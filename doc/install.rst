@@ -21,6 +21,7 @@ Dependencies
 
 * `numpy <http://www.numpy.org/>`__
 * `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
+* `unyt <https://unyt.readthedocs.io/>`__
 
 Most of the examples in the :ref:`gallery` also use:
 
