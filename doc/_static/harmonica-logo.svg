@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="199.9998mm"
+   height="200.0002mm"
+   viewBox="0 0 199.99981 200.0002"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   sodipodi:docname="harmonica-logo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.1767767"
+     inkscape:cx="1027.1863"
+     inkscape:cy="-69.890025"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(2407.4105,-1301.4915)">
+    <g
+       id="g1147"
+       transform="translate(146.05,802.21666)">
+      <g
+         transform="translate(-417.82943,-603.24269)"
+         id="g1083">
+        <path
+           style="fill:#ebeff7;fill-opacity:1;fill-rule:nonzero;stroke-width:0.94450217"
+           d="m -1947.1099,1302.5176 h -188.5212 l 94.2606,-188.5211 z"
+           id="path815-3-6-9-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+        <path
+           style="fill:#2270e8;fill-opacity:1;stroke-width:1.00201178"
+           d="m -1935.6313,1302.5177 -99.9996,-200.0002 -15.0781,30.1563 84.9219,169.8439 z"
+           id="path815-0"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#f45353;fill-opacity:1;fill-rule:nonzero;stroke-width:0.80058223"
+           d="m -1975.8361,1302.5176 h -159.795 l 79.8975,-159.7949 z"
+           id="path815-3-6-9"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+      </g>
+    </g>
+  </g>
+</svg>
