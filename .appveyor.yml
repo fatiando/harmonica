@@ -10,24 +10,19 @@ branches:
 
 environment:
     matrix:
-        # Python 3.5 32bit
-        #- MINICONDA: C:\Miniconda35
-          #PYTHON: 3.5
-        # Python 3.5 64bit
         - MINICONDA: C:\Miniconda35-x64
           PYTHON: 3.5
-        # Python 3.6 32bit
-        #- MINICONDA: C:\Miniconda36
-          #PYTHON: 3.6
-        # Python 3.6 64bit
         - MINICONDA: C:\Miniconda36-x64
           PYTHON: 3.6
 
 init:
     # Add miniconda to the PATH
     - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%MINICONDA%\\Library\\bin;%PATH%"
-    # The file with the listed requirements to be installed by setup-miniconda.bat
+    # The files with the listed requirements to be installed by setup-miniconda.bat
     - set CONDA_REQUIREMENTS=requirements.txt
+    - set CONDA_REQUIREMENTS_DEV=requirements-dev.txt
+    # Cartopy, scipy, and proj aren't on conda-forge for some reason.
+    - set CONDA_EXTRA_CHANNEL=defaults
 
 install:
     # Get the Fatiando CI scripts

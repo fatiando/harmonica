@@ -1,0 +1,12 @@
+# Development requirements
+pyproj
+matplotlib
+cartopy
+pytest
+pytest-cov
+coverage
+pylint
+sphinx
+sphinx_rtd_theme
+sphinx-gallery
+numpydoc

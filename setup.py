@@ -16,18 +16,12 @@ MAINTAINER = AUTHOR
 MAINTAINER_EMAIL = AUTHOR_EMAIL
 LICENSE = "BSD License"
 URL = "https://github.com/fatiando/harmonica"
-DESCRIPTION = "Processing and modeling gravity and magnetic data"
+DESCRIPTION = "Forward modeling, inversion, and processing gravity and magnetic data "
 KEYWORDS = ""
 with open("README.rst") as f:
     LONG_DESCRIPTION = "".join(f.readlines())
-
 VERSION = versioneer.get_version()
 CMDCLASS = versioneer.get_cmdclass()
-
-PACKAGES = find_packages(exclude=["doc"])
-SCRIPTS = []
-PACKAGE_DATA = {}
-
 CLASSIFIERS = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -40,7 +34,11 @@ CLASSIFIERS = [
     "License :: OSI Approved :: {}".format(LICENSE),
 ]
 PLATFORMS = "Any"
-INSTALL_REQUIRES = ["numpy", "scipy"]
+PACKAGES = find_packages(exclude=["doc"])
+SCRIPTS = []
+PACKAGE_DATA = {}
+INSTALL_REQUIRES = ["numpy", "scipy", "pooch"]
+PYTHON_REQUIRES = ">=3.5"
 
 if __name__ == "__main__":
     setup(
@@ -62,5 +60,6 @@ if __name__ == "__main__":
         classifiers=CLASSIFIERS,
         keywords=KEYWORDS,
         install_requires=INSTALL_REQUIRES,
+        python_requires=PYTHON_REQUIRES,
         cmdclass=CMDCLASS,
     )

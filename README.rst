@@ -1,33 +1,45 @@
-.. raw:: html
+.. image:: https://github.com/fatiando/harmonica/raw/master/doc/_static/readme-banner.png
+    :alt: Harmonica
 
-    <h1 align="center">
-        Harmonica
-    </h1>
-    <h3 align="center">
-        <strong>Processing and modeling gravity and magnetic data</strong>
-    </h3>
+`Documentation <http://www.fatiando.org/harmonica>`__ |
+`Documentation (dev version) <http://www.fatiando.org/harmonica/dev>`__ |
+`Contact <https://gitter.im/fatiando/fatiando>`__ |
+Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
-    <p align="center">
-    <a href="https://pypi.python.org/pypi/harmonica"><img alt="Latest version on PyPI" src="http://img.shields.io/pypi/v/harmonica.svg?style=flat-square"></a>
-    <a href="https://travis-ci.org/fatiando/harmonica"><img alt="TravisCI build status" src="http://img.shields.io/travis/fatiando/harmonica/master.svg?style=flat-square&label=Linux|Mac"></a>
-    <a href="https://ci.appveyor.com/project/fatiando/harmonica"><img alt="AppVeyor build status" src="http://img.shields.io/appveyor/ci/fatiando/harmonica/master.svg?style=flat-square&label=Windows"></a>
-    <a href="https://codecov.io/gh/fatiando/harmonica"><img alt="Test coverage status" src="https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square"></a>
-    <a href="https://codeclimate.com/github/fatiando/harmonica"><img alt="Code quality status" src="https://img.shields.io/codeclimate/maintainability/fatiando/harmonica.svg?style=flat-square"></a>
-    <a href="https://www.codacy.com/app/leouieda/harmonica"><img alt="Code quality grade on codacy" src="https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy"></a>
-    <a href="https://pypi.python.org/pypi/harmonica"><img alt="Compatible Python versions." src="https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square"></a>
-    <a href="https://gitter.im/fatiando/fatiando"><img alt="Chat room on Gitter" src="https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square"></a>
-    </p>
 
-    <p align="center">
-    <a href="http://www.fatiando.org/harmonica">Documentation</a> |
-    <a href="https://gitter.im/fatiando/fatiando">Contact</a> |
-    Part of the <a href="https://www.fatiando.org">Fatiando a Terra</a> project
-    </p>
+.. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
+    :alt: Latest version on PyPI
+    :target: https://pypi.python.org/pypi/harmonica
+.. image:: http://img.shields.io/travis/fatiando/harmonica/master.svg?style=flat-square&label=Linux|Mac
+    :alt: TravisCI build status
+    :target: https://travis-ci.org/fatiando/harmonica
+.. image:: http://img.shields.io/appveyor/ci/fatiando/harmonica/master.svg?style=flat-square&label=Windows
+    :alt: AppVeyor build status
+    :target: https://ci.appveyor.com/project/fatiando/harmonica
+.. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square
+    :alt: Test coverage status
+    :target: https://codecov.io/gh/fatiando/harmonica
+.. image:: https://img.shields.io/codeclimate/maintainability/fatiando/harmonica.svg?style=flat-square
+    :alt: Code quality status
+    :target: https://codeclimate.com/github/fatiando/harmonica
+.. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
+    :alt: Code quality grade on codacy
+    :target: https://www.codacy.com/app/leouieda/harmonica
+.. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
+    :alt: Compatible Python versions.
+    :target: https://pypi.python.org/pypi/harmonica
+.. image:: https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square
+    :alt: Chat room on Gitter
+    :target: https://gitter.im/fatiando/fatiando
+
+
+ .. placeholder-for-doc-index
+
 
 Disclaimer
 ----------
 
-**This package in early stages of design and implementation.**
+🚨 **This package is in early stages of design and implementation.** 🚨
 
 We welcome any feedback and ideas!
 Let us know by submitting
@@ -108,3 +120,11 @@ License
 This is free software: you can redistribute it and/or modify it under the terms
 of the **BSD 3-clause License**. A copy of this license is provided in
 `LICENSE.txt <https://github.com/fatiando/harmonica/blob/master/LICENSE.txt>`__.
+
+
+Documentation for other versions
+--------------------------------
+
+* `Development <http://www.fatiando.org/harmonica/dev>`__ (reflects the *master* branch on
+  Github)
+* `Latest release <http://www.fatiando.org/harmonica/latest>`__

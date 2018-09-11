@@ -21,30 +21,12 @@ Dependencies
 
 * `numpy <http://www.numpy.org/>`__
 * `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
-* `unyt <https://unyt.readthedocs.io/>`__
+* `pooch <http://www.fatiando.org/pooch/>`__
 
 Most of the examples in the :ref:`gallery` also use:
 
 * `matplotlib <https://matplotlib.org/>`__
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
-
-
-Installing with conda
----------------------
-
-You can install harmonica using the `conda package manager <https://conda.io/>`__ that
-comes with the Anaconda distribution::
-
-    conda install harmonica --channel conda-forge
-
-
-Installing with pip
--------------------
-
-Alternatively, you can also use the `pip package manager
-<https://pypi.org/project/pip/>`__::
-
-    pip install harmonica
 
 
 Installing the latest development version
