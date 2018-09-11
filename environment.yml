@@ -7,12 +7,11 @@ dependencies:
     - pip
     - numpy
     - scipy
-    - unyt
+    - pooch
     # Development requirements
     - pyproj
     - matplotlib
     - cartopy
-    - jupyter
     - pytest
     - pytest-cov
     - coverage
@@ -22,4 +21,3 @@ dependencies:
     - sphinx_rtd_theme
     - sphinx-gallery
     - numpydoc
-    - twine

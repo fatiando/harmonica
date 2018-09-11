@@ -23,13 +23,13 @@ env:
         # PyPI password for deploying releases (TWINE_PASSWORD)
         - secure: "ufJKNS+JGD3klJglfML+4gerCOntHlfLX8M1zb3wyf6QbOfqZncvijh5ChVSAsqMeqKJG+hHVUgRN0pPgOyhsCetgeS/QdYsehEZO+UZeni+xdaAZgG/pz0pzxDuIOOTu9CImKIn+hnMSo3cnoO9fASem1c77XvLHs6BcShYpUZTRElvDGcvWlU2aZMA2qO9rVBpRBgr8GK6uLdXqV6yzJznWlQVRSJmpVEVfdNr5cbtgy7gxf2IBL2TXEWzzqwcJc3/bkzGFCwqgJ3aouIeHeWuNJEW23BjfIj6Da7ibsC7cPwS0u96MbBTBNOVInlh6Zy7xQvJpzgYBPTE3P3+HMUF7wS6HVkGyn86kh0JMfTwUjSul9SxGDCSn1JWnH5Ya7S5rGekYPcxE+2gKAt3BHjPM8xIDo6fIPH8zWLXl7xQJDHe/TWc3GRUD2OB+y9fWy+xvuXz7DI41oSHMSAEw6Ob2x7dGPbiSGvWmK0Z6Nm1sBVP/3xGhfhuH48587cbVEU27MAIUCzyJYi2750z3LP5pDP4HGiJsiH/kZLTBTgjxKM0m6+A/quAlARUsiXyf5z9fAqed13EcB/0x8YqqGVHNC79+7eIhEWwPU1h1+NeiTqK2wznzvawdfDtFHtquLC0pqWNq+r76walp+wBG0+jGpK+D/orUoW/x0oVrGo="
         - TWINE_USERNAME=Leonardo.Uieda
-        # The file with the listed requirements to be installed by conda
+        # The files with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
+        - CONDA_REQUIREMENTS_DEV=requirements-dev.txt
         # These variables control which actions are performed in a build
         - COVERAGE=false
         - BUILD_DOCS=false
         - CHECK_FORMAT=false
-        - LINKCHECK=false
         - DEPLOY_DOCS=false
         - DEPLOY_PYPI=false
 
@@ -42,9 +42,10 @@ matrix:
               - CHECK_FORMAT=true
               - COVERAGE=true
               - BUILD_DOCS=true
-              - LINKCHECK=true
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
+              # Black is Python 3.6 only so it can't be in the requirements file.
+              - CONDA_INSTALL_EXTRA="black"
         - os: linux
           env:
               - PYTHON=3.5
@@ -90,9 +91,6 @@ script:
           make test;
       fi
     # Build the documentation
-    - if [ "$LINKCHECK" == "true" ]; then
-          make -C doc linkcheck;
-      fi
     - if [ "$BUILD_DOCS" == "true" ]; then
           make -C doc clean all;
       fi

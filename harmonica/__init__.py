@@ -1,14 +1,10 @@
-"""
-The Harmonica public API.
-"""
-from ._version import get_versions as _get_versions
-
-# Import functions/classes to make the API
+# pylint: disable=missing-docstring
+# Import functions/classes to make the public API
+from . import version
 
 
 # Get the version number through versioneer
-__version__ = _get_versions()["version"]
-__commit__ = _get_versions()["full-revisionid"]
+__version__ = version.full_version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

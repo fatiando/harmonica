@@ -3,10 +3,14 @@
 API Reference
 =============
 
+.. automodule:: harmonica
+
 .. currentmodule:: harmonica
 
+Utilities
+---------
 
-Physical constants: :mod:`harmonica.constants`
-----------------------------------------------
+.. autosummary::
+   :toctree: generated/
 
-.. automodule:: harmonica.constants
+    test
