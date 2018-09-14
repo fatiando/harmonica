@@ -6,7 +6,6 @@
 `Contact <https://gitter.im/fatiando/fatiando>`__ |
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
-
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/harmonica
@@ -33,7 +32,7 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
     :target: https://gitter.im/fatiando/fatiando
 
 
- .. placeholder-for-doc-index
+.. placeholder-for-doc-index
 
 
 Disclaimer
@@ -51,11 +50,35 @@ or send us a message on our
 About
 -----
 
+*Harmonica* is a Python library for processing and modeling gravity and magnetic data.
+It includes common processing steps, like calculation of normal gravity, terrain
+correction, reduction to the pole, upward continuation, equivalent layers, and more.
+There are forward modeling functions for basic geometric shapes, like spheres, prisms,
+polygonal prisms, and tesseroids. The inversion methods are implemented as classes with
+an interface inspired by scikit-learn (like `Verde <https://www.fatiando.org/verde>`__).
 
 
 Project goals
 -------------
 
+These are the long-term goals for Harmonica:
+
+* Efficient, well designed, and fully tested code for gravity and magnetic data.
+* Cover the entire data life-cycle: from raw data to 3D Earth model.
+* Focus on best-practices to discourage misuse of methods, particularly inversion.
+* Easily extended code to enable research on the development of new methods.
+
+See the `Github milestones <https://github.com/fatiando/harmonica/milestones>`__ for
+short-term goals.
+
+Things that will *not* be covered in Harmonica:
+
+* Multi-physics partial differential equation solvers. Use
+  `SimPEG <http://www.simpeg.xyz/>`__ or `PyGIMLi <https://www.pygimli.org/>`__ instead.
+* Generic grid processing methods (like horizontal derivatives and FFT). These should be
+  implemented in `Verde <https://www.fatiando.org/verde>`__.
+* Data visualization.
+* GUI applications.
 
 
 Contacting Us
