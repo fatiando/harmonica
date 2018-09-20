@@ -45,7 +45,7 @@ matrix:
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
               # Black is Python 3.6 only so it can't be in the requirements file.
-              - CONDA_INSTALL_EXTRA="black"
+              - CONDA_INSTALL_EXTRA="black twine"
         - os: linux
           env:
               - PYTHON=3.5
