@@ -8,6 +8,7 @@ dependencies:
     - numpy
     - scipy
     - pooch
+    - attrs
     # Development requirements
     - pyproj
     - matplotlib

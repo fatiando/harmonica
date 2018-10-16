@@ -7,6 +7,16 @@ API Reference
 
 .. currentmodule:: harmonica
 
+Ellipsoids
+----------
+
+.. autosummary::
+   :toctree: generated/
+
+    Ellipsoid
+    set_ellipsoid
+    get_ellipsoid
+
 Utilities
 ---------
 

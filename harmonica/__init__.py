@@ -1,7 +1,6 @@
 # pylint: disable=missing-docstring
 # Import functions/classes to make the public API
 from . import version
-from .gravity_processing import normal_gravity
 from .ellipsoid import set_ellipsoid, get_ellipsoid, Ellipsoid
 
 # Get the version number through versioneer
