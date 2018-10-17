@@ -7,7 +7,7 @@ import math
 import attr
 
 
-ELLIPSOID = None
+ELLIPSOID = []
 KNOWN_ELLIPSOIDS = {
     "WGS84": dict(
         name="WGS84",
@@ -161,18 +161,18 @@ class Ellipsoid:
         return result
 
 
-def set_ellipsoid(ellipsoid):
+def set_ellipsoid(ellipsoid="WGS84"):
     """
     """
     if ellipsoid in KNOWN_ELLIPSOIDS:
-        ellipsoid = KNOWN_ELLIPSOIDS[ellipsoid]
+        ellipsoid = Ellipsoid(**KNOWN_ELLIPSOIDS[ellipsoid])
     return EllipsoidContext(ellipsoid)
 
 
 def get_ellipsoid():
     """
     """
-    return ELLIPSOID
+    return ELLIPSOID[-1]
 
 
 class EllipsoidContext:
@@ -180,9 +180,7 @@ class EllipsoidContext:
     """
 
     def __init__(self, ellipsoid):
-        global ELLIPSOID
-        self.backup = ELLIPSOID
-        ELLIPSOID = ellipsoid
+        ELLIPSOID.append(ellipsoid)
 
     def __enter__(self):
         """
@@ -192,9 +190,8 @@ class EllipsoidContext:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
         """
-        global ELLIPSOID
-        ELLIPSOID = self.backup
+        ELLIPSOID.pop()
 
 
-# Set the default ellipsoid for all calculations as WGS84
-set_ellipsoid("WGS84")
+# Set the default ellipsoid for all calculations
+set_ellipsoid()
