@@ -18,6 +18,7 @@ dependencies:
     - coverage
     - black
     - pylint
+    - flake8
     - sphinx
     - sphinx_rtd_theme
     - sphinx-gallery
