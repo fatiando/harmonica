@@ -23,6 +23,8 @@ def load_icgem_gdf(fname, **kwargs):
         Reads the column data and other metadata from
         the file. Column data are numpy arrays.
     """
+    if 'usecols' not in kwargs:
+        kwargs['usecols'] = None
     with open(fname) as f:
         # Read the header and extract metadata
         metadata = []
@@ -69,8 +71,8 @@ def load_icgem_gdf(fname, **kwargs):
     assert shape[0] * shape[1] == size, \
         "Grid shape '{}' and size '{}' mismatch.".format(shape, size)
     assert attributes is not None, "Couldn't read column names."
-    if usecols is not None:
-        attributes = [attributes[i] for i in usecols]
+    if kwargs['usecols'] is not None:
+        attributes = [attributes[i] for i in kwargs['usecols']]
     assert len(attributes) == rawdata.shape[0], \
         "Number of attributes ({}) and data columns ({}) mismatch".format(
             len(attributes), rawdata.shape[0])
