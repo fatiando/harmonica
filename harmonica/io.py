@@ -65,18 +65,24 @@ def load_icgem_gdf(fname, **kwargs):
         # Read the numerical values
         rawdata = np.loadtxt(f, ndmin=2, unpack=True, **kwargs)
     # Sanity checks
-    assert all(n is not None for n in shape), "Couldn't read shape of grid."
-    assert size is not None, "Couldn't read size of grid."
+    if not all(n is not None for n in shape):
+        raise IOError("Couldn't read shape of grid.")
+    if size is None:
+        raise IOError("Couldn't read size of grid.")
     shape = tuple(shape)
-    assert shape[0] * shape[1] == size, \
-        "Grid shape '{}' and size '{}' mismatch.".format(shape, size)
-    assert attributes is not None, "Couldn't read column names."
+    if shape[0] * shape[1] != size:
+        raise ValueError(
+            "Grid shape '{}' and size '{}' mismatch.".format(shape, size))
+    if attributes is None:
+        raise IOError("Couldn't read column names.")
     if kwargs['usecols'] is not None:
         attributes = [attributes[i] for i in kwargs['usecols']]
-    assert len(attributes) == rawdata.shape[0], \
-        "Number of attributes ({}) and data columns ({}) mismatch".format(
-            len(attributes), rawdata.shape[0])
-    assert all(i is not None for i in area), "Couldn't read the grid area."
+    if len(attributes) != rawdata.shape[0]:
+        raise ValueError(
+            "Number of attributes ({}) and data columns ({}) mismatch".format(
+                len(attributes), rawdata.shape[0]))
+    if not all(i is not None for i in area):
+        raise IOError("Couldn't read the grid area.")
     # Return the data in a dictionary with the attribute names
     # that we got from the file.
     data = dict(shape=shape, area=area, metadata=''.join(metadata))
