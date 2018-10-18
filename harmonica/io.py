@@ -71,14 +71,14 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Couldn't read size of grid.")
     shape = tuple(shape)
     if shape[0] * shape[1] != size:
-        raise ValueError(
+        raise IOError(
             "Grid shape '{}' and size '{}' mismatch.".format(shape, size))
     if attributes is None:
         raise IOError("Couldn't read column names.")
     if kwargs['usecols'] is not None:
         attributes = [attributes[i] for i in kwargs['usecols']]
     if len(attributes) != rawdata.shape[0]:
-        raise ValueError(
+        raise IOError(
             "Number of attributes ({}) and data columns ({}) mismatch".format(
                 len(attributes), rawdata.shape[0]))
     if not all(i is not None for i in area):
