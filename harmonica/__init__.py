@@ -1,7 +1,12 @@
 # pylint: disable=missing-docstring
 # Import functions/classes to make the public API
 from . import version
-
+from .ellipsoid import (
+    set_ellipsoid,
+    get_ellipsoid,
+    print_ellipsoids,
+    ReferenceEllipsoid,
+)
 
 # Get the version number through versioneer
 __version__ = version.full_version

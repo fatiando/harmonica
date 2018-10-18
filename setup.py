@@ -37,7 +37,7 @@ PLATFORMS = "Any"
 PACKAGES = find_packages(exclude=["doc"])
 SCRIPTS = []
 PACKAGE_DATA = {}
-INSTALL_REQUIRES = ["numpy", "scipy", "pooch"]
+INSTALL_REQUIRES = ["numpy", "scipy", "pooch", "attrs"]
 PYTHON_REQUIRES = ">=3.5"
 
 if __name__ == "__main__":
