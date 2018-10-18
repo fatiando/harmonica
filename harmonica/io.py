@@ -95,7 +95,8 @@ def load_icgem_gdf(fname, **kwargs):
     if 'latitude' in attributes and 'longitude' in attributes:
         lat, lon = data['latitude'], data['longitude']
         area = (lat.min(), lat.max(), lon.min(), lon.max())
-        assert np.allclose(area, data['area']), \
-            "Grid area read ({}) and calculated from attributes " + \
-            "({}) mismatch.".format(data['area'], area)
+        if not np.allclose(area, data['area']):
+            errline = "Grid area read ({}) and calculated from attributes " + \
+                      "({}) mismatch.".format(data['area'], area)
+            raise IOError(errline)
     return data
