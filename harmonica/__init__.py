@@ -7,6 +7,7 @@ from .ellipsoid import (
     print_ellipsoids,
     ReferenceEllipsoid,
 )
+from .io import load_icgem_gdf
 
 # Get the version number through versioneer
 __version__ = version.full_version
