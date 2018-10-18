@@ -14,8 +14,8 @@ def load_icgem_gdf(fname, **kwargs):
 
     * fname: string
         Name of the ICGEM .gdf file
-    * usecols : int or sequence
-        Which columns to read, with 0 being the first.
+    * **kwargs:
+        Arguments that will be passed to `numpy.loadtxt`.
 
     Returns:
     * data : dict
