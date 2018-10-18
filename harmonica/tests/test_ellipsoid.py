@@ -2,13 +2,18 @@
 Testing the setting of different ellipsoids for calculations.
 """
 
-from ..ellipsoid import get_ellipsoid, set_ellipsoid, Ellipsoid
+from ..ellipsoid import (
+    get_ellipsoid,
+    set_ellipsoid,
+    ReferenceEllipsoid,
+    EllipsoidManager,
+)
 
 
 def test_set_ellipsoid():
     "Set the ellipsoid for a script"
     assert get_ellipsoid().name == "WGS84"
-    ellie = Ellipsoid(
+    ellie = ReferenceEllipsoid(
         name="Ellie",
         semimajor_axis=1,
         inverse_flattening=1,
@@ -36,3 +41,29 @@ def test_set_ellipsoid_by_name_context():
     with set_ellipsoid("GRS80"):
         assert get_ellipsoid().name == "GRS80"
     assert get_ellipsoid().name == "WGS84"
+
+
+def test_ellipsoid_context():
+    "Make sure setup and tear down actions work properly"
+    ctx = EllipsoidManager("myell", global_context=[])
+    # Set it globally
+    ctx.set()
+    assert ctx.global_context == ["myell"]
+    ctx.reset()
+    assert ctx.global_context == []
+    # Use it as a context manager
+    with ctx:
+        assert ctx.global_context == ["myell"]
+    assert ctx.global_context == []
+    # Set before entering the context
+    ctx.set()
+    assert ctx.global_context == ["myell"]
+    with ctx:
+        assert ctx.global_context == ["myell"]
+    assert ctx.global_context == []
+    # Reset before leaving the context
+    with ctx:
+        assert ctx.global_context == ["myell"]
+        ctx.reset()
+        assert ctx.global_context == []
+    assert ctx.global_context == []
