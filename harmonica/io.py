@@ -19,10 +19,10 @@ def load_icgem_gdf(fname, **kwargs):
         Arguments that will be passed to `numpy.loadtxt`.
 
     Returns:
-    * data : dict
-        A dictionary with the data from the file.
-        Reads the column data and other metadata from
-        the file. Column data are numpy arrays.
+    * icgem_grd : xarray.Dataset
+        An `xarray.Dataset` with the data from the file.
+        The header of the gdf file is passed into the `attr` argument
+        of `xarray.Dataset`.
     """
     if 'usecols' not in kwargs:
         kwargs['usecols'] = None
