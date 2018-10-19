@@ -38,8 +38,9 @@ def load_icgem_gdf(fname, **kwargs):
         for line in f:
             if line.strip()[:11] == 'end_of_head':
                 break
-            metadata[line.split[0]] = ''.join(line.split[1:])
-            if not line.strip():
+            if line.strip():
+                metadata[line.split()[0]] = ''.join(line.split()[1:])
+            else:
                 attr_line = True
                 continue
             if not attr_line:
