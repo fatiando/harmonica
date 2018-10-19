@@ -11,6 +11,13 @@ def load_icgem_gdf(fname, **kwargs):
 
     http://icgem.gfz-potsdam.de/home
 
+    **References**
+
+    Barthelmes, F. and Kohler, W. (2016), International Centre for Global Earth
+    Models (ICGEM), in: Drewes, H., Kuglitsch, F., Adam, J. et al.,
+    The Geodesists Handbook 2016, Journal of Geodesy (2016), 90(10), pp 907-1205,
+    doi: 10.1007/s00190-016-0948-z
+
     Parameters:
 
     * fname: string
