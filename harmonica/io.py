@@ -96,7 +96,7 @@ def load_icgem_gdf(fname, **kwargs):
     for attr, value in zip(attributes, rawdata):
         # Need to invert the data matrices in latitude "[::-1]"
         # because the ICGEM grid gets varies latitude from N to S
-        value = value.reshape(shape)[::-1].ravel()
+        value = value.reshape(shape)[::-1]
         if attr == 'latitude':
             icgem_grd.coords['lat'] = (('northing', 'easting'), value)
         elif attr == 'longitude':
