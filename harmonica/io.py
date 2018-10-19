@@ -29,6 +29,7 @@ def load_icgem_gdf(fname, **kwargs):
     with open(fname) as f:
         # Read the header and extract metadata
         metadata = {}
+        metadata_line = True
         shape = [None, None]
         size = None
         height = None
@@ -38,11 +39,12 @@ def load_icgem_gdf(fname, **kwargs):
         for line in f:
             if line.strip()[:11] == 'end_of_head':
                 break
-            if line.strip():
-                metadata[line.split()[0]] = ''.join(line.split()[1:])
-            else:
+            if not line.strip():
                 attr_line = True
+                metadata_line = False
                 continue
+            if line.strip() and metadata_line:
+                metadata[line.split()[0]] = ''.join(line.split()[1:])
             if not attr_line:
                 parts = line.strip().split()
                 if parts[0] == 'height_over_ell':
