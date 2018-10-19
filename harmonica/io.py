@@ -28,7 +28,7 @@ def load_icgem_gdf(fname, **kwargs):
         kwargs['usecols'] = None
     with open(fname) as f:
         # Read the header and extract metadata
-        metadata = []
+        metadata = {}
         shape = [None, None]
         size = None
         height = None
@@ -38,7 +38,7 @@ def load_icgem_gdf(fname, **kwargs):
         for line in f:
             if line.strip()[:11] == 'end_of_head':
                 break
-            metadata.append(line)
+            metadata[line.split[0]] = ''.join(line.split[1:])
             if not line.strip():
                 attr_line = True
                 continue
@@ -92,6 +92,7 @@ def load_icgem_gdf(fname, **kwargs):
 
     # Create xarray.Dataset
     icgem_grd = xr.Dataset()
+    icgem_grd.attrs = metadata
     for attr, value in zip(attributes, rawdata):
         # Need to invert the data matrices in latitude "[::-1]"
         # because the ICGEM grid gets varies latitude from N to S
