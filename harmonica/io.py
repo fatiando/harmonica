@@ -107,7 +107,7 @@ def load_icgem_gdf(fname, **kwargs):
         else:
             icgem_grd[attr] = (('northing', 'easting'), value)
     if (height is not None) and ('height' not in attributes):
-        icgem_grd['height'] = height * np.ones(size)
+        icgem_grd['height'] = (('northing', 'easting'), height * np.ones(shape))
 
     # Check area from header equals to area from data in cols
     area_from_cols = (icgem_grd.lat.values.min(),
