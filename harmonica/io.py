@@ -1,4 +1,5 @@
 import numpy as np
+import xarray as xr
 
 
 def load_icgem_gdf(fname, **kwargs):
@@ -64,6 +65,7 @@ def load_icgem_gdf(fname, **kwargs):
                 attr_line = False
         # Read the numerical values
         rawdata = np.loadtxt(f, ndmin=2, unpack=True, **kwargs)
+
     # Sanity checks
     if not all(n is not None for n in shape):
         raise IOError("Couldn't read shape of grid.")
@@ -83,20 +85,33 @@ def load_icgem_gdf(fname, **kwargs):
                 len(attributes), rawdata.shape[0]))
     if not all(i is not None for i in area):
         raise IOError("Couldn't read the grid area.")
-    # Return the data in a dictionary with the attribute names
-    # that we got from the file.
-    data = dict(shape=shape, area=area, metadata=''.join(metadata))
+    if 'latitude' not in attributes:
+        raise IOError("Couldn't find latitude column.")
+    if 'longitude' not in attributes:
+        raise IOError("Couldn't find longitude column.")
+
+    # Create xarray.Dataset
+    icgem_grd = xr.Dataset()
     for attr, value in zip(attributes, rawdata):
         # Need to invert the data matrices in latitude "[::-1]"
         # because the ICGEM grid gets varies latitude from N to S
-        data[attr] = value.reshape(shape)[::-1].ravel()
+        value = value.reshape(shape)[::-1].ravel()
+        if attr == 'latitude':
+            icgem_grd.coords['lat'] = (('northing', 'easting'), value)
+        elif attr == 'longitude':
+            icgem_grd.coords['lon'] = (('northing', 'easting'), value)
+        else:
+            icgem_grd[attr] = (('northing', 'easting'), value)
     if (height is not None) and ('height' not in attributes):
-        data['height'] = height * np.ones(size)
-    if 'latitude' in attributes and 'longitude' in attributes:
-        lat, lon = data['latitude'], data['longitude']
-        area = (lat.min(), lat.max(), lon.min(), lon.max())
-        if not np.allclose(area, data['area']):
-            errline = "Grid area read ({}) and calculated from attributes " + \
-                      "({}) mismatch.".format(data['area'], area)
-            raise IOError(errline)
-    return data
+        icgem_grd['height'] = height * np.ones(size)
+
+    # Check area from header equals to area from data in cols
+    area_from_cols = (icgem_grd.lat.values.min(),
+                      icgem_grd.lat.values.max(),
+                      icgem_grd.lon.values.min(),
+                      icgem_grd.lon.values.max())
+    if not np.allclose(area, area_from_cols):
+        errline = "Grid area read ({}) and calculated from attributes " + \
+                  "({}) mismatch.".format(area, area_from_cols)
+        raise IOError(errline)
+    return icgem_grd
