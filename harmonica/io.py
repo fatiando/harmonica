@@ -1,5 +1,5 @@
 """
-Functions for interacting with standarized data files that contains gravity or
+Functions for interacting with standarized data files that contain gravity or
 magnetic geophysical data.
 """
 import numpy as np
