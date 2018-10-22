@@ -45,19 +45,17 @@ def load_icgem_gdf(fname, **kwargs):
         size = None
         height = None
         attributes = None
-        attr_line = False
+        attr_units_line = False
         area = [None] * 4
         for line in f:
             if line.strip()[:11] == "end_of_head":
                 break
             if not line.strip():
-                attr_line = True
                 metadata_line = False
                 continue
-            if line.strip() and metadata_line:
-                metadata[line.split()[0]] = "".join(line.split()[1:])
-            if not attr_line:
+            if metadata_line:
                 parts = line.strip().split()
+                metadata[parts[0]] = "".join(parts[1:])
                 if parts[0] == "height_over_ell":
                     height = float(parts[1])
                 elif parts[0] == "latitude_parallels":
@@ -75,8 +73,11 @@ def load_icgem_gdf(fname, **kwargs):
                 elif parts[0] == "longlimit_east":
                     area[3] = float(parts[1])
             else:
-                attributes = line.strip().split()
-                attr_line = False
+                if not attr_units_line:
+                    attributes = line.strip().split()
+                    attr_units_line = True
+                else:
+                    attributes_units = line.strip().split()
         # Read the numerical values
         rawdata = np.loadtxt(f, ndmin=2, unpack=True, **kwargs)
 
@@ -90,8 +91,8 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Grid shape '{}' and size '{}' mismatch.".format(shape, size))
     if attributes is None:
         raise IOError("Couldn't read column names.")
-    if kwargs["usecols"] is not None:
-        attributes = [attributes[i] for i in kwargs["usecols"]]
+    if attributes_units is None:
+        raise IOError("Couldn't read column units.")
     if len(attributes) != rawdata.shape[0]:
         raise IOError(
             "Number of attributes ({}) and data columns ({}) mismatch".format(
@@ -104,6 +105,14 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Couldn't find latitude column.")
     if "longitude" not in attributes:
         raise IOError("Couldn't find longitude column.")
+
+    attributes_units = [unit.replace("[", "").replace("]", "")
+                        for unit in attributes_units]
+    if kwargs["usecols"] is not None:
+        attributes = [attributes[i] for i in kwargs["usecols"]]
+        attributes_units = [attributes_units[i] for i in kwargs["usecols"]]
+    for i, attr in enumerate(attributes):
+        metadata[attr + " unit"] = attributes_units[i]
 
     # Create xarray.Dataset
     icgem_grd = xr.Dataset()
