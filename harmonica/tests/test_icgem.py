@@ -206,12 +206,12 @@ def test_diff_attrs_vs_cols(tmpdir):
 
 
 def test_missing_area(tmpdir):
-    "ICGEM file with different number of cols vs number of attributes"
+    "ICGEM file with missing area coordinates"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latlimit_north", "latlimit_south",
                   "longlimit_west", "longlimit_east"]
     for attribute in attributes:
-        corrupt = tmpdir.join("corrupt_attributes_" + attribute + ".gdf")
+        corrupt = tmpdir.join("missing_" + attribute + ".gdf")
         with open(fname) as f:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in f:
