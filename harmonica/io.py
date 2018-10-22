@@ -94,6 +94,12 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Couldn't read column names.")
     if attributes_units is None:
         raise IOError("Couldn't read column units.")
+    if len(attributes) != len(attributes_units):
+        raise IOError(
+            "Number of attributes ({}) and units ({}) mismatch".format(
+                len(attributes), len(attributes_units)
+            )
+        )
     if len(attributes) != rawdata.shape[0]:
         raise IOError(
             "Number of attributes ({}) and data columns ({}) mismatch".format(
