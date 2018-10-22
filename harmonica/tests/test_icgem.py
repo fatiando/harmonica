@@ -229,8 +229,12 @@ def test_diff_attrs_vs_cols(tmpdir):
 def test_missing_area(tmpdir):
     "ICGEM file with missing area coordinates"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    attributes = ["latlimit_north", "latlimit_south",
-                  "longlimit_west", "longlimit_east"]
+    attributes = [
+        "latlimit_north",
+        "latlimit_south",
+        "longlimit_west",
+        "longlimit_east",
+    ]
     for attribute in attributes:
         corrupt = tmpdir.join("missing_" + attribute + ".gdf")
         with open(fname) as gdf_file:
@@ -247,8 +251,12 @@ def test_missing_area(tmpdir):
 def test_corrupt_area(tmpdir):
     "ICGEM file with area in header mismatch area from data"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    attributes = ["latlimit_north", "latlimit_south",
-                  "longlimit_west", "longlimit_east"]
+    attributes = [
+        "latlimit_north",
+        "latlimit_south",
+        "longlimit_west",
+        "longlimit_east",
+    ]
     for attribute in attributes:
         corrupt = tmpdir.join("corrupt_" + attribute + ".gdf")
         with open(fname) as gdf_file:
