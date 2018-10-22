@@ -2,8 +2,10 @@
 Testing ICGEM gdf files loading.
 """
 import os
+import shutil
 import numpy as np
 import numpy.testing as npt
+from pytest import raises
 
 from .. import load_icgem_gdf
 
@@ -31,3 +33,56 @@ def test_load_icgem_gdf():
     npt.assert_equal(icgem_grd.lat.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
     npt.assert_allclose(height, icgem_grd.height.values)
+
+
+def test_corrupt_icgem_gdf():
+    "Check if load_icgem_gdf detects a corrupt ICGEM gdf file"
+    corrupts_dir = os.path.join(TEST_DATA_DIR, "_corrupts")
+    if os.path.isdir(corrupts_dir):
+        shutil.rmtree(corrupts_dir)
+    else:
+        os.makedirs(corrupts_dir)
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+
+    # Missing shape
+    corrupt = os.path.join(corrupts_dir, "missing_shape.gdf")
+    attribute = "latitude_parallels"
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if attribute in line:
+                    continue
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
+
+    # Missing size
+    corrupt = os.path.join(corrupts_dir, "missing_size.gdf")
+    attribute = "number_of_gridpoints"
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if attribute in line:
+                    continue
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
+
+    # Corrupted shape vs size
+    corrupt = os.path.join(corrupts_dir, "corrupt_shape.gdf")
+    attribute = "latitude_parallels"
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if attribute in line:
+                    new_value = int(line.split()[1]) + 1
+                    new_line = attribute + "\t" + str(new_value) + "\n"
+                    corrupt_gdf.write(new_line)
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
+
+    shutil.rmtree(corrupts_dir)
