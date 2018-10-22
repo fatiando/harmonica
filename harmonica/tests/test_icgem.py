@@ -37,17 +37,18 @@ def test_load_icgem_gdf():
 def test_missing_shape(tmpdir):
     "Check if load_icgem_gdf detects an ICGEM file with missing shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_shape.gdf")
-    attribute = "latitude_parallels"
-    with open(fname) as f:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in f:
-                if attribute in line:
-                    continue
-                else:
-                    corrupt_gdf.write(line)
-    with raises(IOError):
-        load_icgem_gdf(corrupt)
+    attributes = ["latitude_parallels", "longitude_parallels"]
+    for attribute in attributes:
+        corrupt = tmpdir.join("missing_shape_" + attribute + ".gdf")
+        with open(fname) as f:
+            with open(corrupt, "w") as corrupt_gdf:
+                for line in f:
+                    if attribute in line:
+                        continue
+                    else:
+                        corrupt_gdf.write(line)
+        with raises(IOError):
+            load_icgem_gdf(corrupt)
 
 
 def test_missing_size(tmpdir):
@@ -69,19 +70,20 @@ def test_missing_size(tmpdir):
 def test_corrupt_shape(tmpdir):
     "Check if load_icgem_gdf detects an corrupt ICGEM file with corrupt shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_shape.gdf")
-    attribute = "latitude_parallels"
-    with open(fname) as f:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in f:
-                if attribute in line:
-                    new_value = int(line.split()[1]) + 1
-                    new_line = attribute + "\t" + str(new_value) + "\n"
-                    corrupt_gdf.write(new_line)
-                else:
-                    corrupt_gdf.write(line)
-    with raises(IOError):
-        load_icgem_gdf(corrupt)
+    attributes = ["latitude_parallels", "longitude_parallels"]
+    for attribute in attributes:
+        corrupt = tmpdir.join("missing_shape_" + attribute + ".gdf")
+        with open(fname) as f:
+            with open(corrupt, "w") as corrupt_gdf:
+                for line in f:
+                    if attribute in line:
+                        new_value = int(line.split()[1]) + 1
+                        new_line = attribute + "\t" + str(new_value) + "\n"
+                        corrupt_gdf.write(new_line)
+                    else:
+                        corrupt_gdf.write(line)
+        with raises(IOError):
+            load_icgem_gdf(corrupt)
 
 
 def test_missing_cols_names(tmpdir):
