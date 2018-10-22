@@ -87,7 +87,7 @@ def test_corrupt_shape(tmpdir):
 def test_missing_cols_names(tmpdir):
     "Check if load_icgem_gdf detects ICGEM file with missing cols names"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_shape.gdf")
+    corrupt = tmpdir.join("missing_cols_names.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
             for line in f:
@@ -102,7 +102,7 @@ def test_missing_cols_names(tmpdir):
 def test_missing_units(tmpdir):
     "Check if load_icgem_gdf detects an corrupt ICGEM file with missing units"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_shape.gdf")
+    corrupt = tmpdir.join("missing_units.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
             for line in f:
@@ -117,7 +117,7 @@ def test_missing_units(tmpdir):
 def test_missing_empty_line(tmpdir):
     "Check if load_icgem_gdf detects an ICGEM file with missing empty line"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_shape.gdf")
+    corrupt = tmpdir.join("missing_empty_line.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
             for line in f:
