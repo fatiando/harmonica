@@ -2,7 +2,6 @@
 Testing ICGEM gdf files loading.
 """
 import os
-import shutil
 import numpy as np
 import numpy.testing as npt
 from pytest import raises
@@ -35,17 +34,12 @@ def test_load_icgem_gdf():
     npt.assert_allclose(height, icgem_grd.height.values)
 
 
-def test_corrupt_icgem_gdf():
+def test_corrupt_icgem_gdf(tmpdir):
     "Check if load_icgem_gdf detects a corrupt ICGEM gdf file"
-    corrupts_dir = os.path.join(TEST_DATA_DIR, "_corrupts")
-    if os.path.isdir(corrupts_dir):
-        shutil.rmtree(corrupts_dir)
-    else:
-        os.makedirs(corrupts_dir)
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
 
     # Missing shape
-    corrupt = os.path.join(corrupts_dir, "missing_shape.gdf")
+    corrupt = tmpdir.join("missing_shape.gdf")
     attribute = "latitude_parallels"
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
@@ -58,7 +52,7 @@ def test_corrupt_icgem_gdf():
         load_icgem_gdf(corrupt)
 
     # Missing size
-    corrupt = os.path.join(corrupts_dir, "missing_size.gdf")
+    corrupt = tmpdir.join("missing_size.gdf")
     attribute = "number_of_gridpoints"
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
@@ -71,7 +65,7 @@ def test_corrupt_icgem_gdf():
         load_icgem_gdf(corrupt)
 
     # Corrupted shape vs size
-    corrupt = os.path.join(corrupts_dir, "corrupt_shape.gdf")
+    corrupt = tmpdir.join("corrupt_shape.gdf")
     attribute = "latitude_parallels"
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
@@ -84,5 +78,3 @@ def test_corrupt_icgem_gdf():
                     corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
-
-    shutil.rmtree(corrupts_dir)
