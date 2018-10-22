@@ -30,7 +30,7 @@ def load_icgem_gdf(fname, **kwargs):
         Arguments that will be passed to `numpy.loadtxt`.
 
     Returns:
-    * icgem_grd : xarray.Dataset
+    * icgem_ds : xarray.Dataset
         An `xarray.Dataset` with the data from the file.
         The header of the gdf file is passed into the `attr` argument
         of `xarray.Dataset`.
@@ -116,27 +116,27 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Couldn't find longitude column.")
 
     # Create xarray.Dataset
-    icgem_grd = xr.Dataset()
-    icgem_grd.attrs = metadata
+    icgem_ds = xr.Dataset()
+    icgem_ds.attrs = metadata
     for attr, value in zip(attributes, rawdata):
         # Need to invert the data matrices in latitude "[::-1]"
         # because the ICGEM grid gets varies latitude from N to S
         value = value.reshape(shape)[::-1]
         if attr == "latitude":
-            icgem_grd.coords["lat"] = (("northing", "easting"), value)
+            icgem_ds.coords["lat"] = (("northing", "easting"), value)
         elif attr == "longitude":
-            icgem_grd.coords["lon"] = (("northing", "easting"), value)
+            icgem_ds.coords["lon"] = (("northing", "easting"), value)
         else:
-            icgem_grd[attr] = (("northing", "easting"), value)
+            icgem_ds[attr] = (("northing", "easting"), value)
     if (height is not None) and ("height" not in attributes):
-        icgem_grd["height"] = (("northing", "easting"), height * np.ones(shape))
+        icgem_ds["height"] = (("northing", "easting"), height * np.ones(shape))
 
     # Check area from header equals to area from data in cols
     area_from_cols = (
-        icgem_grd.lat.values.min(),
-        icgem_grd.lat.values.max(),
-        icgem_grd.lon.values.min(),
-        icgem_grd.lon.values.max(),
+        icgem_ds.lat.values.min(),
+        icgem_ds.lat.values.max(),
+        icgem_ds.lon.values.min(),
+        icgem_ds.lon.values.max(),
     )
     if not np.allclose(area, area_from_cols):
         errline = (
@@ -144,4 +144,4 @@ def load_icgem_gdf(fname, **kwargs):
             "({}) mismatch.".format(area, area_from_cols)
         )
         raise IOError(errline)
-    return icgem_grd
+    return icgem_ds
