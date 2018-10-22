@@ -35,7 +35,7 @@ def test_load_icgem_gdf():
 
 
 def test_missing_shape(tmpdir):
-    "Check if load_icgem_gdf detects an ICGEM file with missing shape"
+    "ICGEM file with missing shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
@@ -52,7 +52,7 @@ def test_missing_shape(tmpdir):
 
 
 def test_missing_size(tmpdir):
-    "Check if load_icgem_gdf detects an ICGEM file with missing size"
+    "ICGEM file with missing size"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_size.gdf")
     attribute = "number_of_gridpoints"
@@ -68,7 +68,7 @@ def test_missing_size(tmpdir):
 
 
 def test_corrupt_shape(tmpdir):
-    "Check if load_icgem_gdf detects an corrupt ICGEM file with corrupt shape"
+    "ICGEM file with corrupt shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
@@ -87,7 +87,7 @@ def test_corrupt_shape(tmpdir):
 
 
 def test_missing_cols_names(tmpdir):
-    "Check if load_icgem_gdf detects ICGEM file with missing cols names"
+    "ICGEM file with missing cols names"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_cols_names.gdf")
     with open(fname) as f:
@@ -102,7 +102,7 @@ def test_missing_cols_names(tmpdir):
 
 
 def test_missing_units(tmpdir):
-    "Check if load_icgem_gdf detects an ICGEM file with missing units"
+    "ICGEM file with missing units"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_units.gdf")
     with open(fname) as f:
@@ -117,7 +117,7 @@ def test_missing_units(tmpdir):
 
 
 def test_missing_empty_line(tmpdir):
-    "Check if load_icgem_gdf detects an ICGEM file with missing empty line"
+    "ICGEM file with missing empty line"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_empty_line.gdf")
     with open(fname) as f:
