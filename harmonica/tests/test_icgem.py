@@ -13,7 +13,7 @@ TEST_DATA_DIR = os.path.join(MODULE_DIR, "data")
 
 
 def test_load_icgem_gdf():
-    "Check if load_icgem_gdf reads ICGEM test data correctly"
+    "Check if load_icgem_gdf reads an ICGEM file with sample data correctly"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     icgem_grd = load_icgem_gdf(fname)
 
@@ -34,11 +34,9 @@ def test_load_icgem_gdf():
     npt.assert_allclose(height, icgem_grd.height.values)
 
 
-def test_corrupt_icgem_gdf(tmpdir):
-    "Check if load_icgem_gdf detects a corrupt ICGEM gdf file"
+def test_missing_shape(tmpdir):
+    "Check if load_icgem_gdf detects an ICGEM file with missing shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-
-    # Missing shape
     corrupt = tmpdir.join("missing_shape.gdf")
     attribute = "latitude_parallels"
     with open(fname) as f:
@@ -51,7 +49,10 @@ def test_corrupt_icgem_gdf(tmpdir):
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
-    # Missing size
+
+def test_missing_size(tmpdir):
+    "Check if load_icgem_gdf detects an ICGEM file with missing size"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_size.gdf")
     attribute = "number_of_gridpoints"
     with open(fname) as f:
@@ -64,7 +65,10 @@ def test_corrupt_icgem_gdf(tmpdir):
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
-    # Corrupted shape vs size
+
+def test_corrupt_shape(tmpdir):
+    "Check if load_icgem_gdf detects an corrupt ICGEM file with corrupt shape"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("corrupt_shape.gdf")
     attribute = "latitude_parallels"
     with open(fname) as f:
@@ -79,7 +83,10 @@ def test_corrupt_icgem_gdf(tmpdir):
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
-    # Missing columns names
+
+def test_missing_cols_names(tmpdir):
+    "Check if load_icgem_gdf detects ICGEM file with missing cols names"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("corrupt_shape.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
@@ -91,7 +98,10 @@ def test_corrupt_icgem_gdf(tmpdir):
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
-    # Missing cols units
+
+def test_missing_units(tmpdir):
+    "Check if load_icgem_gdf detects an corrupt ICGEM file with missing units"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("corrupt_shape.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
@@ -103,7 +113,10 @@ def test_corrupt_icgem_gdf(tmpdir):
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
-    # Missing blank line
+
+def test_missing_empty_line(tmpdir):
+    "Check if load_icgem_gdf detects an ICGEM file with missing empty line"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("corrupt_shape.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
