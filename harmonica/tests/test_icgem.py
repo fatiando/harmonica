@@ -131,10 +131,10 @@ def test_missing_empty_line(tmpdir):
         load_icgem_gdf(corrupt)
 
 
-def test_corrupt_attributes(tmpdir):
-    "Check if load_icgem_gdf detects an ICGEM file with one missing attr"
+def test_missing_attribute(tmpdir):
+    "ICGEM file with one missing attribute (not missing unit)"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_attributes.gdf")
+    corrupt = tmpdir.join("missing_attribute.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
             for line in f:
@@ -147,10 +147,28 @@ def test_corrupt_attributes(tmpdir):
         load_icgem_gdf(corrupt)
 
 
-def test_corrupt_attrs_vs_cols(tmpdir):
+def test_missing_lat_lon_attributes(tmpdir):
+    "ICGEM file with missing longitude or latitude attribute"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+    attributes = ["longitude", "latitude"]
+    for attribute in attributes:
+        corrupt = tmpdir.join("missing_" + attribute + "_attribute.gdf")
+        with open(fname) as f:
+            with open(corrupt, "w") as corrupt_gdf:
+                for line in f:
+                    if "longitude" in line and "latitude" in line:
+                        new_line = line.replace(attribute, "corrupt")
+                        corrupt_gdf.write(new_line)
+                    else:
+                        corrupt_gdf.write(line)
+        with raises(IOError):
+            load_icgem_gdf(corrupt)
+
+
+def test_diff_attrs_vs_cols(tmpdir):
     "ICGEM file with different number of cols vs number of attributes"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("corrupt_attributes.gdf")
+    corrupt = tmpdir.join("diff_attributes_vs_cols.gdf")
     with open(fname) as f:
         with open(corrupt, "w") as corrupt_gdf:
             for line in f:
