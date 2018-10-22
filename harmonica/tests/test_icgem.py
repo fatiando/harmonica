@@ -34,6 +34,27 @@ def test_load_icgem_gdf():
     npt.assert_allclose(height, icgem_grd.height.values)
 
 
+def test_load_icgem_gdf_usecols():
+    "Check if load_icgem_gdf reads an ICGEM file reading only first two columns"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+    icgem_grd = load_icgem_gdf(fname, usecols=[0, 1])
+
+    s, n, w, e = 16, 28, 150, 164
+    nlat, nlon = 7, 8
+    shape = (nlat, nlon)
+    lat = np.linspace(s, n, nlat, dtype="float64")
+    lon = np.linspace(w, e, nlon, dtype="float64")
+    lon, lat = np.meshgrid(lon, lat)
+    height = np.zeros(shape)
+
+    assert icgem_grd.dims["northing"] == nlat
+    assert icgem_grd.dims["easting"] == nlon
+    npt.assert_equal(icgem_grd.lon.values, lon)
+    npt.assert_equal(icgem_grd.lat.values, lat)
+    npt.assert_allclose(height, icgem_grd.height.values)
+    assert len(icgem_grd.data_vars) == 1
+
+
 def test_missing_shape(tmpdir):
     "ICGEM file with missing shape"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
