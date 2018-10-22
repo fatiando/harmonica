@@ -127,3 +127,19 @@ def test_missing_empty_line(tmpdir):
                     corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
+
+
+def test_corrupt_attributes(tmpdir):
+    "Check if load_icgem_gdf detects an corrupt ICGEM file with one missing attr"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+    corrupt = tmpdir.join("corrupt_attributes.gdf")
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if "longitude" in line and "latitude" in line:
+                    parts = line.strip().split()
+                    corrupt_gdf.write("\t".join(parts[:2]) + "\n")
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
