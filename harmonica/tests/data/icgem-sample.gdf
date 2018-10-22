@@ -18,7 +18,7 @@ generating_institute     gfz-potsdam
       longlimit_west       150.00000000000
       longlimit_east       164.00000000000
             gridstep       2.0000000000000
-     height_over_ell          0.0000 m
+     height_over_ell          1100.0000 m
   latitude_parallels             7
  longitude_parallels             8
 number_of_gridpoints            56
