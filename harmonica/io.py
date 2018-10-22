@@ -37,7 +37,7 @@ def load_icgem_gdf(fname, **kwargs):
     """
     if "usecols" not in kwargs:
         kwargs["usecols"] = None
-    with open(fname) as f:
+    with open(fname) as gdf_file:
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
@@ -48,7 +48,7 @@ def load_icgem_gdf(fname, **kwargs):
         attributes_units = None
         attr_units_line = False
         area = [None] * 4
-        for line in f:
+        for line in gdf_file:
             if line.strip()[:11] == "end_of_head":
                 break
             if not line.strip():
@@ -80,7 +80,7 @@ def load_icgem_gdf(fname, **kwargs):
                 else:
                     attributes_units = line.strip().split()
         # Read the numerical values
-        rawdata = np.loadtxt(f, ndmin=2, unpack=True, **kwargs)
+        rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
 
     # Sanity checks
     if not all(n is not None for n in shape):
