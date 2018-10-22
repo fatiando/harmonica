@@ -78,3 +78,39 @@ def test_corrupt_icgem_gdf(tmpdir):
                     corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
+
+    # Missing columns names
+    corrupt = tmpdir.join("corrupt_shape.gdf")
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if "latitude" in line and "longitude" in line:
+                    continue
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
+
+    # Missing cols units
+    corrupt = tmpdir.join("corrupt_shape.gdf")
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if "[mgal]" in line:
+                    continue
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
+
+    # Missing blank line
+    corrupt = tmpdir.join("corrupt_shape.gdf")
+    with open(fname) as f:
+        with open(corrupt, "w") as corrupt_gdf:
+            for line in f:
+                if not line.strip():
+                    continue
+                else:
+                    corrupt_gdf.write(line)
+    with raises(IOError):
+        load_icgem_gdf(corrupt)
