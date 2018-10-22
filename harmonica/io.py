@@ -113,13 +113,8 @@ def load_icgem_gdf(fname, **kwargs):
     if "longitude" not in attributes:
         raise IOError("Couldn't find longitude column.")
 
-    attributes_units = [unit.replace("[", "").replace("]", "")
-                        for unit in attributes_units]
     if kwargs["usecols"] is not None:
         attributes = [attributes[i] for i in kwargs["usecols"]]
-        attributes_units = [attributes_units[i] for i in kwargs["usecols"]]
-    for i, attr in enumerate(attributes):
-        metadata[attr + " unit"] = attributes_units[i]
 
     # Create xarray.Dataset
     icgem_grd = xr.Dataset()
