@@ -1,3 +1,7 @@
+"""
+Functions for interacting with standarized data files that contains gravity or
+magnetic geophysical data.
+"""
 import numpy as np
 import xarray as xr
 
