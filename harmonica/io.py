@@ -131,7 +131,7 @@ def load_icgem_gdf(fname, **kwargs):
     if not np.allclose(area, area_from_cols):
         errline = (
             "Grid area read ({}) and calculated from attributes "
-            + "({}) mismatch.".format(area, area_from_cols)
+            "({}) mismatch.".format(area, area_from_cols)
         )
         raise IOError(errline)
     return icgem_grd
