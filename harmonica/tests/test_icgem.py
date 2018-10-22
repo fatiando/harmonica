@@ -100,7 +100,7 @@ def test_missing_cols_names(tmpdir):
 
 
 def test_missing_units(tmpdir):
-    "Check if load_icgem_gdf detects an corrupt ICGEM file with missing units"
+    "Check if load_icgem_gdf detects an ICGEM file with missing units"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("missing_units.gdf")
     with open(fname) as f:
