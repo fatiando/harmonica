@@ -130,7 +130,7 @@ def test_missing_empty_line(tmpdir):
 
 
 def test_corrupt_attributes(tmpdir):
-    "Check if load_icgem_gdf detects an corrupt ICGEM file with one missing attr"
+    "Check if load_icgem_gdf detects an ICGEM file with one missing attr"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = tmpdir.join("corrupt_attributes.gdf")
     with open(fname) as f:
