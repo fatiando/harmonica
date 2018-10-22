@@ -221,3 +221,24 @@ def test_missing_area(tmpdir):
                         corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
+
+
+def test_corrupt_area(tmpdir):
+    "ICGEM file with area in header mismatch area from data"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+    attributes = ["latlimit_north", "latlimit_south",
+                  "longlimit_west", "longlimit_east"]
+    for attribute in attributes:
+        corrupt = tmpdir.join("corrupt_" + attribute + ".gdf")
+        with open(fname) as f:
+            with open(corrupt, "w") as corrupt_gdf:
+                for line in f:
+                    if attribute in line:
+                        parts = line.split()
+                        new_bound = float(parts[1]) + 1.0
+                        newline = parts[0] + "\t" + str(new_bound)
+                        corrupt_gdf.write(newline)
+                    else:
+                        corrupt_gdf.write(line)
+        with raises(IOError):
+            load_icgem_gdf(corrupt)
