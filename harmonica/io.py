@@ -100,6 +100,8 @@ def load_icgem_gdf(fname, **kwargs):
                 len(attributes), len(attributes_units)
             )
         )
+    if kwargs["usecols"] is not None:
+        attributes = [attributes[i] for i in kwargs["usecols"]]
     if len(attributes) != rawdata.shape[0]:
         raise IOError(
             "Number of attributes ({}) and data columns ({}) mismatch".format(
@@ -112,9 +114,6 @@ def load_icgem_gdf(fname, **kwargs):
         raise IOError("Couldn't find latitude column.")
     if "longitude" not in attributes:
         raise IOError("Couldn't find longitude column.")
-
-    if kwargs["usecols"] is not None:
-        attributes = [attributes[i] for i in kwargs["usecols"]]
 
     # Create xarray.Dataset
     icgem_grd = xr.Dataset()
