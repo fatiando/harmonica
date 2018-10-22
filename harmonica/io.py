@@ -45,6 +45,7 @@ def load_icgem_gdf(fname, **kwargs):
         size = None
         height = None
         attributes = None
+        attributes_units = None
         attr_units_line = False
         area = [None] * 4
         for line in f:
