@@ -5,7 +5,7 @@ import numpy.testing as npt
 from .. import load_icgem_gdf
 
 MODULE_DIR = os.path.dirname(__file__)
-TEST_DATA_DIR = os.path.join(MODULE_DIR, 'data')
+TEST_DATA_DIR = os.path.join(MODULE_DIR, "data")
 
 
 def test_load_icgem_gdf():
@@ -22,8 +22,8 @@ def test_load_icgem_gdf():
     true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
     height = np.zeros(shape)
 
-    assert icgem_grd.dims['northing'] == nlat
-    assert icgem_grd.dims['easting'] == nlon
+    assert icgem_grd.dims["northing"] == nlat
+    assert icgem_grd.dims["easting"] == nlon
     npt.assert_equal(icgem_grd.lon.values, lon)
     npt.assert_equal(icgem_grd.lat.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
