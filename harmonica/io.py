@@ -37,69 +37,16 @@ def load_icgem_gdf(fname, **kwargs):
     """
     if "usecols" not in kwargs:
         kwargs["usecols"] = None
-    with open(fname) as gdf_file:
-        # Read the header and extract metadata
-        metadata = {}
-        metadata_line = True
-        shape = [None, None]
-        size = None
-        height = None
-        attributes = None
-        attributes_units = None
-        attr_units_line = False
-        area = [None] * 4
-        for line in gdf_file:
-            if line.strip()[:11] == "end_of_head":
-                break
-            if not line.strip():
-                metadata_line = False
-                continue
-            if metadata_line:
-                parts = line.strip().split()
-                metadata[parts[0]] = "".join(parts[1:])
-                if parts[0] == "height_over_ell":
-                    height = float(parts[1])
-                elif parts[0] == "latitude_parallels":
-                    shape[0] = int(parts[1])
-                elif parts[0] == "longitude_parallels":
-                    shape[1] = int(parts[1])
-                elif parts[0] == "number_of_gridpoints":
-                    size = int(parts[1])
-                elif parts[0] == "latlimit_south":
-                    area[0] = float(parts[1])
-                elif parts[0] == "latlimit_north":
-                    area[1] = float(parts[1])
-                elif parts[0] == "longlimit_west":
-                    area[2] = float(parts[1])
-                elif parts[0] == "longlimit_east":
-                    area[3] = float(parts[1])
-            else:
-                if not attr_units_line:
-                    attributes = line.strip().split()
-                    attr_units_line = True
-                else:
-                    attributes_units = line.strip().split()
-        # Read the numerical values
-        rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
+    rawdata, metadata = _read_gdf_file(fname, **kwargs)
+    shape = (metadata["latitude_parallels"], metadata["longitude_parallels"])
+    size = metadata["number_of_gridpoints"]
+    area = [metadata["latlimit_south"], metadata["latlimit_north"],
+            metadata["longlimit_west"], metadata["longlimit_east"]]
+    attributes = metadata["attributes"]
 
     # Sanity checks
-    if not all(n is not None for n in shape):
-        raise IOError("Couldn't read shape of grid.")
-    if size is None:
-        raise IOError("Couldn't read size of grid.")
-    shape = tuple(shape)
     if shape[0] * shape[1] != size:
         raise IOError("Grid shape '{}' and size '{}' mismatch.".format(shape, size))
-    if attributes is None:
-        raise IOError("Couldn't read column names.")
-    if attributes_units is None:
-        raise IOError("Couldn't read column units.")
-    if len(attributes) != len(attributes_units):
-        raise IOError(
-            "Number of attributes ({}) and units ({}) mismatch".format(
-                len(attributes), len(attributes_units)
-            )
-        )
     if kwargs["usecols"] is not None:
         attributes = [attributes[i] for i in kwargs["usecols"]]
     if len(attributes) != rawdata.shape[0]:
@@ -108,12 +55,6 @@ def load_icgem_gdf(fname, **kwargs):
                 len(attributes), rawdata.shape[0]
             )
         )
-    if not all(i is not None for i in area):
-        raise IOError("Couldn't read the grid area.")
-    if "latitude" not in attributes:
-        raise IOError("Couldn't find latitude column.")
-    if "longitude" not in attributes:
-        raise IOError("Couldn't find longitude column.")
 
     # Create xarray.Dataset
     icgem_ds = xr.Dataset()
@@ -128,7 +69,8 @@ def load_icgem_gdf(fname, **kwargs):
             icgem_ds.coords["lon"] = (("northing", "easting"), value)
         else:
             icgem_ds[attr] = (("northing", "easting"), value)
-    if (height is not None) and ("height" not in attributes):
+    if "height_over_ell" in metadata and "height" not in attributes:
+        height = float(metadata["height_over_ell"].split()[0])
         icgem_ds["height"] = (("northing", "easting"), height * np.ones(shape))
 
     # Check area from header equals to area from data in cols
@@ -145,3 +87,58 @@ def load_icgem_gdf(fname, **kwargs):
         )
         raise IOError(errline)
     return icgem_ds
+
+
+def _read_gdf_file(fname, **kwargs):
+    "Read ICGEM gdf file and returns metadata dict and data in cols as np.array"
+    needed_args = ["latitude_parallels", "longitude_parallels",
+                   "number_of_gridpoints",
+                   "latlimit_south", "latlimit_north",
+                   "longlimit_west", "longlimit_east"]
+    with open(fname) as gdf_file:
+        # Read the header and extract metadata
+        metadata = {}
+        metadata_line = True
+        attributes_units_line = False
+        for line in gdf_file:
+            if line.strip()[:11] == "end_of_head":
+                break
+            if not line.strip():
+                metadata_line = False
+                continue
+            if metadata_line:
+                parts = line.strip().split()
+                metadata[parts[0]] = " ".join(parts[1:])
+            else:
+                if not attributes_units_line:
+                    metadata["attributes"] = line.strip().split()
+                    attributes_units_line = True
+                else:
+                    metadata["attributes_units"] = line.strip().split()
+        # Read the numerical values
+        rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
+    for arg in needed_args:
+        if arg in metadata:
+            if "limit" in arg:
+                metadata[arg] = float(metadata[arg].split()[0])
+            else:
+                metadata[arg] = int(metadata[arg].split()[0])
+        else:
+            raise IOError(
+                "Couldn't read {} field from gdf file header".format(arg)
+            )
+    if "attributes" not in metadata:
+        raise IOError("Couldn't read column names.")
+    if "attributes_units" not in metadata:
+        raise IOError("Couldn't read column units.")
+    if len(metadata["attributes"]) != len(metadata["attributes_units"]):
+        raise IOError(
+            "Number of attributes ({}) and units ({}) mismatch".format(
+                len(metadata["attributes"]), len(metadata["attributes_units"])
+            )
+        )
+    if "latitude" not in metadata["attributes"]:
+        raise IOError("Couldn't find latitude column.")
+    if "longitude" not in metadata["attributes"]:
+        raise IOError("Couldn't find longitude column.")
+    return rawdata, metadata
