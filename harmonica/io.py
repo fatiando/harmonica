@@ -95,15 +95,6 @@ def load_icgem_gdf(fname, **kwargs):
 
 def _read_gdf_file(fname, **kwargs):
     "Read ICGEM gdf file and returns metadata dict and data in cols as np.array"
-    needed_args = [
-        "latitude_parallels",
-        "longitude_parallels",
-        "number_of_gridpoints",
-        "latlimit_south",
-        "latlimit_north",
-        "longlimit_west",
-        "longlimit_east",
-    ]
     with open(fname) as gdf_file:
         # Read the header and extract metadata
         metadata = {}
@@ -126,7 +117,22 @@ def _read_gdf_file(fname, **kwargs):
                     metadata["attributes_units"] = line.strip().split()
         # Read the numerical values
         rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
-    # Check if needed arguments are present in metadata dict
+    _check_integrity(metadata)
+    return rawdata, metadata
+
+
+def _check_integrity(metadata):
+    "Check the integrity of ICGEM gdf file metadata."
+    needed_args = [
+        "latitude_parallels",
+        "longitude_parallels",
+        "number_of_gridpoints",
+        "latlimit_south",
+        "latlimit_north",
+        "longlimit_west",
+        "longlimit_east",
+    ]
+    # Check for needed arguments in metadata dictionary
     for arg in needed_args:
         if arg in metadata:
             if "limit" in arg:
@@ -139,6 +145,7 @@ def _read_gdf_file(fname, **kwargs):
         raise IOError("Couldn't read column names.")
     if "attributes_units" not in metadata:
         raise IOError("Couldn't read column units.")
+    # Check cols names and units integrity
     if len(metadata["attributes"]) != len(metadata["attributes_units"]):
         raise IOError(
             "Number of attributes ({}) and units ({}) mismatch".format(
@@ -148,4 +155,3 @@ def _read_gdf_file(fname, **kwargs):
     for arg in ["latitude", "longitude"]:
         if arg not in metadata["attributes"]:
             raise IOError("Couldn't find {} column.".format(arg))
-    return rawdata, metadata
