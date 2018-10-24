@@ -126,6 +126,7 @@ def _read_gdf_file(fname, **kwargs):
                     metadata["attributes_units"] = line.strip().split()
         # Read the numerical values
         rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
+    # Check if needed arguments are present in metadata dict
     for arg in needed_args:
         if arg in metadata:
             if "limit" in arg:
@@ -144,8 +145,7 @@ def _read_gdf_file(fname, **kwargs):
                 len(metadata["attributes"]), len(metadata["attributes_units"])
             )
         )
-    if "latitude" not in metadata["attributes"]:
-        raise IOError("Couldn't find latitude column.")
-    if "longitude" not in metadata["attributes"]:
-        raise IOError("Couldn't find longitude column.")
+    for arg in ["latitude", "longitude"]:
+        if arg not in metadata["attributes"]:
+            raise IOError("Couldn't find {} column.".format(arg))
     return rawdata, metadata
