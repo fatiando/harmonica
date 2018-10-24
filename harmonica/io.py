@@ -40,8 +40,12 @@ def load_icgem_gdf(fname, **kwargs):
     rawdata, metadata = _read_gdf_file(fname, **kwargs)
     shape = (metadata["latitude_parallels"], metadata["longitude_parallels"])
     size = metadata["number_of_gridpoints"]
-    area = [metadata["latlimit_south"], metadata["latlimit_north"],
-            metadata["longlimit_west"], metadata["longlimit_east"]]
+    area = [
+        metadata["latlimit_south"],
+        metadata["latlimit_north"],
+        metadata["longlimit_west"],
+        metadata["longlimit_east"],
+    ]
     attributes = metadata["attributes"]
 
     # Sanity checks
@@ -91,10 +95,15 @@ def load_icgem_gdf(fname, **kwargs):
 
 def _read_gdf_file(fname, **kwargs):
     "Read ICGEM gdf file and returns metadata dict and data in cols as np.array"
-    needed_args = ["latitude_parallels", "longitude_parallels",
-                   "number_of_gridpoints",
-                   "latlimit_south", "latlimit_north",
-                   "longlimit_west", "longlimit_east"]
+    needed_args = [
+        "latitude_parallels",
+        "longitude_parallels",
+        "number_of_gridpoints",
+        "latlimit_south",
+        "latlimit_north",
+        "longlimit_west",
+        "longlimit_east",
+    ]
     with open(fname) as gdf_file:
         # Read the header and extract metadata
         metadata = {}
@@ -124,9 +133,7 @@ def _read_gdf_file(fname, **kwargs):
             else:
                 metadata[arg] = int(metadata[arg].split()[0])
         else:
-            raise IOError(
-                "Couldn't read {} field from gdf file header".format(arg)
-            )
+            raise IOError("Couldn't read {} field from gdf file header".format(arg))
     if "attributes" not in metadata:
         raise IOError("Couldn't read column names.")
     if "attributes_units" not in metadata:
