@@ -4,7 +4,7 @@ Testing ICGEM gdf files loading.
 import os
 import numpy as np
 import numpy.testing as npt
-from pytest import raises
+from pytest import raises, warns
 
 from .. import load_icgem_gdf
 
@@ -271,3 +271,16 @@ def test_corrupt_area(tmpdir):
                         corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
+
+
+def test_empty_file(tmpdir, recwarn):
+    "Empty ICGEM file"
+    empty_fname = tmpdir.join("empty.gdf")
+    with open(empty_fname, "w") as gdf_file:
+        gdf_file.write("")
+    with raises(IOError):
+        load_icgem_gdf(empty_fname)
+    assert len(recwarn) == 1
+    warning = recwarn.pop()
+    assert warning.category == UserWarning
+    assert "Empty input file" in str(warning.message)
