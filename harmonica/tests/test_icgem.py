@@ -4,7 +4,7 @@ Testing ICGEM gdf files loading.
 import os
 import numpy as np
 import numpy.testing as npt
-from pytest import raises, warns
+from pytest import raises
 
 from .. import load_icgem_gdf
 
