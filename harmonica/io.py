@@ -39,7 +39,6 @@ def load_icgem_gdf(fname, **kwargs):
         kwargs["usecols"] = None
     rawdata, metadata = _read_gdf_file(fname, **kwargs)
     shape = (metadata["latitude_parallels"], metadata["longitude_parallels"])
-    size = metadata["number_of_gridpoints"]
     area = [
         metadata["latlimit_south"],
         metadata["latlimit_north"],
@@ -47,10 +46,6 @@ def load_icgem_gdf(fname, **kwargs):
         metadata["longlimit_east"],
     ]
     attributes = metadata["attributes"]
-
-    # Sanity checks
-    if shape[0] * shape[1] != size:
-        raise IOError("Grid shape '{}' and size '{}' mismatch.".format(shape, size))
     if kwargs["usecols"] is not None:
         attributes = [attributes[i] for i in kwargs["usecols"]]
     if len(attributes) != rawdata.shape[0]:
@@ -155,3 +150,8 @@ def _check_integrity(metadata):
     for arg in ["latitude", "longitude"]:
         if arg not in metadata["attributes"]:
             raise IOError("Couldn't find {} column.".format(arg))
+    # Check proper values for shape and size
+    shape = (metadata["latitude_parallels"], metadata["longitude_parallels"])
+    size = metadata["number_of_gridpoints"]
+    if shape[0] * shape[1] != size:
+        raise IOError("Grid shape '{}' and size '{}' mismatch.".format(shape, size))
