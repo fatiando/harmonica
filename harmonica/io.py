@@ -145,6 +145,10 @@ def _check_integrity(metadata):
                 len(metadata["attributes"]), len(metadata["attributes_units"])
             )
         )
+    metadata["attributes_units"] = [
+        attr.replace("[", "").replace("]", "").strip()
+        for attr in metadata["attributes_units"]
+    ]
     for arg in ["latitude", "longitude"]:
         if arg not in metadata["attributes"]:
             raise IOError("Couldn't find {} column.".format(arg))
