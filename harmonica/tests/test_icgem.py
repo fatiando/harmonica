@@ -81,7 +81,7 @@ def test_missing_shape(tmpdir):
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
-        corrupt = tmpdir.join("missing_shape_" + attribute + ".gdf")
+        corrupt = str(tmpdir.join("missing_shape_" + attribute + ".gdf"))
         with open(fname) as gdf_file:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in gdf_file:
@@ -96,7 +96,7 @@ def test_missing_shape(tmpdir):
 def test_missing_size(tmpdir):
     "ICGEM file with missing size"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_size.gdf")
+    corrupt = str(tmpdir.join("missing_size.gdf"))
     attribute = "number_of_gridpoints"
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
@@ -114,7 +114,7 @@ def test_corrupt_shape(tmpdir):
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
-        corrupt = tmpdir.join("missing_shape_" + attribute + ".gdf")
+        corrupt = str(tmpdir.join("missing_shape_" + attribute + ".gdf"))
         with open(fname) as gdf_file:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in gdf_file:
@@ -131,7 +131,7 @@ def test_corrupt_shape(tmpdir):
 def test_missing_cols_names(tmpdir):
     "ICGEM file with missing cols names"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_cols_names.gdf")
+    corrupt = str(tmpdir.join("missing_cols_names.gdf"))
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
             for line in gdf_file:
@@ -146,7 +146,7 @@ def test_missing_cols_names(tmpdir):
 def test_missing_units(tmpdir):
     "ICGEM file with missing units"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_units.gdf")
+    corrupt = str(tmpdir.join("missing_units.gdf"))
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
             for line in gdf_file:
@@ -161,7 +161,7 @@ def test_missing_units(tmpdir):
 def test_missing_empty_line(tmpdir):
     "ICGEM file with missing empty line"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_empty_line.gdf")
+    corrupt = str(tmpdir.join("missing_empty_line.gdf"))
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
             for line in gdf_file:
@@ -176,7 +176,7 @@ def test_missing_empty_line(tmpdir):
 def test_missing_attribute(tmpdir):
     "ICGEM file with one missing attribute (not missing unit)"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("missing_attribute.gdf")
+    corrupt = str(tmpdir.join("missing_attribute.gdf"))
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
             for line in gdf_file:
@@ -194,7 +194,7 @@ def test_missing_lat_lon_attributes(tmpdir):
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["longitude", "latitude"]
     for attribute in attributes:
-        corrupt = tmpdir.join("missing_" + attribute + "_attribute.gdf")
+        corrupt = str(tmpdir.join("missing_" + attribute + "_attribute.gdf"))
         with open(fname) as gdf_file:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in gdf_file:
@@ -210,7 +210,7 @@ def test_missing_lat_lon_attributes(tmpdir):
 def test_diff_attrs_vs_cols(tmpdir):
     "ICGEM file with different number of cols vs number of attributes"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    corrupt = tmpdir.join("diff_attributes_vs_cols.gdf")
+    corrupt = str(tmpdir.join("diff_attributes_vs_cols.gdf"))
     with open(fname) as gdf_file:
         with open(corrupt, "w") as corrupt_gdf:
             for line in gdf_file:
@@ -236,7 +236,7 @@ def test_missing_area(tmpdir):
         "longlimit_east",
     ]
     for attribute in attributes:
-        corrupt = tmpdir.join("missing_" + attribute + ".gdf")
+        corrupt = str(tmpdir.join("missing_" + attribute + ".gdf"))
         with open(fname) as gdf_file:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in gdf_file:
@@ -258,7 +258,7 @@ def test_corrupt_area(tmpdir):
         "longlimit_east",
     ]
     for attribute in attributes:
-        corrupt = tmpdir.join("corrupt_" + attribute + ".gdf")
+        corrupt = str(tmpdir.join("corrupt_" + attribute + ".gdf"))
         with open(fname) as gdf_file:
             with open(corrupt, "w") as corrupt_gdf:
                 for line in gdf_file:
@@ -275,7 +275,7 @@ def test_corrupt_area(tmpdir):
 
 def test_empty_file(tmpdir, recwarn):
     "Empty ICGEM file"
-    empty_fname = tmpdir.join("empty.gdf")
+    empty_fname = str(tmpdir.join("empty.gdf"))
     with open(empty_fname, "w") as gdf_file:
         gdf_file.write("")
     with raises(IOError):
