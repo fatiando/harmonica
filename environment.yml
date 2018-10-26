@@ -9,6 +9,7 @@ dependencies:
     - scipy
     - pooch
     - attrs
+    - xarray
     # Development requirements
     - pyproj
     - matplotlib

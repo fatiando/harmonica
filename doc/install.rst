@@ -23,6 +23,7 @@ Dependencies
 * `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `attrs <https://www.attrs.org/>`__
+* `xarray <https://xarray.pydata.org/>`__
 
 Most of the examples in the :ref:`gallery` also use:
 

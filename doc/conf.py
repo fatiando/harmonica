@@ -20,6 +20,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.viewcode',
     'sphinx.ext.extlinks',
+    "sphinx.ext.intersphinx",
     'matplotlib.sphinxext.plot_directive',
     'numpydoc',
     'sphinx_gallery.gen_gallery',
@@ -30,11 +31,11 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://docs.scipy.org/doc/numpy/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
-    "sklearn": ("http://scikit-learn.org/stable/", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
     "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
+    "verde": ("https://www.fatiando.org/verde/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
 }
 
