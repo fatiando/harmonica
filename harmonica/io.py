@@ -11,7 +11,7 @@ def load_icgem_gdf(fname, **kwargs):
     Reads data from an ICGEM .gdf file.
 
     The `ICGEM Calculation Service
-    <http://icgem.gfz-potsdam.de/>`__[BarthelmesKohler2016]_
+    <http://icgem.gfz-potsdam.de/>`__ [BarthelmesKohler2016]_
     generates gravity field grids from spherical harmonic models.
     They use a custom ASCII grid format with information in the header.
     This function can read the format and parse information from the header.
@@ -22,16 +22,15 @@ def load_icgem_gdf(fname, **kwargs):
     ----------
     fname : string
         Name of the ICGEM .gdf file
-    **kwargs
+    kwargs
         Extra keyword arguments to this function will be passed to
         :func:`numpy.loadtxt`.
 
     Returns
     -------
-    icgem_ds : :class`xarray.Dataset`
-        An :class`xarray.Dataset` with the data from the file.
-        The header of the gdf file is passed into the ``attr`` argument
-        of the :class`xarray.Dataset`.
+    icgem_ds : :class:`xarray.Dataset`
+        An :class:`xarray.Dataset` with the data from the file. The header of the gdf
+        file is passed into the ``attr`` argument of the :class:`xarray.Dataset`.
     """
     if "usecols" not in kwargs:
         kwargs["usecols"] = None

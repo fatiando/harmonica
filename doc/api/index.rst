@@ -7,6 +7,14 @@ API Reference
 
 .. currentmodule:: harmonica
 
+Input and Output
+----------------
+
+.. autosummary::
+   :toctree: generated/
+
+    load_icgem_gdf
+
 Reference Ellipsoids
 --------------------
 
@@ -17,9 +25,6 @@ Reference Ellipsoids
     set_ellipsoid
     get_ellipsoid
     print_ellipsoids
-
-    Input and Output
-    load_icgem_gdf
 
 Utilities
 ---------
