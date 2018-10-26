@@ -18,6 +18,9 @@ Reference Ellipsoids
     get_ellipsoid
     print_ellipsoids
 
+    Input and Output
+    load_icgem_gdf
+
 Utilities
 ---------
 
