@@ -39,3 +39,18 @@ def test_normal_gravity_arrays():
             gammas *= 1e-5
             npt.assert_allclose(gammas, normal_gravity(latitudes, heights),
                                 rtol=rtol)
+
+
+def test_no_zero_height():
+    "Normal gravity above and below the ellipsoid."
+    for ellipsoid_name in KNOWN_ELLIPSOIDS:
+        with set_ellipsoid(ellipsoid_name):
+            # Convert gamma to mGal
+            gamma_pole = get_ellipsoid().gravity_pole * 1e-5
+            gamma_eq = get_ellipsoid().gravity_equator * 1e-5
+            assert gamma_pole > normal_gravity(90, 1000)
+            assert gamma_pole > normal_gravity(-90, 1000)
+            assert gamma_eq > normal_gravity(0, 1000)
+            assert gamma_pole < normal_gravity(90, -1000)
+            assert gamma_pole < normal_gravity(-90, -1000)
+            assert gamma_eq < normal_gravity(0, -1000)
