@@ -22,16 +22,15 @@ def test_load_icgem_gdf():
     shape = (nlat, nlon)
     lat = np.linspace(s, n, nlat, dtype="float64")
     lon = np.linspace(w, e, nlon, dtype="float64")
-    lon, lat = np.meshgrid(lon, lat)
     true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
     height = 1100 * np.ones(shape)
 
-    assert icgem_grd.dims["northing"] == nlat
-    assert icgem_grd.dims["easting"] == nlon
-    npt.assert_equal(icgem_grd.lon.values, lon)
-    npt.assert_equal(icgem_grd.lat.values, lat)
+    assert icgem_grd.dims["latitude"] == nlat
+    assert icgem_grd.dims["longitude"] == nlon
+    npt.assert_equal(icgem_grd.longitude.values, lon)
+    npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
-    npt.assert_allclose(height, icgem_grd.height.values)
+    npt.assert_allclose(height, icgem_grd.height_over_ell.values)
 
 
 def test_load_icgem_gdf_with_height():
@@ -43,14 +42,14 @@ def test_load_icgem_gdf_with_height():
     nlat, nlon = 7, 8
     lat = np.linspace(s, n, nlat, dtype="float64")
     lon = np.linspace(w, e, nlon, dtype="float64")
-    lon, lat = np.meshgrid(lon, lat)
     true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
-    height = lon + lat
+    glon, glat = np.meshgrid(lon, lat)
+    height = glon + glat
 
-    assert icgem_grd.dims["northing"] == nlat
-    assert icgem_grd.dims["easting"] == nlon
-    npt.assert_equal(icgem_grd.lon.values, lon)
-    npt.assert_equal(icgem_grd.lat.values, lat)
+    assert icgem_grd.dims["latitude"] == nlat
+    assert icgem_grd.dims["longitude"] == nlon
+    npt.assert_equal(icgem_grd.longitude.values, lon)
+    npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
     npt.assert_allclose(height, icgem_grd.h_over_geoid.values)
 
@@ -65,14 +64,13 @@ def test_load_icgem_gdf_usecols():
     shape = (nlat, nlon)
     lat = np.linspace(s, n, nlat, dtype="float64")
     lon = np.linspace(w, e, nlon, dtype="float64")
-    lon, lat = np.meshgrid(lon, lat)
     height = 1100 * np.ones(shape)
 
-    assert icgem_grd.dims["northing"] == nlat
-    assert icgem_grd.dims["easting"] == nlon
-    npt.assert_equal(icgem_grd.lon.values, lon)
-    npt.assert_equal(icgem_grd.lat.values, lat)
-    npt.assert_allclose(height, icgem_grd.height.values)
+    assert icgem_grd.dims["latitude"] == nlat
+    assert icgem_grd.dims["longitude"] == nlon
+    npt.assert_equal(icgem_grd.longitude.values, lon)
+    npt.assert_equal(icgem_grd.latitude.values, lat)
+    npt.assert_allclose(height, icgem_grd.height_over_ell.values)
     assert len(icgem_grd.data_vars) == 1
 
 
