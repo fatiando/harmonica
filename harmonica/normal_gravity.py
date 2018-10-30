@@ -1,7 +1,6 @@
 """
 Gravity of ellipsoids models.
 """
-import math
 import numpy as np
 from .ellipsoid import get_ellipsoid
 
@@ -31,41 +30,47 @@ def normal_gravity(latitude, height):
 
     """
     ellipsoid = get_ellipsoid()
-    E = ellipsoid.linear_eccentricity
-    a = ellipsoid.semimajor_axis
-    b = ellipsoid.semiminor_axis
+    ecc = ellipsoid.linear_eccentricity
     omega2 = ellipsoid.angular_velocity**2
 
-    E2 = E**2
-    bE = b / E
-    atanEb = math.atan2(E, b)
-    lat = np.deg2rad(latitude)
-    coslat = np.cos(lat)
-    sinlat = np.sin(lat)
-    tanlat = sinlat / coslat
-    beta = np.arctan2(b * tanlat, a)
-    sinbeta = np.sin(beta)
-    cosbeta = np.cos(beta)
-    zl2 = (b * sinbeta + height * sinlat)**2
-    rl2 = (a * cosbeta + height * coslat)**2
-    D = (rl2 - zl2) / E2
-    R = (rl2 + zl2) / E2
-    cosbetal = np.sqrt(0.5 * (1 + R) - np.sqrt(0.25 * (1 + R**2) - 0.5 * D))
-    cosbetal2 = cosbetal**2
-    sinbetal2 = 1 - cosbetal2
-    bl = np.sqrt(rl2 + zl2 - E2 * cosbetal2)
-    bl2 = bl**2
-    blE = bl / E
-    atanEbl = np.arctan2(E, bl)
-    q0 = 0.5 * ((1 + 3 * bE**2) * atanEb - 3 * bE)
-    q0l = 3 * (1 + blE**2) * (1 - blE * atanEbl) - 1
-    W = np.sqrt((bl2 + E2 * sinbetal2) / (bl2 + E2))
-    a2 = a**2
-    term1 = ellipsoid.geocentric_grav_const / (bl2 + E2)
-    term2 = 0.5 * sinbetal2 - 1 / 6
-    term2 *= a2 * E * q0l * omega2 / ((bl2 + E2) * q0)
-    term3 = -cosbetal2 * bl * omega2
-    gamma = (term1 + term2 + term3) / W
+    big_w, q_l, q_0, b_l, cosbeta_l2, sinbeta_l2 = _normal_grav_factors(
+        ellipsoid, latitude, height)
+    term1 = ellipsoid.geocentric_grav_const / (b_l**2 + ecc**2)
+    term2 = 0.5 * sinbeta_l2 - 1 / 6
+    term2 *= ellipsoid.semimajor_axis**2 * ecc * q_l * omega2 / \
+        ((b_l**2 + ecc**2) * q_0)
+    term3 = -cosbeta_l2 * b_l * omega2
+    gamma = (term1 + term2 + term3) / big_w
     # Convert gamma from SI to mGal
     gamma *= 1e-5
     return gamma
+
+
+def _normal_grav_factors(ellipsoid, latitude, height):
+    ecc = ellipsoid.linear_eccentricity
+    semiminor = ellipsoid.semiminor_axis
+    rl2, zl2 = _normal_grav_r_z(ellipsoid, latitude, height)
+    big_d = (rl2 - zl2) / ecc**2
+    big_r = (rl2 + zl2) / ecc**2
+
+    cosbeta_l2 = 0.5 * (1 + big_r) - \
+        np.sqrt(0.25 * (1 + big_r**2) - 0.5 * big_d)
+    sinbeta_l2 = 1 - cosbeta_l2
+    b_l = np.sqrt(rl2 + zl2 - ecc**2 * cosbeta_l2)
+    q_0 = 0.5 * ((1 + 3 * (semiminor / ecc)**2) * np.arctan2(ecc, semiminor)
+                 - 3 * semiminor / ecc)
+    q_l = 3 * (1 + (b_l / ecc)**2) * (1 - b_l / ecc * np.arctan2(ecc, b_l)) - 1
+    big_w = np.sqrt((b_l**2 + ecc**2 * sinbeta_l2) / (b_l**2 + ecc**2))
+    return big_w, q_l, q_0, b_l, cosbeta_l2, sinbeta_l2
+
+
+def _normal_grav_r_z(ellipsoid, latitude, height):
+    semimajor = ellipsoid.semimajor_axis
+    semiminor = ellipsoid.semiminor_axis
+    lat = np.deg2rad(latitude)
+    coslat, sinlat = np.cos(lat), np.sin(lat)
+    beta = np.arctan2(semiminor * sinlat / coslat, semimajor)
+    cosbeta, sinbeta = np.cos(beta), np.sin(beta)
+    zl2 = (semiminor * sinbeta + height * sinlat)**2
+    rl2 = (semimajor * cosbeta + height * coslat)**2
+    return rl2, zl2
