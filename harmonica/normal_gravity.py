@@ -42,7 +42,7 @@ def normal_gravity(latitude, height):
     term3 = -cosbeta_l2 * b_l * omega2
     gamma = (term1 + term2 + term3) / big_w
     # Convert gamma from SI to mGal
-    gamma *= 1e-5
+    gamma *= 1e5
     return gamma
 
 
