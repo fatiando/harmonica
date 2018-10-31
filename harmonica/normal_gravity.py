@@ -52,7 +52,6 @@ def _normal_grav_factors(ellipsoid, latitude, height):
     rl2, zl2 = _normal_grav_r_z(ellipsoid, latitude, height)
     big_d = (rl2 - zl2) / ecc**2
     big_r = (rl2 + zl2) / ecc**2
-
     cosbeta_l2 = 0.5 * (1 + big_r) - \
         np.sqrt(0.25 * (1 + big_r**2) - 0.5 * big_d)
     sinbeta_l2 = 1 - cosbeta_l2
