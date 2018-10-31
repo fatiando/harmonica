@@ -37,4 +37,14 @@ def isostasy_airy(topography, density_crust, density_mantle,
     * m: 1D-array
         Isostatic moho undulation in meters.
     """
-      
+    moho_undulation = topography.copy()                      
+    
+    moho_undulation[topography >= 0] *= density_crust/(density_mantle - density_crust)
+    
+    if density_water is None:
+        moho_undulation[topography < 0] = np.nan
+    else:
+        moho_undulation[topography < 0] *= (density_crust - density_water)/(density_mantle - density_crust) 
+    
+    return moho_undulation
+
