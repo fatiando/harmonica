@@ -18,23 +18,23 @@ def isostasy_airy(topography, density_crust, density_mantle, density_water=None)
     where $L$ is the topography, $rho_m$ is the density of the mantle,
     $rho_w$ is the density of the water, $\rho_c$ is the crustal density.
 
-    Parameters:
-
-    * rho_m: float
+    Parameters
+    ----------
+    density_mantle : float
         Mantle density in kg/m$^3$.
 
-    * rho_c: float
+    density_crust : float
         Crustal density in kg/m$^3$.
 
-    * rho_w: float
+    density_water : float
         Water density in kg/m$^3$.
 
-    * h: float
-        Topography in meters.
+    topography : array
+        Topography height and bathymetry depth in meters.
 
-    moho:
-
-    * m: 1D-array
+    Returns
+    -------
+    moho_undulation : array
         Isostatic moho undulation in meters.
     """
     moho_undulation = topography.copy()
