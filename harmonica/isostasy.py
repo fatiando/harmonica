@@ -1,8 +1,8 @@
 """
 Function to calculate the moho undulation assuming the Airy isostatic hypothesis.
 """
-
 import numpy as np
+
 
 def isostasy_airy(topography, density_crust, density_mantle, density_water=None):
     """
