@@ -8,6 +8,7 @@ dependencies:
     - numpy
     - scipy
     - pooch
+    - verde
     - attrs
     - xarray
     # Development requirements

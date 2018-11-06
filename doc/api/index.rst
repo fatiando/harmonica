@@ -26,6 +26,14 @@ Reference Ellipsoids
     get_ellipsoid
     print_ellipsoids
 
+Normal Gravity
+--------------
+
+.. autosummary::
+    :toctree: generated/
+
+    normal_gravity
+
 Utilities
 ---------
 

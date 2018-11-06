@@ -8,6 +8,7 @@ from .ellipsoid import (
     ReferenceEllipsoid,
 )
 from .io import load_icgem_gdf
+from .normal_gravity import normal_gravity
 
 # Get the version number through versioneer
 __version__ = version.full_version
