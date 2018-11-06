@@ -24,13 +24,13 @@ def isostasy_airy(topography, density_crust, density_mantle, density_water=None)
     Parameters
     ----------
     density_mantle : float
-        Mantle density in kg/m$^3$.
+        Mantle density in kg/m³.
 
     density_crust : float
-        Crustal density in kg/m$^3$.
+        Crustal density in kg/m³.
 
     density_water : float
-        Water density in kg/m$^3$.
+        Water density in kg/m³.
 
     topography : array
         Topography height and bathymetry depth in meters.
