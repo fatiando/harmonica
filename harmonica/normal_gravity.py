@@ -20,7 +20,7 @@ def normal_gravity(latitude, height):
     latitude : float or numpy array
         The latitude where the normal gravity will be computed (in degrees)
     height : float or numpy array
-        The height of computation (in meters). Should be ellipsoidal
+        The ellipsoidal (geometric) height of computation point (in meters).
         (geometric) heights for geophysical purposes.
 
     Returns
