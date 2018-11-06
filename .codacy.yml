@@ -4,3 +4,4 @@ exclude_paths:
   - '**/_version.py'
   - '**/__init__.py'
   - '**/tests/**'
+  - 'examples/**'
