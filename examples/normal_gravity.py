@@ -26,7 +26,7 @@ lat, lon = np.meshgrid(lat, lon)
 
 # Compute the gravitational effect of the WGS84 (default) ellipsoid
 # on its surface
-gamma = normal_gravity(latitude=lat, height=0)
+gamma = hm.normal_gravity(latitude=lat, height=0)
 
 # Make a plot of the normal gravity using Cartopy
 plt.figure(figsize=(6, 3))
