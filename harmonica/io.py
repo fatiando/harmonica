@@ -34,11 +34,14 @@ def load_icgem_gdf(fname, **kwargs):
     rawdata, metadata = _read_gdf_file(fname, **kwargs)
     shape = (int(metadata["latitude_parallels"]), int(metadata["longitude_parallels"]))
     data = dict(zip(metadata["attributes"], rawdata))
-    coords = {"longitude": data["longitude"].reshape(shape)[0, :],
-              "latitude": data["latitude"].reshape(shape)[:, 0][::-1]}
+    coords = {
+        "longitude": data["longitude"].reshape(shape)[0, :],
+        "latitude": data["latitude"].reshape(shape)[:, 0][::-1],
+    }
     dims = ["latitude", "longitude"]
     data_vars = {
-        name: (dims, value.reshape(shape)[::-1]) for name, value in data.items()
+        name: (dims, value.reshape(shape)[::-1])
+        for name, value in data.items()
         if name not in dims
     }
     # If the grid is at constant height, add the height as a matrix for convenience
@@ -119,10 +122,7 @@ def _check_gdf_integrity(metadata):
     # Check for needed arguments in metadata dictionary
     for arg in needed_args:
         if arg in metadata:
-            if "limit" in arg:
-                metadata[arg] = metadata[arg].split()[0]
-            else:
-                metadata[arg] = metadata[arg].split()[0]
+            metadata[arg] = metadata[arg].split()[0]
         else:
             raise IOError("Couldn't read {} field from gdf file header".format(arg))
     if "attributes" not in metadata:
