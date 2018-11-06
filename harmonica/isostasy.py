@@ -6,7 +6,7 @@ import numpy as np
 
 def isostasy_airy(topography, density_crust, density_mantle, density_water=None):
     """
-    Computes the moho undulation using the Airy hypothesis.
+    Computes the Moho undulation from topography using the Airy hypothesis.
 
     On continental points:
 
