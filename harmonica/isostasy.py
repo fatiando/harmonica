@@ -1,32 +1,40 @@
 """
-Function to calculate the moho undulation assuming the Airy isostatic hypothesis.
+Function to calculate the thickness of the roots and antiroots assuming the Airy isostatic hypothesis.
 """
 import numpy as np
 
 
-def isostasy_airy(topography, density_crust, density_mantle, density_water=None):
+def isostasy_airy(topography, density_upper_crust, density_lower_crust,
+                  density_mantle, density_water=None):
     """
-    Computes the Moho undulation from topography using the Airy hypothesis.
+    Computes the thickness of the roots and antiroots using the Airy hypothesis
+    [Hofmann-WellenhofMoritz2006]_ .
 
     On continental points:
 
     .. math ::
-        m = \frac{\rho_c}{\rho_m - \rho_c} h
+        r = \frac{\rho_{uc}}{\rho_m - \rho_{lc}} t
 
     On oceanic points:
 
     .. math ::
-        m = \frac{\rho_c - \rho_w}{\rho_m - \rho_c} h
+        ar = \frac{\rho_{lc} - \rho_w}{\rho_m - \rho_{lc}} b
 
-    where $L$ is the topography, $rho_m$ is the density of the mantle,
-    $rho_w$ is the density of the water, $\rho_c$ is the crustal density.
+    where $t$ is the topography, $b$ is the bathymetry, $rho_m$ is the density of the mantle, $rho_w$ is the
+    density of the water and $\rho_{uc}$ and $\rho_{lc}$ are the density of the
+    upper and lower crust respectively. If $T$ is the normal thickness of the
+    Earh's crust, $T + r$ and $T + ar$ are the isostatic Moho at the cotinental
+    and oceanic points respectively.
+
 
     Parameters
     ----------
     density_mantle : float
         Mantle density in kg/m³.
-    density_crust : float
-        Crustal density in kg/m³.
+    density_upper_crust : float
+        Density of the upper crust in kg/m³.
+    density_lower_crust : float
+        Density of the lower crust in kg/m³.
     density_water : float
         Water density in kg/m³.
     topography : array
@@ -34,18 +42,18 @@ def isostasy_airy(topography, density_crust, density_mantle, density_water=None)
 
     Returns
     -------
-    moho_undulation : array
-        Isostatic moho undulation in meters.
+    root : array
+         Thickness of the roots and antiroot in meters.
     """
-    moho_undulation = topography.copy()
+    root= topography.copy()
 
-    moho_undulation[topography >= 0] *= density_crust / (density_mantle - density_crust)
+    root[topography >= 0] *= density_upper_crust / (density_mantle - density_lower_crust)
 
     if density_water is None:
-        moho_undulation[topography < 0] = np.nan
+        root[topography < 0] = np.nan
     else:
-        moho_undulation[topography < 0] *= (density_crust - density_water) / (
-            density_mantle - density_crust
+        root[topography < 0] *= (density_lower_crust - density_water) / (
+            density_mantle - density_lower_crust
         )
 
-    return moho_undulation
+    return root
