@@ -30,7 +30,7 @@ gamma = hm.normal_gravity(latitude=lat, height=0)
 # Make a plot of the normal gravity using Cartopy
 plt.figure(figsize=(6, 3))
 ax = plt.axes(projection=ccrs.Mollweide())
-ax.set_title("Normal gravity on the ellipsoid WGS84")
+ax.set_title("Normal gravity on the WGS84 ellipsoid")
 ax.coastlines()
 plt.contourf(lon, lat, gamma, 150, transform=ccrs.PlateCarree())
 plt.colorbar(label="mGal")
