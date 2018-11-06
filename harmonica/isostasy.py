@@ -1,5 +1,6 @@
 """
-Function to calculate the thickness of the roots and antiroots assuming the Airy isostatic hypothesis.
+Function to calculate the thickness of the roots and antiroots assuming the
+Airy isostatic hypothesis.
 """
 import numpy as np
 
@@ -7,8 +8,13 @@ import numpy as np
 def isostasy_airy(topography, density_upper_crust, density_lower_crust,
                   density_mantle, density_water=None):
     """
-    Computes the thickness of the roots and antiroots using the Airy hypothesis
-    [Hofmann-WellenhofMoritz2006]_ .
+    Computes the thickness of the roots/antiroots using the Airy's hypothesis.
+
+    In Airy's hypothesis of isotasy, the mountain range can be thought of as a
+    block of lithosphere (crust) floating in the asthenosphere. Mountains have
+    roots ($r$), while ocean basins have antiroots ($ar$) [Hofmann-WellenhofMoritz2006]_ .
+    If $T$ is the normal thickness of the Earh's crust, $T + r$ and $T + ar$
+    are the isostatic Moho at the cotinental and oceanic points respectively.
 
     On continental points:
 
@@ -20,12 +26,9 @@ def isostasy_airy(topography, density_upper_crust, density_lower_crust,
     .. math ::
         ar = \frac{\rho_{lc} - \rho_w}{\rho_m - \rho_{lc}} b
 
-    where $t$ is the topography, $b$ is the bathymetry, $rho_m$ is the density of the mantle, $rho_w$ is the
-    density of the water and $\rho_{uc}$ and $\rho_{lc}$ are the density of the
-    upper and lower crust respectively. If $T$ is the normal thickness of the
-    Earh's crust, $T + r$ and $T + ar$ are the isostatic Moho at the cotinental
-    and oceanic points respectively.
-
+    where $t$ is the topography, $b$ is the bathymetry, $rho_m$ is the density
+    of the mantle, $rho_w$ is the density of the water and $\rho_{uc}$ and
+    $\rho_{lc}$ are the density of the upper and lower crust respectively.
 
     Parameters
     ----------
