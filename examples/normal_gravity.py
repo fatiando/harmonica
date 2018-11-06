@@ -16,7 +16,7 @@ compute the gravitational effect of the reference ellipsoid given by
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from harmonica import normal_gravity
+import harmonica as hm
 
 # Create a computation grid
 nlat, nlon = 181, 360
