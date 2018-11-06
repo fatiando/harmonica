@@ -33,10 +33,10 @@ def isostasy_airy(
     .. math ::
         ar = \frac{\rho_{lc} - \rho_w}{\rho_m - \rho_{lc}} h
 
-        where :math:`h` is the topography/bathymetry, :math:`rho_m` is the
-        density of the mantle, :math:`rho_w` is the density of the water and
-        :math:`\rho_{uc}` and :math:`\rho_{lc}` are the density of the upper
-        and lower crust respectively.
+    where :math:`h` is the topography/bathymetry, :math:`rho_m` is the
+    density of the mantle, :math:`rho_w` is the density of the water and
+    :math:`\rho_{uc}` and :math:`\rho_{lc}` are the density of the upper
+    and lower crust respectively.
 
     Parameters
     ----------
