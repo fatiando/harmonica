@@ -17,12 +17,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import harmonica as hm
+import verde as vd
 
 # Create a computation grid
-nlat, nlon = 181, 360
-lat = np.linspace(-90, 90, nlat)
-lon = np.linspace(0, 360, nlon)
-lat, lon = np.meshgrid(lat, lon)
+region = [0, 360, -90, 90]
+lon, lat = vd.grid_coordinates(region, spacing=1.0)
 
 # Compute the gravitational effect of the WGS84 (default) ellipsoid
 # on its surface
