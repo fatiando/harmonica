@@ -33,13 +33,13 @@ def isostasy_airy(topography, density_upper_crust, density_lower_crust,
     Parameters
     ----------
     density_mantle : float
-        Mantle density in kg/m³.
+        Mantle density in :math:`kg/m^3`.
     density_upper_crust : float
-        Density of the upper crust in kg/m³.
+        Density of the upper crust in :math:`kg/m^3`.
     density_lower_crust : float
-        Density of the lower crust in kg/m³.
+        Density of the lower crust in :math:`kg/m^3`.
     density_water : float
-        Water density in kg/m³.
+        Water density in :math:`kg/m^3`.
     topography : array
         Topography height and bathymetry depth in meters.
 
@@ -48,7 +48,7 @@ def isostasy_airy(topography, density_upper_crust, density_lower_crust,
     root : array
          Thickness of the roots and antiroot in meters.
     """
-    root= topography.copy()
+    root = topography.copy()
 
     root[topography >= 0] *= density_upper_crust / (density_mantle - density_lower_crust)
 
