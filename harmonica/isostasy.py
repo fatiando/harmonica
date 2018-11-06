@@ -13,7 +13,7 @@ def isostasy_airy(
     density_water=None,
 ):
     """
-    Computes the thickness of the roots/antiroots using the Airy's hypothesis.
+    Computes the thickness of the roots/antiroots using Airy's hypothesis.
 
     In Airy's hypothesis of isotasy, the mountain range can be thought of as a
     block of lithosphere (crust) floating in the asthenosphere. Mountains have
