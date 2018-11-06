@@ -10,6 +10,7 @@ def isostasy_airy(
     density_upper_crust,
     density_lower_crust,
     density_mantle,
+    density_oceanic_crust=None,
     density_water=None,
 ):
     """
@@ -31,12 +32,13 @@ def isostasy_airy(
     On oceanic points:
 
     .. math ::
-        ar = \frac{\rho_{lc} - \rho_w}{\rho_m - \rho_{lc}} h
+        ar = \frac{\rho_{oc} - \rho_w}{\rho_m - \rho_{oc}} h
 
-    where :math:`h` is the topography/bathymetry, :math:`rho_m` is the
-    density of the mantle, :math:`rho_w` is the density of the water and
-    :math:`\rho_{uc}` and :math:`\rho_{lc}` are the density of the upper
-    and lower crust respectively.
+    where :math:`h` is the topography/bathymetry, :math:`\rho_m` is the
+    density of the mantle, :math:`\rho_w` is the density of the water,
+    :math:`\rho_{oc}` is the density of the oceanic crust,:math:`\rho_{uc}` is
+    the density of the upper crust and :math:`\rho_{lc}` is the density of the
+    lower crust.
 
     Parameters
     ----------
@@ -46,6 +48,8 @@ def isostasy_airy(
         Density of the upper crust in :math:`kg/m^3`.
     density_lower_crust : float
         Density of the lower crust in :math:`kg/m^3`.
+    density_oceanic_crust : float
+        Density of the oceanic crust in :math:`kg/m^3`.
     density_water : float
         Water density in :math:`kg/m^3`.
     topography : array
@@ -60,10 +64,10 @@ def isostasy_airy(
     root[topography >= 0] *= density_upper_crust / (
         density_mantle - density_lower_crust
     )
-    if density_water is None:
+    if density_water is None or density_oceanic_crust is None:
         root[topography < 0] = np.nan
     else:
-        root[topography < 0] *= (density_lower_crust - density_water) / (
-            density_mantle - density_lower_crust
+        root[topography < 0] *= (density_oceanic_crust - density_water) / (
+            density_mantle - density_oceani:wc_crust
         )
     return root
