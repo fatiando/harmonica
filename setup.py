@@ -36,7 +36,10 @@ CLASSIFIERS = [
 PLATFORMS = "Any"
 PACKAGES = find_packages(exclude=["doc"])
 SCRIPTS = []
-PACKAGE_DATA = {"harmonica.tests": ["data/*", "baseline/*"]}
+PACKAGE_DATA = {
+    "harmonica.datasets": ["registry.txt"],
+    "harmonica.tests": ["data/*", "baseline/*"],
+}
 INSTALL_REQUIRES = ["numpy", "scipy", "pooch", "attrs", "xarray", "verde"]
 PYTHON_REQUIRES = ">=3.5"
 

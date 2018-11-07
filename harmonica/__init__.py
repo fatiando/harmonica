@@ -1,6 +1,7 @@
 # pylint: disable=missing-docstring
 # Import functions/classes to make the public API
 from . import version
+from . import datasets
 from .ellipsoid import (
     set_ellipsoid,
     get_ellipsoid,
@@ -9,6 +10,7 @@ from .ellipsoid import (
 )
 from .io import load_icgem_gdf
 from .gravity_corrections import normal_gravity
+
 
 # Get the version number through versioneer
 __version__ = version.full_version

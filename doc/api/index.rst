@@ -34,6 +34,20 @@ Input and Output
 
     load_icgem_gdf
 
+
+.. automodule:: harmonica.datasets
+
+.. currentmodule:: harmonica
+
+Datasets
+--------
+
+.. autosummary::
+   :toctree: generated/
+
+    datasets.fetch_gravity_earth
+    datasets.fetch_topography_earth
+
 Utilities
 ---------
 
