@@ -80,5 +80,7 @@ def _load_xz_compressed_grid(fname, **kwargs):
                 shutil.copyfileobj(compressed, decompressed)
         grid = xr.open_dataset(decompressed.name, **kwargs)
     finally:
+        # Make sure the file really is closed to avoid errors on Windows
+        decompressed.close()
         os.remove(decompressed.name)
     return grid
