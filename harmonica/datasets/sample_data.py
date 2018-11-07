@@ -74,13 +74,13 @@ def _load_xz_compressed_grid(fname, **kwargs):
     :func:`xarray.open_dataset`.
     """
     decompressed = tempfile.NamedTemporaryFile(suffix=".nc", delete=False)
+    # Tell xarray to make sure they close the file so we can delete it later
+    kwargs["autoclose"] = kwargs.get("autoclose", True)
     try:
         with decompressed:
             with lzma.open(fname, "rb") as compressed:
                 shutil.copyfileobj(compressed, decompressed)
         grid = xr.open_dataset(decompressed.name, **kwargs)
     finally:
-        # Make sure the file really is closed to avoid errors on Windows
-        decompressed.close()
         os.remove(decompressed.name)
     return grid
