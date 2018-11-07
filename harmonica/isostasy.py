@@ -68,6 +68,6 @@ def isostasy_airy(
         root[topography < 0] = np.nan
     else:
         root[topography < 0] *= (density_oceanic_crust - density_water) / (
-            density_mantle - density_oceani:wc_crust
+            density_mantle - density_oceanic_crust
         )
     return root
