@@ -49,6 +49,10 @@ def load_icgem_gdf(fname, **kwargs):
     if "height_over_ell" in metadata:
         height = float(metadata["height_over_ell"].split()[0])
         data_vars["height_over_ell"] = (dims, np.full(shape, height))
+    # Can't have lists in the Dataset metadata to make it compatible with netCDF3. This
+    # way the data can be saved using only scipy as a dependency instead of netcdf4.
+    metadata["attributes"] = " ".join(metadata["attributes"])
+    metadata["attributes_units"] = " ".join(metadata["attributes_units"])
     grid = xr.Dataset(data_vars, coords=coords, attrs=metadata)
     # Check area from header equals to area from data in cols
     area = [
