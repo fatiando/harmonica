@@ -60,7 +60,7 @@ def isostasy_airy(
     root : array
          Thickness of the roots and antiroot in meters.
     """
-    root = topography.copy()
+    root = topography.astype(np.float64)
     root[topography >= 0] *= density_upper_crust / (
         density_mantle - density_lower_crust
     )
