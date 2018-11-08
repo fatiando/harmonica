@@ -3,3 +3,4 @@ scipy
 pooch
 attrs
 xarray
+verde

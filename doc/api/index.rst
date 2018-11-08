@@ -7,13 +7,13 @@ API Reference
 
 .. currentmodule:: harmonica
 
-Input and Output
-----------------
+Gravity Corrections
+-------------------
 
 .. autosummary::
-   :toctree: generated/
+    :toctree: generated/
 
-    load_icgem_gdf
+    normal_gravity
 
 Reference Ellipsoids
 --------------------
@@ -25,6 +25,28 @@ Reference Ellipsoids
     set_ellipsoid
     get_ellipsoid
     print_ellipsoids
+
+Input and Output
+----------------
+
+.. autosummary::
+   :toctree: generated/
+
+    load_icgem_gdf
+
+
+.. automodule:: harmonica.datasets
+
+.. currentmodule:: harmonica
+
+Datasets
+--------
+
+.. autosummary::
+   :toctree: generated/
+
+    datasets.fetch_gravity_earth
+    datasets.fetch_topography_earth
 
 Utilities
 ---------
