@@ -13,7 +13,7 @@ def isostasy_airy(
     density_oceanic_crust=None,
     density_water=None,
 ):
-    """
+    r"""
     Computes the thickness of the roots/antiroots using Airy's hypothesis.
 
     In Airy's hypothesis of isotasy, the mountain range can be thought of as a
@@ -36,7 +36,7 @@ def isostasy_airy(
 
     where :math:`h` is the topography/bathymetry, :math:`\rho_m` is the
     density of the mantle, :math:`\rho_w` is the density of the water,
-    :math:`\rho_{oc}` is the density of the oceanic crust,:math:`\rho_{uc}` is
+    :math:`\rho_{oc}` is the density of the oceanic crust, :math:`\rho_{uc}` is
     the density of the upper crust and :math:`\rho_{lc}` is the density of the
     lower crust.
 
