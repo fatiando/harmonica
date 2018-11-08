@@ -24,7 +24,7 @@ def geodetic_to_geocentric(latitude, height):
     # Convert latitude to radians
     latitude_rad = np.pi / 180 * latitude
     prime_vertical_radius = ellipsoid.semimajor_axis / np.sqrt(
-        1 - ellipsoid.linear_eccetricity ** 2 * np.sin(latitude_rad) ** 2
+        1 - ellipsoid.linear_eccentricity ** 2 * np.sin(latitude_rad) ** 2
     )
     xy_projection = (height + prime_vertical_radius) * np.cos(latitude_rad)
     z_cartesian = (
