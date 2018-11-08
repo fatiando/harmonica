@@ -42,7 +42,9 @@ def fetch_gravity_earth():
         (``height_over_ell``). Coordinates are latitude and longitude.
 
     """
-    return _load_xz_compressed_grid(POOCH.fetch("gravity-earth-0.5deg.nc.xz"))
+    fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz")
+    data = _load_xz_compressed_grid(fname, engine="scipy")
+    return data
 
 
 def fetch_topography_earth():
@@ -65,7 +67,9 @@ def fetch_topography_earth():
         The topography grid (in meters). Coordinates are latitude and longitude.
 
     """
-    return _load_xz_compressed_grid(POOCH.fetch("etopo1-0.5deg.nc.xz"))
+    fname = POOCH.fetch("etopo1-0.5deg.nc.xz")
+    data = _load_xz_compressed_grid(fname, engine="scipy")
+    return data
 
 
 def _load_xz_compressed_grid(fname, **kwargs):
