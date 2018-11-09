@@ -26,6 +26,14 @@ Reference Ellipsoids
     get_ellipsoid
     print_ellipsoids
 
+Coordinates Conversions
+-----------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    geodetic_to_geocentric
+
 Input and Output
 ----------------
 
