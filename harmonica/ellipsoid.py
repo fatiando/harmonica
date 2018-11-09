@@ -129,6 +129,11 @@ class ReferenceEllipsoid:
         return math.sqrt(self.semimajor_axis ** 2 - self.semiminor_axis ** 2)
 
     @property
+    def first_eccentricity(self):
+        "The first eccentricity [adimensional]"
+        return self.linear_eccentricity / self.semimajor_axis
+
+    @property
     def second_eccentricity(self):
         "The second eccentricity [adimensional]"
         return self.linear_eccentricity / self.semiminor_axis
