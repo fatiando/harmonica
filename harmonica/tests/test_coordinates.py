@@ -17,6 +17,8 @@ def test_geodetic_geocentric_spherical_ellipsoid():
     "Test geodetic to geocentric coordinates conversion if ellipsoid is a sphere."
     rtol = 1e-10
     sphere_radius = 1.0
+    # Define a "spherical" ellipsoid with radius equal to 1m.
+    # To do so, we define a zero flattening, thus an infinite inverse flattening.
     spherical_ellipsoid = ReferenceEllipsoid(
         "unit_sphere",
         sphere_radius,
