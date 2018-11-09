@@ -34,13 +34,13 @@ def geodetic_to_geocentric(latitude, height):
     # Convert latitude to radians
     latitude_rad = np.pi / 180 * latitude
     prime_vertical_radius = ellipsoid.semimajor_axis / np.sqrt(
-        1 - ellipsoid.linear_eccentricity ** 2 * np.sin(latitude_rad) ** 2
+        1 - ellipsoid.second_eccentricity ** 2 * np.sin(latitude_rad) ** 2
     )
     # Instead of computing X and Y, we only comupute the projection on the XY plane:
     # xy_projection = sqrt( X**2 + Y**2 )
     xy_projection = (height + prime_vertical_radius) * np.cos(latitude_rad)
     z_cartesian = (
-        height + (1 - ellipsoid.linear_eccentricity ** 2) * prime_vertical_radius
+        height + (1 - ellipsoid.second_eccentricity ** 2) * prime_vertical_radius
     ) * np.sin(latitude_rad)
     radius = np.sqrt(xy_projection ** 2 + z_cartesian ** 2)
     geocentric_latitude = 180 / np.pi * np.arcsin(z_cartesian / radius)
