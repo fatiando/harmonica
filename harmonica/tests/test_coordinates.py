@@ -28,3 +28,16 @@ def test_geodetic_geocentric_spherical_ellipsoid():
         geocentric_latitude, radius = geodetic_to_geocentric(latitude, height)
         npt.assert_allclose(geocentric_latitude, latitude, rtol=rtol)
         npt.assert_allclose(radius, sphere_radius + height, rtol=rtol)
+
+
+def test_geodetic_geocentric_on_equator():
+    "Test geodetic to geocentric coordinates conversion on equator."
+    rtol = 1e-10
+    height = np.linspace(-1e4, 1e4, 5)
+    latitude = np.full(height.shape, 0)
+    for ellipsoid_name in KNOWN_ELLIPSOIDS:
+        with set_ellipsoid(ellipsoid_name):
+            ellipsoid = get_ellipsoid()
+            geocentric_latitude, radius = geodetic_to_geocentric(latitude, height)
+            npt.assert_allclose(geocentric_latitude, latitude, rtol=rtol)
+            npt.assert_allclose(radius, height + ellipsoid.semimajor_axis, rtol=rtol)
