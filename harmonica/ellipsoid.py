@@ -95,6 +95,8 @@ class ReferenceEllipsoid:
     0.0033528
     >>> print("{:.13e}".format(wgs84.linear_eccentricity))
     5.2185400842339e+05
+    >>> print("{:.13e}".format(wgs84.first_eccentricity))
+    8.1819190842621e-02
     >>> print("{:.13e}".format(wgs84.second_eccentricity))
     8.2094437949696e-02
     >>> print("{:.14f}".format(wgs84.emm))
