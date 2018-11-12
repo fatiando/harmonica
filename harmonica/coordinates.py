@@ -32,7 +32,7 @@ def geodetic_to_geocentric(latitude, height):
     """
     ellipsoid = get_ellipsoid()
     # Convert latitude to radians
-    latitude_rad = np.pi / 180 * latitude
+    latitude_rad = np.radians(latitude)
     prime_vertical_radius = ellipsoid.semimajor_axis / np.sqrt(
         1 - ellipsoid.first_eccentricity ** 2 * np.sin(latitude_rad) ** 2
     )
