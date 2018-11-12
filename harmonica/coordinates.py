@@ -8,7 +8,7 @@ from . import get_ellipsoid
 
 def geodetic_to_geocentric(latitude, height):
     """
-    Convert from geodetic to geocentric coordinates.
+    Convert from geodetic to geocentric spherical coordinates.
 
     The geodetic datum is defined by the default :class:`harmonica.ReferenceEllipsoid`
     set by the :func:`harmonica.set_ellipsoid` function.
