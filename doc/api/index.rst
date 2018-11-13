@@ -32,7 +32,7 @@ Coordinates Conversions
 .. autosummary::
    :toctree: generated/
 
-    geodetic_to_geocentric
+    geodetic_to_spherical
 
 Input and Output
 ----------------
