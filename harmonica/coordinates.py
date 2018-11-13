@@ -24,11 +24,10 @@ def geodetic_to_spherical(latitude, height):
     Returns
     -------
     geocentric_latitude : float or array
-        The geocentric latitude (in degrees).
+        The latitude coordinate in the geocentric spherical reference system
+        (in degrees).
     radius : float or array
-        The radial distance in the geocentric coordinate system (in meters), i.e.  the
-        distance between the point given by ``latitude`` and ``height`` and the origin
-        of the geocentric reference system.
+        The radial coordinate in the geocentric spherical reference system (in meters).
     """
     ellipsoid = get_ellipsoid()
     # Convert latitude to radians
