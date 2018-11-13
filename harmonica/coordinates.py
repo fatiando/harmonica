@@ -6,7 +6,7 @@ import numpy as np
 from . import get_ellipsoid
 
 
-def geodetic_to_geocentric(latitude, height):
+def geodetic_to_spherical(latitude, height):
     """
     Convert from geodetic to geocentric spherical coordinates.
 
