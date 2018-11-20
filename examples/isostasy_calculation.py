@@ -27,9 +27,9 @@ data_africa["root"] = (data_africa.dims, root)
 
 # Root calculation without considering the ocean
 root_without_ocean = hm.isostasy_airy(data_africa.topography.values,
-                                     density_upper_crust=2670,
-                                     density_lower_crust=2800,
-                                     density_mantle=3300)
+                                      density_upper_crust=2670,
+                                      density_lower_crust=2800,
+                                      density_mantle=3300)
 data_africa["root_without_ocean"] = (data_africa.dims, root_without_ocean)
 
 # To obtain the depth of the Moho is necessary to assume a normal crust value
