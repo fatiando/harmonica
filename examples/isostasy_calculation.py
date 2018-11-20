@@ -14,20 +14,13 @@ import harmonica as hm
 data = hm.datasets.fetch_topography_earth()
 print(data)
 
-# Define the density values
-density_upper_crust = 2670
-density_lower_crust = 2800
-density_mantle = 3300
-density_oceanic_crust = 2900
-density_water = 1000
-
 # Root calculation considering the ocean
 root = hm.isostasy_airy(data.topography.values,
-                        density_upper_crust,
-                        density_lower_crust,
-                        density_mantle,
-                        density_oceanic_crust=density_oceanic_crust,
-                        density_water=density_water)
+                        density_upper_crust=2670,
+                        density_lower_crust=2800,
+                        density_mantle=3300,
+                        density_oceanic_crust=2900,
+                        density_water=1000)
 data["root"] = (data.dims, root)
 
 # To obtain the depth of the Moho is necessary to assume a normal crust value
