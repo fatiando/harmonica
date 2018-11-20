@@ -1,5 +1,10 @@
 """
-Calculation of
+Airy Isostasy
+=============
+
+Calculation of the compensated root/antiroot of the topographic structure assuming the
+Airy hypothesis.
+If you want to obtain the isostatic Moho, you need to assume a normal crust value.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
