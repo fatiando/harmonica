@@ -26,7 +26,7 @@ root = hm.isostasy_airy(data_africa.topography.values,
 data_africa["root"] = (data_africa.dims, root)
 
 # Root calculation without considering the ocean
-root_without_ocean= hm.isostasy_airy(data_africa.topography.values,
+root_without_ocean = hm.isostasy_airy(data_africa.topography.values,
                                      density_upper_crust=2670,
                                      density_lower_crust=2800,
                                      density_mantle=3300)
