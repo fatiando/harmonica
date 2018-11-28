@@ -15,6 +15,14 @@ Gravity Corrections
 
     normal_gravity
 
+Isostasy
+--------
+
+.. autosummary::
+    :toctree: generated/
+
+    isostasy_airy
+
 Reference Ellipsoids
 --------------------
 
