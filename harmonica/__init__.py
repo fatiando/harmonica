@@ -11,6 +11,7 @@ from .ellipsoid import (
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
 from .gravity_corrections import normal_gravity
+from .coordinates import geodetic_to_spherical
 
 
 # Get the version number through versioneer

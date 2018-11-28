@@ -95,6 +95,8 @@ class ReferenceEllipsoid:
     0.0033528
     >>> print("{:.13e}".format(wgs84.linear_eccentricity))
     5.2185400842339e+05
+    >>> print("{:.13e}".format(wgs84.first_eccentricity))
+    8.1819190842621e-02
     >>> print("{:.13e}".format(wgs84.second_eccentricity))
     8.2094437949696e-02
     >>> print("{:.14f}".format(wgs84.emm))
@@ -127,6 +129,11 @@ class ReferenceEllipsoid:
     def linear_eccentricity(self):
         "The linear eccentricity [meters]"
         return math.sqrt(self.semimajor_axis ** 2 - self.semiminor_axis ** 2)
+
+    @property
+    def first_eccentricity(self):
+        "The first eccentricity [adimensional]"
+        return self.linear_eccentricity / self.semimajor_axis
 
     @property
     def second_eccentricity(self):

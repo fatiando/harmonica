@@ -34,6 +34,14 @@ Reference Ellipsoids
     get_ellipsoid
     print_ellipsoids
 
+Coordinates Conversions
+-----------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    geodetic_to_spherical
+
 Input and Output
 ----------------
 
@@ -55,6 +63,7 @@ Datasets
 
     datasets.fetch_gravity_earth
     datasets.fetch_topography_earth
+    datasets.fetch_rio_magnetic
 
 Utilities
 ---------
