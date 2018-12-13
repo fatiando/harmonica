@@ -1,10 +1,11 @@
 """
-Gravity of the Earth
-====================
+Earth Gravity
+=============
 
 This is the magnitude of the gravity vector of the Earth (gravitational + centrifugal)
-at 10 km height. The data is on a regular grid with 0.5 degree spacing which was
-generated from the spherical harmonic model EIGEN-6C4 [Forste_etal2014]_.
+at 10 km height. The data is on a regular grid with 0.5 degree spacing at 10km
+ellipsoidal height. It was generated from the spherical harmonic model EIGEN-6C4
+[Forste_etal2014]_.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs

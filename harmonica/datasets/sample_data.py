@@ -44,7 +44,9 @@ def fetch_gravity_earth():
 
     """
     fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz")
-    data = _load_xz_compressed_grid(fname, engine="scipy")
+    # The heights are stored as ints and data as float32 to save space on the data file.
+    # Cast them to float64 to avoid integer division errors.
+    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
     return data
 
 
@@ -56,8 +58,10 @@ def fetch_topography_earth():
     arc-minute grid spacing but here we downsampled to 0.5 degree grid spacing to save
     space and download times. The downsampled grid was generated from a spherical
     harmonic model using the `ICGEM Calculation Service
-    <http://icgem.gfz-potsdam.de/>`__. See the ``attrs`` attribute of the
+    <http://icgem.gfz-potsdam.de/>`__. See the ``attrs`` attribute of the returned
     :class:`xarray.Dataset` for information regarding the grid generation.
+
+    ETOPO1 heights are referenced to "sea level".
 
     If the file isn't already in your data directory, it will be downloaded
     automatically.
@@ -69,7 +73,9 @@ def fetch_topography_earth():
 
     """
     fname = POOCH.fetch("etopo1-0.5deg.nc.xz")
-    data = _load_xz_compressed_grid(fname, engine="scipy")
+    # The data are stored as int16 to save disk space. Cast them to floats to avoid
+    # integer division problems when processing.
+    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
     return data
 
 
