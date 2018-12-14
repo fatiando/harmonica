@@ -24,8 +24,8 @@ def test_topography_earth():
     "Sanity checks for the loaded grid"
     grid = fetch_topography_earth()
     assert grid.topography.shape == (361, 721)
-    npt.assert_allclose(grid.topography.max(), 5622)
-    npt.assert_allclose(grid.topography.min(), -8397)
+    npt.assert_allclose(grid.topography.max(), 5651, atol=1)
+    npt.assert_allclose(grid.topography.min(), -8409, atol=1)
 
 
 def test_rio_magnetic():

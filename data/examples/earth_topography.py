@@ -1,10 +1,11 @@
 """
-Topography of the Earth
-=======================
+Earth Topography
+================
 
 The topography and bathymetry of the Earth according to the ETOPO1 model
 [AmanteEakins2009]_. The original model has 1 arc-minute grid spacing but here we
-downsampled to 0.5 degree grid spacing to save space and download times.
+downsampled to 0.5 degree grid spacing to save space and download times. Heights are
+referenced to sea level.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
