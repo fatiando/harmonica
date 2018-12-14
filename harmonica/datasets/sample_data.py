@@ -22,6 +22,31 @@ POOCH = pooch.create(
 POOCH.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
 
 
+def fetch_geoid_earth():
+    """
+    Fetch a global grid of the geoid height.
+
+    The geoid height is the height of the geoid above (positive) or below (negative) the
+    ellipsoid (WGS84). The data are on a regular grid with 0.5 degree spacing, which was
+    generated from the spherical harmonic model EIGEN-6C4 [Forste_etal2014]_ using the
+    `ICGEM Calculation Service <http://icgem.gfz-potsdam.de/>`__. See the ``attrs``
+    attribute of the :class:`xarray.Dataset` for information regarding the grid
+    generation.
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    grid : :class:`xarray.Dataset`
+        The geoid grid (in meters). Coordinates are geodetic latitude and longitude.
+
+    """
+    fname = POOCH.fetch("geoid-earth-0.5deg.nc.xz")
+    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
+    return data
+
+
 def fetch_gravity_earth():
     """
     Fetch a global grid of Earth gravity.
@@ -39,8 +64,8 @@ def fetch_gravity_earth():
     Returns
     -------
     grid : :class:`xarray.Dataset`
-        The gravity grid (in mGal). Includes a computation height grid
-        (``height_over_ell``). Coordinates are latitude and longitude.
+        The gravity grid (in mGal). Includes a computation (geometric) height grid
+        (``height_over_ell``). Coordinates are geodetic latitude and longitude.
 
     """
     fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz")
@@ -69,7 +94,8 @@ def fetch_topography_earth():
     Returns
     -------
     grid : :class:`xarray.Dataset`
-        The topography grid (in meters). Coordinates are latitude and longitude.
+        The topography grid (in meters) relative to sea level. Coordinates are geodetic
+        latitude and longitude.
 
     """
     fname = POOCH.fetch("etopo1-0.5deg.nc.xz")
