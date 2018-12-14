@@ -5,9 +5,18 @@ import numpy.testing as npt
 
 from ..datasets.sample_data import (
     fetch_gravity_earth,
+    fetch_geoid_earth,
     fetch_topography_earth,
     fetch_rio_magnetic,
 )
+
+
+def test_geoid_earth():
+    "Sanity checks for the loaded grid"
+    grid = fetch_geoid_earth()
+    assert grid.geoid.shape == (361, 721)
+    npt.assert_allclose(grid.geoid.min(), -106.257344)
+    npt.assert_allclose(grid.geoid.max(), 84.722744)
 
 
 def test_gravity_earth():

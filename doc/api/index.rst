@@ -62,6 +62,7 @@ Datasets
    :toctree: generated/
 
     datasets.fetch_gravity_earth
+    datasets.fetch_geoid_earth
     datasets.fetch_topography_earth
     datasets.fetch_rio_magnetic
 
