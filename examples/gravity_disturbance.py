@@ -21,13 +21,13 @@ gamma = hm.normal_gravity(data.latitude, data.height_over_ell)
 data["disturbance"] = data.gravity - gamma
 
 # Make a plot of data using Cartopy
-plt.figure(figsize=(7, 8))
+plt.figure(figsize=(10, 10))
 ax = plt.axes(projection=ccrs.Orthographic(central_longitude=100))
 pc = data.disturbance.plot.pcolormesh(
     ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
 )
 plt.colorbar(
-    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.005, shrink=0.7
+    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
 )
 ax.set_title("Gravity of disturbance of the Earth")
 ax.coastlines()
