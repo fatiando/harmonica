@@ -69,10 +69,13 @@ def isostasy_airy(
          The isostatic Moho depth in meters.
 
     """
-    oceans = topography < 0
-    scale = np.empty(topography.shape, dtype="float")
+    # Need to cast to array to make sure numpy indexing works as expected for 1D
+    # DataArray topography
+    oceans = np.array(topography < 0)
+    continent = np.logical_not(oceans)
+    scale = np.full(topography.shape, np.nan, dtype="float")
+    scale[continent] = density_crust / (density_mantle - density_crust)
     scale[oceans] = (density_crust - density_water) / (density_mantle - density_crust)
-    scale[~oceans] = density_crust / (density_mantle - density_crust)
     moho = topography * scale + reference_depth
     if isinstance(moho, xr.DataArray):
         moho.name = "moho_depth"
