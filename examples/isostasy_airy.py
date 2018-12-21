@@ -2,9 +2,24 @@
 Airy Isostasy
 =============
 
-Calculation of the compensated root/antiroot of the topographic structure assuming the
-Airy hypothesis.
-If you want to obtain the isostatic Moho, you need to assume a normal crust value.
+According to the Airy hypothesis of isostasy, topography above sea level is supported by
+a thickening of the crust (a root) while oceanic basins are supported by a thinning of
+the crust (an anti-root). The relationship between the topographic/bathymetric heights
+(:math:`h`) and the root thickness (:math:`r`) is governed by mass balance
+relations and can be found in classic textbooks like [TurcotteSchubert2014]_ and
+[Hofmann-WellenhofMoritz2006]_.
+
+.. figure:: ../_static/figures/airy-isostasy.svg
+    :align: center
+    :width: 400px
+
+    *Schematic of isostatic compensation following the Airy hypothesis.*
+
+Function :func:`harmonica.isostasy_airy` computes the depth to crust-mantle interface
+(the Moho) according to Airy isostasy. One must assume a value for the reference thickness of the
+continental crust (:math:`H`) in order to convert the root/anti-root thickness into Moho
+depth. The function contains common default values for the reference thickness and
+crust, mantle, and water densities [TurcotteSchubert2014]_.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -16,14 +31,7 @@ print(data)
 data_africa = data.sel(latitude=slice(-40, 30), longitude=slice(-20, 60))
 print(data_africa)
 # Root calculation considering the ocean
-root = hm.isostasy_airy(
-    data_africa.topography.values,
-    density_upper_crust=2670,
-    density_lower_crust=2800,
-    density_mantle=3300,
-    density_oceanic_crust=2900,
-    density_water=1000,
-)
+root = hm.isostasy_airy(data_africa.topography.values)
 data_africa["root"] = (data_africa.dims, root)
 
 # Root calculation without considering the ocean
