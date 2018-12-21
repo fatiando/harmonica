@@ -16,13 +16,13 @@ data = hm.datasets.fetch_gravity_earth()
 print(data)
 
 # Make a plot of data using Cartopy
-plt.figure(figsize=(6, 7))
+plt.figure(figsize=(10, 10))
 ax = plt.axes(projection=ccrs.Orthographic(central_longitude=150))
 pc = data.gravity.plot.pcolormesh(
     ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
 )
 plt.colorbar(
-    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.005, shrink=0.7
+    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.6
 )
 ax.set_title("Gravity of the Earth (EIGEN-6C4)")
 ax.coastlines()
