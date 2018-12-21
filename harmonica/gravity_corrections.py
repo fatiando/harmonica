@@ -4,6 +4,7 @@ Gravity corrections like Normal Gravity and Bouguer corrections.
 import numpy as np
 
 from .ellipsoid import get_ellipsoid
+from .constants import GRAVITATIONAL_CONST
 
 
 def normal_gravity(latitude, height):  # pylint: disable=too-many-locals
@@ -73,3 +74,47 @@ def normal_gravity(latitude, height):  # pylint: disable=too-many-locals
 
     # Convert gamma from SI to mGal
     return gamma * 1e5
+
+
+def bouguer_correction(topography, density_crust=2670, density_water=1040):
+    r"""
+    Gravitational effect of topography using a planar Bouguer plate approximation.
+
+    Calculates the classic Bouguer correction term:
+
+    .. math::
+
+        g_{bg} = 2 \pi G \rho h
+
+    in which :math:`G` is the gravitational constant and :math:`g_{bg}` is the
+    gravitational effect of an infinite plate of thickness :math:`h` and density
+    :math:`\rho`.
+
+    Parameters
+    ----------
+    topography : array or :class:`xarray.DataArray`
+        Topography height and bathymetry depth in meters. Should be referenced to the
+        ellipsoid (ie, geometric heights).
+    density_crust : float
+        Density of the crust in :math:`kg/m^3`.
+    density_water : float
+        Water density in :math:`kg/m^3`.
+
+    Returns
+    -------
+    grav_bouguer : array or :class:`xarray.DataArray`
+         The gravitational effect of topography and residual bathymetry in mGal.
+
+    """
+    # Need to cast to array to make sure numpy indexing works as expected for 1D
+    # DataArray topography
+    oceans = np.array(topography < 0)
+    continent = np.logical_not(oceans)
+    density = np.full(topography.shape, np.nan, dtype="float")
+    density[continent] = density_crust
+    # The minus sign is used to negate the bathymetry (which is negative and the
+    # equation calls for "thickness", not height). This is more practical than taking
+    # the absolute value of the topography.
+    density[oceans] = -1 * (density_water - density_crust)
+    bouguer = 1e5 * 2 * np.pi * GRAVITATIONAL_CONST * density * topography
+    return bouguer
