@@ -16,13 +16,13 @@ data = hm.datasets.fetch_topography_earth()
 print(data)
 
 # Make a plot of data using Cartopy
-plt.figure(figsize=(6, 7))
+plt.figure(figsize=(10, 10))
 ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-30))
 pc = data.topography.plot.pcolormesh(
     ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="terrain"
 )
 plt.colorbar(
-    pc, label="meters", orientation="horizontal", aspect=50, pad=0.005, shrink=0.7
+    pc, label="meters", orientation="horizontal", aspect=50, pad=0.01, shrink=0.6
 )
 ax.set_title("Topography of the Earth (ETOPO1)")
 ax.coastlines()
