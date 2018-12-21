@@ -3,6 +3,7 @@ Function to calculate the thickness of the roots and antiroots assuming the
 Airy isostatic hypothesis.
 """
 import numpy as np
+import xarray as xr
 
 
 def isostasy_airy(
@@ -17,7 +18,7 @@ def isostasy_airy(
 
     According to the Airy hypothesis of isostasy, topography above sea level is
     supported by a thickening of the crust (a root) while oceanic basins are supported
-    by a thinning of the crust (an anti-root).
+    by a thinning of the crust (an anti-root). This assumption is usually
 
     .. figure:: ../../_static/figures/airy-isostasy.svg
         :align: center
@@ -51,7 +52,8 @@ def isostasy_airy(
     Parameters
     ----------
     topography : array or :class:`xarray.DataArray`
-        Topography height and bathymetry depth in meters.
+        Topography height and bathymetry depth in meters. It is usually prudent to use
+        floating point values instead of integers to avoid integer division errors.
     density_crust : float
         Density of the crust in :math:`kg/m^3`.
     density_mantle : float
@@ -67,11 +69,16 @@ def isostasy_airy(
          The isostatic Moho depth in meters.
 
     """
-    root = topography.astype(np.float64)
-    root[topography >= 0] *= density_crust / (
-        density_mantle - density_crust
-    )
-    root[topography < 0] *= (density_crust - density_water) / (
-        density_mantle - density_crust
-    )
-    return root
+    oceans = topography < 0
+    scale = np.empty(topography.shape, dtype="float")
+    scale[oceans] = (density_crust - density_water) / (density_mantle - density_crust)
+    scale[~oceans] = density_crust / (density_mantle - density_crust)
+    moho = topography * scale + reference_depth
+    if isinstance(moho, xr.DataArray):
+        moho.name = "moho_depth"
+        moho.attrs["isostasy"] = "Airy"
+        moho.attrs["density_crust"] = str(density_crust)
+        moho.attrs["density_mantle"] = str(density_mantle)
+        moho.attrs["density_water"] = str(density_water)
+        moho.attrs["reference_depth"] = str(reference_depth)
+    return moho
