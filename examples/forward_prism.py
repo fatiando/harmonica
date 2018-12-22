@@ -9,8 +9,9 @@ import verde as vd
 import harmonica as hm
 
 prism = (-500, 500, -1000, 1000, 0, 500)
-coordinates = vd.grid_coordinates((-2e3, 2e3, -2e3, 2e3), spacing=10,
-                                  extra_coords=[-20])
+coordinates = vd.grid_coordinates(
+    (-2e3, 2e3, -2e3, 2e3), spacing=10, extra_coords=[-20]
+)
 
 gravity = hm.prism_gravity(coordinates, prism, density=2670, components=["v"])
 print(coordinates, gravity)
