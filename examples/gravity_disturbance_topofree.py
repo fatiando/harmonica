@@ -12,13 +12,10 @@ gravity disturbance. The simplest way of calculating the effects of topography a
 oceans is through the Bouguer plate approximation.
 
 We'll use :func:`harmonica.bouguer_correction` to calculate a topography-free gravity
-disturbance for Earth using our sample gravity
-(:func:`harmonica.datasets.fetch_gravity_earth`) and topography
-(:func:`harmonica.datasets.fetch_topography_earth`) data. One thing to note is that the
-ETOPO1 topography is referenced to the geoid, not the ellipsoid. Since we want to remove
-the masses between the surface of the Earth and ellipsoid, we need to add the geoid
-height (:func:`harmonica.datasets.fetch_geoid_earth`) to the topography before Bouguer
-correction.
+disturbance for Earth using our sample gravity and topography data. One thing to note is
+that the ETOPO1 topography is referenced to the geoid, not the ellipsoid. Since we want
+to remove the masses between the surface of the Earth and ellipsoid, we need to add the
+geoid height to the topography before Bouguer correction.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -33,6 +30,7 @@ data = xr.merge(
         hm.datasets.fetch_topography_earth(),
     ]
 )
+print(data)
 
 # Calculate normal gravity and the disturbance
 gamma = hm.normal_gravity(data.latitude, data.height_over_ell)
@@ -45,7 +43,6 @@ topography_ell = data.topography + data.geoid
 # default densities for the crust and ocean water.
 bouguer = hm.bouguer_correction(topography_ell)
 disturbance_topofree = disturbance - bouguer
-print(bouguer)
 
 # Make a plot of data using Cartopy
 plt.figure(figsize=(10, 10))

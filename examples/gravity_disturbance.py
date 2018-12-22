@@ -22,9 +22,9 @@ disturbance = data.gravity - gamma
 
 # Make a plot of data using Cartopy
 plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=100))
+ax = plt.axes(projection=ccrs.Orthographic(central_longitude=160))
 pc = disturbance.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
+    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="seismic"
 )
 plt.colorbar(
     pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
