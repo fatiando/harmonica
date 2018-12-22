@@ -1,0 +1,7 @@
+import numpy as np
+import harmonica as hm
+
+x, y, z = [np.arange(10000, dtype="float")]*3
+model = (0, 10, 0, 20, 0, 10)
+hm.prism_gravity((x, y, -z), model, density=1000, components=["v"])
+%timeit [hm.prism_gravity((x, y, -z), model, density=1000, components=["v"]) for i in range(1000)]
