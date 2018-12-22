@@ -14,6 +14,7 @@ Gravity Corrections
     :toctree: generated/
 
     normal_gravity
+    bouguer_correction
 
 Isostasy
 --------
