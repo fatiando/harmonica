@@ -13,7 +13,7 @@ coordinates = vd.grid_coordinates(
     (-2e3, 2e3, -2e3, 2e3), spacing=10, extra_coords=[-20]
 )
 
-gravity = hm.prism_gravity(coordinates, prism, density=2670, components=["v"])
+gravity = hm.prism_gravity(coordinates, prism, density=2670, field="gz")
 print(coordinates, gravity)
 
 plt.figure()

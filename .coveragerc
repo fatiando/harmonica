@@ -4,3 +4,7 @@ omit =
     */tests/*
     */_version.py
     **/__init__.py
+
+[report]
+exclude_lines =
+    @jit
