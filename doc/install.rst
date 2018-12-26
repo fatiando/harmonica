@@ -22,10 +22,11 @@ Dependencies
 * `numpy <http://www.numpy.org/>`__
 * `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
 * `pandas <http://pandas.pydata.org/>`__
-* `xarray <https://xarray.pydata.org/>`__
-* `attrs <https://www.attrs.org/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+* `attrs <https://www.attrs.org/>`__
+* `xarray <https://xarray.pydata.org/>`__
+* `numba <https://numba.pydata.org/>`__
 
 Most of the examples in the :ref:`gallery` also use:
 

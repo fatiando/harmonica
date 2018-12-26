@@ -12,6 +12,7 @@ dependencies:
     - verde
     - attrs
     - xarray
+    - numba
     # Development requirements
     - pyproj
     - matplotlib

@@ -2,6 +2,7 @@ numpy
 scipy
 pandas
 pooch
+verde
 attrs
 xarray
-verde
+numba

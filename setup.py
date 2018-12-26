@@ -41,7 +41,16 @@ PACKAGE_DATA = {
     "harmonica.datasets": ["registry.txt"],
     "harmonica.tests": ["data/*", "baseline/*"],
 }
-INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "pooch", "attrs", "xarray", "verde"]
+INSTALL_REQUIRES = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "pooch",
+    "verde",
+    "attrs",
+    "xarray",
+    "numba",
+]
 PYTHON_REQUIRES = ">=3.5"
 
 if __name__ == "__main__":
