@@ -42,5 +42,5 @@ def geodetic_to_spherical(latitude, height):
         height + (1 - ellipsoid.first_eccentricity ** 2) * prime_vertical_radius
     ) * np.sin(latitude_rad)
     radius = np.sqrt(xy_projection ** 2 + z_cartesian ** 2)
-    geocentric_latitude = 180 / np.pi * np.arcsin(z_cartesian / radius)
+    geocentric_latitude = np.degrees(np.arcsin(z_cartesian / radius))
     return geocentric_latitude, radius
