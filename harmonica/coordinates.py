@@ -28,6 +28,10 @@ def geodetic_to_spherical(latitude, height):
         (in degrees).
     radius : float or array
         The radial coordinate in the geocentric spherical reference system (in meters).
+
+    See also
+    --------
+    spherical_to_geodetic : Convert from geocentric spherical to geodetic coordinates.
     """
     ellipsoid = get_ellipsoid()
     # Convert latitude to radians
@@ -68,6 +72,10 @@ def spherical_to_geodetic(geocentric_latitude, radius):
         The geodetic latitude (in degrees).
     height : float or array
         The ellipsoidal (geometric or geodetic) height (in meters).
+
+    See also
+    --------
+    geodetic_to_spherical : Convert from geodetic to geocentric spherical coordinates.
     """
     ellipsoid = get_ellipsoid()
     k, big_d, big_z = _spherical_to_geodetic_parameters(geocentric_latitude, radius)
