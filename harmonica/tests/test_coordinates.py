@@ -101,3 +101,20 @@ def test_spherical_to_geodetic_on_poles():
             latitude, height = spherical_to_geodetic(geocentric_latitude, radius)
             npt.assert_allclose(geocentric_latitude, latitude, rtol=rtol)
             npt.assert_allclose(radius, height + ellipsoid.semiminor_axis, rtol=rtol)
+
+
+def test_geodetic_to_spherical_and_spherical_to_geodetic():
+    "Test if geodetic_to_spherical and spherical_to_geodetic is the identity operator"
+    rtol = 1e-10
+    latitude = np.linspace(-90, 90, 19)
+    height = np.linspace(-1e4, 1e4, 8)
+    latitude, height = np.meshgrid(latitude, height)
+    for ellipsoid_name in KNOWN_ELLIPSOIDS:
+        with set_ellipsoid(ellipsoid_name):
+            geocentric_latitude, radius = geodetic_to_spherical(latitude, height)
+            converted_latitude, converted_height = spherical_to_geodetic(
+                geocentric_latitude,
+                radius
+            )
+            npt.assert_allclose(latitude, converted_latitude, rtol=rtol)
+            npt.assert_allclose(height, converted_height, rtol=rtol)
