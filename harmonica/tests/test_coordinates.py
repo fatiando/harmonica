@@ -113,8 +113,7 @@ def test_identity():
         with set_ellipsoid(ellipsoid_name):
             geocentric_latitude, radius = geodetic_to_spherical(latitude, height)
             converted_latitude, converted_height = spherical_to_geodetic(
-                geocentric_latitude,
-                radius
+                geocentric_latitude, radius
             )
             npt.assert_allclose(latitude, converted_latitude, rtol=rtol)
             npt.assert_allclose(height, converted_height, rtol=rtol)
