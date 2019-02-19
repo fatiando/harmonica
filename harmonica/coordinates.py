@@ -70,21 +70,32 @@ def spherical_to_geodetic(geocentric_latitude, radius):
         The ellipsoidal (geometric or geodetic) height (in meters).
     """
     ellipsoid = get_ellipsoid()
+    k, big_d, big_z = _spherical_to_geodetic_parameters(geocentric_latitude, radius)
+    latitude = np.degrees(
+        2 * np.arctan(big_z / (big_d + np.sqrt(big_d ** 2 + big_z ** 2)))
+    )
+    height = (k + ellipsoid.first_eccentricity ** 2 - 1) / k \
+        * np.sqrt(big_d ** 2 + big_z ** 2)
+    return latitude, height
+
+
+def _spherical_to_geodetic_parameters(geocentric_latitude, radius):
+    "Compute parameters for spherical to geodetic coordinates conversion"
+    ellipsoid = get_ellipsoid()
     # Convert latitude to radians
     geocentric_latitude_rad = np.radians(geocentric_latitude)
-    Z = radius * np.sin(geocentric_latitude_rad)
-    p = radius ** 2 * np.cos(geocentric_latitude_rad) ** 2 / \
+    big_z = radius * np.sin(geocentric_latitude_rad)
+    p_0 = radius ** 2 * np.cos(geocentric_latitude_rad) ** 2 / \
         ellipsoid.semimajor_axis ** 2
-    q = (1 - ellipsoid.first_eccentricity ** 2) / ellipsoid.semimajor_axis ** 2 * Z ** 2
-    r = (p + q - ellipsoid.first_eccentricity ** 4) / 6
-    s = ellipsoid.first_eccentricity ** 4 * p * q / 4 / r ** 3
-    t = np.cbrt(1 + s + np.sqrt(2 * s + s ** 2))
-    u = r * (1 + t + 1 / t)
-    v = np.sqrt(u ** 2 + q * ellipsoid.first_eccentricity ** 4)
-    w = ellipsoid.first_eccentricity ** 2 * (u + v - q) / 2 / v
-    k = np.sqrt(u + v + w ** 2) - w
-    D = k * radius * np.cos(geocentric_latitude_rad) / \
+    q_0 = (1 - ellipsoid.first_eccentricity ** 2) / ellipsoid.semimajor_axis ** 2 \
+        * big_z ** 2
+    r_0 = (p_0 + q_0 - ellipsoid.first_eccentricity ** 4) / 6
+    s_0 = ellipsoid.first_eccentricity ** 4 * p_0 * q_0 / 4 / r_0 ** 3
+    t_0 = np.cbrt(1 + s_0 + np.sqrt(2 * s_0 + s_0 ** 2))
+    u_0 = r_0 * (1 + t_0 + 1 / t_0)
+    v_0 = np.sqrt(u_0 ** 2 + q_0 * ellipsoid.first_eccentricity ** 4)
+    w_0 = ellipsoid.first_eccentricity ** 2 * (u_0 + v_0 - q_0) / 2 / v_0
+    k = np.sqrt(u_0 + v_0 + w_0 ** 2) - w_0
+    big_d = k * radius * np.cos(geocentric_latitude_rad) / \
         (k + ellipsoid.first_eccentricity ** 2)
-    latitude = np.degrees(2 * np.arctan(Z / (D + np.sqrt(D ** 2 + Z ** 2))))
-    height = (k + ellipsoid.first_eccentricity ** 2 - 1) / k * np.sqrt(D ** 2 + Z ** 2)
-    return latitude, height
+    return k, big_d, big_z
