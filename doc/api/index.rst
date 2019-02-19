@@ -42,6 +42,7 @@ Coordinates Conversions
    :toctree: generated/
 
     geodetic_to_spherical
+    spherical_to_geodetic
 
 Input and Output
 ----------------
