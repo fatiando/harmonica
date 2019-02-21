@@ -43,7 +43,7 @@ matrix:
               - PYTHON=3.7
               - CHECK=true
               # Don't need to install everything just to run the style checks
-              - CONDA_INSTALL_EXTRA="black flake8 pylint"
+              - CONDA_INSTALL_EXTRA="black flake8 pylint=2.2.2"
               - CONDA_REQUIREMENTS=""
               - CONDA_REQUIREMENTS_DEV=""
         - name: "Linux - Python 3.7"
