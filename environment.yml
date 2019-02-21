@@ -20,7 +20,7 @@ dependencies:
     - pytest-cov
     - coverage
     - black
-    - pylint
+    - pylint=2.2.2
     - flake8
     - sphinx
     - sphinx_rtd_theme
