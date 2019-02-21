@@ -5,7 +5,7 @@ cartopy
 pytest
 pytest-cov
 coverage
-pylint=2.2.2
+pylint
 flake8
 sphinx
 sphinx_rtd_theme

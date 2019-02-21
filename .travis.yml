@@ -49,7 +49,7 @@ matrix:
         - name: "Linux - Python 3.7"
           os: linux
           env:
-              - PYTHON=3.5
+              - PYTHON=3.7
               - TEST=true
               - BUILD_DOCS=true
         # Main build to deploy to PyPI and Github pages
