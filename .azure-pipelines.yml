@@ -52,13 +52,15 @@ jobs:
   # Check that the code passes format checks
   - bash: |
       set -x -e
+      source activate testing
       make check
     displayName: Formatting check (black and flake8)
 
   # Check that the code passes linting checks
   - bash: |
       set -x -e
-      make ling
+      source activate testing
+      make lint
     displayName: Linting (pylint)
 
 
@@ -106,8 +108,8 @@ jobs:
   # Copy the test data to the cache folder
   - bash: |
       set -x -e
-      mkdir -p ~\.harmonica\data\master
-      cp data\* ~\.harmonica\data\master
+      mkdir -p $HOME/.harmonica/data/master
+      cp -r data/* $HOME/.harmonica/data/master
     displayName: Copy test data to cache
 
   # Install the package
@@ -185,6 +187,12 @@ jobs:
       source activate testing
       conda list
     displayName: List installed packages
+
+  # Copy the test data to the cache folder
+  - bash: |
+      mkdir -p ~/.harmonica/data/master
+      cp -r data/* ~/.harmonica/data/master
+    displayName: Copy test data to cache
 
   # Install the package that we want to test
   - bash: |
