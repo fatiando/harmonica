@@ -9,12 +9,15 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: http://img.shields.io/travis/fatiando/harmonica/master.svg?style=flat-square&label=Linux|Mac
+.. image:: http://img.shields.io/travis/fatiando/harmonica/master.svg?style=flat-square&label=TravisCI
     :alt: TravisCI build status
     :target: https://travis-ci.org/fatiando/harmonica
-.. image:: http://img.shields.io/appveyor/ci/fatiando/harmonica/master.svg?style=flat-square&label=Windows
+.. image:: http://img.shields.io/appveyor/ci/fatiando/harmonica/master.svg?style=flat-square&label=AppVeyor
     :alt: AppVeyor build status
     :target: https://ci.appveyor.com/project/fatiando/harmonica
+.. image:: https://img.shields.io/azure-devops/build/fatiando/468a030e-9766-495e-b0d6-b94ff15ff50b/5/master.svg?label=Azure&style=flat-square
+   :alt: Azure Pipelines build status
+    :target: https://dev.azure.com/fatiando/harmonica/_build
 .. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/harmonica
