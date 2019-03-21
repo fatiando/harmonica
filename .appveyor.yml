@@ -10,8 +10,6 @@ branches:
 
 environment:
     matrix:
-        - MINICONDA: C:\Miniconda35-x64
-          PYTHON: 3.5
         - MINICONDA: C:\Miniconda36-x64
           PYTHON: 3.6
         - MINICONDA: C:\Miniconda37-x64

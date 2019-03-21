@@ -61,12 +61,6 @@ matrix:
               - BUILD_DOCS=true
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
-        - name: "Linux - Python 3.5"
-          os: linux
-          env:
-              - PYTHON=3.5
-              - TEST=true
-              - BUILD_DOCS=true
         - name: "Mac - Python 3.7"
           os: osx
           env:
