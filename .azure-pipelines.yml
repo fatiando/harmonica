@@ -76,6 +76,7 @@ jobs:
   variables:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
+    CONDA_INSTALL_EXTRA: "codecov"
 
   strategy:
     matrix:
@@ -125,7 +126,6 @@ jobs:
   - bash: |
       set -x -e
       source activate testing
-      pip install codecov
       make test
     displayName: Test
 
@@ -143,6 +143,8 @@ jobs:
       coverage xml
       echo "Uploading coverage to Codecov"
       codecov -e PYTHON
+    env:
+      CODECOV_TOKEN: $(codecov.token)
     condition: succeeded()
     displayName: Upload coverage
 
@@ -158,6 +160,7 @@ jobs:
   variables:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
+    CONDA_INSTALL_EXTRA: "codecov"
     # Cartopy, scipy, and proj aren't on conda-forge for some reason.
     CONDA_EXTRA_CHANNEL: defaults
 
@@ -209,7 +212,6 @@ jobs:
   - bash: |
       set -x -e
       source activate testing
-      pip install codecov
       make test
     displayName: Test
 
@@ -219,5 +221,7 @@ jobs:
       source activate testing
       coverage xml
       codecov -e PYTHON
+    env:
+      CODECOV_TOKEN: $(codecov.token)
     condition: succeeded()
     displayName: Upload coverage
