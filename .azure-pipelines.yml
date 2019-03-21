@@ -224,5 +224,6 @@ jobs:
       codecov -e PYTHON AGENT_OS
     env:
       CODECOV_TOKEN: $(codecov.token)
+      CI_PROJECT_DIR: $BUILD_SOURCESDIRECTORY
     condition: succeeded()
     displayName: Upload coverage
