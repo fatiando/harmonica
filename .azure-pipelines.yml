@@ -15,21 +15,20 @@ jobs:
 # Linux
 ########################################################################################
 - job:
-  displayName: 'Linux'
+  displayName: 'Style Checks'
 
   pool:
     vmImage: 'ubuntu-16.04'
 
   variables:
     CONDA_INSTALL_EXTRA: "black flake8 pylint=2.2.2"
-
-  strategy:
-    matrix:
-      StyleCheck:
-        python.version: '3.7'
-        PYTHON: '3.7'
+    PYTHON: '3.7'
 
   steps:
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
 
   - bash: echo "##vso[task.prependpath]/usr/share/miniconda/bin"
     displayName: Add conda to PATH
