@@ -183,18 +183,21 @@ jobs:
 
   # Show installed pkg information for postmortem diagnostic
   - bash: |
+      set -x -e
       source activate testing
       conda list
     displayName: List installed packages
 
   # Copy the test data to the cache folder
   - bash: |
+      set -x -e
       mkdir -p ~/.harmonica/data/master
       cp -r data/* ~/.harmonica/data/master
     displayName: Copy test data to cache
 
   # Install the package that we want to test
   - bash: |
+      set -x -e
       source activate testing
       python setup.py sdist --formats=zip
       pip install dist/*
@@ -202,6 +205,7 @@ jobs:
 
   # Run the tests
   - bash: |
+      set -x -e
       source activate testing
       pip install codecov
       make test
@@ -209,6 +213,7 @@ jobs:
 
   # Upload test coverage if there were no failures
   - bash: |
+      set -x -e
       source activate testing
       coverage xml
       codecov -e PYTHON
