@@ -54,6 +54,7 @@ jobs:
       source activate testing
       make check
     displayName: Formatting check (black and flake8)
+    condition: succeededOrFailed()
 
   # Check that the code passes linting checks
   - bash: |
@@ -61,6 +62,7 @@ jobs:
       source activate testing
       make lint
     displayName: Linting (pylint)
+    condition: succeededOrFailed()
 
 
 # Mac
