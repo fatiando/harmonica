@@ -34,7 +34,7 @@ jobs:
     displayName: Add conda to PATH
 
   # Get the Fatiando CI scripts (replace "master" with the version you want to use)
-  - bash: git clone --branch=master --depth=1 https://github.com/fatiando/continuous-integration.git
+  - bash: git clone --branch=1.1.0 --depth=1 https://github.com/fatiando/continuous-integration.git
     displayName: Fetch the Fatiando CI scripts
 
   # Setup dependencies and build a conda environment
@@ -221,8 +221,6 @@ jobs:
       source activate testing
       coverage report -m
       coverage xml
-      export CI_PROJECT_DIR=$BUILD_SOURCESDIRECTORY
-      echo $CI_PROJECT_DIR
       codecov -e PYTHON AGENT_OS
     env:
       CODECOV_TOKEN: $(codecov.token)
