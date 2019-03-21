@@ -142,7 +142,7 @@ jobs:
       source activate testing
       coverage xml
       echo "Uploading coverage to Codecov"
-      codecov -e PYTHON
+      codecov -e PYTHON AGENT_OS
     env:
       CODECOV_TOKEN: $(codecov.token)
     condition: succeeded()
@@ -219,8 +219,9 @@ jobs:
   - bash: |
       set -x -e
       source activate testing
+      coverage report -m
       coverage xml
-      codecov -e PYTHON
+      codecov -e PYTHON AGENT_OS
     env:
       CODECOV_TOKEN: $(codecov.token)
     condition: succeeded()
