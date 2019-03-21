@@ -13,10 +13,6 @@ from ..ellipsoid import (
 )
 
 
-def test_dummy():
-    "meh"
-    assert False
-
 def test_geodetic_to_spherical_with_spherical_ellipsoid():
     "Test geodetic to geocentric coordinates conversion if ellipsoid is a sphere."
     rtol = 1e-10

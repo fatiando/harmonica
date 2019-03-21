@@ -18,10 +18,6 @@ from .coordinates import geodetic_to_spherical, spherical_to_geodetic
 __version__ = version.full_version
 
 
-
-bla = 'meh'
-
-
 def test(doctest=True, verbose=True, coverage=False, figures=False):
     """
     Run the test suite.
