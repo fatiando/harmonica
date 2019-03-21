@@ -26,6 +26,7 @@ env:
         # The files with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
         - CONDA_REQUIREMENTS_DEV=requirements-dev.txt
+        - CONDA_INSTALL_EXTRA="codecov"
         # These variables control which actions are performed in a build
         - DEPLOY_DOCS=false
         - DEPLOY_PYPI=false
@@ -66,8 +67,6 @@ install:
 
 # Run the actual tests and checks
 script:
-    # To report on coverage
-    - pip install codecov
     # Run the test suite
     - make test
     # Build the documentation
