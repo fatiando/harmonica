@@ -20,6 +20,9 @@ def point_mass_gravity(
     point_mass : list or array
         Coordinates of the point mass: [`longitude`, `latitude`, `height`].
     """
+    kernels = {"potential": kernel_potential, "gz": kernel_gz}
+    if field not in kernels:
+        raise ValueError("Gravity field {} not recognized".format(field))
     if coordinate_system not in ["geodetic", "spherical"]:
         raise ValueError(
             "Coordinate system {} not recognized".format(coordinate_system)
@@ -36,8 +39,6 @@ def point_mass_gravity(
         point_mass = [longitude_p, latitude_p, radius_p]
     elif coordinate_system == "spherical":
         longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
-    # Define kernels available and compute gravitational effect
-    kernels = {"potential": kernel_potential, "gz": kernel_gz}
     jit_point_mass_gravity(
         longitude, latitude, radius, point_mass, kernels[field], result
     )

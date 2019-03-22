@@ -78,6 +78,21 @@ def test_point_mass_on_origin():
     npt.assert_allclose(gz, gz_analytical)
 
 
+def test_invalid_field():
+    point_mass = [0.0, 0.0, 0.0]
+    mass = 1.0
+    longitude = np.array(0.0)
+    latitude = np.array(0.0)
+    height = np.array(0.0)
+    with raises(ValueError):
+        point_mass_gravity(
+            [longitude, latitude, height],
+            point_mass,
+            mass,
+            "this-field-does-not-exist",
+        )
+
+
 def test_invalid_coordinate_system():
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
