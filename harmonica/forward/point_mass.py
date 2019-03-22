@@ -8,7 +8,9 @@ from ..constants import GRAVITATIONAL_CONST
 from ..coordinates import geodetic_to_spherical
 
 
-def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
+def point_mass_gravity(
+    coordinates, point_mass, mass, field, coordinate_system="geodetic", dtype="float64"
+):
     """
     Parameters
     ----------
@@ -16,29 +18,28 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
         List or array containing `longitude`, `latitude` and `height` of computation
         points.
     point_mass : list or array
-        Geodetic coordinates of the point mass: [`longitude`, `latitude`, `height`].
+        Coordinates of the point mass: [`longitude`, `latitude`, `height`].
     """
+    if coordinate_system not in ["geodetic", "spherical"]:
+        raise ValueError(
+            "Coordinate system {} not recognized".format(coordinate_system)
+        )
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
-    # Convert coordinates of computation points from geodetic to geocentric spherical
-    longitude, latitude, height = (i.ravel() for i in coordinates[:3])
-    spherical_latitude, radius = geodetic_to_spherical(latitude, height)
-    # Convert coordinates of point mass from geodetic to geocentric spherical
-    mass_longitude, mass_latitude, mass_height = point_mass[:]
-    mass_spherical_latitude, mass_radius = geodetic_to_spherical(
-        mass_latitude, mass_height
-    )
-    point_mass_geocentric = [mass_longitude, mass_spherical_latitude, mass_radius]
+    if coordinate_system == "geodetic":
+        longitude, latitude, height = (i.ravel() for i in coordinates[:3])
+        longitude_p, latitude_p, height_p = point_mass[:]
+        # Convert coordinates geocentric spherical
+        latitude, radius = geodetic_to_spherical(latitude, height)
+        latitude_p, radius_p = geodetic_to_spherical(latitude_p, height_p)
+        point_mass = [longitude_p, latitude_p, radius_p]
+    elif coordinate_system == "spherical":
+        longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
     # Define kernels available and compute gravitational effect
     kernels = {"potential": kernel_potential, "gz": kernel_gz}
     jit_point_mass_gravity(
-        longitude,
-        spherical_latitude,
-        radius,
-        point_mass_geocentric,
-        kernels[field],
-        result,
+        longitude, latitude, radius, point_mass, kernels[field], result
     )
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
