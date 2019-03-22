@@ -9,7 +9,7 @@ from harmonica.constants import GRAVITATIONAL_CONST
 
 
 def test_point_mass_on_equator():
-    "Check gravitational fields of point mass"
+    "Check gravitational fields of point mass on equator"
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     height = np.logspace(1, 5, 5, dtype="float64")
