@@ -47,7 +47,7 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True, fastmath=True)
+@jit(nopython=True)
 def jit_point_mass_gravity(longitude, latitude, radius, point_mass, kernel, out):
     """
     """
@@ -68,7 +68,7 @@ def jit_point_mass_gravity(longitude, latitude, radius, point_mass, kernel, out)
         )
 
 
-@jit(nopython=True, fastmath=True)
+@jit(nopython=True)
 def kernel_potential(
     longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
 ):
@@ -80,7 +80,7 @@ def kernel_potential(
     return 1 / np.sqrt(distance_sq)
 
 
-@jit(nopython=True, fastmath=True)
+@jit(nopython=True)
 def kernel_gz(
     longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
 ):
