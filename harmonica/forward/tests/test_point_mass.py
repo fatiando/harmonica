@@ -3,6 +3,7 @@ Test forward modellig for point masses.
 """
 import numpy as np
 import numpy.testing as npt
+from pytest import raises
 
 from ..point_mass import point_mass_gravity
 from harmonica.constants import GRAVITATIONAL_CONST
@@ -75,3 +76,19 @@ def test_point_mass_on_origin():
     # Convert to mGal
     gz_analytical *= 1e5
     npt.assert_allclose(gz, gz_analytical)
+
+
+def test_invalid_coordinate_system():
+    point_mass = [0.0, 0.0, 0.0]
+    mass = 1.0
+    longitude = np.array(0.0)
+    latitude = np.array(0.0)
+    height = np.array(0.0)
+    with raises(ValueError):
+        point_mass_gravity(
+            [longitude, latitude, height],
+            point_mass,
+            mass,
+            "potential",
+            coordinate_system="this-coordinate-system-does-not-exist",
+        )
