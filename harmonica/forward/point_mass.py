@@ -32,12 +32,7 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     point_mass_geocentric = [mass_longitude, mass_spherical_latitude, mass_radius]
     # Define kernels available and compute gravitational effect
     jit_point_mass_gravity(
-        longitude,
-        spherical_latitude,
-        radius,
-        point_mass_geocentric,
-        field,
-        result
+        longitude, spherical_latitude, radius, point_mass_geocentric, field, result
     )
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
@@ -55,10 +50,9 @@ def jit_point_mass_gravity(longitude, latitude, radius, point_mass, field, out):
     sinphi_p = np.sin(mass_latitude)
     mass_radius_sq = mass_radius ** 2
     for l in range(out.size):
-        cosphi = (
-            sinphi_p * np.sin(latitude[l])
-            + cosphi_p * np.cos(latitude[l]) * np.cos(mass_longitude - longitude[l])
-        )
-        distance_sq = radius**2 + mass_radius_sq - 2 * radius * mass_radius * cosphi
+        cosphi = sinphi_p * np.sin(latitude[l]) + cosphi_p * np.cos(
+            latitude[l]
+        ) * np.cos(mass_longitude - longitude[l])
+        distance_sq = radius ** 2 + mass_radius_sq - 2 * radius * mass_radius * cosphi
         if field == "potential":
             out[l] += 1 / np.sqrt(distance_sq)
