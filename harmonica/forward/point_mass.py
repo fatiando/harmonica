@@ -33,7 +33,7 @@ def point_mass_gravity(
     if coordinate_system == "geodetic":
         longitude, latitude, height = (i.ravel() for i in coordinates[:3])
         longitude_p, latitude_p, height_p = point_mass[:]
-        # Convert coordinates geocentric spherical
+        # Convert coordinates to geocentric spherical
         latitude, radius = geodetic_to_spherical(latitude, height)
         latitude_p, radius_p = geodetic_to_spherical(latitude_p, height_p)
         point_mass = [longitude_p, latitude_p, radius_p]
