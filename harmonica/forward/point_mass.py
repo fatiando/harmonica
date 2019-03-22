@@ -31,8 +31,14 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     )
     point_mass_geocentric = [mass_longitude, mass_spherical_latitude, mass_radius]
     # Define kernels available and compute gravitational effect
+    kernels = {"potential": kernel_potential, "gz": kernel_gz}
     jit_point_mass_gravity(
-        longitude, spherical_latitude, radius, point_mass_geocentric, field, result
+        longitude,
+        spherical_latitude,
+        radius,
+        point_mass_geocentric,
+        kernels[field],
+        result,
     )
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
@@ -42,17 +48,46 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
 
 
 @jit(nopython=True, fastmath=True)
-def jit_point_mass_gravity(longitude, latitude, radius, point_mass, field, out):
+def jit_point_mass_gravity(longitude, latitude, radius, point_mass, kernel, out):
     """
     """
-    mass_longitude, mass_latitude, mass_radius = point_mass[:]
-    cosphi_p = np.cos(mass_latitude)
-    sinphi_p = np.sin(mass_latitude)
-    mass_radius_sq = mass_radius ** 2
+    longitude_p, latitude_p, radius_p = point_mass[:]
+    cosphi_p = np.cos(latitude_p)
+    sinphi_p = np.sin(latitude_p)
+    radius_p_sq = radius_p ** 2
     for l in range(out.size):
-        cosphi = sinphi_p * np.sin(latitude[l]) + cosphi_p * np.cos(
-            latitude[l]
-        ) * np.cos(mass_longitude - longitude[l])
-        distance_sq = radius ** 2 + mass_radius_sq - 2 * radius * mass_radius * cosphi
-        if field == "potential":
-            out[l] += 1 / np.sqrt(distance_sq)
+        out[l] += kernel(
+            longitude[l],
+            latitude[l],
+            radius[l],
+            longitude_p,
+            cosphi_p,
+            sinphi_p,
+            radius_p,
+            radius_p_sq,
+        )
+
+
+@jit(nopython=True, fastmath=True)
+def kernel_potential(
+    longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
+):
+    cosphi = np.cos(latitude)
+    sinphi = np.sin(latitude)
+    coslambda = np.cos(longitude_p - longitude)
+    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
+    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    return 1 / np.sqrt(distance_sq)
+
+
+@jit(nopython=True, fastmath=True)
+def kernel_gz(
+    longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
+):
+    cosphi = np.cos(latitude)
+    sinphi = np.sin(latitude)
+    coslambda = np.cos(longitude_p - longitude)
+    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
+    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    delta_z = radius_p * cospsi - radius
+    return delta_z / distance_sq ** (3 / 2)
