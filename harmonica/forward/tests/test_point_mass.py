@@ -86,10 +86,7 @@ def test_invalid_field():
     height = np.array(0.0)
     with raises(ValueError):
         point_mass_gravity(
-            [longitude, latitude, height],
-            point_mass,
-            mass,
-            "this-field-does-not-exist",
+            [longitude, latitude, height], point_mass, mass, "this-field-does-not-exist"
         )
 
 
