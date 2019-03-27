@@ -8,9 +8,7 @@ from ..constants import GRAVITATIONAL_CONST
 from ..coordinates import geodetic_to_spherical
 
 
-def point_mass_gravity(
-    coordinates, point_mass, mass, field, coordinate_system="geodetic", dtype="float64"
-):
+def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     """
     Parameters
     ----------
@@ -23,22 +21,10 @@ def point_mass_gravity(
     kernels = {"potential": kernel_potential, "gz": kernel_gz}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
-    if coordinate_system not in ["geodetic", "spherical"]:
-        raise ValueError(
-            "Coordinate system {} not recognized".format(coordinate_system)
-        )
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
-    if coordinate_system == "geodetic":
-        longitude, latitude, height = (i.ravel() for i in coordinates[:3])
-        longitude_p, latitude_p, height_p = point_mass[:]
-        # Convert coordinates to geocentric spherical
-        latitude, radius = geodetic_to_spherical(latitude, height)
-        latitude_p, radius_p = geodetic_to_spherical(latitude_p, height_p)
-        point_mass = [longitude_p, latitude_p, radius_p]
-    elif coordinate_system == "spherical":
-        longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
+    longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
     jit_point_mass_gravity(
         longitude, latitude, radius, point_mass, kernels[field], result
     )
