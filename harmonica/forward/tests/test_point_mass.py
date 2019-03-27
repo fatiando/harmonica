@@ -64,3 +64,28 @@ def test_point_mass_same_radial_direction():
                 # Convert to mGal
                 gz_analytical *= 1e5
                 npt.assert_allclose(gz, gz_analytical)
+
+
+def test_point_mass_potential_on_equator():
+    "Check potential field on equator and same radial coordinate"
+    radius = 1.
+    mass = 1.
+    latitude = 0.
+    for longitude_p in np.linspace(0, 350, 36):
+        point_mass = [longitude_p, latitude, radius]
+        for longitude in np.linspace(0, 350, 36):
+            if longitude != longitude_p:
+                coordinates = [
+                    np.array(longitude),
+                    np.array(latitude),
+                    np.array(radius),
+                ]
+                potential = point_mass_gravity(
+                    coordinates, point_mass, mass, "potential"
+                )
+                # Calculate analytical solution for this potential
+                distance = (
+                    2 * radius * np.sin(0.5 * np.radians(abs(longitude - longitude_p)))
+                )
+                potential_analytical = GRAVITATIONAL_CONST * mass / distance
+                npt.assert_allclose(potential, potential_analytical)
