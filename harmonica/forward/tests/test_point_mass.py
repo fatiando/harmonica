@@ -41,8 +41,8 @@ def test_point_mass_on_origin():
     npt.assert_allclose(gz, gz_analytical)
 
 
-def test_point_mass_constant_latitude_longitude():
-    "Check gravity fields with same latitude and longitude coordinates"
+def test_point_mass_same_radial_direction():
+    "Check gravity fields of point mass and computation point on same radial direction"
     sphere_radius = 1.0
     mass = 1.0
     for longitude in np.linspace(-180, 180, 37):
