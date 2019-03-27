@@ -72,6 +72,33 @@ def kernel_potential(
 
 
 @jit(nopython=True)
+def kernel_gx(
+    longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
+):
+    cosphi = np.cos(latitude)
+    sinphi = np.sin(latitude)
+    coslambda = np.cos(longitude_p - longitude)
+    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
+    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    delta_x = radius_p * (cosphi * sinphi_p - sinphi * cosphi_p * coslambda)
+    return delta_x / distance_sq ** (3 / 2)
+
+
+@jit(nopython=True)
+def kernel_gy(
+    longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
+):
+    cosphi = np.cos(latitude)
+    sinphi = np.sin(latitude)
+    coslambda = np.cos(longitude_p - longitude)
+    sinlambda = np.sin(longitude_p - longitude)
+    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
+    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    delta_y = radius_p * cosphi_p * sinlambda
+    return delta_y / distance_sq ** (3 / 2)
+
+
+@jit(nopython=True)
 def kernel_gz(
     longitude, latitude, radius, longitude_p, cosphi_p, sinphi_p, radius_p, radius_p_sq
 ):
