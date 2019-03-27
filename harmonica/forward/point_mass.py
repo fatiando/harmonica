@@ -18,7 +18,12 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     point_mass : list or array
         Coordinates of the point mass: [`longitude`, `latitude`, `height`].
     """
-    kernels = {"potential": kernel_potential, "gz": kernel_gz}
+    kernels = {
+        "potential": kernel_potential,
+        "gx": kernel_gx,
+        "gy": kernel_gy,
+        "gz": kernel_gz,
+    }
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
