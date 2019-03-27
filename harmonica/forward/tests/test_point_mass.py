@@ -30,19 +30,11 @@ def test_point_mass_on_origin():
     latitude = np.linspace(-90, 90, 19)
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
     potential = point_mass_gravity(
-        [longitude, latitude, radius],
-        point_mass,
-        mass,
-        "potential",
+        [longitude, latitude, radius], point_mass, mass, "potential"
     )
     potential_analytical = GRAVITATIONAL_CONST * mass / radius
     npt.assert_allclose(potential, potential_analytical)
-    gz = point_mass_gravity(
-        [longitude, latitude, radius],
-        point_mass,
-        mass,
-        "gz",
-    )
+    gz = point_mass_gravity([longitude, latitude, radius], point_mass, mass, "gz")
     gz_analytical = -GRAVITATIONAL_CONST * mass / radius ** 2
     # Convert to mGal
     gz_analytical *= 1e5
