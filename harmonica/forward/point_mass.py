@@ -40,13 +40,16 @@ def jit_point_mass_gravity(longitude, latitude, radius, point_mass, kernel, out)
     """
     """
     longitude_p, latitude_p, radius_p = point_mass[:]
+    longitude_p, latitude_p = np.radians(longitude_p), np.radians(latitude_p)
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     radius_p_sq = radius_p ** 2
     for l in range(out.size):
+        longitude_radians = np.radians(longitude[l])
+        latitude_radians = np.radians(latitude[l])
         out[l] += kernel(
-            longitude[l],
-            latitude[l],
+            longitude_radians,
+            latitude_radians,
             radius[l],
             longitude_p,
             cosphi_p,
