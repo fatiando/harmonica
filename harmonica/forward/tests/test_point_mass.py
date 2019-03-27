@@ -114,3 +114,53 @@ def test_point_mass_potential_on_same_meridian():
                 )
                 potential_analytical = GRAVITATIONAL_CONST * mass / distance
                 npt.assert_allclose(potential, potential_analytical)
+
+
+def test_point_mass_gy_on_equator():
+    "Check gy field on equator and same radial coordinate"
+    radius = 1.0
+    mass = 1.0
+    latitude = 0.0
+    longitude_p = 0.0
+    point_mass = [longitude_p, latitude, radius]
+    for delta_longitude in np.linspace(-90, 90, 19):
+        longitude = longitude_p + delta_longitude
+        if longitude != longitude_p:
+            coordinates = [np.array(longitude), np.array(latitude), np.array(radius)]
+            gy = point_mass_gravity(coordinates, point_mass, mass, "gy")
+            # Calculate analytical solution for gy
+            distance = 2 * radius * np.sin(0.5 * np.radians(abs(delta_longitude)))
+            gy_analytical = (
+                GRAVITATIONAL_CONST
+                * mass
+                / distance ** 2
+                * np.cos(0.5 * np.radians(delta_longitude))
+                * np.sign(-delta_longitude)
+            )
+            gy_analytical *= 1e5
+            npt.assert_allclose(gy, gy_analytical)
+
+
+def test_point_mass_gx_on_same_meridian():
+    "Check gx field on same meridian and radial coordinate"
+    radius = 1.0
+    mass = 1.0
+    longitude = 0.0
+    latitude_p = 0.0
+    point_mass = [longitude, latitude_p, radius]
+    for delta_latitude in np.linspace(-90, 90, 19):
+        latitude = latitude_p + delta_latitude
+        if latitude != latitude_p:
+            coordinates = [np.array(longitude), np.array(latitude), np.array(radius)]
+            gx = point_mass_gravity(coordinates, point_mass, mass, "gx")
+            # Calculate analytical solution for gy
+            distance = 2 * radius * np.sin(0.5 * np.radians(abs(delta_latitude)))
+            gx_analytical = (
+                GRAVITATIONAL_CONST
+                * mass
+                / distance ** 2
+                * np.cos(0.5 * np.radians(delta_latitude))
+                * np.sign(-delta_latitude)
+            )
+            gx_analytical *= 1e5
+            npt.assert_allclose(gx, gx_analytical)
