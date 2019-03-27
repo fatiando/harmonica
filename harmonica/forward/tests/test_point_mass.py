@@ -68,9 +68,9 @@ def test_point_mass_same_radial_direction():
 
 def test_point_mass_potential_on_equator():
     "Check potential field on equator and same radial coordinate"
-    radius = 1.
-    mass = 1.
-    latitude = 0.
+    radius = 1.0
+    mass = 1.0
+    latitude = 0.0
     for longitude_p in np.linspace(0, 350, 36):
         point_mass = [longitude_p, latitude, radius]
         for longitude in np.linspace(0, 350, 36):
