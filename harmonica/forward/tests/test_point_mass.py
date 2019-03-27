@@ -51,25 +51,24 @@ def test_point_mass_on_origin():
 
 def test_point_mass_constant_latitude_longitude():
     "Check gravity fields with same latitude and longitude coordinates"
+    sphere_radius = 1.0
+    mass = 1.0
     for longitude in np.linspace(-180, 180, 37):
         for latitude in np.linspace(-90, 90, 19):
-            sphere_radius = 1.0
-            mass = 1.0
-            height = 1.0
-            point_mass = [longitude, latitude, sphere_radius]
-            radius = np.array(height + sphere_radius)
-            coordinates = [
-                np.array(longitude),
-                np.array(latitude),
-                np.array(height + sphere_radius)
-            ]
-            print([longitude, latitude, radius])
-            print(point_mass)
-            potential = point_mass_gravity(coordinates, point_mass, mass, "potential")
-            potential_analytical = GRAVITATIONAL_CONST * mass / height
-            npt.assert_allclose(potential, potential_analytical)
-            gz = point_mass_gravity(coordinates, point_mass, mass, "gz")
-            gz_analytical = -GRAVITATIONAL_CONST * mass / height ** 2
-            # Convert to mGal
-            gz_analytical *= 1e5
-            npt.assert_allclose(gz, gz_analytical)
+            for height in np.logspace(0, 4, 5):
+                point_mass = [longitude, latitude, sphere_radius]
+                coordinates = [
+                    np.array(longitude),
+                    np.array(latitude),
+                    np.array(height + sphere_radius),
+                ]
+                potential = point_mass_gravity(
+                    coordinates, point_mass, mass, "potential"
+                )
+                potential_analytical = GRAVITATIONAL_CONST * mass / height
+                npt.assert_allclose(potential, potential_analytical)
+                gz = point_mass_gravity(coordinates, point_mass, mass, "gz")
+                gz_analytical = -GRAVITATIONAL_CONST * mass / height ** 2
+                # Convert to mGal
+                gz_analytical *= 1e5
+                npt.assert_allclose(gz, gz_analytical)
