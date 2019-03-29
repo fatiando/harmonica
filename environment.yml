@@ -8,6 +8,7 @@ dependencies:
     - numpy
     - scipy
     - pandas
+    - numba
     - pooch
     - verde
     - attrs
