@@ -6,18 +6,26 @@ from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
 
+STACK_SIZE = 100
 
-def adaptive_discretization(coordinates, tesseroid, distance_size_ratio):
+
+@jit(nopython=True)
+def adaptive_discretization(
+    coordinates, tesseroid, distance_size_ratio, stack_size=STACK_SIZE
+):
     """
     Two dimensional adaptive discretization
     """
     # Create list of small tesseroids
     small_tesseroids = []
     # Create stack of tesseroids
-    stack = [tesseroid]
-    while stack:
+    stack = np.zeros((stack_size, 6))
+    stack[0, :] = np.array([tesseroid])
+    stack_top = 0
+    while stack_top >= 0:
         # Pop the first tesseroid from the stack
-        tesseroid = stack.pop()
+        tesseroid = [stack[stack_top, i] for i in range(6)]
+        stack_top -= 1
         # Get its dimensions
         L_lon, L_lat = _tesseroid_horizontal_dimensions(tesseroid)
         # Get distance between computation point and center of tesseroid
@@ -26,13 +34,16 @@ def adaptive_discretization(coordinates, tesseroid, distance_size_ratio):
         split_lon = bool(distance / L_lon < distance_size_ratio)
         split_lat = bool(distance / L_lat < distance_size_ratio)
         if split_lon or split_lat:
-            _split_tesseroid(tesseroid, split_lon, split_lat, stack)
+            stack_top = _split_tesseroid(
+                tesseroid, split_lon, split_lat, stack, stack_top
+            )
         else:
             small_tesseroids.append(tesseroid)
     return np.array(small_tesseroids)
 
 
-def _split_tesseroid(tesseroid, split_lon, split_lat, stack):
+@jit(nopython=True)
+def _split_tesseroid(tesseroid, split_lon, split_lat, stack, stack_top):
     """
     Split tesseroid along horizontal dimensions
     """
@@ -42,28 +53,29 @@ def _split_tesseroid(tesseroid, split_lon, split_lat, stack):
         n_lon = 2
     if split_lat:
         n_lat = 2
+    # Compute differential distance
+    # These lines may give errors while working near the 0 - 360 boundary
     d_lon = (e - w) / n_lon
     d_lat = (n - s) / n_lat
     for i in range(n_lon):
         for j in range(n_lat):
-            stack.append(
-                [
-                    w + d_lon * i,
-                    w + d_lon * (i + 1),
-                    s + d_lat * j,
-                    s + d_lat * (j + 1),
-                    bottom,
-                    top,
-                ]
-            )
+            stack_top += 1
+            stack[stack_top, 0] = w + d_lon * i
+            stack[stack_top, 1] = w + d_lon * (i + 1)
+            stack[stack_top, 2] = s + d_lat * j
+            stack[stack_top, 3] = s + d_lat * (j + 1)
+            stack[stack_top, 4] = bottom
+            stack[stack_top, 5] = top
+    return stack_top
 
 
+@jit(nopython=True)
 def _tesseroid_horizontal_dimensions(tesseroid):
     """
     Calculate the horizontal dimensions of the tesseroid.
     """
-    w, e, s, n = np.radians(np.array(tesseroid[:4]))
-    bottom, top = tesseroid[-2:]
+    w, e, s, n, bottom, top = tesseroid[:]
+    w, e, s, n = np.radians(w), np.radians(e), np.radians(s), np.radians(n)
     latitude_center = (n + s) / 2
     L_lat = top * np.arccos(np.sin(n) * np.sin(s) + np.cos(n) * np.cos(s))
     L_lon = top * np.arccos(
@@ -72,6 +84,7 @@ def _tesseroid_horizontal_dimensions(tesseroid):
     return L_lon, L_lat
 
 
+@jit(nopython=True)
 def _distance_tesseroid_point(coordinates, tesseroid):
     """
     Calculate the distance between a computation point and the center of a tesseroid.
