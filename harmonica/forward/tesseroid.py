@@ -20,7 +20,7 @@ def adaptive_discretization(
     small_tesseroids = []
     # Create stack of tesseroids
     stack = np.zeros((stack_size, 6))
-    stack[0, :] = np.array([tesseroid])
+    stack[0, :] = tesseroid
     stack_top = 0
     while stack_top >= 0:
         # Pop the first tesseroid from the stack
@@ -33,6 +33,7 @@ def adaptive_discretization(
         # Check inequality
         split_lon = bool(distance / L_lon < distance_size_ratio)
         split_lat = bool(distance / L_lat < distance_size_ratio)
+        # Apply discretization
         if split_lon or split_lat:
             stack_top = _split_tesseroid(
                 tesseroid, split_lon, split_lat, stack, stack_top
