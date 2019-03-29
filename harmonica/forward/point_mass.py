@@ -5,7 +5,6 @@ import numpy as np
 from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
-from ..coordinates import geodetic_to_spherical
 
 
 def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
