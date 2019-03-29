@@ -11,7 +11,11 @@ STACK_SIZE = 100
 
 @jit(nopython=True)
 def adaptive_discretization(
-    coordinates, tesseroid, distance_size_ratio, stack_size=STACK_SIZE
+    coordinates,
+    tesseroid,
+    distance_size_ratio,
+    stack_size=STACK_SIZE,
+    radial_discretization=False,
 ):
     """
     Two dimensional adaptive discretization
@@ -33,10 +37,16 @@ def adaptive_discretization(
         # Check inequality
         split_lon = bool(distance / L_lon < distance_size_ratio)
         split_lat = bool(distance / L_lat < distance_size_ratio)
+        # Choose 2D or 3D adaptive discretization
+        if radial_discretization:
+            L_r = tesseroid[-1] - tesseroid[-2]
+            split_radial = bool(distance / L_r < distance_size_ratio)
+        else:
+            split_radial = False
         # Apply discretization
-        if split_lon or split_lat:
+        if split_lon or split_lat or split_radial:
             stack_top = _split_tesseroid(
-                tesseroid, split_lon, split_lat, stack, stack_top
+                tesseroid, split_lon, split_lat, split_radial, stack, stack_top
             )
         else:
             small_tesseroids.append(tesseroid)
@@ -44,7 +54,7 @@ def adaptive_discretization(
 
 
 @jit(nopython=True)
-def _split_tesseroid(tesseroid, split_lon, split_lat, stack, stack_top):
+def _split_tesseroid(tesseroid, split_lon, split_lat, split_radial, stack, stack_top):
     """
     Split tesseroid along horizontal dimensions
     """
@@ -54,19 +64,23 @@ def _split_tesseroid(tesseroid, split_lon, split_lat, stack, stack_top):
         n_lon = 2
     if split_lat:
         n_lat = 2
+    if split_radial:
+        n_radial = 2
     # Compute differential distance
     # These lines may give errors while working near the 0 - 360 boundary
     d_lon = (e - w) / n_lon
     d_lat = (n - s) / n_lat
+    d_radial = (top - bottom) / n_radial
     for i in range(n_lon):
         for j in range(n_lat):
-            stack_top += 1
-            stack[stack_top, 0] = w + d_lon * i
-            stack[stack_top, 1] = w + d_lon * (i + 1)
-            stack[stack_top, 2] = s + d_lat * j
-            stack[stack_top, 3] = s + d_lat * (j + 1)
-            stack[stack_top, 4] = bottom
-            stack[stack_top, 5] = top
+            for k in range(n_radial):
+                stack_top += 1
+                stack[stack_top, 0] = w + d_lon * i
+                stack[stack_top, 1] = w + d_lon * (i + 1)
+                stack[stack_top, 2] = s + d_lat * j
+                stack[stack_top, 3] = s + d_lat * (j + 1)
+                stack[stack_top, 4] = bottom + d_radial * k
+                stack[stack_top, 5] = bottom + d_radial * (k + 1)
     return stack_top
 
 
