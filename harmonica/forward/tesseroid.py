@@ -108,19 +108,17 @@ def _distance_tesseroid_point(coordinates, tesseroid):
     """
     longitude, latitude, radius = coordinates[:]
     longitude, latitude = np.radians(longitude), np.radians(latitude)
-    w, e, s, n, bottom, top = tesseroid[:]
     # Get center of the tesseroid
-    longitude_p = (e + w) / 2
-    latitude_p = (n + s) / 2
-    radius_p = (top + bottom) / 2
+    longitude_p = (tesseroid[0] + tesseroid[1]) / 2
+    latitude_p = (tesseroid[2] + tesseroid[3]) / 2
+    radius_p = (tesseroid[4] + tesseroid[5]) / 2
     # Convert angles to radians
     longitude_p, latitude_p = np.radians(longitude_p), np.radians(latitude_p)
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
-    radius_p_sq = radius_p ** 2
     cosphi = np.cos(latitude)
     sinphi = np.sin(latitude)
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance = np.sqrt(radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi)
+    distance = np.sqrt(radius ** 2 + radius_p ** 2 - 2 * radius * radius_p * cospsi)
     return distance
