@@ -65,12 +65,7 @@ def test_split_tesseroid_only_longitude():
     stack = np.zeros((8, 6))
     stack_top = -1
     stack_top = _split_tesseroid(
-        tesseroid,
-        split_lon=True,
-        split_lat=False,
-        split_radial=False,
-        stack=stack,
-        stack_top=stack_top,
+        tesseroid, n_lon=2, n_lat=1, n_rad=1, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
@@ -96,12 +91,7 @@ def test_split_tesseroid_only_latitude():
     stack = np.zeros((8, 6))
     stack_top = -1
     stack_top = _split_tesseroid(
-        tesseroid,
-        split_lon=False,
-        split_lat=True,
-        split_radial=False,
-        stack=stack,
-        stack_top=stack_top,
+        tesseroid, n_lon=1, n_lat=2, n_rad=1, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
@@ -127,12 +117,7 @@ def test_split_tesseroid_only_radius():
     stack = np.zeros((8, 6))
     stack_top = -1
     stack_top = _split_tesseroid(
-        tesseroid,
-        split_lon=False,
-        split_lat=False,
-        split_radial=True,
-        stack=stack,
-        stack_top=stack_top,
+        tesseroid, n_lon=1, n_lat=1, n_rad=2, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
@@ -155,12 +140,7 @@ def test_split_tesseroid_only_horizontal():
     stack = np.zeros((8, 6))
     stack_top = -1
     stack_top = _split_tesseroid(
-        tesseroid,
-        split_lon=True,
-        split_lat=True,
-        split_radial=False,
-        stack=stack,
-        stack_top=stack_top,
+        tesseroid, n_lon=2, n_lat=2, n_rad=1, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2 ** 2
@@ -179,12 +159,7 @@ def test_split_tesseroid():
     stack = np.zeros((8, 6))
     stack_top = -1
     stack_top = _split_tesseroid(
-        tesseroid,
-        split_lon=True,
-        split_lat=True,
-        split_radial=True,
-        stack=stack,
-        stack_top=stack_top,
+        tesseroid, n_lon=2, n_lat=2, n_rad=2, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2 ** 3
