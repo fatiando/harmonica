@@ -54,7 +54,15 @@ def adaptive_discretization(
 
 
 @jit(nopython=True)
-def _split_tesseroid(tesseroid, split_lon, split_lat, split_radial, stack, stack_top):
+def _split_tesseroid(
+    tesseroid,
+    split_lon,
+    split_lat,
+    split_radial,
+    stack,
+    stack_top,
+    stack_size,
+):
     """
     Split tesseroid along horizontal dimensions
     """
@@ -66,6 +74,8 @@ def _split_tesseroid(tesseroid, split_lon, split_lat, split_radial, stack, stack
         n_lat = 2
     if split_radial:
         n_radial = 2
+    if stack_top + n_lon * n_lat * n_radial > stack_size:
+        raise OverflowError("Tesseroid stack overflow.")
     # Compute differential distance
     # These lines may give errors while working near the 0 - 360 boundary
     d_lon = (e - w) / n_lon
