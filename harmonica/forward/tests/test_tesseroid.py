@@ -56,13 +56,13 @@ def test_tesseroid_dimensions():
 def test_adaptive_discretization_on_radii():
     "Test if closer computation points increase the tesseroid discretization"
     for radial_discretization in [True, False]:
-        tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
-        radii = [1.5, 2.0, 3.0, 5.0, 10.0]
+        tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+        radii = [10.5, 12.0, 13.0, 15.0, 20.0, 30.0]
         # Only if 2D adaptive discretization set point on the surface of the tesseroid
         if radial_discretization:
-            radii.insert(0, 1.01)
+            radii.insert(0, 10.1)
         else:
-            radii.insert(0, 1.0)
+            radii.insert(0, 10.0)
         number_of_splits = []
         for radius in radii:
             coordinates = [0.0, 0.0, radius]
@@ -80,8 +80,8 @@ def test_adaptive_discretization_on_radii():
 def test_adaptive_discretization_on_D_ratio():
     "Test if higher distance-size-ratio increase the tesseroid discretization"
     for radial_discretization in [True, False]:
-        tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
-        coordinates = [0.0, 0.0, 1.2]
+        tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+        coordinates = [0.0, 0.0, 10.2]
         distance_size_ratii = np.linspace(1, 10, 10)
         number_of_splits = []
         for D in distance_size_ratii:
