@@ -102,3 +102,14 @@ def test_stack_overflow():
     coordinates = [0.0, 0.0, 1.0]
     with raises(OverflowError):
         adaptive_discretization(coordinates, tesseroid, 10.0, stack_size=2)
+
+
+def test_two_dimensional_adaptive_discretization():
+    "Test if the 2D adaptive discretization produces no splits on radial direction"
+    bottom, top = 1.0, 10.0
+    tesseroid = [-10.0, 10.0, -10.0, 10.0, bottom, top]
+    coordinates = [0.0, 0.0, top]
+    small_tesseroids = adaptive_discretization(coordinates, tesseroid, 10.0)
+    for tess in small_tesseroids:
+        assert tess[-2] == bottom
+        assert tess[-1] == top
