@@ -8,6 +8,7 @@ from pytest import raises
 from ..tesseroid import (
     _distance_tesseroid_point,
     _tesseroid_dimensions,
+    _split_tesseroid,
     adaptive_discretization,
 )
 
@@ -51,6 +52,147 @@ def test_tesseroid_dimensions():
     L_lon, L_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
     L_r = top - bottom
     npt.assert_allclose((L_lon, L_lat, L_r), _tesseroid_dimensions(tesseroid))
+
+
+def test_split_tesseroid_only_longitude():
+    "Test splitting of a tesseroid only on longitude"
+    lon_indexes = [0, 1]
+    lat_indexes = [2, 3]
+    radial_indexes = [4, 5]
+    w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
+    tesseroid = [w, e, s, n, bottom, top]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid,
+        split_lon=True,
+        split_lat=False,
+        split_radial=False,
+        stack=stack,
+        stack_top=stack_top,
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on latitudinal and radial direction
+    assert (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
+    assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
+    # Check if the tesseroid has been correctly split on longitudinal direction
+    lon_splitted = splitted[:, lon_indexes]
+    lon_splitted.sort(axis=0)
+    npt.assert_allclose(lon_splitted[0], [w, (e + w) / 2])
+    npt.assert_allclose(lon_splitted[1], [(e + w) / 2, e])
+
+
+def test_split_tesseroid_only_latitude():
+    "Test splitting of a tesseroid only on latitude"
+    lon_indexes = [0, 1]
+    lat_indexes = [2, 3]
+    radial_indexes = [4, 5]
+    w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
+    tesseroid = [w, e, s, n, bottom, top]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid,
+        split_lon=False,
+        split_lat=True,
+        split_radial=False,
+        stack=stack,
+        stack_top=stack_top,
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on longitudinal and radial direction
+    assert (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
+    assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
+    # Check if the tesseroid has been correctly split on longitudinal direction
+    lat_splitted = splitted[:, lat_indexes]
+    lat_splitted.sort(axis=0)
+    npt.assert_allclose(lat_splitted[0], [s, (n + s) / 2])
+    npt.assert_allclose(lat_splitted[1], [(n + s) / 2, n])
+
+
+def test_split_tesseroid_only_radius():
+    "Test splitting of a tesseroid only on radius"
+    lon_indexes = [0, 1]
+    lat_indexes = [2, 3]
+    radial_indexes = [4, 5]
+    w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
+    tesseroid = [w, e, s, n, bottom, top]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid,
+        split_lon=False,
+        split_lat=False,
+        split_radial=True,
+        stack=stack,
+        stack_top=stack_top,
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on longitudinal and latitudinal direction
+    assert (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
+    assert (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
+    # Check if the tesseroid has been correctly split on longitudinal direction
+    radial_splitted = splitted[:, radial_indexes]
+    radial_splitted.sort(axis=0)
+    npt.assert_allclose(radial_splitted[0], [bottom, (top + bottom) / 2])
+    npt.assert_allclose(radial_splitted[1], [(top + bottom) / 2, top])
+
+
+def test_split_tesseroid_only_horizontal():
+    "Test splitting of a tesseroid on horizontal directions"
+    radial_indexes = [4, 5]
+    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid,
+        split_lon=True,
+        split_lat=True,
+        split_radial=False,
+        stack=stack,
+        stack_top=stack_top,
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2 ** 2
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on radial direction
+    assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
+
+
+def test_split_tesseroid():
+    "Test splitting of a tesseroid on every direction"
+    lon_indexes = [0, 1]
+    lat_indexes = [2, 3]
+    radial_indexes = [4, 5]
+    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid,
+        split_lon=True,
+        split_lat=True,
+        split_radial=True,
+        stack=stack,
+        stack_top=stack_top,
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2 ** 3
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on each direction
+    assert not (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
+    assert not (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
+    assert not (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
 
 
 def test_adaptive_discretization_on_radii():
