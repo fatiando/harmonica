@@ -87,7 +87,6 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     if stack_top + n_lon * n_lat * n_rad > stack.shape[0]:
         raise OverflowError("Tesseroid stack overflow.")
     # Compute differential distance
-    # These lines may give errors while working near the 0 - 360 boundary
     d_lon = (e - w) / n_lon
     d_lat = (n - s) / n_lat
     d_rad = (top - bottom) / n_rad
