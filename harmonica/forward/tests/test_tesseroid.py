@@ -5,7 +5,7 @@ import numpy as np
 import numpy.testing as npt
 from pytest import raises
 
-from ..tesseroid import _distance_tesseroid_point
+from ..tesseroid import _distance_tesseroid_point, _tesseroid_dimensions
 
 
 def test_distance_tesseroid_point():
@@ -37,3 +37,13 @@ def test_distance_tesseroid_point():
     point = [longitude_p, latitude, radius_p]
     distance = 2 * radius_p * np.sin(0.5 * np.radians(abs(latitude - latitude_p)))
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), distance)
+
+
+def test_tesseroid_dimensions():
+    "Test calculation of tesseroid dimensions"
+    # Tesseroid on equator
+    w, e, s, n, bottom, top = -1.0, 1.0, -1.0, 1.0, 0.5, 1.5
+    tesseroid = [w, e, s, n, bottom, top]
+    L_lon, L_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
+    L_r = top - bottom
+    npt.assert_allclose((L_lon, L_lat, L_r), _tesseroid_dimensions(tesseroid))
