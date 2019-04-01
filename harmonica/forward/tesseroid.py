@@ -59,19 +59,19 @@ def _split_tesseroid(
     split_radial,
     stack,
     stack_top,
-    stack_size,
 ):
     """
     Split tesseroid along each dimension
     """
     w, e, s, n, bottom, top = tesseroid[:]
-    n_lon, n_lat = 1, 1
+    n_lon, n_lat, n_radial = 1, 1, 1
     if split_lon:
         n_lon = 2
     if split_lat:
         n_lat = 2
     if split_radial:
         n_radial = 2
+    stack_size = stack.shape[0]
     if stack_top + n_lon * n_lat * n_radial > stack_size:
         raise OverflowError("Tesseroid stack overflow.")
     # Compute differential distance
