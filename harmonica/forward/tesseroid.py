@@ -64,7 +64,7 @@ def _split_tesseroid(
     stack_size,
 ):
     """
-    Split tesseroid along horizontal dimensions
+    Split tesseroid along each dimension
     """
     w, e, s, n, bottom, top = tesseroid[:]
     n_lon, n_lat = 1, 1
