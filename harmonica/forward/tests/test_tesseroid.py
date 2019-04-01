@@ -94,3 +94,11 @@ def test_adaptive_discretization_on_D_ratio():
             number_of_splits.append(smaller_tesseroids.shape[0])
         for i in range(1, len(number_of_splits)):
             assert number_of_splits[i - 1] <= number_of_splits[i]
+
+
+def test_stack_overflow():
+    "Test if adaptive discretization raises OverflowError on stack overflow"
+    tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
+    coordinates = [0.0, 0.0, 1.0]
+    with raises(OverflowError):
+        adaptive_discretization(coordinates, tesseroid, 10.0, stack_size=2)
