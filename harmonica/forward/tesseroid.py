@@ -114,6 +114,7 @@ def _distance_tesseroid_point(coordinates, tesseroid):
     Calculate the distance between a computation point and the center of a tesseroid.
     """
     longitude, latitude, radius = coordinates[:]
+    longitude, latitude = np.radians(longitude), np.radians(latitude)
     w, e, s, n, bottom, top = tesseroid[:]
     # Get center of the tesseroid
     longitude_p = (e + w) / 2
