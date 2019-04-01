@@ -3,10 +3,36 @@ Forward modelling for tesseroids
 """
 import numpy as np
 from numba import jit
+from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
 
 STACK_SIZE = 100
+GLQ_DEGREES = [2, 2, 2]
+
+
+def tesseroid_to_point_masses(tesseroid, glq_degrees=GLQ_DEGREES):
+    """
+    Convert tesseroid to equivalent point masses on nodes of GLQ
+    """
+    w, e, s, n, bottom, top = tesseroid[:]
+    lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    # Get nodes coordinates and weights
+    longitude, lon_weights = leggauss(lon_degree)
+    latitude, lat_weights = leggauss(lat_degree)
+    radius, rad_weights = leggauss(rad_degree)
+    # Scale nodes
+    longitude = 0.5 * (e - w) * longitude + 0.5 * (e + w)
+    latitude = 0.5 * (n - s) * latitude + 0.5 * (n + s)
+    radius = 0.5 * (top - bottom) * radius + 0.5 * (top + bottom)
+    # Create mesh grids of coordinates and weights
+    longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
+    lon_weights, lat_weights, rad_weights = np.meshgrid(
+        lon_weights, lat_weights, rad_weights
+    )
+    point_masses = [longitude, latitude, radius]
+    weights = [lon_weights, lat_weights, rad_weights]
+    return (point_masses, weights)
 
 
 @jit(nopython=True)
