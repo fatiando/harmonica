@@ -18,7 +18,7 @@ def adaptive_discretization(
     radial_discretization=False,
 ):
     """
-    Two dimensional adaptive discretization
+    Three or two dimensional adaptive discretization
     """
     # Create list of small tesseroids
     small_tesseroids = []
