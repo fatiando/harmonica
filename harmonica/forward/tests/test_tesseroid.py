@@ -5,7 +5,11 @@ import numpy as np
 import numpy.testing as npt
 from pytest import raises
 
-from ..tesseroid import _distance_tesseroid_point, _tesseroid_dimensions
+from ..tesseroid import (
+    _distance_tesseroid_point,
+    _tesseroid_dimensions,
+    adaptive_discretization,
+)
 
 
 def test_distance_tesseroid_point():
@@ -47,3 +51,27 @@ def test_tesseroid_dimensions():
     L_lon, L_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
     L_r = top - bottom
     npt.assert_allclose((L_lon, L_lat, L_r), _tesseroid_dimensions(tesseroid))
+
+
+def test_adaptive_discretization():
+    "Test if closer computation points increase the tesseroid discretization"
+    for radial_discretization in [True, False]:
+        tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
+        radii = [1.5, 2.0, 3.0, 5.0, 10.0]
+        # Only if 2D adaptive discretization set point on the surface of the tesseroid
+        if radial_discretization:
+            radii.insert(0, 1.01)
+        else:
+            radii.insert(0, 1.0)
+        number_of_splits = []
+        for radius in radii:
+            coordinates = [0.0, 0.0, radius]
+            smaller_tesseroids = adaptive_discretization(
+                coordinates,
+                tesseroid,
+                distance_size_ratio=10.0,
+                radial_discretization=radial_discretization,
+            )
+            number_of_splits.append(smaller_tesseroids.shape[0])
+        for i in range(1, len(number_of_splits)):
+            assert number_of_splits[i - 1] >= number_of_splits[i]
