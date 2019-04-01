@@ -52,14 +52,7 @@ def adaptive_discretization(
 
 
 @jit(nopython=True)
-def _split_tesseroid(
-    tesseroid,
-    split_lon,
-    split_lat,
-    split_radial,
-    stack,
-    stack_top,
-):
+def _split_tesseroid(tesseroid, split_lon, split_lat, split_radial, stack, stack_top):
     """
     Split tesseroid along each dimension
     """
