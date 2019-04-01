@@ -31,13 +31,13 @@ def adaptive_discretization(
         tesseroid = [stack[stack_top, i] for i in range(6)]
         stack_top -= 1
         # Get its dimensions
-        L_lon, L_lat, L_r = _tesseroid_dimensions(tesseroid)
+        l_lon, l_lat, l_rad = _tesseroid_dimensions(tesseroid)
         # Get distance between computation point and center of tesseroid
         distance = _distance_tesseroid_point(coordinates, tesseroid)
         # Check inequality
-        split_lon = bool(distance / L_lon < distance_size_ratio)
-        split_lat = bool(distance / L_lat < distance_size_ratio)
-        split_radial = bool(distance / L_r < distance_size_ratio)
+        split_lon = bool(distance / l_lon < distance_size_ratio)
+        split_lat = bool(distance / l_lat < distance_size_ratio)
+        split_radial = bool(distance / l_rad < distance_size_ratio)
         # Choose 2D or 3D adaptive discretization
         if not radial_discretization:
             split_radial = False
@@ -93,12 +93,12 @@ def _tesseroid_dimensions(tesseroid):
     w, e, s, n, bottom, top = tesseroid[:]
     w, e, s, n = np.radians(w), np.radians(e), np.radians(s), np.radians(n)
     latitude_center = (n + s) / 2
-    L_lat = top * np.arccos(np.sin(n) * np.sin(s) + np.cos(n) * np.cos(s))
-    L_lon = top * np.arccos(
+    l_lat = top * np.arccos(np.sin(n) * np.sin(s) + np.cos(n) * np.cos(s))
+    l_lon = top * np.arccos(
         np.sin(latitude_center) ** 2 + np.cos(latitude_center) ** 2 * np.cos(e - w)
     )
-    L_r = top - bottom
-    return L_lon, L_lat, L_r
+    l_rad = top - bottom
+    return l_lon, l_lat, l_rad
 
 
 @jit(nopython=True)

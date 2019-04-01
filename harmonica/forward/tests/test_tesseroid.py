@@ -49,9 +49,9 @@ def test_tesseroid_dimensions():
     # Tesseroid on equator
     w, e, s, n, bottom, top = -1.0, 1.0, -1.0, 1.0, 0.5, 1.5
     tesseroid = [w, e, s, n, bottom, top]
-    L_lon, L_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
-    L_r = top - bottom
-    npt.assert_allclose((L_lon, L_lat, L_r), _tesseroid_dimensions(tesseroid))
+    l_lon, l_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
+    l_rad = top - bottom
+    npt.assert_allclose((l_lon, l_lat, l_rad), _tesseroid_dimensions(tesseroid))
 
 
 def test_split_tesseroid_only_longitude():
