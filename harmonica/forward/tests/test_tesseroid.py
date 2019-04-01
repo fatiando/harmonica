@@ -53,7 +53,7 @@ def test_tesseroid_dimensions():
     npt.assert_allclose((L_lon, L_lat, L_r), _tesseroid_dimensions(tesseroid))
 
 
-def test_adaptive_discretization():
+def test_adaptive_discretization_on_radii():
     "Test if closer computation points increase the tesseroid discretization"
     for radial_discretization in [True, False]:
         tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
@@ -75,3 +75,22 @@ def test_adaptive_discretization():
             number_of_splits.append(smaller_tesseroids.shape[0])
         for i in range(1, len(number_of_splits)):
             assert number_of_splits[i - 1] >= number_of_splits[i]
+
+
+def test_adaptive_discretization_on_D_ratio():
+    "Test if higher distance-size-ratio increase the tesseroid discretization"
+    for radial_discretization in [True, False]:
+        tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
+        coordinates = [0.0, 0.0, 1.2]
+        distance_size_ratii = np.linspace(1, 10, 10)
+        number_of_splits = []
+        for D in distance_size_ratii:
+            smaller_tesseroids = adaptive_discretization(
+                coordinates,
+                tesseroid,
+                distance_size_ratio=D,
+                radial_discretization=radial_discretization,
+            )
+            number_of_splits.append(smaller_tesseroids.shape[0])
+        for i in range(1, len(number_of_splits)):
+            assert number_of_splits[i - 1] <= number_of_splits[i]
