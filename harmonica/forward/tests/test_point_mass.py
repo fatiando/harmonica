@@ -24,7 +24,7 @@ def test_invalid_field():
 def test_point_mass_on_origin():
     "Check potential, gz and gzz of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
-    mass = 1.0
+    mass = 2.0
     radius = np.logspace(1, 8, 5, dtype="float64")
     longitude = np.linspace(-180, 180, 37)
     latitude = np.linspace(-90, 90, 19)
@@ -45,8 +45,8 @@ def test_point_mass_on_origin():
 
 def test_point_mass_same_radial_direction():
     "Check potential, gz, gzz of point mass and computation point on same radius"
-    sphere_radius = 1.0
-    mass = 1.0
+    sphere_radius = 3.0
+    mass = 2.0
     for longitude in np.linspace(-180, 180, 37):
         for latitude in np.linspace(-90, 90, 19):
             for height in np.logspace(0, 4, 5):
@@ -73,8 +73,8 @@ def test_point_mass_same_radial_direction():
 
 def test_point_mass_potential_on_equator():
     "Check potential field on equator and same radial coordinate"
-    radius = 1.0
-    mass = 1.0
+    radius = 3.0
+    mass = 2.0
     latitude = 0.0
     for longitude_p in np.linspace(0, 350, 36):
         point_mass = [longitude_p, latitude, radius]
@@ -100,8 +100,8 @@ def test_point_mass_potential_on_equator():
 
 def test_point_mass_potential_on_same_meridian():
     "Check potential field on same meridian and radial coordinate"
-    radius = 1.0
-    mass = 1.0
+    radius = 3.0
+    mass = 2.0
     longitude = 0.0
     for latitude_p in np.linspace(-90, 90, 19):
         point_mass = [longitude, latitude_p, radius]
@@ -127,8 +127,8 @@ def test_point_mass_potential_on_same_meridian():
 
 def test_point_mass_gy_on_equator():
     "Check gy field on equator and same radial coordinate"
-    radius = 1.0
-    mass = 1.0
+    radius = 3.0
+    mass = 2.0
     latitude = 0.0
     longitude_p = 0.0
     point_mass = [longitude_p, latitude, radius]
@@ -158,8 +158,8 @@ def test_point_mass_gy_on_equator():
 
 def test_point_mass_gx_on_same_meridian():
     "Check gx field on same meridian and radial coordinate"
-    radius = 1.0
-    mass = 1.0
+    radius = 3.0
+    mass = 2.0
     longitude = 0.0
     latitude_p = 0.0
     point_mass = [longitude, latitude_p, radius]
