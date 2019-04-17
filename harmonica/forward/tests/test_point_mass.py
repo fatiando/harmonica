@@ -22,23 +22,29 @@ def test_invalid_field():
 
 
 def test_point_mass_on_origin():
-    "Check potential and gz of point mass on origin"
+    "Check potential, gz and gzz of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     radius = np.logspace(1, 8, 5, dtype="float64")
     longitude = np.linspace(-180, 180, 37)
     latitude = np.linspace(-90, 90, 19)
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
+    # Check potential
     potential = point_mass_gravity(
         [longitude, latitude, radius], point_mass, mass, "potential"
     )
     potential_analytical = GRAVITATIONAL_CONST * mass / radius
     npt.assert_allclose(potential, potential_analytical)
+    # Check gz
     gz = point_mass_gravity([longitude, latitude, radius], point_mass, mass, "gz")
     gz_analytical = -GRAVITATIONAL_CONST * mass / radius ** 2
-    # Convert to mGal
-    gz_analytical *= 1e5
+    gz_analytical *= 1e5  # convert to mGal
     npt.assert_allclose(gz, gz_analytical)
+    # Check gzz
+    gzz = point_mass_gravity([longitude, latitude, radius], point_mass, mass, "gzz")
+    gzz_analytical = 2 * GRAVITATIONAL_CONST * mass / radius ** 3
+    gzz_analytical *= 1e9  # convert to eotvos
+    npt.assert_allclose(gzz, gzz_analytical)
 
 
 def test_point_mass_same_radial_direction():
