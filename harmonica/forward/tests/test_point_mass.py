@@ -5,8 +5,8 @@ import numpy as np
 import numpy.testing as npt
 from pytest import raises
 
-from ..point_mass import point_mass_gravity
 from harmonica.constants import GRAVITATIONAL_CONST
+from ..point_mass import point_mass_gravity
 
 
 def test_invalid_field():
@@ -22,7 +22,7 @@ def test_invalid_field():
 
 
 def test_point_mass_on_origin():
-    "Check gravitational fields of point mass on origin"
+    "Check potential and gz of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     radius = np.logspace(1, 8, 5, dtype="float64")
@@ -42,7 +42,7 @@ def test_point_mass_on_origin():
 
 
 def test_point_mass_same_radial_direction():
-    "Check gravity fields of point mass and computation point on same radial direction"
+    "Check potential and gz of point mass and computation point on same radial direction"
     sphere_radius = 1.0
     mass = 1.0
     for longitude in np.linspace(-180, 180, 37):
