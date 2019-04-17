@@ -42,7 +42,7 @@ def test_point_mass_on_origin():
 
 
 def test_point_mass_same_radial_direction():
-    "Check potential and gz of point mass and computation point on same radial direction"
+    "Check potential, gz, gzz of point mass and computation point on same radius"
     sphere_radius = 1.0
     mass = 1.0
     for longitude in np.linspace(-180, 180, 37):
@@ -65,6 +65,11 @@ def test_point_mass_same_radial_direction():
                 gz_analytical = -GRAVITATIONAL_CONST * mass / height ** 2
                 gz_analytical *= 1e5  # convert to mgal
                 npt.assert_allclose(gz, gz_analytical)
+                # Check gzz
+                gzz = point_mass_gravity(coordinates, point_mass, mass, "gzz")
+                gzz_analytical = 2 * GRAVITATIONAL_CONST * mass / height ** 3
+                gzz_analytical *= 1e9  # convert to eotvos
+                npt.assert_allclose(gzz, gzz_analytical)
 
 
 def test_point_mass_potential_on_equator():
