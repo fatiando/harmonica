@@ -57,12 +57,13 @@ def test_point_mass_same_radial_direction():
                 potential = point_mass_gravity(
                     coordinates, point_mass, mass, "potential"
                 )
+                # Check potential
                 potential_analytical = GRAVITATIONAL_CONST * mass / height
                 npt.assert_allclose(potential, potential_analytical)
+                # Check gz
                 gz = point_mass_gravity(coordinates, point_mass, mass, "gz")
                 gz_analytical = -GRAVITATIONAL_CONST * mass / height ** 2
-                # Convert to mGal
-                gz_analytical *= 1e5
+                gz_analytical *= 1e5  # convert to mgal
                 npt.assert_allclose(gz, gz_analytical)
 
 
