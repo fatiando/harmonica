@@ -121,6 +121,22 @@ def tesseroids_to_point_masses(tesseroids, glq_degrees=GLQ_DEGREES):
     return [longitude, latitude, radius], weights
 
 
+def glq_nodes_weights(glq_degrees):
+    """
+    Calculate 3D GLQ unscaled nodes and weights
+    """
+    # Unpack GLQ degrees
+    lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    # Get nodes coordinates and weights
+    lon_node, lon_weights = leggauss(lon_degree)
+    lat_node, lat_weights = leggauss(lat_degree)
+    rad_node, rad_weights = leggauss(rad_degree)
+    # Reorder nodes and weights
+    glq_nodes = [lon_node, lat_node, rad_node]
+    glq_weights = [lon_weights, lat_weights, rad_weights]
+    return glq_nodes, glq_weights
+
+
 @jit(nopython=True)
 def adaptive_discretization(
     coordinates,
