@@ -85,29 +85,40 @@ def tesseroid_gravity(coordinates, tesseroid, density, field):
     )
 
 
-def tesseroid_to_point_masses(tesseroid, glq_degrees=GLQ_DEGREES):
+def tesseroids_to_point_masses(tesseroids, glq_degrees=GLQ_DEGREES):
     """
     Convert tesseroid to equivalent point masses on nodes of GLQ
     """
-    # Get nodes coordinates and weights
+    # Get GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    # Initialize output arrays
+    n_point_masses = lon_degree * lat_degree * rad_degree
+    n_tesseroids = len(tesseroids)
+    longitude = np.empty(n_point_masses * n_tesseroids)
+    latitude = np.empty(n_point_masses * n_tesseroids)
+    radius = np.empty(n_point_masses * n_tesseroids)
+    weights = np.empty(n_point_masses * n_tesseroids)
+    # Get nodes coordinates and weights
     lon_node, lon_weights = leggauss(lon_degree)
     lat_node, lat_weights = leggauss(lat_degree)
     rad_node, rad_weights = leggauss(rad_degree)
     # Get coordinates of the tesseroid
-    w, e, s, n, bottom, top = tesseroid[:]
-    # Scale nodes
-    longitude = 0.5 * (e - w) * lon_node + 0.5 * (e + w)
-    latitude = 0.5 * (n - s) * lat_node + 0.5 * (n + s)
-    radius = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
-    # Create mesh grids of coordinates and weights
-    longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
-    lon_weights, lat_weights, rad_weights = np.meshgrid(
-        lon_weights, lat_weights, rad_weights
-    )
-    point_masses = [longitude, latitude, radius]
-    weights = [lon_weights, lat_weights, rad_weights]
-    return (point_masses, weights)
+    for i, tesseroid in enumerate(tesseroids):
+        w, e, s, n, bottom, top = tesseroid[:]
+        # Scale nodes
+        lon_point = 0.5 * (e - w) * lon_node + 0.5 * (e + w)
+        lat_point = 0.5 * (n - s) * lat_node + 0.5 * (n + s)
+        rad_point = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
+        # Create mesh grids of coordinates and weights
+        lon_point, lat_point, rad_point = np.meshgrid(lon_point, lat_point, rad_point)
+        lon_w, lat_w, rad_w = np.meshgrid(lon_weights, lat_weights, rad_weights)
+        point_weights = (lon_w * lat_w * rad_w).ravel()
+        # Add point masses coordinates and weights to output arrays
+        longitude[n_point_masses * i: n_point_masses * (i + 1)] = lon_point.ravel()[:]
+        latitude[n_point_masses * i: n_point_masses * (i + 1)] = lat_point.ravel()[:]
+        radius[n_point_masses * i: n_point_masses * (i + 1)] = rad_point.ravel()[:]
+        weights[n_point_masses * i: n_point_masses * (i + 1)] = point_weights[:]
+    return [longitude, latitude, radius], weights
 
 
 @jit(nopython=True)
