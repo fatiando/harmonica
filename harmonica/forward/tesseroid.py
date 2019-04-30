@@ -87,7 +87,7 @@ def tesseroid_gravity(coordinates, tesseroid, density, field):
 
 def tesseroids_to_point_masses(tesseroids, glq_degrees=GLQ_DEGREES):
     """
-    Convert tesseroid to equivalent point masses on nodes of GLQ
+    Convert tesseroids to equivalent point masses on nodes of GLQ
     """
     # Get GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
