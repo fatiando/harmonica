@@ -72,50 +72,69 @@ def tesseroid_gravity(
         raise OverflowError(
             "Small Tesseroids Overflow. Try to increase the maximum number of splits."
         )
+    # Get GLQ unscaled nodes, weights and number of point masses per small tesseroid
+    n_point_masses, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
+    # Get total number of point masses and initialize arrays
+    n_point_masses *= n_splits
+    point_masses = np.empty((n_point_masses, 3))
+    weights = np.empty(n_point_masses)
     # Get equivalent point masses
-    glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
-    point_masses, weights = tesseroids_to_point_masses(
-        small_tesseroids, glq_nodes, glq_weights
+    tesseroids_to_point_masses(
+        small_tesseroids[:n_splits], glq_nodes, glq_weights, point_masses, weights
     )
+    return point_masses, weights
 
 
 @jit(nopython=True)
-def tesseroids_to_point_masses(tesseroids, glq_nodes, glq_weights):
+def tesseroids_to_point_masses(
+    tesseroids, glq_nodes, glq_weights, point_masses, weights
+):
     """
     Convert tesseroids to equivalent point masses on nodes of GLQ
     """
     # Unpack nodes and weights
-    lon_node, lat_node, rad_node = glq_nodes[:]
+    lon_nodes, lat_nodes, rad_nodes = glq_nodes[:]
     lon_weights, lat_weights, rad_weights = glq_weights[:]
-    # Initialize output arrays
-    longitude = []
-    latitude = []
-    radius = []
-    weights = []
-    # Get coordinates of the tesseroid
-    for tesseroid in tesseroids:
-        w, e, s, n, bottom, top = tesseroid[:]
-        # Scale nodeglq_nodes
-        lon_point = 0.5 * (e - w) * lon_node + 0.5 * (e + w)
-        lat_point = 0.5 * (n - s) * lat_node + 0.5 * (n + s)
-        rad_point = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
-        # Create mesh grids of coordinates and weights
-        for i in range(2):
-            for j in range(2):
-                for k in range(2):
-                    longitude.append(lon_point[i])
-                    latitude.append(lat_point[j])
-                    radius.append(rad_point[k])
-                    weights.append(lon_weights[i] * lat_weights[j] * rad_weights[k])
-    return [longitude, latitude, radius], weights
+    # Recover GLQ degrees from nodes
+    lon_glq_degree = len(lon_nodes)
+    lat_glq_degree = len(lat_nodes)
+    rad_glq_degree = len(rad_nodes)
+    # Convert each tesseroid to a point mass
+    mass_index = 0
+    for i in range(len(tesseroids)):
+        west = tesseroids[i, 0]
+        east = tesseroids[i, 1]
+        south = tesseroids[i, 2]
+        north = tesseroids[i, 3]
+        bottom = tesseroids[i, 4]
+        top = tesseroids[i, 5]
+        A_factor = 1 / 8 * (east - west) * (north - south) * (top - bottom)
+        for i in range(lon_glq_degree):
+            for j in range(lat_glq_degree):
+                for k in range(rad_glq_degree):
+                    point_masses[0, mass_index] = 0.5 * (east - west) * lon_nodes[
+                        i
+                    ] + 0.5 * (east + west)
+                    point_masses[1, mass_index] = 0.5 * (north - south) * lat_nodes[
+                        j
+                    ] + 0.5 * (east + west)
+                    point_masses[2, mass_index] = 0.5 * (top - bottom) * rad_nodes[
+                        k
+                    ] + 0.5 * (top + bottom)
+                    weights[mass_index] = (
+                        A_factor * lon_weights[i] * lat_weights[j] * rad_weights[k]
+                    )
+                    mass_index += 1
 
 
 def glq_nodes_weights(glq_degrees):
     """
-    Calculate 3D GLQ unscaled nodes and weights
+    Calculate 3D GLQ unscaled nodes, weights and number of point masses
     """
     # Unpack GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    # Get number of point masses
+    n_point_masses = np.prod(glq_degrees)
     # Get nodes coordinates and weights
     lon_node, lon_weights = leggauss(lon_degree)
     lat_node, lat_weights = leggauss(lat_degree)
@@ -123,7 +142,7 @@ def glq_nodes_weights(glq_degrees):
     # Reorder nodes and weights
     glq_nodes = [lon_node, lat_node, rad_node]
     glq_weights = [lon_weights, lat_weights, rad_weights]
-    return glq_nodes, glq_weights
+    return n_point_masses, glq_nodes, glq_weights
 
 
 @jit(nopython=True)
