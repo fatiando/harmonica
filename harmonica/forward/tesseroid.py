@@ -6,28 +6,23 @@ from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
-from .point_mass import (
-    jit_point_mass_gravity,
-    kernel_potential,
-    kernel_gx,
-    kernel_gy,
-    kernel_gz,
-    kernel_gxx,
-    kernel_gxy,
-    kernel_gxz,
-    kernel_gyy,
-    kernel_gyz,
-    kernel_gzz,
-)
 
 STACK_SIZE = 100
 GLQ_DEGREES = [2, 2, 2]
+MAXIMUM_SMALLER_TESSEROID_SIZE = 3000
 DISTANCE_SIZE_RATIO_POTENTIAL = 1
 DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
 DISTANCE_SIZE_RATIO_TENSOR = 8
 
 
-def tesseroid_gravity(coordinates, tesseroid, density, field):
+def tesseroid_gravity(
+    coordinates,
+    tesseroid,
+    density,
+    field,
+    glq_degrees=GLQ_DEGREES,
+    max_small_tesseroids=MAXIMUM_SMALLER_TESSEROID_SIZE
+):
     """
     Compute gravitational field of a tesseroid on a single computation point
 
@@ -53,19 +48,8 @@ def tesseroid_gravity(coordinates, tesseroid, density, field):
         - Maurssi tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
           ``gzz``
     """
-    kernels = {
-        "potential": kernel_potential,
-        "gx": kernel_gx,
-        "gy": kernel_gy,
-        "gz": kernel_gz,
-        "gxx": kernel_gxx,
-        "gxy": kernel_gxy,
-        "gxz": kernel_gxz,
-        "gyy": kernel_gyy,
-        "gyz": kernel_gyz,
-        "gzz": kernel_gzz,
-    }
-    if field not in kernels:
+    fields = "potential gx gy gz gxx gxy gxz gyy gyz gzz".split()
+    if field not in fields:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Get value of D (distance_size_ratio)
     if field == "potential":
@@ -78,10 +62,10 @@ def tesseroid_gravity(coordinates, tesseroid, density, field):
     small_tesseroids = adaptive_discretization(
         coordinates, tesseroid, distance_size_ratio
     )
-    # Initialize result
-    result = 0
-    jit_point_mass_gravity(
-        longitude, latitude, radius, point_mass, kernels[field], result
+    # Get equivalent point masses
+    glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
+    point_masses, weights = tesseroids_to_point_masses(
+        small_tesseroids, glq_nodes, glq_weights
     )
 
 
