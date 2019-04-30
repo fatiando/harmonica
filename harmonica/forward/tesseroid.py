@@ -89,16 +89,17 @@ def tesseroid_to_point_masses(tesseroid, glq_degrees=GLQ_DEGREES):
     """
     Convert tesseroid to equivalent point masses on nodes of GLQ
     """
-    w, e, s, n, bottom, top = tesseroid[:]
-    lon_degree, lat_degree, rad_degree = glq_degrees[:]
     # Get nodes coordinates and weights
-    longitude, lon_weights = leggauss(lon_degree)
-    latitude, lat_weights = leggauss(lat_degree)
-    radius, rad_weights = leggauss(rad_degree)
+    lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    lon_node, lon_weights = leggauss(lon_degree)
+    lat_node, lat_weights = leggauss(lat_degree)
+    rad_node, rad_weights = leggauss(rad_degree)
+    # Get coordinates of the tesseroid
+    w, e, s, n, bottom, top = tesseroid[:]
     # Scale nodes
-    longitude = 0.5 * (e - w) * longitude + 0.5 * (e + w)
-    latitude = 0.5 * (n - s) * latitude + 0.5 * (n + s)
-    radius = 0.5 * (top - bottom) * radius + 0.5 * (top + bottom)
+    longitude = 0.5 * (e - w) * lon_node + 0.5 * (e + w)
+    latitude = 0.5 * (n - s) * lat_node + 0.5 * (n + s)
+    radius = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
     # Create mesh grids of coordinates and weights
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
     lon_weights, lat_weights, rad_weights = np.meshgrid(
