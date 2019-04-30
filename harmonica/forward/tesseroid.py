@@ -6,9 +6,83 @@ from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
+from .point_mass import (
+    jit_point_mass_gravity,
+    kernel_potential,
+    kernel_gx,
+    kernel_gy,
+    kernel_gz,
+    kernel_gxx,
+    kernel_gxy,
+    kernel_gxz,
+    kernel_gyy,
+    kernel_gyz,
+    kernel_gzz,
+)
 
 STACK_SIZE = 100
 GLQ_DEGREES = [2, 2, 2]
+DISTANCE_SIZE_RATIO_POTENTIAL = 1
+DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
+DISTANCE_SIZE_RATIO_TENSOR = 8
+
+
+def tesseroid_gravity(coordinates, tesseroid, density, field):
+    """
+    Compute gravitational field of a tesseroid on a single computation point
+
+    Parameters
+    ----------
+    coordinates: list or 1d-array
+        List or array containing `longitude`, `latitude` and `radius` of a single
+        computation points defined on a spherical geocentric coordinate system.
+        Both `longitude` and `latitude` should be in degrees and `radius` in meters.
+    tesseroid : list or 1d-array
+        Geocentric spherical coordinates of the tesseroid: `w`, `e`, `s`, `n`, `bottom`,
+        `top`.
+        The longitudinal and latitudinal boundaries should be in degrees, while the
+        radial ones must be in meters.
+    density : float
+        Density of the single tesseroid in kg/m^3.
+    field: str
+        Gravitational field that wants to be computed.
+        The available fields are:
+
+        - Gravitational potential: ``potential``
+        - Accelerations or gradient components: ``gx``, ``gy``, ``gz``
+        - Maurssi tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
+          ``gzz``
+    """
+    kernels = {
+        "potential": kernel_potential,
+        "gx": kernel_gx,
+        "gy": kernel_gy,
+        "gz": kernel_gz,
+        "gxx": kernel_gxx,
+        "gxy": kernel_gxy,
+        "gxz": kernel_gxz,
+        "gyy": kernel_gyy,
+        "gyz": kernel_gyz,
+        "gzz": kernel_gzz,
+    }
+    if field not in kernels:
+        raise ValueError("Gravity field {} not recognized".format(field))
+    # Get value of D (distance_size_ratio)
+    if field == "potential":
+        distance_size_ratio = DISTANCE_SIZE_RATIO_POTENTIAL
+    elif field in ("gx", "gy", "gz"):
+        distance_size_ratio = DISTANCE_SIZE_RATIO_ACCELERATION
+    elif field in ("gxx", "gxy", "gxz", "gyy", "gyz", "gzz"):
+        distance_size_ratio = DISTANCE_SIZE_RATIO_TENSOR
+    # Apply adaptive discretization on tesseroid
+    small_tesseroids = adaptive_discretization(
+        coordinates, tesseroid, distance_size_ratio
+    )
+    # Initialize result
+    result = 0
+    jit_point_mass_gravity(
+        longitude, latitude, radius, point_mass, kernels[field], result
+    )
 
 
 def tesseroid_to_point_masses(tesseroid, glq_degrees=GLQ_DEGREES):
