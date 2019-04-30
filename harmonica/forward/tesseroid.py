@@ -9,7 +9,7 @@ from ..constants import GRAVITATIONAL_CONST
 
 STACK_SIZE = 100
 GLQ_DEGREES = [2, 2, 2]
-MAXIMUM_SMALLER_TESSEROID_SIZE = 3000
+MAX_DISCRETIZATIONS = 400
 DISTANCE_SIZE_RATIO_POTENTIAL = 1
 DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
 DISTANCE_SIZE_RATIO_TENSOR = 8
@@ -21,7 +21,8 @@ def tesseroid_gravity(
     density,
     field,
     glq_degrees=GLQ_DEGREES,
-    max_small_tesseroids=MAXIMUM_SMALLER_TESSEROID_SIZE
+    stack_size=STACK_SIZE,
+    max_discretizations=MAX_DISCRETIZATIONS,
 ):
     """
     Compute gravitational field of a tesseroid on a single computation point
@@ -58,10 +59,19 @@ def tesseroid_gravity(
         distance_size_ratio = DISTANCE_SIZE_RATIO_ACCELERATION
     elif field in ("gxx", "gxy", "gxz", "gyy", "gyz", "gzz"):
         distance_size_ratio = DISTANCE_SIZE_RATIO_TENSOR
+    # Initialize arrays to perform memory allocation only once
+    stack = np.empty((stack_size, 6))
+    small_tesseroids = np.empty((max_discretizations, 6))
     # Apply adaptive discretization on tesseroid
-    small_tesseroids = adaptive_discretization(
-        coordinates, tesseroid, distance_size_ratio
+    n_splits, error = _adaptive_discretization(
+        coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids,
     )
+    if error == -1:
+        raise OverflowError("Stack Overflow. Try to increase the stack size.")
+    elif error == -2:
+        raise OverflowError(
+            "Small Tesseroids Overflow. Try to increase the maximum number of splits."
+        )
     # Get equivalent point masses
     glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     point_masses, weights = tesseroids_to_point_masses(
@@ -117,22 +127,22 @@ def glq_nodes_weights(glq_degrees):
 
 
 @jit(nopython=True)
-def adaptive_discretization(
+def _adaptive_discretization(
     coordinates,
     tesseroid,
     distance_size_ratio,
-    stack_size=STACK_SIZE,
+    stack,
+    small_tesseroids,
     radial_discretization=False,
 ):
     """
     Three or two dimensional adaptive discretization
     """
-    # Create list of small tesseroids
-    small_tesseroids = []
     # Create stack of tesseroids
-    stack = np.zeros((stack_size, 6))
     stack[0, :] = tesseroid
     stack_top = 0
+    error = 0
+    n_splits = 0
     while stack_top >= 0:
         # Pop the first tesseroid from the stack
         tesseroid = [stack[stack_top, i] for i in range(6)]
@@ -151,12 +161,21 @@ def adaptive_discretization(
             n_rad = 2
         # Apply discretization
         if n_lon * n_lat * n_rad > 1:
+            # Raise error if stack overflow
+            if stack_top + n_lon * n_lat * n_rad > stack.shape[0]:
+                error = -1
+                return n_splits, error
             stack_top = _split_tesseroid(
                 tesseroid, n_lon, n_lat, n_rad, stack, stack_top
             )
         else:
-            small_tesseroids.append(tesseroid)
-    return np.array(small_tesseroids)
+            # Raise error if small_tesseroids overflow
+            if n_splits + 1 > small_tesseroids.shape[0]:
+                error = -2
+                return n_splits, error
+            small_tesseroids[n_splits] = tesseroid
+            n_splits += 1
+    return n_splits, error
 
 
 @jit(nopython=True)
@@ -165,8 +184,6 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     Split tesseroid along each dimension
     """
     w, e, s, n, bottom, top = tesseroid[:]
-    if stack_top + n_lon * n_lat * n_rad > stack.shape[0]:
-        raise OverflowError("Tesseroid stack overflow.")
     # Compute differential distance
     d_lon = (e - w) / n_lon
     d_lat = (n - s) / n_lat
