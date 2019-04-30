@@ -85,39 +85,34 @@ def tesseroid_gravity(coordinates, tesseroid, density, field):
     )
 
 
-def tesseroids_to_point_masses(tesseroids, glq_degrees=GLQ_DEGREES):
+@jit(nopython=True)
+def tesseroids_to_point_masses(tesseroids, glq_nodes, glq_weights):
     """
     Convert tesseroids to equivalent point masses on nodes of GLQ
     """
-    # Get GLQ degrees
-    lon_degree, lat_degree, rad_degree = glq_degrees[:]
+    # Unpack nodes and weights
+    lon_node, lat_node, rad_node = glq_nodes[:]
+    lon_weights, lat_weights, rad_weights = glq_weights[:]
     # Initialize output arrays
-    n_point_masses = lon_degree * lat_degree * rad_degree
-    n_tesseroids = len(tesseroids)
-    longitude = np.empty(n_point_masses * n_tesseroids)
-    latitude = np.empty(n_point_masses * n_tesseroids)
-    radius = np.empty(n_point_masses * n_tesseroids)
-    weights = np.empty(n_point_masses * n_tesseroids)
-    # Get nodes coordinates and weights
-    lon_node, lon_weights = leggauss(lon_degree)
-    lat_node, lat_weights = leggauss(lat_degree)
-    rad_node, rad_weights = leggauss(rad_degree)
+    longitude = []
+    latitude = []
+    radius = []
+    weights = []
     # Get coordinates of the tesseroid
-    for i, tesseroid in enumerate(tesseroids):
+    for tesseroid in tesseroids:
         w, e, s, n, bottom, top = tesseroid[:]
-        # Scale nodes
+        # Scale nodeglq_nodes
         lon_point = 0.5 * (e - w) * lon_node + 0.5 * (e + w)
         lat_point = 0.5 * (n - s) * lat_node + 0.5 * (n + s)
         rad_point = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
         # Create mesh grids of coordinates and weights
-        lon_point, lat_point, rad_point = np.meshgrid(lon_point, lat_point, rad_point)
-        lon_w, lat_w, rad_w = np.meshgrid(lon_weights, lat_weights, rad_weights)
-        point_weights = (lon_w * lat_w * rad_w).ravel()
-        # Add point masses coordinates and weights to output arrays
-        longitude[n_point_masses * i: n_point_masses * (i + 1)] = lon_point.ravel()[:]
-        latitude[n_point_masses * i: n_point_masses * (i + 1)] = lat_point.ravel()[:]
-        radius[n_point_masses * i: n_point_masses * (i + 1)] = rad_point.ravel()[:]
-        weights[n_point_masses * i: n_point_masses * (i + 1)] = point_weights[:]
+        for i in range(2):
+            for j in range(2):
+                for k in range(2):
+                    longitude.append(lon_point[i])
+                    latitude.append(lat_point[j])
+                    radius.append(rad_point[k])
+                    weights.append(lon_weights[i] * lat_weights[j] * rad_weights[k])
     return [longitude, latitude, radius], weights
 
 
