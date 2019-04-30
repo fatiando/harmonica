@@ -64,7 +64,7 @@ def tesseroid_gravity(
     small_tesseroids = np.empty((max_discretizations, 6))
     # Apply adaptive discretization on tesseroid
     n_splits, error = _adaptive_discretization(
-        coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids,
+        coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
     )
     if error == -1:
         raise OverflowError("Stack Overflow. Try to increase the stack size.")
