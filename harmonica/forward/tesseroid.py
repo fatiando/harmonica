@@ -59,6 +59,9 @@ def tesseroid_gravity(
         distance_size_ratio = DISTANCE_SIZE_RATIO_ACCELERATION
     elif field in ("gxx", "gxy", "gxz", "gyy", "gyz", "gzz"):
         distance_size_ratio = DISTANCE_SIZE_RATIO_TENSOR
+    # Convert coordinates and tesseroid to array to make Numba run only on Numpy arrays
+    tesseroid = np.array(tesseroid)
+    coordinates = np.array(coordinates)
     # Initialize arrays to perform memory allocation only once
     stack = np.empty((stack_size, 6))
     small_tesseroids = np.empty((max_discretizations, 6))
@@ -158,13 +161,13 @@ def _adaptive_discretization(
     Three or two dimensional adaptive discretization
     """
     # Create stack of tesseroids
-    stack[0, :] = tesseroid
+    stack[0] = tesseroid
     stack_top = 0
     error = 0
     n_splits = 0
     while stack_top >= 0:
         # Pop the first tesseroid from the stack
-        tesseroid = [stack[stack_top, i] for i in range(6)]
+        tesseroid = stack[stack_top]
         stack_top -= 1
         # Get its dimensions
         l_lon, l_lat, l_rad = _tesseroid_dimensions(tesseroid)
