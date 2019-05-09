@@ -9,7 +9,7 @@ from ..tesseroid import (
     _distance_tesseroid_point,
     _tesseroid_dimensions,
     _split_tesseroid,
-    adaptive_discretization,
+    _adaptive_discretization,
 )
 
 
@@ -183,7 +183,7 @@ def test_adaptive_discretization_on_radii():
         number_of_splits = []
         for radius in radii:
             coordinates = [0.0, 0.0, radius]
-            smaller_tesseroids = adaptive_discretization(
+            smaller_tesseroids = _adaptive_discretization(
                 coordinates,
                 tesseroid,
                 distance_size_ratio=10.0,
@@ -202,7 +202,7 @@ def test_adaptive_discretization_on_distance_size_ratio():
         distance_size_ratii = np.linspace(1, 10, 10)
         number_of_splits = []
         for distance_size_ratio in distance_size_ratii:
-            smaller_tesseroids = adaptive_discretization(
+            smaller_tesseroids = _adaptive_discretization(
                 coordinates,
                 tesseroid,
                 distance_size_ratio=distance_size_ratio,
@@ -218,7 +218,7 @@ def test_stack_overflow():
     tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
     coordinates = [0.0, 0.0, 1.0]
     with raises(OverflowError):
-        adaptive_discretization(coordinates, tesseroid, 10.0, stack_size=2)
+        _adaptive_discretization(coordinates, tesseroid, 10.0, stack_size=2)
 
 
 def test_two_dimensional_adaptive_discretization():
@@ -226,7 +226,7 @@ def test_two_dimensional_adaptive_discretization():
     bottom, top = 1.0, 10.0
     tesseroid = [-10.0, 10.0, -10.0, 10.0, bottom, top]
     coordinates = [0.0, 0.0, top]
-    small_tesseroids = adaptive_discretization(coordinates, tesseroid, 10.0)
+    small_tesseroids = _adaptive_discretization(coordinates, tesseroid, 10.0)
     for tess in small_tesseroids:
         assert tess[-2] == bottom
         assert tess[-1] == top
