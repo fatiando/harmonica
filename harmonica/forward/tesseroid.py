@@ -12,7 +12,6 @@ GLQ_DEGREES = [2, 2, 2]
 MAX_DISCRETIZATIONS = 400
 DISTANCE_SIZE_RATIO_POTENTIAL = 1
 DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
-DISTANCE_SIZE_RATIO_TENSOR = 8
 
 
 def tesseroid_gravity(
@@ -45,20 +44,16 @@ def tesseroid_gravity(
         The available fields are:
 
         - Gravitational potential: ``potential``
-        - Accelerations or gradient components: ``gx``, ``gy``, ``gz``
-        - Maurssi tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
-          ``gzz``
+        - Radial acceleration: ``g_radial``
     """
-    fields = "potential gx gy gz gxx gxy gxz gyy gyz gzz".split()
+    fields = "potential g_radial".split()
     if field not in fields:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Get value of D (distance_size_ratio)
     if field == "potential":
         distance_size_ratio = DISTANCE_SIZE_RATIO_POTENTIAL
-    elif field in ("gx", "gy", "gz"):
+    elif field == "g_radial":
         distance_size_ratio = DISTANCE_SIZE_RATIO_ACCELERATION
-    elif field in ("gxx", "gxy", "gxz", "gyy", "gyz", "gzz"):
-        distance_size_ratio = DISTANCE_SIZE_RATIO_TENSOR
     # Convert coordinates and tesseroid to array to make Numba run only on Numpy arrays
     tesseroid = np.array(tesseroid)
     coordinates = np.array(coordinates)
@@ -85,7 +80,7 @@ def tesseroid_gravity(
     tesseroids_to_point_masses(
         small_tesseroids[:n_splits], glq_nodes, glq_weights, point_masses, weights
     )
-    return point_masses, weights
+    return n_splits
 
 
 @jit(nopython=True)
