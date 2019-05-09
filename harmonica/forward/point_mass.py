@@ -28,9 +28,7 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
         The available fields are:
 
         - Gravitational potential: ``potential``
-        - Accelerations or gradient components: ``gx``, ``gy``, ``gz``
-        - Gravity gradient tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
-          ``gzz``
+        - Radial acceleration: ``g_radial``
 
     Returns
     -------
@@ -42,15 +40,7 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
     """
     kernels = {
         "potential": kernel_potential,
-        "gx": kernel_gx,
-        "gy": kernel_gy,
-        "gz": kernel_gz,
-        "gxx": kernel_gxx,
-        "gxy": kernel_gxy,
-        "gxz": kernel_gxz,
-        "gyy": kernel_gyy,
-        "gyz": kernel_gyz,
-        "gzz": kernel_gzz,
+        "g_radial": kernel_g_radial,
     }
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
@@ -63,10 +53,8 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
     )
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
-    if field in ("gx", "gy", "gz"):
+    if field in ("g_radial"):
         result *= 1e5  # SI to mGal
-    if field in ("gxx", "gxy", "gxz", "gyy", "gyz", "gzz"):
-        result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
 
 
@@ -115,46 +103,7 @@ def kernel_potential(
 
 
 @jit(nopython=True)
-def kernel_gx(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_x = radius_p * (cosphi * sinphi_p - sinphi * cosphi_p * coslambda)
-    return delta_x / distance_sq ** (3 / 2)
-
-
-@jit(nopython=True)
-def kernel_gy(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    sinlambda = np.sin(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_y = radius_p * cosphi_p * sinlambda
-    return delta_y / distance_sq ** (3 / 2)
-
-
-@jit(nopython=True)
-def kernel_gz(
+def kernel_g_radial(
     longitude,
     cosphi,
     sinphi,
@@ -170,123 +119,3 @@ def kernel_gz(
     distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
     delta_z = radius_p * cospsi - radius
     return delta_z / distance_sq ** (3 / 2)
-
-
-@jit(nopython=True)
-def kernel_gxx(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_x = radius_p * (cosphi * sinphi_p - sinphi * cosphi_p * coslambda)
-    return (3 * delta_x ** 2 - distance_sq) / distance_sq ** (5 / 2)
-
-
-@jit(nopython=True)
-def kernel_gxy(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    sinlambda = np.sin(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_x = radius_p * (cosphi * sinphi_p - sinphi * cosphi_p * coslambda)
-    delta_y = radius_p * cosphi_p * sinlambda
-    return 3 * delta_x * delta_y / distance_sq ** (5 / 2)
-
-
-@jit(nopython=True)
-def kernel_gxz(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_x = radius_p * (cosphi * sinphi_p - sinphi * cosphi_p * coslambda)
-    delta_z = radius_p * cospsi - radius
-    return 3 * delta_x * delta_z / distance_sq ** (5 / 2)
-
-
-@jit(nopython=True)
-def kernel_gyy(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    sinlambda = np.sin(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_y = radius_p * cosphi_p * sinlambda
-    return (3 * delta_y ** 2 - distance_sq) / distance_sq ** (5 / 2)
-
-
-@jit(nopython=True)
-def kernel_gyz(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    sinlambda = np.sin(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_y = radius_p * cosphi_p * sinlambda
-    delta_z = radius_p * cospsi - radius
-    return 3 * delta_y * delta_z / distance_sq ** (5 / 2)
-
-
-@jit(nopython=True)
-def kernel_gzz(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
-    radius_p_sq,
-):
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
-    delta_z = radius_p * cospsi - radius
-    return (3 * delta_z ** 2 - distance_sq) / distance_sq ** (5 / 2)

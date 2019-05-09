@@ -22,7 +22,7 @@ def test_invalid_field():
 
 
 def test_point_mass_on_origin():
-    "Check potential, gz and gzz of point mass on origin"
+    "Check potential and g_radial of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
     mass = 2.0
     radius = np.logspace(1, 8, 5, dtype="float64")
@@ -32,8 +32,7 @@ def test_point_mass_on_origin():
     # Analytical solutions (accelerations are in mgal and tensor components in eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
-        "gz": -GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
-        "gzz": 2 * GRAVITATIONAL_CONST * mass / radius ** 3 * 1e9,
+        "g_radial": -GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
     }
     # Compare results with analytical solutions
     for field in analytical:
@@ -44,7 +43,7 @@ def test_point_mass_on_origin():
 
 
 def test_point_mass_same_radial_direction():
-    "Check potential, gz, gzz of point mass and computation point on same radius"
+    "Check potential and g_radial of point mass and computation point on same radius"
     sphere_radius = 3.0
     mass = 2.0
     for longitude in np.linspace(-180, 180, 37):
@@ -60,8 +59,7 @@ def test_point_mass_same_radial_direction():
                 # (accelerations are in mgal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
-                    "gz": -GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
-                    "gzz": 2 * GRAVITATIONAL_CONST * mass / height ** 3 * 1e9,
+                    "g_radial": -GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
                 }
                 # Compare results with analytical solutions
                 for field in analytical:
@@ -123,65 +121,3 @@ def test_point_mass_potential_on_same_meridian():
                     point_mass_gravity(coordinates, point_mass, mass, "potential"),
                     analytical["potential"],
                 )
-
-
-def test_point_mass_gy_on_equator():
-    "Check gy field on equator and same radial coordinate"
-    radius = 3.0
-    mass = 2.0
-    latitude = 0.0
-    longitude_p = 0.0
-    point_mass = [longitude_p, latitude, radius]
-    for delta_longitude in np.linspace(-90, 90, 19):
-        longitude = longitude_p + delta_longitude
-        if longitude != longitude_p:
-            coordinates = [np.array(longitude), np.array(latitude), np.array(radius)]
-            # Analytical solutions
-            # (accelerations are in mgal and tensor components in eotvos)
-            distance = 2 * radius * np.sin(0.5 * np.radians(abs(delta_longitude)))
-            analytical = {
-                "gy": (
-                    GRAVITATIONAL_CONST
-                    * mass
-                    / distance ** 2
-                    * np.cos(0.5 * np.radians(delta_longitude))
-                    * np.sign(-delta_longitude)
-                    * 1e5
-                )
-            }
-            # Compare results with analytical solutions
-            npt.assert_allclose(
-                point_mass_gravity(coordinates, point_mass, mass, "gy"),
-                analytical["gy"],
-            )
-
-
-def test_point_mass_gx_on_same_meridian():
-    "Check gx field on same meridian and radial coordinate"
-    radius = 3.0
-    mass = 2.0
-    longitude = 0.0
-    latitude_p = 0.0
-    point_mass = [longitude, latitude_p, radius]
-    for delta_latitude in np.linspace(-90, 90, 19):
-        latitude = latitude_p + delta_latitude
-        if latitude != latitude_p:
-            coordinates = [np.array(longitude), np.array(latitude), np.array(radius)]
-            # Analytical solutions
-            # (accelerations are in mgal and tensor components in eotvos)
-            distance = 2 * radius * np.sin(0.5 * np.radians(abs(delta_latitude)))
-            analytical = {
-                "gx": (
-                    GRAVITATIONAL_CONST
-                    * mass
-                    / distance ** 2
-                    * np.cos(0.5 * np.radians(delta_latitude))
-                    * np.sign(-delta_latitude)
-                    * 1e5
-                )
-            }
-            # Compare results with analytical solutions
-            npt.assert_allclose(
-                point_mass_gravity(coordinates, point_mass, mass, "gx"),
-                analytical["gx"],
-            )
