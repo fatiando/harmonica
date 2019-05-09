@@ -144,7 +144,9 @@ class ReferenceEllipsoid:
 
     @property
     def mean_radius(self):
-        "The arithmetic mean radius [meters]"
+        """
+        The arithmetic mean radius :math:`R_1 = (2a + b) /3` [Moritz2000]_ [meters]
+        """
         return 1 / 3 * (2 * self.semimajor_axis + self.semiminor_axis)
 
     @property
