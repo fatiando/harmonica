@@ -7,7 +7,7 @@ from numba import jit
 from ..constants import GRAVITATIONAL_CONST
 
 
-def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
+def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
     """
     Compute gravitational fields of a point mass on spherical coordinates.
 
@@ -17,7 +17,7 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
         List or array containing `longitude`, `latitude` and `radius` of computation
         points defined on a spherical geocentric coordinate system.
         Both `longitude` and `latitude` should be in degrees and `radius` in meters.
-    point_mass : list or array
+    point : list or array
         Coordinates of the point mass: [`longitude`, `latitude`, `radius`] defined on
         a spherical geocentric coordinate system.
         Both `longitude` and `latitude` should be in degrees and `radius` in meters.
@@ -59,7 +59,7 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
     result = np.zeros(cast.size, dtype=dtype)
     longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
     jit_point_mass_gravity(
-        longitude, latitude, radius, point_mass, kernels[field], result
+        longitude, latitude, radius, point, kernels[field], result
     )
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
@@ -71,10 +71,10 @@ def point_mass_gravity(coordinates, point_mass, mass, field, dtype="float64"):
 
 
 @jit(nopython=True)
-def jit_point_mass_gravity(longitude, latitude, radius, point_mass, kernel, out):
+def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
     """
     """
-    longitude_p, latitude_p, radius_p = point_mass[:]
+    longitude_p, latitude_p, radius_p = point[:]
     longitude_p, latitude_p = np.radians(longitude_p), np.radians(latitude_p)
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
