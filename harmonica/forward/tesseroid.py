@@ -6,6 +6,7 @@ from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
+from .point_mass import jit_point_masses_gravity, kernel_potential, kernel_g_radial
 
 STACK_SIZE = 100
 GLQ_DEGREES = [2, 2, 2]
@@ -46,8 +47,11 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_radial``
     """
-    fields = "potential g_radial".split()
-    if field not in fields:
+    kernels = {
+        "potential": kernel_potential,
+        "g_radial": kernel_g_radial,
+    }
+    if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Get value of D (distance_size_ratio)
     if field == "potential":
@@ -80,7 +84,17 @@ def tesseroid_gravity(
     tesseroids_to_point_masses(
         small_tesseroids[:n_splits], glq_nodes, glq_weights, point_masses, weights
     )
-    return n_splits
+    # Compute gravity fields
+    longitude_p, latitude_p, radius_p = (i.ravel() for i in point_masses[:3])
+    masses = density * weights
+    result = jit_point_masses_gravity(
+        coordinates, longitude_p, latitude_p, radius_p, masses, kernels[field]
+    )
+    result *= GRAVITATIONAL_CONST
+    # Convert to more convenient units
+    if field in ("g_radial"):
+        result *= 1e5  # SI to mGal
+    return result
 
 
 @jit(nopython=True)

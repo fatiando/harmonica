@@ -59,6 +59,47 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
 
 
 @jit(nopython=True)
+def jit_point_masses_gravity(
+    coordinates,
+    longitude_p,
+    latitude_p,
+    radius_p,
+    masses,
+    kernel,
+):
+    """
+    Compute gravity field of point masses on a single computation point
+    """
+    # Compute quantities related to computation point
+    longitude, latitude, radius = coordinates[:]
+    longitude = np.radians(longitude)
+    latitude = np.radians(latitude)
+    cosphi = np.cos(latitude)
+    sinphi = np.sin(latitude)
+    # Compute quantities related to point masses
+    longitude_p = np.radians(longitude_p)
+    latitude_p = np.radians(latitude_p)
+    cosphi_p = np.cos(latitude_p)
+    sinphi_p = np.sin(latitude_p)
+    radius_p_sq = radius_p ** 2
+    # Compute gravity field
+    out = 0
+    for l in range(longitude_p.size):
+        out += masses[l] * kernel(
+            longitude,
+            cosphi,
+            sinphi,
+            radius,
+            longitude_p[l],
+            cosphi_p[l],
+            sinphi_p[l],
+            radius_p[l],
+            radius_p_sq[l],
+        )
+    return out
+
+
+@jit(nopython=True)
 def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
     """
     """
