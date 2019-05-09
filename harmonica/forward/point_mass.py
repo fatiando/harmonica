@@ -29,7 +29,7 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
 
         - Gravitational potential: ``potential``
         - Accelerations or gradient components: ``gx``, ``gy``, ``gz``
-        - Maurssi tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
+        - Gravity gradient tensor components: ``gxx``, ``gxy``, ``gxz``, ``gyy``, ``gyz``,
           ``gzz``
 
     Returns
