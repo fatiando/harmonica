@@ -74,7 +74,7 @@ def tesseroid_gravity(
     n_point_masses, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     # Get total number of point masses and initialize arrays
     n_point_masses *= n_splits
-    point_masses = np.empty((n_point_masses, 3))
+    point_masses = np.empty((3, n_point_masses))
     weights = np.empty(n_point_masses)
     # Get equivalent point masses
     tesseroids_to_point_masses(
