@@ -207,19 +207,28 @@ def test_adaptive_discretization_on_radii():
 
 def test_adaptive_discretization_on_distance_size_ratio():
     "Test if higher distance-size-ratio increase the tesseroid discretization"
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
+    coordinates = [0.0, 0.0, 10.2]
+    distance_size_ratii = np.linspace(1, 10, 10)
+    stack = np.empty((STACK_SIZE, 6))
     for radial_discretization in [True, False]:
-        tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
-        coordinates = [0.0, 0.0, 10.2]
-        distance_size_ratii = np.linspace(1, 10, 10)
         number_of_splits = []
+        if radial_discretization:
+            small_tesseroids = np.empty((MAX_DISCRETIZATIONS_3D, 6))
+        else:
+            small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
         for distance_size_ratio in distance_size_ratii:
-            smaller_tesseroids = _adaptive_discretization(
+            n_splits, error = _adaptive_discretization(
                 coordinates,
                 tesseroid,
-                distance_size_ratio=distance_size_ratio,
+                distance_size_ratio,
+                stack,
+                small_tesseroids,
                 radial_discretization=radial_discretization,
             )
-            number_of_splits.append(smaller_tesseroids.shape[0])
+            # Assert no stack overflows
+            assert error == 0
+            number_of_splits.append(n_splits)
         for i in range(1, len(number_of_splits)):
             assert number_of_splits[i - 1] <= number_of_splits[i]
 
