@@ -265,9 +265,19 @@ def test_stack_overflow():
 def test_two_dimensional_adaptive_discretization():
     "Test if the 2D adaptive discretization produces no splits on radial direction"
     bottom, top = 1.0, 10.0
-    tesseroid = [-10.0, 10.0, -10.0, 10.0, bottom, top]
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
     coordinates = [0.0, 0.0, top]
-    small_tesseroids = _adaptive_discretization(coordinates, tesseroid, 10.0)
+    stack = np.empty((STACK_SIZE, 6))
+    small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
+    distance_size_ratio = 10
+    n_splits, error = _adaptive_discretization(
+        coordinates,
+        tesseroid,
+        distance_size_ratio,
+        stack,
+        small_tesseroids,
+    )
+    small_tesseroids = small_tesseroids[:n_splits]
     for tess in small_tesseroids:
         assert tess[-2] == bottom
         assert tess[-1] == top
