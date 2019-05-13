@@ -235,10 +235,31 @@ def test_adaptive_discretization_on_distance_size_ratio():
 
 def test_stack_overflow():
     "Test if adaptive discretization raises OverflowError on stack overflow"
-    tesseroid = [-10.0, 10.0, -10.0, 10.0, 0.5, 1.0]
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
     coordinates = [0.0, 0.0, 1.0]
-    with raises(OverflowError):
-        _adaptive_discretization(coordinates, tesseroid, 10.0, stack_size=2)
+    distance_size_ratio = 10
+    # Test stack overflow
+    stack = np.empty((2, 6))
+    small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
+    n_splits, error = _adaptive_discretization(
+        coordinates,
+        tesseroid,
+        distance_size_ratio,
+        stack,
+        small_tesseroids,
+    )
+    assert error == -1
+    # Test small_tesseroids overflow
+    stack = np.empty((STACK_SIZE, 6))
+    small_tesseroids = np.empty((2, 6))
+    n_splits, error = _adaptive_discretization(
+        coordinates,
+        tesseroid,
+        distance_size_ratio,
+        stack,
+        small_tesseroids,
+    )
+    assert error == -2
 
 
 def test_two_dimensional_adaptive_discretization():
