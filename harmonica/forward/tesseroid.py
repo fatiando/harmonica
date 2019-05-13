@@ -23,6 +23,7 @@ def tesseroid_gravity(
     glq_degrees=GLQ_DEGREES,
     stack_size=STACK_SIZE,
     max_discretizations=MAX_DISCRETIZATIONS,
+    three_dimensional_adaptive_discretization=False,
 ):
     """
     Compute gravitational field of a tesseroid on a single computation point
@@ -63,7 +64,12 @@ def tesseroid_gravity(
     small_tesseroids = np.empty((max_discretizations, 6))
     # Apply adaptive discretization on tesseroid
     n_splits, error = _adaptive_discretization(
-        coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
+        coordinates,
+        tesseroid,
+        distance_size_ratio,
+        stack,
+        small_tesseroids,
+        radial_discretization=three_dimensional_adaptive_discretization,
     )
     if error == -1:
         raise OverflowError("Stack Overflow. Try to increase the stack size.")
