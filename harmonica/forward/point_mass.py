@@ -38,19 +38,14 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
         The potential is given in SI units, the accelerations in mGal and the Marussi
         tensor components in Eotvos.
     """
-    kernels = {
-        "potential": kernel_potential,
-        "g_radial": kernel_g_radial,
-    }
+    kernels = {"potential": kernel_potential, "g_radial": kernel_g_radial}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
-    jit_point_mass_gravity(
-        longitude, latitude, radius, point, kernels[field], result
-    )
+    jit_point_mass_gravity(longitude, latitude, radius, point, kernels[field], result)
     result *= GRAVITATIONAL_CONST * mass
     # Convert to more convenient units
     if field in ("g_radial"):
@@ -60,12 +55,7 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
 
 @jit(nopython=True)
 def jit_point_masses_gravity(
-    coordinates,
-    longitude_p,
-    latitude_p,
-    radius_p,
-    masses,
-    kernel,
+    coordinates, longitude_p, latitude_p, radius_p, masses, kernel
 ):
     """
     Compute gravity field of point masses on a single computation point

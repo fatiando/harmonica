@@ -10,8 +10,7 @@ from .point_mass import jit_point_masses_gravity, kernel_potential, kernel_g_rad
 
 STACK_SIZE = 100
 GLQ_DEGREES = [2, 2, 2]
-MAX_DISCRETIZATIONS = 400
-MAX_DISCRETIZATIONS_3D = 100000
+MAX_DISCRETIZATIONS = 100000
 DISTANCE_SIZE_RATIO_POTENTIAL = 1
 DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
 
@@ -48,10 +47,7 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_radial``
     """
-    kernels = {
-        "potential": kernel_potential,
-        "g_radial": kernel_g_radial,
-    }
+    kernels = {"potential": kernel_potential, "g_radial": kernel_g_radial}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Get value of D (distance_size_ratio)
