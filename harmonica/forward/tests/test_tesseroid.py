@@ -10,6 +10,9 @@ from ..tesseroid import (
     _tesseroid_dimensions,
     _split_tesseroid,
     _adaptive_discretization,
+    STACK_SIZE,
+    MAX_DISCRETIZATIONS,
+    MAX_DISCRETIZATIONS_3D,
 )
 
 
@@ -172,24 +175,32 @@ def test_split_tesseroid():
 
 def test_adaptive_discretization_on_radii():
     "Test if closer computation points increase the tesseroid discretization"
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
+    distance_size_ratio = 10
+    stack = np.empty((STACK_SIZE, 6))
     for radial_discretization in [True, False]:
-        tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
         radii = [10.5, 12.0, 13.0, 15.0, 20.0, 30.0]
         # Only if 2D adaptive discretization set point on the surface of the tesseroid
         if radial_discretization:
             radii.insert(0, 10.1)
+            small_tesseroids = np.empty((MAX_DISCRETIZATIONS_3D, 6))
         else:
             radii.insert(0, 10.0)
+            small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
         number_of_splits = []
         for radius in radii:
             coordinates = [0.0, 0.0, radius]
-            smaller_tesseroids = _adaptive_discretization(
+            n_splits, error = _adaptive_discretization(
                 coordinates,
                 tesseroid,
-                distance_size_ratio=10.0,
+                distance_size_ratio,
+                stack,
+                small_tesseroids,
                 radial_discretization=radial_discretization,
             )
-            number_of_splits.append(smaller_tesseroids.shape[0])
+            # Assert no stack overflows
+            assert error == 0
+            number_of_splits.append(n_splits)
         for i in range(1, len(number_of_splits)):
             assert number_of_splits[i - 1] >= number_of_splits[i]
 
