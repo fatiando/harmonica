@@ -99,6 +99,8 @@ class ReferenceEllipsoid:
     8.1819190842621e-02
     >>> print("{:.13e}".format(wgs84.second_eccentricity))
     8.2094437949696e-02
+    >>> print("{:.4f}".format(wgs84.mean_radius))
+    6371008.7714
     >>> print("{:.14f}".format(wgs84.emm))
     0.00344978650684
     >>> print("{:.10f}".format(wgs84.gravity_equator))
@@ -139,6 +141,13 @@ class ReferenceEllipsoid:
     def second_eccentricity(self):
         "The second eccentricity [adimensional]"
         return self.linear_eccentricity / self.semiminor_axis
+
+    @property
+    def mean_radius(self):
+        """
+        The arithmetic mean radius :math:`R_1 = (2a + b) /3` [Moritz2000]_ [meters]
+        """
+        return 1 / 3 * (2 * self.semimajor_axis + self.semiminor_axis)
 
     @property
     def emm(self):
