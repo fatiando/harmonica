@@ -31,7 +31,7 @@ def tesseroid_gravity(
     ----------
     coordinates: list or 1d-array
         List or array containing `longitude`, `latitude` and `radius` of a single
-        computation points defined on a spherical geocentric coordinate system.
+        computation point defined on a spherical geocentric coordinate system.
         Both `longitude` and `latitude` should be in degrees and `radius` in meters.
     tesseroid : list or 1d-array
         Geocentric spherical coordinates of the tesseroid: `w`, `e`, `s`, `n`, `bottom`,
