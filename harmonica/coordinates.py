@@ -23,8 +23,8 @@ def geodetic_to_spherical(longitude, latitude, height):
     height : array
         Ellipsoidal heights in meters.
 
-    See also
-    --------
+    Returns
+    -------
     longitude : array
         Longitude coordinates on geocentric spherical coordinate system in degrees.
         The longitude coordinates are not modified during this conversion.
@@ -33,6 +33,10 @@ def geodetic_to_spherical(longitude, latitude, height):
         degrees.
     radius : array
         Converted spherical radius coordinates in meters.
+
+    See also
+    --------
+    spherical_to_geodetic : Convert from geocentric spherical to geodetic coordinates.
     """
     # Get ellipsoid
     ellipsoid = get_ellipsoid()
@@ -69,8 +73,8 @@ def spherical_to_geodetic(longitude, spherical_latitude, radius):
     radius : array
         Spherical radius coordinates in meters.
 
-    See also
-    --------
+    Returns
+    -------
     longitude : array
         Longitude coordinates on geodetic coordinate system in degrees.
         The longitude coordinates are not modified during this conversion.
