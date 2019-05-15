@@ -28,7 +28,7 @@ def test_geodetic_to_spherical_with_spherical_ellipsoid():
         latitude = np.linspace(-90, 90, size)
         height = np.linspace(-0.2, 0.2, size)
         spherical_longitude, spherical_latitude, radius = geodetic_to_spherical(
-            [longitude, latitude, height]
+            longitude, latitude, height
         )
         npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
         npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -46,7 +46,7 @@ def test_geodetic_to_spherical_on_equator():
         with set_ellipsoid(ellipsoid_name):
             ellipsoid = get_ellipsoid()
             spherical_longitude, spherical_latitude, radius = geodetic_to_spherical(
-                [longitude, latitude, height]
+                longitude, latitude, height
             )
             npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
             npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -64,7 +64,7 @@ def test_geodetic_to_spherical_on_poles():
         with set_ellipsoid(ellipsoid_name):
             ellipsoid = get_ellipsoid()
             spherical_longitude, spherical_latitude, radius = geodetic_to_spherical(
-                [longitude, latitude, height]
+                longitude, latitude, height
             )
             npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
             npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -86,7 +86,7 @@ def test_spherical_to_geodetic_with_spherical_ellipsoid():
         spherical_latitude = np.linspace(-90, 90, size)
         radius = np.linspace(0.8, 1.2, size)
         longitude, latitude, height = spherical_to_geodetic(
-            [spherical_longitude, spherical_latitude, radius]
+            spherical_longitude, spherical_latitude, radius
         )
         npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
         npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -104,7 +104,7 @@ def test_spherical_to_geodetic_on_equator():
             spherical_longitude = np.linspace(0, 180, size)
             radius = np.linspace(-1e4, 1e4, size) + ellipsoid.semimajor_axis
             longitude, latitude, height = spherical_to_geodetic(
-                [spherical_longitude, spherical_latitude, radius]
+                spherical_longitude, spherical_latitude, radius
             )
             npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
             npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -124,7 +124,7 @@ def test_spherical_to_geodetic_on_poles():
                 [np.linspace(-1e4, 1e4, size) + ellipsoid.semiminor_axis] * 2
             )
             longitude, latitude, height = spherical_to_geodetic(
-                [spherical_longitude, spherical_latitude, radius]
+                spherical_longitude, spherical_latitude, radius
             )
             npt.assert_allclose(spherical_longitude, longitude, rtol=rtol)
             npt.assert_allclose(spherical_latitude, latitude, rtol=rtol)
@@ -140,6 +140,6 @@ def test_identity():
     coordinates = np.meshgrid(longitude, latitude, height)
     for ellipsoid_name in KNOWN_ELLIPSOIDS:
         with set_ellipsoid(ellipsoid_name):
-            spherical_coordinates = geodetic_to_spherical(coordinates)
-            reconverted_coordinates = spherical_to_geodetic(spherical_coordinates)
+            spherical_coordinates = geodetic_to_spherical(*coordinates)
+            reconverted_coordinates = spherical_to_geodetic(*spherical_coordinates)
             npt.assert_allclose(coordinates, reconverted_coordinates, rtol=rtol)

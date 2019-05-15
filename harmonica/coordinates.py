@@ -6,7 +6,7 @@ import numpy as np
 from . import get_ellipsoid
 
 
-def geodetic_to_spherical(coordinates):
+def geodetic_to_spherical(longitude, latitude, height):
     """
     Convert from geodetic to geocentric spherical coordinates.
 
@@ -16,26 +16,26 @@ def geodetic_to_spherical(coordinates):
 
     Parameters
     ----------
-    coordinates : list or array
-        List or array containing `longitude`, `latitude` and `height` coordinates on
-        a geodetic coordinate system. Both `longitude` and `latitude` must be in
-        degrees, and the ellipsoidal `height` in meters.
-
-    Returns
-    -------
-    spherical_coordinates : list
-        List containing the converted `longitude`, `latitude` and `radius` coordinates
-        on a spherical geocentric coordinate system. Both `longitude` and `latitude`
-        will be in degrees, and the `radius` in meters.
+    longitude : array
+        Longitude coordinates on geodetic coordinate system in degrees.
+    latitude : array
+        Latitude coordinates on geodetic coordinate system in degrees.
+    height : array
+        Ellipsoidal heights in meters.
 
     See also
     --------
-    spherical_to_geodetic : Convert from geocentric spherical to geodetic coordinates.
+    longitude : array
+        Longitude coordinates on geocentric spherical coordinate system in degrees.
+        The longitude coordinates are not modified during this conversion.
+    spherical_latitude : array
+        Converted latitude coordinates on geocentric spherical coordinate system in
+        degrees.
+    radius : array
+        Converted spherical radius coordinates in meters.
     """
     # Get ellipsoid
     ellipsoid = get_ellipsoid()
-    # Extract geodetic coordinates
-    longitude, latitude, height = coordinates[:3]
     # Convert latitude to radians
     latitude_rad = np.radians(latitude)
     prime_vertical_radius = ellipsoid.semimajor_axis / np.sqrt(
@@ -52,7 +52,7 @@ def geodetic_to_spherical(coordinates):
     return longitude, spherical_latitude, radius
 
 
-def spherical_to_geodetic(coordinates):
+def spherical_to_geodetic(longitude, spherical_latitude, radius):
     """
     Convert from geocentric spherical to geodetic coordinates.
 
@@ -62,17 +62,22 @@ def spherical_to_geodetic(coordinates):
 
     Parameters
     ----------
-    coordinates : list or array
-        List or array containing `longitude`, `latitude` and `radius` coordinates on
-        a spherical geocentric coordinate system. Both `longitude` and `latitude` must
-        be in degrees, and the `radius` in meters.
+    longitude : array
+        Longitude coordinates on geocentric spherical coordinate system in degrees.
+    spherical_latitude : array
+        Latitude coordinates on geocentric spherical coordinate system in degrees.
+    radius : array
+        Spherical radius coordinates in meters.
 
-    Returns
-    -------
-    spherical_coordinates : list
-        List containing the converted `longitude`, `latitude` and `height` coordinates
-        on a geodetic coordinate system. Both `longitude` and `latitude` will be in
-        degrees, and the ellipsoidal `height` in meters.
+    See also
+    --------
+    longitude : array
+        Longitude coordinates on geodetic coordinate system in degrees.
+        The longitude coordinates are not modified during this conversion.
+    spherical_latitude : array
+        Converted latitude coordinates on geodetic coordinate system in degrees.
+    height : array
+        Converted ellipsoidal height coordinates in meters.
 
     See also
     --------
@@ -80,8 +85,6 @@ def spherical_to_geodetic(coordinates):
     """
     # Get ellipsoid
     ellipsoid = get_ellipsoid()
-    # Extract geodetic coordinates
-    longitude, spherical_latitude, radius = coordinates[:3]
     k, big_d, big_z = _spherical_to_geodetic_parameters(spherical_latitude, radius)
     latitude = np.degrees(
         2 * np.arctan(big_z / (big_d + np.sqrt(big_d ** 2 + big_z ** 2)))
