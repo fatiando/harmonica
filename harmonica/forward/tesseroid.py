@@ -134,7 +134,7 @@ def tesseroids_to_point_masses(
                     ] + 0.5 * (east + west)
                     point_masses[1, mass_index] = 0.5 * (north - south) * lat_nodes[
                         j
-                    ] + 0.5 * (east + west)
+                    ] + 0.5 * (north + south)
                     point_masses[2, mass_index] = 0.5 * (top - bottom) * rad_nodes[
                         k
                     ] + 0.5 * (top + bottom)
