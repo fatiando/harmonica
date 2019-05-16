@@ -117,29 +117,30 @@ def tesseroids_to_point_masses(
     # Convert each tesseroid to a point mass
     mass_index = 0
     for i in range(len(tesseroids)):
-        west = tesseroids[i, 0]
-        east = tesseroids[i, 1]
-        south = tesseroids[i, 2]
-        north = tesseroids[i, 3]
+        w = tesseroids[i, 0]
+        e = tesseroids[i, 1]
+        s = tesseroids[i, 2]
+        n = tesseroids[i, 3]
         bottom = tesseroids[i, 4]
         top = tesseroids[i, 5]
-        A_factor = (
-            1 / 8 * np.radians(east - west) * np.radians(north - south) * (top - bottom)
-        )
+        A_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
         for i in range(lon_glq_degree):
             for j in range(lat_glq_degree):
                 for k in range(rad_glq_degree):
-                    point_masses[0, mass_index] = 0.5 * (east - west) * lon_nodes[
-                        i
-                    ] + 0.5 * (east + west)
-                    point_masses[1, mass_index] = 0.5 * (north - south) * lat_nodes[
-                        j
-                    ] + 0.5 * (north + south)
-                    point_masses[2, mass_index] = 0.5 * (top - bottom) * rad_nodes[
-                        k
-                    ] + 0.5 * (top + bottom)
+                    # Compute coordinates of each point mass
+                    longitude = 0.5 * (e - w) * lon_nodes[i] + 0.5 * (e + w)
+                    latitude = 0.5 * (n - s) * lat_nodes[j] + 0.5 * (n + s)
+                    radius = 0.5 * (top - bottom) * rad_nodes[k] + 0.5 * (top + bottom)
+                    kappa = radius ** 2 * np.cos(np.radians(latitude))
+                    point_masses[0, mass_index] = longitude
+                    point_masses[1, mass_index] = latitude
+                    point_masses[2, mass_index] = radius
                     weights[mass_index] = (
-                        A_factor * lon_weights[i] * lat_weights[j] * rad_weights[k]
+                        A_factor
+                        * kappa
+                        * lon_weights[i]
+                        * lat_weights[j]
+                        * rad_weights[k]
                     )
                     mass_index += 1
 
