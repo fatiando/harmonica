@@ -13,6 +13,7 @@ from .isostasy import isostasy_airy
 from .gravity_corrections import normal_gravity, bouguer_correction
 from .coordinates import geodetic_to_spherical, spherical_to_geodetic
 from .forward.point_mass import point_mass_gravity
+from .forward.tesseroid import tesseroid_gravity
 
 
 # Get the version number through versioneer
