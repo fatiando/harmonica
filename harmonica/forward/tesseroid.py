@@ -123,7 +123,9 @@ def tesseroids_to_point_masses(
         north = tesseroids[i, 3]
         bottom = tesseroids[i, 4]
         top = tesseroids[i, 5]
-        A_factor = 1 / 8 * (east - west) * (north - south) * (top - bottom)
+        A_factor = (
+            1 / 8 * np.radians(east - west) * np.radians(north - south) * (top - bottom)
+        )
         for i in range(lon_glq_degree):
             for j in range(lat_glq_degree):
                 for k in range(rad_glq_degree):
