@@ -95,7 +95,7 @@ def tesseroid_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field in ("g_radial"):
+    if field == "g_radial":
         result *= 1e5  # SI to mGal
     return result
 
