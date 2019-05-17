@@ -32,12 +32,12 @@ def tesseroid_gravity(
     Parameters
     ----------
     coordinates: list or 1d-array
-        List or array containing `longitude`, `latitude` and `radius` of a single
+        List or array containing ``longitude``, ``latitude`` and ``radius`` of a single
         computation point defined on a spherical geocentric coordinate system.
-        Both `longitude` and `latitude` should be in degrees and `radius` in meters.
+        Both ``longitude`` and ``latitude`` should be in degrees and ``radius`` in meters.
     tesseroid : list or 1d-array
-        Geocentric spherical coordinates of the tesseroid: `w`, `e`, `s`, `n`, `bottom`,
-        `top`.
+        Geocentric spherical coordinates of the tesseroid: ``w``, ``e``, ``s``, ``n``,
+        ``bottom``, ``top``.
         The longitudinal and latitudinal boundaries should be in degrees, while the
         radial ones must be in meters.
     density : float
@@ -48,6 +48,34 @@ def tesseroid_gravity(
 
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_radial``
+
+    distance_size_ratio : dict (optional)
+        Dictionary containing distance-size ratii for each gravity field used on the
+        adaptive discretization algorithm.
+        Values must be the available fields and keys should be the desired distance-size
+        ratio.
+        The greater the distance-size ratio, more discretizations will occur, increasing
+        the accuracy of the numerical approximation but also the computation time.
+    glq_degrees : list (optional)
+        List containing the GLQ degrees used on each direction:
+        ``glq_degree_longitude``, ``glq_degree_latitude``, ``glq_degree_radius``.
+        The GLQ degree specifies how many point masses will be created along each
+        direction.
+        Increasing the GLQ degree will increase the accuracy of the numerical
+        approximation, but also the computation time.
+        Default ``[2, 2, 2]``.
+    stack_size : int (optional)
+        Size of the tesseroid stack used on the adaptive discretization algorithm.
+        If the algorithm will perform too many splits, please increase the stack size.
+    max_discretizations : int (optional)
+        Maximum number of splits made by the adaptive discretization algorithm.
+        If the algorithm will perform too many splits, please increase the maximum
+        number of splits.
+    three_dimensional_adaptive_discretization : bool (optional)
+        If ``False``, the adaptive discretization algorithm will split the tesseroid
+        only on the horizontal direction. If ``True``, it will perform a three dimensional
+        adaptive discretization, splitting the tesseroids on every direction.
+        Default ``False``.
     """
     if field not in KERNELS:
         raise ValueError("Gravity field {} not recognized".format(field))
