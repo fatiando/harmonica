@@ -285,21 +285,18 @@ def _check_tesseroid(tesseroid):
     w, e, s, n, bottom, top = tesseroid[:]
     if w >= e:
         raise ValueError(
-            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
-            + "W must be lower than E."
+            "Invalid tesseroid. The west boundary must be lower than the east one."
         )
     if s >= n:
         raise ValueError(
-            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
-            + "S must be lower than N."
+            "Invalid tesseroid. The south boundary must be lower than the north one."
         )
     if bottom > top:
         raise ValueError(
-            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
-            + "BOTTOM must be lower than TOP."
+            "Invalid tesseroid. "
+            + "The bottom radius boundary must be lower than the top one."
         )
-    if bottom < 0 or top < 0:
+    if bottom <= 0 or top <= 0:
         raise ValueError(
-            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
-            + "BOTTOM and TOP radii must be greater than zero."
+            "Invalid tesseroid. The bottom and top radii must be greater than zero."
         )
