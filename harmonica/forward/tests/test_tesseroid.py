@@ -10,6 +10,7 @@ from ...ellipsoid import get_ellipsoid
 from ..tesseroid import (
     tesseroid_gravity,
     _check_tesseroid,
+    _check_point_outside_tesseroid,
     _distance_tesseroid_point,
     _tesseroid_dimensions,
     _split_tesseroid,
@@ -39,6 +40,19 @@ def test_invalid_tesseroid():
         _check_tesseroid(np.array([w, e, s, n, bottom, -100]))
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, s, n, bottom, bottom]))
+
+
+def test_point_inside_tesseroid():
+    "Check if a computation point inside the tesseroid is catched"
+    tesseroid = np.array([-10, 10, -10, 10, 100, 200])
+    # Test if outside point is not catched
+    points = [np.array([0, 0, 250]), np.array([20, 0, 150]), np.array([0, 20, 150])]
+    for coordinates in points:
+        _check_point_outside_tesseroid(coordinates, tesseroid)
+    # Test if computation point is inside the tesseroid
+    coordinates = np.array([0, 0, 150])
+    with pytest.raises(ValueError):
+        _check_point_outside_tesseroid(coordinates, tesseroid)
 
 
 def test_distance_tesseroid_point():
