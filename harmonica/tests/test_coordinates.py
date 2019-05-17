@@ -131,7 +131,7 @@ def test_spherical_to_geodetic_on_poles():
             npt.assert_allclose(radius, height + ellipsoid.semiminor_axis, rtol=rtol)
 
 
-def test_identity():
+def test_spherical_to_geodetic_identity():
     "Test if geodetic_to_spherical and spherical_to_geodetic is the identity operator"
     rtol = 1e-10
     longitude = np.linspace(0, 350, 36)

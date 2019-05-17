@@ -37,6 +37,27 @@ def geodetic_to_spherical(longitude, latitude, height):
     See also
     --------
     spherical_to_geodetic : Convert from geocentric spherical to geodetic coordinates.
+
+    Examples
+    --------
+
+    In the poles, the radius should be the reference ellipsoid's semi-minor axis:
+
+    >>> import harmonica as hm
+    >>> spherical = hm.geodetic_to_spherical(longitude=0, latitude=90, height=0)
+    >>> print(", ".join("{:.4f}".format(i) for i in spherical))
+    0.0000, 90.0000, 6356752.3142
+    >>> print("{:.4f}".format(hm.get_ellipsoid().semiminor_axis))
+    6356752.3142
+
+    In  the equator, it should be the semi-major axis:
+
+    >>> spherical = hm.geodetic_to_spherical(longitude=0, latitude=0, height=0)
+    >>> print(", ".join("{:.4f}".format(i) for i in spherical))
+    0.0000, 0.0000, 6378137.0000
+    >>> print("{:.4f}".format(hm.get_ellipsoid().semimajor_axis))
+    6378137.0000
+
     """
     # Get ellipsoid
     ellipsoid = get_ellipsoid()
@@ -78,7 +99,7 @@ def spherical_to_geodetic(longitude, spherical_latitude, radius):
     longitude : array
         Longitude coordinates on geodetic coordinate system in degrees.
         The longitude coordinates are not modified during this conversion.
-    spherical_latitude : array
+    latitude : array
         Converted latitude coordinates on geodetic coordinate system in degrees.
     height : array
         Converted ellipsoidal height coordinates in meters.
@@ -86,6 +107,32 @@ def spherical_to_geodetic(longitude, spherical_latitude, radius):
     See also
     --------
     geodetic_to_spherical : Convert from geodetic to geocentric spherical coordinates.
+
+    Examples
+    --------
+
+    In the poles and equator, using the semi-minor or semi-major axis of the ellipsoid
+    as the radius should yield 0 height:
+
+    >>> import harmonica as hm
+    >>> geodetic = hm.spherical_to_geodetic(
+    ...     longitude=0, spherical_latitude=90, radius=hm.get_ellipsoid().semiminor_axis
+    ... )
+    >>> print(", ".join("{:.1f}".format(i) for i in geodetic))
+    0.0, 90.0, 0.0
+    >>> geodetic = hm.spherical_to_geodetic(
+    ...     longitude=0, spherical_latitude=0, radius=hm.get_ellipsoid().semimajor_axis
+    ... )
+    >>> print(", ".join("{:.1f}".format(i) for i in geodetic))
+    0.0, 0.0, 0.0
+    >>> geodetic = hm.spherical_to_geodetic(
+    ...     longitude=0,
+    ...     spherical_latitude=-90,
+    ...     radius=hm.get_ellipsoid().semiminor_axis + 2
+    ... )
+    >>> print(", ".join("{:.1f}".format(i) for i in geodetic))
+    0.0, -90.0, 2.0
+
     """
     # Get ellipsoid
     ellipsoid = get_ellipsoid()
