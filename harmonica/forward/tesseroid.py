@@ -296,7 +296,7 @@ def _check_tesseroid(tesseroid):
         raise ValueError(
             "Invalid tesseroid. The bottom and top radii must be greater than zero."
         )
-    if bottom > top:
+    if bottom >= top:
         raise ValueError(
             "Invalid tesseroid. "
             + "The bottom radius boundary must be lower than the top one."
