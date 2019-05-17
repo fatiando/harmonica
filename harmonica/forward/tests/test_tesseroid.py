@@ -22,6 +22,8 @@ from ..tesseroid import (
 def test_invalid_tesseroid():
     "Check if an invalid tesseroid boundaries are catched"
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
+    # Check if it works properly on valid tesseroids
+    _check_tesseroid([w, e, s, n, bottom, top])
     # Test invalid longitude boundaries
     with pytest.raises(ValueError):
         _check_tesseroid([20, 10, s, n, bottom, top])
@@ -35,6 +37,8 @@ def test_invalid_tesseroid():
         _check_tesseroid([w, e, s, n, -100, top])
     with pytest.raises(ValueError):
         _check_tesseroid([w, e, s, n, bottom, -100])
+    with pytest.raises(ValueError):
+        _check_tesseroid([w, e, s, n, bottom, bottom])
 
 
 def test_distance_tesseroid_point():
