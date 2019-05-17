@@ -56,8 +56,9 @@ def tesseroid_gravity(
     # Convert coordinates and tesseroid to array to make Numba run only on Numpy arrays
     tesseroid = np.array(tesseroid)
     coordinates = np.array(coordinates)
-    # Sanity checks for tesseroid
+    # Sanity checks for tesseroid and computation point
     _check_tesseroid(tesseroid)
+    _check_external_point(coordinates, tesseroid)
     # Initialize arrays to perform memory allocation only once
     stack = np.empty((stack_size, 6))
     small_tesseroids = np.empty((max_discretizations, 6))
@@ -299,4 +300,19 @@ def _check_tesseroid(tesseroid):
     if bottom <= 0 or top <= 0:
         raise ValueError(
             "Invalid tesseroid. The bottom and top radii must be greater than zero."
+        )
+
+
+@jit(nopython=True)
+def _check_external_point(coordinates, tesseroid):
+    "Check if computation point is not inside the tesseroid"
+    longitude, latitude, radius = coordinates[:]
+    w, e, s, n, bottom, top = tesseroid[:]
+    inside_longitude = bool(longitude > w and longitude < e)
+    inside_latitude = bool(latitude > s and latitude < n)
+    inside_radius = bool(radius > bottom and radius < top)
+    if inside_longitude and inside_latitude and inside_radius:
+        raise ValueError(
+            "Found computation point inside tesseroid. "
+            + "Computation points must be outside of tesseroids."
         )
