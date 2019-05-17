@@ -4,12 +4,12 @@ Test forward modellig for point masses.
 import numpy as np
 import numpy.testing as npt
 import pytest
-from pytest import raises
 
 from ...constants import GRAVITATIONAL_CONST
 from ...ellipsoid import get_ellipsoid
 from ..tesseroid import (
     tesseroid_gravity,
+    _check_tesseroid,
     _distance_tesseroid_point,
     _tesseroid_dimensions,
     _split_tesseroid,
@@ -17,6 +17,24 @@ from ..tesseroid import (
     STACK_SIZE,
     MAX_DISCRETIZATIONS,
 )
+
+
+def test_invalid_tesseroid():
+    "Check if an invalid tesseroid boundaries are catched"
+    w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
+    # Test invalid longitude boundaries
+    with pytest.raises(ValueError):
+        _check_tesseroid([20, 10, s, n, bottom, top])
+    # Test invalid latitude boundaries
+    with pytest.raises(ValueError):
+        _check_tesseroid([w, e, 20, 10, bottom, top])
+    # Test invalid radial boundaries
+    with pytest.raises(ValueError):
+        _check_tesseroid([w, e, s, n, 200, 100])
+    with pytest.raises(ValueError):
+        _check_tesseroid([w, e, s, n, -100, top])
+    with pytest.raises(ValueError):
+        _check_tesseroid([w, e, s, n, bottom, -100])
 
 
 def test_distance_tesseroid_point():
