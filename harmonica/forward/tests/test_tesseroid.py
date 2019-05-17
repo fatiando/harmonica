@@ -46,7 +46,17 @@ def test_point_inside_tesseroid():
     "Check if a computation point inside the tesseroid is catched"
     tesseroid = np.array([-10, 10, -10, 10, 100, 200])
     # Test if outside point is not catched
-    points = [np.array([0, 0, 250]), np.array([20, 0, 150]), np.array([0, 20, 150])]
+    points = [
+        np.array([0, 0, 250]),  # outside point on radius
+        np.array([20, 0, 150]),  # outside point on longitude
+        np.array([0, 20, 150]),  # outside point on latitude
+        np.array([0, 0, 200]),  # point on top surface
+        np.array([0, 0, 100]),  # point on bottom surface
+        np.array([-10, 0, 150]),  # point on western surface
+        np.array([10, 0, 150]),  # point on eastern surface
+        np.array([0, -10, 150]),  # point on southern surface
+        np.array([0, 10, 150]),  # point on northern surface
+    ]
     for coordinates in points:
         _check_point_outside_tesseroid(coordinates, tesseroid)
     # Test if computation point is inside the tesseroid
