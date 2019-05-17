@@ -3,9 +3,13 @@ Test forward modellig for point masses.
 """
 import numpy as np
 import numpy.testing as npt
+import pytest
 from pytest import raises
 
+from ...constants import GRAVITATIONAL_CONST
+from ...ellipsoid import get_ellipsoid
 from ..tesseroid import (
+    tesseroid_gravity,
     _distance_tesseroid_point,
     _tesseroid_dimensions,
     _split_tesseroid,
@@ -264,3 +268,63 @@ def test_two_dimensional_adaptive_discretization():
     for tess in small_tesseroids:
         assert tess[-2] == bottom
         assert tess[-1] == top
+
+
+def test_spherical_shell():
+    "Compare numerical result from tesseroid_gravity with analytical solution"
+    # Get mean Earth radius
+    ellipsoid = get_ellipsoid()
+    mean_earth_radius = ellipsoid.mean_radius
+    # Define computation point located on the equator at the mean Earth radius
+    coordinates = [0, 0, mean_earth_radius]
+    # Define shape of spherical shell model made of tesseroids
+    shape = (6, 6)
+    # Define a density for the shell
+    density = 1000
+    # Define different values for the spherical shell thickness
+    thicknesses = np.logspace(1, 5, 5)
+    for thickness in thicknesses:
+        # Create list of tesseroids for the spherical shell model
+        tesseroids = []
+        # Define boundary coordinates of each tesseroid
+        top = mean_earth_radius
+        bottom = top - thickness
+        longitude = np.linspace(0, 360, shape[0] + 1)
+        latitude = np.linspace(-90, 90, shape[1] + 1)
+        west, east = longitude[:-1], longitude[1:]
+        south, north = latitude[:-1], latitude[1:]
+        for w, e in zip(west, east):
+            for s, n in zip(south, north):
+                tesseroids.append([w, e, s, n, bottom, top])
+        # Compute gravitational fields of the spherical shell
+        numerical = {"potential": 0, "g_radial": 0}
+        for tesseroid in tesseroids:
+            for field in numerical:
+                numerical[field] += tesseroid_gravity(
+                    coordinates, tesseroid, density, field=field
+                )
+        # Get analytical solutions
+        analytical = spherical_shell_analytical(top, bottom, density, mean_earth_radius)
+        # Assert percentage difference between analytical and numerical < 0.1%
+        for field in numerical:
+            diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
+            assert diff < 0.1
+
+
+def spherical_shell_analytical(top, bottom, density, radius):
+    "Compute analytical solution of gravity fields for an homogeneous spherical shell"
+    potential = (
+        4
+        / 3
+        * np.pi
+        * GRAVITATIONAL_CONST
+        * density
+        * (top ** 3 - bottom ** 3)
+        / radius
+    )
+    analytical = {
+        "potential": potential,
+        # Accelerations are converted from SI to mGal
+        "g_radial": -1e5 * potential / radius,
+    }
+    return analytical
