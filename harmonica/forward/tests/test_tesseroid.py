@@ -270,13 +270,12 @@ def test_two_dimensional_adaptive_discretization():
         assert tess[-1] == top
 
 
-def test_spherical_shell():
-    "Compare numerical result from tesseroid_gravity with analytical solution"
-    # Get mean Earth radius
-    ellipsoid = get_ellipsoid()
-    mean_earth_radius = ellipsoid.mean_radius
+def test_spherical_shell_two_dimensional_adaptive_discretization():
+    "Compare numerical result with analytical solution for 2D adaptive discretization"
     # Define computation point located on the equator at the mean Earth radius
-    coordinates = [0, 0, mean_earth_radius]
+    ellipsoid = get_ellipsoid()
+    radius = ellipsoid.mean_radius
+    coordinates = [0, 0, radius]
     # Define shape of spherical shell model made of tesseroids
     shape = (6, 6)
     # Define a density for the shell
@@ -287,7 +286,7 @@ def test_spherical_shell():
         # Create list of tesseroids for the spherical shell model
         tesseroids = []
         # Define boundary coordinates of each tesseroid
-        top = mean_earth_radius
+        top = ellipsoid.mean_radius
         bottom = top - thickness
         longitude = np.linspace(0, 360, shape[0] + 1)
         latitude = np.linspace(-90, 90, shape[1] + 1)
@@ -304,7 +303,51 @@ def test_spherical_shell():
                     coordinates, tesseroid, density, field=field
                 )
         # Get analytical solutions
-        analytical = spherical_shell_analytical(top, bottom, density, mean_earth_radius)
+        analytical = spherical_shell_analytical(top, bottom, density, radius)
+        # Assert percentage difference between analytical and numerical < 0.1%
+        for field in numerical:
+            diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
+            assert diff < 0.1
+
+
+def test_spherical_shell_three_dimensional_adaptive_discretization():
+    "Compare numerical result with analytical solution for 3D adaptive discretization"
+    # Define computation point located on the equator at 1km above mean Earth radius
+    ellipsoid = get_ellipsoid()
+    radius = ellipsoid.mean_radius + 1e3
+    coordinates = [0, 0, radius]
+    # Define shape of spherical shell model made of tesseroids
+    shape = (6, 6)
+    # Define a density for the shell
+    density = 1000
+    # Define different values for the spherical shell thickness
+    thicknesses = np.logspace(1, 5, 5)
+    for thickness in thicknesses:
+        # Create list of tesseroids for the spherical shell model
+        tesseroids = []
+        # Define boundary coordinates of each tesseroid
+        top = ellipsoid.mean_radius
+        bottom = top - thickness
+        longitude = np.linspace(0, 360, shape[0] + 1)
+        latitude = np.linspace(-90, 90, shape[1] + 1)
+        west, east = longitude[:-1], longitude[1:]
+        south, north = latitude[:-1], latitude[1:]
+        for w, e in zip(west, east):
+            for s, n in zip(south, north):
+                tesseroids.append([w, e, s, n, bottom, top])
+        # Compute gravitational fields of the spherical shell
+        numerical = {"potential": 0, "g_radial": 0}
+        for tesseroid in tesseroids:
+            for field in numerical:
+                numerical[field] += tesseroid_gravity(
+                    coordinates,
+                    tesseroid,
+                    density,
+                    field=field,
+                    three_dimensional_adaptive_discretization=True,
+                )
+        # Get analytical solutions
+        analytical = spherical_shell_analytical(top, bottom, density, radius)
         # Assert percentage difference between analytical and numerical < 0.1%
         for field in numerical:
             diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
