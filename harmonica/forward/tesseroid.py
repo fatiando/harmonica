@@ -9,10 +9,10 @@ from ..constants import GRAVITATIONAL_CONST
 from .point_mass import jit_point_masses_gravity, kernel_potential, kernel_g_radial
 
 STACK_SIZE = 100
-GLQ_DEGREES = [2, 2, 2]
 MAX_DISCRETIZATIONS = 100000
-DISTANCE_SIZE_RATIO_POTENTIAL = 1
-DISTANCE_SIZE_RATIO_ACCELERATION = 2.5
+GLQ_DEGREES = [2, 2, 2]
+DISTANCE_SIZE_RATII = {"potential": 1, "g_radial": 2.5}
+KERNELS = {"potential": kernel_potential, "g_radial": kernel_g_radial}
 
 
 def tesseroid_gravity(
@@ -20,6 +20,7 @@ def tesseroid_gravity(
     tesseroid,
     density,
     field,
+    distance_size_ratii=DISTANCE_SIZE_RATII,
     glq_degrees=GLQ_DEGREES,
     stack_size=STACK_SIZE,
     max_discretizations=MAX_DISCRETIZATIONS,
@@ -48,14 +49,10 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_radial``
     """
-    kernels = {"potential": kernel_potential, "g_radial": kernel_g_radial}
-    if field not in kernels:
+    if field not in KERNELS:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Get value of D (distance_size_ratio)
-    if field == "potential":
-        distance_size_ratio = DISTANCE_SIZE_RATIO_POTENTIAL
-    elif field == "g_radial":
-        distance_size_ratio = DISTANCE_SIZE_RATIO_ACCELERATION
+    distance_size_ratio = distance_size_ratii[field]
     # Convert coordinates and tesseroid to array to make Numba run only on Numpy arrays
     tesseroid = np.array(tesseroid)
     coordinates = np.array(coordinates)
@@ -91,7 +88,7 @@ def tesseroid_gravity(
     longitude_p, latitude_p, radius_p = (i.ravel() for i in point_masses[:3])
     masses = density * weights
     result = jit_point_masses_gravity(
-        coordinates, longitude_p, latitude_p, radius_p, masses, kernels[field]
+        coordinates, longitude_p, latitude_p, radius_p, masses, KERNELS[field]
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
