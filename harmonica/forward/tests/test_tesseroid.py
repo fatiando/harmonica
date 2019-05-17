@@ -28,9 +28,13 @@ def test_invalid_tesseroid():
     # Test invalid longitude boundaries
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([20, 10, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroid(np.array([w, w, s, n, bottom, top]))
     # Test invalid latitude boundaries
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, 20, 10, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroid(np.array([w, e, s, s, bottom, top]))
     # Test invalid radial boundaries
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, s, n, 200, 100]))
