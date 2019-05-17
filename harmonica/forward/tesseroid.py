@@ -58,7 +58,7 @@ def tesseroid_gravity(
     coordinates = np.array(coordinates)
     # Sanity checks for tesseroid and computation point
     _check_tesseroid(tesseroid)
-    _check_external_point(coordinates, tesseroid)
+    _check_point_outside_tesseroid(coordinates, tesseroid)
     # Initialize arrays to perform memory allocation only once
     stack = np.empty((stack_size, 6))
     small_tesseroids = np.empty((max_discretizations, 6))
@@ -304,7 +304,7 @@ def _check_tesseroid(tesseroid):
 
 
 @jit(nopython=True)
-def _check_external_point(coordinates, tesseroid):
+def _check_point_outside_tesseroid(coordinates, tesseroid):
     "Check if computation point is not inside the tesseroid"
     longitude, latitude, radius = coordinates[:]
     w, e, s, n, bottom, top = tesseroid[:]
