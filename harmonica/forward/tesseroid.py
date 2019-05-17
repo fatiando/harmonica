@@ -56,6 +56,8 @@ def tesseroid_gravity(
     # Convert coordinates and tesseroid to array to make Numba run only on Numpy arrays
     tesseroid = np.array(tesseroid)
     coordinates = np.array(coordinates)
+    # Sanity checks for tesseroid
+    _check_tesseroid(tesseroid)
     # Initialize arrays to perform memory allocation only once
     stack = np.empty((stack_size, 6))
     small_tesseroids = np.empty((max_discretizations, 6))
@@ -275,3 +277,29 @@ def _distance_tesseroid_point(coordinates, tesseroid):
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
     distance = np.sqrt(radius ** 2 + radius_p ** 2 - 2 * radius * radius_p * cospsi)
     return distance
+
+
+@jit(nopython=True)
+def _check_tesseroid(tesseroid):
+    "Check if tesseroid boundaries are well defined"
+    w, e, s, n, bottom, top = tesseroid[:]
+    if w >= e:
+        raise ValueError(
+            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
+            + "W must be lower than E."
+        )
+    if s >= n:
+        raise ValueError(
+            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
+            + "S must be lower than N."
+        )
+    if bottom > top:
+        raise ValueError(
+            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
+            + "BOTTOM must be lower than TOP."
+        )
+    if bottom < 0 or top < 0:
+        raise ValueError(
+            "Invalid tesseroid: {} (W, E, S, N, BOTTOM, TOP). ".format(tesseroid)
+            + "BOTTOM and TOP radii must be greater than zero."
+        )
