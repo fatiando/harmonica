@@ -174,10 +174,10 @@ def tesseroids_to_point_masses(
     ----------
     tesseroids : 2d-array
         Array containing tesseroids boundaries.
-    glq_nodes : array
-        Unscaled location of GLQ nodes on the ``[-1, 1]`` interval.
-    glq_weights : array
-        GLQ weigths for each node.
+    glq_nodes : list
+        Unscaled location of GLQ nodes for each direction.
+    glq_weights : list
+        GLQ weigths for each node for each direction.
     point_masses : 2d-array
         Empty array with shape ``(3, n)``, where ``n`` is the total number of point
         masses computed as the product of number of tesseroids and the GLQ degrees for
@@ -228,11 +228,22 @@ def tesseroids_to_point_masses(
 
 def glq_nodes_weights(glq_degrees):
     """
-    Calculate 3D GLQ unscaled nodes, weights and number of point masses
+    Calculate GLQ unscaled nodes, weights and total number of nodes
 
     Parameters
     ----------
-    glq_degrees
+    glq_degrees : list
+        List of GLQ degrees for each direction: ``longitude``, ``latitude``, ``radius``.
+
+    Returns
+    -------
+    n_nodes : int
+        Total number of nodes computed as the product of the GLQ degrees.
+    glq_nodes : list
+        Unscaled GLQ nodes for each direction: ``longitude``, ``latitude``, ``radius``.
+    glq_weights : list
+        GLQ weights for each node on each direction: ``longitude``, ``latitude``,
+        ``radius``.
     """
     # Unpack GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
