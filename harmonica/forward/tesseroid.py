@@ -154,12 +154,38 @@ def tesseroid_gravity(
     return result
 
 
-@jit(nopython=True)
 def tesseroids_to_point_masses(
     tesseroids, glq_nodes, glq_weights, point_masses, weights
 ):
     """
     Convert tesseroids to equivalent point masses on nodes of GLQ
+
+    Each tesseroid is converted into a set of point masses located on the scaled nodes
+    of the Gauss-Legendre Quadrature. The number of point masses created from each
+    tesseroid is equal to the product of the GLQ degrees for each direction
+    (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`).
+    It also compute a weight value for each point mass defined as the product of the GLQ
+    weights for each direction (:math:`W_i^r`, :math:`W_j^\phi`, :math:`W_k^\lambda`),
+    the scale constant :math:`A` and the :math:`\kappa` factor evaluated on the
+    coordinates of the point mass.
+
+    Parameters
+    ----------
+    tesseroids : 2d-array
+        Array containing tesseroids boundaries.
+    glq_nodes : array
+        Unscaled location of GLQ nodes on the ``[-1, 1]`` interval.
+    glq_weights : array
+        GLQ weigths for each node.
+    point_masses : 2d-array
+        Empty array with shape ``(3, n)``, where ``n`` is the total number of point
+        masses computed as the product of number of tesseroids and the GLQ degrees for
+        each direction.
+        The location of the point masses will be located inside this array.
+    weights : 1d-array
+        Empty array with ``n`` elements.
+        It will contain the weight constant for each point mass.
+
     """
     # Unpack nodes and weights
     lon_nodes, lat_nodes, rad_nodes = glq_nodes[:]
