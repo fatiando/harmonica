@@ -269,7 +269,36 @@ def _adaptive_discretization(
     radial_discretization=False,
 ):
     """
-    Three or two dimensional adaptive discretization
+    Perform the adaptive discretization algorithm on a tesseroid
+
+    It apply the three or two dimensional adaptive discretization algorithm on
+    a tesseroid after a single computation point.
+
+    Parameters
+    ----------
+    coordinates : array
+        Array containing ``longitude``, ``latitude`` and ``radius`` of a single
+        computation point.
+    tesseroid : array
+        Array containing the boundaries of the tesseroid.
+    distance_size_ratio : float
+        Value for the distance-size ratio. A greater value will perform more
+        discretizations.
+    stack : 2d-array
+        Array with shape ``(6, stack_size)`` that will temporarly hold the small
+        tesseroids that are not yet processed.
+        If too many discretizations will take place, increase the ``stack_size``.
+    small_tesseroids : 2d-array
+        Array with shape ``(6, max_discretizations)`` that will contain every small
+        tesseroid produced by the adaptive discretization algorithm.
+        If too many discretizations will take place, increase the
+        ``max_discretizations``.
+    radial_discretization : bool (optional)
+        If ``True`` the three dimensional adaptive discretization will be applied.
+        If ``False`` the two dimensional adaptive discretization will be applied, i.e.
+        the tesseroid will only be split on the ``longitude`` and ``latitude``
+        directions.
+        Default ``False``.
     """
     # Create stack of tesseroids
     stack[0] = tesseroid
