@@ -154,6 +154,7 @@ def tesseroid_gravity(
     return result
 
 
+@jit(nopython=True)
 def tesseroids_to_point_masses(
     tesseroids, glq_nodes, glq_weights, point_masses, weights
 ):
@@ -228,6 +229,10 @@ def tesseroids_to_point_masses(
 def glq_nodes_weights(glq_degrees):
     """
     Calculate 3D GLQ unscaled nodes, weights and number of point masses
+
+    Parameters
+    ----------
+    glq_degrees
     """
     # Unpack GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
