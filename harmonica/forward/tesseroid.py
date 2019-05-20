@@ -131,10 +131,10 @@ def tesseroid_gravity(
         raise OverflowError(
             "Small Tesseroids Overflow. Try to increase the maximum number of splits."
         )
-    # Get GLQ unscaled nodes, weights and number of point masses per small tesseroid
-    n_point_masses, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
+    # Get GLQ unscaled nodes, weights and number of nodes for each small tesseroid
+    n_nodes, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     # Get total number of point masses and initialize arrays
-    n_point_masses *= n_splits
+    n_point_masses = n_nodes * n_splits
     point_masses = np.empty((3, n_point_masses))
     weights = np.empty(n_point_masses)
     # Get equivalent point masses
@@ -237,7 +237,7 @@ def glq_nodes_weights(glq_degrees):
     # Unpack GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
     # Get number of point masses
-    n_point_masses = np.prod(glq_degrees)
+    n_nodes = np.prod(glq_degrees)
     # Get nodes coordinates and weights
     lon_node, lon_weights = leggauss(lon_degree)
     lat_node, lat_weights = leggauss(lat_degree)
@@ -245,7 +245,7 @@ def glq_nodes_weights(glq_degrees):
     # Reorder nodes and weights
     glq_nodes = [lon_node, lat_node, rad_node]
     glq_weights = [lon_weights, lat_weights, rad_weights]
-    return n_point_masses, glq_nodes, glq_weights
+    return n_nodes, glq_nodes, glq_weights
 
 
 @jit(nopython=True)
