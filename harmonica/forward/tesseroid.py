@@ -100,7 +100,7 @@ def tesseroid_gravity(
     >>> coordinates = [0, 0, ellipsoid.mean_radius]
     >>> # Compute radial component of the gravitational gradient in mGal
     >>> tesseroid_gravity(coordinates, tesseroid, density, field="g_radial")
-    -112.54539712315395
+    -112.54539932616652
 
     """
     if field not in KERNELS:
