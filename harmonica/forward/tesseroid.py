@@ -330,7 +330,8 @@ def _adaptive_discretization(
         # Apply discretization
         if n_lon * n_lat * n_rad > 1:
             # Raise error if stack overflow
-            if stack_top + n_lon * n_lat * n_rad > stack.shape[0]:
+            # Number of tesseroids in stack = stack_top + 1
+            if (stack_top + 1) + n_lon * n_lat * n_rad > stack.shape[0]:
                 error = -1
                 return n_splits, error
             stack_top = _split_tesseroid(
