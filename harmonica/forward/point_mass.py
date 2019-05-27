@@ -113,14 +113,7 @@ def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
 
 @jit(nopython=True)
 def kernel_potential(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
+    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
@@ -130,14 +123,7 @@ def kernel_potential(
 
 @jit(nopython=True)
 def kernel_g_radial(
-    longitude,
-    cosphi,
-    sinphi,
-    radius,
-    longitude_p,
-    cosphi_p,
-    sinphi_p,
-    radius_p,
+    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
