@@ -71,7 +71,6 @@ def jit_point_masses_gravity(
     latitude_p = np.radians(latitude_p)
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
-    radius_p_sq = radius_p ** 2
     # Compute gravity field
     out = 0
     for l in range(longitude_p.size):
@@ -84,7 +83,6 @@ def jit_point_masses_gravity(
             cosphi_p[l],
             sinphi_p[l],
             radius_p[l],
-            radius_p_sq[l],
         )
     return out
 
@@ -97,7 +95,6 @@ def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
     longitude_p, latitude_p = np.radians(longitude_p), np.radians(latitude_p)
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
-    radius_p_sq = radius_p ** 2
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     longitude_radians = np.radians(longitude)
@@ -111,7 +108,6 @@ def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
             cosphi_p,
             sinphi_p,
             radius_p,
-            radius_p_sq,
         )
 
 
@@ -125,11 +121,10 @@ def kernel_potential(
     cosphi_p,
     sinphi_p,
     radius_p,
-    radius_p_sq,
 ):
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
     return 1 / np.sqrt(distance_sq)
 
 
@@ -143,10 +138,9 @@ def kernel_g_radial(
     cosphi_p,
     sinphi_p,
     radius_p,
-    radius_p_sq,
 ):
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = radius ** 2 + radius_p_sq - 2 * radius * radius_p * cospsi
+    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
     delta_z = radius_p * cospsi - radius
     return delta_z / distance_sq ** (3 / 2)

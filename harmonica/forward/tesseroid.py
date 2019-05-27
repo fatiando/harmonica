@@ -407,7 +407,7 @@ def _distance_tesseroid_point(coordinates, tesseroid):
     sinphi = np.sin(latitude)
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance = np.sqrt(radius ** 2 + radius_p ** 2 - 2 * radius * radius_p * cospsi)
+    distance = np.sqrt((radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi))
     return distance
 
 
