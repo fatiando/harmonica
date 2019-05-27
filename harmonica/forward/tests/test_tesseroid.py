@@ -71,8 +71,9 @@ def test_point_inside_tesseroid():
 
 def test_distance_tesseroid_point():
     "Test distance between tesseroid and computation point"
-    longitude_p, latitude_p, radius_p = 0.0, 0.0, 1.0
-    d_lon, d_lat, d_radius = 2.0, 2.0, 1.0
+    ellipsoid = get_ellipsoid()
+    longitude_p, latitude_p, radius_p = 0.0, 0.0, ellipsoid.mean_radius
+    d_lon, d_lat, d_radius = 2.0, 2.0, 1.3
     tesseroid = [
         longitude_p - d_lon / 2,
         longitude_p + d_lon / 2,
