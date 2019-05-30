@@ -85,6 +85,56 @@ def tesseroid_layer(
         Dataset containing the coordinates of the tesseroids' centers in geocentric
         spherical coordinates along with the top and bottom coordinates and density of
         each tesseroid.
+
+    Examples
+    --------
+
+    # Create a layer around (0, 0) with tesseroids of 0.5 x 0.5 degrees
+    >>> region = [-10, 10, -10, 10]
+    >>> layer = tesseroid_layer(region, spacing=0.5)
+    >>> print(layer.shape)
+    (41, 41)
+
+    # Create a layer with top, bottom and density
+    >>> from harmonica import get_ellipsoid
+    >>> ellipsoid = get_ellipsoid()
+    >>> top = ellipsoid.mean_radius
+    >>> bottom = top - 1e3
+    >>> density = 2670
+    >>> region = [-70.1, -60.2, -45.2, -33.1]
+    >>> layer = tesseroid_layer(
+    ...     region, spacing=0.5, top=top, bottom=bottom, density=density
+    ... )
+    >>> print("Spacing: ({:.3f}, {:.3f})".format(layer.spacing[0], layer.spacing[1]))
+    Spacing: (0.504, 0.495)
+    >>> print(layer.shape)
+    (25, 21)
+    >>> print(layer.data_vars)
+    Data variables:
+        top      (latitude, longitude) float64 6.371e+06 6.371e+06 ... 6.371e+06
+        bottom   (latitude, longitude) float64 6.37e+06 6.37e+06 ... 6.37e+06
+        density  (latitude, longitude) float64 2.67e+03 2.67e+03 ... 2.67e+03
+
+    # Pass top and bottom as ellipsoidal heights (geodetic coordinate system)
+    >>> bottom, top = -1000, 1000
+    >>> region = [-12, 12, -20, 20]
+    >>> layer = tesseroid_layer(
+    ...     region, spacing=0.5, top=top, bottom=bottom, coordinates="geodetic"
+    ... )
+    >>> print(layer.data_vars)
+    Data variables:
+        top      (latitude, longitude) float64 6.377e+06 6.377e+06 ... 6.377e+06
+        bottom   (latitude, longitude) float64 6.375e+06 6.375e+06 ... 6.375e+06
+        density  (latitude, longitude) float64 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0
+
+    # Create a layer where region coordinates are the boundaries of extreme tesseroids
+    >>> region = [-1, 1, -1, 1]
+    >>> layer = tesseroid_layer(region, spacing=0.2, region_centers=False)
+    >>> print(layer.coords)
+    Coordinates:
+      * longitude  (longitude) float64 -0.9 -0.7 -0.5 -0.3 -0.1 0.1 0.3 0.5 0.7 0.9
+      * latitude   (latitude) float64 -0.9 -0.7 -0.5 -0.3 -0.1 0.1 0.3 0.5 0.7 0.9
+
     """
     check_region(region)
     if shape is not None and spacing is not None:
