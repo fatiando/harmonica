@@ -89,13 +89,15 @@ def tesseroid_layer(
     Examples
     --------
 
-    # Create a layer around (0, 0) with tesseroids of 0.5 x 0.5 degrees
+    Create a layer around (0, 0) with tesseroids of 0.5 x 0.5 degrees
+
     >>> region = [-10, 10, -10, 10]
     >>> layer = tesseroid_layer(region, spacing=0.5)
     >>> print(layer.shape)
     (41, 41)
 
-    # Create a layer with top, bottom and density
+    Create a layer with top, bottom and density
+
     >>> from harmonica import get_ellipsoid
     >>> ellipsoid = get_ellipsoid()
     >>> top = ellipsoid.mean_radius
@@ -115,7 +117,8 @@ def tesseroid_layer(
         bottom   (latitude, longitude) float64 6.37e+06 6.37e+06 ... 6.37e+06
         density  (latitude, longitude) float64 2.67e+03 2.67e+03 ... 2.67e+03
 
-    # Pass top and bottom as ellipsoidal heights (geodetic coordinate system)
+    Pass top and bottom as ellipsoidal heights (geodetic coordinate system)
+
     >>> bottom, top = -1000, 1000
     >>> region = [-12, 12, -20, 20]
     >>> layer = tesseroid_layer(
@@ -127,7 +130,8 @@ def tesseroid_layer(
         bottom   (latitude, longitude) float64 6.375e+06 6.375e+06 ... 6.375e+06
         density  (latitude, longitude) float64 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0
 
-    # Create a layer where region coordinates are the boundaries of extreme tesseroids
+    Create a layer where region coordinates are the boundaries of extreme tesseroids
+
     >>> region = [-1, 1, -1, 1]
     >>> layer = tesseroid_layer(region, spacing=0.2, region_centers=False)
     >>> print(layer.coords)
