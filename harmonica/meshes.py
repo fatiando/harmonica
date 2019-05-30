@@ -46,11 +46,12 @@ def tesseroids_layer(
     Parameters
     ----------
     region : list = [W, E, S, N]
-        The boundaries of a given region in geocentric spherical coordinates.
+        The boundaries of a given region in geocentric spherical coordinates in degrees.
     spacing : float, tuple = (d_lat, d_lon), or None
-        The latitudinal and longitudinal spacing between the center of neighbour
-        tesseroids, respectively, i.e. the longitudinal and latitudinal size of each
-        tesseroid. A single value means that the spacing is equal in both directions.
+        The latitudinal and longitudinal spacing (in degrees) between the center of
+        neighbour tesseroids, respectively, i.e. the longitudinal and latitudinal size
+        of each tesseroid. A single value means that the spacing is equal in both
+        directions.
     shape : tuple = (n_lat, n_lon) or None
         The number of tesseroids in the latitudinal and longitudinal directions,
         respectively.
@@ -58,16 +59,16 @@ def tesseroids_layer(
         Whether to adjust the spacing or the region if required. Ignored if *shape* is
         given instead of *spacing*. Defaults to adjusting the spacing.
     top : float or None
-        Coordinate of outer surface of the layer in geocentric spherical or geodetic
-        coordinates. If ``None`` a ``np.nan`` array will be added to the
+        Coordinate (in meters) of outer surface of the layer in geocentric spherical or
+        geodetic coordinates. If ``None`` a ``np.nan`` array will be added to the
         :class:``xarray.Dataset``.
     bottom : float or None
-        Coordinate of inner surface of the layer in geocentric spherical or geodetic
-        coordinates. If ``None`` a ``np.nan`` array will be added to the
+        Coordinate (in meters) of inner surface of the layer in geocentric spherical or
+        geodetic coordinates. If ``None`` a ``np.nan`` array will be added to the
         :class:``xarray.Dataset``.
     density : float or None
-        Density of the tesseroids on the layer. If ``None`` a zeroes array will be
-        added to the :class:``xarray.Dataset``.
+        Density (in SI units) of the tesseroids on the layer. If ``None`` a zeroes array
+        will be added to the :class:``xarray.Dataset``.
     coordinates : {"spherical", "geodetic"}
         Specify under which coordinate system the ``top`` and ``bottom`` parameters are
         defined. Default is ``spherical``.
