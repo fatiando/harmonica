@@ -100,9 +100,10 @@ def tesseroid_layer(
         )
     longitude = np.linspace(region[0], region[1], shape[1])
     latitude = np.linspace(region[2], region[3], shape[0])
+    d_lon, d_lat = longitude[1] - longitude[0], latitude[1] - latitude[0]
     if not region_centers:
-        longitude = longitude[:-1] + (longitude[1] - longitude[0]) / 2
-        latitude = latitude[:-1] + (latitude[1] - latitude[0]) / 2
+        longitude = longitude[:-1] + d_lon / 2
+        latitude = latitude[:-1] + d_lat / 2
         shape = (shape[0] - 1, shape[1] - 1)
     coords = {"longitude": longitude, "latitude": latitude}
     if top is None:
@@ -117,7 +118,12 @@ def tesseroid_layer(
         "bottom": (dims, bottom * np.ones(shape)),
         "density": (dims, density * np.ones(shape)),
     }
-    layer = xr.Dataset(data_vars, coords=coords)
+    metadata = {
+        "spacing": (d_lat, d_lon),
+        "region": region,
+        "shape": shape,
+    }
+    layer = xr.Dataset(data_vars, coords=coords, attrs=metadata)
     # Convert top and bottom coordinates if given in geodetic
     if coordinates == "geodetic":
         if top is not None:
