@@ -118,11 +118,7 @@ def tesseroid_layer(
         "bottom": (dims, bottom * np.ones(shape)),
         "density": (dims, density * np.ones(shape)),
     }
-    metadata = {
-        "spacing": (d_lat, d_lon),
-        "region": region,
-        "shape": shape,
-    }
+    metadata = {"spacing": (d_lat, d_lon), "region": region, "shape": shape}
     layer = xr.Dataset(data_vars, coords=coords, attrs=metadata)
     # Convert top and bottom coordinates if given in geodetic
     if coordinates == "geodetic":
