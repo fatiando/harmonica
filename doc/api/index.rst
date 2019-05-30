@@ -44,6 +44,14 @@ Coordinates Conversions
     geodetic_to_spherical
     spherical_to_geodetic
 
+Meshes
+------
+
+.. autosummary::
+   :toctree: generated/
+
+    tesseroid_layer
+
 Input and Output
 ----------------
 
