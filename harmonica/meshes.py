@@ -96,6 +96,30 @@ def tesseroid_layer(
     >>> print(layer.shape)
     (41, 41)
 
+    We can specify the number of tesseroids instead
+
+    >>> region = [-10, 10, -10, 10]
+    >>> layer = tesseroid_layer(region, shape=(21, 21))
+    >>> print(layer.spacing)
+    (1.0, 1.0)
+
+    If the spacing doesn't fit the region, we can adjust either the spacing:
+
+    >>> region = [-10.1, 10.1, -10.1, 10.1]
+    >>> layer = tesseroid_layer(region, spacing=0.5)
+    >>> print(layer.region)
+    (-10.1, 10.1, -10.1, 10.1)
+    >>> print("({:.3f}, {:.3f})".format(*layer.spacing))
+    (0.505, 0.505)
+
+    Or the region:
+
+    >>> layer = tesseroid_layer(region, spacing=0.5, adjust="region")
+    >>> print(layer.region)
+    (-10.1, 9.9, -10.1, 9.9)
+    >>> print(layer.spacing)
+    (0.5, 0.5)
+
     Create a layer with top, bottom and density
 
     >>> from harmonica import get_ellipsoid
@@ -107,8 +131,8 @@ def tesseroid_layer(
     >>> layer = tesseroid_layer(
     ...     region, spacing=0.5, top=top, bottom=bottom, density=density
     ... )
-    >>> print("Spacing: ({:.3f}, {:.3f})".format(layer.spacing[0], layer.spacing[1]))
-    Spacing: (0.504, 0.495)
+    >>> print("({:.3f}, {:.3f})".format(*layer.spacing))
+    (0.504, 0.495)
     >>> print(layer.shape)
     (25, 21)
     >>> print(layer.data_vars)
