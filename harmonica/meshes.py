@@ -53,7 +53,7 @@ def tesseroid_layer(
         Coordinate of outer surface of the layer in geocentric spherical or geodetic
         coordinates. If ``None`` a ``np.nan`` array will be added to the
         :class:``xarray.Dataset``.
-    bottom : flaot or None
+    bottom : float or None
         Coordinate of inner surface of the layer in geocentric spherical or geodetic
         coordinates. If ``None`` a ``np.nan`` array will be added to the
         :class:``xarray.Dataset``.
