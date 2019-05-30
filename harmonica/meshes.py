@@ -5,6 +5,8 @@ import numpy as np
 import xarray as xr
 from verde.coordinates import spacing_to_shape
 
+from . import geodetic_to_spherical
+
 
 def tesseroid_layer(
     region,
@@ -111,4 +113,14 @@ def tesseroid_layer(
         "density": (dims, density * np.ones(shape)),
     }
     layer = xr.Dataset(data_vars, coords=coords)
+    # Convert top and bottom coordinates if given in geodetic
+    if coordinates == "geodetic":
+        if top is not None:
+            _, _, layer["top"] = geodetic_to_spherical(
+                layer.longitude, layer.latitude, layer.top
+            )
+        if bottom is not None:
+            _, _, layer["bottom"] = geodetic_to_spherical(
+                layer.longitude, layer.latitude, layer.bottom
+            )
     return layer
