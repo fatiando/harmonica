@@ -76,7 +76,8 @@ def tesseroid_layer(
         tesseroids located on the boundaries of the layer. If False, the region
         boundaries are considered as the longitudinal and latitudinal bounds of the
         extreme tesseroids. In practice this means that there won't be any portion of
-        mass outside the given region. Default is True.
+        mass outside the given region, and there will be one less tesseroid per
+        dimension compared with the case if this is True. Default is True.
 
     Returns
     -------
@@ -99,6 +100,10 @@ def tesseroid_layer(
         )
     longitude = np.linspace(region[0], region[1], shape[1])
     latitude = np.linspace(region[2], region[3], shape[0])
+    if not region_centers:
+        longitude = longitude[:-1] + (longitude[1] - longitude[0]) / 2
+        latitude = latitude[:-1] + (latitude[1] - latitude[0]) / 2
+        shape = (shape[0] - 1, shape[1] - 1)
     coords = {"longitude": longitude, "latitude": latitude}
     if top is None:
         top = np.nan
