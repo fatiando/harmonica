@@ -3,9 +3,9 @@ Meshes and layers of simple geometric elements.
 """
 import numpy as np
 import xarray as xr
-from verde.coordinates import spacing_to_shape
+from verde.coordinates import spacing_to_shape, check_region
 
-from . import geodetic_to_spherical, check_region
+from . import geodetic_to_spherical
 
 
 def tesseroid_layer(
