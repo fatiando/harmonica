@@ -87,9 +87,9 @@ def tesseroid_layer(
     """
     # check_region(region)
     if shape is not None and spacing is not None:
-        raise ValueError("Both grid shape and spacing provided. Only one is allowed.")
+        raise ValueError("Both shape and spacing provided. Only one is allowed.")
     if shape is None and spacing is None:
-        raise ValueError("Either a grid shape or a spacing must be provided.")
+        raise ValueError("Either a shape or a spacing must be provided.")
     if spacing is not None:
         shape, region = spacing_to_shape(region, spacing, adjust)
     if coordinates not in ("spherical", "geodetic"):
