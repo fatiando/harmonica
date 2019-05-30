@@ -5,7 +5,7 @@ import numpy as np
 import xarray as xr
 from verde.coordinates import spacing_to_shape
 
-from . import geodetic_to_spherical
+from . import geodetic_to_spherical, check_region
 
 
 def tesseroid_layer(
@@ -86,7 +86,7 @@ def tesseroid_layer(
         spherical coordinates along with the top and bottom coordinates and density of
         each tesseroid.
     """
-    # check_region(region)
+    check_region(region)
     if shape is not None and spacing is not None:
         raise ValueError("Both shape and spacing provided. Only one is allowed.")
     if shape is None and spacing is None:
