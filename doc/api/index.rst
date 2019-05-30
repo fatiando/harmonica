@@ -50,7 +50,7 @@ Meshes
 .. autosummary::
    :toctree: generated/
 
-    tesseroid_layer
+    tesseroids_layer
 
 Input and Output
 ----------------

@@ -8,7 +8,7 @@ from verde.coordinates import spacing_to_shape, check_region
 from . import geodetic_to_spherical
 
 
-def tesseroid_layer(
+def tesseroids_layer(
     region,
     spacing=None,
     shape=None,
@@ -81,7 +81,7 @@ def tesseroid_layer(
 
     Returns
     -------
-    tesseroid_layer : :class:``xarray.Dataset``
+    tesseroids_layer : :class:``xarray.Dataset``
         Dataset containing the coordinates of the tesseroids' centers in geocentric
         spherical coordinates along with the top and bottom coordinates and density of
         each tesseroid.
@@ -92,21 +92,21 @@ def tesseroid_layer(
     Create a layer around (0, 0) with tesseroids of 0.5 x 0.5 degrees
 
     >>> region = [-10, 10, -10, 10]
-    >>> layer = tesseroid_layer(region, spacing=0.5)
+    >>> layer = tesseroids_layer(region, spacing=0.5)
     >>> print(layer.shape)
     (41, 41)
 
     We can specify the number of tesseroids instead
 
     >>> region = [-10, 10, -10, 10]
-    >>> layer = tesseroid_layer(region, shape=(21, 21))
+    >>> layer = tesseroids_layer(region, shape=(21, 21))
     >>> print(layer.spacing)
     (1.0, 1.0)
 
     If the spacing doesn't fit the region, we can adjust either the spacing:
 
     >>> region = [-10.1, 10.1, -10.1, 10.1]
-    >>> layer = tesseroid_layer(region, spacing=0.5)
+    >>> layer = tesseroids_layer(region, spacing=0.5)
     >>> print(layer.region)
     (-10.1, 10.1, -10.1, 10.1)
     >>> print("({:.3f}, {:.3f})".format(*layer.spacing))
@@ -114,7 +114,7 @@ def tesseroid_layer(
 
     Or the region:
 
-    >>> layer = tesseroid_layer(region, spacing=0.5, adjust="region")
+    >>> layer = tesseroids_layer(region, spacing=0.5, adjust="region")
     >>> print(layer.region)
     (-10.1, 9.9, -10.1, 9.9)
     >>> print(layer.spacing)
@@ -128,7 +128,7 @@ def tesseroid_layer(
     >>> bottom = top - 1e3
     >>> density = 2670
     >>> region = [-70.1, -60.2, -45.2, -33.1]
-    >>> layer = tesseroid_layer(
+    >>> layer = tesseroids_layer(
     ...     region, spacing=0.5, top=top, bottom=bottom, density=density
     ... )
     >>> print("({:.3f}, {:.3f})".format(*layer.spacing))
@@ -145,7 +145,7 @@ def tesseroid_layer(
 
     >>> bottom, top = -1000, 1000
     >>> region = [-12, 12, -20, 20]
-    >>> layer = tesseroid_layer(
+    >>> layer = tesseroids_layer(
     ...     region, spacing=0.5, top=top, bottom=bottom, coordinates="geodetic"
     ... )
     >>> print(layer.data_vars)
@@ -157,7 +157,7 @@ def tesseroid_layer(
     Create a layer where region coordinates are the boundaries of extreme tesseroids
 
     >>> region = [-1, 1, -1, 1]
-    >>> layer = tesseroid_layer(region, spacing=0.2, region_centers=False)
+    >>> layer = tesseroids_layer(region, spacing=0.2, region_centers=False)
     >>> print(layer.coords)
     Coordinates:
       * longitude  (longitude) float64 -0.9 -0.7 -0.5 -0.3 -0.1 0.1 0.3 0.5 0.7 0.9
