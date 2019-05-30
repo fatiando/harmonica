@@ -26,9 +26,15 @@ def tesseroid_layer(
     The layer will be a :class:`xarray.Dataset` with ``longitude`` and ``latitude``
     coordinates and `top`, `bottom` and `density` as data.
     The ``longitude`` and ``latitude`` will be the coordinates of the center of each
-    tesseroid on the layer.
-    The ``region``, ``top`` and ``bottom`` can be defined either in a geocentric
+    tesseroid on the layer in geocentric spherical coordinates.
+    The ``top`` and ``bottom`` parameters can be defined either in a geocentric
     spherical or in a geodetic coordinate system.
+
+    .. warning :
+        If ``top`` and ``bottom`` parameters are defined under a geodetic coordinate
+        system, they will be converted to a spherical geocentric one.
+        Because tesseroids cannot be defined on a geodetic coordinate system, the
+        latitude coordinates will remain unchanged.
 
     If the given region is not divisible by the desired spacing, either the region or
     the spacing will have to be adjusted. By default, the spacing will be rounded to the
@@ -38,7 +44,7 @@ def tesseroid_layer(
     Parameters
     ----------
     region : list = [W, E, S, N]
-        The boundaries of a given region in geodetic or geocentric spherical coordinates.
+        The boundaries of a given region in geocentric spherical coordinates.
     spacing : float, tuple = (d_lat, d_lon), or None
         The latitudinal and longitudinal spacing between the center of neighbour
         tesseroids, respectively, i.e. the longitudinal and latitudinal size of each
@@ -61,7 +67,7 @@ def tesseroid_layer(
         Density of the tesseroids on the layer. If ``None`` a zeroes array will be
         added to the :class:``xarray.Dataset``.
     coordinates : {"spherical", "geodetic"}
-        Specify under which coordinate system the ``region``, ``top`` and ``bottom`` are
+        Specify under which coordinate system the ``top`` and ``bottom`` parameters are
         defined. Default is ``spherical``.
     region_centers : bool
         If True, the region coordinates are assumed to be the center of the
