@@ -158,7 +158,7 @@ def tesseroid_gravity(
 def tesseroids_to_point_masses(
     tesseroids, glq_nodes, glq_weights, point_masses, weights
 ):
-    """
+    r"""
     Convert tesseroids to equivalent point masses on nodes of GLQ
 
     Each tesseroid is converted into a set of point masses located on the scaled nodes
