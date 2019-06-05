@@ -408,22 +408,22 @@ def _distance_tesseroid_point(coordinates, tesseroid):
 def _check_tesseroid(tesseroid):
     "Check if tesseroid boundaries are well defined"
     w, e, s, n, bottom, top = tesseroid[:]
-    if w >= e:
+    if w > e:
         raise ValueError(
-            "Invalid tesseroid. The west boundary must be lower than the east one."
+            "Invalid tesseroid. The west boundary can't be greater than the east one."
         )
-    if s >= n:
+    if s > n:
         raise ValueError(
-            "Invalid tesseroid. The south boundary must be lower than the north one."
+            "Invalid tesseroid. The south boundary can't be greater than the north one."
         )
-    if bottom <= 0 or top <= 0:
+    if bottom < 0 or top < 0:
         raise ValueError(
-            "Invalid tesseroid. The bottom and top radii must be greater than zero."
+            "Invalid tesseroid. The bottom and top radii couldn't be lower than zero."
         )
-    if bottom >= top:
+    if bottom > top:
         raise ValueError(
             "Invalid tesseroid. "
-            + "The bottom radius boundary must be lower than the top one."
+            + "The bottom radius boundary can't be greater than the top one."
         )
 
 

@@ -25,16 +25,15 @@ def test_invalid_tesseroid():
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Check if it works properly on valid tesseroids
     _check_tesseroid(np.array([w, e, s, n, bottom, top]))
-    # Test invalid longitude boundaries
+    # Check if it works properly on valid tesseroid with zero volume
+    _check_tesseroid(np.array([w, w, s, n, bottom, top]))
+    _check_tesseroid(np.array([w, e, s, s, bottom, top]))
+    _check_tesseroid(np.array([w, e, s, n, bottom, bottom]))
+    # Test invalid longitude and latitude boundaries
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([20, 10, s, n, bottom, top]))
     with pytest.raises(ValueError):
-        _check_tesseroid(np.array([w, w, s, n, bottom, top]))
-    # Test invalid latitude boundaries
-    with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, 20, 10, bottom, top]))
-    with pytest.raises(ValueError):
-        _check_tesseroid(np.array([w, e, s, s, bottom, top]))
     # Test invalid radial boundaries
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, s, n, 200, 100]))
@@ -42,8 +41,6 @@ def test_invalid_tesseroid():
         _check_tesseroid(np.array([w, e, s, n, -100, top]))
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, s, n, bottom, -100]))
-    with pytest.raises(ValueError):
-        _check_tesseroid(np.array([w, e, s, n, bottom, bottom]))
 
 
 def test_point_inside_tesseroid():
