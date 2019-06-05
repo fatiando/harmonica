@@ -7,7 +7,7 @@ from numba import jit
 from ..constants import GRAVITATIONAL_CONST
 
 
-def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
+def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
     """
     Compute gravitational fields of a point mass on spherical coordinates.
 
@@ -17,12 +17,12 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
         List or array containing `longitude`, `latitude` and `radius` of computation
         points defined on a spherical geocentric coordinate system.
         Both `longitude` and `latitude` should be in degrees and `radius` in meters.
-    point : list or array
-        Coordinates of the point mass: [`longitude`, `latitude`, `radius`] defined on
-        a spherical geocentric coordinate system.
-        Both `longitude` and `latitude` should be in degrees and `radius` in meters.
-    mass : float
-        Mass of the point mass in kg.
+    points : list or array
+        List or array containing the coordinates of the point masses `longitude_p`,
+        `latitude_p`, `radius_p` defined on a spherical geocentric coordinate system.
+        Both `longitude_p` and `latitude_p` should be in degrees and `radius` in meters.
+    masses : list or array
+        List or array containing the mass of each point mass in kg.
     field : str
         Gravitational field that wants to be computed.
         The available fields are:
@@ -44,9 +44,27 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
-    longitude, latitude, radius = (i.ravel() for i in coordinates[:3])
-    jit_point_mass_gravity(longitude, latitude, radius, point, kernels[field], result)
-    result *= GRAVITATIONAL_CONST * mass
+    # Prepare arrays to be passed to the jitted functions
+    longitude, latitude, radius = (
+        np.atleast_1d(i).ravel().astype(np.float64) for i in coordinates[:3]
+    )
+    longitude_p, latitude_p, radius_p = (
+        np.atleast_1d(i).ravel().astype(np.float64) for i in points[:3]
+    )
+    masses = np.atleast_1d(masses).astype(np.float64).ravel()
+    # Compute gravitational field
+    jit_point_mass_gravity(
+        longitude,
+        latitude,
+        radius,
+        longitude_p,
+        latitude_p,
+        radius_p,
+        masses,
+        result,
+        kernels[field],
+    )
+    result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
     if field in ("g_radial"):
         result *= 1e5  # SI to mGal
@@ -54,14 +72,28 @@ def point_mass_gravity(coordinates, point, mass, field, dtype="float64"):
 
 
 @jit(nopython=True)
-def jit_point_masses_gravity(
-    coordinates, longitude_p, latitude_p, radius_p, masses, kernel
+def jit_point_mass_gravity(
+    longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):
     """
-    Compute gravity field of point masses on a single computation point
+    Compute gravity field of point masses on computation points.
+
+    Parameters
+    ----------
+    longitude, latitude, radius : 1d-arrays
+        Coordinates of computation points in spherical geocentric coordinate system.
+    longitude_p, latitude_p, radius_p : 1d-arrays
+        Coordinates of point masses in spherical geocentric coordinate system.
+    masses : 1d-array
+        Mass of each point mass in SI units.
+    out : 1d-array
+        Array where the gravitational field on each computation point will be appended.
+        It must have the same size of ``longitude``, ``latitude`` and ``radius``.
+    kernel : func
+        Kernel function that will be used to compute the gravity field on the
+        computation points.
     """
     # Compute quantities related to computation point
-    longitude, latitude, radius = coordinates[:]
     longitude = np.radians(longitude)
     latitude = np.radians(latitude)
     cosphi = np.cos(latitude)
@@ -72,43 +104,18 @@ def jit_point_masses_gravity(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravity field
-    out = 0
-    for l in range(longitude_p.size):
-        out += masses[l] * kernel(
-            longitude,
-            cosphi,
-            sinphi,
-            radius,
-            longitude_p[l],
-            cosphi_p[l],
-            sinphi_p[l],
-            radius_p[l],
-        )
-    return out
-
-
-@jit(nopython=True)
-def jit_point_mass_gravity(longitude, latitude, radius, point, kernel, out):
-    """
-    """
-    longitude_p, latitude_p, radius_p = point[:]
-    longitude_p, latitude_p = np.radians(longitude_p), np.radians(latitude_p)
-    cosphi_p = np.cos(latitude_p)
-    sinphi_p = np.sin(latitude_p)
-    cosphi = np.cos(np.radians(latitude))
-    sinphi = np.sin(np.radians(latitude))
-    longitude_radians = np.radians(longitude)
-    for l in range(out.size):
-        out[l] += kernel(
-            longitude_radians[l],
-            cosphi[l],
-            sinphi[l],
-            radius[l],
-            longitude_p,
-            cosphi_p,
-            sinphi_p,
-            radius_p,
-        )
+    for l in range(longitude.size):
+        for m in range(longitude_p.size):
+            out[l] += masses[m] * kernel(
+                longitude[l],
+                cosphi[l],
+                sinphi[l],
+                radius[l],
+                longitude_p[m],
+                cosphi_p[m],
+                sinphi_p[m],
+                radius_p[m],
+            )
 
 
 @jit(nopython=True)

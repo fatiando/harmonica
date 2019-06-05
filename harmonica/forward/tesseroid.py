@@ -6,7 +6,7 @@ from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
-from .point_mass import jit_point_masses_gravity, kernel_potential, kernel_g_radial
+from .point_mass import jit_point_mass_gravity, kernel_potential, kernel_g_radial
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
