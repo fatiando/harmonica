@@ -4,6 +4,7 @@ Test forward modellig for point masses.
 import numpy as np
 import numpy.testing as npt
 import pytest
+from verde import grid_coordinates
 
 from ...constants import GRAVITATIONAL_CONST
 from ...ellipsoid import get_ellipsoid
@@ -319,9 +320,13 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
     # Define computation point located on the equator at the mean Earth radius
     ellipsoid = get_ellipsoid()
     radius = ellipsoid.mean_radius
-    coordinates = [0, 0, radius]
-    # Define shape of spherical shell model made of tesseroids
+    coordinates = grid_coordinates([0, 350, -90, 90], spacing=10, extra_coords=radius)
+    # Define lon and lat coordinates of spherical shell model made of tesseroids
     shape = (6, 6)
+    longitude = np.linspace(0, 360, shape[0] + 1)
+    latitude = np.linspace(-90, 90, shape[1] + 1)
+    west, east = longitude[:-1], longitude[1:]
+    south, north = latitude[:-1], latitude[1:]
     # Define a density for the shell
     density = 1000
     # Define different values for the spherical shell thickness
@@ -332,25 +337,22 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
         # Define boundary coordinates of each tesseroid
         top = ellipsoid.mean_radius
         bottom = top - thickness
-        longitude = np.linspace(0, 360, shape[0] + 1)
-        latitude = np.linspace(-90, 90, shape[1] + 1)
-        west, east = longitude[:-1], longitude[1:]
-        south, north = latitude[:-1], latitude[1:]
         for w, e in zip(west, east):
             for s, n in zip(south, north):
                 tesseroids.append([w, e, s, n, bottom, top])
         # Compute gravitational fields of the spherical shell
         numerical = {"potential": 0, "g_radial": 0}
-        for tesseroid in tesseroids:
-            for field in numerical:
-                numerical[field] += tesseroid_gravity(
-                    coordinates, tesseroid, density, field=field
-                )
+        for field in numerical:
+            numerical[field] = tesseroid_gravity(
+                coordinates, tesseroids, density * np.ones(shape), field=field
+            )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
         # Assert percentage difference between analytical and numerical < 0.1%
         for field in numerical:
-            diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
+            diff = np.max(
+                abs((analytical[field] - numerical[field]) / analytical[field]) * 100
+            )
             assert diff < 0.1
 
 
