@@ -176,6 +176,49 @@ def jit_tesseroid_gravity(
     kernel,
 ):
     """
+    Compute gravitational field of tesseroids on computations points
+
+    Perform adaptive discretization, convert each small tesseroid to equivalent point
+    masses through GLQ and use point masses kernel functions to compute the
+    gravitational field.
+
+    Parameters
+    ----------
+    longitude, latitude, radius : 1d-arrays
+        Arrays containing the coordinates of the computation points in spherical
+        geocentric coordinate system.
+    tesseroids : 2d-array
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+    density : 1d-array
+        Density of each tesseroid in SI units.
+    stack : 2d-array
+        Empty array where tesseroids created by adaptive discretization algorithm will
+        be processed.
+    small_tesseroids : 2d-array
+        Empty array where smaller tesseroids created by adaptive discretization
+        algorithm will be stored.
+    point_masses : 2d-array
+        Empty array where equivalent point masses will be stored.
+    weights : 1d-array
+        Empty array where the GLQ weight of each point mass will be stored.
+    result : 1d-array
+        Array where the gravitational effect of each tesseroid will be added.
+    distance_size_ratio : float
+        Value of the distance size ratio.
+    radial_discretization : bool
+        If ``False``, the adaptive discretization algorithm will split the tesseroid
+        only on the horizontal direction. If ``True``, it will perform a three dimensional
+        adaptive discretization, splitting the tesseroids on every direction.
+    n_nodes : int
+        Total number of equivalent point masses that will be generated for each
+        split tesseroid.
+    glq_nodes : list
+        List containing unscaled GLQ nodes.
+    glq_weights : list
+        List containing GLQ weights of the nodes.
+    kernel : func
+        Kernel function for the gravitational field of point masses.
     """
     for l in range(tesseroids.shape[0]):
         tesseroid = tesseroids[l, :]
