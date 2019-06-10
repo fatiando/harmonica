@@ -322,7 +322,7 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
     radius = ellipsoid.mean_radius
     coordinates = grid_coordinates([0, 350, -90, 90], spacing=10, extra_coords=radius)
     # Define lon and lat coordinates of spherical shell model made of tesseroids
-    shape = (6, 6)
+    shape = (12, 6)
     longitude = np.linspace(0, 360, shape[0] + 1)
     latitude = np.linspace(-90, 90, shape[1] + 1)
     west, east = longitude[:-1], longitude[1:]
