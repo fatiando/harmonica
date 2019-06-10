@@ -224,6 +224,7 @@ def jit_tesseroid_gravity(
         tesseroid = tesseroids[l, :]
         # Sanity checks for tesseroid
         _check_tesseroid(tesseroid)
+        _longitude_continuity(tesseroid)
         for m in range(longitude.size):
             computation_point = np.array([longitude[m], latitude[m], radius[m]])
             # Sanity checks for tesseroid and computation point
@@ -552,3 +553,27 @@ def _check_point_outside_tesseroid(coordinates, tesseroid):
             "Found computation point inside tesseroid. "
             + "Computation points must be outside of tesseroids."
         )
+
+
+@jit(nopython=True)
+def _longitude_continuity(region):
+    """
+    Modify longitudinal boundaries of region to ensure longitude continuity.
+
+    Longitudinal boundaries of the region are moved to the `[0, 360)` or `[-180, 180)`
+    degrees interval depending which one is better suited for that specific region.
+
+    Parameters
+    ----------
+    region : 1d-array
+        Array containing the boundaries of the region (or tesseroid).
+        The first two elements should be the western and the eastern boundaries.
+    """
+    w, e = region[:2]
+    w %= 360
+    e %= 360
+    if w > e:
+        e = ((e + 180) % 360) - 180
+        w = ((w + 180) % 360) - 180
+    region[0] = w
+    region[1] = e
