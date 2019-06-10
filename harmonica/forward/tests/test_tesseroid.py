@@ -417,3 +417,21 @@ def spherical_shell_analytical(top, bottom, density, radius):
         "g_radial": -1e5 * potential / radius,
     }
     return analytical
+
+
+def test_longitude_continuity_tesseroid():
+    "Test if longitude continuity works as expected"
+    ellipsoid = get_ellipsoid()
+    top = ellipsoid.mean_radius
+    bottom = top - 1e4
+    w, e, s, n = -10, 10, -10, 10
+    tesseroid = [w, e, s, n, bottom, top]
+    density = 1e3
+    coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
+    for field in ("potential", "g_radial"):
+        result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
+        # Change longitudinal boundaries of tesseroid but defining the same one
+        tesseroid = [350, 10, s, n, bottom, top]
+        npt.assert_allclose(
+            result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
+        )

@@ -223,8 +223,8 @@ def jit_tesseroid_gravity(
     for l in range(tesseroids.shape[0]):
         tesseroid = tesseroids[l, :]
         # Sanity checks for tesseroid
-        _check_tesseroid(tesseroid)
         _longitude_continuity(tesseroid)
+        _check_tesseroid(tesseroid)
         for m in range(longitude.size):
             computation_point = np.array([longitude[m], latitude[m], radius[m]])
             # Sanity checks for tesseroid and computation point
