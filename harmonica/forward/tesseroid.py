@@ -78,6 +78,9 @@ def tesseroid_gravity(
         only on the horizontal direction. If ``True``, it will perform a three dimensional
         adaptive discretization, splitting the tesseroids on every direction.
         Default ``False``.
+    dtype: data-type (optional)
+        Data type assigned to tesseroid boundaries, computation points coordinates and
+        resulting gravitational field. Default to ``np.float64``.
 
     Returns
     -------
@@ -113,10 +116,10 @@ def tesseroid_gravity(
     result = np.zeros(cast.size, dtype=dtype)
     # Convert coordinates, tesseroids and density to arrays
     longitude, latitude, radius = (
-        np.atleast_1d(i).ravel().astype(np.float64) for i in coordinates[:3]
+        np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
     )
     tesseroids = np.atleast_2d(tesseroids)
-    density = np.atleast_1d(density).ravel().astype(np.float64)
+    density = np.atleast_1d(density).ravel().astype(dtype)
     if density.size != tesseroids.shape[0]:
         raise ValueError(
             "Density array must have the same size as number of tesseroids."
