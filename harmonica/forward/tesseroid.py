@@ -448,8 +448,8 @@ def _adaptive_discretization(
             # Raise error if small_tesseroids overflow
             if n_splits + 1 > small_tesseroids.shape[0]:
                 raise OverflowError(
-                    "Small Tesseroids Overflow."
-                    + " Try to increase the maximum number of splits."
+                    "Exceeded maximum discretizations."
+                    + " Please increase the maximum_discretizations."
                 )
             small_tesseroids[n_splits] = tesseroid
             n_splits += 1
