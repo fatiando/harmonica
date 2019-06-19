@@ -44,6 +44,24 @@ def test_invalid_tesseroid():
         _check_tesseroid(np.array([w, e, s, n, bottom, -100]))
 
 
+def test_invalid_distance_size_ratii():
+    "Check if distance_size_ratii argument is well handled"
+    tesseroid = [-10, 10, -10, 10, 100, 200]
+    density = 1000
+    coordinates = [0, 0, 250]
+    # Check empty distance_size_ratii dictionary
+    distance_size_ratii = {}
+    for field in ("potential", "g_radial"):
+        with pytest.raises(ValueError):
+            tesseroid_gravity(
+                coordinates,
+                tesseroid,
+                density,
+                distance_size_ratii=distance_size_ratii,
+                field=field,
+            )
+
+
 def test_point_inside_tesseroid():
     "Check if a computation point inside the tesseroid is catched"
     tesseroid = np.array([-10, 10, -10, 10, 100, 200])
