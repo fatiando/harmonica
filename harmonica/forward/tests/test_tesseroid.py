@@ -21,6 +21,9 @@ from ..tesseroid import (
 )
 
 
+# -------------------
+# Error raising tests
+# -------------------
 def test_invalid_field():
     "Check if passing an invalid field raises an error"
     tesseroid = [-10, 10, -10, 10, 100, 200]
@@ -110,6 +113,30 @@ def test_point_inside_tesseroid():
         _check_point_outside_tesseroid(coordinates, tesseroid)
 
 
+def test_stack_overflow():
+    "Test if adaptive discretization raises OverflowError on stack overflow"
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
+    coordinates = [0.0, 0.0, 1.0]
+    distance_size_ratio = 10
+    # Test stack overflow
+    stack = np.empty((2, 6))
+    small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
+    with pytest.raises(OverflowError):
+        _adaptive_discretization(
+            coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
+        )
+    # Test small_tesseroids overflow
+    stack = np.empty((STACK_SIZE, 6))
+    small_tesseroids = np.empty((2, 6))
+    with pytest.raises(OverflowError):
+        _adaptive_discretization(
+            coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
+        )
+
+
+# ---------------
+# Numerical tests
+# ---------------
 def test_distance_tesseroid_point():
     "Test distance between tesseroid and computation point"
     ellipsoid = get_ellipsoid()
@@ -318,27 +345,6 @@ def test_adaptive_discretization_on_distance_size_ratio():
             number_of_splits.append(n_splits)
         for i in range(1, len(number_of_splits)):
             assert number_of_splits[i - 1] <= number_of_splits[i]
-
-
-def test_stack_overflow():
-    "Test if adaptive discretization raises OverflowError on stack overflow"
-    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
-    coordinates = [0.0, 0.0, 1.0]
-    distance_size_ratio = 10
-    # Test stack overflow
-    stack = np.empty((2, 6))
-    small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
-    with pytest.raises(OverflowError):
-        _adaptive_discretization(
-            coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
-        )
-    # Test small_tesseroids overflow
-    stack = np.empty((STACK_SIZE, 6))
-    small_tesseroids = np.empty((2, 6))
-    with pytest.raises(OverflowError):
-        _adaptive_discretization(
-            coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
-        )
 
 
 def test_two_dimensional_adaptive_discretization():
