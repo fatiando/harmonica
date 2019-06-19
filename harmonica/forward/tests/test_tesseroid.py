@@ -21,6 +21,15 @@ from ..tesseroid import (
 )
 
 
+def test_invalid_field():
+    "Check if passing an invalid field raises an error"
+    tesseroid = [-10, 10, -10, 10, 100, 200]
+    density = 1000
+    coordinates = [0, 0, 250]
+    with pytest.raises(ValueError):
+        tesseroid_gravity(coordinates, tesseroid, density, field="Not a valid field")
+
+
 def test_invalid_tesseroid():
     "Check if an invalid tesseroid boundaries are catched"
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
