@@ -120,6 +120,7 @@ def tesseroid_gravity(
     longitude, latitude, radius = (
         np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
     )
+    coordinates = np.vstack((longitude, latitude, radius))
     tesseroids = np.atleast_2d(tesseroids).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
     if density.size != tesseroids.shape[0]:
@@ -145,9 +146,7 @@ def tesseroid_gravity(
     weights = np.empty(n_nodes * max_discretizations, dtype=dtype)
     # Compute gravity field
     jit_tesseroid_gravity(
-        longitude,
-        latitude,
-        radius,
+        coordinates,
         tesseroids,
         density,
         stack,
@@ -171,9 +170,7 @@ def tesseroid_gravity(
 
 @jit(nopython=True, parallel=True)
 def jit_tesseroid_gravity(
-    longitude,
-    latitude,
-    radius,
+    coordinates,
     tesseroids,
     density,
     stack,
@@ -197,8 +194,8 @@ def jit_tesseroid_gravity(
 
     Parameters
     ----------
-    longitude, latitude, radius : 1d-arrays
-        Arrays containing the coordinates of the computation points in spherical
+    coordinates : 2d-array
+        Array containing the coordinates of the computation points in spherical
         geocentric coordinate system.
     tesseroids : 2d-array
         Array containing the boundaries of each tesseroid:
@@ -238,8 +235,8 @@ def jit_tesseroid_gravity(
         # Sanity checks for tesseroid
         _longitude_continuity(tesseroid)
         _check_tesseroid(tesseroid)
-        for m in range(longitude.size):
-            computation_point = np.array([longitude[m], latitude[m], radius[m]])
+        for m in range(coordinates.shape[1]):
+            computation_point = coordinates[:, m]
             # Sanity checks for tesseroid and computation point
             _check_point_outside_tesseroid(computation_point, tesseroid)
             # Apply adaptive discretization on tesseroid
