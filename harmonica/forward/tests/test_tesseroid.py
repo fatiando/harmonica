@@ -71,6 +71,22 @@ def test_invalid_distance_size_ratii():
             )
 
 
+def test_invalid_density_array():
+    "Check if error is raised when density shape does not match tesseroids shape"
+    # Create a set of 4 tesseroids
+    tesseroids = [
+        [-10, 0, -10, 0, 100, 200],
+        [-10, 0, 0, 10, 100, 200],
+        [0, 10, -10, 0, 100, 200],
+        [0, 10, 0, 10, 100, 200],
+    ]
+    # Generate a two element density
+    density = [1000, 2000]
+    coordinates = [0, 0, 250]
+    with pytest.raises(ValueError):
+        tesseroid_gravity(coordinates, tesseroids, density, field="potential")
+
+
 def test_point_inside_tesseroid():
     "Check if a computation point inside the tesseroid is catched"
     tesseroid = np.array([-10, 10, -10, 10, 100, 200])
