@@ -10,7 +10,7 @@ from .point_mass import jit_point_mass_gravity, kernel_potential, kernel_g_radia
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
-GLQ_DEGREES = [2, 2, 2]
+GLQ_DEGREES = (2, 2, 2)
 DISTANCE_SIZE_RATII = {"potential": 1, "g_radial": 2.5}
 
 
@@ -58,7 +58,7 @@ def tesseroid_gravity(
         ratio.
         The greater the distance-size ratio, more discretizations will occur, increasing
         the accuracy of the numerical approximation but also the computation time.
-    glq_degrees : list (optional)
+    glq_degrees : tuple (optional)
         List containing the GLQ degrees used on each direction:
         ``glq_degree_longitude``, ``glq_degree_latitude``, ``glq_degree_radius``.
         The GLQ degree specifies how many point masses will be created along each
