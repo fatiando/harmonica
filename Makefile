@@ -2,6 +2,7 @@
 PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
+NUMBATEST_ARGS=--doctest-modules -v --pyargs -m numba
 LINT_FILES=setup.py $(PROJECT)
 BLACK_FILES=setup.py $(PROJECT) examples data/examples
 FLAKE8_FILES=setup.py $(PROJECT) examples data/examples
@@ -20,12 +21,18 @@ help:
 install:
 	pip install --no-deps -e .
 
-test:
+test: test_coverage test_numba
+
+test_coverage:
 	# Run a tmp folder to make sure the tests are run on the installed version
 	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); MPLBACKEND='agg' pytest $(PYTEST_ARGS) $(PROJECT)
+	cd $(TESTDIR); export NUMBA_DISABLE_JIT=1; MPLBACKEND='agg' pytest $(PYTEST_ARGS) $(PROJECT)
 	cp $(TESTDIR)/.coverage* .
 	rm -rvf $(TESTDIR)
+
+test_numba:
+	# Run a tmp folder to make sure the tests are run on the installed version
+	export NUMBA_DISABLE_JIT=0; MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
 
 format:
 	black $(BLACK_FILES)

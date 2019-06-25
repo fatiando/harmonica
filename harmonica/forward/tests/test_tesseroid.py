@@ -1,6 +1,7 @@
 """
 Test forward modellig for point masses.
 """
+import os
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -24,6 +25,7 @@ from ..tesseroid import (
 # -------------------
 # Error raising tests
 # -------------------
+@pytest.mark.numba
 def test_invalid_field():
     "Check if passing an invalid field raises an error"
     tesseroid = [-10, 10, -10, 10, 100, 200]
@@ -33,6 +35,7 @@ def test_invalid_field():
         tesseroid_gravity(coordinates, tesseroid, density, field="Not a valid field")
 
 
+@pytest.mark.numba
 def test_invalid_tesseroid():
     "Check if an invalid tesseroid boundaries are catched"
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
@@ -56,6 +59,7 @@ def test_invalid_tesseroid():
         _check_tesseroid(np.array([w, e, s, n, bottom, -100]))
 
 
+@pytest.mark.numba
 def test_invalid_distance_size_ratii():
     "Check if distance_size_ratii argument is well handled"
     tesseroid = [-10, 10, -10, 10, 100, 200]
@@ -74,6 +78,7 @@ def test_invalid_distance_size_ratii():
             )
 
 
+@pytest.mark.numba
 def test_invalid_density_array():
     "Check if error is raised when density shape does not match tesseroids shape"
     # Create a set of 4 tesseroids
@@ -90,6 +95,7 @@ def test_invalid_density_array():
         tesseroid_gravity(coordinates, tesseroids, density, field="potential")
 
 
+@pytest.mark.numba
 def test_point_inside_tesseroid():
     "Check if a computation point inside the tesseroid is catched"
     tesseroid = np.array([-10, 10, -10, 10, 100, 200])
@@ -113,6 +119,7 @@ def test_point_inside_tesseroid():
         _check_point_outside_tesseroid(coordinates, tesseroid)
 
 
+@pytest.mark.numba
 def test_stack_overflow():
     "Test if adaptive discretization raises OverflowError on stack overflow"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
@@ -134,9 +141,29 @@ def test_stack_overflow():
         )
 
 
+def test_single_tesseroid():
+    "Test single tesseroid for achieving coverage when Numba is disabled"
+    ellipsoid = get_ellipsoid()
+    top = ellipsoid.mean_radius
+    bottom = top - 1e3
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
+    density = 1000.0
+    coordinates = [0.0, 0.0, top + 100]
+    for field in ("potential", "g_radial"):
+        for adaptive_3D in (True, False):
+            tesseroid_gravity(
+                coordinates,
+                tesseroid,
+                density,
+                three_dimensional_adaptive_discretization=adaptive_3D,
+                field=field,
+            )
+
+
 # ---------------
 # Numerical tests
 # ---------------
+@pytest.mark.numba
 def test_distance_tesseroid_point():
     "Test distance between tesseroid and computation point"
     ellipsoid = get_ellipsoid()
@@ -169,6 +196,7 @@ def test_distance_tesseroid_point():
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), distance)
 
 
+@pytest.mark.numba
 def test_tesseroid_dimensions():
     "Test calculation of tesseroid dimensions"
     # Tesseroid on equator
@@ -179,6 +207,7 @@ def test_tesseroid_dimensions():
     npt.assert_allclose((l_lon, l_lat, l_rad), _tesseroid_dimensions(tesseroid))
 
 
+@pytest.mark.numba
 def test_split_tesseroid_only_longitude():
     "Test splitting of a tesseroid only on longitude"
     lon_indexes = [0, 1]
@@ -205,6 +234,7 @@ def test_split_tesseroid_only_longitude():
     npt.assert_allclose(lon_splitted[1], [(e + w) / 2, e])
 
 
+@pytest.mark.numba
 def test_split_tesseroid_only_latitude():
     "Test splitting of a tesseroid only on latitude"
     lon_indexes = [0, 1]
@@ -231,6 +261,7 @@ def test_split_tesseroid_only_latitude():
     npt.assert_allclose(lat_splitted[1], [(n + s) / 2, n])
 
 
+@pytest.mark.numba
 def test_split_tesseroid_only_radius():
     "Test splitting of a tesseroid only on radius"
     lon_indexes = [0, 1]
@@ -257,6 +288,7 @@ def test_split_tesseroid_only_radius():
     npt.assert_allclose(radial_splitted[1], [(top + bottom) / 2, top])
 
 
+@pytest.mark.numba
 def test_split_tesseroid_only_horizontal():
     "Test splitting of a tesseroid on horizontal directions"
     radial_indexes = [4, 5]
@@ -274,6 +306,7 @@ def test_split_tesseroid_only_horizontal():
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
 
 
+@pytest.mark.numba
 def test_split_tesseroid():
     "Test splitting of a tesseroid on every direction"
     lon_indexes = [0, 1]
@@ -295,6 +328,8 @@ def test_split_tesseroid():
     assert not (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
 
 
+@pytest.mark.numba
+@pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason="Numba is disabled")
 def test_adaptive_discretization_on_radii():
     "Test if closer computation points increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
@@ -324,6 +359,8 @@ def test_adaptive_discretization_on_radii():
             assert number_of_splits[i - 1] >= number_of_splits[i]
 
 
+@pytest.mark.numba
+@pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason="Numba is disabled")
 def test_adaptive_discretization_on_distance_size_ratio():
     "Test if higher distance-size-ratio increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
@@ -347,6 +384,8 @@ def test_adaptive_discretization_on_distance_size_ratio():
             assert number_of_splits[i - 1] <= number_of_splits[i]
 
 
+@pytest.mark.numba
+@pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason="Numba is disabled")
 def test_two_dimensional_adaptive_discretization():
     "Test if the 2D adaptive discretization produces no splits on radial direction"
     bottom, top = 1.0, 10.0
@@ -364,6 +403,7 @@ def test_two_dimensional_adaptive_discretization():
         assert tess[-1] == top
 
 
+@pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason="Numba is disabled")
 def test_spherical_shell_two_dimensional_adaptive_discretization():
     "Compare numerical result with analytical solution for 2D adaptive discretization"
     # Define computation point located on the equator at the mean Earth radius
@@ -405,6 +445,8 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
             assert diff < 0.1
 
 
+@pytest.mark.numba
+@pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason="Numba is disabled")
 def test_spherical_shell_three_dimensional_adaptive_discretization():
     "Compare numerical result with analytical solution for 3D adaptive discretization"
     # Define computation point located on the equator at 1km above mean Earth radius
@@ -468,6 +510,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
     return analytical
 
 
+@pytest.mark.numba
 def test_longitude_continuity_tesseroid():
     "Test if longitude continuity works as expected"
     ellipsoid = get_ellipsoid()
