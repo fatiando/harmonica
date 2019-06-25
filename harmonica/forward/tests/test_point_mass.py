@@ -3,7 +3,7 @@ Test forward modellig for point masses.
 """
 import numpy as np
 import numpy.testing as npt
-from pytest import raises
+import pytest
 
 from harmonica.constants import GRAVITATIONAL_CONST
 from ..point_mass import point_mass_gravity
@@ -15,12 +15,13 @@ def test_invalid_field():
     longitude = np.array(0.0)
     latitude = np.array(0.0)
     height = np.array(0.0)
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         point_mass_gravity(
             [longitude, latitude, height], point_mass, mass, "this-field-does-not-exist"
         )
 
 
+@pytest.mark.numba
 def test_point_mass_on_origin():
     "Check potential and g_radial of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
@@ -42,6 +43,7 @@ def test_point_mass_on_origin():
         )
 
 
+@pytest.mark.numba
 def test_point_mass_same_radial_direction():
     "Check potential and g_radial of point mass and computation point on same radius"
     sphere_radius = 3.0
@@ -69,6 +71,7 @@ def test_point_mass_same_radial_direction():
                     )
 
 
+@pytest.mark.numba
 def test_point_mass_potential_on_equator():
     "Check potential field on equator and same radial coordinate"
     radius = 3.0
@@ -96,6 +99,7 @@ def test_point_mass_potential_on_equator():
                 )
 
 
+@pytest.mark.numba
 def test_point_mass_potential_on_same_meridian():
     "Check potential field on same meridian and radial coordinate"
     radius = 3.0
