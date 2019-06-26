@@ -27,7 +27,7 @@ def test_point_mass_on_origin():
     "Check potential and g_radial of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
     mass = 2.0
-    radius = np.logspace(1, 8, 5, dtype="float64")
+    radius = np.logspace(1, 8, 5)
     longitude = np.linspace(-180, 180, 37)
     latitude = np.linspace(-90, 90, 19)
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
