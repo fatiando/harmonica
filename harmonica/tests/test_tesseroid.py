@@ -7,9 +7,9 @@ import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
 
-from ...constants import GRAVITATIONAL_CONST
-from ...ellipsoid import get_ellipsoid
-from ..tesseroid import (
+from ..constants import GRAVITATIONAL_CONST
+from ..ellipsoid import get_ellipsoid
+from ..forward.tesseroid import (
     tesseroid_gravity,
     _check_tesseroid,
     _check_point_outside_tesseroid,

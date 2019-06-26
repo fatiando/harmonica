@@ -5,8 +5,8 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from harmonica.constants import GRAVITATIONAL_CONST
-from ..point_mass import point_mass_gravity
+from ..constants import GRAVITATIONAL_CONST
+from ..forward.point_mass import point_mass_gravity
 
 
 def test_invalid_field():
