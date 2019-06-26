@@ -5,7 +5,7 @@ import os
 import pytest
 
 
-def require_numba(function):
+def require_numba(function):  # pylint: disable=unused-argument
     """
     Decorator to tell pytest to run the test function only if Numba jit is enabled.
 
