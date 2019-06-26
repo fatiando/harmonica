@@ -18,6 +18,7 @@ from ..forward.tesseroid import (
     _tesseroid_dimensions,
     _split_tesseroid,
     _adaptive_discretization,
+    _longitude_continuity,
     STACK_SIZE,
     MAX_DISCRETIZATIONS,
 )
@@ -205,6 +206,46 @@ def test_tesseroid_dimensions():
     l_rad = top - bottom
     npt.assert_allclose((l_lon, l_lat, l_rad), _tesseroid_dimensions(tesseroid))
 
+
+# -------------------------
+# Test longitude continuity
+# -------------------------
+@pytest.mark.use_numba
+def test_longitude_continuity():
+    "Check if longitude_continuity works as expected"
+    # Tesseroid on the [-180, 180) interval
+    tesseroid = [-10, 10, -10, 10, 1, 2]
+    _longitude_continuity(tesseroid)
+    assert tesseroid[0] == -10
+    assert tesseroid[1] == 10
+    tesseroid = [-70, -60, -10, 10, 1, 2]
+    _longitude_continuity(tesseroid)
+    assert tesseroid[0] == 290
+    assert tesseroid[1] == 300
+    # Tesseroid on the [0, 360) interval
+    tesseroid = [350, 10, -10, 10, 1, 2]
+    _longitude_continuity(tesseroid)
+    assert tesseroid[0] == -10
+    assert tesseroid[1] == 10
+
+
+@pytest.mark.use_numba
+def test_longitude_continuity_equivalent_tesseroids():
+    "Check if two equivalent tesseroids generate the same gravity field"
+    ellipsoid = get_ellipsoid()
+    top = ellipsoid.mean_radius
+    bottom = top - 1e4
+    w, e, s, n = -10, 10, -10, 10
+    tesseroid = [w, e, s, n, bottom, top]
+    density = 1e3
+    coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
+    for field in ("potential", "g_radial"):
+        result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
+        # Change longitudinal boundaries of tesseroid but defining the same one
+        tesseroid = [350, 10, s, n, bottom, top]
+        npt.assert_allclose(
+            result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
+        )
 
 # ---------------------
 # Test tesseroid splits
@@ -504,22 +545,3 @@ def test_spherical_shell_three_dimensional_adaptive_discretization():
         for field in numerical:
             diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
             assert diff < 0.1
-
-
-@pytest.mark.use_numba
-def test_longitude_continuity_tesseroid():
-    "Test if longitude continuity works as expected"
-    ellipsoid = get_ellipsoid()
-    top = ellipsoid.mean_radius
-    bottom = top - 1e4
-    w, e, s, n = -10, 10, -10, 10
-    tesseroid = [w, e, s, n, bottom, top]
-    density = 1e3
-    coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
-    for field in ("potential", "g_radial"):
-        result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
-        # Change longitudinal boundaries of tesseroid but defining the same one
-        tesseroid = [350, 10, s, n, bottom, top]
-        npt.assert_allclose(
-            result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
-        )
