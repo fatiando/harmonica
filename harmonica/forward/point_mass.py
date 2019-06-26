@@ -69,7 +69,7 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field in ("g_radial"):
+    if field == "g_radial":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -77,7 +77,7 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
 @jit(nopython=True)
 def jit_point_mass_gravity(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):
+):  # pylint: disable=invalid-name
     """
     Compute gravity field of point masses on computation points.
 
@@ -125,6 +125,9 @@ def jit_point_mass_gravity(
 def kernel_potential(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
+    """
+    Kernel function for potential gravity field
+    """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
     distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
@@ -135,6 +138,9 @@ def kernel_potential(
 def kernel_g_radial(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
+    """
+    Kernel function for radial component of gravity gradient
+    """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
     distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
