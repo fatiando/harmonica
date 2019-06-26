@@ -505,7 +505,9 @@ def _tesseroid_dimensions(tesseroid):
 
 
 @jit(nopython=True)
-def _distance_tesseroid_point(coordinates, tesseroid):  # pylint: disable=too-many-locals
+def _distance_tesseroid_point(
+    coordinates, tesseroid
+):  # pylint: disable=too-many-locals
     """
     Calculate the distance between a computation point and the center of a tesseroid.
     """
