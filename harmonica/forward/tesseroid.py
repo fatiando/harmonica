@@ -314,13 +314,13 @@ def tesseroids_to_point_masses(
     rad_glq_degree = len(rad_nodes)
     # Convert each tesseroid to a point mass
     mass_index = 0
-    for i in range(len(tesseroids)):
-        w = tesseroids[i, 0]
-        e = tesseroids[i, 1]
-        s = tesseroids[i, 2]
-        n = tesseroids[i, 3]
-        bottom = tesseroids[i, 4]
-        top = tesseroids[i, 5]
+    for tesseroid_index in range(len(tesseroids)):
+        w = tesseroids[tesseroid_index, 0]
+        e = tesseroids[tesseroid_index, 1]
+        s = tesseroids[tesseroid_index, 2]
+        n = tesseroids[tesseroid_index, 3]
+        bottom = tesseroids[tesseroid_index, 4]
+        top = tesseroids[tesseroid_index, 5]
         A_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
         for i in range(lon_glq_degree):
             for j in range(lat_glq_degree):
