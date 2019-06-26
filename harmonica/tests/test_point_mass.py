@@ -10,6 +10,7 @@ from ..forward.point_mass import point_mass_gravity
 
 
 def test_invalid_field():
+    "Check if an invalid gravitational field is passed as argument"
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     longitude = np.array(0.0)
