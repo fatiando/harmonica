@@ -23,7 +23,7 @@ def tesseroid_gravity(
     glq_degrees=GLQ_DEGREES,
     stack_size=STACK_SIZE,
     max_discretizations=MAX_DISCRETIZATIONS,
-    three_dimensional_adaptive_discretization=False,
+    radial_adaptive_discretization=False,
     dtype=np.float64,
 ):
     """
@@ -75,7 +75,7 @@ def tesseroid_gravity(
         Maximum number of splits made by the adaptive discretization algorithm.
         If the algorithm will perform too many splits, please increase the maximum
         number of splits.
-    three_dimensional_adaptive_discretization : bool (optional)
+    radial_adaptive_discretization : bool (optional)
         If ``False``, the adaptive discretization algorithm will split the tesseroid
         only on the horizontal direction. If ``True``, it will perform a three dimensional
         adaptive discretization, splitting the tesseroids on every direction.
@@ -155,7 +155,7 @@ def tesseroid_gravity(
         weights,
         result,
         distance_size_ratio,
-        three_dimensional_adaptive_discretization,
+        radial_adaptive_discretization,
         n_nodes,
         glq_nodes,
         glq_weights,

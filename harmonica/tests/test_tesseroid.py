@@ -39,7 +39,7 @@ def test_single_tesseroid():
                 coordinates,
                 tesseroid,
                 density,
-                three_dimensional_adaptive_discretization=adaptive_3D,
+                radial_adaptive_discretization=adaptive_3D,
                 field=field,
             )
 
@@ -543,7 +543,7 @@ def test_spherical_shell_three_dimensional_adaptive_discretization():
                     tesseroid,
                     density,
                     field=field,
-                    three_dimensional_adaptive_discretization=True,
+                    radial_adaptive_discretization=True,
                 )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
