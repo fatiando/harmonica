@@ -1,5 +1,5 @@
 """
-Test forward modellig for point masses.
+Test forward modelling for point masses.
 """
 import os
 import numpy as np
@@ -92,7 +92,7 @@ def test_invalid_density_array():
 
 @pytest.mark.use_numba
 def test_invalid_tesseroid():
-    "Check if an invalid tesseroid boundaries are catched by _check_tesseroid"
+    "Check if an invalid tesseroid boundaries are caught by _check_tesseroid"
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Check if it works properly on valid tesseroids
     _check_tesseroid(np.array([w, e, s, n, bottom, top]))
@@ -116,9 +116,9 @@ def test_invalid_tesseroid():
 
 @pytest.mark.use_numba
 def test_point_inside_tesseroid():
-    "Check if a computation point inside the tesseroid is catched"
+    "Check if a computation point inside the tesseroid is caught"
     tesseroid = np.array([-10, 10, -10, 10, 100, 200])
-    # Test if outside point is not catched
+    # Test if outside point is not caught
     points = [
         np.array([0, 0, 250]),  # outside point on radius
         np.array([20, 0, 150]),  # outside point on longitude

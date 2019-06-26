@@ -1,5 +1,5 @@
 """
-Test forward modellig for point masses.
+Test forward modelling for point masses.
 """
 import numpy as np
 import numpy.testing as npt
