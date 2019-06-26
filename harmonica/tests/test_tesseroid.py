@@ -247,6 +247,7 @@ def test_longitude_continuity_equivalent_tesseroids():
             result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
         )
 
+
 # ---------------------
 # Test tesseroid splits
 # ---------------------
@@ -441,6 +442,12 @@ def test_two_dimensional_adaptive_discretization():
 # ------------------------------------------------------------------
 # Compare numerical result vs analytical solution of spherical shell
 # ------------------------------------------------------------------
+@pytest.fixture
+def accuracy_threshold():
+    "Return the accuracy threshold for tesseroids (0.1%) as a relative error (0.001)"
+    return 1e-3
+
+
 def spherical_shell_analytical(top, bottom, density, radius):
     "Compute analytical solution of gravity fields for an homogeneous spherical shell"
     potential = (
@@ -494,12 +501,11 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
             )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert percentage difference between analytical and numerical < 0.1%
+        # Assert analytical and numerical solution are bellow the accuracy threshold
         for field in numerical:
-            diff = np.max(
-                abs((analytical[field] - numerical[field]) / analytical[field]) * 100
+            np.assert_allclose(
+                analytical[field], numerical[field], rtol=accuracy_threshold
             )
-            assert diff < 0.1
 
 
 @require_numba
@@ -541,7 +547,8 @@ def test_spherical_shell_three_dimensional_adaptive_discretization():
                 )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert percentage difference between analytical and numerical < 0.1%
+        # Assert analytical and numerical solution are bellow the accuracy threshold
         for field in numerical:
-            diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
-            assert diff < 0.1
+            np.assert_allclose(
+                analytical[field], numerical[field], rtol=accuracy_threshold
+            )
