@@ -26,14 +26,14 @@ test: test_coverage test_numba
 test_coverage:
 	# Run a tmp folder to make sure the tests are run on the installed version
 	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); export NUMBA_DISABLE_JIT=1; MPLBACKEND='agg' pytest $(PYTEST_ARGS) $(PROJECT)
+	cd $(TESTDIR); NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest $(PYTEST_ARGS) $(PROJECT)
 	cp $(TESTDIR)/.coverage* .
 	rm -rvf $(TESTDIR)
 
 test_numba:
 	# Run a tmp folder to make sure the tests are run on the installed version
 	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); export NUMBA_DISABLE_JIT=0; MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
+	cd $(TESTDIR); NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
 	rm -rvf $(TESTDIR)
 
 format:
