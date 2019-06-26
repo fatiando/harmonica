@@ -23,10 +23,29 @@ from ..forward.tesseroid import (
 )
 
 
-# -------------------
-# Error raising tests
-# -------------------
 @pytest.mark.use_numba
+def test_single_tesseroid():
+    "Test single tesseroid for achieving coverage when Numba is disabled"
+    ellipsoid = get_ellipsoid()
+    top = ellipsoid.mean_radius
+    bottom = top - 1e3
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
+    density = 1000.0
+    coordinates = [0.0, 0.0, top + 100]
+    for field in ("potential", "g_radial"):
+        for adaptive_3D in (True, False):
+            tesseroid_gravity(
+                coordinates,
+                tesseroid,
+                density,
+                three_dimensional_adaptive_discretization=adaptive_3D,
+                field=field,
+            )
+
+
+# ------------------
+# Test error raising
+# ------------------
 def test_invalid_field():
     "Check if passing an invalid field raises an error"
     tesseroid = [-10, 10, -10, 10, 100, 200]
@@ -36,9 +55,43 @@ def test_invalid_field():
         tesseroid_gravity(coordinates, tesseroid, density, field="Not a valid field")
 
 
+def test_invalid_distance_size_ratii():
+    "Check if distance_size_ratii argument is well handled by tesseroid_gravity"
+    tesseroid = [-10, 10, -10, 10, 100, 200]
+    density = 1000
+    coordinates = [0, 0, 250]
+    # Check empty distance_size_ratii dictionary
+    distance_size_ratii = {}
+    for field in ("potential", "g_radial"):
+        with pytest.raises(ValueError):
+            tesseroid_gravity(
+                coordinates,
+                tesseroid,
+                density,
+                distance_size_ratii=distance_size_ratii,
+                field=field,
+            )
+
+
+def test_invalid_density_array():
+    "Check if error is raised when density shape does not match tesseroids shape"
+    # Create a set of 4 tesseroids
+    tesseroids = [
+        [-10, 0, -10, 0, 100, 200],
+        [-10, 0, 0, 10, 100, 200],
+        [0, 10, -10, 0, 100, 200],
+        [0, 10, 0, 10, 100, 200],
+    ]
+    # Generate a two element density
+    density = [1000, 2000]
+    coordinates = [0, 0, 250]
+    with pytest.raises(ValueError):
+        tesseroid_gravity(coordinates, tesseroids, density, field="potential")
+
+
 @pytest.mark.use_numba
 def test_invalid_tesseroid():
-    "Check if an invalid tesseroid boundaries are catched"
+    "Check if an invalid tesseroid boundaries are catched by _check_tesseroid"
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Check if it works properly on valid tesseroids
     _check_tesseroid(np.array([w, e, s, n, bottom, top]))
@@ -58,42 +111,6 @@ def test_invalid_tesseroid():
         _check_tesseroid(np.array([w, e, s, n, -100, top]))
     with pytest.raises(ValueError):
         _check_tesseroid(np.array([w, e, s, n, bottom, -100]))
-
-
-@pytest.mark.use_numba
-def test_invalid_distance_size_ratii():
-    "Check if distance_size_ratii argument is well handled"
-    tesseroid = [-10, 10, -10, 10, 100, 200]
-    density = 1000
-    coordinates = [0, 0, 250]
-    # Check empty distance_size_ratii dictionary
-    distance_size_ratii = {}
-    for field in ("potential", "g_radial"):
-        with pytest.raises(ValueError):
-            tesseroid_gravity(
-                coordinates,
-                tesseroid,
-                density,
-                distance_size_ratii=distance_size_ratii,
-                field=field,
-            )
-
-
-@pytest.mark.use_numba
-def test_invalid_density_array():
-    "Check if error is raised when density shape does not match tesseroids shape"
-    # Create a set of 4 tesseroids
-    tesseroids = [
-        [-10, 0, -10, 0, 100, 200],
-        [-10, 0, 0, 10, 100, 200],
-        [0, 10, -10, 0, 100, 200],
-        [0, 10, 0, 10, 100, 200],
-    ]
-    # Generate a two element density
-    density = [1000, 2000]
-    coordinates = [0, 0, 250]
-    with pytest.raises(ValueError):
-        tesseroid_gravity(coordinates, tesseroids, density, field="potential")
 
 
 @pytest.mark.use_numba
@@ -121,8 +138,8 @@ def test_point_inside_tesseroid():
 
 
 @pytest.mark.use_numba
-def test_stack_overflow():
-    "Test if adaptive discretization raises OverflowError on stack overflow"
+def test_stack_overflow_on_adaptive_discretization():
+    "Test if _adaptive_discretization raises OverflowError on stack overflow"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
     coordinates = [0.0, 0.0, 1.0]
     distance_size_ratio = 10
@@ -142,29 +159,9 @@ def test_stack_overflow():
         )
 
 
-@pytest.mark.use_numba
-def test_single_tesseroid():
-    "Test single tesseroid for achieving coverage when Numba is disabled"
-    ellipsoid = get_ellipsoid()
-    top = ellipsoid.mean_radius
-    bottom = top - 1e3
-    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
-    density = 1000.0
-    coordinates = [0.0, 0.0, top + 100]
-    for field in ("potential", "g_radial"):
-        for adaptive_3D in (True, False):
-            tesseroid_gravity(
-                coordinates,
-                tesseroid,
-                density,
-                three_dimensional_adaptive_discretization=adaptive_3D,
-                field=field,
-            )
-
-
-# ---------------
-# Numerical tests
-# ---------------
+# --------------------------------------
+# Test tesseroid distance and dimensions
+# --------------------------------------
 @pytest.mark.use_numba
 def test_distance_tesseroid_point():
     "Test distance between tesseroid and computation point"
@@ -209,12 +206,33 @@ def test_tesseroid_dimensions():
     npt.assert_allclose((l_lon, l_lat, l_rad), _tesseroid_dimensions(tesseroid))
 
 
+# ---------------------
+# Test tesseroid splits
+# ---------------------
+@pytest.mark.use_numba
+def test_split_tesseroid():
+    "Test splitting of a tesseroid on every direction"
+    lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
+    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+    # Split only on longitude
+    stack = np.zeros((8, 6))
+    stack_top = -1
+    stack_top = _split_tesseroid(
+        tesseroid, n_lon=2, n_lat=2, n_rad=2, stack=stack, stack_top=stack_top
+    )
+    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
+    assert splitted.shape[0] == 2 ** 3
+    assert splitted.shape[0] == stack_top + 1
+    # Check if the tesseroid hasn't been split on each direction
+    assert not (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
+    assert not (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
+    assert not (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
+
+
 @pytest.mark.use_numba
 def test_split_tesseroid_only_longitude():
     "Test splitting of a tesseroid only on longitude"
-    lon_indexes = [0, 1]
-    lat_indexes = [2, 3]
-    radial_indexes = [4, 5]
+    lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = [w, e, s, n, bottom, top]
     # Split only on longitude
@@ -239,9 +257,7 @@ def test_split_tesseroid_only_longitude():
 @pytest.mark.use_numba
 def test_split_tesseroid_only_latitude():
     "Test splitting of a tesseroid only on latitude"
-    lon_indexes = [0, 1]
-    lat_indexes = [2, 3]
-    radial_indexes = [4, 5]
+    lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = [w, e, s, n, bottom, top]
     # Split only on longitude
@@ -266,9 +282,7 @@ def test_split_tesseroid_only_latitude():
 @pytest.mark.use_numba
 def test_split_tesseroid_only_radius():
     "Test splitting of a tesseroid only on radius"
-    lon_indexes = [0, 1]
-    lat_indexes = [2, 3]
-    radial_indexes = [4, 5]
+    lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = [w, e, s, n, bottom, top]
     # Split only on longitude
@@ -308,28 +322,9 @@ def test_split_tesseroid_only_horizontal():
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
 
 
-@pytest.mark.use_numba
-def test_split_tesseroid():
-    "Test splitting of a tesseroid on every direction"
-    lon_indexes = [0, 1]
-    lat_indexes = [2, 3]
-    radial_indexes = [4, 5]
-    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
-    # Split only on longitude
-    stack = np.zeros((8, 6))
-    stack_top = -1
-    stack_top = _split_tesseroid(
-        tesseroid, n_lon=2, n_lat=2, n_rad=2, stack=stack, stack_top=stack_top
-    )
-    splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
-    assert splitted.shape[0] == 2 ** 3
-    assert splitted.shape[0] == stack_top + 1
-    # Check if the tesseroid hasn't been split on each direction
-    assert not (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
-    assert not (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
-    assert not (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
-
-
+# ----------------------------
+# Test adaptive discretization
+# ----------------------------
 @require_numba
 def test_adaptive_discretization_on_radii():
     "Test if closer computation points increase the tesseroid discretization"
@@ -361,7 +356,7 @@ def test_adaptive_discretization_on_radii():
 
 
 @require_numba
-def test_adaptive_discretization_on_distance_size_ratio():
+def test_adaptive_discretization_vs_distance_size_ratio():
     "Test if higher distance-size-ratio increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     coordinates = [0.0, 0.0, 10.2]
@@ -400,6 +395,28 @@ def test_two_dimensional_adaptive_discretization():
     for tess in small_tesseroids:
         assert tess[-2] == bottom
         assert tess[-1] == top
+
+
+# ------------------------------------------------------------------
+# Compare numerical result vs analytical solution of spherical shell
+# ------------------------------------------------------------------
+def spherical_shell_analytical(top, bottom, density, radius):
+    "Compute analytical solution of gravity fields for an homogeneous spherical shell"
+    potential = (
+        4
+        / 3
+        * np.pi
+        * GRAVITATIONAL_CONST
+        * density
+        * (top ** 3 - bottom ** 3)
+        / radius
+    )
+    analytical = {
+        "potential": potential,
+        # Accelerations are converted from SI to mGal
+        "g_radial": -1e5 * potential / radius,
+    }
+    return analytical
 
 
 @require_numba
@@ -487,25 +504,6 @@ def test_spherical_shell_three_dimensional_adaptive_discretization():
         for field in numerical:
             diff = abs((analytical[field] - numerical[field]) / analytical[field]) * 100
             assert diff < 0.1
-
-
-def spherical_shell_analytical(top, bottom, density, radius):
-    "Compute analytical solution of gravity fields for an homogeneous spherical shell"
-    potential = (
-        4
-        / 3
-        * np.pi
-        * GRAVITATIONAL_CONST
-        * density
-        * (top ** 3 - bottom ** 3)
-        / radius
-    )
-    analytical = {
-        "potential": potential,
-        # Accelerations are converted from SI to mGal
-        "g_radial": -1e5 * potential / radius,
-    }
-    return analytical
 
 
 @pytest.mark.use_numba
