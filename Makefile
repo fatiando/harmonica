@@ -32,7 +32,9 @@ test_coverage:
 
 test_numba:
 	# Run a tmp folder to make sure the tests are run on the installed version
-	export NUMBA_DISABLE_JIT=0; MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
+	mkdir -p $(TESTDIR)
+	cd $(TESTDIR); export NUMBA_DISABLE_JIT=0; MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
+	rm -rvf $(TESTDIR)
 
 format:
 	black $(BLACK_FILES)
