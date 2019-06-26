@@ -556,9 +556,9 @@ def _check_point_outside_tesseroid(coordinates, tesseroid):
     "Check if computation point is not inside the tesseroid"
     longitude, latitude, radius = coordinates[:]
     w, e, s, n, bottom, top = tesseroid[:]
-    inside_longitude = bool(longitude > w and longitude < e)
-    inside_latitude = bool(latitude > s and latitude < n)
-    inside_radius = bool(radius > bottom and radius < top)
+    inside_longitude = bool(w < longitude < e)
+    inside_latitude = bool(s < latitude < n)
+    inside_radius = bool(bottom < radius < top)
     if inside_longitude and inside_latitude and inside_radius:
         raise ValueError(
             "Found computation point inside tesseroid. "
