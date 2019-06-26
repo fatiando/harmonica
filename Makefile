@@ -2,7 +2,7 @@
 PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
-NUMBATEST_ARGS=--doctest-modules -v --pyargs -m numba
+NUMBATEST_ARGS=--doctest-modules -v --pyargs -m use_numba
 LINT_FILES=setup.py $(PROJECT)
 BLACK_FILES=setup.py $(PROJECT) examples data/examples
 FLAKE8_FILES=setup.py $(PROJECT) examples data/examples

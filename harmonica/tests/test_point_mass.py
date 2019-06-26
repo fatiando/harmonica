@@ -21,7 +21,7 @@ def test_invalid_field():
         )
 
 
-@pytest.mark.numba
+@pytest.mark.use_numba
 def test_point_mass_on_origin():
     "Check potential and g_radial of point mass on origin"
     point_mass = [0.0, 0.0, 0.0]
@@ -43,7 +43,7 @@ def test_point_mass_on_origin():
         )
 
 
-@pytest.mark.numba
+@pytest.mark.use_numba
 def test_point_mass_same_radial_direction():
     "Check potential and g_radial of point mass and computation point on same radius"
     sphere_radius = 3.0
@@ -71,7 +71,7 @@ def test_point_mass_same_radial_direction():
                     )
 
 
-@pytest.mark.numba
+@pytest.mark.use_numba
 def test_point_mass_potential_on_equator():
     "Check potential field on equator and same radial coordinate"
     radius = 3.0
@@ -99,7 +99,7 @@ def test_point_mass_potential_on_equator():
                 )
 
 
-@pytest.mark.numba
+@pytest.mark.use_numba
 def test_point_mass_potential_on_same_meridian():
     "Check potential field on same meridian and radial coordinate"
     radius = 3.0
