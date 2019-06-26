@@ -1,8 +1,8 @@
 """
 Forward modelling for tesseroids
 """
-import numpy as np
 from numba import jit
+import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
@@ -25,7 +25,7 @@ def tesseroid_gravity(
     max_discretizations=MAX_DISCRETIZATIONS,
     radial_adaptive_discretization=False,
     dtype=np.float64,
-):
+):  # pylint: disable=too-many-locals
     """
     Compute gravitational field of tesseroids on computation points.
 
@@ -184,7 +184,7 @@ def jit_tesseroid_gravity(
     glq_nodes,
     glq_weights,
     kernel,
-):
+):  # pylint: disable=too-many-locals,too-many-arguments,invalid-name
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -274,7 +274,7 @@ def jit_tesseroid_gravity(
 @jit(nopython=True)
 def tesseroids_to_point_masses(
     tesseroids, glq_nodes, glq_weights, point_masses, weights
-):
+):  # pylint: disable=too-many-locals,invalid-name
     r"""
     Convert tesseroids to equivalent point masses on nodes of GLQ
 
@@ -464,7 +464,9 @@ def _adaptive_discretization(
 
 
 @jit(nopython=True)
-def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
+def _split_tesseroid(
+    tesseroid, n_lon, n_lat, n_rad, stack, stack_top
+):  # pylint: disable=too-many-locals
     """
     Split tesseroid along each dimension
     """
@@ -503,7 +505,7 @@ def _tesseroid_dimensions(tesseroid):
 
 
 @jit(nopython=True)
-def _distance_tesseroid_point(coordinates, tesseroid):
+def _distance_tesseroid_point(coordinates, tesseroid):  # pylint: disable=too-many-locals
     """
     Calculate the distance between a computation point and the center of a tesseroid.
     """
