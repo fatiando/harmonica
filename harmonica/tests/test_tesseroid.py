@@ -1,7 +1,6 @@
 """
 Test forward modelling for point masses.
 """
-import os
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -34,12 +33,12 @@ def test_single_tesseroid():
     density = 1000.0
     coordinates = [0.0, 0.0, top + 100]
     for field in ("potential", "g_radial"):
-        for adaptive_3D in (True, False):
+        for radial_discretization in (True, False):
             tesseroid_gravity(
                 coordinates,
                 tesseroid,
                 density,
-                radial_adaptive_discretization=adaptive_3D,
+                radial_adaptive_discretization=radial_discretization,
                 field=field,
             )
 
@@ -468,7 +467,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
 
 
 @require_numba
-def test_spherical_shell_two_dimensional_adaptive_discretization():
+def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many-locals
     "Compare numerical result with analytical solution for 2D adaptive discretization"
     # Define computation point located on the equator at the mean Earth radius
     ellipsoid = get_ellipsoid()
@@ -509,7 +508,7 @@ def test_spherical_shell_two_dimensional_adaptive_discretization():
 
 
 @require_numba
-def test_spherical_shell_three_dimensional_adaptive_discretization():
+def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-many-locals
     "Compare numerical result with analytical solution for 3D adaptive discretization"
     # Define computation point located on the equator at 1km above mean Earth radius
     ellipsoid = get_ellipsoid()
