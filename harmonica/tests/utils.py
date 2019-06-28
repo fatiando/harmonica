@@ -18,10 +18,19 @@ def require_numba(function):  # pylint: disable=unused-argument
     function will be run twice: one with Numba jit enabled, and another one with Numba
     jit disable to check coverage.
     """
-    reason = "Numba jit is disabled"
+    # Check if env variable NUMBA_DISABLE_JIT is defined
+    if os.getenv("NUMBA_DISABLE_JIT") is None:
+        raise EnvironmentError(
+            "Enviromental variable NUMBA_DISABLE_JIT is not defined."
+            + " Cannot run tests unless it's set to 0 or 1"
+            + " (for running non-compiled or compiled versios of jitted functions,"
+            + " respectively)."
+        )
+    # Check if Numba is disabled
+    numba_is_disabled = bool(os.getenv("NUMBA_DISABLE_JIT") != "0")
 
     @pytest.mark.use_numba
-    @pytest.mark.skipif(os.environ["NUMBA_DISABLE_JIT"] != "0", reason=reason)
+    @pytest.mark.skipif(numba_is_disabled, reason="Numba jit is disabled")
     def function_wrapper():
         return
 
