@@ -1,5 +1,5 @@
 """
-Equivalent Layer Gridders for harmonic functions
+Equivalent Layer interpolators for harmonic functions
 """
 import numpy as np
 from verde.base import BaseGridder, check_is_fitted, check_fit_input, least_squares
@@ -7,7 +7,7 @@ from verde.base import BaseGridder, check_is_fitted, check_fit_input, least_squa
 
 class HarmonicEQL(BaseGridder):
     """
-    3D Equivalent Layer Gridder for harmonic fields using Green's functions
+    3D Equivalent Layer interpolator for harmonic fields using Green's functions
     """
 
     def __init__(self):
