@@ -29,10 +29,10 @@ class HarmonicEQL(BaseGridder):
         if points is None:
             # Define a default set of point masses. This is not intended to be on the
             # final version.
-            self.points = [np.atleast_1d(i).ravel().copy() for i in coordinates]
+            self.points = list(np.atleast_1d(i).ravel().copy() for i in coordinates)
             self.points[-1] += depth
         else:
-            self.points = [np.atleast_1d(i).ravel() for i in points[:3]]
+            self.points = tuple(np.atleast_1d(i).ravel() for i in points[:3])
         jacobian = self.jacobian(coordinates)
         self.masses_ = least_squares(jacobian, data, weights, self.damping)
         return self
