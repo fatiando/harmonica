@@ -49,7 +49,7 @@ class HarmonicEQL(BaseGridder):
     def __init__(self, damping=None):
         self.damping = damping
 
-    def fit(self, coordinates, data, weights=None, points=None, depth=-1e3):
+    def fit(self, coordinates, data, weights=None, points=None):
         """
         Fit the masses of the Equivalent Layer.
 
@@ -73,8 +73,10 @@ class HarmonicEQL(BaseGridder):
             Typically, this should be 1 over the data uncertainty squared.
         points : None or list of arrays (optional)
             List containing the coordinates of the point masses used as Equivalent Layer
-            in the following order: (easting, northing, vertical). If None, (specify).
-            Default None.
+            in the following order: (easting, northing, vertical). If None, a default
+            set of points will be created putting a single point mass bellow each
+            observation point at a depth three times the minimum distance between all
+            observation points [Cooper2000]_. Default None.
 
         Returns
         -------
@@ -86,10 +88,13 @@ class HarmonicEQL(BaseGridder):
         self.region_ = get_region(coordinates[:2])
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         if points is None:
-            # Define a default set of point masses. This is not intended to be on the
-            # final version.
-            self.points_ = list(np.atleast_1d(i).ravel().copy() for i in coordinates)
-            self.points_[-1] += depth
+            # Put a single point mass bellow each observation point at a depth three
+            # times the smaller distance between the observation points.
+            point_east, point_north, point_vertical = tuple(
+                np.atleast_1d(i).ravel().copy() for i in coordinates[:3]
+            )
+            point_vertical -= 3 * minimum_distance(coordinates)
+            self.points_ = (point_east, point_north, point_vertical)
         else:
             self.points_ = tuple(np.atleast_1d(i).ravel() for i in points[:3])
         jacobian = self.jacobian(coordinates, self.points_)
@@ -180,9 +185,7 @@ def greens_func(east, north, vertical, point_east, point_north, point_vertical):
     """
     Calculate the Green's function for the Equivalent Layer using numba.
     """
-    return 1 / distance(
-        east, north, vertical, point_east, point_north, point_vertical
-    )
+    return 1 / distance(east, north, vertical, point_east, point_north, point_vertical)
 
 
 @jit(nopython=True)
@@ -215,3 +218,21 @@ def distance(east_1, north_1, vertical_1, east_2, north_2, vertical_2):
         + (vertical_1 - vertical_2) ** 2
     )
     return dist
+
+
+@jit(nopython=True)
+def minimum_distance(coordinates):
+    """
+    Compute the minumum distance between a set of points
+    """
+    east, north, vertical = coordinates[:]
+    # Initialize min_dist with the distance between the first two points
+    min_dist = distance(east[0], north[0], vertical[0], east[1], north[1], vertical[1])
+    for i in range(east.size):
+        for j in range(i + 1, east.size):
+            dist = distance(
+                east[i], north[i], vertical[i], east[j], north[j], vertical[j]
+            )
+            if dist < min_dist:
+                min_dist = dist
+    return min_dist
