@@ -151,7 +151,7 @@ class HarmonicEQL(BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=dtype)
-        jacobian_numba(*coordinates, *points, jac)
+        jacobian_numba(coordinates, points, jac)
         return jac
 
 
@@ -188,10 +188,12 @@ def greens_func(east, north, vertical, point_east, point_north, point_vertical):
 
 
 @jit(nopython=True)
-def jacobian_numba(east, north, vertical, point_east, point_north, point_vertical, jac):
+def jacobian_numba(coordinates, points, jac):
     """
     Calculate the Jacobian matrix using numba to speed things up.
     """
+    east, north, vertical = coordinates[:]
+    point_east, point_north, point_vertical = points[:]
     for i in range(east.size):
         for j in range(point_east.size):
             jac[i, j] = greens_func(
