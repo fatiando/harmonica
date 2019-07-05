@@ -75,8 +75,8 @@ class HarmonicEQL(BaseGridder):
             List containing the coordinates of the point masses used as Equivalent Layer
             in the following order: (easting, northing, vertical). If None, a default
             set of points will be created putting a single point mass bellow each
-            observation point at a depth three times the minimum distance between all
-            observation points [Cooper2000]_. Default None.
+            observation point at a depth three times the distance to the nearest
+            observation point [Cooper2000]_. Default None.
 
         Returns
         -------
@@ -89,11 +89,13 @@ class HarmonicEQL(BaseGridder):
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         if points is None:
             # Put a single point mass bellow each observation point at a depth three
-            # times the smaller distance between the observation points.
+            # times the distance to the nearest observation point.
+            nearest_distances = np.zeros(coordinates[0].size)
+            distance_to_nearest_point(coordinates, nearest_distances)
             point_east, point_north, point_vertical = tuple(
                 np.atleast_1d(i).ravel().copy() for i in coordinates[:3]
             )
-            point_vertical -= 3 * minimum_distance(coordinates)
+            point_vertical -= 3 * nearest_distances
             self.points_ = (point_east, point_north, point_vertical)
         else:
             self.points_ = tuple(np.atleast_1d(i).ravel() for i in points[:3])
@@ -221,18 +223,20 @@ def distance(east_1, north_1, vertical_1, east_2, north_2, vertical_2):
 
 
 @jit(nopython=True)
-def minimum_distance(coordinates):
+def distance_to_nearest_point(coordinates, distances):
     """
-    Compute the minumum distance between a set of points
+    Compute the distance to the nearest point for each observation point
     """
     east, north, vertical = coordinates[:]
-    # Initialize min_dist with the distance between the first two points
-    min_dist = distance(east[0], north[0], vertical[0], east[1], north[1], vertical[1])
     for i in range(east.size):
-        for j in range(i + 1, east.size):
-            dist = distance(
-                east[i], north[i], vertical[i], east[j], north[j], vertical[j]
-            )
-            if dist < min_dist:
-                min_dist = dist
-    return min_dist
+        # Initialize min_dist with the distance between the i-th and the (i-1)-th points
+        distances[i] = distance(
+            east[i], north[i], vertical[i], east[i - 1], north[i - 1], vertical[i - 1]
+        )
+        for j in range(east.size):
+            if i != j:
+                dist = distance(
+                    east[i], north[i], vertical[i], east[j], north[j], vertical[j]
+                )
+                if dist < distances[i]:
+                    distances[i] = dist
