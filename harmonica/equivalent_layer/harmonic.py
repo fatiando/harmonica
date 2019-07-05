@@ -6,6 +6,7 @@ from numba import jit
 from sklearn.utils.validation import check_is_fitted
 from verde import get_region
 from verde.base import BaseGridder, check_fit_input, least_squares
+
 # Would use n_1d_arrays from verde.base when a new release is made
 
 
@@ -179,12 +180,9 @@ def greens_func(east, north, vertical, point_east, point_north, point_vertical):
     """
     Calculate the Green's function for the Equivalent Layer using numba.
     """
-    distance = np.sqrt(
-        (east - point_east) ** 2
-        + (north - point_north) ** 2
-        + (vertical - point_vertical) ** 2
+    return 1 / distance(
+        east, north, vertical, point_east, point_north, point_vertical
     )
-    return 1 / distance
 
 
 @jit(nopython=True)
@@ -204,3 +202,16 @@ def jacobian_numba(coordinates, points, jac):
                 point_north[j],
                 point_vertical[j],
             )
+
+
+@jit(nopython=True)
+def distance(east_1, north_1, vertical_1, east_2, north_2, vertical_2):
+    """
+    Compute the distance between two points
+    """
+    dist = np.sqrt(
+        (east_1 - east_2) ** 2
+        + (north_1 - north_2) ** 2
+        + (vertical_1 - vertical_2) ** 2
+    )
+    return dist
