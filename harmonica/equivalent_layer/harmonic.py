@@ -46,7 +46,7 @@ class HarmonicEQL(BaseGridder):
         size = np.broadcast(*coordinates[:3]).size
         dtype = coordinates[0].dtype
         coordinates = [np.atleast_1d(i).ravel() for i in coordinates[:3]]
-        data = np.empty(size, dtype=dtype)
+        data = np.zeros(size, dtype=dtype)
         predict_numba(coordinates, self.points, self.masses_, data)
         return data.reshape(shape)
 
