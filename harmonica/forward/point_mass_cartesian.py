@@ -40,7 +40,7 @@ def point_mass_gravity_cartesian(coordinates, points, masses, field, dtype="floa
         The potential is given in SI units, the accelerations in mGal and the Marussi
         tensor components in Eotvos.
     """
-    kernels = {"potential": kernel_potential, "g_radial": kernel_g_vertical}
+    kernels = {"potential": kernel_potential, "g_vertical": kernel_g_vertical}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
