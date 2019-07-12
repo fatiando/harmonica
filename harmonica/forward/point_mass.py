@@ -30,8 +30,9 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_radial``
     dtype: data-type (optional)
-        Data type assigned to tesseroid boundaries, computation points coordinates and
-        resulting gravitational field. Default to ``np.float64``.
+        Data type assigned to resulting gravitational field, and coordinates of point
+        masses and computation points. Default to ``np.float64``.
+
 
     Returns
     -------
