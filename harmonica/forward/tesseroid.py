@@ -44,7 +44,7 @@ def tesseroid_gravity(
         radial ones must be in meters.
     density : list or array
         List or array containing the density of each tesseroid in kg/m^3.
-    field: str
+    field : str
         Gravitational field that wants to be computed.
         The available fields are:
 
@@ -80,7 +80,7 @@ def tesseroid_gravity(
         only on the horizontal direction. If ``True``, it will perform a three dimensional
         adaptive discretization, splitting the tesseroids on every direction.
         Default ``False``.
-    dtype: data-type (optional)
+    dtype : data-type (optional)
         Data type assigned to tesseroid boundaries, computation points coordinates and
         resulting gravitational field. Default to ``np.float64``.
 
