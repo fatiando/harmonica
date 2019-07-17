@@ -32,7 +32,7 @@ def test_single_tesseroid():
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
     density = 1000.0
     coordinates = [0.0, 0.0, top + 100]
-    for field in ("potential", "g_radial"):
+    for field in ("potential", "g_r"):
         for radial_discretization in (True, False):
             tesseroid_gravity(
                 coordinates,
@@ -62,7 +62,7 @@ def test_invalid_distance_size_ratii():
     coordinates = [0, 0, 250]
     # Check empty distance_size_ratii dictionary
     distance_size_ratii = {}
-    for field in ("potential", "g_radial"):
+    for field in ("potential", "g_r"):
         with pytest.raises(ValueError):
             tesseroid_gravity(
                 coordinates,
@@ -238,7 +238,7 @@ def test_longitude_continuity_equivalent_tesseroids():
     tesseroid = [w, e, s, n, bottom, top]
     density = 1e3
     coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
-    for field in ("potential", "g_radial"):
+    for field in ("potential", "g_r"):
         result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
         # Change longitudinal boundaries of tesseroid but defining the same one
         tesseroid = [350, 10, s, n, bottom, top]
@@ -461,7 +461,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
     analytical = {
         "potential": potential,
         # Accelerations are converted from SI to mGal
-        "g_radial": -1e5 * potential / radius,
+        "g_r": -1e5 * potential / radius,
     }
     return analytical
 
@@ -493,7 +493,7 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
             for s, n in zip(south, north):
                 tesseroids.append([w, e, s, n, bottom, top])
         # Compute gravitational fields of the spherical shell
-        numerical = {"potential": 0, "g_radial": 0}
+        numerical = {"potential": 0, "g_r": 0}
         for field in numerical:
             numerical[field] = tesseroid_gravity(
                 coordinates, tesseroids, density * np.ones(shape), field=field
@@ -534,7 +534,7 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
             for s, n in zip(south, north):
                 tesseroids.append([w, e, s, n, bottom, top])
         # Compute gravitational fields of the spherical shell
-        numerical = {"potential": 0, "g_radial": 0}
+        numerical = {"potential": 0, "g_r": 0}
         for tesseroid in tesseroids:
             for field in numerical:
                 numerical[field] += tesseroid_gravity(

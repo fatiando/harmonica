@@ -28,7 +28,7 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
         The available fields are:
 
         - Gravitational potential: ``potential``
-        - Radial acceleration: ``g_radial``
+        - Radial acceleration: ``g_r``
     dtype : data-type (optional)
         Data type assigned to resulting gravitational field, and coordinates of point
         masses and computation points. Default to ``np.float64``.
@@ -42,7 +42,7 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
         The potential is given in SI units, the accelerations in mGal and the Marussi
         tensor components in Eotvos.
     """
-    kernels = {"potential": kernel_potential, "g_radial": kernel_g_radial}
+    kernels = {"potential": kernel_potential, "g_r": kernel_g_r}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
@@ -70,7 +70,7 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_radial":
+    if field == "g_r":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -136,7 +136,7 @@ def kernel_potential(
 
 
 @jit(nopython=True)
-def kernel_g_radial(
+def kernel_g_r(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
