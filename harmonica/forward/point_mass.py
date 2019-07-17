@@ -5,6 +5,12 @@ import numpy as np
 from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
+from .utils import (
+    distance_cartesian,
+    _distance_sq_cartesian,
+    distance_spherical,
+    _distance_sq_spherical,
+)
 
 
 def point_mass_gravity(
@@ -135,7 +141,7 @@ def kernel_potential_cartesian(
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
-    return 1 / _distance_cartesian(
+    return 1 / distance_cartesian(
         [easting, northing, vertical], [easting_p, northing_p, vertical_p]
     )
 
@@ -145,33 +151,10 @@ def kernel_g_z(easting, northing, vertical, easting_p, northing_p, vertical_p):
     """
     Kernel function for downward component of gravity gradient in Cartesian coordinates
     """
-    distance_sq = _distance_cartesian_sq(
+    distance_sq = _distance_sq_cartesian(
         [easting, northing, vertical], [easting_p, northing_p, vertical_p]
     )
     return (vertical - vertical_p) / distance_sq ** (3 / 2)
-
-
-@jit(nopython=True)
-def _distance_cartesian_sq(point_a, point_b):
-    """
-    Calculate the square distance between two points given in Cartesian coordinates
-    """
-    easting, northing, vertical = point_a[:]
-    easting_p, northing_p, vertical_p = point_b[:]
-    distance_sq = (
-        (easting - easting_p) ** 2
-        + (northing - northing_p) ** 2
-        + (vertical - vertical_p) ** 2
-    )
-    return distance_sq
-
-
-@jit(nopython=True)
-def _distance_cartesian(point_a, point_b):
-    """
-    Calculate the distance between two points given in Cartesian coordinates
-    """
-    return np.sqrt(_distance_cartesian_sq(point_a, point_b))
 
 
 @jit(nopython=True)
@@ -228,9 +211,9 @@ def kernel_potential_spherical(
     """
     Kernel function for potential gravity field in spherical coordinates
     """
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
+    distance_sq, _, _ = _distance_sq_spherical(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
     return 1 / np.sqrt(distance_sq)
 
 
@@ -241,8 +224,8 @@ def kernel_g_r(
     """
     Kernel function for radial component of gravity gradient in spherical coordinates
     """
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
+    distance_sq, cospsi, _ = _distance_sq_spherical(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
     delta_z = radius_p * cospsi - radius
     return delta_z / distance_sq ** (3 / 2)
