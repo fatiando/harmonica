@@ -6,7 +6,7 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
-from .point_mass import jit_point_mass_gravity, kernel_potential, kernel_g_r
+from .point_mass import jit_point_mass_spherical, kernel_potential_spherical, kernel_g_r
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
@@ -110,7 +110,7 @@ def tesseroid_gravity(
     array(-112.54539933)
 
     """
-    kernels = {"potential": kernel_potential, "g_r": kernel_g_r}
+    kernels = {"potential": kernel_potential_spherical, "g_r": kernel_g_r}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
@@ -258,7 +258,7 @@ def jit_tesseroid_gravity(
                 weights,
             )
             # Compute gravity fields
-            jit_point_mass_gravity(
+            jit_point_mass_spherical(
                 computation_point[0:1],
                 computation_point[1:2],
                 computation_point[2:3],

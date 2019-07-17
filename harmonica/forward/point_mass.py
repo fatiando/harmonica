@@ -7,28 +7,46 @@ from numba import jit
 from ..constants import GRAVITATIONAL_CONST
 
 
-def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
+def point_mass_gravity(
+    coordinates, points, masses, field, coordinate_system="cartesian", dtype="float64"
+):
     """
     Compute gravitational fields of a point mass on spherical coordinates.
 
     Parameters
     ----------
     coordinates : list or array
-        List or array containing `longitude`, `latitude` and `radius` of computation
-        points defined on a spherical geocentric coordinate system.
+        List or array containing the coordinates of computation points in the following
+        order: `easting`, `northing` and `vertical` (if coordinates given in Cartesian
+        coordiantes), or `longitude`, `latitude` and `radius` (if given on a spherical
+        geocentric coordinate system).
+        All `easting`, `northing` and `vertical` should be in meters.
         Both `longitude` and `latitude` should be in degrees and `radius` in meters.
     points : list or array
-        List or array containing the coordinates of the point masses `longitude_p`,
-        `latitude_p`, `radius_p` defined on a spherical geocentric coordinate system.
-        Both `longitude_p` and `latitude_p` should be in degrees and `radius` in meters.
+        List or array containing the coordinates of the point masses in the following
+        order: `easting`, `northing` and `vertical` (if coordinates given in Cartesian
+        coordiantes), or `longitude`, `latitude` and `radius` (if given on a spherical
+        geocentric coordinate system).
+        All `easting`, `northing` and `vertical` should be in meters.
+        Both `longitude` and `latitude` should be in degrees and `radius` in meters.
     masses : list or array
         List or array containing the mass of each point mass in kg.
     field : str
         Gravitational field that wants to be computed.
-        The available fields are:
+        The available fields in Cartesian coordinates are:
+
+        - Gravitational potential: ``potential``
+        - Vertical acceleration: ``g_z``
+
+        The available fields in spherical geocentric coordinates are:
 
         - Gravitational potential: ``potential``
         - Radial acceleration: ``g_r``
+
+    coordinate_system : str (optional)
+        Coordinate system of the coordinates of the computation points and the point
+        masses. Available coordinates systems: ``cartesian``, ``spherical``.
+        Default ``cartesian``.
     dtype : data-type (optional)
         Data type assigned to resulting gravitational field, and coordinates of point
         masses and computation points. Default to ``np.float64``.
@@ -42,45 +60,126 @@ def point_mass_gravity(coordinates, points, masses, field, dtype="float64"):
         The potential is given in SI units, the accelerations in mGal and the Marussi
         tensor components in Eotvos.
     """
-    kernels = {"potential": kernel_potential, "g_r": kernel_g_r}
-    if field not in kernels:
+    # Organize dispatchers and kernel functions inside dictionaries
+    dispatchers = {
+        "cartesian": jit_point_mass_cartesian,
+        "spherical": jit_point_mass_spherical,
+    }
+    kernels = {
+        "cartesian": {"potential": kernel_potential_cartesian, "g_z": kernel_g_z},
+        "spherical": {"potential": kernel_potential_spherical, "g_r": kernel_g_r},
+    }
+    # Sanity checks for coordinate_system and field
+    if coordinate_system not in ("cartesian", "spherical"):
+        raise ValueError(
+            "Coordinate system {} not recognized".format(coordinate_system)
+        )
+    if field not in kernels[coordinate_system]:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    longitude, latitude, radius = (
-        np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
-    )
-    longitude_p, latitude_p, radius_p = (
-        np.atleast_1d(i).ravel().astype(dtype) for i in points[:3]
-    )
+    coordinates = (np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
+    points = (np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
     masses = np.atleast_1d(masses).astype(dtype).ravel()
     # Compute gravitational field
-    jit_point_mass_gravity(
-        longitude,
-        latitude,
-        radius,
-        longitude_p,
-        latitude_p,
-        radius_p,
-        masses,
-        result,
-        kernels[field],
+    dispatchers[coordinate_system](
+        *coordinates, *points, masses, result, kernels[coordinate_system][field]
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_r":
+    if field in ("g_r", "g_z"):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
 
 @jit(nopython=True)
-def jit_point_mass_gravity(
+def jit_point_mass_cartesian(
+    easting, northing, vertical, easting_p, northing_p, vertical_p, masses, out, kernel
+):  # pylint: disable=invalid-name
+    """
+    Compute gravity field of point masses on computation points in Cartesian coordinates
+
+    Parameters
+    ----------
+    easting, northing, vertical : 1d-arrays
+        Coordinates of computation points in Cartesian coordinate system.
+    easting_p, northing_p, vertical_p : 1d-arrays
+        Coordinates of point masses in Cartesian coordinate system.
+    masses : 1d-array
+        Mass of each point mass in SI units.
+    out : 1d-array
+        Array where the gravitational field on each computation point will be appended.
+        It must have the same size of ``easting``, ``northing`` and ``vertical``.
+    kernel : func
+        Kernel function that will be used to compute the gravity field on the
+        computation points.
+    """
+    for l in range(easting.size):
+        for m in range(easting_p.size):
+            out[l] += masses[m] * kernel(
+                easting[l],
+                northing[l],
+                vertical[l],
+                easting_p[m],
+                northing_p[m],
+                vertical_p[m],
+            )
+
+
+@jit(nopython=True)
+def kernel_potential_cartesian(
+    easting, northing, vertical, easting_p, northing_p, vertical_p
+):
+    """
+    Kernel function for potential gravity field in Cartesian coordinates
+    """
+    return 1 / _distance_cartesian(
+        [easting, northing, vertical], [easting_p, northing_p, vertical_p]
+    )
+
+
+@jit(nopython=True)
+def kernel_g_z(easting, northing, vertical, easting_p, northing_p, vertical_p):
+    """
+    Kernel function for downward component of gravity gradient in Cartesian coordinates
+    """
+    distance_sq = _distance_cartesian_sq(
+        [easting, northing, vertical], [easting_p, northing_p, vertical_p]
+    )
+    return (vertical - vertical_p) / distance_sq ** (3 / 2)
+
+
+@jit(nopython=True)
+def _distance_cartesian_sq(point_a, point_b):
+    """
+    Calculate the square distance between two points given in Cartesian coordinates
+    """
+    easting, northing, vertical = point_a[:]
+    easting_p, northing_p, vertical_p = point_b[:]
+    distance_sq = (
+        (easting - easting_p) ** 2
+        + (northing - northing_p) ** 2
+        + (vertical - vertical_p) ** 2
+    )
+    return distance_sq
+
+
+@jit(nopython=True)
+def _distance_cartesian(point_a, point_b):
+    """
+    Calculate the distance between two points given in Cartesian coordinates
+    """
+    return np.sqrt(_distance_cartesian_sq(point_a, point_b))
+
+
+@jit(nopython=True)
+def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
     """
-    Compute gravity field of point masses on computation points.
+    Compute gravity field of point masses on computation points in spherical coordiantes
 
     Parameters
     ----------
@@ -123,11 +222,11 @@ def jit_point_mass_gravity(
 
 
 @jit(nopython=True)
-def kernel_potential(
+def kernel_potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel function for potential gravity field
+    Kernel function for potential gravity field in spherical coordinates
     """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
@@ -140,7 +239,7 @@ def kernel_g_r(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel function for radial component of gravity gradient
+    Kernel function for radial component of gravity gradient in spherical coordinates
     """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
