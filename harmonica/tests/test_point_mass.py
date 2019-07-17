@@ -58,6 +58,7 @@ def test_invalid_field_for_coordinate_system():
 # ---------------------------
 # Cartesian coordinates tests
 # ---------------------------
+@pytest.mark.use_numba
 def test_potential_cartesian_symmetry():
     """
     Test if potential field of a point mass has symmetry in Cartesian coordinates
@@ -84,6 +85,7 @@ def test_potential_cartesian_symmetry():
     npt.assert_allclose(*results)
 
 
+@pytest.mark.use_numba
 def test_g_z_symmetry():
     """
     Test if g_z field of a point mass has symmetry in Cartesian coordinates
