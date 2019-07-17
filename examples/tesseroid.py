@@ -34,17 +34,17 @@ tesseroid = [west, east, south, north, bottom, top]
 density = 2670
 
 # Compute the potential and the radial component of the acceleration
-fields = "potential g_radial".split()
+fields = "potential g_r".split()
 results = {}
 for field in fields:
     results[field] = hm.tesseroid_gravity(coordinates, tesseroid, density, field=field)
 
 # Plot the gravitational fields
 fig = plt.figure(figsize=(8, 5))
-units = {"potential": "J/kg", "g_radial": "mGal"}
+units = {"potential": "J/kg", "g_r": "mGal"}
 titles = {
     "potential": "Potential gravitational field",
-    "g_radial": "Radial component of gravitational gradient",
+    "g_r": "Radial component of gravitational gradient",
 }
 for i, field in enumerate(fields):
     # Add subplot
