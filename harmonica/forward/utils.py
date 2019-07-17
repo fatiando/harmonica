@@ -90,6 +90,24 @@ def _distance_sq_spherical(
 ):
     """
     Calculate the square distance between two points in spherical coordinates
+
+    All angles must be in radians.
+
+    Parameters
+    ----------
+    longitude, cosphi, sinphi, radius : floats
+        Quantities related to the coordinates of the first point.
+    longitude_p, cosphi_p, sinphi_p, radius_p : floats
+        Quantities related to the coordinates of the second point.
+
+    Returns
+    -------
+    distance_sq : float
+        Square distance between the two points.
+    cospsi : float
+        Cosine of the psi angle.
+    coslambda : float
+        Cosine of the diferences between the longitudes of both points.
     """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
