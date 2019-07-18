@@ -38,7 +38,7 @@ def point_mass_gravity(
         The available fields in Cartesian coordinates are:
 
         - Gravitational potential: ``potential``
-        - Vertical acceleration: ``g_z``
+        - Downward acceleration: ``g_z``
 
         The available fields in spherical geocentric coordinates are:
 
