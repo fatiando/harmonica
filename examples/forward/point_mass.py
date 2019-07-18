@@ -21,7 +21,7 @@ import matplotlib.ticker
 # Define two point masses with oposite mass values of 10000000 kg
 easting = [5e3, 15e3]
 northing = [5e3, 15e3]
-vertical = [-2.5e3, -2.5e3]
+vertical = [-5e3, -2.5e3]
 points = [easting, northing, vertical]
 masses = [10e6, -10e6]
 
