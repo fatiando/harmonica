@@ -64,7 +64,8 @@ def point_mass_gravity(
 
     .. math::
 
-        \cos \Psi = \sin \varphi \sin \varphi_p + \cos \varphi \cos \varphi_p \cos(\lambda - \lambda_p).
+        \cos \Psi = \sin \varphi \sin \varphi_p +
+        \cos \varphi \cos \varphi_p \cos(\lambda - \lambda_p).
 
     The radial component of the acceleration vector on a local North-oriented
     system whose origin is located on the point :math:`P(r, \varphi, \lambda)`
