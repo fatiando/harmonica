@@ -1,6 +1,6 @@
 """
-Point Mass Forward Modelling on Cartesian Coordinates
-=====================================================
+Point Mass on Cartesian Coordinates
+===================================
 
 The simplest geometry used to compute gravitational fields are point masses.
 Although modelling geologic structures with point masses can be challenging, they are
