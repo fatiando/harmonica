@@ -213,7 +213,7 @@ def kernel_g_z(easting, northing, vertical, easting_p, northing_p, vertical_p):
     distance_sq = _distance_cartesian_sq(
         [easting, northing, vertical], [easting_p, northing_p, vertical_p]
     )
-    return (vertical - vertical_p) / distance_sq ** (3 / 2)
+    return (vertical_p - vertical) / distance_sq ** (3 / 2)
 
 
 @jit(nopython=True)
