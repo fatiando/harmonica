@@ -4,7 +4,7 @@ Equivalent Layer interpolators for harmonic functions
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
-from verde import get_region
+from verde import get_region, median_distance
 from verde.base import BaseGridder, check_fit_input, least_squares
 
 # Would use n_1d_arrays from verde.base when a new release is made
@@ -37,15 +37,19 @@ class EQLHarmonic(BaseGridder):
         List containing the coordinates of the point sources used as Equivalent Layer
         in the following order: (``easting``, ``northing``, ``vertical``). If None,
         a default set of points will be created putting a single point source bellow
-        each observation point at a depth proportional to  the distance to the nearest
-        observation point [Cooper2000]_. Default None.
+        each observation point at a depth proportional to the mean distance to the
+        nearest k observation points [Cooper2000]_. Default None.
     depth_factor : float (optional)
         Adimensional factor to set the depth of each point source.
         If ``points`` is None, a default set of point will be created putting
         a single point source bellow each obervation point at a depth given by the
-        product of the ``depth_factor`` and the distance to the nearest obervation
-        point. A greater ``depth_factor`` will increase the depth of the point
-        source. This parameter is ignored if ``points`` is not None. Default 3.
+        product of the ``depth_factor`` and the mean distance to the nearest
+        k obervation points. A greater ``depth_factor`` will increase the depth of the
+        point source. This parameter is ignored if ``points`` is not None. Default 3.
+    k_nearest : int
+        Number of observation points used to compute the median distance to its nearest
+        neighbours. This argument is passed to :func:`verde.mean_distance`. It's ignored
+        if ``points`` is not None. Default 1.
 
     Attributes
     ----------
@@ -59,10 +63,11 @@ class EQLHarmonic(BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, depth_factor=3):
+    def __init__(self, damping=None, points=None, depth_factor=3, k_nearest=1):
         self.damping = damping
         self.points = points
         self.depth_factor = depth_factor
+        self.k_nearest = k_nearest
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -98,13 +103,13 @@ class EQLHarmonic(BaseGridder):
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         if self.points is None:
             # Put a single point source bellow each observation point at a depth three
-            # times the distance to the nearest observation point.
-            nearest_distances = np.zeros(coordinates[0].size)
-            distance_to_nearest_point(coordinates, nearest_distances)
+            # times the meadian distance to the nearest k observation points.
             point_east, point_north, point_vertical = tuple(
                 np.atleast_1d(i).ravel().copy() for i in coordinates[:3]
             )
-            point_vertical -= self.depth_factor * nearest_distances
+            point_vertical -= self.depth_factor * median_distance(
+                coordinates, k_nearest=self.k_nearest
+            )
             self.points_ = (point_east, point_north, point_vertical)
         else:
             self.points_ = tuple(np.atleast_1d(i).ravel() for i in self.points[:3])
@@ -231,23 +236,3 @@ def distance(east_1, north_1, vertical_1, east_2, north_2, vertical_2):
         + (vertical_1 - vertical_2) ** 2
     )
     return dist
-
-
-@jit(nopython=True)
-def distance_to_nearest_point(coordinates, distances):
-    """
-    Compute the distance to the nearest point for each observation point
-    """
-    east, north, vertical = coordinates[:]
-    for i in range(east.size):
-        # Initialize min_dist with the distance between the i-th and the (i-1)-th points
-        distances[i] = distance(
-            east[i], north[i], vertical[i], east[i - 1], north[i - 1], vertical[i - 1]
-        )
-        for j in range(east.size):
-            if i != j:
-                dist = distance(
-                    east[i], north[i], vertical[i], east[j], north[j], vertical[j]
-                )
-                if dist < distances[i]:
-                    distances[i] = dist
