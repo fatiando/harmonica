@@ -5,9 +5,7 @@ import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
 from verde import get_region, median_distance
-from verde.base import BaseGridder, check_fit_input, least_squares
-
-# Would use n_1d_arrays from verde.base when a new release is made
+from verde.base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 
 
 class EQLHarmonic(BaseGridder):
@@ -100,19 +98,19 @@ class EQLHarmonic(BaseGridder):
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
-        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+        coordinates = n_1d_arrays(coordinates, 3)
         if self.points is None:
             # Put a single point source bellow each observation point at a depth three
             # times the meadian distance to the nearest k observation points.
             point_east, point_north, point_vertical = tuple(
-                np.atleast_1d(i).ravel().copy() for i in coordinates[:3]
+                i.copy() for i in coordinates
             )
             point_vertical -= self.depth_factor * median_distance(
                 coordinates, k_nearest=self.k_nearest
             )
             self.points_ = (point_east, point_north, point_vertical)
         else:
-            self.points_ = tuple(np.atleast_1d(i).ravel() for i in self.points[:3])
+            self.points_ = n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = least_squares(jacobian, data, weights, self.damping)
         return self
