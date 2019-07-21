@@ -139,7 +139,7 @@ class EQLHarmonic(BaseGridder):
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
         dtype = coordinates[0].dtype
-        coordinates = [np.atleast_1d(i).ravel() for i in coordinates[:3]]
+        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         data = np.zeros(size, dtype=dtype)
         predict_numba(coordinates, self.points_, self.coefs_, data)
         return data.reshape(shape)
