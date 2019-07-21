@@ -7,6 +7,7 @@ import numpy as np
 import pyproj
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+from sklearn.model_selection import ShuffleSplit
 
 
 # Fetch magnetic anomaly data from Rio de Janeiro
@@ -31,14 +32,16 @@ coordinates, (altitude, magnetic_anomaly) = reducer.filter(
 )
 coordinates = (*coordinates, altitude)
 
-# Create a regular grid
-grid_coordinates = vd.grid_coordinates(
-    vd.get_region(coordinates), spacing=300, extra_coords=coordinates[-1]
-)
+# Perform a cross-validation in order to score the interpolator
+gridder = hm.EQLHarmonic()
+shuffle = ShuffleSplit(n_splits=10, test_size=0.3, random_state=0)
+scores = vd.cross_val_score(gridder, coordinates, magnetic_anomaly, cv=shuffle)
+print("Score: {}".format(np.mean(scores)))
 
 # Interpolate data into the regular grid
-gridder = hm.EQLHarmonic()
-gridder.fit(coordinates, magnetic_anomaly)
+grid_coordinates = vd.grid_coordinates(
+    vd.get_region(coordinates), spacing=300, extra_coords=coordinates[-1].mean()
+)
 gridded_anomaly = gridder.predict(grid_coordinates)
 
 # Plot original magnetic anomaly
