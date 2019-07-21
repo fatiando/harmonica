@@ -33,6 +33,19 @@ class HarmonicEQL(BaseGridder):
     damping : None or float
         The positive damping regularization parameter. Controls how much smoothness is
         imposed on the estimated forces. If None, no regularization is used.
+    points : None or list of arrays (optional)
+        List containing the coordinates of the point masses used as Equivalent Layer
+        in the following order: (easting, northing, vertical). If None, a default
+        set of points will be created putting a single point mass bellow each
+        observation point at a depth proportional to  the distance to the nearest
+        observation point [Cooper2000]_. Default None.
+    depth_factor : float (optional)
+        Adimensional factor to set the depth of each point mass.
+        If ``points`` is None, a default set of point will be created putting
+        a single point mass bellow each obervation point at a depth given by the
+        product of the ``depth_factor`` and the distance to the nearest obervation
+        point. A greater ``depth_factor`` will increase the depth of the point
+        masses. This parameter is ignored if ``points`` is not None. Default 3.
 
     Attributes
     ----------
@@ -46,10 +59,12 @@ class HarmonicEQL(BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None):
+    def __init__(self, damping=None, points=None, depth_factor=3):
         self.damping = damping
+        self.points = points
+        self.depth_factor = depth_factor
 
-    def fit(self, coordinates, data, weights=None, points=None, depth_factor=3):
+    def fit(self, coordinates, data, weights=None):
         """
         Fit the masses of the Equivalent Layer.
 
@@ -71,20 +86,6 @@ class HarmonicEQL(BaseGridder):
         weights : None or array
             If not None, then the weights assigned to each data point.
             Typically, this should be 1 over the data uncertainty squared.
-        points : None or list of arrays (optional)
-            List containing the coordinates of the point masses used as Equivalent Layer
-            in the following order: (easting, northing, vertical). If None, a default
-            set of points will be created putting a single point mass bellow each
-            observation point at a depth proportional to  the distance to the nearest
-            observation point [Cooper2000]_. Default None.
-        depth_factor : float (optional)
-            Adimensional factor to set the depth of each point mass.
-            If ``points`` is None, a default set of point will be created putting
-            a single point mass bellow each obervation point at a depth given by the
-            product of the ``depth_factor`` and the distance to the nearest obervation
-            point. A greater ``depth_factor`` will increase the depth of the point
-            masses. This parameter is ignored if ``points`` is not None. Default 3.
-
 
         Returns
         -------
@@ -95,7 +96,7 @@ class HarmonicEQL(BaseGridder):
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-        if points is None:
+        if self.points is None:
             # Put a single point mass bellow each observation point at a depth three
             # times the distance to the nearest observation point.
             nearest_distances = np.zeros(coordinates[0].size)
@@ -103,10 +104,10 @@ class HarmonicEQL(BaseGridder):
             point_east, point_north, point_vertical = tuple(
                 np.atleast_1d(i).ravel().copy() for i in coordinates[:3]
             )
-            point_vertical -= depth_factor * nearest_distances
+            point_vertical -= self.depth_factor * nearest_distances
             self.points_ = (point_east, point_north, point_vertical)
         else:
-            self.points_ = tuple(np.atleast_1d(i).ravel() for i in points[:3])
+            self.points_ = tuple(np.atleast_1d(i).ravel() for i in self.points[:3])
         jacobian = self.jacobian(coordinates, self.points_)
         self.masses_ = least_squares(jacobian, data, weights, self.damping)
         return self
