@@ -10,7 +10,7 @@ from verde.base import BaseGridder, check_fit_input, least_squares
 # Would use n_1d_arrays from verde.base when a new release is made
 
 
-class HarmonicEQL(BaseGridder):
+class EQLHarmonic(BaseGridder):
     r"""
     3D Equivalent Layer interpolator for harmonic fields using Green's functions
 
