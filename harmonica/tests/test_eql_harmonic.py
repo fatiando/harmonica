@@ -1,12 +1,16 @@
 """
 Test the EQLHarmonic gridder
 """
+import pytest
 import numpy as np
 import numpy.testing as npt
 from verde import scatter_points, grid_coordinates
 from verde.datasets.synthetic import CheckerBoard
+from verde.base import n_1d_arrays
 
 from .. import EQLHarmonic
+from ..equivalent_layer.harmonic import jacobian_numba
+from .utils import require_numba
 
 
 def point_mass_gravity_simple(coordinates, points, masses):
@@ -26,6 +30,7 @@ def point_mass_gravity_simple(coordinates, points, masses):
     return result.reshape(cast.shape)
 
 
+@require_numba
 def test_EQLHarmonic():
     """
     See if exact solution matches the synthetic data
@@ -54,3 +59,27 @@ def test_EQLHarmonic():
     gridder = EQLHarmonic(points=points)
     gridder.fit(coordinates, data)
     npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+
+
+@pytest.mark.use_numba
+def test_jacobian():
+    "Test Jacobian matrix under symetric system of point sources"
+    easting, northing, vertical = grid_coordinates(
+        region=[-100, 100, -100, 100], shape=(2, 2), extra_coords=0
+    )
+    points = n_1d_arrays((easting, northing, vertical + 100), n=3)
+    coordinates = n_1d_arrays((easting, northing, vertical), n=3)
+    n_points = points[0].size
+    jacobian = np.zeros((n_points, n_points), dtype=points[0].dtype)
+    jacobian_numba(coordinates, points, jacobian)
+    # All diagonal elements must be equal
+    diagonal = np.diag_indices(4)
+    npt.assert_allclose(jacobian[diagonal][0], jacobian[diagonal])
+    # All anti-diagonal elements must be equal (elements between distant points)
+    anti_diagonal = (diagonal[0], diagonal[1][::-1])
+    npt.assert_allclose(jacobian[anti_diagonal][0], jacobian[anti_diagonal])
+    # All elements corresponding to nearest neigbours must be equal
+    nearest_neighbours = np.ones((4, 4), dtype=bool)
+    nearest_neighbours[diagonal] = False
+    nearest_neighbours[anti_diagonal] = False
+    npt.assert_allclose(jacobian[nearest_neighbours][0], jacobian[nearest_neighbours])
