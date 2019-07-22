@@ -190,19 +190,12 @@ def jit_point_mass_cartesian(
     for l in range(easting.size):
         for m in range(easting_p.size):
             out[l] += masses[m] * kernel(
-                easting[l],
-                northing[l],
-                down[l],
-                easting_p[m],
-                northing_p[m],
-                down_p[m],
+                easting[l], northing[l], down[l], easting_p[m], northing_p[m], down_p[m]
             )
 
 
 @jit(nopython=True)
-def kernel_potential_cartesian(
-    easting, northing, down, easting_p, northing_p, down_p
-):
+def kernel_potential_cartesian(easting, northing, down, easting_p, northing_p, down_p):
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
@@ -230,9 +223,7 @@ def _distance_cartesian_sq(point_a, point_b):
     easting, northing, down = point_a[:]
     easting_p, northing_p, down_p = point_b[:]
     distance_sq = (
-        (easting - easting_p) ** 2
-        + (northing - northing_p) ** 2
-        + (down - down_p) ** 2
+        (easting - easting_p) ** 2 + (northing - northing_p) ** 2 + (down - down_p) ** 2
     )
     return distance_sq
 
