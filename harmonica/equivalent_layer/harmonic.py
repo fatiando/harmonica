@@ -105,7 +105,7 @@ class EQLHarmonic(BaseGridder):
             point_east, point_north, point_vertical = tuple(
                 i.copy() for i in coordinates
             )
-            point_vertical -= self.depth_factor * median_distance(
+            point_vertical += self.depth_factor * median_distance(
                 coordinates, k_nearest=self.k_nearest
             )
             self.points_ = (point_east, point_north, point_vertical)
