@@ -39,10 +39,12 @@ scores = vd.cross_val_score(gridder, coordinates, magnetic_anomaly, cv=shuffle)
 print("Score: {}".format(np.mean(scores)))
 
 # Interpolate data into the regular grid
-grid_coordinates = vd.grid_coordinates(
-    vd.get_region(coordinates), spacing=300, extra_coords=coordinates[-1].mean()
+grid = gridder.grid(
+    region=vd.get_region(coordinates),
+    spacing=100,
+    data_names=["magnetic_anomaly"],
+    extra_coords=coordinates[-1].mean(),
 )
-gridded_anomaly = gridder.predict(grid_coordinates)
 
 # Plot original magnetic anomaly
 fig, ax = plt.subplots()
@@ -54,7 +56,7 @@ plt.show()
 
 # Plot gridded magnetic anomaly
 fig, ax = plt.subplots()
-tmp = ax.pcolormesh(*grid_coordinates[:2], gridded_anomaly)
+tmp = grid.magnetic_anomaly.plot.pcolormesh(ax=ax, add_colorbar=False)
 plt.colorbar(tmp, label="nT")
 ax.set_aspect("equal")
 plt.title("Gridded Anomaly Magnetic data from Rio de Janeiro")
