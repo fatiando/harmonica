@@ -21,8 +21,8 @@ import matplotlib.ticker
 # Define two point masses with oposite mass values of 10000000 kg
 easting = [5e3, 15e3]
 northing = [5e3, 15e3]
-vertical = [7e3, 2.5e3]
-points = [easting, northing, vertical]
+down = [7e3, 2.5e3]
+points = [easting, northing, down]
 masses = [10e6, -10e6]
 
 # Define computation points on a grid at 500m above the ground

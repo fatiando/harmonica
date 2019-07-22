@@ -70,14 +70,14 @@ def test_potential_cartesian_symmetry():
     distance = 3.3
     easting = point_mass[0] * np.ones(6)
     northing = point_mass[1] * np.ones(6)
-    vertical = point_mass[2] * np.ones(6)
+    down = point_mass[2] * np.ones(6)
     easting[0] += distance
     easting[1] -= distance
     northing[2] += distance
     northing[3] -= distance
-    vertical[4] += distance
-    vertical[5] -= distance
-    coordinates = [easting, northing, vertical]
+    down[4] += distance
+    down[5] -= distance
+    coordinates = [easting, northing, down]
     # Compute potential gravity field on each computation point
     results = point_mass_gravity(
         coordinates, point_mass, masses, "potential", "cartesian"
@@ -97,11 +97,11 @@ def test_g_z_symmetry():
     distance = 3.3
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
-    vertical = point_mass[2] * np.ones(2)
-    vertical[0] += distance
-    vertical[1] -= distance
-    coordinates = [easting, northing, vertical]
-    # Compute g_vertical gravity field on each computation point
+    down = point_mass[2] * np.ones(2)
+    down[0] += distance
+    down[1] -= distance
+    coordinates = [easting, northing, down]
+    # Compute g_z gravity field on each computation point
     results = point_mass_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
