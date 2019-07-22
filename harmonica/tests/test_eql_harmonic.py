@@ -61,6 +61,36 @@ def test_EQLHarmonic():
     npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
 
 
+def test_EQLHarmonic_numba_disabled():
+    """
+    See if exact solution matches the synthetic data with few sources
+    """
+    region = (-3e4, -1e4, 5e4, 7e4)
+    # Build synthetic point masses
+    depth = 1e3
+    points = scatter_points(
+        region=region, size=50, random_state=1, extra_coords=depth
+    )
+    checker = CheckerBoard(region=region)
+    synth_masses = checker.predict(points)
+    # Define a random set of observation points
+    coordinates = scatter_points(
+        region=region, size=50, random_state=2, extra_coords=0
+    )
+    # Get synthetic data
+    data = point_mass_gravity_simple(coordinates, points, synth_masses)
+
+    # The interpolation should be perfect on the data points
+    gridder = EQLHarmonic()
+    gridder.fit(coordinates, data)
+    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+
+    # Configure new gridder passing the syntetic points
+    gridder = EQLHarmonic(points=points)
+    gridder.fit(coordinates, data)
+    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+
+
 @pytest.mark.use_numba
 def test_jacobian():
     "Test Jacobian matrix under symetric system of point sources"
