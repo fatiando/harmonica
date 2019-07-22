@@ -28,7 +28,7 @@ def point_mass_gravity(
 
     In Cartesian coordinates, the points :math:`P` and :math:`Q` are given by :math:`x`,
     :math:`y` and :math:`z` coordinates, which can be translated into ``northing``,
-    ``easting`` and ``vertical``, respectively.
+    ``easting`` and ``down``, respectively.
     If :math:`P` is located at :math:`(x, y, z)`, and :math:`Q` at :math:`(x_p, y_p,
     z_p)`, the distance :math:`l` can be computed as:
 
@@ -75,23 +75,29 @@ def point_mass_gravity(
 
         g_r(P) = \frac{G m}{l^3} (r_p \cos \Psi - r).
 
+    .. warning::
+
+        When working in Cartesian coordinates, the ``down`` direction points downwards,
+        i.e. positive and negative values represent points below and above the surface,
+        respectively.
+
 
     Parameters
     ----------
     coordinates : list or array
         List or array containing the coordinates of computation points in the following
-        order: ``easting``, ``northing`` and ``vertical`` (if coordinates given in
+        order: ``easting``, ``northing`` and ``down`` (if coordinates given in
         Cartesian coordiantes), or ``longitude``, ``latitude`` and ``radius`` (if given
         on a spherical geocentric coordinate system).
-        All ``easting``, ``northing`` and ``vertical`` should be in meters.
+        All ``easting``, ``northing`` and ``down`` should be in meters.
         Both ``longitude`` and ``latitude`` should be in degrees and ``radius`` in
         meters.
     points : list or array
         List or array containing the coordinates of the point masses in the following
-        order: ``easting``, ``northing`` and ``vertical`` (if coordinates given in
+        order: ``easting``, ``northing`` and ``down`` (if coordinates given in
         Cartesian coordiantes), or ``longitude``, ``latitude`` and ``radius`` (if given
         on a spherical geocentric coordinate system).
-        All ``easting``, ``northing`` and ``vertical`` should be in meters.
+        All ``easting``, ``northing`` and ``down`` should be in meters.
         Both ``longitude`` and ``latitude`` should be in degrees and ``radius`` in
         meters.
     masses : list or array
@@ -161,22 +167,22 @@ def point_mass_gravity(
 
 @jit(nopython=True)
 def jit_point_mass_cartesian(
-    easting, northing, vertical, easting_p, northing_p, vertical_p, masses, out, kernel
+    easting, northing, down, easting_p, northing_p, down_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
     """
     Compute gravity field of point masses on computation points in Cartesian coordinates
 
     Parameters
     ----------
-    easting, northing, vertical : 1d-arrays
+    easting, northing, down : 1d-arrays
         Coordinates of computation points in Cartesian coordinate system.
-    easting_p, northing_p, vertical_p : 1d-arrays
+    easting_p, northing_p, down_p : 1d-arrays
         Coordinates of point masses in Cartesian coordinate system.
     masses : 1d-array
         Mass of each point mass in SI units.
     out : 1d-array
         Array where the gravitational field on each computation point will be appended.
-        It must have the same size of ``easting``, ``northing`` and ``vertical``.
+        It must have the same size of ``easting``, ``northing`` and ``down``.
     kernel : func
         Kernel function that will be used to compute the gravity field on the
         computation points.
@@ -186,34 +192,34 @@ def jit_point_mass_cartesian(
             out[l] += masses[m] * kernel(
                 easting[l],
                 northing[l],
-                vertical[l],
+                down[l],
                 easting_p[m],
                 northing_p[m],
-                vertical_p[m],
+                down_p[m],
             )
 
 
 @jit(nopython=True)
 def kernel_potential_cartesian(
-    easting, northing, vertical, easting_p, northing_p, vertical_p
+    easting, northing, down, easting_p, northing_p, down_p
 ):
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
     return 1 / _distance_cartesian(
-        [easting, northing, vertical], [easting_p, northing_p, vertical_p]
+        [easting, northing, down], [easting_p, northing_p, down_p]
     )
 
 
 @jit(nopython=True)
-def kernel_g_z(easting, northing, vertical, easting_p, northing_p, vertical_p):
+def kernel_g_z(easting, northing, down, easting_p, northing_p, down_p):
     """
     Kernel function for downward component of gravity gradient in Cartesian coordinates
     """
     distance_sq = _distance_cartesian_sq(
-        [easting, northing, vertical], [easting_p, northing_p, vertical_p]
+        [easting, northing, down], [easting_p, northing_p, down_p]
     )
-    return (vertical_p - vertical) / distance_sq ** (3 / 2)
+    return (down_p - down) / distance_sq ** (3 / 2)
 
 
 @jit(nopython=True)
@@ -221,12 +227,12 @@ def _distance_cartesian_sq(point_a, point_b):
     """
     Calculate the square distance between two points given in Cartesian coordinates
     """
-    easting, northing, vertical = point_a[:]
-    easting_p, northing_p, vertical_p = point_b[:]
+    easting, northing, down = point_a[:]
+    easting_p, northing_p, down_p = point_b[:]
     distance_sq = (
         (easting - easting_p) ** 2
         + (northing - northing_p) ** 2
-        + (vertical - vertical_p) ** 2
+        + (down - down_p) ** 2
     )
     return distance_sq
 
