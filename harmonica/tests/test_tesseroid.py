@@ -141,7 +141,7 @@ def test_point_inside_tesseroid():
 def test_stack_overflow_on_adaptive_discretization():
     "Test if _adaptive_discretization raises OverflowError on stack overflow"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
-    coordinates = [0.0, 0.0, 1.0]
+    coordinates = np.array([0.0, 0.0, 1.0])
     distance_size_ratio = 10
     # Test stack overflow
     stack = np.empty((2, 6))
@@ -168,29 +168,31 @@ def test_distance_tesseroid_point():
     ellipsoid = get_ellipsoid()
     longitude_p, latitude_p, radius_p = 0.0, 0.0, ellipsoid.mean_radius
     d_lon, d_lat, d_radius = 2.0, 2.0, 1.3
-    tesseroid = [
-        longitude_p - d_lon / 2,
-        longitude_p + d_lon / 2,
-        latitude_p - d_lat / 2,
-        latitude_p + d_lat / 2,
-        radius_p - d_radius / 2,
-        radius_p + d_radius / 2,
-    ]
+    tesseroid = np.array(
+        [
+            longitude_p - d_lon / 2,
+            longitude_p + d_lon / 2,
+            latitude_p - d_lat / 2,
+            latitude_p + d_lat / 2,
+            radius_p - d_radius / 2,
+            radius_p + d_radius / 2,
+        ]
+    )
     # Computation point on the center of the tesseroid
-    point = [longitude_p, latitude_p, radius_p]
+    point = np.array([longitude_p, latitude_p, radius_p])
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), 0.0)
     # Computation point and tesseroid center with same longitude and latitude
     radius = radius_p + 1.0
-    point = [longitude_p, latitude_p, radius]
+    point = np.array([longitude_p, latitude_p, radius])
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), 1.0)
     # Computation point and tesseroid center on equator and same radius
     longitude = 3.0
-    point = [longitude, latitude_p, radius_p]
+    point = np.array([longitude, latitude_p, radius_p])
     distance = 2 * radius_p * np.sin(0.5 * np.radians(abs(longitude - longitude_p)))
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), distance)
     # Computation point and tesseroid center on same meridian and radius
     latitude = 3.0
-    point = [longitude_p, latitude, radius_p]
+    point = np.array([longitude_p, latitude, radius_p])
     distance = 2 * radius_p * np.sin(0.5 * np.radians(abs(latitude - latitude_p)))
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), distance)
 
@@ -200,7 +202,7 @@ def test_tesseroid_dimensions():
     "Test calculation of tesseroid dimensions"
     # Tesseroid on equator
     w, e, s, n, bottom, top = -1.0, 1.0, -1.0, 1.0, 0.5, 1.5
-    tesseroid = [w, e, s, n, bottom, top]
+    tesseroid = np.array([w, e, s, n, bottom, top])
     l_lon, l_lat = top * np.radians(abs(e - w)), top * np.radians(abs(n - s))
     l_rad = top - bottom
     npt.assert_allclose((l_lon, l_lat, l_rad), _tesseroid_dimensions(tesseroid))
@@ -213,16 +215,16 @@ def test_tesseroid_dimensions():
 def test_longitude_continuity():
     "Check if longitude_continuity works as expected"
     # Tesseroid on the [-180, 180) interval
-    tesseroid = [-10, 10, -10, 10, 1, 2]
+    tesseroid = np.array([-10, 10, -10, 10, 1, 2])
     _longitude_continuity(tesseroid)
     assert tesseroid[0] == -10
     assert tesseroid[1] == 10
-    tesseroid = [-70, -60, -10, 10, 1, 2]
+    tesseroid = np.array([-70, -60, -10, 10, 1, 2])
     _longitude_continuity(tesseroid)
     assert tesseroid[0] == 290
     assert tesseroid[1] == 300
     # Tesseroid on the [0, 360) interval
-    tesseroid = [350, 10, -10, 10, 1, 2]
+    tesseroid = np.array([350, 10, -10, 10, 1, 2])
     _longitude_continuity(tesseroid)
     assert tesseroid[0] == -10
     assert tesseroid[1] == 10
@@ -254,7 +256,7 @@ def test_longitude_continuity_equivalent_tesseroids():
 def test_split_tesseroid():
     "Test splitting of a tesseroid on every direction"
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
-    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     # Split only on longitude
     stack = np.zeros((8, 6))
     stack_top = -1
@@ -275,7 +277,7 @@ def test_split_tesseroid_only_longitude():
     "Test splitting of a tesseroid only on longitude"
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
-    tesseroid = [w, e, s, n, bottom, top]
+    tesseroid = np.array([w, e, s, n, bottom, top])
     # Split only on longitude
     stack = np.zeros((8, 6))
     stack_top = -1
@@ -300,7 +302,7 @@ def test_split_tesseroid_only_latitude():
     "Test splitting of a tesseroid only on latitude"
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
-    tesseroid = [w, e, s, n, bottom, top]
+    tesseroid = np.array([w, e, s, n, bottom, top])
     # Split only on longitude
     stack = np.zeros((8, 6))
     stack_top = -1
@@ -325,7 +327,7 @@ def test_split_tesseroid_only_radius():
     "Test splitting of a tesseroid only on radius"
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
-    tesseroid = [w, e, s, n, bottom, top]
+    tesseroid = np.array([w, e, s, n, bottom, top])
     # Split only on longitude
     stack = np.zeros((8, 6))
     stack_top = -1
@@ -349,7 +351,7 @@ def test_split_tesseroid_only_radius():
 def test_split_tesseroid_only_horizontal():
     "Test splitting of a tesseroid on horizontal directions"
     radial_indexes = [4, 5]
-    tesseroid = [-10.0, 10.0, -10.0, 10.0, 1.0, 10.0]
+    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     # Split only on longitude
     stack = np.zeros((8, 6))
     stack_top = -1
@@ -382,7 +384,7 @@ def test_adaptive_discretization_on_radii():
             radii.insert(0, 10.0)
         number_of_splits = []
         for radius in radii:
-            coordinates = [0.0, 0.0, radius]
+            coordinates = np.array([0.0, 0.0, radius])
             n_splits = _adaptive_discretization(
                 coordinates,
                 tesseroid,
@@ -400,7 +402,7 @@ def test_adaptive_discretization_on_radii():
 def test_adaptive_discretization_vs_distance_size_ratio():
     "Test if higher distance-size-ratio increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
-    coordinates = [0.0, 0.0, 10.2]
+    coordinates = np.array([0.0, 0.0, 10.2])
     distance_size_ratii = np.linspace(1, 10, 10)
     stack = np.empty((STACK_SIZE, 6))
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
@@ -425,7 +427,7 @@ def test_two_dimensional_adaptive_discretization():
     "Test if the 2D adaptive discretization produces no splits on radial direction"
     bottom, top = 1.0, 10.0
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
-    coordinates = [0.0, 0.0, top]
+    coordinates = np.array([0.0, 0.0, top])
     stack = np.empty((STACK_SIZE, 6))
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
     distance_size_ratio = 10
