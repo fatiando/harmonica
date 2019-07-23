@@ -371,8 +371,8 @@ def glq_nodes_weights(glq_degrees):
     lat_node, lat_weights = leggauss(lat_degree)
     rad_node, rad_weights = leggauss(rad_degree)
     # Reorder nodes and weights
-    glq_nodes = [lon_node, lat_node, rad_node]
-    glq_weights = [lon_weights, lat_weights, rad_weights]
+    glq_nodes = (lon_node, lat_node, rad_node)
+    glq_weights = (lon_weights, lat_weights, rad_weights)
     return n_nodes, glq_nodes, glq_weights
 
 
