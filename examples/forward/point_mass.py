@@ -1,5 +1,5 @@
 """
-Point Mass on Cartesian Coordinates
+Point Mass in Cartesian Coordinates
 ===================================
 
 The simplest geometry used to compute gravitational fields are point masses.
