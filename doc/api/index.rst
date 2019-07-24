@@ -24,6 +24,8 @@ Forward modelling
 
     point_mass_gravity
     tesseroid_gravity
+    distance_cartesian
+    distance_spherical
 
 Isostasy
 --------
