@@ -23,8 +23,8 @@ def point_mass_gravity(
 
         V(P) = \frac{G m}{l},
 
-    where :math:`l` is the Euclidean distance between :math:`P` and :math:`Q`
-    [Blakely1995]_.
+    where :math:`G` is the gravitational constant and :math:`l` is the Euclidean
+    distance between :math:`P` and :math:`Q` [Blakely1995]_.
 
     In Cartesian coordinates, the points :math:`P` and :math:`Q` are given by :math:`x`,
     :math:`y` and :math:`z` coordinates, which can be translated into ``northing``,
