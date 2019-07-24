@@ -44,7 +44,7 @@ def point_mass_gravity(
         \vec{g} = \nabla V.
 
     Therefore, the :math:`z` component of :math:`\vec{g}` at the point :math:`P` can be
-    computed as:
+    computed as (remember that :math:`z` points downward):
 
     .. math::
 
