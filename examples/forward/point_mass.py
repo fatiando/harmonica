@@ -23,6 +23,7 @@ easting = [5e3, 15e3]
 northing = [5e3, 15e3]
 down = [7e3, 2.5e3]
 points = [easting, northing, down]
+# We're using "negative" masses to represent a "mass deficit"
 masses = [10e6, -10e6]
 
 # Define computation points on a grid at 500m above the ground
