@@ -77,7 +77,7 @@ def point_mass_gravity(
 
     .. warning::
 
-        When working in Cartesian coordinates, the ``down`` direction points downwards,
+        When working in Cartesian coordinates, the **z direction points downwards**,
         i.e. positive and negative values represent points below and above the surface,
         respectively.
 
