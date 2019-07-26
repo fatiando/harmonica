@@ -20,7 +20,15 @@ def test_distance():
     npt.assert_allclose(distance(point_a, point_b, coordinate_system="spherical"), 100)
 
 
-def test_invalid_coordinate_system():
-    "Check if invalid coordinate system is passed"
+def test_distance_invalid_coordinate_system():
+    "Check if invalid coordinate system is passed to distance function"
+    point_a = (0, 0, 0)
+    point_b = (1, 1, 1)
+    with pytest.raises(ValueError):
+        distance(point_a, point_b, "this-is-not-a-valid-coordinate-system")
+
+
+def test_check_coordinate_system():
+    "Check if invalid coordinate system is passed to _check_coordinate_system"
     with pytest.raises(ValueError):
         _check_coordinate_system("this-is-not-a-valid-coordinate-system")
