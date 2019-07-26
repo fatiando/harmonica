@@ -40,7 +40,7 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     _check_coordinate_system(coordinate_system)
     if coordinate_system == "cartesian":
         dist = np.sqrt(_distance_sq_cartesian(point_p, point_q))
-    elif coordinate_system == "spherical":
+    if coordinate_system == "spherical":
         dist = np.sqrt(_distance_sq_spherical(point_p, point_q))
     return dist
 
