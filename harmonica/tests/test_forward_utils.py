@@ -8,7 +8,7 @@ from ..forward.utils import distance, _check_coordinate_system
 
 
 @pytest.mark.use_numba
-def test_distance_cartesian():
+def test_distance():
     "Test if computated is distance is right"
     # Cartesian coordinate system
     point_a = (1.1, 1.2, 1.3)
