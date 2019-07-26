@@ -6,9 +6,9 @@ from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import (
-    DISTANCE_CARTESIAN_NUMBA,
     _distance_sq_cartesian,
     _distance_sq_spherical,
+    _distance_sq_spherical_core,
 )
 
 
@@ -204,8 +204,10 @@ def kernel_potential_cartesian(easting, northing, down, easting_p, northing_p, d
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
-    return 1 / DISTANCE_CARTESIAN_NUMBA(
-        [easting, northing, down], [easting_p, northing_p, down_p]
+    return 1 / np.sqrt(
+        _distance_sq_spherical(
+            (easting, northing, down), (easting_p, northing_p, down_p)
+        )
     )
 
 
@@ -274,7 +276,7 @@ def kernel_potential_spherical(
     """
     Kernel function for potential gravity field in spherical coordinates
     """
-    distance_sq, _, _ = _distance_sq_spherical(
+    distance_sq, _, _ = _distance_sq_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
     return 1 / np.sqrt(distance_sq)
@@ -287,7 +289,7 @@ def kernel_g_r(
     """
     Kernel function for radial component of gravity gradient in spherical coordinates
     """
-    distance_sq, cospsi, _ = _distance_sq_spherical(
+    distance_sq, cospsi, _ = _distance_sq_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
     delta_z = radius_p * cospsi - radius

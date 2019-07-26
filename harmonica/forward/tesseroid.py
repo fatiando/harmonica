@@ -6,7 +6,7 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
-from .utils import DISTANCE_SPHERICAL_NUMBA
+from .utils import _distance_sq_spherical
 from .point_mass import jit_point_mass_spherical, kernel_potential_spherical, kernel_g_r
 
 STACK_SIZE = 100
@@ -518,8 +518,8 @@ def _distance_tesseroid_point(
     latitude_p = (s + n) / 2
     radius_p = (bottom + top) / 2
     # Get distance between computation point and tesseroid center
-    distance = DISTANCE_SPHERICAL_NUMBA(
-        coordinates, (longitude_p, latitude_p, radius_p)
+    distance = np.sqrt(
+        _distance_sq_spherical(coordinates, (longitude_p, latitude_p, radius_p))
     )
     return distance
 
