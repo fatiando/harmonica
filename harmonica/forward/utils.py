@@ -37,15 +37,32 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     distance : float
         Distance between ``point_p`` and ``point_q``.
     """
-    if coordinate_system not in ("cartesian", "spherical"):
-        raise ValueError(
-            "Coordinate system {} not recognized.".format(coordinate_system)
-        )
+    _check_coordinate_system(coordinate_system)
     if coordinate_system == "cartesian":
         dist = np.sqrt(_distance_sq_cartesian(point_p, point_q))
     elif coordinate_system == "spherical":
         dist = np.sqrt(_distance_sq_spherical(point_p, point_q))
     return dist
+
+
+def _check_coordinate_system(
+    coordinate_system, valid_coord_systems=("cartesian", "spherical")
+):
+    """
+    Check if the coordinate system is a valid one.
+
+    Parameters
+    ----------
+    coordinate_system : str
+        Coordinate system to be checked.
+    valid_coord_system : tuple or list (optional)
+        Tuple or list containing the valid coordinate systems.
+        Default (``cartesian``, ``spherical``).
+    """
+    if coordinate_system not in valid_coord_systems:
+        raise ValueError(
+            "Coordinate system {} not recognized.".format(coordinate_system)
+        )
 
 
 @jit(nopython=True)
