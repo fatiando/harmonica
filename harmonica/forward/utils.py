@@ -39,9 +39,9 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     """
     _check_coordinate_system(coordinate_system)
     if coordinate_system == "cartesian":
-        dist = np.sqrt(_distance_sq_cartesian(point_p, point_q))
+        dist = distance_cartesian(point_p, point_q)
     if coordinate_system == "spherical":
-        dist = np.sqrt(_distance_sq_spherical(point_p, point_q))
+        dist = distance_spherical(point_p, point_q)
     return dist
 
 
@@ -66,9 +66,9 @@ def _check_coordinate_system(
 
 
 @jit(nopython=True)
-def _distance_sq_cartesian(point_p, point_q):
+def distance_cartesian(point_p, point_q):
     """
-    Calculate the square distance between two points given in Cartesian coordinates
+    Calculate the distance between two points given in Cartesian coordinates
 
     Parameters
     ----------
@@ -83,21 +83,21 @@ def _distance_sq_cartesian(point_p, point_q):
 
     Returns
     -------
-    distance_sq : float
-        Square distance between ``point_p`` and ``point_q``.
+    distance : float
+        Distance between ``point_p`` and ``point_q``.
     """
     easting, northing, down = point_p[:]
     easting_p, northing_p, down_p = point_q[:]
-    distance_sq = (
+    dist = np.sqrt(
         (easting - easting_p) ** 2 + (northing - northing_p) ** 2 + (down - down_p) ** 2
     )
-    return distance_sq
+    return dist
 
 
 @jit(nopython=True)
-def _distance_sq_spherical(point_p, point_q):
+def distance_spherical(point_p, point_q):
     """
-    Calculate the square distance between two points in spherical coordinates
+    Calculate the distance between two points in spherical coordinates
 
     All angles must be in degrees and radii in meters.
 
@@ -116,8 +116,8 @@ def _distance_sq_spherical(point_p, point_q):
 
     Returns
     -------
-    distance_sq : float
-        Square distance between ``point_p`` and ``point_q``.
+    distance : float
+        Distance between ``point_p`` and ``point_q``.
     """
     # Get coordinates of the two points
     longitude, latitude, radius = point_p[:]
@@ -130,20 +130,20 @@ def _distance_sq_spherical(point_p, point_q):
     sinphi_p = np.sin(latitude_p)
     cosphi = np.cos(latitude)
     sinphi = np.sin(latitude)
-    distance_sq, _, _ = _distance_sq_spherical_core(
+    dist, _, _ = distance_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
-    return distance_sq
+    return dist
 
 
 @jit(nopython=True)
-def _distance_sq_spherical_core(
+def distance_spherical_core(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Core computation for the square distance between two points in spherical coordinates
+    Core computation for the distance between two points in spherical coordinates
 
-    It computes the square distance between two points in spherical coordinates given
+    It computes the distance between two points in spherical coordinates given
     precomputed quantities related to the coordinates of both points: the ``longitude``
     in radians, the sine and cosine of the ``latitude`` and the ``radius`` in meters.
     Precomputing this quantities may save computation time on some cases.
@@ -161,8 +161,8 @@ def _distance_sq_spherical_core(
 
     Returns
     -------
-    distance_sq : float
-        Square distance between the two points.
+    distance : float
+        Distance between the two points.
     cospsi : float
         Cosine of the psi angle.
     coslambda : float
@@ -170,5 +170,5 @@ def _distance_sq_spherical_core(
     """
     coslambda = np.cos(longitude_p - longitude)
     cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
-    return distance_sq, cospsi, coslambda
+    dist = np.sqrt((radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi))
+    return dist, cospsi, coslambda
