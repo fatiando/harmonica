@@ -576,7 +576,9 @@ def _check_tesseroids(tesseroids):
         )
 
 
-def _check_points_outside_tesseroids(coordinates, tesseroids):
+def _check_points_outside_tesseroids(
+    coordinates, tesseroids
+):  # pylint: disable=too-many-locals
     """
     Check if computation points are not inside the tesseroids
 
