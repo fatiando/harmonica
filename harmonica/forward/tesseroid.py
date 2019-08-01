@@ -623,11 +623,19 @@ def _check_points_outside_tesseroids(
     inside_radius = np.logical_and(
         bottom < radius[:, np.newaxis], radius[:, np.newaxis] < top
     )
-    if (inside_longitude * inside_latitude * inside_radius).any():
-        raise ValueError(
+    # Build array of booleans.
+    # The (i, j) element is True if the computation point i is inside the tesseroid j.
+    inside = inside_longitude * inside_latitude * inside_radius
+    if inside.any():
+        err_msg = (
             "Found computation point inside tesseroid. "
-            + "Computation points must be outside of tesseroids."
+            + "Computation points must be outside of tesseroids.\n"
         )
+        for point_i, tess_i in np.argwhere(inside):
+            err_msg += "\tComputation point '{}' found inside tesseroid '{}'\n".format(
+                coordinates[:, point_i], tesseroids[tess_i, :]
+            )
+        raise ValueError(err_msg)
 
 
 def _longitude_continuity(tesseroids):
