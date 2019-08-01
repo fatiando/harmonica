@@ -9,19 +9,106 @@ from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
 
 
-def test_invalid_field():
-    "Check if an invalid gravitational field is passed as argument"
+def test_invalid_coordinate_system():
+    "Check if invalid coordinate system is passed"
+    coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
-    longitude = np.array(0.0)
-    latitude = np.array(0.0)
-    height = np.array(0.0)
     with pytest.raises(ValueError):
         point_mass_gravity(
-            [longitude, latitude, height], point_mass, mass, "this-field-does-not-exist"
+            coordinates,
+            point_mass,
+            mass,
+            "potential",
+            "this-is-not-a-valid-coordinate-system",
         )
 
 
+def test_invalid_field():
+    "Check if an invalid gravitational field is passed as argument"
+    coordinates = [0.0, 0.0, 0.0]
+    point_mass = [0.0, 0.0, 0.0]
+    mass = 1.0
+    for coordinate_system in ("spherical", "cartesian"):
+        with pytest.raises(ValueError):
+            point_mass_gravity(
+                coordinates,
+                point_mass,
+                mass,
+                "this-field-does-not-exist",
+                coordinate_system,
+            )
+
+
+def test_invalid_field_for_coordinate_system():
+    "Check if an invalid field is passed for that coordinate system"
+    coordinates = [0.0, 0.0, 0.0]
+    point_mass = [0.0, 0.0, 0.0]
+    mass = 1.0
+    cartesian_exclusive_fields = ["g_z"]
+    spherical_exclusive_fields = ["g_r"]
+    for field in spherical_exclusive_fields:
+        with pytest.raises(ValueError):
+            point_mass_gravity(coordinates, point_mass, mass, field, "cartesian")
+    for field in cartesian_exclusive_fields:
+        with pytest.raises(ValueError):
+            point_mass_gravity(coordinates, point_mass, mass, field, "spherical")
+
+
+# ---------------------------
+# Cartesian coordinates tests
+# ---------------------------
+@pytest.mark.use_numba
+def test_potential_cartesian_symmetry():
+    """
+    Test if potential field of a point mass has symmetry in Cartesian coordinates
+    """
+    # Define a single point mass
+    point_mass = [1.1, 1.2, 1.3]
+    masses = [2670]
+    # Define a set of computation points at a fixed distance from the point mass
+    distance = 3.3
+    easting = point_mass[0] * np.ones(6)
+    northing = point_mass[1] * np.ones(6)
+    down = point_mass[2] * np.ones(6)
+    easting[0] += distance
+    easting[1] -= distance
+    northing[2] += distance
+    northing[3] -= distance
+    down[4] += distance
+    down[5] -= distance
+    coordinates = [easting, northing, down]
+    # Compute potential gravity field on each computation point
+    results = point_mass_gravity(
+        coordinates, point_mass, masses, "potential", "cartesian"
+    )
+    npt.assert_allclose(*results)
+
+
+@pytest.mark.use_numba
+def test_g_z_symmetry():
+    """
+    Test if g_z field of a point mass has symmetry in Cartesian coordinates
+    """
+    # Define a single point mass
+    point_mass = [1.1, 1.2, 1.3]
+    masses = [2670]
+    # Define a pair of computation points above and bellow the point mass
+    distance = 3.3
+    easting = point_mass[0] * np.ones(2)
+    northing = point_mass[1] * np.ones(2)
+    down = point_mass[2] * np.ones(2)
+    down[0] += distance
+    down[1] -= distance
+    coordinates = [easting, northing, down]
+    # Compute g_z gravity field on each computation point
+    results = point_mass_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
+    npt.assert_allclose(results[0], -results[1])
+
+
+# ---------------------------
+# Spherical coordinates tests
+# ---------------------------
 @pytest.mark.use_numba
 def test_point_mass_on_origin():
     "Check potential and g_r of point mass on origin"
@@ -39,7 +126,9 @@ def test_point_mass_on_origin():
     # Compare results with analytical solutions
     for field in analytical:
         npt.assert_allclose(
-            point_mass_gravity([longitude, latitude, radius], point_mass, mass, field),
+            point_mass_gravity(
+                [longitude, latitude, radius], point_mass, mass, field, "spherical"
+            ),
             analytical[field],
         )
 
@@ -67,7 +156,9 @@ def test_point_mass_same_radial_direction():
                 # Compare results with analytical solutions
                 for field in analytical:
                     npt.assert_allclose(
-                        point_mass_gravity(coordinates, point_mass, mass, field),
+                        point_mass_gravity(
+                            coordinates, point_mass, mass, field, "spherical"
+                        ),
                         analytical[field],
                     )
 
@@ -95,7 +186,9 @@ def test_point_mass_potential_on_equator():
                 analytical = {"potential": GRAVITATIONAL_CONST * mass / distance}
                 # Compare results with analytical solutions
                 npt.assert_allclose(
-                    point_mass_gravity(coordinates, point_mass, mass, "potential"),
+                    point_mass_gravity(
+                        coordinates, point_mass, mass, "potential", "spherical"
+                    ),
                     analytical["potential"],
                 )
 
@@ -123,6 +216,8 @@ def test_point_mass_potential_on_same_meridian():
                 analytical = {"potential": GRAVITATIONAL_CONST * mass / distance}
                 # Compare results with analytical solutions
                 npt.assert_allclose(
-                    point_mass_gravity(coordinates, point_mass, mass, "potential"),
+                    point_mass_gravity(
+                        coordinates, point_mass, mass, "potential", "spherical"
+                    ),
                     analytical["potential"],
                 )
