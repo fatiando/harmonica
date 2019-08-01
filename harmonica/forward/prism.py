@@ -72,32 +72,54 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
 def _check_prisms(prisms):
     """
     Check if prisms boundaries are well defined
+
+    Parameters
+    ----------
+    coordinates : 2d-array
+        Array containing the coordinates of the computation points in the following
+        order: ``easting``, ``northing`` and ``down``.
+        The array must have the following shape: (3, ``n_points``), where
+        ``n_points`` is the total number of computation points.
+    prisms : 2d-array
+        Array containing the boundaries of the prisms in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The array must have the following shape: (``n_prisms``, 6), where
+        ``n_prisms`` is the total number of prisms.
+        This array of prisms must have valid boundaries. Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
+    err_msg = "Invalid prism or prisms. "
     if (west > east).any():
-        raise ValueError(
-            "Invalid prism '{}' (W, E, S, N, BOTTOM, TOP). Must have W <= E.".format(
-                prisms[west > east]
-            )
-        )
+        err_msg += "The west boundary can't be greater than the east one.\n"
+        for prism in prisms[west > east]:
+            err_msg += "\tInvalid prism: {}\n".format(prism)
+        raise ValueError(err_msg)
     if (south > north).any():
-        raise ValueError(
-            "Invalid prism '{}' (W, E, S, N, BOTTOM, TOP). Must have S <= N.".format(
-                prisms[south > north]
-            )
-        )
+        err_msg += "The south boundary can't be greater than the north one.\n"
+        for prism in prisms[south > north]:
+            err_msg += "\tInvalid prism: {}\n".format(prism)
+        raise ValueError(err_msg)
     if (bottom > top).any():
-        raise ValueError(
-            "Invalid prism '{}' (W, E, S, N, BOTTOM, TOP). ".format(
-                prisms[bottom > top]
-            )
-            + "Must have BOTTOM <= TOP."
-        )
+        err_msg += "The bottom radius boundary can't be greater than the top one.\n"
+        for prism in prisms[bottom > top]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(prism)
+        raise ValueError(err_msg)
 
 
-def _check_points_outside_prisms(coordinates, prisms):
+def _check_points_outside_prisms(
+    coordinates, prisms
+):  # pylint: disable=too-many-locals
     """
     Check if computation points are not inside the prisms
+
+    Parameters
+    ----------
+    prisms : 2d-array
+        Array containing the boundaries of the prisms in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The array must have the following shape: (``n_prisms``, 6), where
+        ``n_prisms`` is the total number of prisms.
+        This array of prisms must have valid boundaries. Run ``_check_prisms`` before.
     """
     easting, northing, down = coordinates[:]
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
@@ -110,11 +132,19 @@ def _check_points_outside_prisms(coordinates, prisms):
     inside_down = np.logical_and(
         bottom < down[:, np.newaxis], down[:, np.newaxis] < top
     )
-    if (inside_easting * inside_northing * inside_down).any():
-        raise ValueError(
+    # Build array of booleans.
+    # The (i, j) element is True if the computation point i is inside the prism j.
+    inside = inside_easting * inside_northing * inside_down
+    if inside.any():
+        err_msg = (
             "Found computation point inside prism. "
-            + "Computation points must be outside of prisms."
+            + "Computation points must be outside of prisms.\n"
         )
+        for point_i, prism_i in np.argwhere(inside):
+            err_msg += "\tComputation point '{}' found inside tesseroid '{}'\n".format(
+                coordinates[:, point_i], prisms[prism_i, :]
+            )
+        raise ValueError(err_msg)
 
 
 @jit(nopython=True)
