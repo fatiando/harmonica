@@ -582,11 +582,22 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
         Longitudinal and latitudinal boundaries must be in degrees.
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
+        This array of tesseroids must have longitude continuity and valid boundaries.
+        Run ``_longitude_continuity`` and ``_check_tesseroids`` before.
     """
     longitude, latitude, radius = coordinates[:]
     west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
-    inside_longitude = np.logical_and(
-        west < longitude[:, np.newaxis], longitude[:, np.newaxis] < east
+    # Longitudinal boundaries of the tesseroid must be compared with longitudinal
+    # coordinates of computation points when moved to [0, 360) and [-180, 180).
+    longitude_360 = longitude % 360
+    longitude_180 = ((longitude + 180) % 360) - 180
+    inside_longitude = np.logical_or(
+        np.logical_and(
+            west < longitude_360[:, np.newaxis], longitude_360[:, np.newaxis] < east
+        ),
+        np.logical_and(
+            west < longitude_180[:, np.newaxis], longitude_180[:, np.newaxis] < east
+        ),
     )
     inside_latitude = np.logical_and(
         south < latitude[:, np.newaxis], latitude[:, np.newaxis] < north

@@ -177,6 +177,14 @@ def test_point_inside_tesseroid():
     coordinates = np.atleast_2d([0, 0, 150]).T
     with pytest.raises(ValueError):
         _check_points_outside_tesseroids(coordinates, tesseroids)
+    # Test if computation point with phased longitude is inside the tesseroid
+    coordinates = np.atleast_2d([360, 0, 150]).T
+    with pytest.raises(ValueError):
+        _check_points_outside_tesseroids(coordinates, tesseroids)
+    tesseroids = np.atleast_2d([260, 280, -10, 10, 100, 200])
+    coordinates = np.atleast_2d([-90, 0, 150]).T
+    with pytest.raises(ValueError):
+        _check_points_outside_tesseroids(coordinates, tesseroids)
 
 
 @pytest.mark.use_numba
