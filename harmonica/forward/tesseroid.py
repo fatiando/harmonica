@@ -557,23 +557,27 @@ def _check_tesseroids(tesseroids):
         ``n_tesseroids`` is the total number of tesseroids.
     """
     west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
+    err_msg = "Invalid tesseroid or tesseroids. "
     if (west > east).any():
-        raise ValueError(
-            "Invalid tesseroid. The west boundary can't be greater than the east one."
-        )
+        err_msg += "The west boundary can't be greater than the east one.\n"
+        for tess in tesseroids[west > east]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
     if (south > north).any():
-        raise ValueError(
-            "Invalid tesseroid. The south boundary can't be greater than the north one."
-        )
+        err_msg += "The south boundary can't be greater than the north one.\n"
+        for tess in tesseroids[south > north]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
     if (bottom < 0).any() or (top < 0).any():
-        raise ValueError(
-            "Invalid tesseroid. The bottom and top radii couldn't be lower than zero."
-        )
+        err_msg += "The bottom and top radii couldn't be lower than zero.\n"
+        for tess in tesseroids[np.logical_or(bottom < 0, top < 0)]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
     if (bottom > top).any():
-        raise ValueError(
-            "Invalid tesseroid. "
-            + "The bottom radius boundary can't be greater than the top one."
-        )
+        err_msg += "The bottom radius boundary can't be greater than the top one.\n"
+        for tess in tesseroids[bottom > top]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
 
 
 def _check_points_outside_tesseroids(
