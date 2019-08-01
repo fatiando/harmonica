@@ -200,10 +200,17 @@ def jit_tesseroid_gravity(
     ----------
     coordinates : 2d-array
         Array containing the coordinates of the computation points in spherical
-        geocentric coordinate system.
+        geocentric coordinate system in the following order:
+        ``longitude``, ``latitude``, ``radius``.
+        The array must have the following shape: (3, ``n_points``), where
+        ``n_points`` is the total number of computation points.
     tesseroids : 2d-array
         Array containing the boundaries of each tesseroid:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
     density : 1d-array
         Density of each tesseroid in SI units.
     stack : 2d-array
@@ -289,7 +296,12 @@ def tesseroids_to_point_masses(
     Parameters
     ----------
     tesseroids : 2d-array
-        Array containing tesseroids boundaries.
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
@@ -623,9 +635,13 @@ def _longitude_continuity(tesseroids):
     Parameters
     ----------
     tesseroids : 2d-array
-        Array containing the boundaries of the tesseroids in the following order:
-        ``longitude``, ``latitude`` and ``radius``.
         Longitudinal and latitudinal boundaries must be in degrees.
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
     """
     west, east = tuple(tesseroids[:, i] for i in range(2))
     west %= 360
