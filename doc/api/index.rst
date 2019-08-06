@@ -24,7 +24,6 @@ Forward modelling
 
     point_mass_gravity
     tesseroid_gravity
-    distance
 
 Isostasy
 --------
