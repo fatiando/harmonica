@@ -34,6 +34,13 @@ def tesseroid_gravity(
     """
     Compute gravitational field of tesseroids on computation points.
 
+    .. warning::
+
+        The ``g_z`` field returns the downward component of the gravity acceleration on
+        the local North oriented coordinate system. It is equivalent to the opposite of
+        the radial component, therefore it's positive if the acceleration vector points
+        inside the spheroid.
+
     Parameters
     ----------
     coordinates : list or 1d-array

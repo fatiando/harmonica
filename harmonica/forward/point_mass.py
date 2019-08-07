@@ -84,8 +84,16 @@ def point_mass_gravity(
     .. warning::
 
         When working in Cartesian coordinates, the **z direction points upwards**,
-        i.e. positive and negative values represent points above and below the surface,
-        respectively.
+        i.e. positive and negative values of the ``g_z`` field represent points above
+        and below the surface, respectively.
+
+    .. warning::
+
+        When working in geocentric spherical coordinates, remember that the ``g_z``
+        field returns the downward component of the gravity acceleration on the local
+        North oriented coordinate system. It is equivalent to the opposite of the radial
+        component, therefore it's positive if the acceleration vector points inside the
+        spheroid.
 
 
     Parameters
