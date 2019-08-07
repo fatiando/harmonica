@@ -6,7 +6,7 @@ from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import (
-    _check_coordinate_system,
+    check_coordinate_system,
     distance_cartesian,
     distance_spherical,
     distance_spherical_core,
@@ -147,7 +147,7 @@ def point_mass_gravity(
         "spherical": {"potential": kernel_potential_spherical, "g_r": kernel_g_r},
     }
     # Sanity checks for coordinate_system and field
-    _check_coordinate_system(coordinate_system)
+    check_coordinate_system(coordinate_system)
     if field not in kernels[coordinate_system]:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array

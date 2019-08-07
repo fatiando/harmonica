@@ -37,7 +37,7 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     distance : float
         Distance between ``point_p`` and ``point_q``.
     """
-    _check_coordinate_system(coordinate_system)
+    check_coordinate_system(coordinate_system)
     if coordinate_system == "cartesian":
         dist = distance_cartesian(point_p, point_q)
     if coordinate_system == "spherical":
@@ -45,7 +45,7 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     return dist
 
 
-def _check_coordinate_system(
+def check_coordinate_system(
     coordinate_system, valid_coord_systems=("cartesian", "spherical")
 ):
     """

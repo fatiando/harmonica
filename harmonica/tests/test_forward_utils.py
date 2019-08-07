@@ -4,7 +4,7 @@ Test utils functions for forward modelling
 import pytest
 import numpy.testing as npt
 
-from ..forward.utils import distance, _check_coordinate_system
+from ..forward.utils import distance, check_coordinate_system
 
 
 @pytest.mark.use_numba
@@ -31,4 +31,4 @@ def test_distance_invalid_coordinate_system():
 def test_check_coordinate_system():
     "Check if invalid coordinate system is passed to _check_coordinate_system"
     with pytest.raises(ValueError):
-        _check_coordinate_system("this-is-not-a-valid-coordinate-system")
+        check_coordinate_system("this-is-not-a-valid-coordinate-system")
