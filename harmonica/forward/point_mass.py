@@ -54,7 +54,7 @@ def point_mass_gravity(
 
     .. math::
 
-        g_z(P) = \frac{G m}{l^3} (z_p - z).
+        g_z(P) = \frac{G m}{l^3} (z - z_p).
 
     On a geocentric spherical coordinate system, the points :math:`P` and :math:`Q` are
     given by the ``longitude``, ``latitude`` and ``radius`` coordinates, i.e.
@@ -79,7 +79,7 @@ def point_mass_gravity(
 
     .. math::
 
-        g_r(P) = \frac{G m}{l^3} (r_p \cos \Psi - r).
+        g_z(P) = \frac{G m}{l^3} (r - r_p \cos \Psi).
 
     .. warning::
 
@@ -144,7 +144,7 @@ def point_mass_gravity(
         },
         "spherical": {
             "potential": kernel_potential_spherical,
-            "g_r": kernel_g_z_spherical,
+            "g_z": kernel_g_z_spherical,
         },
     }
     # Sanity checks for coordinate_system and field
@@ -164,7 +164,7 @@ def point_mass_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field in ("g_r", "g_z"):
+    if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 

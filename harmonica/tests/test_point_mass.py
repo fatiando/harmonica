@@ -40,21 +40,6 @@ def test_invalid_field():
             )
 
 
-def test_invalid_field_for_coordinate_system():
-    "Check if an invalid field is passed for that coordinate system"
-    coordinates = [0.0, 0.0, 0.0]
-    point_mass = [0.0, 0.0, 0.0]
-    mass = 1.0
-    cartesian_exclusive_fields = ["g_z"]
-    spherical_exclusive_fields = ["g_r"]
-    for field in spherical_exclusive_fields:
-        with pytest.raises(ValueError):
-            point_mass_gravity(coordinates, point_mass, mass, field, "cartesian")
-    for field in cartesian_exclusive_fields:
-        with pytest.raises(ValueError):
-            point_mass_gravity(coordinates, point_mass, mass, field, "spherical")
-
-
 # ---------------------------
 # Cartesian coordinates tests
 # ---------------------------
@@ -111,7 +96,7 @@ def test_g_z_symmetry():
 # ---------------------------
 @pytest.mark.use_numba
 def test_point_mass_on_origin():
-    "Check potential and g_r of point mass on origin"
+    "Check potential and g_z of point mass on origin in spherical coordinates"
     point_mass = [0.0, 0.0, 0.0]
     mass = 2.0
     radius = np.logspace(1, 8, 5)
@@ -121,7 +106,7 @@ def test_point_mass_on_origin():
     # Analytical solutions (accelerations are in mgal and tensor components in eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
-        "g_r": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
+        "g_z": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
     }
     # Compare results with analytical solutions
     for field in analytical:
@@ -135,7 +120,7 @@ def test_point_mass_on_origin():
 
 @pytest.mark.use_numba
 def test_point_mass_same_radial_direction():
-    "Check potential and g_r of point mass and computation point on same radius"
+    "Check potential and g_z of point mass and computation point on same radius"
     sphere_radius = 3.0
     mass = 2.0
     for longitude in np.linspace(-180, 180, 37):
@@ -151,7 +136,7 @@ def test_point_mass_same_radial_direction():
                 # (accelerations are in mgal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
-                    "g_r": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
+                    "g_z": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
                 }
                 # Compare results with analytical solutions
                 for field in analytical:
