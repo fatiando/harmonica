@@ -28,6 +28,7 @@ def require_numba(function):  # pylint: disable=unused-argument
     @pytest.mark.use_numba
     @pytest.mark.skipif(numba_is_disabled, reason="Numba jit is disabled")
     def function_wrapper():
+        function()
         return
 
     return function_wrapper
