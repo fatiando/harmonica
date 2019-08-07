@@ -54,7 +54,14 @@ def point_mass_gravity(
 
     .. math::
 
-        g_z(P) = \frac{G m}{l^3} (z - z_p).
+        g_{up}(P) = - \frac{G m}{l^3} (z - z_p).
+
+    We define the downward component of the gravity acceleration as the opposite of
+    :math:`g_{up}`:
+
+    .. math::
+
+        g_{z}(P) = \frac{G m}{l^3} (z - z_p).
 
     On a geocentric spherical coordinate system, the points :math:`P` and :math:`Q` are
     given by the ``longitude``, ``latitude`` and ``radius`` coordinates, i.e.
@@ -79,13 +86,21 @@ def point_mass_gravity(
 
     .. math::
 
+        g_r(P) =  - \frac{G m}{l^3} (r - r_p \cos \Psi).
+
+    We define the downward component of the gravity acceleration :math:`g_z` as the
+    opposite of the radial component:
+
+    .. math::
+
         g_z(P) = \frac{G m}{l^3} (r - r_p \cos \Psi).
 
     .. warning::
 
-        When working in Cartesian coordinates, the **z direction points upwards**,
-        i.e. positive and negative values of the ``g_z`` field represent points above
-        and below the surface, respectively.
+        When working in Cartesian coordinates, the **z direction points upwards**, i.e.
+        positive and negative values of ``upward`` represent points above and below the
+        surface, respectively. But remember that the ``g_z`` field returns the downward
+        component of the gravity acceleration.
 
     .. warning::
 
