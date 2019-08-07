@@ -70,14 +70,14 @@ def test_potential_cartesian_symmetry():
     distance = 3.3
     easting = point_mass[0] * np.ones(6)
     northing = point_mass[1] * np.ones(6)
-    down = point_mass[2] * np.ones(6)
+    upward = point_mass[2] * np.ones(6)
     easting[0] += distance
     easting[1] -= distance
     northing[2] += distance
     northing[3] -= distance
-    down[4] += distance
-    down[5] -= distance
-    coordinates = [easting, northing, down]
+    upward[4] += distance
+    upward[5] -= distance
+    coordinates = [easting, northing, upward]
     # Compute potential gravity field on each computation point
     results = point_mass_gravity(
         coordinates, point_mass, masses, "potential", "cartesian"
@@ -97,10 +97,10 @@ def test_g_z_symmetry():
     distance = 3.3
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
-    down = point_mass[2] * np.ones(2)
-    down[0] += distance
-    down[1] -= distance
-    coordinates = [easting, northing, down]
+    upward = point_mass[2] * np.ones(2)
+    upward[0] += distance
+    upward[1] -= distance
+    coordinates = [easting, northing, upward]
     # Compute g_z gravity field on each computation point
     results = point_mass_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
     npt.assert_allclose(results[0], -results[1])
@@ -121,7 +121,7 @@ def test_point_mass_on_origin():
     # Analytical solutions (accelerations are in mgal and tensor components in eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
-        "g_r": -GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
+        "g_r": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
     }
     # Compare results with analytical solutions
     for field in analytical:
@@ -151,7 +151,7 @@ def test_point_mass_same_radial_direction():
                 # (accelerations are in mgal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
-                    "g_r": -GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
+                    "g_r": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
                 }
                 # Compare results with analytical solutions
                 for field in analytical:
