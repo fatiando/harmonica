@@ -21,14 +21,14 @@ import matplotlib.ticker
 # Define two point masses with oposite mass values of 10000000 kg
 easting = [5e3, 15e3]
 northing = [5e3, 15e3]
-down = [7e3, 2.5e3]
-points = [easting, northing, down]
+upward = [-7e3, -2.5e3]
+points = [easting, northing, upward]
 # We're using "negative" masses to represent a "mass deficit"
 masses = [10e6, -10e6]
 
 # Define computation points on a grid at 500m above the ground
 coordinates = vd.grid_coordinates(
-    region=[0, 20e3, 0, 20e3], shape=(80, 80), extra_coords=-500
+    region=[0, 20e3, 0, 20e3], shape=(80, 80), extra_coords=500
 )
 
 # Compute the downward component of the acceleration
