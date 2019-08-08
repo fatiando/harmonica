@@ -199,11 +199,12 @@ def predict_numba(coordinates, points, coeffs, result):
 @jit(nopython=True)
 def greens_func(east, north, upward, point_east, point_north, point_upward):
     """
-    Calculate the Green's function for the Equivalent Layer using numba.
+    Calculate the Green's function for the Equivalent Layer using Numba.
     """
-    return 1 / distance_cartesian(
-        east, north, upward, point_east, point_north, point_upward
+    distance = distance_cartesian(
+        (east, north, upward), (point_east, point_north, point_upward)
     )
+    return 1 / distance
 
 
 @jit(nopython=True)
