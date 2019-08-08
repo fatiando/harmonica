@@ -144,7 +144,9 @@ class EQLHarmonic(BaseGridder):
         predict_numba(coordinates, self.points_, self.coefs_, data)
         return data.reshape(shape)
 
-    def jacobian(self, coordinates, points, dtype="float64"):
+    def jacobian(
+        self, coordinates, points, dtype="float64"
+    ):  # pylint: disable=no-self-use
         """
         Make the Jacobian matrix for the Equivalent Layer.
 

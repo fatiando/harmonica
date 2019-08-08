@@ -31,7 +31,7 @@ def point_mass_gravity_simple(coordinates, points, masses):
 
 
 @require_numba
-def test_EQLHarmonic():
+def test_eql_harmonic():
     """
     See if exact solution matches the synthetic data
     """
@@ -61,7 +61,7 @@ def test_EQLHarmonic():
     npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
 
 
-def test_EQLHarmonic_numba_disabled():
+def test_eql_harmonic_numba_disabled():
     """
     See if exact solution matches the synthetic data with few sources
     """
