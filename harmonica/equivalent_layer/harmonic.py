@@ -7,6 +7,8 @@ from sklearn.utils.validation import check_is_fitted
 from verde import get_region, median_distance
 from verde.base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 
+from ..forward.utils import distance_cartesian
+
 
 class EQLHarmonic(BaseGridder):
     r"""
@@ -201,7 +203,9 @@ def greens_func(east, north, upward, point_east, point_north, point_upward):
     """
     Calculate the Green's function for the Equivalent Layer using numba.
     """
-    return 1 / distance(east, north, upward, point_east, point_north, point_upward)
+    return 1 / distance_cartesian(
+        east, north, upward, point_east, point_north, point_upward
+    )
 
 
 @jit(nopython=True)
@@ -221,16 +225,3 @@ def jacobian_numba(coordinates, points, jac):
                 point_north[j],
                 point_upward[j],
             )
-
-
-@jit(nopython=True)
-def distance(east_1, north_1, upward_1, east_2, north_2, upward_2):
-    """
-    Compute the distance between two points
-    """
-    dist = np.sqrt(
-        (east_1 - east_2) ** 2
-        + (north_1 - north_2) ** 2
-        + (upward_1 - upward_2) ** 2
-    )
-    return dist
