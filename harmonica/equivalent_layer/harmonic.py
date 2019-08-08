@@ -33,7 +33,7 @@ class EQLHarmonic(BaseGridder):
         imposed on the estimated coefficients. If None, no regularization is used.
     points : None or list of arrays (optional)
         List containing the coordinates of the point sources used as Equivalent Layer
-        in the following order: (``easting``, ``northing``, ``vertical``). If None,
+        in the following order: (``easting``, ``northing``, ``upward``). If None,
         a default set of points will be created putting a single point source bellow
         each observation point at a depth proportional to the mean distance to the
         nearest k observation points [Cooper2000]_. Default None.
@@ -81,7 +81,7 @@ class EQLHarmonic(BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting
+            following order: (easting, northing, upward, ...). Only easting
             and northing will be used, all subsequent coordinates will be
             ignored.
         data : array
@@ -102,13 +102,13 @@ class EQLHarmonic(BaseGridder):
         if self.points is None:
             # Put a single point source bellow each observation point at a depth three
             # times the meadian distance to the nearest k observation points.
-            point_east, point_north, point_vertical = tuple(
+            point_east, point_north, point_upward = tuple(
                 i.copy() for i in coordinates
             )
-            point_vertical += self.depth_factor * median_distance(
+            point_upward += self.depth_factor * median_distance(
                 coordinates, k_nearest=self.k_nearest
             )
-            self.points_ = (point_east, point_north, point_vertical)
+            self.points_ = (point_east, point_north, point_upward)
         else:
             self.points_ = n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
@@ -125,8 +125,8 @@ class EQLHarmonic(BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``vertical``, ...). Only
-            ``easting``, ``northing`` and ``vertical`` will be used, all subsequent
+            following order: (``easting``, ``northing``, ``upward``, ...). Only
+            ``easting``, ``northing`` and ``upward`` will be used, all subsequent
             coordinates will be ignored.
 
         Returns
@@ -155,13 +155,13 @@ class EQLHarmonic(BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``vertical``, ...). Only
-            ``easting``, ``northing`` and ``vertical`` will be used, all subsequent
+            following order: (``easting``, ``northing``, ``upward``, ...). Only
+            ``easting``, ``northing`` and ``upward`` will be used, all subsequent
             coordinates will be ignored.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the point sources used as
             Equivalent Layer in the following order: (``easting``, ``northing``,
-            ``vertical``).
+            ``upward``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -182,26 +182,26 @@ def predict_numba(coordinates, points, coeffs, result):
     """
     Calculate the predicted data using numba for speeding things up.
     """
-    east, north, vertical = coordinates[:]
-    point_east, point_north, point_vertical = points[:]
+    east, north, upward = coordinates[:]
+    point_east, point_north, point_upward = points[:]
     for i in range(east.size):
         for j in range(point_east.size):
             result[i] += coeffs[j] * greens_func(
                 east[i],
                 north[i],
-                vertical[i],
+                upward[i],
                 point_east[j],
                 point_north[j],
-                point_vertical[j],
+                point_upward[j],
             )
 
 
 @jit(nopython=True)
-def greens_func(east, north, vertical, point_east, point_north, point_vertical):
+def greens_func(east, north, upward, point_east, point_north, point_upward):
     """
     Calculate the Green's function for the Equivalent Layer using numba.
     """
-    return 1 / distance(east, north, vertical, point_east, point_north, point_vertical)
+    return 1 / distance(east, north, upward, point_east, point_north, point_upward)
 
 
 @jit(nopython=True)
@@ -209,28 +209,28 @@ def jacobian_numba(coordinates, points, jac):
     """
     Calculate the Jacobian matrix using numba to speed things up.
     """
-    east, north, vertical = coordinates[:]
-    point_east, point_north, point_vertical = points[:]
+    east, north, upward = coordinates[:]
+    point_east, point_north, point_upward = points[:]
     for i in range(east.size):
         for j in range(point_east.size):
             jac[i, j] = greens_func(
                 east[i],
                 north[i],
-                vertical[i],
+                upward[i],
                 point_east[j],
                 point_north[j],
-                point_vertical[j],
+                point_upward[j],
             )
 
 
 @jit(nopython=True)
-def distance(east_1, north_1, vertical_1, east_2, north_2, vertical_2):
+def distance(east_1, north_1, upward_1, east_2, north_2, upward_2):
     """
     Compute the distance between two points
     """
     dist = np.sqrt(
         (east_1 - east_2) ** 2
         + (north_1 - north_2) ** 2
-        + (vertical_1 - vertical_2) ** 2
+        + (upward_1 - upward_2) ** 2
     )
     return dist

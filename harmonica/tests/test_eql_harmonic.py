@@ -94,11 +94,11 @@ def test_EQLHarmonic_numba_disabled():
 @pytest.mark.use_numba
 def test_jacobian():
     "Test Jacobian matrix under symetric system of point sources"
-    easting, northing, vertical = grid_coordinates(
+    easting, northing, upward = grid_coordinates(
         region=[-100, 100, -100, 100], shape=(2, 2), extra_coords=0
     )
-    points = n_1d_arrays((easting, northing, vertical + 100), n=3)
-    coordinates = n_1d_arrays((easting, northing, vertical), n=3)
+    points = n_1d_arrays((easting, northing, upward + 100), n=3)
+    coordinates = n_1d_arrays((easting, northing, upward), n=3)
     n_points = points[0].size
     jacobian = np.zeros((n_points, n_points), dtype=points[0].dtype)
     jacobian_numba(coordinates, points, jacobian)
