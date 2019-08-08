@@ -16,7 +16,7 @@ from ..forward.prism import (
 
 def test_invalid_field():
     "Check if passing an invalid field raises an error"
-    prism = [-100, 100, -100, 100, 100, 200]
+    prism = [-100, 100, -100, 100, -200, -100]
     density = 1000
     coordinates = [0, 0, 0]
     with pytest.raises(ValueError):
@@ -27,10 +27,10 @@ def test_invalid_density_array():
     "Check if error is raised when density shape does not match prisms shape"
     # Create a set of 4 tesseroids
     prisms = [
-        [-100, 0, -100, 0, 100, 200],
-        [-100, 0, 0, 100, 100, 200],
-        [0, 100, -100, 0, 100, 200],
-        [0, 100, 0, 100, 100, 200],
+        [-100, 0, -100, 0, -200, -100],
+        [-100, 0, 0, 100, -200, -100],
+        [0, 100, -100, 0, -200, -100],
+        [0, 100, 0, 100, -200, -100],
     ]
     # Generate a two element density
     density = [1000, 2000]
@@ -41,7 +41,7 @@ def test_invalid_density_array():
 
 def test_invalid_prisms():
     "Check if invalid prism boundaries are caught by _check_prisms"
-    w, e, s, n, bottom, top = -100, 100, -100, 100, 100, 200
+    w, e, s, n, bottom, top = -100, 100, -100, 100, -200, -100
     # Check if it works properly on valid prisms
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
     # Check if it works properly on valid tesseroid with zero volume
@@ -59,7 +59,7 @@ def test_invalid_prisms():
     with pytest.raises(ValueError):
         _check_prisms(np.atleast_2d([w, e, s, n, 300, top]))
     with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([w, e, s, n, bottom, -100]))
+        _check_prisms(np.atleast_2d([w, e, s, n, bottom, -500]))
 
 
 def test_point_inside_prisms():
