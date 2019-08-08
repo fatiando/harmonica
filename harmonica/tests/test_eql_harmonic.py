@@ -68,15 +68,11 @@ def test_EQLHarmonic_numba_disabled():
     region = (-3e4, -1e4, 5e4, 7e4)
     # Build synthetic point masses
     depth = 1e3
-    points = scatter_points(
-        region=region, size=50, random_state=1, extra_coords=depth
-    )
+    points = scatter_points(region=region, size=50, random_state=1, extra_coords=depth)
     checker = CheckerBoard(region=region)
     synth_masses = checker.predict(points)
     # Define a random set of observation points
-    coordinates = scatter_points(
-        region=region, size=50, random_state=2, extra_coords=0
-    )
+    coordinates = scatter_points(region=region, size=50, random_state=2, extra_coords=0)
     # Get synthetic data
     data = point_mass_gravity_simple(coordinates, points, synth_masses)
 
