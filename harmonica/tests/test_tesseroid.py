@@ -22,6 +22,9 @@ from ..forward.tesseroid import (
     MAX_DISCRETIZATIONS,
 )
 
+# Define the accuracy threshold for tesseroids (0.1%) as a relative error (0.001)
+ACCURACY_THRESHOLD = 1e-3
+
 
 @pytest.mark.use_numba
 def test_single_tesseroid():
@@ -443,12 +446,6 @@ def test_two_dimensional_adaptive_discretization():
 # ------------------------------------------------------------------
 # Compare numerical result vs analytical solution of spherical shell
 # ------------------------------------------------------------------
-@pytest.fixture
-def accuracy_threshold():
-    "Return the accuracy threshold for tesseroids (0.1%) as a relative error (0.001)"
-    return 1e-3
-
-
 def spherical_shell_analytical(top, bottom, density, radius):
     "Compute analytical solution of gravity fields for an homogeneous spherical shell"
     potential = (
@@ -494,18 +491,16 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
         for w, e in zip(west, east):
             for s, n in zip(south, north):
                 tesseroids.append([w, e, s, n, bottom, top])
-        # Compute gravitational fields of the spherical shell
-        numerical = {"potential": 0, "g_r": 0}
-        for field in numerical:
-            numerical[field] = tesseroid_gravity(
-                coordinates, tesseroids, density * np.ones(shape), field=field
-            )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
         # Assert analytical and numerical solution are bellow the accuracy threshold
-        for field in numerical:
-            np.assert_allclose(
-                analytical[field], numerical[field], rtol=accuracy_threshold
+        for field in analytical:
+            npt.assert_allclose(
+                analytical[field],
+                tesseroid_gravity(
+                    coordinates, tesseroids, density * np.ones(shape), field=field
+                ),
+                rtol=ACCURACY_THRESHOLD,
             )
 
 
@@ -535,21 +530,14 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
         for w, e in zip(west, east):
             for s, n in zip(south, north):
                 tesseroids.append([w, e, s, n, bottom, top])
-        # Compute gravitational fields of the spherical shell
-        numerical = {"potential": 0, "g_r": 0}
-        for tesseroid in tesseroids:
-            for field in numerical:
-                numerical[field] += tesseroid_gravity(
-                    coordinates,
-                    tesseroid,
-                    density,
-                    field=field,
-                    radial_adaptive_discretization=True,
-                )
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
         # Assert analytical and numerical solution are bellow the accuracy threshold
-        for field in numerical:
-            np.assert_allclose(
-                analytical[field], numerical[field], rtol=accuracy_threshold
+        for field in analytical:
+            npt.assert_allclose(
+                analytical[field],
+                tesseroid_gravity(
+                    coordinates, tesseroids, density * np.ones(shape), field=field
+                ),
+                rtol=ACCURACY_THRESHOLD,
             )
