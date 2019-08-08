@@ -50,17 +50,15 @@ grid = gridder.grid(
 )
 
 # Plot original magnetic anomaly
-fig, ax = plt.subplots()
-tmp = ax.scatter(data.easting, data.northing, c=data.total_field_anomaly_nt, s=2)
-plt.colorbar(tmp, label="nT")
-ax.set_aspect("equal")
-plt.title("Observed Anomaly Magnetic data from Rio de Janeiro")
-plt.show()
+fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10, 10))
+tmp = ax1.scatter(data.easting, data.northing, c=data.total_field_anomaly_nt, s=2)
+plt.colorbar(tmp, ax=ax1, label="nT")
+ax1.set_aspect("equal")
+ax1.set_title("Observed Anomaly Magnetic data from Rio de Janeiro")
 
 # Plot gridded magnetic anomaly
-fig, ax = plt.subplots()
-tmp = grid.magnetic_anomaly.plot.pcolormesh(ax=ax, add_colorbar=False, cmap="viridis")
-plt.colorbar(tmp, label="nT")
-ax.set_aspect("equal")
-plt.title("Gridded Anomaly Magnetic data from Rio de Janeiro")
+tmp = grid.magnetic_anomaly.plot.pcolormesh(ax=ax2, add_colorbar=False, cmap="viridis")
+plt.colorbar(tmp, ax=ax2, label="nT")
+ax2.set_aspect("equal")
+ax2.set_title("Gridded Anomaly Magnetic data from Rio de Janeiro")
 plt.show()
