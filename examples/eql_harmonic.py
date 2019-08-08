@@ -1,5 +1,14 @@
 """
-Grid magnetic data with Harmonic Equivalent Layer interpolator
+Grid total-field magnetic data from Rio de Janeiro
+==================================================
+
+Most potential field surveys gather data on several scatter points that might be at
+different heights. For a great number of applications we may need to interpolate these
+data points into a regular grid. This can be done through an Equivalent Layer
+interpolator. We will use :class:`harmonica.EQLHarmonic` to generate a set of point
+sources beneath the observation points that predicts the observed data. Then these point
+sources will be used to interpolate the data values into a regular grid at a constant
+height.
 """
 import harmonica as hm
 import verde as vd
