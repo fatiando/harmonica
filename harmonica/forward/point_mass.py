@@ -5,6 +5,12 @@ import numpy as np
 from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
+from .utils import (
+    check_coordinate_system,
+    distance_cartesian,
+    distance_spherical,
+    distance_spherical_core,
+)
 
 
 def point_mass_gravity(
@@ -141,10 +147,7 @@ def point_mass_gravity(
         "spherical": {"potential": kernel_potential_spherical, "g_r": kernel_g_r},
     }
     # Sanity checks for coordinate_system and field
-    if coordinate_system not in ("cartesian", "spherical"):
-        raise ValueError(
-            "Coordinate system {} not recognized".format(coordinate_system)
-        )
+    check_coordinate_system(coordinate_system)
     if field not in kernels[coordinate_system]:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
@@ -199,8 +202,8 @@ def kernel_potential_cartesian(easting, northing, down, easting_p, northing_p, d
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
-    return 1 / _distance_cartesian(
-        [easting, northing, down], [easting_p, northing_p, down_p]
+    return 1 / distance_spherical(
+        (easting, northing, down), (easting_p, northing_p, down_p)
     )
 
 
@@ -209,31 +212,10 @@ def kernel_g_z(easting, northing, down, easting_p, northing_p, down_p):
     """
     Kernel function for downward component of gravity gradient in Cartesian coordinates
     """
-    distance_sq = _distance_cartesian_sq(
+    distance = distance_cartesian(
         [easting, northing, down], [easting_p, northing_p, down_p]
     )
-    return (down_p - down) / distance_sq ** (3 / 2)
-
-
-@jit(nopython=True)
-def _distance_cartesian_sq(point_a, point_b):
-    """
-    Calculate the square distance between two points given in Cartesian coordinates
-    """
-    easting, northing, down = point_a[:]
-    easting_p, northing_p, down_p = point_b[:]
-    distance_sq = (
-        (easting - easting_p) ** 2 + (northing - northing_p) ** 2 + (down - down_p) ** 2
-    )
-    return distance_sq
-
-
-@jit(nopython=True)
-def _distance_cartesian(point_a, point_b):
-    """
-    Calculate the distance between two points given in Cartesian coordinates
-    """
-    return np.sqrt(_distance_cartesian_sq(point_a, point_b))
+    return (down_p - down) / distance ** 3
 
 
 @jit(nopython=True)
@@ -290,10 +272,10 @@ def kernel_potential_spherical(
     """
     Kernel function for potential gravity field in spherical coordinates
     """
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
-    return 1 / np.sqrt(distance_sq)
+    distance, _, _ = distance_spherical_core(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
+    return 1 / distance
 
 
 @jit(nopython=True)
@@ -303,8 +285,8 @@ def kernel_g_r(
     """
     Kernel function for radial component of gravity gradient in spherical coordinates
     """
-    coslambda = np.cos(longitude_p - longitude)
-    cospsi = sinphi_p * sinphi + cosphi_p * cosphi * coslambda
-    distance_sq = (radius - radius_p) ** 2 + 2 * radius * radius_p * (1 - cospsi)
+    distance, cospsi, _ = distance_spherical_core(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
     delta_z = radius_p * cospsi - radius
-    return delta_z / distance_sq ** (3 / 2)
+    return delta_z / distance ** 3
