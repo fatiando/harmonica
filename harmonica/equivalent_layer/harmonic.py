@@ -45,7 +45,8 @@ class EQLHarmonic(BaseGridder):
         a single point source bellow each obervation point at a depth given by the
         product of the ``depth_factor`` and the mean distance to the nearest
         k obervation points. A greater ``depth_factor`` will increase the depth of the
-        point source. This parameter is ignored if ``points`` is not None. Default 3.
+        point source. This parameter is ignored if ``points`` is not None.
+        Default 3 (following [Cooper2000]_).
     k_nearest : int
         Number of observation points used to compute the median distance to its nearest
         neighbours. This argument is passed to :func:`verde.mean_distance`. It's ignored
