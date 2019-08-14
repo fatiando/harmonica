@@ -34,7 +34,7 @@ def point_mass_gravity(
 
     In Cartesian coordinates, the points :math:`P` and :math:`Q` are given by :math:`x`,
     :math:`y` and :math:`z` coordinates, which can be translated into ``northing``,
-    ``easting`` and ``down``, respectively.
+    ``easting`` and ``upward``, respectively.
     If :math:`P` is located at :math:`(x, y, z)`, and :math:`Q` at :math:`(x_p, y_p,
     z_p)`, the distance :math:`l` can be computed as:
 
@@ -50,11 +50,18 @@ def point_mass_gravity(
         \vec{g} = \nabla V.
 
     Therefore, the :math:`z` component of :math:`\vec{g}` at the point :math:`P` can be
-    computed as (remember that :math:`z` points downward):
+    computed as (remember that :math:`z` points upwards):
 
     .. math::
 
-        g_z(P) = \frac{G m}{l^3} (z_p - z).
+        g_{up}(P) = - \frac{G m}{l^3} (z - z_p).
+
+    We define the downward component of the gravity acceleration as the opposite of
+    :math:`g_{up}`:
+
+    .. math::
+
+        g_{z}(P) = \frac{G m}{l^3} (z - z_p).
 
     On a geocentric spherical coordinate system, the points :math:`P` and :math:`Q` are
     given by the ``longitude``, ``latitude`` and ``radius`` coordinates, i.e.
@@ -79,46 +86,57 @@ def point_mass_gravity(
 
     .. math::
 
-        g_r(P) = \frac{G m}{l^3} (r_p \cos \Psi - r).
+        g_r(P) =  - \frac{G m}{l^3} (r - r_p \cos \Psi).
+
+    We define the downward component of the gravity acceleration :math:`g_z` as the
+    opposite of the radial component:
+
+    .. math::
+
+        g_z(P) = \frac{G m}{l^3} (r - r_p \cos \Psi).
 
     .. warning::
 
-        When working in Cartesian coordinates, the **z direction points downwards**,
-        i.e. positive and negative values represent points below and above the surface,
-        respectively.
+        When working in Cartesian coordinates, the **z direction points upwards**, i.e.
+        positive and negative values of ``upward`` represent points above and below the
+        surface, respectively. But remember that the ``g_z`` field returns the downward
+        component of the gravity acceleration.
+
+    .. warning::
+
+        When working in geocentric spherical coordinates, remember that the ``g_z``
+        field returns the downward component of the gravity acceleration on the local
+        North oriented coordinate system. It is equivalent to the opposite of the radial
+        component, therefore it's positive if the acceleration vector points inside the
+        spheroid.
 
 
     Parameters
     ----------
     coordinates : list or array
         List or array containing the coordinates of computation points in the following
-        order: ``easting``, ``northing`` and ``down`` (if coordinates given in
+        order: ``easting``, ``northing`` and ``upward`` (if coordinates given in
         Cartesian coordiantes), or ``longitude``, ``latitude`` and ``radius`` (if given
         on a spherical geocentric coordinate system).
-        All ``easting``, ``northing`` and ``down`` should be in meters.
+        All ``easting``, ``northing`` and ``upward`` should be in meters.
         Both ``longitude`` and ``latitude`` should be in degrees and ``radius`` in
         meters.
     points : list or array
         List or array containing the coordinates of the point masses in the following
-        order: ``easting``, ``northing`` and ``down`` (if coordinates given in
+        order: ``easting``, ``northing`` and ``upward`` (if coordinates given in
         Cartesian coordiantes), or ``longitude``, ``latitude`` and ``radius`` (if given
         on a spherical geocentric coordinate system).
-        All ``easting``, ``northing`` and ``down`` should be in meters.
+        All ``easting``, ``northing`` and ``upward`` should be in meters.
         Both ``longitude`` and ``latitude`` should be in degrees and ``radius`` in
         meters.
     masses : list or array
         List or array containing the mass of each point mass in kg.
     field : str
         Gravitational field that wants to be computed.
-        The available fields in Cartesian coordinates are:
+        The available fields coordinates are:
 
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
-
-        The available fields in spherical geocentric coordinates are:
-
-        - Gravitational potential: ``potential``
-        - Radial acceleration: ``g_r``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the point
@@ -143,8 +161,14 @@ def point_mass_gravity(
         "spherical": jit_point_mass_spherical,
     }
     kernels = {
-        "cartesian": {"potential": kernel_potential_cartesian, "g_z": kernel_g_z},
-        "spherical": {"potential": kernel_potential_spherical, "g_r": kernel_g_r},
+        "cartesian": {
+            "potential": kernel_potential_cartesian,
+            "g_z": kernel_g_z_cartesian,
+        },
+        "spherical": {
+            "potential": kernel_potential_spherical,
+            "g_z": kernel_g_z_spherical,
+        },
     }
     # Sanity checks for coordinate_system and field
     check_coordinate_system(coordinate_system)
@@ -163,29 +187,29 @@ def point_mass_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field in ("g_r", "g_z"):
+    if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
 
 @jit(nopython=True)
 def jit_point_mass_cartesian(
-    easting, northing, down, easting_p, northing_p, down_p, masses, out, kernel
+    easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
     """
     Compute gravity field of point masses on computation points in Cartesian coordinates
 
     Parameters
     ----------
-    easting, northing, down : 1d-arrays
+    easting, northing, upward : 1d-arrays
         Coordinates of computation points in Cartesian coordinate system.
-    easting_p, northing_p, down_p : 1d-arrays
+    easting_p, northing_p, upward_p : 1d-arrays
         Coordinates of point masses in Cartesian coordinate system.
     masses : 1d-array
         Mass of each point mass in SI units.
     out : 1d-array
         Array where the gravitational field on each computation point will be appended.
-        It must have the same size of ``easting``, ``northing`` and ``down``.
+        It must have the same size of ``easting``, ``northing`` and ``upward``.
     kernel : func
         Kernel function that will be used to compute the gravity field on the
         computation points.
@@ -193,29 +217,36 @@ def jit_point_mass_cartesian(
     for l in range(easting.size):
         for m in range(easting_p.size):
             out[l] += masses[m] * kernel(
-                easting[l], northing[l], down[l], easting_p[m], northing_p[m], down_p[m]
+                easting[l],
+                northing[l],
+                upward[l],
+                easting_p[m],
+                northing_p[m],
+                upward_p[m],
             )
 
 
 @jit(nopython=True)
-def kernel_potential_cartesian(easting, northing, down, easting_p, northing_p, down_p):
+def kernel_potential_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
     return 1 / distance_spherical(
-        (easting, northing, down), (easting_p, northing_p, down_p)
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
 
 
 @jit(nopython=True)
-def kernel_g_z(easting, northing, down, easting_p, northing_p, down_p):
+def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
     """
     Kernel function for downward component of gravity gradient in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, down], [easting_p, northing_p, down_p]
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
-    return (down_p - down) / distance ** 3
+    return (upward - upward_p) / distance ** 3
 
 
 @jit(nopython=True)
@@ -223,7 +254,7 @@ def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
     """
-    Compute gravity field of point masses on computation points in spherical coordiantes
+    Compute gravity field of point masses on computation points in spherical coordinates
 
     Parameters
     ----------
@@ -279,14 +310,14 @@ def kernel_potential_spherical(
 
 
 @jit(nopython=True)
-def kernel_g_r(
+def kernel_g_z_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel function for radial component of gravity gradient in spherical coordinates
+    Kernel function for downward component of gravity gradient in spherical coordinates
     """
     distance, cospsi, _ = distance_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
-    delta_z = radius_p * cospsi - radius
+    delta_z = radius - radius_p * cospsi
     return delta_z / distance ** 3
