@@ -21,6 +21,7 @@ import matplotlib.ticker
 # Define two point masses with oposite mass values of 10000000 kg
 easting = [5e3, 15e3]
 northing = [5e3, 15e3]
+# The vertical coordinate is positive upward so negative numbers represent depth
 upward = [-7e3, -2.5e3]
 points = [easting, northing, upward]
 # We're using "negative" masses to represent a "mass deficit"
