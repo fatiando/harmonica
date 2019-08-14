@@ -7,12 +7,16 @@ from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import distance_spherical
-from .point_mass import jit_point_mass_spherical, kernel_potential_spherical, kernel_g_r
+from .point_mass import (
+    jit_point_mass_spherical,
+    kernel_potential_spherical,
+    kernel_g_z_spherical,
+)
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
 GLQ_DEGREES = (2, 2, 2)
-DISTANCE_SIZE_RATII = {"potential": 1, "g_r": 2.5}
+DISTANCE_SIZE_RATII = {"potential": 1, "g_z": 2.5}
 
 
 def tesseroid_gravity(
@@ -29,6 +33,13 @@ def tesseroid_gravity(
 ):  # pylint: disable=too-many-locals
     """
     Compute gravitational field of tesseroids on computation points.
+
+    .. warning::
+
+        The ``g_z`` field returns the downward component of the gravity acceleration on
+        the local North oriented coordinate system. It is equivalent to the opposite of
+        the radial component, therefore it's positive if the acceleration vector points
+        inside the spheroid.
 
     Parameters
     ----------
@@ -50,7 +61,7 @@ def tesseroid_gravity(
         The available fields are:
 
         - Gravitational potential: ``potential``
-        - Radial acceleration: ``g_r``
+        - Downward acceleration: ``g_z``
 
     distance_size_ratio : dict or None (optional)
         Dictionary containing distance-size ratii for each gravity field used on the
@@ -107,11 +118,11 @@ def tesseroid_gravity(
     >>> # Define computation point located on the top surface of the tesseroid
     >>> coordinates = [0, 0, ellipsoid.mean_radius]
     >>> # Compute radial component of the gravitational gradient in mGal
-    >>> tesseroid_gravity(coordinates, tesseroid, density, field="g_r")
-    array(-112.54539933)
+    >>> tesseroid_gravity(coordinates, tesseroid, density, field="g_z")
+    array(112.54539933)
 
     """
-    kernels = {"potential": kernel_potential_spherical, "g_r": kernel_g_r}
+    kernels = {"potential": kernel_potential_spherical, "g_z": kernel_g_z_spherical}
     if field not in kernels:
         raise ValueError("Gravity field {} not recognized".format(field))
     # Figure out the shape and size of the output array
@@ -164,7 +175,7 @@ def tesseroid_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_r":
+    if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
