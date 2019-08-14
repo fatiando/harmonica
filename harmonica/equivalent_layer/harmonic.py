@@ -103,7 +103,7 @@ class EQLHarmonic(BaseGridder):
         coordinates = n_1d_arrays(coordinates, 3)
         if self.points is None:
             # Put a single point source bellow each observation point at a depth three
-            # times the meadian distance to the nearest k observation points.
+            # times the median distance to the nearest k observation points.
             point_east, point_north, point_upward = tuple(i.copy() for i in coordinates)
             point_upward += self.depth_factor * median_distance(
                 coordinates, k_nearest=self.k_nearest
