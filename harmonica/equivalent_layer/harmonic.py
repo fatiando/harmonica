@@ -37,17 +37,17 @@ class EQLHarmonic(BaseGridder):
         List containing the coordinates of the point sources used as Equivalent Layer
         in the following order: (``easting``, ``northing``, ``upward``). If None,
         a default set of points will be created putting a single point source bellow
-        each observation point at a depth proportional to the mean distance to the
-        nearest k observation points [Cooper2000]_. Default None.
+        each observation point at a relative depth proportional to the mean distance to
+        the nearest k observation points [Cooper2000]_. Default None.
     depth_factor : float (optional)
         Adimensional factor to set the depth of each point source.
         If ``points`` is None, a default set of point will be created putting
-        a single point source bellow each obervation point at a depth given by the
-        product of the ``depth_factor`` and the mean distance to the nearest
-        k obervation points. A greater ``depth_factor`` will increase the depth of the
-        point source. This parameter is ignored if ``points`` is not None.
+        a single point source bellow each obervation point at a relative depth given by
+        the product of the ``depth_factor`` and the mean distance to the nearest
+        ``k_nearest`` obervation points. A greater ``depth_factor`` will increase the
+        depth of the point source. This parameter is ignored if ``points`` is not None.
         Default 3 (following [Cooper2000]_).
-    k_nearest : int
+    k_nearest : int (optional)
         Number of observation points used to compute the median distance to its nearest
         neighbours. This argument is passed to :func:`verde.mean_distance`. It's ignored
         if ``points`` is not None. Default 1.
