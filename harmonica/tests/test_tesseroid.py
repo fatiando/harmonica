@@ -35,7 +35,7 @@ def test_single_tesseroid():
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
     density = 1000.0
     coordinates = [0.0, 0.0, top + 100]
-    for field in ("potential", "g_r"):
+    for field in ("potential", "g_z"):
         for radial_discretization in (True, False):
             tesseroid_gravity(
                 coordinates,
@@ -65,7 +65,7 @@ def test_invalid_distance_size_ratii():
     coordinates = [0, 0, 250]
     # Check empty distance_size_ratii dictionary
     distance_size_ratii = {}
-    for field in ("potential", "g_r"):
+    for field in ("potential", "g_z"):
         with pytest.raises(ValueError):
             tesseroid_gravity(
                 coordinates,
@@ -291,7 +291,7 @@ def test_longitude_continuity_equivalent_tesseroids():
     tesseroid = [w, e, s, n, bottom, top]
     density = 1e3
     coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
-    for field in ("potential", "g_r"):
+    for field in ("potential", "g_z"):
         result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
         # Change longitudinal boundaries of tesseroid but defining the same one
         tesseroid = [350, 10, s, n, bottom, top]
@@ -508,7 +508,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
     analytical = {
         "potential": potential,
         # Accelerations are converted from SI to mGal
-        "g_r": -1e5 * potential / radius,
+        "g_z": 1e5 * potential / radius,
     }
     return analytical
 

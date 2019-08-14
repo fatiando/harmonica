@@ -13,18 +13,18 @@ def distance(point_p, point_q, coordinate_system="cartesian"):
     ----------
     point_p : list or tuple or 1d-array
         List, tuple or array containing the coordinates of the first point in the
-        following order: (``easting``, ``northing`` and ``down``) if given in Cartesian
+        following order: (``easting``, ``northing`` and ``upward``) if given in Cartesian
         coordinates, or (``longitude``, ``latitude`` and ``radius``) if given in
         a spherical geocentric coordiante system.
-        All ``easting``, ``northing`` and ``down`` must be in meters.
+        All ``easting``, ``northing`` and ``upward`` must be in meters.
         Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
         meters.
     point_q : list or tuple or 1d-array
         List, tuple or array containing the coordinates of the second point in the
-        following order: (``easting``, ``northing`` and ``down``) if given in Cartesian
+        following order: (``easting``, ``northing`` and ``upward``) if given in Cartesian
         coordinates, or (``longitude``, ``latitude`` and ``radius``) if given in
         a spherical geocentric coordiante system.
-        All ``easting``, ``northing`` and ``down`` must be in meters.
+        All ``easting``, ``northing`` and ``upward`` must be in meters.
         Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
         meters.
     coordinate_system : str (optional)
@@ -74,11 +74,11 @@ def distance_cartesian(point_p, point_q):
     ----------
     point_p : tuple or 1d-array
         Tuple or array containing the coordinates of the first point in the
-        following order: (``easting``, ``northing`` and ``down``)
+        following order: (``easting``, ``northing`` and ``upward``)
         All coordinates must be in meters.
     point_q : tuple or 1d-array
         Tuple or array containing the coordinates of the second point in the
-        following order: (``easting``, ``northing`` and ``down``)
+        following order: (``easting``, ``northing`` and ``upward``)
         All coordinates must be in meters.
 
     Returns
@@ -86,10 +86,12 @@ def distance_cartesian(point_p, point_q):
     distance : float
         Distance between ``point_p`` and ``point_q``.
     """
-    easting, northing, down = point_p[:]
-    easting_p, northing_p, down_p = point_q[:]
+    easting, northing, upward = point_p[:]
+    easting_p, northing_p, upward_p = point_q[:]
     dist = np.sqrt(
-        (easting - easting_p) ** 2 + (northing - northing_p) ** 2 + (down - down_p) ** 2
+        (easting - easting_p) ** 2
+        + (northing - northing_p) ** 2
+        + (upward - upward_p) ** 2
     )
     return dist
 
