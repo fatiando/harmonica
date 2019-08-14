@@ -16,6 +16,14 @@ Gravity Corrections
     normal_gravity
     bouguer_correction
 
+Gridding and Interpolation
+--------------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    EQLHarmonic
+
 Forward modelling
 -----------------
 
