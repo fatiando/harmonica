@@ -14,7 +14,6 @@ import harmonica as hm
 import verde as vd
 import numpy as np
 import pyproj
-import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 from sklearn.model_selection import ShuffleSplit
 
