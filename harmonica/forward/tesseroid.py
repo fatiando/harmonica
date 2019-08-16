@@ -135,10 +135,14 @@ def tesseroid_gravity(
     coordinates = np.vstack((longitude, latitude, radius))
     tesseroids = np.atleast_2d(tesseroids).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
+    # Sanity checks for tesseroids and computation points
     if density.size != tesseroids.shape[0]:
         raise ValueError(
             "Density array must have the same size as number of tesseroids."
         )
+    _longitude_continuity(tesseroids)
+    _check_tesseroids(tesseroids)
+    _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get value of D (distance_size_ratio)
     if distance_size_ratii is None:
         distance_size_ratii = DISTANCE_SIZE_RATII
@@ -208,10 +212,17 @@ def jit_tesseroid_gravity(
     ----------
     coordinates : 2d-array
         Array containing the coordinates of the computation points in spherical
-        geocentric coordinate system.
+        geocentric coordinate system in the following order:
+        ``longitude``, ``latitude``, ``radius``.
+        The array must have the following shape: (3, ``n_points``), where
+        ``n_points`` is the total number of computation points.
     tesseroids : 2d-array
         Array containing the boundaries of each tesseroid:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
     density : 1d-array
         Density of each tesseroid in SI units.
     stack : 2d-array
@@ -244,13 +255,8 @@ def jit_tesseroid_gravity(
     """
     for l in range(tesseroids.shape[0]):
         tesseroid = tesseroids[l, :]
-        # Sanity checks for tesseroid
-        _longitude_continuity(tesseroid)
-        _check_tesseroid(tesseroid)
         for m in range(coordinates.shape[1]):
             computation_point = coordinates[:, m]
-            # Sanity checks for tesseroid and computation point
-            _check_point_outside_tesseroid(computation_point, tesseroid)
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
                 computation_point,
@@ -302,7 +308,12 @@ def tesseroids_to_point_masses(
     Parameters
     ----------
     tesseroids : 2d-array
-        Array containing tesseroids boundaries.
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
@@ -533,63 +544,123 @@ def _distance_tesseroid_point(
     return distance
 
 
-@jit(nopython=True)
-def _check_tesseroid(tesseroid):
-    "Check if tesseroid boundaries are well defined"
-    w, e, s, n, bottom, top = tesseroid[:]
-    if w > e:
-        raise ValueError(
-            "Invalid tesseroid. The west boundary can't be greater than the east one."
-        )
-    if s > n:
-        raise ValueError(
-            "Invalid tesseroid. The south boundary can't be greater than the north one."
-        )
-    if bottom < 0 or top < 0:
-        raise ValueError(
-            "Invalid tesseroid. The bottom and top radii couldn't be lower than zero."
-        )
-    if bottom > top:
-        raise ValueError(
-            "Invalid tesseroid. "
-            + "The bottom radius boundary can't be greater than the top one."
-        )
-
-
-@jit(nopython=True)
-def _check_point_outside_tesseroid(coordinates, tesseroid):
-    "Check if computation point is not inside the tesseroid"
-    longitude, latitude, radius = coordinates[:]
-    w, e, s, n, bottom, top = tesseroid[:]
-    inside_longitude = bool(w < longitude < e)
-    inside_latitude = bool(s < latitude < n)
-    inside_radius = bool(bottom < radius < top)
-    if inside_longitude and inside_latitude and inside_radius:
-        raise ValueError(
-            "Found computation point inside tesseroid. "
-            + "Computation points must be outside of tesseroids."
-        )
-
-
-@jit(nopython=True)
-def _longitude_continuity(region):
+def _check_tesseroids(tesseroids):
     """
-    Modify longitudinal boundaries of region to ensure longitude continuity.
-
-    Longitudinal boundaries of the region are moved to the `[0, 360)` or `[-180, 180)`
-    degrees interval depending which one is better suited for that specific region.
+    Check if tesseroids boundaries are well defined
 
     Parameters
     ----------
-    region : 1d-array
-        Array containing the boundaries of the region (or tesseroid).
-        The first two elements should be the western and the eastern boundaries.
+    tesseroids : 2d-array
+        Array containing the boundaries of the tesseroids in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        Longitudinal and latitudinal boundaries must be in degrees.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
     """
-    w, e = region[:2]
-    w %= 360
-    e %= 360
-    if w > e:
-        e = ((e + 180) % 360) - 180
-        w = ((w + 180) % 360) - 180
-    region[0] = w
-    region[1] = e
+    west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
+    err_msg = "Invalid tesseroid or tesseroids. "
+    if (west > east).any():
+        err_msg += "The west boundary can't be greater than the east one.\n"
+        for tess in tesseroids[west > east]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    if (south > north).any():
+        err_msg += "The south boundary can't be greater than the north one.\n"
+        for tess in tesseroids[south > north]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    if (bottom < 0).any() or (top < 0).any():
+        err_msg += "The bottom and top radii couldn't be lower than zero.\n"
+        for tess in tesseroids[np.logical_or(bottom < 0, top < 0)]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    if (bottom > top).any():
+        err_msg += "The bottom radius boundary can't be greater than the top one.\n"
+        for tess in tesseroids[bottom > top]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+
+
+def _check_points_outside_tesseroids(
+    coordinates, tesseroids
+):  # pylint: disable=too-many-locals
+    """
+    Check if computation points are not inside the tesseroids
+
+    Parameters
+    ----------
+    coordinates : 2d-array
+        Array containing the coordinates of the computation points in the following
+        order: ``longitude``, ``latitude`` and ``radius``.
+        Both ``longitude`` and ``latitude`` must be in degrees.
+        The array must have the following shape: (3, ``n_points``), where
+        ``n_points`` is the total number of computation points.
+    tesseroids : 2d-array
+        Array containing the boundaries of the tesseroids in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        Longitudinal and latitudinal boundaries must be in degrees.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        This array of tesseroids must have longitude continuity and valid boundaries.
+        Run ``_longitude_continuity`` and ``_check_tesseroids`` before.
+    """
+    longitude, latitude, radius = coordinates[:]
+    west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
+    # Longitudinal boundaries of the tesseroid must be compared with longitudinal
+    # coordinates of computation points when moved to [0, 360) and [-180, 180).
+    longitude_360 = longitude % 360
+    longitude_180 = ((longitude + 180) % 360) - 180
+    inside_longitude = np.logical_or(
+        np.logical_and(
+            west < longitude_360[:, np.newaxis], longitude_360[:, np.newaxis] < east
+        ),
+        np.logical_and(
+            west < longitude_180[:, np.newaxis], longitude_180[:, np.newaxis] < east
+        ),
+    )
+    inside_latitude = np.logical_and(
+        south < latitude[:, np.newaxis], latitude[:, np.newaxis] < north
+    )
+    inside_radius = np.logical_and(
+        bottom < radius[:, np.newaxis], radius[:, np.newaxis] < top
+    )
+    # Build array of booleans.
+    # The (i, j) element is True if the computation point i is inside the tesseroid j.
+    inside = inside_longitude * inside_latitude * inside_radius
+    if inside.any():
+        err_msg = (
+            "Found computation point inside tesseroid. "
+            + "Computation points must be outside of tesseroids.\n"
+        )
+        for point_i, tess_i in np.argwhere(inside):
+            err_msg += "\tComputation point '{}' found inside tesseroid '{}'\n".format(
+                coordinates[:, point_i], tesseroids[tess_i, :]
+            )
+        raise ValueError(err_msg)
+
+
+def _longitude_continuity(tesseroids):
+    """
+    Modify longitudinal boundaries of a set of tesserods to ensure longitude continuity
+
+    Longitudinal boundaries of the tesseroids are moved to the `[0, 360)` or `[-180, 180)`
+    degrees interval depending which one is better suited for that specific set of
+    boundaries.
+
+    Parameters
+    ----------
+    tesseroids : 2d-array
+        Longitudinal and latitudinal boundaries must be in degrees.
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
+        coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
+    """
+    west, east = tuple(tesseroids[:, i] for i in range(2))
+    west %= 360
+    east %= 360
+    tess_to_be_changed = west > east
+    east[tess_to_be_changed] = ((east[tess_to_be_changed] + 180) % 360) - 180
+    west[tess_to_be_changed] = ((west[tess_to_be_changed] + 180) % 360) - 180
