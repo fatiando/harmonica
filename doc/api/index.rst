@@ -16,6 +16,15 @@ Gravity Corrections
     normal_gravity
     bouguer_correction
 
+Forward modelling
+-----------------
+
+.. autosummary::
+    :toctree: generated/
+
+    point_mass_gravity
+    tesseroid_gravity
+
 Isostasy
 --------
 
