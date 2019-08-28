@@ -213,7 +213,9 @@ class EQLHarmonic(BaseGridder):
             )
             # Build the sparse Jacobian matrix
             jac = csr_matrix(
-                (jac_values, (row_indices, col_indices)), shape=(n_data, n_points)
+                (jac_values, (row_indices, col_indices)),
+                shape=(n_data, n_points),
+                dtype=dtype,
             )
         return jac
 
