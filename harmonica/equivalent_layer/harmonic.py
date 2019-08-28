@@ -3,8 +3,10 @@ Equivalent Layer interpolators for harmonic functions
 """
 import numpy as np
 from numba import jit
+from scipy.sparse import csr_matrix
 from sklearn.utils.validation import check_is_fitted
-from verde import get_region, median_distance
+from verde import get_region, median_distance, distance_mask
+from verde.utils import kdtree
 from verde.base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 
 from ..forward.utils import distance_cartesian
@@ -64,11 +66,19 @@ class EQLHarmonic(BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, depth_factor=3, k_nearest=1):
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        depth_factor=3,
+        k_nearest=1,
+        distance_threshold=None,
+    ):
         self.damping = damping
         self.points = points
         self.depth_factor = depth_factor
         self.k_nearest = k_nearest
+        self.distance_threshold = distance_threshold
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -175,9 +185,52 @@ class EQLHarmonic(BaseGridder):
         """
         n_data = coordinates[0].size
         n_points = points[0].size
-        jac = np.zeros((n_data, n_points), dtype=dtype)
-        jacobian_numba(coordinates, points, jac)
+        if self.distance_threshold is None:
+            jac = np.zeros((n_data, n_points), dtype=dtype)
+            jacobian_numba(coordinates, points, jac)
+        else:
+            # Use cKDTree to get the indices of the observation points that are within
+            # the distance threshold to the source points
+            points_tree = kdtree(points, use_pykdtree=False)
+            coords_tree = kdtree(coordinates, use_pykdtree=False)
+            # Get the indices of the coordinates points that are close to each source
+            # points
+            col_indices = points_tree.query_ball_tree(
+                coords_tree, self.distance_threshold
+            )
+            # Build the indices for the source points
+            row_indices = tuple(
+                np.full_like(indices, fill_value=i)
+                for i, indices in enumerate(col_indices)
+            )
+            col_indices = tuple(np.atleast_1d(indices_i) for indices_i in col_indices)
+            # Stack all the arrays inside the row and col indices
+            row_indices, col_indices = np.hstack(row_indices), np.hstack(col_indices)
+            # Compute the non-zero elements of the Jacobian matrix
+            jac_values = np.zeros_like(row_indices)
+            sparse_jacobian_elements(
+                coordinates, points, col_indices, row_indices, jac_values
+            )
+            # Build the sparse Jacobian matrix
+            jac = csr_matrix(
+                (jac_values, (row_indices, col_indices)), shape=(n_data, n_points)
+            )
         return jac
+
+
+@jit(nopython=True)
+def sparse_jacobian_elements(coordinates, points, col_indices, row_indices, jac_values):
+    """
+    Compute elements of the sparse Jacobian matrix
+    """
+    counter = 0
+    east, north, upward = coordinates[:]
+    point_east, point_north, point_upward = points[:]
+    for i, j in zip(col_indices, row_indices):
+        jac_values[counter] = greens_func(
+            east[i], north[i], upward[i], point_east[j], point_north[j], point_upward[j]
+        )
+        counter += 1
 
 
 @jit(nopython=True)
