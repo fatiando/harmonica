@@ -30,6 +30,18 @@ class EQLHarmonic(BaseGridder):
     where :math:`P` and :math:`Q` are the coordinates of the observation point and the
     source, respectively.
 
+    When working with a great number of data and source points, it's better to build the
+    Jacobian matrix as a sparse matrix. This can be done by passing
+    `distance_threshold`. The sparse matrix is built by approximating to zero all the
+    jacobian elements that relate source and data points at a distance greater than
+    `distance_threshold`.
+
+    .. warning ::
+
+        If the `self.distance_threshold` is too small, the sparse Jacobian could not
+        be a good approximation of the true Jacobian matrix. This could lead to
+        a bad fitting of the gridder.
+
     Parameters
     ----------
     damping : None or float
@@ -53,6 +65,10 @@ class EQLHarmonic(BaseGridder):
         Number of observation points used to compute the median distance to its nearest
         neighbours. This argument is passed to :func:`verde.mean_distance`. It's ignored
         if ``points`` is not None. Default 1.
+    distance_threshold : float or None
+        Distance used to choose the nearest data points to each source point when
+        building the sparse Jacobian matrix. If ``None`` the Jacobian matrix will be fully
+        computed. Default None.
 
     Attributes
     ----------
@@ -163,6 +179,8 @@ class EQLHarmonic(BaseGridder):
 
         Each column of the Jacobian is the Green's function for a single point source
         evaluated on all observation points [Sandwell1987]_.
+        If `self.distance_threshold` is not `None`, the Jacobian matrix will be computed
+        as a sparse matrix to reduce memory consumption.
 
         Parameters
         ----------
@@ -224,6 +242,28 @@ class EQLHarmonic(BaseGridder):
 def sparse_jacobian_elements(coordinates, points, col_indices, row_indices, jac_values):
     """
     Compute elements of the sparse Jacobian matrix
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (``easting``, ``northing``, ``upward``, ...). Only
+        ``easting``, ``northing`` and ``upward`` will be used, all subsequent
+        coordinates will be ignored.
+    points : tuple of arrays
+        Tuple of arrays containing the coordinates of the point sources used as
+        Equivalent Layer in the following order: (``easting``, ``northing``,
+        ``upward``).
+    col_indices : 1d array
+        Array containing the indices of the data points that will be used to
+        compute the sparse Jacobian elements.
+    row_indices : 1d array
+        Array containing the indices of the source points that will be used to
+        compute the sparse Jacobian elements. It must have the same size as
+        `col_indices`.
+    jac_values : 1d array
+        Array where all the elements of the sparse Jacobian matrix will be stored.
+        It must have the same size as `col_indices` and `row_indices`.
     """
     counter = 0
     east, north, upward = coordinates[:]
