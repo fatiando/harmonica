@@ -16,7 +16,7 @@ Gravity Corrections
     normal_gravity
     bouguer_correction
 
-Gridding and Interpolation
+Equivalent Layers
 --------------------------
 
 .. autosummary::
