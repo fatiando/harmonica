@@ -218,7 +218,7 @@ class EQLHarmonic(BaseGridder):
             )
             # Build the indices for the source points
             row_indices = tuple(
-                np.full_like(indices, fill_value=i)
+                np.full_like(indices, fill_value=i, dtype=int)
                 for i, indices in enumerate(col_indices)
             )
             col_indices = tuple(np.atleast_1d(indices_i) for indices_i in col_indices)
