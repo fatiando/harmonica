@@ -225,7 +225,7 @@ class EQLHarmonic(BaseGridder):
             # Stack all the arrays inside the row and col indices
             row_indices, col_indices = np.hstack(row_indices), np.hstack(col_indices)
             # Compute the non-zero elements of the Jacobian matrix
-            jac_values = np.zeros_like(row_indices)
+            jac_values = np.zeros_like(row_indices, dtype=dtype)
             sparse_jacobian_elements(
                 coordinates, points, col_indices, row_indices, jac_values
             )
