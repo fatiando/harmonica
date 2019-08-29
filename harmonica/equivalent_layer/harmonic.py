@@ -268,7 +268,9 @@ def sparse_jacobian_elements(coordinates, points, col_indices, row_indices, jac_
     counter = 0
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i, j in zip(col_indices, row_indices):
+    for l in range(col_indices.size):
+        i = col_indices[l]
+        j = row_indices[l]
         jac_values[counter] = greens_func(
             east[i], north[i], upward[i], point_east[j], point_north[j], point_upward[j]
         )
