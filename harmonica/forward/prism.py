@@ -213,9 +213,7 @@ def kernel_g_z(easting, northing, upward):
         + northing * log(easting + radius)
         - upward * atan2(easting * northing, upward * radius)
     )
-    # Minus because Nagy et al (2000) give the formula for the
-    # gradient of the potential and gravity is -grad(V)
-    return -kernel
+    return kernel
 
 
 @jit(nopython=True)
