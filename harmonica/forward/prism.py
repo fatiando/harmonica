@@ -11,7 +11,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     """
     Compute gravitational field of prisms on computation points.
 
-    Forward modelling based on [Nagy2000]_.
+    Forward modelling based on [Nagy2000]_ and [Nagy2002]_.
 
     .. warning::
         The **z direction points upwards**, i.e. positive and negative values of
