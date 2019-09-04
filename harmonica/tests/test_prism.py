@@ -100,21 +100,65 @@ def test_potential_field_symmetry():
 
 @pytest.mark.use_numba
 def test_g_z_symmetry():
-    "Test if the g_z field satisfies symmetry"
-    prism = [-100, 100, -100, 100, -100, 100]
+    """
+    Test if the g_z field satisfies symmetry
+
+    In order to test if the computed g_z satisfies the symmetry of a square prism
+    we will define several set of computation points:
+
+    A. Two points located on the vertical axis of the prism (``easting == 0`` and
+    ``northing == 0``), one above and one bellow the prism at the same distance from its
+    center.
+    B. Four points located around the prism on the ``upward == 0`` plane distributed
+       normally to the faces of the prism, i.e. only one of the horizontal coordinates
+       will be nonzero.
+    C. Same as points defined in B, but located on an ``upward`` plane above the prism.
+    D. Same as points defined in B, but located on an ``upward`` plane bellow the prism.
+    E. Four points located around the prism on the ``upward == 0`` plane distributed on
+       the diagonal directions, i.e. both horizontal coordinates will be equal and
+       nonzero.
+    F. Same as points defined in E, but located on an ``upward`` plane above the prism.
+    G. Same as points defined in E, but located on an ``upward`` plane bellow the prism.
+
+    The g_z field for a square prism (the horizontal dimensions of the prism are equal)
+    must satisfy the following symmetry rules:
+
+    - The g_z values on points A must be opposite.
+    - The g_z values on points B must be all equal.
+    - The g_z values on points C must be all equal.
+    - The g_z values on points D must be all equal.
+    - The g_z values on points C and D must be opposite.
+    - The g_z values on points E must be all equal.
+    - The g_z values on points F must be all equal.
+    - The g_z values on points G must be all equal.
+    - The g_z values on points F and G must be opposite.
+    """
+    prism = [-100, 100, -100, 100, -150, 150]
     density = 2670
-    # Vertical symmetry
-    # Create two computation points: one above and one bellow at same distance from the
-    # prism. The g_z values on each computation point must be opposite.
-    coordinates = [[0, 0], [0, 0], [-200, 200]]
-    result = prism_gravity(coordinates, prism, density, field="g_z")
-    npt.assert_allclose(result[0], -result[1])
-    # Horizontal symmetry
-    # Create four observation points above the prisms distributed along east and north
-    # directions but keeping the same distance to the prisms
-    coordinates = [[-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]]
-    result = prism_gravity(coordinates, prism, density, field="g_z")
-    npt.assert_allclose(result[0], result)
+    computation_points = {
+        "A": ([0, 0], [0, 0], [-200, 200]),
+        "B": ([-200, 200, 0, 0], [0, 0, -200, 200], [0, 0, 0, 0]),
+        "C": ([-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]),
+        "D": ([-200, 200, 0, 0], [0, 0, -200, 200], [-200, -200, -200, -200]),
+        "E": ([-200, -200, 200, 200], [-200, 200, -200, 200], [0, 0, 0, 0]),
+        "F": ([-200, -200, 200, 200], [-200, 200, -200, 200], [200, 200, 200, 200]),
+        "G": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-200, -200, -200, -200]),
+    }
+    # Compute g_z on each set of points
+    results = {}
+    for group in computation_points:
+        results[group] = prism_gravity(
+            computation_points[group], prism, density, field="g_z"
+        )
+    # Check symmetries
+    # Values on A must be opposite
+    npt.assert_allclose(results["A"][0], -results["A"][1])
+    # Values on B, C, D, E, F and G must be all equal within each set
+    for group in "B C D E F G".split():
+        npt.assert_allclose(results[group][0], results[group])
+    # Values on C and D, and in F and G must be opposite
+    for above, bellow in (("C", "D"), ("F", "G")):
+        npt.assert_allclose(results[above], -results[bellow])
 
 
 @pytest.mark.use_numba
