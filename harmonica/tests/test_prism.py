@@ -103,11 +103,18 @@ def test_g_z_symmetry():
     "Test if the g_z field satisfies symmetry"
     prism = [-100, 100, -100, 100, -100, 100]
     density = 2670
-    # Create two computation points:
-    # one above and one bellow at same distance from the prism
+    # Vertical symmetry
+    # Create two computation points: one above and one bellow at same distance from the
+    # prism. The g_z values on each computation point must be opposite.
     coordinates = [[0, 0], [0, 0], [-200, 200]]
     result = prism_gravity(coordinates, prism, density, field="g_z")
     npt.assert_allclose(result[0], -result[1])
+    # Horizontal symmetry
+    # Create four observation points above the prisms distributed along east and north
+    # directions but keeping the same distance to the prisms
+    coordinates = [[-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]]
+    result = prism_gravity(coordinates, prism, density, field="g_z")
+    npt.assert_allclose(result[0], result)
 
 
 @pytest.mark.use_numba
