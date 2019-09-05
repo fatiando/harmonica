@@ -109,50 +109,58 @@ def test_g_z_symmetry():
     A. Two points located on the vertical axis of the prism (``easting == 0`` and
     ``northing == 0``), one above and one bellow the prism at the same distance from its
     center.
-    B. Four points located on a plane above the prism distributed normally to the faces
-       of the prism, i.e. only one of the horizontal coordinates will be nonzero.
-    C. Same as points defined in B, but located on a plane bellow the prism.
-    D. Same as points defined in B, but located on a plane slighly above the horizontal
-       plane that passes through the center of the prism.
-    E. Same as points defined in B, but located on a plane slighly bellow the horizontal
-       plane that passes through the center of the prism.
-    F. Four points located on a plane above the prism distributed on the diagonal
-       directions , i.e. both horizontal coordinates will be equal and nonzero.
-    G. Same as points defined in F, but located on an plane bellow the prism.
-    H. Same as points defined in F, but located on a plane slighly above the horizontal
-       plane that passes through the center of the prism.
-    I. Same as points defined in F, but located on a plane slighly bellow the horizontal
-       plane that passes through the center of the prism.
+    B. Four points located on the ``upward == 0`` plane around the prism distributed
+       normally to its faces , i.e. only one of the horizontal coordinates will be
+       nonzero.
+    C. Same as points defined in B, but located on a plane above the prism.
+    D. Same as points defined in B, but located on a plane bellow the prism.
+    E. Same as points defined in B, but located on a plane slightly above the
+       ``upward == 0`` plane.
+    F. Same as points defined in B, but located on a plane slightly bellow the
+       ``upward == 0`` plane.
+    G. Four points located on the ``upward == 0`` plane around the prism distributed on
+       the diagonal directions , i.e. both horizontal coordinates will be equal and
+       nonzero.
+    H. Same as points defined in G, but located on an plane above the prism.
+    I. Same as points defined in G, but located on an plane bellow the prism.
+    J. Same as points defined in G, but located on a plane slightly above the
+       ``upward == 0`` plane.
+    K. Same as points defined in G, but located on a plane slightly bellow the
+       ``upward == 0`` plane.
 
     The g_z field for a square prism (the horizontal dimensions of the prism are equal)
     must satisfy the following symmetry rules:
 
     - The g_z values on points A must be opposite.
-    - The g_z values on points B must be all equal.
+    - The g_z values on points B must be all zero.
     - The g_z values on points C must be all equal.
     - The g_z values on points D must be all equal.
     - The g_z values on points E must be all equal.
-    - The g_z values on points B and C must be opposite.
-    - The g_z values on points D and E must be opposite.
     - The g_z values on points F must be all equal.
-    - The g_z values on points G must be all equal.
+    - The g_z values on points C and D must be opposite.
+    - The g_z values on points E and F must be opposite.
+    - The g_z values on points G must be all zero.
     - The g_z values on points H must be all equal.
     - The g_z values on points I must be all equal.
-    - The g_z values on points F and G must be opposite.
+    - The g_z values on points J must be all equal.
+    - The g_z values on points K must be all equal.
     - The g_z values on points H and I must be opposite.
+    - The g_z values on points J and K must be opposite.
     """
     prism = [-100, 100, -100, 100, -150, 150]
     density = 2670
     computation_points = {
         "A": ([0, 0], [0, 0], [-200, 200]),
-        "B": ([-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]),
-        "C": ([-200, 200, 0, 0], [0, 0, -200, 200], [-200, -200, -200, -200]),
-        "D": ([-200, 200, 0, 0], [0, 0, -200, 200], [1, 1, 1, 1]),
-        "E": ([-200, 200, 0, 0], [0, 0, -200, 200], [-1, -1, -1, -1]),
-        "F": ([-200, -200, 200, 200], [-200, 200, -200, 200], [200, 200, 200, 200]),
-        "G": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-200, -200, -200, -200]),
-        "H": ([-200, -200, 200, 200], [-200, 200, -200, 200], [1, 1, 1, 1]),
-        "I": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-1, -1, -1, -1]),
+        "B": ([-200, 200, 0, 0], [0, 0, -200, 200], [0, 0, 0, 0]),
+        "C": ([-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]),
+        "D": ([-200, 200, 0, 0], [0, 0, -200, 200], [-200, -200, -200, -200]),
+        "E": ([-200, 200, 0, 0], [0, 0, -200, 200], [1, 1, 1, 1]),
+        "F": ([-200, 200, 0, 0], [0, 0, -200, 200], [-1, -1, -1, -1]),
+        "G": ([-200, 200, 0, 0], [0, 0, -200, 200], [0, 0, 0, 0]),
+        "H": ([-200, -200, 200, 200], [-200, 200, -200, 200], [200, 200, 200, 200]),
+        "I": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-200, -200, -200, -200]),
+        "J": ([-200, -200, 200, 200], [-200, 200, -200, 200], [1, 1, 1, 1]),
+        "K": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-1, -1, -1, -1]),
     }
     # Compute g_z on each set of points
     results = {}
@@ -161,14 +169,25 @@ def test_g_z_symmetry():
             computation_points[group], prism, density, field="g_z"
         )
     # Check symmetries
-    # Values on A must be opposite
+    # Values on A must be opposite, and the value of g_z at the point above the prism
+    # must have the same sign as the density, while the one bellow should have the
+    # opposite
     npt.assert_allclose(results["A"][0], -results["A"][1])
-    # Values on B, C, D, E, F, G, H and I must be all equal within each set
-    for group in "B C D E F G H I".split():
+    npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
+    npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
+    # Values on C, D, E, F, H, I, J, K must be all equal within each set
+    for group in "C D E F H I J K".split():
         npt.assert_allclose(results[group][0], results[group])
-    # Values on B and C, D and E, F and G, H and I must be opposite
-    for above, bellow in (("B", "C"), ("D", "E"), ("F", "G"), ("H", "I")):
+    # Values on B and G must be zero
+    for group in "B G".split():
+        npt.assert_allclose(0, results[group])
+    # Values on C and D, E and F, H and I, J and K must be opposite
+    # Moreover, the set of points that are above the prism must have the same sign as
+    # the density, while the ones bellow should have the opposite
+    for above, bellow in (("C", "D"), ("E", "F"), ("H", "I"), ("J", "K")):
         npt.assert_allclose(results[above], -results[bellow])
+        npt.assert_allclose(np.sign(results[above]), np.sign(density))
+        npt.assert_allclose(np.sign(results[bellow]), -np.sign(density))
 
 
 @pytest.mark.use_numba
