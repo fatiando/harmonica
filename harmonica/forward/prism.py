@@ -242,7 +242,7 @@ def safe_atan2(y, x):
 def safe_log(x):
     """
     Modified log to return 0 for log(0).
-    The limits in the formula terms tend to 0 (see Nagy et al., 2000)
+    The limits in the formula terms tend to 0 (see [Nagy2000]_).
     """
     if np.abs(x) < 1e-10:
         result = 0
