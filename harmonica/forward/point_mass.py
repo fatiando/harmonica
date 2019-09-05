@@ -250,6 +250,17 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
 
 
 @jit(nopython=True)
+def kernel_g_x_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for northing component of gravity gradient in Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
+    )
+    return (northing - northing_p) / distance ** 3
+
+
+@jit(nopython=True)
 def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
