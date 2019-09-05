@@ -11,7 +11,7 @@ from ..forward.prism import (
     _check_prisms,
     _check_points_outside_prisms,
     safe_atan2,
-    log,
+    safe_log,
 )
 
 
@@ -195,14 +195,14 @@ def test_safe_atan2():
 
 
 @pytest.mark.use_numba
-def test_custom_log():
-    "Test the custom log function"
-    # Check if custom log function satisfies log(0) == 0
-    assert log(0) == 0
-    # Check if x != 0 the custom log behavies like the natural logarithm
+def test_safe_log():
+    "Test the safe_log function"
+    # Check if safe_log function satisfies safe_log(0) == 0
+    assert safe_log(0) == 0
+    # Check if safe_log behaves like the natural logarithm in case that x != 0
     x = np.linspace(1, 100, 101)
     for x_i in x:
-        npt.assert_allclose(log(x_i), np.log(x_i))
+        npt.assert_allclose(safe_log(x_i), np.log(x_i))
 
 
 def gravity_infinite_slab(thickness, density):

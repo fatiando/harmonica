@@ -192,9 +192,9 @@ def kernel_potential(easting, northing, upward):
     """
     radius = np.sqrt(easting ** 2 + northing ** 2 + upward ** 2)
     kernel = (
-        easting * northing * log(upward + radius)
-        + northing * upward * log(easting + radius)
-        + easting * upward * log(northing + radius)
+        easting * northing * safe_log(upward + radius)
+        + northing * upward * safe_log(easting + radius)
+        + easting * upward * safe_log(northing + radius)
         - 0.5 * easting ** 2 * safe_atan2(upward * northing, easting * radius)
         - 0.5 * northing ** 2 * safe_atan2(upward * easting, northing * radius)
         - 0.5 * upward ** 2 * safe_atan2(easting * northing, upward * radius)
@@ -209,8 +209,8 @@ def kernel_g_z(easting, northing, upward):
     """
     radius = np.sqrt(easting ** 2 + northing ** 2 + upward ** 2)
     kernel = (
-        easting * log(northing + radius)
-        + northing * log(easting + radius)
+        easting * safe_log(northing + radius)
+        + northing * safe_log(easting + radius)
         - upward * safe_atan2(easting * northing, upward * radius)
     )
     return kernel
@@ -239,7 +239,7 @@ def safe_atan2(y, x):
 
 
 @jit(nopython=True)
-def log(x):
+def safe_log(x):
     """
     Modified log to return 0 for log(0).
     The limits in the formula terms tend to 0 (see Nagy et al., 2000)
