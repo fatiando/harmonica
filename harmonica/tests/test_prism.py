@@ -10,7 +10,7 @@ from ..forward.prism import (
     prism_gravity,
     _check_prisms,
     _check_points_outside_prisms,
-    atan2,
+    safe_atan2,
     log,
 )
 
@@ -172,23 +172,26 @@ def test_g_z_symmetry():
 
 
 @pytest.mark.use_numba
-def test_custom_atan2():
-    "Test the custom atan2 function"
-    # Test atan2 for one poit per quadrant
+def test_safe_atan2():
+    "Test the safe_atan2 function"
+    # Test safe_atan2 for one point per quadrant
     # First quadrant
     x, y = 1, 1
-    npt.assert_allclose(atan2(y, x), np.pi / 4)
+    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
     # Second quadrant
     x, y = -1, 1
-    npt.assert_allclose(atan2(y, x), 3 / 4 * np.pi)
+    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
     # Third quadrant
     x, y = -1, -1
-    npt.assert_allclose(atan2(y, x), -3 / 4 * np.pi)
+    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
     # Forth quadrant
     x, y = 1, -1
-    npt.assert_allclose(atan2(y, x), -np.pi / 4)
-    # Numerator equal to zero
-    assert atan2(0, 1) == 0
+    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
+    # Test safe_atan2 if the denominator is equal to zero
+    npt.assert_allclose(safe_atan2(1, 0), np.pi / 2)
+    npt.assert_allclose(safe_atan2(-1, 0), -np.pi / 2)
+    # Test safe_atan2 if both numerator and denominator are equal to zero
+    assert safe_atan2(0, 0) == 0
 
 
 @pytest.mark.use_numba

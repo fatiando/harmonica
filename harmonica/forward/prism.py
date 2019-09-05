@@ -195,9 +195,9 @@ def kernel_potential(easting, northing, upward):
         easting * northing * log(upward + radius)
         + northing * upward * log(easting + radius)
         + easting * upward * log(northing + radius)
-        - 0.5 * easting ** 2 * atan2(upward * northing, easting * radius)
-        - 0.5 * northing ** 2 * atan2(upward * easting, northing * radius)
-        - 0.5 * upward ** 2 * atan2(easting * northing, upward * radius)
+        - 0.5 * easting ** 2 * safe_atan2(upward * northing, easting * radius)
+        - 0.5 * northing ** 2 * safe_atan2(upward * easting, northing * radius)
+        - 0.5 * upward ** 2 * safe_atan2(easting * northing, upward * radius)
     )
     return kernel
 
@@ -211,28 +211,30 @@ def kernel_g_z(easting, northing, upward):
     kernel = (
         easting * log(northing + radius)
         + northing * log(easting + radius)
-        - upward * atan2(easting * northing, upward * radius)
+        - upward * safe_atan2(easting * northing, upward * radius)
     )
     return kernel
 
 
 @jit(nopython=True)
-def atan2(y, x):
+def safe_atan2(y, x):
     """
-    Modified arctangent to return angles in the right quadrants for prism modeling.
-    Needed to get the correct results below the prism and on the sides (for some
-    components).
-    Shift the angle from np.arctan2 to match the sign of the tangent.
-    Return 0 instead of 2Pi for 0 tangent.
+    Return the principal value of the arctangent expressed as a two variable function
+
+    This modification has to be made to the arctangent function so the gravitational
+    field of the prism satisfies the Poisson's equation. Therefore, it guarantees that
+    the fields satisfies the symmetry properties of the prism. This modified function
+    has been defined according to [Fukushima2019]_.
     """
-    if np.abs(y) < 1e-10:
-        result = 0
+    if x != 0:
+        result = np.arctan(y / x)
     else:
-        result = np.arctan2(y, x)
-    if y > 0 and x < 0:
-        result -= np.pi
-    elif y < 0 and x < 0:
-        result += np.pi
+        if y > 0:
+            result = np.pi / 2
+        elif y < 0:
+            result = -np.pi / 2
+        else:
+            result = 0
     return result
 
 
