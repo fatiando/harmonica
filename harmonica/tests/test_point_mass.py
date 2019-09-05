@@ -91,6 +91,27 @@ def test_g_z_symmetry():
     npt.assert_allclose(results[0], -results[1])
 
 
+@pytest.mark.use_numba
+def test_g_x_symmetry():
+    """
+    Test if g_x field of a point mass has symmetry in Cartesian coordinates
+    """
+    # Define a single point mass
+    point_mass = [-7.9, 25, -130]
+    masses = [2670]
+    # Define a pair of computation points northward and southward the point mass
+    distance = 6.1
+    easting = point_mass[0] + np.zeros(2)
+    northing = point_mass[1] + np.zeros(2)
+    upward = point_mass[2] + np.zeros(2)
+    northing[0] += distance
+    northing[1] -= distance
+    coordinates = [easting, northing, upward]
+    # Compute g_x gravity field on each computation point
+    results = point_mass_gravity(coordinates, point_mass, masses, "g_x", "cartesian")
+    npt.assert_allclose(results[0], -results[1])
+
+
 # ---------------------------
 # Spherical coordinates tests
 # ---------------------------
