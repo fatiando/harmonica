@@ -138,6 +138,7 @@ def point_mass_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
         - Northing acceleration: ``g_northing``
+        - Easting acceleration: ``g_easting``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the point
@@ -166,6 +167,7 @@ def point_mass_gravity(
             "potential": kernel_potential_cartesian,
             "g_z": kernel_g_z_cartesian,
             "g_northing": kernel_g_northing_cartesian,
+            "g_easting": kernel_g_easting_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
@@ -192,6 +194,8 @@ def point_mass_gravity(
     if field == "g_z":
         result *= 1e5  # SI to mGal
     if field == "g_northing":
+        result *= 1e5  # SI to mGal
+    if field == "g_easting":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
