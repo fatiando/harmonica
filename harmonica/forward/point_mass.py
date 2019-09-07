@@ -137,7 +137,7 @@ def point_mass_gravity(
 
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
-        - Northing acceleration: ``g_x``
+        - Northing acceleration: ``g_northing``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the point
@@ -165,7 +165,7 @@ def point_mass_gravity(
         "cartesian": {
             "potential": kernel_potential_cartesian,
             "g_z": kernel_g_z_cartesian,
-            "g_x": kernel_g_x_cartesian,
+            "g_northing": kernel_g_northing_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
@@ -191,7 +191,7 @@ def point_mass_gravity(
     # Convert to more convenient units
     if field == "g_z":
         result *= 1e5  # SI to mGal
-    if field == "g_x":
+    if field == "g_northing":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -254,7 +254,9 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
 
 
 @jit(nopython=True)
-def kernel_g_x_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+def kernel_g_northing_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
     """
     Kernel function for northing component of gravity gradient in Cartesian coordinates
     """

@@ -92,9 +92,9 @@ def test_g_z_symmetry():
 
 
 @pytest.mark.use_numba
-def test_g_x_symmetry():
+def test_g_northing_symmetry():
     """
-    Test if g_x field of a point mass has symmetry in Cartesian coordinates
+    Test if g_northing field of a point mass has symmetry in Cartesian coordinates
     """
     # Define a single point mass
     point_mass = [-7.9, 25, -130]
@@ -107,8 +107,10 @@ def test_g_x_symmetry():
     northing[0] += distance
     northing[1] -= distance
     coordinates = [easting, northing, upward]
-    # Compute g_x gravity field on each computation point
-    results = point_mass_gravity(coordinates, point_mass, masses, "g_x", "cartesian")
+    # Compute g_northing gravity field on each computation point
+    results = point_mass_gravity(
+        coordinates, point_mass, masses, "g_northing", "cartesian"
+    )
     npt.assert_allclose(results[0], -results[1])
 
 
