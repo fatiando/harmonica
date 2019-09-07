@@ -114,6 +114,29 @@ def test_g_northing_symmetry():
     npt.assert_allclose(results[0], -results[1])
 
 
+@pytest.mark.use_numba
+def test_g_easting_symmetry():
+    """
+    Test if g_easting field of a point mass has symmetry in Cartesian coordinates
+    """
+    # Define a single point mass
+    point_mass = [191, -5, 0]
+    masses = [2670]
+    # Define a pair of computation points northward and southward the point mass
+    distance = 4.6
+    easting = point_mass[0] + np.zeros(2)
+    northing = point_mass[1] + np.zeros(2)
+    upward = point_mass[2] + np.zeros(2)
+    easting[0] += distance
+    easting[1] -= distance
+    coordinates = [easting, northing, upward]
+    # Compute g_easting gravity field on each computation point
+    results = point_mass_gravity(
+        coordinates, point_mass, masses, "g_easting", "cartesian"
+    )
+    npt.assert_allclose(results[0], -results[1])
+
+
 # ---------------------------
 # Spherical coordinates tests
 # ---------------------------
