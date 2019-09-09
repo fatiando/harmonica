@@ -178,9 +178,19 @@ def point_mass_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    coordinates = (np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
-    points = (np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
+    coordinates = np.vstack(
+        tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
+    )
+    points = np.vstack(
+        tuple(np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
+    )
     masses = np.atleast_1d(masses).astype(dtype).ravel()
+    # Sanity checks
+    print(points.shape)
+    if masses.size != points.shape[1]:
+        raise ValueError(
+            "Masses array must have the same size as number of point masses."
+        )
     # Compute gravitational field
     dispatchers[coordinate_system](
         *coordinates, *points, masses, result, kernels[coordinate_system][field]
