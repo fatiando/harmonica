@@ -65,7 +65,6 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     if density.size != prisms.shape[0]:
         raise ValueError("Density array must have the same size as number of prisms.")
     _check_prisms(prisms)
-    _check_points_outside_prisms(coordinates, prisms)
     # Compute gravitational field
     jit_prism_gravity(coordinates, prisms, density, kernels[field], result)
     result *= GRAVITATIONAL_CONST
@@ -109,47 +108,6 @@ def _check_prisms(prisms):
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
         for prism in prisms[bottom > top]:
             err_msg += "\tInvalid tesseroid: {}\n".format(prism)
-        raise ValueError(err_msg)
-
-
-def _check_points_outside_prisms(
-    coordinates, prisms
-):  # pylint: disable=too-many-locals
-    """
-    Check if computation points are not inside the prisms
-
-    Parameters
-    ----------
-    prisms : 2d-array
-        Array containing the boundaries of the prisms in the following order:
-        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
-        The array must have the following shape: (``n_prisms``, 6), where
-        ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries. Run ``_check_prisms`` before.
-    """
-    easting, northing, upward = coordinates[:]
-    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
-    inside_easting = np.logical_and(
-        west < easting[:, np.newaxis], easting[:, np.newaxis] < east
-    )
-    inside_northing = np.logical_and(
-        south < northing[:, np.newaxis], northing[:, np.newaxis] < north
-    )
-    inside_upward = np.logical_and(
-        bottom < upward[:, np.newaxis], upward[:, np.newaxis] < top
-    )
-    # Build array of booleans.
-    # The (i, j) element is True if the computation point i is inside the prism j.
-    inside = inside_easting * inside_northing * inside_upward
-    if inside.any():
-        err_msg = (
-            "Found computation point inside prism. "
-            + "Computation points must be outside of prisms.\n"
-        )
-        for point_i, prism_i in np.argwhere(inside):
-            err_msg += "\tComputation point '{}' found inside tesseroid '{}'\n".format(
-                coordinates[:, point_i], prisms[prism_i, :]
-            )
         raise ValueError(err_msg)
 
 
