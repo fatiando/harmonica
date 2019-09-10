@@ -73,11 +73,7 @@ def test_potential_field_symmetry():
     npt.assert_allclose(result[0], result)
     # Create six inside computation points located on the normal directions to the prism
     # faces and at the same distance from its center
-    coordinates = (
-        [-50, 50, 0, 0, 0, 0],
-        [0, 0, -50, 50, 0, 0],
-        [0, 0, 0, 0, -50, 50],
-    )
+    coordinates = ([-50, 50, 0, 0, 0, 0], [0, 0, -50, 50, 0, 0], [0, 0, 0, 0, -50, 50])
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
     # Create twelve outside computation points located on the diagonal directions to the
