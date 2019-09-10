@@ -62,20 +62,48 @@ def test_potential_field_symmetry():
     "Test if the potential field satisfies symmetry"
     prism = [-100, 100, -100, 100, -100, 100]
     density = 2670
-    # Create six outside computation points at the same distance from the prism
-    coords = [-200, 200]
-    coordinates = tuple(i.ravel() for i in np.meshgrid(coords, coords, coords))
+    # Create six outside computation points located on the normal directions to the
+    # prism faces and at the same distance from its center
+    coordinates = (
+        [-200, 200, 0, 0, 0, 0],
+        [0, 0, -200, 200, 0, 0],
+        [0, 0, 0, 0, -200, 200],
+    )
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
-    # Create six inside computation points at the same distance from the prism
-    coords = [-50, 50]
-    coordinates = tuple(i.ravel() for i in np.meshgrid(coords, coords, coords))
+    # Create six inside computation points located on the normal directions to the prism
+    # faces and at the same distance from its center
+    coordinates = (
+        [-50, 50, 0, 0, 0, 0],
+        [0, 0, -50, 50, 0, 0],
+        [0, 0, 0, 0, -50, 50],
+    )
+    result = prism_gravity(coordinates, prism, density, field="potential")
+    npt.assert_allclose(result[0], result)
+    # Create twelve outside computation points located on the diagonal directions to the
+    # prism faces and at the same distance from its center. They can be divided into
+    # three sets: one made by those points that live on the horizontal plane that passes
+    # through the prism center, and the other two that live on the pair of vertical
+    # and perpendicular planes that also passes through the center of the prism.
+    coordinates = (
+        [-200, -200, 200, 200, -200, -200, 200, 200, 0, 0, 0, 0],
+        [-200, 200, -200, 200, 0, 0, 0, 0, -200, -200, 200, 200],
+        [0, 0, 0, 0, -200, 200, -200, 200, -200, 200, -200, 200],
+    )
+    result = prism_gravity(coordinates, prism, density, field="potential")
+    npt.assert_allclose(result[0], result)
+    # Create the same twelve points as before, but now all points fall inside the prism
+    coordinates = (
+        [-50, -50, 50, 50, -50, -50, 50, 50, 0, 0, 0, 0],
+        [-50, 50, -50, 50, 0, 0, 0, 0, -50, -50, 50, 50],
+        [0, 0, 0, 0, -50, 50, -50, 50, -50, 50, -50, 50],
+    )
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
 
 
 @pytest.mark.use_numba
-def test_g_z_symmetry():
+def test_g_z_symmetry_outside():
     """
     Test if the g_z field satisfies symmetry
 
