@@ -11,7 +11,14 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     """
     Compute gravitational field of prisms on computation points.
 
-    Forward modelling based on [Nagy2000]_ and [Nagy2002]_.
+    The gravitational fields are computed through the analytical solution given by
+    [Nagy2000]_ and [Nagy2002]_, which is valid on the entire domain. This means that
+    the computation point can be any point, either outside or inside the prism.
+
+    This forward model makes use of the modified arctangent function proposed by
+    [Fukushima2019]_ (eq. 12) in order to the potential field to satisfy the Poisson's
+    equation. Moreover, the logarithm function was also modified in order to solve the
+    singularities that the analytical solution has on some points (see [Nagy2000]_).
 
     .. warning::
         The **z direction points upwards**, i.e. positive and negative values of
@@ -23,13 +30,12 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     ----------
     coordinates : list or 1d-array
         List or array containing ``easting``, ``northing`` and ``upward`` of the
-        computation points defined on a Cartesian coordinate system.
-        All coordinates should be in meters.
+        computation points defined on a Cartesian coordinate system. All coordinates
+        should be in meters.
     prisms : list or 1d-array
-        List or array containing the coordinates of the tesseroid:
+        List or array containing the coordinates of the prism:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a Cartesian coordinate
-        system.
-        All coordinates should be in meters.
+        system. All coordinates should be in meters.
     density : list or array
         List or array containing the density of each prism in kg/m^3.
     field : str
@@ -121,7 +127,7 @@ def jit_prism_gravity(
     # Iterate over computation points and prisms
     for l in range(coordinates.shape[1]):
         for m in range(prisms.shape[0]):
-            # Itereate over the prism boundaries to compute the result of the
+            # Iterate over the prism boundaries to compute the result of the
             # integration (see Nagy et al., 2000)
             for i in range(2):
                 for j in range(2):
