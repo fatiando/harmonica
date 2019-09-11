@@ -191,11 +191,7 @@ def point_mass_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_z":
-        result *= 1e5  # SI to mGal
-    if field == "g_northing":
-        result *= 1e5  # SI to mGal
-    if field == "g_easting":
+    if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -254,6 +250,10 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     distance = distance_cartesian(
         [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
+    # Remember that the ``g_z`` field returns the downward component of the
+    # gravity acceleration. As a consequence, it is multiplied by -1. Notice that
+    # the ``g_z`` does not have the minus signal observed at the compoents
+    # ``g_northing`` and ``g_easting``.
     return (upward - upward_p) / distance ** 3
 
 
@@ -267,7 +267,7 @@ def kernel_g_northing_cartesian(
     distance = distance_cartesian(
         [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
-    return (northing - northing_p) / distance ** 3
+    return -(northing - northing_p) / distance ** 3
 
 
 @jit(nopython=True)
@@ -280,7 +280,7 @@ def kernel_g_easting_cartesian(
     distance = distance_cartesian(
         [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
-    return (easting - easting_p) / distance ** 3
+    return -(easting - easting_p) / distance ** 3
 
 
 @jit(nopython=True)
