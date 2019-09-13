@@ -1,5 +1,5 @@
 """
-Equivalent Layer interpolators for harmonic functions
+Equivalent layer for generic harmonic functions
 """
 import numpy as np
 from numba import jit
@@ -12,7 +12,7 @@ from ..forward.utils import distance_cartesian
 
 class EQLHarmonic(BaseGridder):
     r"""
-    3D Equivalent Layer interpolator for harmonic fields using Green's functions
+    Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
 
     This gridder assumes Cartesian coordinates.
 
@@ -39,18 +39,6 @@ class EQLHarmonic(BaseGridder):
         a default set of points will be created putting a single point source bellow
         each observation point at a relative depth proportional to the mean distance to
         the nearest k observation points [Cooper2000]_. Default None.
-    depth_factor : float (optional)
-        Adimensional factor to set the depth of each point source.
-        If ``points`` is None, a default set of point will be created putting
-        a single point source bellow each obervation point at a relative depth given by
-        the product of the ``depth_factor`` and the mean distance to the nearest
-        ``k_nearest`` obervation points. A greater ``depth_factor`` will increase the
-        depth of the point source. This parameter is ignored if ``points`` is not None.
-        Default 3 (following [Cooper2000]_).
-    k_nearest : int (optional)
-        Number of observation points used to compute the median distance to its nearest
-        neighbours. This argument is passed to :func:`verde.mean_distance`. It's ignored
-        if ``points`` is not None. Default 1.
 
     Attributes
     ----------
@@ -64,11 +52,10 @@ class EQLHarmonic(BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, depth_factor=3, k_nearest=1):
+    def __init__(self, depth=500, damping=None, points=None):
+        self.depth = depth
         self.damping = damping
         self.points = points
-        self.depth_factor = depth_factor
-        self.k_nearest = k_nearest
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -103,13 +90,7 @@ class EQLHarmonic(BaseGridder):
         self.region_ = get_region(coordinates[:2])
         coordinates = n_1d_arrays(coordinates, 3)
         if self.points is None:
-            # Put a single point source bellow each observation point at a depth
-            # proportional to the median distance to the nearest k observation points.
-            point_east, point_north, point_upward = tuple(i.copy() for i in coordinates)
-            point_upward -= self.depth_factor * median_distance(
-                coordinates, k_nearest=self.k_nearest
-            )
-            self.points_ = (point_east, point_north, point_upward)
+            self.points_ = (coordinates[0], coordinates[1], coordinates[2] - self.depth)
         else:
             self.points_ = n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
