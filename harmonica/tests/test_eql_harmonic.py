@@ -39,7 +39,7 @@ def test_eql_harmonic():
     npt.assert_allclose(true, eql.predict(grid), rtol=1e-3)
 
 
-def test_eql_harmonic_numba_disabled():
+def test_eql_harmonic_small_data():
     """
     Check the predictions against synthetic data using few data points for speed
     """
@@ -53,9 +53,47 @@ def test_eql_harmonic_numba_disabled():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic()
+    eql = EQLHarmonic(depth=500)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
+
+    # Check that the proper source locations were set
+    tmp = [i.ravel() for i in coordinates]
+    npt.assert_allclose(tmp[:2], eql.points_[:2], rtol=1e-5)
+    npt.assert_allclose(tmp[2] - 500, eql.points_[2], rtol=1e-5)
+
+    # Gridding at higher altitude should be reasonably accurate when compared to
+    # synthetic values
+    grid = vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=20)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
+    npt.assert_allclose(true, eql.predict(grid), rtol=0.05)
+
+
+def test_eql_harmonic_custom_points():
+    """
+    Check that passing in custom points works and actually uses the points
+    """
+    region = (-3e3, -1e3, 5e3, 7e3)
+    # Build synthetic point masses
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=0)
+    # Get synthetic data
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+
+    # The interpolation should be perfect on the data points
+    src_points = tuple(
+        i.ravel()
+        for i in vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=-550)
+    )
+    eql = EQLHarmonic(depth=500, points=src_points)
+    eql.fit(coordinates, data)
+    npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
+
+    # Check that the proper source locations were set
+    npt.assert_allclose(src_points[:2], eql.points_[:2], rtol=1e-5)
+    npt.assert_allclose(-550, eql.points_[2], rtol=1e-5)
 
     # Gridding at higher altitude should be reasonably accurate when compared to
     # synthetic values
