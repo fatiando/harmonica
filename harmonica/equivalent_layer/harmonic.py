@@ -4,13 +4,13 @@ Equivalent layer for generic harmonic functions
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
-from verde import get_region, median_distance
-from verde.base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+import verde as vd
+import verde.base as vdb
 
 from ..forward.utils import distance_cartesian
 
 
-class EQLHarmonic(BaseGridder):
+class EQLHarmonic(vdb.BaseGridder):
     r"""
     Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
 
@@ -105,16 +105,16 @@ class EQLHarmonic(BaseGridder):
         self
             Returns this estimator instance for chaining operations.
         """
-        coordinates, data, weights = check_fit_input(coordinates, data, weights)
+        coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
         # Capture the data region to use as a default when gridding.
-        self.region_ = get_region(coordinates[:2])
-        coordinates = n_1d_arrays(coordinates, 3)
+        self.region_ = vd.get_region(coordinates[:2])
+        coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
             self.points_ = (coordinates[0], coordinates[1], coordinates[2] - self.depth)
         else:
-            self.points_ = n_1d_arrays(self.points, 3)
+            self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
-        self.coefs_ = least_squares(jacobian, data, weights, self.damping)
+        self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
 
     def predict(self, coordinates):
