@@ -4,97 +4,74 @@ Test the EQLHarmonic gridder
 import pytest
 import numpy as np
 import numpy.testing as npt
-from verde import scatter_points, grid_coordinates
-from verde.datasets.synthetic import CheckerBoard
-from verde.base import n_1d_arrays
+import verde as vd
+import verde.base as vdb
 
-from .. import EQLHarmonic
+from .. import EQLHarmonic, point_mass_gravity
 from ..equivalent_layer.harmonic import jacobian_numba
 from .utils import require_numba
-
-
-def point_mass_gravity_simple(coordinates, points, masses):
-    """
-    Function to patch the missing harmonica.point_mass_gravity function
-
-    This should be replaced by hm.point_mass_gravity when its PR is merged.
-    """
-    from ..equivalent_layer.harmonic import predict_numba
-    from ..constants import GRAVITATIONAL_CONST
-
-    coeffs = GRAVITATIONAL_CONST * masses
-    cast = np.broadcast(*coordinates[:3])
-    result = np.zeros(cast.size, dtype=coordinates[0].dtype)
-    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-    predict_numba(coordinates, points, coeffs, result)
-    return result.reshape(cast.shape)
 
 
 @require_numba
 def test_eql_harmonic():
     """
-    See if exact solution matches the synthetic data
+    Check that predictions are reasonable when interpolating from one grid to a denser
+    grid.
     """
-    region = (-3e4, -1e4, 5e4, 7e4)
+    region = (-3e3, -1e3, 5e3, 7e3)
     # Build synthetic point masses
-    depth = 1e3
-    points = scatter_points(
-        region=region, size=1500, random_state=1, extra_coords=depth
-    )
-    checker = CheckerBoard(region=region)
-    synth_masses = checker.predict(points)
-    # Define a random set of observation points
-    coordinates = scatter_points(
-        region=region, size=1500, random_state=2, extra_coords=0
-    )
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity_simple(coordinates, points, synth_masses)
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    gridder = EQLHarmonic()
-    gridder.fit(coordinates, data)
-    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+    eql = EQLHarmonic()
+    eql.fit(coordinates, data)
+    npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
-    # Configure new gridder passing the syntetic points
-    gridder = EQLHarmonic(points=points)
-    gridder.fit(coordinates, data)
-    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+    # Gridding onto a denser grid should be reasonably accurate when compared to
+    # synthetic values
+    grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
+    npt.assert_allclose(true, eql.predict(grid), rtol=1e-3)
 
 
 def test_eql_harmonic_numba_disabled():
     """
-    See if exact solution matches the synthetic data with few sources
+    Check the predictions against synthetic data using few data points for speed
     """
-    region = (-3e4, -1e4, 5e4, 7e4)
+    region = (-3e3, -1e3, 5e3, 7e3)
     # Build synthetic point masses
-    depth = 1e3
-    points = scatter_points(region=region, size=50, random_state=1, extra_coords=depth)
-    checker = CheckerBoard(region=region)
-    synth_masses = checker.predict(points)
-    # Define a random set of observation points
-    coordinates = scatter_points(region=region, size=50, random_state=2, extra_coords=0)
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity_simple(coordinates, points, synth_masses)
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    gridder = EQLHarmonic()
-    gridder.fit(coordinates, data)
-    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+    eql = EQLHarmonic()
+    eql.fit(coordinates, data)
+    npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
-    # Configure new gridder passing the syntetic points
-    gridder = EQLHarmonic(points=points)
-    gridder.fit(coordinates, data)
-    npt.assert_allclose(data, gridder.predict(coordinates), rtol=1e-5)
+    # Gridding at higher altitude should be reasonably accurate when compared to
+    # synthetic values
+    grid = vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=20)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
+    npt.assert_allclose(true, eql.predict(grid), rtol=0.05)
 
 
 @pytest.mark.use_numba
-def test_jacobian():
-    "Test Jacobian matrix under symetric system of point sources"
-    easting, northing, upward = grid_coordinates(
+def test_eql_harmonic_jacobian():
+    "Test Jacobian matrix under symmetric system of point sources"
+    easting, northing, upward = vd.grid_coordinates(
         region=[-100, 100, -100, 100], shape=(2, 2), extra_coords=0
     )
-    points = n_1d_arrays((easting, northing, upward + 100), n=3)
-    coordinates = n_1d_arrays((easting, northing, upward), n=3)
+    points = vdb.n_1d_arrays((easting, northing, upward + 100), n=3)
+    coordinates = vdb.n_1d_arrays((easting, northing, upward), n=3)
     n_points = points[0].size
     jacobian = np.zeros((n_points, n_points), dtype=points[0].dtype)
     jacobian_numba(coordinates, points, jacobian)
@@ -104,7 +81,7 @@ def test_jacobian():
     # All anti-diagonal elements must be equal (elements between distant points)
     anti_diagonal = (diagonal[0], diagonal[1][::-1])
     npt.assert_allclose(jacobian[anti_diagonal][0], jacobian[anti_diagonal])
-    # All elements corresponding to nearest neigbours must be equal
+    # All elements corresponding to nearest neighbors must be equal
     nearest_neighbours = np.ones((4, 4), dtype=bool)
     nearest_neighbours[diagonal] = False
     nearest_neighbours[anti_diagonal] = False
