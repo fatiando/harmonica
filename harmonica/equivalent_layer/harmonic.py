@@ -14,19 +14,35 @@ class EQLHarmonic(BaseGridder):
     r"""
     Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
 
-    This gridder assumes Cartesian coordinates.
+    This equivalent layer can be used for:
 
-    Predict values of an harmonic function. It uses point sources to build the
-    Equivalent Layer, fitting the coefficients that correspond to each point source in
-    order to fit the data values. Uses as Green's functions the inverse distance between
-    the grid coordinates and the point source:
+    * Cartesian coordinates (geographic coordinates must be project before use)
+    * Gravity and magnetic data (including derivatives)
+    * Single data types
+    * Interpolation
+    * Upward continuation
+    * Finite-difference based derivative calculations
+
+    It cannot be used for:
+
+    * Joint inversion of multiple data types (e.g., gravity + gravity gradients)
+    * Reduction to the pole of magnetic total field anomaly data
+    * Analytical derivative calculations
+
+    Point sources are located beneath the observed potential-field measurement points by
+    default [Cooper2000]_. Custom source locations can be used by specifying the
+    *points* argument. Coefficients associated with each point source are estimated
+    through linear least-squares with damping (Tikhonov 0th order) regularization.
+
+    The Green's function for point mass effects used is the inverse Cartesian distance
+    between the grid coordinates and the point source:
 
     .. math::
 
-        \phi_m(P, Q) = \frac{1}{|P - Q|}
+        \phi(\bar{x}, \bar{x}') = \frac{1}{||\bar{x} - \bar{x}'||}
 
-    where :math:`P` and :math:`Q` are the coordinates of the observation point and the
-    source, respectively.
+    where :math:`\bar{x}` and :math:`\bar{x}'` are the coordinate vectors of the
+    observation point and the source, respectively.
 
     Parameters
     ----------
@@ -34,16 +50,20 @@ class EQLHarmonic(BaseGridder):
         The positive damping regularization parameter. Controls how much smoothness is
         imposed on the estimated coefficients. If None, no regularization is used.
     points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as Equivalent Layer
-        in the following order: (``easting``, ``northing``, ``upward``). If None,
-        a default set of points will be created putting a single point source bellow
-        each observation point at a relative depth proportional to the mean distance to
-        the nearest k observation points [Cooper2000]_. Default None.
+        List containing the coordinates of the point sources used as the equivalent
+        layer. Coordinates are assumed to be in the following order: (``easting``,
+        ``northing``, ``upward``). If None, will place one
+        point source bellow each observation point at a fixed depth below the
+        observation point [Cooper2000]_. Defaults to None.
+    depth : float
+        Depth at which the point sources are placed beneath the observation points. Use
+        positive numbers (negative numbers would mean point sources are above the data
+        points). Ignored if *points* is specified.
 
     Attributes
     ----------
     points_ : 2d-array
-        Coordinates of the point sources used to build the Equivalent Layer.
+        Coordinates of the point sources used to build the equivalent layer.
     coefs_ : array
         Estimated coefficients of every point source.
     region_ : tuple
@@ -52,14 +72,14 @@ class EQLHarmonic(BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, depth=500, damping=None, points=None):
-        self.depth = depth
+    def __init__(self, damping=None, points=None, depth=500):
         self.damping = damping
         self.points = points
+        self.depth = depth
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the coefficients of the Equivalent Layer.
+        Fit the coefficients of the equivalent layer.
 
         The data region is captured and used as default for the
         :meth:`~harmonica.HarmonicEQL.grid` and :meth:`~harmonica.HarmonicEQL.scatter`
@@ -71,8 +91,8 @@ class EQLHarmonic(BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, upward, ...). Only easting
-            and northing will be used, all subsequent coordinates will be
+            following order: (easting, northing, upward, ...). Only easting,
+            northing, and upward will be used, all subsequent coordinates will be
             ignored.
         data : array
             The data values of each data point.
@@ -99,7 +119,7 @@ class EQLHarmonic(BaseGridder):
 
     def predict(self, coordinates):
         """
-        Evaluate the estimated spline on the given set of points.
+        Evaluate the estimated equivalent layer on the given set of points.
 
         Requires a fitted estimator (see :meth:`~harmonica.HarmonicEQL.fit`).
 
@@ -130,10 +150,10 @@ class EQLHarmonic(BaseGridder):
         self, coordinates, points, dtype="float64"
     ):  # pylint: disable=no-self-use
         """
-        Make the Jacobian matrix for the Equivalent Layer.
+        Make the Jacobian matrix for the equivalent layer.
 
         Each column of the Jacobian is the Green's function for a single point source
-        evaluated on all observation points [Sandwell1987]_.
+        evaluated on all observation points.
 
         Parameters
         ----------
@@ -144,7 +164,7 @@ class EQLHarmonic(BaseGridder):
             coordinates will be ignored.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the point sources used as
-            Equivalent Layer in the following order: (``easting``, ``northing``,
+            equivalent layer in the following order: (``easting``, ``northing``,
             ``upward``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
@@ -183,7 +203,7 @@ def predict_numba(coordinates, points, coeffs, result):
 @jit(nopython=True)
 def greens_func(east, north, upward, point_east, point_north, point_upward):
     """
-    Calculate the Green's function for the Equivalent Layer using Numba.
+    Calculate the Green's function for the equivalent layer using Numba.
     """
     distance = distance_cartesian(
         (east, north, upward), (point_east, point_north, point_upward)

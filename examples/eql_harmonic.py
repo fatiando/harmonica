@@ -33,7 +33,9 @@ data["easting"], data["northing"] = projection(
 )
 coordinates = (data.easting, data.northing, data.altitude_m)
 
-train, test = vd.train_test_split(coordinates, data.total_field_anomaly_nt, random_state=0)
+train, test = vd.train_test_split(
+    coordinates, data.total_field_anomaly_nt, random_state=0
+)
 
 eql = hm.EQLHarmonic(depth=1000, damping=10)
 eql.fit(*train)
@@ -48,14 +50,22 @@ print(grid)
 maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values)
 
 fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(15, 6))
-tmp = ax1.scatter(data.easting, data.northing, c=data.total_field_anomaly_nt, s=20,
-                  vmin=-maxabs, vmax=maxabs, cmap="seismic")
+tmp = ax1.scatter(
+    data.easting,
+    data.northing,
+    c=data.total_field_anomaly_nt,
+    s=20,
+    vmin=-maxabs,
+    vmax=maxabs,
+    cmap="seismic",
+)
 plt.colorbar(tmp, ax=ax1, label="nT")
 ax1.set_title("Observed Anomaly Magnetic data from Rio de Janeiro")
 
 # Plot gridded magnetic anomaly
-tmp = grid.magnetic_anomaly.plot.pcolormesh(ax=ax2, add_colorbar=False,
-                  vmin=-maxabs, vmax=maxabs, cmap="seismic")
+tmp = grid.magnetic_anomaly.plot.pcolormesh(
+    ax=ax2, add_colorbar=False, vmin=-maxabs, vmax=maxabs, cmap="seismic"
+)
 plt.colorbar(tmp, ax=ax2, label="nT")
 ax2.set_title("Gridded Anomaly Magnetic data from Rio de Janeiro")
 plt.show()
