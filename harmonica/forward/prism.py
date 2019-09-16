@@ -9,7 +9,7 @@ from ..constants import GRAVITATIONAL_CONST
 
 def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     """
-    Compute gravitational field of prisms on computation points.
+    Compute gravitational fields of right-rectangular prisms in Cartesian coordinates.
 
     The gravitational fields are computed through the analytical solution given by
     [Nagy2000]_ and [Nagy2002]_, which is valid on the entire domain. This means that
