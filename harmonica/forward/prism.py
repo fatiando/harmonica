@@ -65,7 +65,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     >>> density = 2670
     >>> # Define a computation point above its center, at 30 meters above the surface
     >>> coordinates = (130, 75, 30)
-    >>> # Compute the g_z that the prism generates on the computation point
+    >>> # Compute the downward component that the prism generates on the computation point
     >>> prism_gravity(coordinates, prism, density, field="g_z")
     array(0.15375061)
 
