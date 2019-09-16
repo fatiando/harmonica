@@ -16,7 +16,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     the computation can be done at any point, either outside or inside the prism.
 
     This implementation makes use of the modified arctangent function proposed by
-    [Fukushima2019]_ (eq. 12) in order to the potential field to satisfy the Poisson's
+    [Fukushima2019]_ (eq. 12) so that the potential field to satisfies Poisson's
     equation. Moreover, the logarithm function was also modified in order to solve the
     singularities that the analytical solution has on some points (see [Nagy2000]_).
 
