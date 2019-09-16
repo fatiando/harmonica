@@ -148,6 +148,24 @@ def jit_prism_gravity(
 ):  # pylint: disable=invalid-name
     """
     Compute gravitational field of prisms on computations points
+
+    Parameters
+    ----------
+    coordinates : tuple
+        Tuple containing ``easting``, ``northing`` and ``upward`` of the computation
+        points as arrays, all defined on a Cartesian coordinate system and in meters.
+    prisms : 2d-array
+        Two dimensional array containing the coordinates of the prism(s) in the
+        following order: west, east, south, north, bottom, top in a Cartesian coordinate
+        system. All coordinates should be in meters.
+    density : 1d-array
+        Array containing the density of each prism in kg/m^3. Must have the same size as
+        the number of prisms.
+    kernel : func
+        Kernel function that will be used to compute the desired field.
+    out : 1d-array
+        Array where the resulting field values will be stored. Must have the same size
+        as the arrays contained on ``coordinates``.
     """
     # Iterate over computation points and prisms
     for l in range(coordinates[0].size):
