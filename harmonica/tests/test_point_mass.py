@@ -79,29 +79,39 @@ def test_potential_versus_derivatives():
     point_mass = [0, 0, -50.7]
     mass = [1000]
     # Compute the analytic derivatives of gravitational potential
-    g_northing = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_northing", "cartesian")
-    g_easting = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_easting", "cartesian")
+    g_northing = point_mass_gravity(
+        [[0], [0], [0]], point_mass, mass, "g_northing", "cartesian"
+    )
+    g_easting = point_mass_gravity(
+        [[0], [0], [0]], point_mass, mass, "g_easting", "cartesian"
+    )
     g_z = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_z", "cartesian")
     # Compute the numerical derivatives of potential
-    delta = 10.
+    delta = 10.0
     easting = np.array([-delta, delta])
     northing = np.array([0, 0])
     upward = np.array([0, 0])
     coordinates = [easting, northing, upward]
-    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
-    derivative_easting = 1e-5*(potential[1] - potential[0])/(2.*delta)
+    potential = point_mass_gravity(
+        coordinates, point_mass, mass, "potential", "cartesian"
+    )
+    derivative_easting = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
     easting = np.array([0, 0])
     northing = np.array([-delta, delta])
     upward = np.array([0, 0])
     coordinates = [easting, northing, upward]
-    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
-    derivative_northing = 1e-5*(potential[1] - potential[0])/(2.*delta)
+    potential = point_mass_gravity(
+        coordinates, point_mass, mass, "potential", "cartesian"
+    )
+    derivative_northing = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
     easting = np.array([0, 0])
     northing = np.array([0, 0])
     upward = np.array([-delta, delta])
     coordinates = [easting, northing, upward]
-    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
-    derivative_z = 1e-5*(potential[1] - potential[0])/(2.*delta)
+    potential = point_mass_gravity(
+        coordinates, point_mass, mass, "potential", "cartesian"
+    )
+    derivative_z = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
 
     # Compare the results
     npt.assert_allclose(g_easting, derivative_easting)
@@ -189,7 +199,9 @@ def test_g_northing_signal():
     z = np.zeros(3)
     coordinates = [easting, northing, z]
     # Compute g_northing gravity field on each computation point
-    results = point_mass_gravity(coordinates, point_mass, mass, "g_northing", "cartesian")
+    results = point_mass_gravity(
+        coordinates, point_mass, mass, "g_northing", "cartesian"
+    )
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
@@ -233,7 +245,9 @@ def test_g_easting_signal():
     z = np.zeros(3)
     coordinates = [easting, northing, z]
     # Compute g_easting gravity field on each computation point
-    results = point_mass_gravity(coordinates, point_mass, mass, "g_easting", "cartesian")
+    results = point_mass_gravity(
+        coordinates, point_mass, mass, "g_easting", "cartesian"
+    )
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
