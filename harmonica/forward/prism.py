@@ -33,7 +33,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
         computation points defined on a Cartesian coordinate system. All coordinates
         should be in meters.
     prisms : list, 1d-array, or 2d-array
-        List or array containing the coordinates of the prism:
+        List or array containing the coordinates of the prism(s) in the following order:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a Cartesian coordinate
         system. All coordinates should be in meters.
     density : list or array
