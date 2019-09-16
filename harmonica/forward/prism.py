@@ -13,7 +13,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
 
     The gravitational fields are computed through the analytical solutions given by
     [Nagy2000]_ and [Nagy2002]_, which are valid on the entire domain. This means that
-    the computation point can be any point, either outside or inside the prism.
+    the computation can be done at any point, either outside or inside the prism.
 
     This forward model makes use of the modified arctangent function proposed by
     [Fukushima2019]_ (eq. 12) in order to the potential field to satisfy the Poisson's
