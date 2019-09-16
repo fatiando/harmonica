@@ -32,7 +32,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
         List or array containing ``easting``, ``northing`` and ``upward`` of the
         computation points defined on a Cartesian coordinate system. All coordinates
         should be in meters.
-    prisms : list or 1d-array
+    prisms : list, 1d-array, or 2d-array
         List or array containing the coordinates of the prism:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a Cartesian coordinate
         system. All coordinates should be in meters.
