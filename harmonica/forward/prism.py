@@ -91,9 +91,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Convert coordinates, prisms and density to arrays with proper shape
-    coordinates = tuple(
-        np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
-    )
+    coordinates = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
     prisms = np.atleast_2d(prisms).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
     # Sanity checks
