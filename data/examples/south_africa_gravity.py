@@ -3,10 +3,12 @@ Land Gravity Data from South Africa
 ===================================
 
 Land gravity survey performed in January 1986 within the boundaries of the Republic of
-South Africa. The data are stored in a :class:`pandas.DataFrame` with columns:
-longitude, latitude, elevation (above sea level) and gravity(mGal). See the
-documentation for :func:`harmonica.datasets.fetch_south_africa_gravity` for more
-information.
+South Africa. The data was made available by the `National Centers for Environmental
+Information (NCEI) <https://www.ngdc.noaa.gov/>`__ (formerly NGDC) and are in the
+`public domain <https://www.ngdc.noaa.gov/ngdcinfo/privacy.html#copyright-notice>`__.
+The entire dataset is stored in a :class:`pandas.DataFrame` with columns: longitude,
+latitude, elevation (above sea level) and gravity(mGal). See the documentation for
+:func:`harmonica.datasets.fetch_south_africa_gravity` for more information.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
