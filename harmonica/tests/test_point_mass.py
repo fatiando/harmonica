@@ -71,23 +71,19 @@ def test_potential_cartesian_symmetry():
 
 
 @pytest.mark.use_numba
-def test_potential_versus_derivatives():
+def test_potential_versus_g_easting():
     """
-    Test if the gravity components can be obtained numerically from potential
+    Test if the g_easting can be obtained numerically from potential
     """
     # Define a single point mass
-    point_mass = [0, 0, -50.7]
-    mass = [1000]
-    # Compute the analytic derivatives of gravitational potential
-    g_northing = point_mass_gravity(
-        [[0], [0], [0]], point_mass, mass, "g_northing", "cartesian"
-    )
+    point_mass = [20, 54, -500.7]
+    mass = [200]
+    # Compute the easting component
     g_easting = point_mass_gravity(
         [[0], [0], [0]], point_mass, mass, "g_easting", "cartesian"
     )
-    g_z = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_z", "cartesian")
-    # Compute the numerical derivatives of potential
-    delta = 10.0
+    # Compute the numerical derivative of potential
+    delta = 0.1
     easting = np.array([-delta, delta])
     northing = np.array([0, 0])
     upward = np.array([0, 0])
@@ -95,7 +91,26 @@ def test_potential_versus_derivatives():
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_easting = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
+    derivative_easting = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+
+    # Compare the results
+    npt.assert_allclose(g_easting, derivative_easting)
+
+
+@pytest.mark.use_numba
+def test_potential_versus_g_northing():
+    """
+    Test if the g_northing can be obtained numerically from potential
+    """
+    # Define a single point mass
+    point_mass = [-30, 10, -500.7]
+    mass = [200]
+    # Compute the northing component
+    g_northing = point_mass_gravity(
+        [[0], [0], [0]], point_mass, mass, "g_northing", "cartesian"
+    )
+    # Compute the numerical derivative of potential
+    delta = 0.1
     easting = np.array([0, 0])
     northing = np.array([-delta, delta])
     upward = np.array([0, 0])
@@ -103,7 +118,24 @@ def test_potential_versus_derivatives():
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_northing = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
+    derivative_northing = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+
+    # Compare the results
+    npt.assert_allclose(g_northing, derivative_northing)
+
+
+@pytest.mark.use_numba
+def test_potential_versus_g_z():
+    """
+    Test if the g_z can be obtained numerically from potential
+    """
+    # Define a single point mass
+    point_mass = [-3, 51, -500.7]
+    mass = [200]
+    # Compute the z component
+    g_z = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_z", "cartesian")
+    # Compute the numerical derivative of potential
+    delta = 0.1
     easting = np.array([0, 0])
     northing = np.array([0, 0])
     upward = np.array([-delta, delta])
@@ -111,11 +143,9 @@ def test_potential_versus_derivatives():
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_z = 1e-5 * (potential[1] - potential[0]) / (2.0 * delta)
+    derivative_z = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
 
     # Compare the results
-    npt.assert_allclose(g_easting, derivative_easting)
-    npt.assert_allclose(g_northing, derivative_northing)
     npt.assert_allclose(g_z, -derivative_z)
 
 
