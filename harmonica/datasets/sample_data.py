@@ -163,7 +163,7 @@ def fetch_south_africa_gravity():
     """
     Fetch gravity station data from South Africa
 
-    This data base (14559 records),received in January 1986, consists in land gravity
+    This data base (14559 records), received in January 1986, consists in land gravity
     surveys within the boundaries of the Republic of South Africa. The survey was
     conducted by Dr. R.J. Kleywegt with the contribution of the Republic of South
     Africa, the Department of Mineral and Energy Affairs and the Geological Survey. The
