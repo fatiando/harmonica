@@ -45,15 +45,11 @@ def test_invalid_prisms():
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
     # Test invalid boundaries
     with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([150, 100, s, n, bottom, top]))
+        _check_prisms(np.atleast_2d([e, w, s, n, bottom, top]))
     with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([w, e, 150, 100, bottom, top]))
+        _check_prisms(np.atleast_2d([w, e, n, s, bottom, top]))
     with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([w, e, s, n, 150, 100]))
-    with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([w, e, s, n, 300, top]))
-    with pytest.raises(ValueError):
-        _check_prisms(np.atleast_2d([w, e, s, n, bottom, -500]))
+        _check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
 
 
 @pytest.mark.use_numba
