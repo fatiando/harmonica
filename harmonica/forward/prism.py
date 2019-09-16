@@ -115,11 +115,6 @@ def _check_prisms(prisms):
 
     Parameters
     ----------
-    coordinates : 2d-array
-        Array containing the coordinates of the computation points in the following
-        order: ``easting``, ``northing`` and ``upward``.
-        The array must have the following shape: (3, ``n_points``), where
-        ``n_points`` is the total number of computation points.
     prisms : 2d-array
         Array containing the boundaries of the prisms in the following order:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
