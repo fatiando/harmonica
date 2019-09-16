@@ -90,11 +90,10 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
-    # Convert coordinates, tesseroids and density to arrays
-    easting, northing, upward = (
+    # Convert coordinates, tesseroids and density to arrays with proper shape
+    coordinates = tuple(
         np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
     )
-    coordinates = np.vstack((easting, northing, upward))
     prisms = np.atleast_2d(prisms).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
     # Sanity checks
@@ -155,7 +154,7 @@ def jit_prism_gravity(
     Compute gravitational field of prisms on computations points
     """
     # Iterate over computation points and prisms
-    for l in range(coordinates.shape[1]):
+    for l in range(coordinates[0].size):
         for m in range(prisms.shape[0]):
             # Iterate over the prism boundaries to compute the result of the
             # integration (see Nagy et al., 2000)
@@ -172,9 +171,9 @@ def jit_prism_gravity(
                             density[m]
                             * (-1) ** (i + j + k)
                             * kernel(
-                                shift_east - coordinates[0, l],
-                                shift_north - coordinates[1, l],
-                                shift_upward - coordinates[2, l],
+                                shift_east - coordinates[0][l],
+                                shift_north - coordinates[1][l],
+                                shift_upward - coordinates[2][l],
                             )
                         )
 
