@@ -17,8 +17,9 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
 
     This implementation makes use of the modified arctangent function proposed by
     [Fukushima2019]_ (eq. 12) so that the potential field to satisfies Poisson's
-    equation in the entire domain. Moreover, the logarithm function was also modified in order to solve the
-    singularities that the analytical solution has on some points (see [Nagy2000]_).
+    equation in the entire domain. Moreover, the logarithm function was also modified in
+    order to solve the singularities that the analytical solution has on some points
+    (see [Nagy2000]_).
 
     .. warning::
         The **z direction points upwards**, i.e. positive and negative values of
@@ -34,10 +35,10 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
         should be in meters.
     prisms : list, 1d-array, or 2d-array
         List or array containing the coordinates of the prism(s) in the following order:
-       west, east, south, north, bottom, top in a Cartesian coordinate
-        system. All coordinates should be in meters. 
-        Coordinates for more than one prism can be provided. In this case, *prisms*
-        should be a list of lists or 2d-array (with one prism per line).
+        west, east, south, north, bottom, top in a Cartesian coordinate system. All
+        coordinates should be in meters. Coordinates for more than one prism can be
+        provided. In this case, *prisms* should be a list of lists or 2d-array (with one
+        prism per line).
     density : list or array
         List or array containing the density of each prism in kg/m^3.
     field : str
@@ -60,7 +61,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     --------
 
     Compute a single a prism located beneath the surface with density of 2670 kg/m³:
-    
+
     >>> prism = [105, 155, 46, 104, -345, -146]
     >>> density = 2670
     >>> # Define a computation point above its center, at 30 meters above the surface

@@ -106,8 +106,8 @@ def test_g_z_symmetry_outside():
     we will define several set of computation points:
 
     A. Two points located on the vertical axis of the prism (``easting == 0`` and
-    ``northing == 0``), one above and one bellow the prism at the same distance from its
-    center.
+       ``northing == 0``), one above and one bellow the prism at the same distance from
+       its center.
     B. Four points located on the ``upward == 0`` plane around the prism distributed
        normally to its faces , i.e. only one of the horizontal coordinates will be
        nonzero.
