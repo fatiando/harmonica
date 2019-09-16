@@ -124,19 +124,22 @@ def _check_prisms(prisms):
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
-    if (west > east).any():
+    bad_we = west > east
+    bad_sn = south > north
+    bad_bt = bottom > top
+    if bad_we.any():
         err_msg += "The west boundary can't be greater than the east one.\n"
-        for prism in prisms[west > east]:
+        for prism in prisms[bad_we]:
             err_msg += "\tInvalid prism: {}\n".format(prism)
         raise ValueError(err_msg)
-    if (south > north).any():
+    if bad_sn.any():
         err_msg += "The south boundary can't be greater than the north one.\n"
-        for prism in prisms[south > north]:
+        for prism in prisms[bad_sn]:
             err_msg += "\tInvalid prism: {}\n".format(prism)
         raise ValueError(err_msg)
-    if (bottom > top).any():
+    if bad_bt.any():
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
-        for prism in prisms[bottom > top]:
+        for prism in prisms[bad_bt]:
             err_msg += "\tInvalid tesseroid: {}\n".format(prism)
         raise ValueError(err_msg)
 
