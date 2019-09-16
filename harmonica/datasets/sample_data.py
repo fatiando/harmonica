@@ -168,9 +168,9 @@ def fetch_south_africa_gravity():
     conducted by Dr. R.J. Kleywegt with the contribution of the Republic of South
     Africa, the Department of Mineral and Energy Affairs and the Geological Survey. The
     data was made available by the `National Centers for Environmental Information
-    (NCEI) <https://www.ngdc.noaa.gov/>`__ (formerly NGDC) and are in the 
+    (NCEI) <https://www.ngdc.noaa.gov/>`__ (formerly NGDC) and are in the
     `public domain <https://www.ngdc.noaa.gov/ngdcinfo/privacy.html#copyright-notice>`__.
-    Original data files can be found at: 
+    Original data files can be found at:
     https://www.ngdc.noaa.gov/mgg/gravity/1999/data/regional/africa/
 
     Principal gravity parameters include elevation and observed gravity. The observed
@@ -184,6 +184,6 @@ def fetch_south_africa_gravity():
         The gravity data.
 
     """
-    fname = POOCH.fetch("south_africa_gravity.ast.xz")
+    fname = POOCH.fetch("south-africa-gravity.ast.xz")
     columns = ["latitude", "longitude", "elevation", "gravity"]
     return pd.read_csv(fname, sep=r"\s+", names=columns, compression="xz")
