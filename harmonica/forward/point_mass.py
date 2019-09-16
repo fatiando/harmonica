@@ -237,9 +237,10 @@ def kernel_potential_cartesian(
     """
     Kernel function for potential gravity field in Cartesian coordinates
     """
-    return 1 / distance_spherical(
-        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    distance = distance_cartesian(
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
+    return 1 / distance
 
 
 @jit(nopython=True)

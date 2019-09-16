@@ -71,6 +71,45 @@ def test_potential_cartesian_symmetry():
 
 
 @pytest.mark.use_numba
+def test_potential_versus_derivatives():
+    """
+    Test if the gravity components can be obtained numerically from potential
+    """
+    # Define a single point mass
+    point_mass = [0, 0, -50.7]
+    mass = [1000]
+    # Compute the analytic derivatives of gravitational potential
+    g_northing = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_northing", "cartesian")
+    g_easting = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_easting", "cartesian")
+    g_z = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_z", "cartesian")
+    # Compute the numerical derivatives of potential
+    delta = 10.
+    easting = np.array([-delta, delta])
+    northing = np.array([0, 0])
+    upward = np.array([0, 0])
+    coordinates = [easting, northing, upward]
+    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
+    derivative_easting = 1e-5*(potential[1] - potential[0])/(2.*delta)
+    easting = np.array([0, 0])
+    northing = np.array([-delta, delta])
+    upward = np.array([0, 0])
+    coordinates = [easting, northing, upward]
+    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
+    derivative_northing = 1e-5*(potential[1] - potential[0])/(2.*delta)
+    easting = np.array([0, 0])
+    northing = np.array([0, 0])
+    upward = np.array([-delta, delta])
+    coordinates = [easting, northing, upward]
+    potential = point_mass_gravity(coordinates, point_mass, mass, "potential", "cartesian")
+    derivative_z = 1e-5*(potential[1] - potential[0])/(2.*delta)
+
+    # Compare the results
+    npt.assert_allclose(g_easting, derivative_easting)
+    npt.assert_allclose(g_northing, derivative_northing)
+    npt.assert_allclose(g_z, -derivative_z)
+
+
+@pytest.mark.use_numba
 def test_g_z_symmetry():
     """
     Test if g_z field of a point mass has symmetry in Cartesian coordinates
@@ -89,6 +128,27 @@ def test_g_z_symmetry():
     # Compute g_z gravity field on each computation point
     results = point_mass_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
     npt.assert_allclose(results[0], -results[1])
+
+
+@pytest.mark.use_numba
+def test_g_z_signal():
+    """
+    Test if g_z field of a positive point mass has the correct signal
+    """
+    # Define a single point mass
+    point_mass = [-10, 100.2, -300.7]
+    mass = [2670]
+    # Define three computation points located above, at the same depth and
+    # bellow the point mass
+    easting = np.zeros(3)
+    northing = np.zeros(3) + 52.3
+    z = np.array([100.11, -300.7, -400])
+    coordinates = [easting, northing, z]
+    # Compute g_z gravity field on each computation point
+    results = point_mass_gravity(coordinates, point_mass, mass, "g_z", "cartesian")
+    assert np.sign(mass) == np.sign(results[0])
+    npt.assert_allclose(results[1], 0)
+    assert np.sign(mass) == -np.sign(results[2])
 
 
 @pytest.mark.use_numba
@@ -115,6 +175,27 @@ def test_g_northing_symmetry():
 
 
 @pytest.mark.use_numba
+def test_g_northing_signal():
+    """
+    Test if g_northing field of a positive point mass has the correct signal
+    """
+    # Define a single point mass
+    point_mass = [-10, 100.2, -300.7]
+    mass = [2670]
+    # Define three computation points located above the point mass, along the
+    # north axis
+    easting = np.zeros(3)
+    northing = np.array([0, 100.2, 210.7])
+    z = np.zeros(3)
+    coordinates = [easting, northing, z]
+    # Compute g_northing gravity field on each computation point
+    results = point_mass_gravity(coordinates, point_mass, mass, "g_northing", "cartesian")
+    assert np.sign(mass) == np.sign(results[0])
+    npt.assert_allclose(results[1], 0)
+    assert np.sign(mass) == -np.sign(results[2])
+
+
+@pytest.mark.use_numba
 def test_g_easting_symmetry():
     """
     Test if g_easting field of a point mass has symmetry in Cartesian coordinates
@@ -135,6 +216,27 @@ def test_g_easting_symmetry():
         coordinates, point_mass, masses, "g_easting", "cartesian"
     )
     npt.assert_allclose(results[0], -results[1])
+
+
+@pytest.mark.use_numba
+def test_g_easting_signal():
+    """
+    Test if g_easting field of a positive point mass has the correct signal
+    """
+    # Define a single point mass
+    point_mass = [-10, 100.2, -300.7]
+    mass = [2670]
+    # Define three computation points located above the point mass, along the
+    # east axis
+    easting = np.array([-150.7, -10, 79])
+    northing = np.zeros(3)
+    z = np.zeros(3)
+    coordinates = [easting, northing, z]
+    # Compute g_easting gravity field on each computation point
+    results = point_mass_gravity(coordinates, point_mass, mass, "g_easting", "cartesian")
+    assert np.sign(mass) == np.sign(results[0])
+    npt.assert_allclose(results[1], 0)
+    assert np.sign(mass) == -np.sign(results[2])
 
 
 # ---------------------------
