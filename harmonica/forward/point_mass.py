@@ -178,16 +178,11 @@ def point_mass_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    coordinates = np.vstack(
-        tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
-    )
-    points = np.vstack(
-        tuple(np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
-    )
+    coordinates = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
+    points = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
     masses = np.atleast_1d(masses).astype(dtype).ravel()
     # Sanity checks
-    print(points.shape)
-    if masses.size != points.shape[1]:
+    if masses.size != points[0].size:
         raise ValueError(
             "Masses array must have the same size as number of point masses."
         )
