@@ -17,7 +17,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
 
     This implementation makes use of the modified arctangent function proposed by
     [Fukushima2019]_ (eq. 12) so that the potential field to satisfies Poisson's
-    equation. Moreover, the logarithm function was also modified in order to solve the
+    equation in the entire domain. Moreover, the logarithm function was also modified in order to solve the
     singularities that the analytical solution has on some points (see [Nagy2000]_).
 
     .. warning::
