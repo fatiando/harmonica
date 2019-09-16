@@ -24,7 +24,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
         The **z direction points upwards**, i.e. positive and negative values of
         ``upward`` represent points above and below the surface, respectively. But
         remember that the ``g_z`` field returns the downward component of the gravity
-        acceleration.
+        acceleration so that positive density contrasts produce positive anomalies.
 
     Parameters
     ----------
