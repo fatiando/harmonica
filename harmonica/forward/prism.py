@@ -59,7 +59,8 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     Examples
     --------
 
-    >>> # Define a prism located beneath the surface with density of 2670 kg/m^3
+    Compute a single a prism located beneath the surface with density of 2670 kg/m³:
+    
     >>> prism = [105, 155, 46, 104, -345, -146]
     >>> density = 2670
     >>> # Define a computation point above its center, at 30 meters above the surface
