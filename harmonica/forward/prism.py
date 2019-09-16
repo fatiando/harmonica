@@ -67,7 +67,8 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     >>> coordinates = (130, 75, 30)
     >>> # Compute the downward component that the prism generates on the computation point
     >>> gz = prism_gravity(coordinates, prism, density, field="g_z")
-    array(0.15375061)
+    >>> print("{:.5f}".format(gz[0]))
+    0.15375
 
     >>> # Define two prism, one with positive and the other one with negative density
     >>> prisms = [[-134, -5, -45, 45, -200, -50], [5, 134, -45, 45, -180, -30]]
