@@ -48,7 +48,6 @@ def test_invalid_prisms():
         _check_prisms(np.atleast_2d([150, 100, s, n, bottom, top]))
     with pytest.raises(ValueError):
         _check_prisms(np.atleast_2d([w, e, 150, 100, bottom, top]))
-    # Test invalid radial boundaries
     with pytest.raises(ValueError):
         _check_prisms(np.atleast_2d([w, e, s, n, 150, 100]))
     with pytest.raises(ValueError):
