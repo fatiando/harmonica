@@ -20,7 +20,7 @@ data = hm.datasets.fetch_south_africa_gravity()
 print(data)
 
 # Plot the observations in a Mercator map using Cartopy
-fig = plt.figure(figsize=(10, 6))
+fig = plt.figure(figsize=(6.5, 5))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Observed gravity data from South Africa", pad=25)
 tmp = ax.scatter(
@@ -35,10 +35,9 @@ plt.colorbar(
     tmp,
     ax=ax,
     label="observed gravity [mGal]",
-    orientation="horizontal",
     aspect=50,
-    shrink=0.6,
-    pad=0.06,
+    pad=0.1,
+    shrink=0.92,
 )
 ax.set_extent(vd.get_region((data.longitude, data.latitude)))
 ax.gridlines(draw_labels=True)
