@@ -39,7 +39,7 @@ def test_invalid_prisms():
     w, e, s, n, bottom, top = -100, 100, -100, 100, -200, -100
     # Check if it works properly on valid prisms
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
-    # Check if it works properly on valid tesseroid with zero volume
+    # Check if it works properly on valid prisms with zero volume
     _check_prisms(np.atleast_2d([w, w, s, n, bottom, top]))
     _check_prisms(np.atleast_2d([w, e, s, s, bottom, top]))
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
