@@ -62,23 +62,26 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
 
     Compute a single a prism located beneath the surface with density of 2670 kg/m³:
 
-    >>> prism = [105, 155, 46, 104, -345, -146]
+    >>> prism = [-34, 5, -18, 14, -345, -146]
     >>> density = 2670
     >>> # Define a computation point above its center, at 30 meters above the surface
     >>> coordinates = (130, 75, 30)
-    >>> # Compute the downward component that the prism generates on the computation point
+    >>> # Define three computation points along the easting axe at 30m above the surface
+    >>> coordinates = ([-40, 0, 40], [0, 0, 0], [30, 30, 30])
+    >>> # Compute the downward component of the gravity acceleration that the prism
+    >>> # generates on the computation points
     >>> gz = prism_gravity(coordinates, prism, density, field="g_z")
-    >>> print("{:.5f}".format(gz[0]))
-    0.15375
+    >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
+    (0.06551, 0.06628, 0.06173)
 
-    >>> # Define two prism, one with positive and the other one with negative density
+    Define two prisms with positive and negative density contrasts
+
     >>> prisms = [[-134, -5, -45, 45, -200, -50], [5, 134, -45, 45, -180, -30]]
     >>> densities = [-300, 300]
-    >>> # Define three computation points along the easting axe
-    >>> coordinates = ([-40, 0, 40], [0, 0, 0], [0, 0, 0])
-    >>> # Compute the g_z that the prisms generate
-    >>> prism_gravity(coordinates, prisms, densities, field="g_z")
-    array([-0.11785066,  0.04643262,  0.21866826])
+    >>> # Compute the g_z that the prisms generate on the computation points
+    >>> gz = prism_gravity(coordinates, prisms, densities, field="g_z")
+    >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
+    (-0.05379, 0.02908, 0.11235)
 
     """
     kernels = {"potential": kernel_potential, "g_z": kernel_g_z}
