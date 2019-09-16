@@ -43,7 +43,7 @@ def test_invalid_prisms():
     _check_prisms(np.atleast_2d([w, w, s, n, bottom, top]))
     _check_prisms(np.atleast_2d([w, e, s, s, bottom, top]))
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
-    # Test invalid longitude and latitude boundaries
+    # Test invalid boundaries
     with pytest.raises(ValueError):
         _check_prisms(np.atleast_2d([150, 100, s, n, bottom, top]))
     with pytest.raises(ValueError):
