@@ -12,7 +12,7 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     Compute gravitational fields of right-rectangular prisms in Cartesian coordinates.
 
     The gravitational fields are computed through the analytical solutions given by
-    [Nagy2000]_ and [Nagy2002]_, which is valid on the entire domain. This means that
+    [Nagy2000]_ and [Nagy2002]_, which are valid on the entire domain. This means that
     the computation point can be any point, either outside or inside the prism.
 
     This forward model makes use of the modified arctangent function proposed by
