@@ -32,12 +32,7 @@ tmp = ax.scatter(
     transform=ccrs.PlateCarree(),
 )
 plt.colorbar(
-    tmp,
-    ax=ax,
-    label="observed gravity [mGal]",
-    aspect=50,
-    pad=0.1,
-    shrink=0.92,
+    tmp, ax=ax, label="observed gravity [mGal]", aspect=50, pad=0.1, shrink=0.92
 )
 ax.set_extent(vd.get_region((data.longitude, data.latitude)))
 ax.gridlines(draw_labels=True)
