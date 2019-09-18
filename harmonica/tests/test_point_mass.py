@@ -171,7 +171,7 @@ def test_g_z_symmetry():
 
 
 @pytest.mark.use_numba
-def test_g_z_signal():
+def test_g_z_sign():
     """
     Test if g_z field of a positive point mass has the correct signal
     """
