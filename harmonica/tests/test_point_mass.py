@@ -263,7 +263,7 @@ def test_g_easting_symmetry():
 @pytest.mark.use_numba
 def test_g_easting_sign():
     """
-    Test if g_easting field of a positive point mass has the correct signal
+    Test if g_easting field of a positive point mass has the correct sign
     """
     # Define a single point mass
     point_mass = [-10, 100.2, -300.7]
