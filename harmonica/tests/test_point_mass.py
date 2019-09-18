@@ -183,7 +183,7 @@ def test_g_z_sign():
     easting = np.zeros(3)
     northing = np.zeros(3) + 52.3
     upward = np.array([100.11, -300.7, -400])
-    coordinates = [easting, northing, z]
+    coordinates = [easting, northing, upward]
     # Compute g_z gravity field on each computation point
     results = point_mass_gravity(coordinates, point_mass, mass, "g_z", "cartesian")
     assert np.sign(mass) == np.sign(results[0])
