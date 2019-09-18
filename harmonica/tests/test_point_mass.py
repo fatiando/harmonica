@@ -217,7 +217,7 @@ def test_g_northing_symmetry():
 @pytest.mark.use_numba
 def test_g_northing_sign():
     """
-    Test if g_northing field of a positive point mass has the correct signal
+    Test if g_northing field of a positive point mass has the correct sign
     """
     # Define a single point mass
     point_mass = [-10, 100.2, -300.7]
