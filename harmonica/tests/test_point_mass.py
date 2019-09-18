@@ -273,7 +273,7 @@ def test_g_easting_sign():
     easting = np.array([-150.7, -10, 79])
     northing = np.zeros(3)
     upward = np.zeros(3)
-    coordinates = [easting, northing, z]
+    coordinates = [easting, northing, upward]
     # Compute g_easting gravity field on each computation point
     results = point_mass_gravity(
         coordinates, point_mass, mass, "g_easting", "cartesian"
