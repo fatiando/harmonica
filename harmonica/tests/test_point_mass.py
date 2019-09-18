@@ -227,7 +227,7 @@ def test_g_northing_signal():
     easting = np.zeros(3)
     northing = np.array([0, 100.2, 210.7])
     z = np.zeros(3)
-    coordinates = [easting, northing, z]
+    coordinates = [easting, northing, upward]
     # Compute g_northing gravity field on each computation point
     results = point_mass_gravity(
         coordinates, point_mass, mass, "g_northing", "cartesian"
