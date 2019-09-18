@@ -258,7 +258,7 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     )
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, it is multiplied by -1. Notice that
-    # the ``g_z`` does not have the minus signal observed at the compoents
+    # the ``g_z`` does not have the minus signal present on the
     # ``g_northing`` and ``g_easting``.
     return (upward - upward_p) / distance ** 3
 
