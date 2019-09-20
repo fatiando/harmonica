@@ -16,6 +16,14 @@ Gravity Corrections
     normal_gravity
     bouguer_correction
 
+Equivalent Layers
+--------------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    EQLHarmonic
+
 Forward modelling
 -----------------
 
