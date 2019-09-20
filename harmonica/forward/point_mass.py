@@ -184,7 +184,8 @@ def point_mass_gravity(
     # Sanity checks
     if masses.size != points[0].size:
         raise ValueError(
-            "Masses array must have the same size as number of point masses."
+            "Number of elements in masses ({}) ".format(masses.size)
+            + "mismatch the number of points ({})".format(points[0].size)
         )
     # Compute gravitational field
     dispatchers[coordinate_system](
