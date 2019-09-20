@@ -84,6 +84,7 @@ Datasets
     datasets.fetch_geoid_earth
     datasets.fetch_topography_earth
     datasets.fetch_rio_magnetic
+    datasets.fetch_south_africa_gravity
 
 Utilities
 ---------
