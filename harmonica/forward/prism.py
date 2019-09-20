@@ -96,7 +96,10 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     density = np.atleast_1d(density).ravel().astype(dtype)
     # Sanity checks
     if density.size != prisms.shape[0]:
-        raise ValueError("Density array must have the same size as number of prisms.")
+        raise ValueError(
+            "Number of elements in density ({}) ".format(density.size)
+            + "mismatch the number of prisms ({})".format(prisms.shape[0])
+        )
     _check_prisms(prisms)
     # Compute gravitational field
     jit_prism_gravity(coordinates, prisms, density, kernels[field], result)
