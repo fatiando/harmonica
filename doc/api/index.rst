@@ -31,6 +31,7 @@ Forward modelling
     :toctree: generated/
 
     point_mass_gravity
+    prism_gravity
     tesseroid_gravity
 
 Isostasy
