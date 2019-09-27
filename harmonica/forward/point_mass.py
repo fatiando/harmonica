@@ -249,7 +249,7 @@ def kernel_potential_cartesian(
     Kernel function for potential gravitational field in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     return 1 / distance
 
@@ -260,7 +260,7 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     Kernel function for downward component of gravitational gradient in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, it is multiplied by -1. Notice that
@@ -277,7 +277,7 @@ def kernel_g_northing_cartesian(
     Kernel function for northing component of gravitational gradient in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     return -(northing - northing_p) / distance ** 3
 
@@ -290,7 +290,7 @@ def kernel_g_easting_cartesian(
     Kernel function for easting component of gravitational gradient in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     return -(easting - easting_p) / distance ** 3
 
