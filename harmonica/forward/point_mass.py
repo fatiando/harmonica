@@ -44,25 +44,25 @@ def point_mass_gravity(
 
         \vec{g} = \nabla V
 
-    and has components :math:`g_{northing}(P)`, :math:`g_{easting}(P)` and
-    :math:`g_{upward}(P)` given by
+    and has components :math:`g_\text{northing}(P)`, :math:`g_\text{easting}(P)` and
+    :math:`g_\text{upward}(P)` given by
 
     .. math::
 
-        g_{northing}(P) = - \frac{G m}{l^3} (x - x_p),
+        g_\text{northing}(P) = - \frac{G m}{l^3} (x - x_p),
 
     .. math::
 
-        g_{easting}(P) = - \frac{G m}{l^3} (y - y_p)
+        g_\text{easting}(P) = - \frac{G m}{l^3} (y - y_p)
 
     and
 
     .. math::
 
-        g_{upward}(P) = - \frac{G m}{l^3} (z - z_p).
+        g_\text{upward}(P) = - \frac{G m}{l^3} (z - z_p).
 
     We define the downward component of the gravitational acceleration as the opposite of
-    :math:`g_{upward}` (remember that :math:`z` points upwards):
+    :math:`g_\text{upward}` (remember that :math:`z` points upwards):
 
     .. math::
 
