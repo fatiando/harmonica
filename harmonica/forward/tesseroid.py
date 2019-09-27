@@ -138,7 +138,8 @@ def tesseroid_gravity(
     # Sanity checks for tesseroids and computation points
     if density.size != tesseroids.shape[0]:
         raise ValueError(
-            "Density array must have the same size as number of tesseroids."
+            "Number of elements in density ({}) ".format(density.size)
+            + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
         )
     _longitude_continuity(tesseroids)
     _check_tesseroids(tesseroids)
