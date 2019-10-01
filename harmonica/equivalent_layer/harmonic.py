@@ -210,9 +210,7 @@ class EQLHarmonic(vdb.BaseGridder):
             coords_tree = vd.utils.kdtree(coordinates, use_pykdtree=False)
             # Get the indices of the coordinates points that are close to each source
             # points
-            col_indices = points_tree.query_ball_tree(
-                coords_tree, self.cutoff_distance
-            )
+            col_indices = points_tree.query_ball_tree(coords_tree, self.cutoff_distance)
             # Build the indices for the source points
             row_indices = tuple(
                 np.full_like(indices, fill_value=i, dtype=int)
