@@ -93,8 +93,8 @@ def tesseroid_gravity(
         adaptive discretization, splitting the tesseroids on every direction.
         Default ``False``.
     dtype : data-type (optional)
-        Data type assigned to tesseroid boundaries, computation points coordinates and
-        resulting gravitational field. Default to ``np.float64``.
+        Data type assigned to the resulting gravitational field. Default to
+        ``np.float64``.
 
     Returns
     -------
@@ -111,10 +111,10 @@ def tesseroid_gravity(
     >>> thickness = 1000
     >>> top = ellipsoid.mean_radius
     >>> bottom = top - thickness
-    >>> w, e, s, n = -1, 1, -1, 1
+    >>> w, e, s, n = -1.0, 1.0, -1.0, 1.0
     >>> tesseroid = [w, e, s, n, bottom, top]
     >>> # Set a density of 2670 kg/m^3
-    >>> density = 2670
+    >>> density = 2670.0
     >>> # Define computation point located on the top surface of the tesseroid
     >>> coordinates = [0, 0, ellipsoid.mean_radius]
     >>> # Compute radial component of the gravitational gradient in mGal
@@ -129,12 +129,10 @@ def tesseroid_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Convert coordinates, tesseroids and density to arrays
-    longitude, latitude, radius = (
-        np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3]
-    )
+    longitude, latitude, radius = (np.atleast_1d(i).ravel() for i in coordinates[:3])
     coordinates = np.vstack((longitude, latitude, radius))
-    tesseroids = np.atleast_2d(tesseroids).astype(dtype)
-    density = np.atleast_1d(density).ravel().astype(dtype)
+    tesseroids = np.atleast_2d(tesseroids)
+    density = np.atleast_1d(density).ravel()
     # Sanity checks for tesseroids and computation points
     if density.size != tesseroids.shape[0]:
         raise ValueError(
@@ -157,10 +155,10 @@ def tesseroid_gravity(
     # Get GLQ unscaled nodes, weights and number of nodes for each small tesseroid
     n_nodes, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     # Initialize arrays to perform memory allocation only once
-    stack = np.empty((stack_size, 6), dtype=dtype)
-    small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
-    point_masses = np.empty((3, n_nodes * max_discretizations), dtype=dtype)
-    weights = np.empty(n_nodes * max_discretizations, dtype=dtype)
+    stack = np.empty((stack_size, 6), dtype=tesseroids.dtype)
+    small_tesseroids = np.empty((max_discretizations, 6), dtype=tesseroids.dtype)
+    point_masses = np.empty((3, n_nodes * max_discretizations), dtype=tesseroids.dtype)
+    weights = np.empty(n_nodes * max_discretizations, dtype=density.dtype)
     # Compute gravity field
     jit_tesseroid_gravity(
         coordinates,
