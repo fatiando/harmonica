@@ -87,7 +87,9 @@ class EQLHarmonic(vdb.BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, relative_depth=500, distance_threshold=None):
+    def __init__(
+        self, damping=None, points=None, relative_depth=500, distance_threshold=None
+    ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
