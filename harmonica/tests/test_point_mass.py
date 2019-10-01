@@ -7,6 +7,7 @@ import pytest
 
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
+from ..forward.utils import distance_cartesian
 
 
 def test_invalid_coordinate_system():
@@ -88,82 +89,111 @@ def test_potential_cartesian_symmetry():
 
 
 @pytest.mark.use_numba
-def test_potential_versus_g_easting():
+def test_g_easting_relative_error():
     """
-    Test if the g_easting can be obtained numerically from potential
+    Test the relative error in computing the g_easting component
     """
     # Define a single point mass
-    point_mass = [20, 54, -500.7]
-    mass = [200]
+    point_mass = (20, 54, -500.7)
+    mass = 200
+    coordinates_p = (-3, 24, -10)
     # Compute the easting component
-    g_easting = point_mass_gravity(
-        [[0], [0], [0]], point_mass, mass, "g_easting", "cartesian"
+    exact_deriv = point_mass_gravity(
+        coordinates_p, point_mass, mass, "g_easting", "cartesian"
     )
     # Compute the numerical derivative of potential
     delta = 0.1
-    easting = np.array([-delta, delta])
-    northing = np.array([0, 0])
-    upward = np.array([0, 0])
-    coordinates = [easting, northing, upward]
+    easting = np.array([coordinates_p[0] - delta, coordinates_p[0] + delta])
+    northing = np.zeros(2) + coordinates_p[1]
+    upward = np.zeros(2) + coordinates_p[2]
+    coordinates = (easting, northing, upward)
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_easting = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+    approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+
+    # Compute the relative error
+    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
+
+    # Bound value
+    distance = distance_cartesian(coordinates_p, point_mass)
+    bound_value = 1.5 * (delta / distance) ** 2
 
     # Compare the results
-    npt.assert_allclose(g_easting, derivative_easting)
+    npt.assert_array_less(relative_error, bound_value)
 
 
 @pytest.mark.use_numba
-def test_potential_versus_g_northing():
+def test_g_northing_relative_error():
     """
-    Test if the g_northing can be obtained numerically from potential
+    Test the relative error in computing the g_northing component
     """
     # Define a single point mass
-    point_mass = [-30, 10, -500.7]
-    mass = [200]
+    point_mass = (1, -67, -300.7)
+    mass = 250
+    coordinates_p = (0, -39, -13)
     # Compute the northing component
-    g_northing = point_mass_gravity(
-        [[0], [0], [0]], point_mass, mass, "g_northing", "cartesian"
+    exact_deriv = point_mass_gravity(
+        coordinates_p, point_mass, mass, "g_northing", "cartesian"
     )
     # Compute the numerical derivative of potential
     delta = 0.1
-    easting = np.array([0, 0])
-    northing = np.array([-delta, delta])
-    upward = np.array([0, 0])
-    coordinates = [easting, northing, upward]
+    easting = np.zeros(2) + coordinates_p[0]
+    northing = np.array([coordinates_p[1] - delta, coordinates_p[1] + delta])
+    upward = np.zeros(2) + coordinates_p[2]
+    coordinates = (easting, northing, upward)
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_northing = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+    approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+
+    # Compute the relative error
+    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
+
+    # Bound value
+    distance = distance_cartesian(coordinates_p, point_mass)
+    bound_value = 1.5 * (delta / distance) ** 2
 
     # Compare the results
-    npt.assert_allclose(g_northing, derivative_northing)
+    npt.assert_array_less(relative_error, bound_value)
 
 
 @pytest.mark.use_numba
-def test_potential_versus_g_z():
+def test_g_z_relative_error():
     """
-    Test if the g_z can be obtained numerically from potential
+    Test the relative error in computing the g_z component
     """
     # Define a single point mass
-    point_mass = [-3, 51, -500.7]
-    mass = [200]
+    point_mass = (1, -67, -300.7)
+    mass = 250
+    coordinates_p = (0, -39, -13)
     # Compute the z component
-    g_z = point_mass_gravity([[0], [0], [0]], point_mass, mass, "g_z", "cartesian")
+    exact_deriv = point_mass_gravity(
+        coordinates_p, point_mass, mass, "g_z", "cartesian"
+    )
     # Compute the numerical derivative of potential
     delta = 0.1
-    easting = np.array([0, 0])
-    northing = np.array([0, 0])
-    upward = np.array([-delta, delta])
-    coordinates = [easting, northing, upward]
+    easting = np.zeros(2) + coordinates_p[0]
+    northing = np.zeros(2) + coordinates_p[1]
+    upward = np.array([coordinates_p[2] - delta, coordinates_p[2] + delta])
+    coordinates = (easting, northing, upward)
     potential = point_mass_gravity(
         coordinates, point_mass, mass, "potential", "cartesian"
     )
-    derivative_z = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+    # Remember that the ``g_z`` field returns the downward component of the
+    # gravitational acceleration. As a consequence, the numerical derivativative
+    # is multiplied by -1.
+    approximated_deriv = -1e5 * (potential[1] - potential[0]) / (2.0 * delta)
+
+    # Compute the relative error
+    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
+
+    # Bound value
+    distance = distance_cartesian(coordinates_p, point_mass)
+    bound_value = 1.5 * (delta / distance) ** 2
 
     # Compare the results
-    npt.assert_allclose(g_z, -derivative_z)
+    npt.assert_array_less(relative_error, bound_value)
 
 
 @pytest.mark.use_numba
