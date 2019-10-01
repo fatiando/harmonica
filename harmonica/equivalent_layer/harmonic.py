@@ -47,13 +47,13 @@ class EQLHarmonic(vdb.BaseGridder):
 
     When working with a great number of data and source points, it's better to build the
     Jacobian matrix as a sparse matrix. This can be done by passing
-    `distance_threshold`. The sparse matrix is built by approximating to zero all the
+    `cutoff_distance`. The sparse matrix is built by approximating to zero all the
     jacobian elements that relate source and data points at a distance greater than
-    `distance_threshold`.
+    `cutoff_distance`.
 
     .. warning ::
 
-        If the `self.distance_threshold` is too small, the sparse Jacobian could not
+        If the `self.cutoff_distance` is too small, the sparse Jacobian could not
         be a good approximation of the true Jacobian matrix. This could lead to
         a bad fitting of the gridder.
 
@@ -88,12 +88,12 @@ class EQLHarmonic(vdb.BaseGridder):
     """
 
     def __init__(
-        self, damping=None, points=None, relative_depth=500, distance_threshold=None
+        self, damping=None, points=None, relative_depth=500, cutoff_distance=None
     ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
-        self.distance_threshold = distance_threshold
+        self.cutoff_distance = cutoff_distance
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -176,7 +176,7 @@ class EQLHarmonic(vdb.BaseGridder):
 
         Each column of the Jacobian is the Green's function for a single point source
         evaluated on all observation points.
-        If `self.distance_threshold` is not `None`, the Jacobian matrix will be computed
+        If `self.cutoff_distance` is not `None`, the Jacobian matrix will be computed
         as a sparse matrix to reduce memory consumption.
 
         Parameters
@@ -200,18 +200,18 @@ class EQLHarmonic(vdb.BaseGridder):
         """
         n_data = coordinates[0].size
         n_points = points[0].size
-        if self.distance_threshold is None:
+        if self.cutoff_distance is None:
             jac = np.zeros((n_data, n_points), dtype=dtype)
             jacobian_numba(coordinates, points, jac)
         else:
             # Use cKDTree to get the indices of the observation points that are within
-            # the distance threshold to the source points
+            # the cutoff distance to the source points
             points_tree = vd.utils.kdtree(points, use_pykdtree=False)
             coords_tree = vd.utils.kdtree(coordinates, use_pykdtree=False)
             # Get the indices of the coordinates points that are close to each source
             # points
             col_indices = points_tree.query_ball_tree(
-                coords_tree, self.distance_threshold
+                coords_tree, self.cutoff_distance
             )
             # Build the indices for the source points
             row_indices = tuple(
