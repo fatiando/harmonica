@@ -236,7 +236,9 @@ class EQLHarmonic(vdb.BaseGridder):
 
 
 @jit(nopython=True)
-def sparse_jacobian_elements(coordinates, points, col_indices, row_indices, jac_values):
+def sparse_jacobian_elements(
+    coordinates, points, col_indices, row_indices, jac_values
+):  # pylint: disable=invalid-name
     """
     Compute elements of the sparse Jacobian matrix
 
