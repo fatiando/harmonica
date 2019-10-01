@@ -66,12 +66,14 @@ class EQLHarmonic(vdb.BaseGridder):
         List containing the coordinates of the point sources used as the equivalent
         layer. Coordinates are assumed to be in the following order: (``easting``,
         ``northing``, ``upward``). If None, will place one
-        point source bellow each observation point at a fixed depth below the
+        point source bellow each observation point at a fixed relative depth bellow the
         observation point [Cooper2000]_. Defaults to None.
-    depth : float
-        Depth at which the point sources are placed beneath the observation points. Use
-        positive numbers (negative numbers would mean point sources are above the data
-        points). Ignored if *points* is specified.
+    relative_depth : float
+        Relative depth at which the point sources are placed beneath the observation
+        points. Each source point will be set beneath each data point at a depth
+        calculated as the elevation of the data point minus this constant
+        *relative_depth*. Use positive numbers (negative numbers would mean point sources
+        are above the data points). Ignored if *points* is specified.
 
     Attributes
     ----------
@@ -85,10 +87,10 @@ class EQLHarmonic(vdb.BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, depth=500, distance_threshold=None):
+    def __init__(self, damping=None, points=None, relative_depth=500, distance_threshold=None):
         self.damping = damping
         self.points = points
-        self.depth = depth
+        self.relative_depth = relative_depth
         self.distance_threshold = distance_threshold
 
     def fit(self, coordinates, data, weights=None):
@@ -124,7 +126,11 @@ class EQLHarmonic(vdb.BaseGridder):
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = (coordinates[0], coordinates[1], coordinates[2] - self.depth)
+            self.points_ = (
+                coordinates[0],
+                coordinates[1],
+                coordinates[2] - self.relative_depth,
+            )
         else:
             self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)

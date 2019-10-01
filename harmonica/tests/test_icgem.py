@@ -85,8 +85,7 @@ def test_missing_shape(tmpdir):
                 for line in gdf_file:
                     if attribute in line:
                         continue
-                    else:
-                        corrupt_gdf.write(line)
+                    corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
@@ -101,8 +100,7 @@ def test_missing_size(tmpdir):
             for line in gdf_file:
                 if attribute in line:
                     continue
-                else:
-                    corrupt_gdf.write(line)
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -135,8 +133,7 @@ def test_missing_cols_names(tmpdir):
             for line in gdf_file:
                 if "latitude" in line and "longitude" in line:
                     continue
-                else:
-                    corrupt_gdf.write(line)
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -150,8 +147,7 @@ def test_missing_units(tmpdir):
             for line in gdf_file:
                 if "[mgal]" in line:
                     continue
-                else:
-                    corrupt_gdf.write(line)
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -165,8 +161,7 @@ def test_missing_empty_line(tmpdir):
             for line in gdf_file:
                 if not line.strip():
                     continue
-                else:
-                    corrupt_gdf.write(line)
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -240,8 +235,7 @@ def test_missing_area(tmpdir):
                 for line in gdf_file:
                     if attribute in line:
                         continue
-                    else:
-                        corrupt_gdf.write(line)
+                    corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 

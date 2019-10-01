@@ -53,7 +53,7 @@ def test_eql_harmonic_small_data():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic(depth=500)
+    eql = EQLHarmonic(relative_depth=500)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -87,7 +87,7 @@ def test_eql_harmonic_custom_points():
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=-550)
     )
-    eql = EQLHarmonic(depth=500, points=src_points)
+    eql = EQLHarmonic(relative_depth=500, points=src_points)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 

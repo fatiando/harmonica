@@ -31,6 +31,7 @@ Forward modelling
     :toctree: generated/
 
     point_mass_gravity
+    prism_gravity
     tesseroid_gravity
 
 Isostasy
@@ -84,6 +85,7 @@ Datasets
     datasets.fetch_geoid_earth
     datasets.fetch_topography_earth
     datasets.fetch_rio_magnetic
+    datasets.fetch_south_africa_gravity
 
 Utilities
 ---------
