@@ -268,16 +268,16 @@ def test_longitude_continuity():
     "Check if longitude_continuity works as expected"
     # Tesseroid on the [-180, 180) interval
     tesseroid = np.atleast_2d([-10, 10, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
+    tesseroid = _longitude_continuity(tesseroid)
     assert tesseroid[0, 0] == -10
     assert tesseroid[0, 1] == 10
     tesseroid = np.atleast_2d([-70, -60, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
+    tesseroid = _longitude_continuity(tesseroid)
     assert tesseroid[0, 0] == 290
     assert tesseroid[0, 1] == 300
     # Tesseroid on the [0, 360) interval
     tesseroid = np.atleast_2d([350, 10, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
+    tesseroid = _longitude_continuity(tesseroid)
     assert tesseroid[0, 0] == -10
     assert tesseroid[0, 1] == 10
 

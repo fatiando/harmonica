@@ -139,7 +139,7 @@ def tesseroid_gravity(
             "Number of elements in density ({}) ".format(density.size)
             + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
         )
-    _longitude_continuity(tesseroids)
+    tesseroids = _longitude_continuity(tesseroids)
     _check_tesseroids(tesseroids)
     _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get value of D (distance_size_ratio)
@@ -656,10 +656,18 @@ def _longitude_continuity(tesseroids):
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
         All tesseroids must have valid boundary coordinates.
+
+    Returns
+    -------
+    tesseroids : 2d-array
+        Modified boundaries of the tesseroids.
     """
+    # Copy the tesseroids in order to avoid modifying the original tesseroids array
+    tesseroids = tesseroids.copy()
     west, east = tuple(tesseroids[:, i] for i in range(2))
     west %= 360
     east %= 360
     tess_to_be_changed = west > east
     east[tess_to_be_changed] = ((east[tess_to_be_changed] + 180) % 360) - 180
     west[tess_to_be_changed] = ((west[tess_to_be_changed] + 180) % 360) - 180
+    return tesseroids
