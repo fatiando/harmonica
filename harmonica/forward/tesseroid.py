@@ -129,8 +129,7 @@ def tesseroid_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Convert coordinates, tesseroids and density to arrays
-    longitude, latitude, radius = (np.atleast_1d(i).ravel() for i in coordinates[:3])
-    coordinates = np.vstack((longitude, latitude, radius))
+    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
     tesseroids = np.atleast_2d(tesseroids)
     density = np.atleast_1d(density).ravel()
     # Sanity checks for tesseroids and computation points
@@ -209,12 +208,11 @@ def jit_tesseroid_gravity(
 
     Parameters
     ----------
-    coordinates : 2d-array
-        Array containing the coordinates of the computation points in spherical
+    coordinates : tuple
+        Tuple containing the coordinates of the computation points in spherical
         geocentric coordinate system in the following order:
         ``longitude``, ``latitude``, ``radius``.
-        The array must have the following shape: (3, ``n_points``), where
-        ``n_points`` is the total number of computation points.
+        Each element of the tuple must be a 1d array.
     tesseroids : 2d-array
         Array containing the boundaries of each tesseroid:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric spherical
@@ -254,11 +252,10 @@ def jit_tesseroid_gravity(
     """
     for l in range(tesseroids.shape[0]):
         tesseroid = tesseroids[l, :]
-        for m in range(coordinates.shape[1]):
-            computation_point = coordinates[:, m]
+        for m in range(coordinates[0].size):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                computation_point,
+                (coordinates[0][m], coordinates[1][m], coordinates[2][m]),
                 tesseroid,
                 distance_size_ratio,
                 stack,
@@ -276,9 +273,9 @@ def jit_tesseroid_gravity(
             )
             # Compute gravity fields
             jit_point_mass_spherical(
-                computation_point[0:1],
-                computation_point[1:2],
-                computation_point[2:3],
+                coordinates[0][m : m + 1],  # slice lon to pass a single element array
+                coordinates[1][m : m + 1],  # slice lat to pass a single element array
+                coordinates[2][m : m + 1],  # slice up to pass a single element array
                 point_masses[0, :n_point_masses],
                 point_masses[1, :n_point_masses],
                 point_masses[2, :n_point_masses],
