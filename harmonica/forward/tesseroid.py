@@ -275,7 +275,7 @@ def jit_tesseroid_gravity(
             jit_point_mass_spherical(
                 coordinates[0][m : m + 1],  # slice lon to pass a single element array
                 coordinates[1][m : m + 1],  # slice lat to pass a single element array
-                coordinates[2][m : m + 1],  # slice up to pass a single element array
+                coordinates[2][m : m + 1],  # slice rad to pass a single element array
                 point_masses[0, :n_point_masses],
                 point_masses[1, :n_point_masses],
                 point_masses[2, :n_point_masses],
