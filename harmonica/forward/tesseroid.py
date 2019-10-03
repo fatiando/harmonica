@@ -31,7 +31,7 @@ def tesseroid_gravity(
     radial_adaptive_discretization=False,
     dtype=np.float64,
     disable_checks=False,
-):  # pylint: disable=too-many-locals
+):  # pylint: disable=too-many-locals, too-many-arguments
     """
     Compute gravitational field of tesseroids on computation points.
 
