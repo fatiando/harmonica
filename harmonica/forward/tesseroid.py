@@ -154,10 +154,10 @@ def tesseroid_gravity(
     # Get GLQ unscaled nodes, weights and number of nodes for each small tesseroid
     n_nodes, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     # Initialize arrays to perform memory allocation only once
-    stack = np.empty((stack_size, 6), dtype=tesseroids.dtype)
-    small_tesseroids = np.empty((max_discretizations, 6), dtype=tesseroids.dtype)
-    point_masses = np.empty((3, n_nodes * max_discretizations), dtype=tesseroids.dtype)
-    weights = np.empty(n_nodes * max_discretizations, dtype=density.dtype)
+    stack = np.empty((stack_size, 6), dtype=dtype)
+    small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
+    point_masses = np.empty((3, n_nodes * max_discretizations), dtype=dtype)
+    weights = np.empty(n_nodes * max_discretizations, dtype=dtype)
     # Compute gravity field
     jit_tesseroid_gravity(
         coordinates,
