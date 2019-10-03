@@ -30,6 +30,7 @@ def tesseroid_gravity(
     max_discretizations=MAX_DISCRETIZATIONS,
     radial_adaptive_discretization=False,
     dtype=np.float64,
+    disable_checks=False,
 ):  # pylint: disable=too-many-locals
     """
     Compute gravitational field of tesseroids on computation points.
@@ -95,6 +96,10 @@ def tesseroid_gravity(
     dtype : data-type (optional)
         Data type assigned to tesseroid boundaries, computation points coordinates and
         resulting gravitational field. Default to ``np.float64``.
+    disable_checks : bool (optional)
+        Flag that controls whether to perform a sanity check on the model. Should be set
+        to ``True`` when it is certain that the material is rational and it does not need
+        to be checked. Default to ``False``.
 
     Returns
     -------
@@ -136,14 +141,15 @@ def tesseroid_gravity(
     tesseroids = np.atleast_2d(tesseroids).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
     # Sanity checks for tesseroids and computation points
-    if density.size != tesseroids.shape[0]:
-        raise ValueError(
-            "Number of elements in density ({}) ".format(density.size)
-            + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
-        )
-    _longitude_continuity(tesseroids)
-    _check_tesseroids(tesseroids)
-    _check_points_outside_tesseroids(coordinates, tesseroids)
+    if not disable_checks:
+        if density.size != tesseroids.shape[0]:
+            raise ValueError(
+                "Number of elements in density ({}) ".format(density.size)
+                + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
+            )
+        _longitude_continuity(tesseroids)
+        _check_tesseroids(tesseroids)
+        _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get value of D (distance_size_ratio)
     if distance_size_ratii is None:
         distance_size_ratii = DISTANCE_SIZE_RATII
