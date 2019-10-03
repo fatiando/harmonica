@@ -52,6 +52,15 @@ def test_invalid_prisms():
         _check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
 
 
+def test_disable_checks():
+    "Check if the disable_checks flag works properly"
+    prism = [0, 10, 0, 10, 0, -10]
+    density = 100
+    coordinates = [0, 0, 0]
+    # Check if an invalid prism doesn't raise an error with the disable_checks flag set to True
+    prism_gravity(coordinates, prism, density, field="potential", disable_checks=True)
+
+
 @pytest.mark.use_numba
 def test_potential_field_symmetry():
     "Test if the potential field satisfies symmetry"
