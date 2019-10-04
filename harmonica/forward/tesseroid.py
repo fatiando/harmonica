@@ -98,8 +98,8 @@ def tesseroid_gravity(
         resulting gravitational field. Default to ``np.float64``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model. Should be set
-        to ``True`` when it is certain that the material is rational and it does not need
-        to be checked. Default to ``False``.
+        to ``True`` only when it is certain that the input model is valid and it does not
+        need to be checked. Default to ``False``.
 
     Returns
     -------
