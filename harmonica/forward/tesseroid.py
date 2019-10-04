@@ -661,7 +661,7 @@ def _longitude_continuity(tesseroids):
     """
     # Copy the tesseroids in order to avoid modifying the original tesseroids array
     tesseroids = tesseroids.copy()
-    west, east = tuple(tesseroids[:, i] for i in range(2))
+    west, east = tesseroids[:, 0], tesseroids[:, 1]
     west %= 360
     east %= 360
     tess_to_be_changed = west > east
