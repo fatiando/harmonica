@@ -54,11 +54,19 @@ def test_invalid_prisms():
 
 def test_disable_checks():
     "Check if the disable_checks flag works properly"
-    prism = [0, 10, 0, 10, 0, -10]
+    valid_prism = [0, 10, 0, 10, -10, 0]
+    invalid_prism = [0, 10, 0, 10, 0, -10]
     density = 100
     coordinates = [0, 0, 0]
     # Check if an invalid prism doesn't raise an error with the disable_checks flag set to True
-    prism_gravity(coordinates, prism, density, field="potential", disable_checks=True)
+    prism_gravity(
+        coordinates, invalid_prism, density, field="potential", disable_checks=True
+    )
+    # Check if an invalid prism returns the inverse of a valid one's return value
+    # with only top and bottom values flipped between the two.
+    assert prism_gravity(
+        coordinates, invalid_prism, density, field="potential", disable_checks=True
+    ) == (-1) * prism_gravity(coordinates, valid_prism, density, field="potential")
 
 
 @pytest.mark.use_numba
