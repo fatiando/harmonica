@@ -140,6 +140,30 @@ def fetch_rio_magnetic():
     return pd.read_csv(POOCH.fetch("rio-magnetic.csv.xz"), compression="xz")
 
 
+def fetch_gb_magnetic():
+    """
+    Fetch total-field magnetic anomaly data of the United Kingdom.
+
+    These data are a complete airborne survey of the entire United Kingdom
+    conducted between 1955 and 1965. The data are made available by the
+    British Geological Survey (BGS) through their `geophysical data portal
+    <https://www.bgs.ac.uk/products/geophysics/aeromagneticRegional.html>`__.
+
+    The columns of the data table are longitude, latitude, total-field
+    magnetic anomaly (nanoTesla), observation height relative to Ordnance Survey
+    datum (in meters), survey area, and line number and line segment for each data point.
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    data : :class:`pandas.DataFrame`
+        The magnetic anomaly data.
+    """
+    return pd.read_csv(POOCH.fetch("gb-magnetic.csv.xz"), compression="xz")
+
+
 def _load_xz_compressed_grid(fname, **kwargs):
     """
     Load a netCDF grid that has been xz compressed. Keyword arguments are passed to
