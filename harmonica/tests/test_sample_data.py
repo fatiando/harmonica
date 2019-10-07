@@ -8,6 +8,7 @@ from ..datasets.sample_data import (
     fetch_geoid_earth,
     fetch_topography_earth,
     fetch_rio_magnetic,
+    fetch_gb_magnetic,
     fetch_south_africa_gravity,
 )
 
@@ -53,6 +54,36 @@ def test_rio_magnetic():
     npt.assert_allclose(data.line_number.min(), 1680)
     npt.assert_allclose(data.line_number.max(), 9600)
     assert set(data.line_type.unique()) == {"TIE", "LINE"}
+
+
+def test_gb_magnetic():
+    "Sanity checks for the loaded dataset"
+    data = fetch_gb_magnetic()
+    assert data.shape == (541508, 6)
+    npt.assert_allclose(data.LONGITUDE.min(), -8.65338)
+    npt.assert_allclose(data.LONGITUDE.max(), 1.92441)
+    npt.assert_allclose(data.LATITUDE.min(), 49.81407)
+    npt.assert_allclose(data.LATITUDE.max(), 60.97483)
+    npt.assert_allclose(data.MAG_IGRF90.min(), -3735)
+    npt.assert_allclose(data.MAG_IGRF90.max(), 2792)
+    npt.assert_allclose(data.AOD.min(), 0)
+    npt.assert_allclose(data.AOD.max(), 1492)
+    assert set(data.SURVEY_AREA.unique()) == {
+        "CA55_NORTH",
+        "CA55_SOUTH",
+        "CA57",
+        "CA58",
+        "CA59",
+        "CA60",
+        "CA63",
+        "HG56",
+        "HG57",
+        "HG58",
+        "HG61",
+        "HG62",
+        "HG64",
+        "HG65",
+    }
 
 
 def test_south_africa_gravity():
