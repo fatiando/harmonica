@@ -138,8 +138,7 @@ def tesseroid_gravity(
             "Number of elements in density ({}) ".format(density.size)
             + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
         )
-    tesseroids = _longitude_continuity(tesseroids)
-    _check_tesseroids(tesseroids)
+    tesseroids = _check_tesseroids(tesseroids)
     _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get value of D (distance_size_ratio)
     if distance_size_ratii is None:
@@ -540,9 +539,23 @@ def _distance_tesseroid_point(
     return distance
 
 
-def _check_tesseroids(tesseroids):
+def _check_tesseroids(tesseroids):  # pylint: disable=too-many-branches
     """
     Check if tesseroids boundaries are well defined
+
+    A valid tesseroid should have:
+        - latitudinal boundaries within the [-90, 90] degrees interval,
+        - north boundaries greater or equal than the south boundaries,
+        - radial boundaries positive or zero,
+        - top boundaries greater or equal than the bottom boundaries,
+        - longitudinal boundaries within the [-180, 360] degrees interval,
+        - longitudinal interval must not be greater than one turn around the globe.
+
+    Some valid tesseroids have its west boundary greater than the east one, e.g.
+    ``(350, 10, ...)``. On these cases the ``_longitude_continuity`` function is applied
+    in order to move the longitudinal coordinates to the [-180, 180) interval. Any valid
+    tesseroid should have east boundaries greater than the west boundaries before or
+    after applying longitude continuity.
 
     Parameters
     ----------
@@ -552,29 +565,86 @@ def _check_tesseroids(tesseroids):
         Longitudinal and latitudinal boundaries must be in degrees.
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
+
+    Returns
+    -------
+    tesseroids :  2d-array
+        Array containing the boundaries of the tesseroids. If no longitude continuity
+        needs to be applied, the returned array is the same one as the orignal.
+        Otherwise, it's copied and its longitudinal boundaries are modified.
     """
     west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
     err_msg = "Invalid tesseroid or tesseroids. "
-    if (west > east).any():
-        err_msg += "The west boundary can't be greater than the east one.\n"
-        for tess in tesseroids[west > east]:
+    # Check if latitudinal boundaries are inside the [-90, 90] interval
+    invalid = np.logical_or(
+        np.logical_or(south < -90, south > 90), np.logical_or(north < -90, north > 90)
+    )
+    if (invalid).any():
+        err_msg += (
+            "The latitudinal boundaries must be inside the [-90, 90] "
+            + "degrees interval.\n"
+        )
+        for tess in tesseroids[invalid]:
             err_msg += "\tInvalid tesseroid: {}\n".format(tess)
         raise ValueError(err_msg)
-    if (south > north).any():
+    # Check if south boundary is not greater than the corresponding north boundary
+    invalid = south > north
+    if (invalid).any():
         err_msg += "The south boundary can't be greater than the north one.\n"
-        for tess in tesseroids[south > north]:
+        for tess in tesseroids[invalid]:
             err_msg += "\tInvalid tesseroid: {}\n".format(tess)
         raise ValueError(err_msg)
-    if (bottom < 0).any() or (top < 0).any():
-        err_msg += "The bottom and top radii couldn't be lower than zero.\n"
-        for tess in tesseroids[np.logical_or(bottom < 0, top < 0)]:
+    # Check if radial boundaries are positive or zero
+    invalid = np.logical_or(bottom < 0, top < 0)
+    if (invalid).any():
+        err_msg += "The bottom and top radii should be positive or zero.\n"
+        for tess in tesseroids[invalid]:
             err_msg += "\tInvalid tesseroid: {}\n".format(tess)
         raise ValueError(err_msg)
-    if (bottom > top).any():
+    # Check if top boundary is not greater than the corresponding bottom boundary
+    invalid = bottom > top
+    if (invalid).any():
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
-        for tess in tesseroids[bottom > top]:
+        for tess in tesseroids[invalid]:
             err_msg += "\tInvalid tesseroid: {}\n".format(tess)
         raise ValueError(err_msg)
+    # Check if longitudinal boundaries are inside the [-180, 360] interval
+    invalid = np.logical_or(
+        np.logical_or(west < -180, west > 360), np.logical_or(east < -180, east > 360)
+    )
+    if (invalid).any():
+        err_msg += (
+            "The longitudinal boundaries must be inside the [-180, 360] "
+            + "degrees interval.\n"
+        )
+        for tess in tesseroids[invalid]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    # Apply longitude continuity if w > e
+    if (west > east).any():
+        tesseroids = _longitude_continuity(tesseroids)
+        west, east, south, north, bottom, top = tuple(
+            tesseroids[:, i] for i in range(6)
+        )
+    # Check if west boundary is not greater than the corresponding east boundary, even
+    # after applying the longitude continuity
+    invalid = west > east
+    if (invalid).any():
+        err_msg += "The west boundary can't be greater than the east one.\n"
+        for tess in tesseroids[invalid]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    # Check if the longitudinal interval is not grater than one turn around the globe
+    invalid = east - west > 360
+    if (invalid).any():
+        err_msg += (
+            "The difference between east and west boundaries cannot be greater than "
+            + "one turn around the globe.\n"
+        )
+        for tess in tesseroids[invalid]:
+            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+        raise ValueError(err_msg)
+    return tesseroids
 
 
 def _check_points_outside_tesseroids(
@@ -598,7 +668,7 @@ def _check_points_outside_tesseroids(
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
         This array of tesseroids must have longitude continuity and valid boundaries.
-        Run ``_longitude_continuity`` and ``_check_tesseroids`` before.
+        Run ``_check_tesseroids`` before.
     """
     longitude, latitude, radius = coordinates[:]
     west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
@@ -639,9 +709,8 @@ def _longitude_continuity(tesseroids):
     """
     Modify longitudinal boundaries of a set of tesserods to ensure longitude continuity
 
-    Longitudinal boundaries of the tesseroids are moved to the `[0, 360)` or `[-180, 180)`
-    degrees interval depending which one is better suited for that specific set of
-    boundaries.
+    Longitudinal boundaries of the tesseroids are moved to the ``[-180, 180)`` degrees
+    interval in case the ``west`` boundary is numerically greater than the ``east`` one.
 
     Parameters
     ----------
@@ -652,7 +721,6 @@ def _longitude_continuity(tesseroids):
         coordinate system.
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
-        All tesseroids must have valid boundary coordinates.
 
     Returns
     -------
@@ -662,8 +730,6 @@ def _longitude_continuity(tesseroids):
     # Copy the tesseroids in order to avoid modifying the original tesseroids array
     tesseroids = tesseroids.copy()
     west, east = tesseroids[:, 0], tesseroids[:, 1]
-    west %= 360
-    east %= 360
     tess_to_be_changed = west > east
     east[tess_to_be_changed] = ((east[tess_to_be_changed] + 180) % 360) - 180
     west[tess_to_be_changed] = ((west[tess_to_be_changed] + 180) % 360) - 180
