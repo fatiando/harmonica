@@ -166,6 +166,9 @@ def test_disable_checks():
     invalid_tesseroid = [0, 10, 0, 10, 20, 10]
     density = 100
     coordinates = [0, 0, 10]
+    # By default, an error should be raised for invalid input
+    with pytest.raises(ValueError):
+        tesseroid_gravity(coordinates, invalid_tesseroid, density, field="potential")
     # Check if an invalid tesseroid doesn't raise an error with the disable_checks flag set to True
     invalid_result = tesseroid_gravity(
         coordinates, invalid_tesseroid, density, field="potential", disable_checks=True
@@ -175,7 +178,7 @@ def test_disable_checks():
     valid_result = tesseroid_gravity(
         coordinates, valid_tesseroid, density, field="potential"
     )
-    assert invalid_result == -valid_result
+    npt.assert_allclose(invalid_result, -valid_result)
 
 
 def test_point_inside_tesseroid():
