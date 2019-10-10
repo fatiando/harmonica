@@ -7,7 +7,9 @@ from numba import jit
 from ..constants import GRAVITATIONAL_CONST
 
 
-def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
+def prism_gravity(
+    coordinates, prisms, density, field, dtype="float64", disable_checks=False
+):
     """
     Compute gravitational fields of right-rectangular prisms in Cartesian coordinates.
 
@@ -51,6 +53,10 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     dtype : data-type (optional)
         Data type assigned to prism boundaries, computation points coordinates and
         resulting gravitational field. Default to ``np.float64``.
+    disable_checks : bool (optional)
+        Flag that controls whether to perform a sanity check on the model. Should be set
+        to ``True`` only when it is certain that the input model is valid and it does not
+        need to be checked. Default to ``False``.
 
     Returns
     -------
@@ -95,12 +101,13 @@ def prism_gravity(coordinates, prisms, density, field, dtype="float64"):
     prisms = np.atleast_2d(prisms).astype(dtype)
     density = np.atleast_1d(density).ravel().astype(dtype)
     # Sanity checks
-    if density.size != prisms.shape[0]:
-        raise ValueError(
-            "Number of elements in density ({}) ".format(density.size)
-            + "mismatch the number of prisms ({})".format(prisms.shape[0])
-        )
-    _check_prisms(prisms)
+    if not disable_checks:
+        if density.size != prisms.shape[0]:
+            raise ValueError(
+                "Number of elements in density ({}) ".format(density.size)
+                + "mismatch the number of prisms ({})".format(prisms.shape[0])
+            )
+        _check_prisms(prisms)
     # Compute gravitational field
     jit_prism_gravity(coordinates, prisms, density, kernels[field], result)
     result *= GRAVITATIONAL_CONST
