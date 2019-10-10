@@ -92,15 +92,31 @@ def test_invalid_density_array():
         tesseroid_gravity(coordinates, tesseroids, density, field="potential")
 
 
-def test_invalid_tesseroid():
-    "Check if invalid tesseroid boundaries are caught by _check_tesseroids"
+def test_valid_tesseroid():
+    "Check if no valid tesseroid is caught as invalid by _check_tesseroids"
+    # Define some tesseroid boundaries
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
-    # Check if it works properly on valid tesseroids
+    # Check if some valid tesseroids are not caught
     _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, top]))
-    # Check if it works properly on valid tesseroid with zero volume
+    # Check if valid tesseroids with zero volume aren't caught
     _check_tesseroids(np.atleast_2d([w, w, s, n, bottom, top]))
     _check_tesseroids(np.atleast_2d([w, e, s, s, bottom, top]))
     _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, bottom]))
+    # Check if valid tesseroid with west > east is not caught
+    _check_tesseroids(np.atleast_2d([350, 10, s, n, bottom, top]))
+    # Check if tesseroids on [-180, 180) are not caught
+    _check_tesseroids(np.atleast_2d([-70, -60, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-10, 10, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-150, 150, s, n, bottom, top]))
+    # Check if tesseroids around the globe aren't caught
+    _check_tesseroids(np.atleast_2d([0, 360, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-180, 180, s, n, bottom, top]))
+
+
+def test_invalid_tesseroid():
+    "Check if invalid tesseroid boundaries are caught by _check_tesseroids"
+    # Define some tesseroid boundaries
+    w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Test invalid latitudinal boundaries
     with pytest.raises(ValueError):
         _check_tesseroids(np.atleast_2d([w, e, n, s, bottom, top]))
