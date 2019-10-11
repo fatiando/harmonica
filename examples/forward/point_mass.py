@@ -19,7 +19,7 @@ import matplotlib.ticker
 
 # Define the coordinates for two point masses
 easting = [5e3, 15e3]
-northing = [5e3, 15e3]
+northing = [7e3, 13e3]
 # The vertical coordinate is positive upward so negative numbers represent depth
 upward = [-0.5e3, -1e3]
 points = [easting, northing, upward]
@@ -29,7 +29,7 @@ masses = [3e11, -10e11]
 
 # Define computation points on a grid at 500m above the ground
 coordinates = vd.grid_coordinates(
-    region=[0, 20e3, 0, 20e3], shape=(80, 80), extra_coords=500
+    region=[0, 20e3, 0, 20e3], shape=(100, 100), extra_coords=500
 )
 
 # Compute the downward component of the gravitational acceleration
@@ -43,8 +43,8 @@ fig, ax = plt.subplots(figsize=(8, 6))
 ax.set_aspect("equal")
 # Get the maximum absolute value so we can center the colorbar on zero
 maxabs = vd.maxabs(gravity)
-img = ax.pcolormesh(
-    *coordinates[:2], gravity, vmin=-maxabs, vmax=maxabs, cmap="seismic"
+img = ax.contourf(
+    *coordinates[:2], gravity, 60, vmin=-maxabs, vmax=maxabs, cmap="seismic"
 )
 plt.colorbar(img, ax=ax, pad=0.04, shrink=0.73, label="mGal")
 # Plot the point mass locations
