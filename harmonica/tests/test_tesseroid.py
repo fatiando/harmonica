@@ -92,80 +92,80 @@ def test_invalid_density_array():
         tesseroid_gravity(coordinates, tesseroids, density, field="potential")
 
 
-def test_invalid_tesseroid():
-    "Check if invalid tesseroid boundaries are caught by _check_tesseroids"
+def test_valid_tesseroid():
+    "Check if no valid tesseroid is caught as invalid by _check_tesseroids"
+    # Define some tesseroid boundaries
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
-    # Check if it works properly on valid tesseroids
+    # Check if some valid tesseroids are not caught
     _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, top]))
-    # Check if it works properly on valid tesseroid with zero volume
+    # Check if valid tesseroids with zero volume aren't caught
     _check_tesseroids(np.atleast_2d([w, w, s, n, bottom, top]))
     _check_tesseroids(np.atleast_2d([w, e, s, s, bottom, top]))
     _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, bottom]))
-    # Test invalid longitude and latitude boundaries
-    with pytest.raises(ValueError):
-        _check_tesseroids(np.atleast_2d([20, 10, s, n, bottom, top]))
-    with pytest.raises(ValueError):
-        _check_tesseroids(np.atleast_2d([w, e, 20, 10, bottom, top]))
-    # Test invalid radial boundaries
-    with pytest.raises(ValueError):
-        _check_tesseroids(np.atleast_2d([w, e, s, n, 200, 100]))
-    with pytest.raises(ValueError):
-        _check_tesseroids(np.atleast_2d([w, e, s, n, -100, top]))
-    with pytest.raises(ValueError):
-        _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, -100]))
+    # Check if valid tesseroid with west > east is not caught
+    _check_tesseroids(np.atleast_2d([350, 10, s, n, bottom, top]))
+    # Check if tesseroids on [-180, 180) are not caught
+    _check_tesseroids(np.atleast_2d([-70, -60, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-10, 10, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-150, 150, s, n, bottom, top]))
+    # Check if tesseroids around the globe aren't caught
+    _check_tesseroids(np.atleast_2d([0, 360, s, n, bottom, top]))
+    _check_tesseroids(np.atleast_2d([-180, 180, s, n, bottom, top]))
 
 
-@pytest.mark.use_numba
-def test_invalid_tesseroids():
-    "Check if invalid multiple tesseroid boundaries are caught by _check_tesseroids"
-    tesseroids = np.atleast_2d(
-        [
-            [-10, 0, -10, 0, 100, 200],
-            [-10, 0, 0, 10, 100, 200],
-            [0, 10, -10, 0, 100, 200],
-            [0, 10, 0, 10, 100, 200],
-        ]
-    )
-    # Check if it works properly on valid tesseroids
-    _check_tesseroids(tesseroids)
-    # Check if it works properly on valid tesseroid with zero volume
-    w, e, s, n, bottom, top = tesseroids[0, :].copy()
-    tesseroids_with_zero_vol = [
-        [w, w, s, n, bottom, top],
-        [w, e, s, s, bottom, top],
-        [w, e, s, n, bottom, bottom],
-    ]
-    for tess_zero_vol in tesseroids_with_zero_vol:
-        new_tesseroids = tesseroids.copy()
-        new_tesseroids[0] = tess_zero_vol
-        _check_tesseroids(new_tesseroids)
-    # Test invalid longitude and latitude boundaries
-    invalid_tesseroids = [[20, 10, s, n, bottom, top], [w, e, 20, 10, bottom, top]]
-    for invalid_tess in invalid_tesseroids:
-        new_tesseroids = tesseroids.copy()
-        new_tesseroids[0] = invalid_tess
-        with pytest.raises(ValueError):
-            _check_tesseroids(new_tesseroids)
+def test_invalid_tesseroid():
+    "Check if invalid tesseroid boundaries are caught by _check_tesseroids"
+    # Define some tesseroid boundaries
+    w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
+    # Test invalid latitudinal boundaries
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, n, s, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, s, -100, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, s, 100, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, -100, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, 100, n, bottom, top]))
     # Test invalid radial boundaries
-    invalid_tesseroids = [
-        [w, e, s, n, 200, 100],
-        [w, e, s, n, -100, top],
-        [w, e, s, n, bottom, -100],
-    ]
-    for invalid_tess in invalid_tesseroids:
-        new_tesseroids = tesseroids.copy()
-        new_tesseroids[0] = invalid_tess
-        with pytest.raises(ValueError):
-            _check_tesseroids(new_tesseroids)
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, s, n, top, bottom]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, -1]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, e, s, n, -1, top]))
+    # Test invalid longitudinal boundaries
+    # longitudinal boundaries outside the [-180, 360] interval
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([-200, e, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([400, e, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, -200, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([w, 400, s, n, bottom, top]))
+    # west > east (even after longitude continuity)
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([30, 0, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([-60, -70, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([300, -150, s, n, bottom, top]))
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([350, 340, s, n, bottom, top]))
+    # more than one turn around the globe
+    with pytest.raises(ValueError):
+        _check_tesseroids(np.atleast_2d([-150, 300, s, n, bottom, top]))
 
 
 @pytest.mark.use_numba
 def test_disable_checks():
     "Check if the disable_checks flag works properly"
-    valid_tesseroid = [0, 10, 0, 10, 10, 20]
-    invalid_tesseroid = [0, 10, 0, 10, 20, 10]
-    density = 100
-    coordinates = [0, 0, 10]
+    valid_tesseroid = [0.0, 10.0, 0.0, 10.0, 10.0, 20.0]
+    invalid_tesseroid = [0.0, 10.0, 0.0, 10.0, 20.0, 10.0]
+    density = 100.0
+    coordinates = [0.0, 0.0, 10.0]
     # By default, an error should be raised for invalid input
     with pytest.raises(ValueError):
         tesseroid_gravity(coordinates, invalid_tesseroid, density, field="potential")
@@ -290,16 +290,16 @@ def test_longitude_continuity():
     "Check if longitude_continuity works as expected"
     # Tesseroid on the [-180, 180) interval
     tesseroid = np.atleast_2d([-10, 10, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
+    tesseroid = _longitude_continuity(tesseroid)
     assert tesseroid[0, 0] == -10
     assert tesseroid[0, 1] == 10
     tesseroid = np.atleast_2d([-70, -60, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
-    assert tesseroid[0, 0] == 290
-    assert tesseroid[0, 1] == 300
+    tesseroid = _longitude_continuity(tesseroid)
+    assert tesseroid[0, 0] == -70
+    assert tesseroid[0, 1] == -60
     # Tesseroid on the [0, 360) interval
     tesseroid = np.atleast_2d([350, 10, -10, 10, 1, 2])
-    _longitude_continuity(tesseroid)
+    tesseroid = _longitude_continuity(tesseroid)
     assert tesseroid[0, 0] == -10
     assert tesseroid[0, 1] == 10
 

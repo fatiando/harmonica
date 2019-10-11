@@ -51,8 +51,8 @@ def prism_gravity(
         - Downward acceleration: ``g_z``
 
     dtype : data-type (optional)
-        Data type assigned to prism boundaries, computation points coordinates and
-        resulting gravitational field. Default to ``np.float64``.
+        Data type assigned to the resulting gravitational field. Default to
+        ``np.float64``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model. Should be set
         to ``True`` only when it is certain that the input model is valid and it does not
@@ -97,9 +97,9 @@ def prism_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Convert coordinates, prisms and density to arrays with proper shape
-    coordinates = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
-    prisms = np.atleast_2d(prisms).astype(dtype)
-    density = np.atleast_1d(density).ravel().astype(dtype)
+    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+    prisms = np.atleast_2d(prisms)
+    density = np.atleast_1d(density).ravel()
     # Sanity checks
     if not disable_checks:
         if density.size != prisms.shape[0]:
