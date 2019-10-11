@@ -162,10 +162,10 @@ def test_invalid_tesseroid():
 @pytest.mark.use_numba
 def test_disable_checks():
     "Check if the disable_checks flag works properly"
-    valid_tesseroid = [0, 10, 0, 10, 10, 20]
-    invalid_tesseroid = [0, 10, 0, 10, 20, 10]
-    density = 100
-    coordinates = [0, 0, 10]
+    valid_tesseroid = [0.0, 10.0, 0.0, 10.0, 10.0, 20.0]
+    invalid_tesseroid = [0.0, 10.0, 0.0, 10.0, 20.0, 10.0]
+    density = 100.0
+    coordinates = [0.0, 0.0, 10.0]
     # By default, an error should be raised for invalid input
     with pytest.raises(ValueError):
         tesseroid_gravity(coordinates, invalid_tesseroid, density, field="potential")
