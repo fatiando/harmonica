@@ -142,12 +142,15 @@ def fetch_rio_magnetic():
 
 def fetch_gb_magnetic():
     """
-    Fetch total-field magnetic anomaly data of the United Kingdom.
+    Fetch total-field magnetic anomaly data of Great Britain.
 
-    These data are a complete airborne survey of the entire United Kingdom
+    These data are a complete airborne survey of the entire Great Britain
     conducted between 1955 and 1965. The data are made available by the
     British Geological Survey (BGS) through their `geophysical data portal
     <https://www.bgs.ac.uk/products/geophysics/aeromagneticRegional.html>`__.
+    
+    License: `Open Government License 
+    <http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/>`__
 
     The columns of the data table are longitude, latitude, total-field
     magnetic anomaly (nanoTesla), observation height relative to Ordnance Survey

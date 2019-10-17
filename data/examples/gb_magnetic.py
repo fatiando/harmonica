@@ -2,7 +2,7 @@
 Total Field Magnetic Anomaly from Great Britain
 ================================================
 
-These data are a complete airborne survey of the entire United Kingdom
+These data are a complete airborne survey of the entire Great Britain
 conducted between 1955 and 1965. The data are made available by the
 British Geological Survey (BGS) through their `geophysical data portal
 <https://www.bgs.ac.uk/products/geophysics/aeromagneticRegional.html>`__.
@@ -23,15 +23,15 @@ data = hm.datasets.fetch_gb_magnetic()
 print(data)
 
 # Plot the observations in a Mercator map using Cartopy
-fig = plt.figure(figsize=(10, 6))
+fig = plt.figure(figsize=(7.5, 10))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Magnetic data from Great Britain", pad=25)
-maxabs = vd.maxabs(data.MAG_IGRF90)
+maxabs = np.percentile(data.MAG_IGRF9, 99)
 tmp = ax.scatter(
     data.LONGITUDE,
     data.LATITUDE,
     c=data.MAG_IGRF90,
-    s=0.8,
+    s=0.001,
     cmap="seismic",
     vmin=-maxabs,
     vmax=maxabs,
@@ -41,12 +41,13 @@ plt.colorbar(
     tmp,
     ax=ax,
     label="total field magnetic anomaly [nT]",
-    orientation="horizontal",
+    orientation="vertical",
     aspect=50,
     shrink=0.7,
-    pad=0.06,
+    pad=0.1,
 )
 ax.set_extent(vd.get_region((data.LONGITUDE, data.LATITUDE)))
 ax.gridlines(draw_labels=True)
+ax.coastlines(resolution="50m")
 plt.tight_layout()
 plt.show()
