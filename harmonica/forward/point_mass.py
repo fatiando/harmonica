@@ -143,8 +143,7 @@ def point_mass_gravity(
         masses. Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
     dtype : data-type (optional)
-        Data type assigned to resulting gravitational field, and coordinates of point
-        masses and computation points. Default to ``np.float64``.
+        Data type assigned to resulting gravitational field. Default to ``np.float64``.
 
 
     Returns
@@ -178,9 +177,15 @@ def point_mass_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    coordinates = (np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
-    points = (np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
-    masses = np.atleast_1d(masses).astype(dtype).ravel()
+    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+    points = tuple(np.atleast_1d(i).ravel() for i in points[:3])
+    masses = np.atleast_1d(masses).ravel()
+    # Sanity checks
+    if masses.size != points[0].size:
+        raise ValueError(
+            "Number of elements in masses ({}) ".format(masses.size)
+            + "mismatch the number of points ({})".format(points[0].size)
+        )
     # Compute gravitational field
     dispatchers[coordinate_system](
         *coordinates, *points, masses, result, kernels[coordinate_system][field]

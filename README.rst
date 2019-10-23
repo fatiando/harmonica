@@ -3,7 +3,7 @@
 
 `Documentation <http://www.fatiando.org/harmonica>`__ |
 `Documentation (dev version) <http://www.fatiando.org/harmonica/dev>`__ |
-`Contact <https://gitter.im/fatiando/fatiando>`__ |
+`Contact <http://contact.fatiando.org>`__ |
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
@@ -30,9 +30,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square
-    :alt: Chat room on Gitter
-    :target: https://gitter.im/fatiando/fatiando
 
 
 .. placeholder-for-doc-index
@@ -47,7 +44,7 @@ We welcome any feedback and ideas!
 Let us know by submitting
 `issues on Github <https://github.com/fatiando/harmonica/issues>`__
 or send us a message on our
-`Gitter chatroom <https://gitter.im/fatiando/fatiando>`__.
+`Slack chatroom <http://contact.fatiando.org>`__.
 
 
 About
@@ -91,7 +88,7 @@ Contacting Us
   Feel free to `open an issue
   <https://github.com/fatiando/harmonica/issues/new>`__ or comment
   on any open issue or pull request.
-* We have `chat room on Gitter <https://gitter.im/fatiando/fatiando>`__
+* We have `chat room on Slack <http://contact.fatiando.org>`__
   where you can ask questions and leave comments.
 
 

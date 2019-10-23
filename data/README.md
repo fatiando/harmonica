@@ -22,3 +22,14 @@ These files are used as sample data in Harmonica:
   survey, made available by the Geological Survey of Brazil (CPRM) through their [GEOSGB
   portal](http://geosgb.cprm.gov.br/). See the original data for more processing
   information.
+* `south-africa-gravity.ast.xz`:
+  Land gravity survey performed in January 1986 within the boundaries of the Republic of
+  South Africa. Columns are longitude, latitude, elevation (above sea level) and gravity
+  (mGal). The observed gravity values are referenced to the International Gravity
+  Standardization Net 1971 (IGSN 71). The data was made available by the [National
+  Centers for Environmental Information (NCEI)](https://www.ngdc.noaa.gov/) (formerly
+  NGDC) and are in the [public
+  domain](https://www.ngdc.noaa.gov/ngdcinfo/privacy.html#copyright-notice). Original
+  data files can be found at:
+  https://www.ngdc.noaa.gov/mgg/gravity/1999/data/regional/africa/ The data are stored
+  in a netCDF file and then `xz` compressed.
