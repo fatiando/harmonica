@@ -37,7 +37,7 @@ def tesseroid_gravity(
 
     .. warning::
 
-        The ``g_z`` field returns the downward component of the gravity acceleration on
+        The ``g_z`` field returns the downward component of the gravitational acceleration on
         the local North oriented coordinate system. It is equivalent to the opposite of
         the radial component, therefore it's positive if the acceleration vector points
         inside the spheroid.
@@ -65,7 +65,7 @@ def tesseroid_gravity(
         - Downward acceleration: ``g_z``
 
     distance_size_ratio : dict or None (optional)
-        Dictionary containing distance-size ratii for each gravity field used on the
+        Dictionary containing distance-size ratii for each gravitational field used on the
         adaptive discretization algorithm.
         Values must be the available fields and keys should be the desired distance-size
         ratio.
@@ -129,7 +129,7 @@ def tesseroid_gravity(
     """
     kernels = {"potential": kernel_potential_spherical, "g_z": kernel_g_z_spherical}
     if field not in kernels:
-        raise ValueError("Gravity field {} not recognized".format(field))
+        raise ValueError("Gravitational field {} not recognized".format(field))
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -151,7 +151,7 @@ def tesseroid_gravity(
         distance_size_ratii = DISTANCE_SIZE_RATII
     if field not in distance_size_ratii:
         raise ValueError(
-            'Gravity field "{}" not found on distance_size_ratii dictionary'.format(
+            'Gravitational field "{}" not found on distance_size_ratii dictionary'.format(
                 field
             )
         )
@@ -163,7 +163,7 @@ def tesseroid_gravity(
     small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
     point_masses = np.empty((3, n_nodes * max_discretizations), dtype=dtype)
     weights = np.empty(n_nodes * max_discretizations, dtype=dtype)
-    # Compute gravity field
+    # Compute gravitational field
     jit_tesseroid_gravity(
         coordinates,
         tesseroids,
@@ -276,7 +276,7 @@ def jit_tesseroid_gravity(
                 point_masses,
                 weights,
             )
-            # Compute gravity fields
+            # Compute gravitational fields
             jit_point_mass_spherical(
                 coordinates[0][m : m + 1],  # slice lon to pass a single element array
                 coordinates[1][m : m + 1],  # slice lat to pass a single element array
