@@ -68,7 +68,7 @@ def test_britain_magnetic():
     npt.assert_allclose(data.total_field_anomaly_nt.max(), 2792)
     npt.assert_allclose(data.altitude_m.min(), 201.0)
     npt.assert_allclose(data.altitude_m.max(), 1545.0)
-    assert set(data.SURVEY_AREA.unique()) == {
+    assert set(data.survey_area.unique()) == {
         "CA55_NORTH",
         "CA55_SOUTH",
         "CA57",

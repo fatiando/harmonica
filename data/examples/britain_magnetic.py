@@ -36,11 +36,11 @@ print(data)
 fig = plt.figure(figsize=(7.5, 10))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Magnetic data from Great Britain", pad=25)
-maxabs = np.percentile(data.MAG_IGRF9, 99)
+maxabs = np.percentile(data.total_field_anomaly_nt, 99)
 tmp = ax.scatter(
-    data.LONGITUDE,
-    data.LATITUDE,
-    c=data.MAG_IGRF90,
+    data.longitude,
+    data.latitude,
+    c=data.total_field_anomaly_nt,
     s=0.001,
     cmap="seismic",
     vmin=-maxabs,
@@ -56,7 +56,7 @@ plt.colorbar(
     shrink=0.7,
     pad=0.1,
 )
-ax.set_extent(vd.get_region((data.LONGITUDE, data.LATITUDE)))
+ax.set_extent(vd.get_region((data.longitude, data.latitude)))
 ax.gridlines(draw_labels=True)
 ax.coastlines(resolution="50m")
 plt.tight_layout()
