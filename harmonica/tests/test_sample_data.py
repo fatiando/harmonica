@@ -8,7 +8,7 @@ from ..datasets.sample_data import (
     fetch_geoid_earth,
     fetch_topography_earth,
     fetch_rio_magnetic,
-    fetch_gb_magnetic,
+    fetch_britain_magnetic,
     fetch_south_africa_gravity,
 )
 
@@ -56,18 +56,18 @@ def test_rio_magnetic():
     assert set(data.line_type.unique()) == {"TIE", "LINE"}
 
 
-def test_gb_magnetic():
+def test_britain_magnetic():
     "Sanity checks for the loaded dataset"
-    data = fetch_gb_magnetic()
+    data = fetch_britain_magnetic()
     assert data.shape == (541508, 6)
-    npt.assert_allclose(data.LONGITUDE.min(), -8.65338)
-    npt.assert_allclose(data.LONGITUDE.max(), 1.92441)
-    npt.assert_allclose(data.LATITUDE.min(), 49.81407)
-    npt.assert_allclose(data.LATITUDE.max(), 60.97483)
-    npt.assert_allclose(data.MAG_IGRF90.min(), -3735)
-    npt.assert_allclose(data.MAG_IGRF90.max(), 2792)
-    npt.assert_allclose(data.AOD.min(), 0)
-    npt.assert_allclose(data.AOD.max(), 1492)
+    npt.assert_allclose(data.longitude.min(), -8.65338)
+    npt.assert_allclose(data.longitude.max(), 1.92441)
+    npt.assert_allclose(data.latitude.min(), 49.81407)
+    npt.assert_allclose(data.latitude.max(), 60.97483)
+    npt.assert_allclose(data.total_field_anomaly_nt.min(), -3735)
+    npt.assert_allclose(data.total_field_anomaly_nt.max(), 2792)
+    npt.assert_allclose(data.altitude_m.min(), 201.0)
+    npt.assert_allclose(data.altitude_m.max(), 1545.0)
     assert set(data.SURVEY_AREA.unique()) == {
         "CA55_NORTH",
         "CA55_SOUTH",
