@@ -120,7 +120,7 @@ def test_potential_cartesian_known_values():
             847.66,
             450.64,
             791.34,
-            622.71
+            622.71,
         ]
     )
     easting = np.array(
@@ -174,7 +174,7 @@ def test_potential_cartesian_known_values():
             497.76,
             599.79,
             854.61,
-            82.29
+            82.29,
         ]
     )
     upward = np.array(
@@ -228,7 +228,7 @@ def test_potential_cartesian_known_values():
             510.58,
             577.19,
             519.46,
-            868.59
+            868.59,
         ]
     )
     coordinates = [easting, northing, upward]
@@ -283,7 +283,7 @@ def test_potential_cartesian_known_values():
             4.513884876958,
             5.282294418322,
             3.920614966133,
-            4.664576954878
+            4.664576954878,
         ]
     )
     # Compute potential gravity field on each computation point
