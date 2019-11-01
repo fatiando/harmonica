@@ -5,12 +5,7 @@ import numpy as np
 from numba import jit
 
 from ..constants import GRAVITATIONAL_CONST
-from .utils import (
-    check_coordinate_system,
-    distance_cartesian,
-    distance_spherical,
-    distance_spherical_core,
-)
+from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
 
 
 def point_mass_gravity(
@@ -238,7 +233,7 @@ def kernel_potential_cartesian(
     """
     Kernel function for gravitational potential field in Cartesian coordinates
     """
-    return 1 / distance_spherical(
+    return 1 / distance_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
 
