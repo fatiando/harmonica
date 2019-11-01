@@ -240,10 +240,10 @@ def kernel_potential_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p
 ):
     """
-    Kernel function for potential gravitational field in Cartesian coordinates
+    Kernel function for gravitational potential field in Cartesian coordinates
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     return 1 / distance
 
