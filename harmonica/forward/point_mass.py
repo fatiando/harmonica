@@ -42,17 +42,27 @@ def point_mass_gravity(
 
     .. math::
 
-        \vec{g} = \nabla V.
+        \vec{g} = \nabla V
 
-    Therefore, the :math:`z` component of :math:`\vec{g}` at the point :math:`P` can be
-    computed as (remember that :math:`z` points upwards):
+    and has components :math:`g_{northing}(P)`, :math:`g_{easting}(P)` and
+    :math:`g_{upward}(P)` given by
 
     .. math::
 
-        g_{up}(P) = - \frac{G m}{l^3} (z - z_p).
+        g_{northing}(P) = - \frac{G m}{l^3} (x - x_p),
+
+    .. math::
+
+        g_{easting}(P) = - \frac{G m}{l^3} (y - y_p)
+
+    and
+
+    .. math::
+
+        g_{upward}(P) = - \frac{G m}{l^3} (z - z_p).
 
     We define the downward component of the gravitational acceleration as the opposite of
-    :math:`g_{up}`:
+    :math:`g_{upward}` (remember that :math:`z` points upwards):
 
     .. math::
 
@@ -132,13 +142,16 @@ def point_mass_gravity(
 
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
+        - Northing acceleration: ``g_northing``
+        - Easting acceleration: ``g_easting``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the point
         masses. Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
     dtype : data-type (optional)
-        Data type assigned to resulting gravitational field. Default to ``np.float64``.
+        Data type assigned to resulting gravitational field, and coordinates of point
+        masses and computation points. Default to ``np.float64``.
 
 
     Returns
@@ -158,6 +171,8 @@ def point_mass_gravity(
         "cartesian": {
             "potential": kernel_potential_cartesian,
             "g_z": kernel_g_z_cartesian,
+            "g_northing": kernel_g_northing_cartesian,
+            "g_easting": kernel_g_easting_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
@@ -172,22 +187,16 @@ def point_mass_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-    points = tuple(np.atleast_1d(i).ravel() for i in points[:3])
-    masses = np.atleast_1d(masses).ravel()
-    # Sanity checks
-    if masses.size != points[0].size:
-        raise ValueError(
-            "Number of elements in masses ({}) ".format(masses.size)
-            + "mismatch the number of points ({})".format(points[0].size)
-        )
+    coordinates = (np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
+    points = (np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
+    masses = np.atleast_1d(masses).astype(dtype).ravel()
     # Compute gravitational field
     dispatchers[coordinate_system](
         *coordinates, *points, masses, result, kernels[coordinate_system][field]
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_z":
+    if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -231,11 +240,12 @@ def kernel_potential_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p
 ):
     """
-    Kernel function for gravitational potential field in Cartesian coordinates
+    Kernel function for potential gravitational field in Cartesian coordinates
     """
-    return 1 / distance_cartesian(
-        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    distance = distance_cartesian(
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
+    return 1 / distance
 
 
 @jit(nopython=True)
@@ -246,7 +256,37 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     distance = distance_cartesian(
         [easting, northing, upward], [easting_p, northing_p, upward_p]
     )
+    # Remember that the ``g_z`` field returns the downward component of the
+    # gravitational acceleration. As a consequence, it is multiplied by -1. Notice that
+    # the ``g_z`` does not have the minus signal observed at the compoents
+    # ``g_northing`` and ``g_easting``.
     return (upward - upward_p) / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_northing_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
+    """
+    Kernel function for northing component of gravitational gradient in Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
+    )
+    return -(northing - northing_p) / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_easting_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
+    """
+    Kernel function for easting component of gravitational gradient in Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        [easting, northing, upward], [easting_p, northing_p, upward_p]
+    )
+    return -(easting - easting_p) / distance ** 3
 
 
 @jit(nopython=True)
