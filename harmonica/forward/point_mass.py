@@ -150,8 +150,7 @@ def point_mass_gravity(
         masses. Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
     dtype : data-type (optional)
-        Data type assigned to resulting gravitational field, and coordinates of point
-        masses and computation points. Default to ``np.float64``.
+        Data type assigned to resulting gravitational field. Default to ``np.float64``.
 
 
     Returns
@@ -187,9 +186,9 @@ def point_mass_gravity(
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
     # Prepare arrays to be passed to the jitted functions
-    coordinates = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in coordinates[:3])
-    points = tuple(np.atleast_1d(i).ravel().astype(dtype) for i in points[:3])
-    masses = np.atleast_1d(masses).astype(dtype).ravel()
+    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+    points = tuple(np.atleast_1d(i).ravel() for i in points[:3])
+    masses = np.atleast_1d(masses).ravel()
     # Sanity checks
     if masses.size != points[0].size:
         raise ValueError(
@@ -246,7 +245,7 @@ def kernel_potential_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p
 ):
     """
-    Kernel function for potential gravitational field in Cartesian coordinates
+    Kernel function for gravitational potential field in Cartesian coordinates
     """
     distance = distance_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)

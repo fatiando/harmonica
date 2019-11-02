@@ -2,9 +2,6 @@
 Functions to load sample datasets used in the Harmonica docs.
 """
 import os
-import tempfile
-import lzma
-import shutil
 
 import xarray as xr
 import pandas as pd
@@ -42,8 +39,8 @@ def fetch_geoid_earth():
         The geoid grid (in meters). Coordinates are geodetic latitude and longitude.
 
     """
-    fname = POOCH.fetch("geoid-earth-0.5deg.nc.xz")
-    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
+    fname = POOCH.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
+    data = xr.open_dataset(fname, engine="scipy").astype("float64")
     return data
 
 
@@ -68,10 +65,10 @@ def fetch_gravity_earth():
         (``height_over_ell``). Coordinates are geodetic latitude and longitude.
 
     """
-    fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz")
+    fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
     # The heights are stored as ints and data as float32 to save space on the data file.
     # Cast them to float64 to avoid integer division errors.
-    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
+    data = xr.open_dataset(fname, engine="scipy").astype("float64")
     return data
 
 
@@ -98,10 +95,10 @@ def fetch_topography_earth():
         latitude and longitude.
 
     """
-    fname = POOCH.fetch("etopo1-0.5deg.nc.xz")
+    fname = POOCH.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
     # The data are stored as int16 to save disk space. Cast them to floats to avoid
     # integer division problems when processing.
-    data = _load_xz_compressed_grid(fname, engine="scipy").astype("float64")
+    data = xr.open_dataset(fname, engine="scipy").astype("float64")
     return data
 
 
@@ -140,23 +137,36 @@ def fetch_rio_magnetic():
     return pd.read_csv(POOCH.fetch("rio-magnetic.csv.xz"), compression="xz")
 
 
-def _load_xz_compressed_grid(fname, **kwargs):
+def fetch_britain_magnetic():
     """
-    Load a netCDF grid that has been xz compressed. Keyword arguments are passed to
-    :func:`xarray.open_dataset`.
+    Fetch total-field magnetic anomaly data of Great Britain.
+
+    These data are a complete airborne survey of the entire Great Britain
+    conducted between 1955 and 1965. The data are made available by the
+    British Geological Survey (BGS) through their `geophysical data portal
+    <https://www.bgs.ac.uk/products/geophysics/aeromagneticRegional.html>`__.
+
+    License: `Open Government License
+    <http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/>`__
+
+    The columns of the data table are longitude, latitude, total-field
+    magnetic anomaly (nanoTesla), observation height relative to the WGS84 datum
+    (in meters), survey area, and line number and line segment for each data point.
+
+    Latitude, longitude, and elevation data converted from original OSGB36 (epsg:27700)
+    coordinate system to WGS84 (epsg:4326) using to_crs function in GeoPandas.
+
+    See the original data for more processing information.
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    data : :class:`pandas.DataFrame`
+        The magnetic anomaly data.
     """
-    decompressed = tempfile.NamedTemporaryFile(suffix=".nc", delete=False)
-    try:
-        with decompressed:
-            with lzma.open(fname, "rb") as compressed:
-                shutil.copyfileobj(compressed, decompressed)
-        # Call load to make sure the data are loaded into memory and not linked to file
-        grid = xr.open_dataset(decompressed.name, **kwargs).load()
-        # Close any files associated with this dataset to make sure can delete them
-        grid.close()
-    finally:
-        os.remove(decompressed.name)
-    return grid
+    return pd.read_csv(POOCH.fetch("britain-magnetic.csv.xz"), compression="xz")
 
 
 def fetch_south_africa_gravity():
