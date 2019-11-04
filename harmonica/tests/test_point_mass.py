@@ -7,6 +7,7 @@ import pytest
 
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
+from ..forward.utils import distance_cartesian
 
 
 def test_invalid_coordinate_system():
