@@ -2,6 +2,7 @@
 # Import functions/classes to make the public API
 from . import version
 from . import datasets
+from . import synthetic
 from .ellipsoid import (
     set_ellipsoid,
     get_ellipsoid,
