@@ -9,7 +9,7 @@ from ..datasets import fetch_britain_magnetic, fetch_south_africa_gravity
 
 def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     """
-    Create a synthetic ground survey
+    Create measurement locations for a synthetic airborne survey.
 
     The observation points are sampled from the Great Britain total-field magnetic
     anomaly dataset (see :func:`harmonica.datasets.fetch_britain_magnetic`).
