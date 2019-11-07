@@ -19,7 +19,7 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     Parameters
     ----------
     region : tuple or list (optional)
-        Region at which the survey points coordinates will be scaled.
+        Survey horizontal coordinates will be scaled to span this area.
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
         coordinate system and in degrees.
