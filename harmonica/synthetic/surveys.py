@@ -57,7 +57,8 @@ def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
     """
     Create a synthetic ground survey
 
-    The observation points are sampled from the South Africa gravity dataset.
+    The observation points are sampled from the South Africa gravity dataset
+    (see :func:`harmonica.datasets.fetch_south_africa_gravity`).
     Only a portion of the original survey is sampled and its region is rescaled to the
     passed ``region``.
 
