@@ -112,7 +112,7 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
 
 def _cut_and_scale(survey, region, subsection):
     """
-    Cut the original survey to the subsection and scale it to the passed region
+    Cut a subsection from the original survey and scale it to the given region.
 
     Parameters
     ----------
