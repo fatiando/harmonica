@@ -120,7 +120,7 @@ def _cut_and_scale(survey, region, subsection):
         Original survey as a :class:`pandas.DataFrame` containing the following columns:
         ``longitude``, ``latitude`` and ``height``.
     region : tuple or list (optional)
-        Region at which the survey points coordinates will be scaled.
+        Region to which the survey points coordinates will be scaled.
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
         coordinate system and in degrees.
