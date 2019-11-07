@@ -7,7 +7,7 @@ from verde.coordinates import check_region
 from ..datasets import fetch_britain_magnetic, fetch_south_africa_gravity
 
 
-def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
+def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
     """
     Create measurement locations for a synthetic airborne survey.
 
@@ -25,7 +25,7 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
         coordinate system and in degrees.
         Only the 4 horizontal boundaries are used. Subsequent boundaries will be ignored.
         If ``None``, the survey points won't be scaled. Default ``None``.
-    subsection : tuple or list (optional)
+    data_region : tuple or list (optional)
         Subsection of the original Great Britain magnetic dataset that will be sampled.
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
@@ -43,10 +43,10 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     datasets.fetch_britain_magnetic:
         Fetch total-field magnetic anomaly data of Great Britain.
     """
-    # Sanity checks for region and subsection
+    # Sanity checks for region and data_region
     if region is not None:
         check_region(region[:4])
-    check_region(subsection)
+    check_region(data_region)
     # Fetch airborne magnetic survey from Great Britain
     survey = fetch_britain_magnetic()
     # Rename the "elevation" column to "height" and
@@ -54,12 +54,12 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     survey = survey.rename(columns={"altitude_m": "height"}).filter(
         ["longitude", "latitude", "height"]
     )
-    # Cut the survey into the subsection and scale it to the passed region
-    survey = _cut_and_scale(survey, region, subsection)
+    # Cut the survey into the data_region and scale it to the passed region
+    survey = _cut_and_scale(survey, region, data_region)
     return survey
 
 
-def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
+def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
     """
     Create a synthetic ground survey
 
@@ -77,7 +77,7 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
         coordinate system and in degrees.
         All subsequent boundaries will be ignored.
         If ``None``, the survey points won't be scaled. Default ``None``.
-    subsection : tuple or list (optional)
+    data_region : tuple or list (optional)
         Region where the original Great Britain magnetic dataset will be sampled.
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
@@ -94,10 +94,10 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
     --------
     datasets.fetch_south_africa_gravity: Fetch gravity station data from South Africa.
     """
-    # Sanity checks for region and subsection
+    # Sanity checks for region and data_region
     if region is not None:
         check_region(region[:4])
-    check_region(subsection)
+    check_region(data_region)
     # Fetch ground gravity survey from South Africa
     survey = fetch_south_africa_gravity()
     # Rename the "elevation" column to "height" and
@@ -105,12 +105,12 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
     survey = survey.rename(columns={"elevation": "height"}).filter(
         ["longitude", "latitude", "height"]
     )
-    # Cut the survey into the subsection and scale it to the passed region
-    survey = _cut_and_scale(survey, region, subsection)
+    # Cut the survey into the data_region and scale it to the passed region
+    survey = _cut_and_scale(survey, region, data_region)
     return survey
 
 
-def _cut_and_scale(survey, region, subsection):
+def _cut_and_scale(survey, region, data_region):
     """
     Cut a subsection from the original survey and scale it to the given region.
 
@@ -126,7 +126,7 @@ def _cut_and_scale(survey, region, subsection):
         coordinate system and in degrees.
         All subsequent boundaries will be ignored.
         If ``None``, the survey points won't be scaled.
-    subsection : tuple or list (optional)
+    data_region : tuple or list (optional)
         Region where the original Great Britain magnetic dataset will be sampled.
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
@@ -139,8 +139,8 @@ def _cut_and_scale(survey, region, subsection):
         coordinate system. Longitudes and latitudes are in degrees, and heights in
         meters.
     """
-    # Cut the data into the subsection
-    inside_points = inside((survey.longitude, survey.latitude), subsection)
+    # Cut the data into the data_region
+    inside_points = inside((survey.longitude, survey.latitude), data_region)
     survey = survey[inside_points].copy()
     # Scale survey coordinates to the passed region
     if region is not None:
