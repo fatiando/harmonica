@@ -12,26 +12,31 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     Create a synthetic ground survey
 
     The observation points are sampled from the Great Britain total-field magnetic
-    anomaly dataset. Only a portion of the original survey is sampled and its region is
-    rescaled to the passed ``region``.
+    anomaly dataset (see :func:`harmonica.datasets.fetch_britain_magnetic`).
+    Only a portion of the original survey is sampled and its region may be
+    scaled to the passed ``region``.
 
     Parameters
     ----------
-    region : tuple or list
-        Boundaries of the synthetic region where the observation points will be located
-        in the following order: (``east``, ``west``, ``south``, ``north``, ...). All
-        subsequent boundaries will be ignored. All boundaries should be in Cartesian
-        coordinates and in meters.
-    cut_region : tuple (optional)
-        Region to reduce the extension of the survey. Must be boundaries of the original
-        survey, in degrees.
+    region : tuple or list (optional)
+        Region at which the survey points coordinates will be scaled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees.
+        All subsequent boundaries will be ignored.
+        If ``None``, the survey points won't be scaled. Default ``None``.
+    subsection : tuple or list (optional)
+        Region where the original Great Britain magnetic dataset will be sampled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees. All subsequent boundaries will be ignored.
 
     Returns
     -------
     survey : :class:`pandas.DataFrame`
-        Dataframe containing the coordinates of the observation points and their
-        elevation Cartesian coordinates for the synthetic model. All coordinates and
-        altitude are in meters.
+        Dataframe containing the coordinates of the observation points on a geodetic
+        coordinate system. Longitudes and latitudes are in degrees, and heights in
+        meters.
 
     See also
     --------
@@ -48,9 +53,7 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     survey.rename({"altitude_m": "height"})
     # Keep only the longitude, latitude and height on the DataFrame
     survey = survey.filter(["longitude", "latitude", "height"])
-    # Cut the region into the cut_region, project it with a mercator projection to
-    # convert the coordinates into Cartesian and move this Cartesian region into the
-    # passed region
+    # Cut the survey into the subsection and scale it to the passed region
     survey = _cut_and_scale(survey, region, subsection)
     return survey
 
@@ -61,32 +64,36 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
 
     The observation points are sampled from the South Africa gravity dataset
     (see :func:`harmonica.datasets.fetch_south_africa_gravity`).
-    Only a portion of the original survey is sampled and its region is rescaled to the
+    Only a portion of the original survey is sampled and its region may be scaled to the
     passed ``region``.
 
     Parameters
     ----------
-    region : tuple or list
-        Boundaries of the synthetic region where the observation points will be located
-        in the following order: (``east``, ``west``, ``south``, ``north``, ...). All
-        subsequent boundaries will be ignored. All boundaries should be in Cartesian
-        coordinates and in meters.
-    cut_region : tuple (optional)
-        Region to reduce the extension of the survey. Must be boundaries of the original
-        survey, in degrees.
+    region : tuple or list (optional)
+        Region at which the survey points coordinates will be scaled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees.
+        All subsequent boundaries will be ignored.
+        If ``None``, the survey points won't be scaled. Default ``None``.
+    subsection : tuple or list (optional)
+        Region where the original Great Britain magnetic dataset will be sampled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees. All subsequent boundaries will be ignored.
 
     Returns
     -------
     survey : :class:`pandas.DataFrame`
-        Dataframe containing the coordinates of the observation points and their
-        elevation Cartesian coordinates for the synthetic model. All coordinates and
-        altitude are in meters.
+        Dataframe containing the coordinates of the observation points on a geodetic
+        coordinate system. Longitudes and latitudes are in degrees, and heights in
+        meters.
 
     See also
     --------
     datasets.fetch_south_africa_gravity: Fetch gravity station data from South Africa.
     """
-    # Sanity checks for region and cut_region
+    # Sanity checks for region and subsection
     if region is not None:
         check_region(region[:4])
     check_region(subsection)
@@ -96,38 +103,39 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
     survey.rename({"elevation": "height"})
     # Keep only the longitude, latitude and height on the DataFrame
     survey = survey.filter(["longitude", "latitude", "height"])
-    # Cut the region into the cut_region, project it with a mercator projection to
-    # convert the coordinates into Cartesian and move this Cartesian region into the
-    # passed region
+    # Cut the survey into the subsection and scale it to the passed region
     survey = _cut_and_scale(survey, region, subsection)
     return survey
 
 
 def _cut_and_scale(survey, region, subsection):
     """
-    Cut, project and move the original survey to the passed region
+    Cut the original survey to the subsection and scale it to the passed region
 
     Parameters
     ----------
     survey : :class:`pandas.DataFrame`
         Original survey as a :class:`pandas.DataFrame` containing the following columns:
-        ``longitude``, ``latitude`` and ``elevation``. The ``longitude`` and
-        ``latitude`` must be in degrees and the ``elevation`` in meters.
-    region : tuple or list
-        Boundaries of the synthetic region where the observation points will be located
-        in the following order: (``east``, ``west``, ``south``, ``north``, ...). All
-        subsequent boundaries will be ignored. All boundaries should be in Cartesian
-        coordinates and in meters.
-    cut_region : tuple (optional)
-        Region to reduce the extension of the survey. Must be boundaries of the original
-        survey, in degrees.
+        ``longitude``, ``latitude`` and ``height``.
+    region : tuple or list (optional)
+        Region at which the survey points coordinates will be scaled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees.
+        All subsequent boundaries will be ignored.
+        If ``None``, the survey points won't be scaled.
+    subsection : tuple or list (optional)
+        Region where the original Great Britain magnetic dataset will be sampled.
+        The boundaries must be passed in the following order:
+        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
+        coordinate system and in degrees. All subsequent boundaries will be ignored.
 
     Returns
     -------
     survey : :class:`pandas.DataFrame`
-        Dataframe containing the coordinates of the observation points and their
-        elevation Cartesian coordinates for the synthetic model. All coordinates and
-        altitude are in meters.
+        Dataframe containing the coordinates of the observation points on a geodetic
+        coordinate system. Longitudes and latitudes are in degrees, and heights in
+        meters.
     """
     # Cut the data into the subsection
     inside_points = inside((survey.longitude, survey.latitude), subsection)
