@@ -7,7 +7,7 @@ from verde.coordinates import check_region
 from ..datasets import fetch_britain_magnetic, fetch_south_africa_gravity
 
 
-def airborne_survey(region, subsection=(-5.0, -4.0, 56.0, 56.5)):
+def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     """
     Create a synthetic ground survey
 
@@ -38,8 +38,9 @@ def airborne_survey(region, subsection=(-5.0, -4.0, 56.0, 56.5)):
     datasets.fetch_britain_magnetic:
         Fetch total-field magnetic anomaly data of Great Britain.
     """
-    # Sanity checks for region and cut_region
-    check_region(region[:4])
+    # Sanity checks for region and subsection
+    if region is not None:
+        check_region(region[:4])
     check_region(subsection)
     # Fetch airborne magnetic survey from Great Britain
     survey = fetch_britain_magnetic()
@@ -54,7 +55,7 @@ def airborne_survey(region, subsection=(-5.0, -4.0, 56.0, 56.5)):
     return survey
 
 
-def ground_survey(region, subsection=(13.60, 20.30, -24.20, -17.5)):
+def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
     """
     Create a synthetic ground survey
 
@@ -86,7 +87,8 @@ def ground_survey(region, subsection=(13.60, 20.30, -24.20, -17.5)):
     datasets.fetch_south_africa_gravity: Fetch gravity station data from South Africa.
     """
     # Sanity checks for region and cut_region
-    check_region(region[:4])
+    if region is not None:
+        check_region(region[:4])
     check_region(subsection)
     # Fetch ground gravity survey from South Africa
     survey = fetch_south_africa_gravity()
@@ -127,18 +129,19 @@ def _cut_and_scale(survey, region, subsection):
         elevation Cartesian coordinates for the synthetic model. All coordinates and
         altitude are in meters.
     """
-    # Cut the data into the cut_region
+    # Cut the data into the subsection
     inside_points = inside((survey.longitude, survey.latitude), subsection)
     survey = survey[inside_points].copy()
     # Scale survey coordinates to the passed region
-    w, e, s, n = region[:4]
-    longitude_min, longitude_max, latitude_min, latitude_max = get_region(
-        (survey.longitude, survey.latitude)
-    )
-    survey["longitude"] = (e - w) / (longitude_max - longitude_min) * (
-        survey.longitude - longitude_min
-    ) + w
-    survey["latitude"] = (n - s) / (latitude_max - latitude_min) * (
-        survey.latitude - latitude_min
-    ) + s
+    if region is not None:
+        w, e, s, n = region[:4]
+        longitude_min, longitude_max, latitude_min, latitude_max = get_region(
+            (survey.longitude, survey.latitude)
+        )
+        survey["longitude"] = (e - w) / (longitude_max - longitude_min) * (
+            survey.longitude - longitude_min
+        ) + w
+        survey["latitude"] = (n - s) / (latitude_max - latitude_min) * (
+            survey.latitude - latitude_min
+        ) + s
     return survey
