@@ -1,7 +1,6 @@
 """
 Create synthetic surveys for gravity and magnetic observations
 """
-import pyproj
 from verde import get_region, inside
 from verde.coordinates import check_region
 
@@ -125,22 +124,17 @@ def _cut_and_scale(survey, region, cut_region):
     # Cut the data into the cut_region
     inside_points = inside((survey.longitude, survey.latitude), cut_region)
     survey = survey[inside_points].copy()
-    # Project coordinates
-    projection = pyproj.Proj(proj="merc", lat_ts=(cut_region[2] + cut_region[3]) / 2)
-    survey["easting"], survey["northing"] = projection(
-        survey.longitude.values, survey.latitude.values
-    )
-    # Move projected coordinates to the boundaries of the region argument
+    # Scale survey coordinates to the passed region
     w, e, s, n = region[:4]
-    easting_min, easting_max, northing_min, northing_max = get_region(
-        (survey.easting, survey.northing)
+    longitude_min, longitude_max, latitude_min, latitude_max = get_region(
+        (survey.longitude, survey.latitude)
     )
-    survey["easting"] = (e - w) / (easting_max - easting_min) * (
-        survey.easting - easting_min
+    survey["longitude"] = (e - w) / (longitude_max - longitude_min) * (
+        survey.longitude - longitude_min
     ) + w
-    survey["northing"] = (n - s) / (northing_max - northing_min) * (
-        survey.northing - northing_min
+    survey["latitude"] = (n - s) / (latitude_max - latitude_min) * (
+        survey.latitude - latitude_min
     ) + s
-    # Keep only the easting, northing and elevation on the DataFrame
-    survey = survey.filter(["easting", "northing", "elevation"])
+    # Keep only the longitude, latitude and elevation on the DataFrame
+    survey = survey.filter(["longitude", "latitude", "elevation"])
     return survey
