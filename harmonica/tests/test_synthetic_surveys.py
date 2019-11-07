@@ -10,8 +10,12 @@ def test_ground_survey():
     Test if the sythetic ground survey returns the expected survey
     """
     # Ground survey without scaling
-    subsection = (13.60, 20.30, -24.20, -17.5)  # this is the default subsection
-    expected_region = (13.60833, 20.28333, -24.2, -17.50333)
+    expected_region = (
+        13.60833,
+        20.28333,
+        -24.2,
+        -17.50333,
+    )  # expected region for the default subsection
     survey = ground_survey()
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
     assert survey.longitude.size == 963
@@ -38,8 +42,12 @@ def test_airborne_survey():
     """
     Test if the synthetic airborne survey returns the expected survey
     """
-    subsection = (-5.0, -4.0, 56.0, 56.5)  # this is the default subsection
-    expected_region = (-4.99975, -4.00003, 56.00011, 56.49997)
+    expected_region = (
+        -4.99975,
+        -4.00003,
+        56.00011,
+        56.49997,
+    )  # expected region for the default subsection
     survey = airborne_survey()
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
     assert survey.longitude.size == 5673
