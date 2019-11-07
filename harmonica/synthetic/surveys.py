@@ -7,7 +7,7 @@ from verde.coordinates import check_region
 from ..datasets import fetch_britain_magnetic, fetch_south_africa_gravity
 
 
-def airborne_survey(region, cut_region=(-5.0, -4.0, 56.0, 56.5)):
+def airborne_survey(region, subsection=(-5.0, -4.0, 56.0, 56.5)):
     """
     Create a synthetic ground survey
 
@@ -40,7 +40,7 @@ def airborne_survey(region, cut_region=(-5.0, -4.0, 56.0, 56.5)):
     """
     # Sanity checks for region and cut_region
     check_region(region[:4])
-    check_region(cut_region)
+    check_region(subsection)
     # Fetch airborne magnetic survey from Great Britain
     survey = fetch_britain_magnetic()
     # Rename the "altitude_m" column to "height"
@@ -50,11 +50,11 @@ def airborne_survey(region, cut_region=(-5.0, -4.0, 56.0, 56.5)):
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
-    survey = _cut_and_scale(survey, region, cut_region)
+    survey = _cut_and_scale(survey, region, subsection)
     return survey
 
 
-def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
+def ground_survey(region, subsection=(13.60, 20.30, -24.20, -17.5)):
     """
     Create a synthetic ground survey
 
@@ -87,7 +87,7 @@ def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
     """
     # Sanity checks for region and cut_region
     check_region(region[:4])
-    check_region(cut_region)
+    check_region(subsection)
     # Fetch ground gravity survey from South Africa
     survey = fetch_south_africa_gravity()
     # Rename the "elevation" column to "height"
@@ -97,11 +97,11 @@ def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
-    survey = _cut_and_scale(survey, region, cut_region)
+    survey = _cut_and_scale(survey, region, subsection)
     return survey
 
 
-def _cut_and_scale(survey, region, cut_region):
+def _cut_and_scale(survey, region, subsection):
     """
     Cut, project and move the original survey to the passed region
 
@@ -128,7 +128,7 @@ def _cut_and_scale(survey, region, cut_region):
         altitude are in meters.
     """
     # Cut the data into the cut_region
-    inside_points = inside((survey.longitude, survey.latitude), cut_region)
+    inside_points = inside((survey.longitude, survey.latitude), subsection)
     survey = survey[inside_points].copy()
     # Scale survey coordinates to the passed region
     w, e, s, n = region[:4]
