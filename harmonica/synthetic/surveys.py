@@ -14,7 +14,7 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     The observation points are sampled from the Great Britain total-field magnetic
     anomaly dataset (see :func:`harmonica.datasets.fetch_britain_magnetic`).
     A portion of the original survey is cut (*data_region*) and the coordinates may be
-    scaled to the passed ``region``.
+    scaled to the given *region*.
 
     Parameters
     ----------
