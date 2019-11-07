@@ -43,8 +43,10 @@ def airborne_survey(region, cut_region=(-5.0, -4.0, 56.0, 56.5)):
     check_region(cut_region)
     # Fetch airborne magnetic survey from Great Britain
     survey = fetch_britain_magnetic()
-    # Rename the "altitude_m" column to "elevation"
-    survey["elevation"] = survey["altitude_m"]
+    # Rename the "altitude_m" column to "height"
+    survey.rename({"altitude_m": "height"})
+    # Keep only the longitude, latitude and height on the DataFrame
+    survey = survey.filter(["longitude", "latitude", "height"])
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
@@ -88,6 +90,10 @@ def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
     check_region(cut_region)
     # Fetch ground gravity survey from South Africa
     survey = fetch_south_africa_gravity()
+    # Rename the "elevation" column to "height"
+    survey.rename({"elevation": "height"})
+    # Keep only the longitude, latitude and height on the DataFrame
+    survey = survey.filter(["longitude", "latitude", "height"])
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
@@ -135,6 +141,4 @@ def _cut_and_scale(survey, region, cut_region):
     survey["latitude"] = (n - s) / (latitude_max - latitude_min) * (
         survey.latitude - latitude_min
     ) + s
-    # Keep only the longitude, latitude and elevation on the DataFrame
-    survey = survey.filter(["longitude", "latitude", "elevation"])
     return survey
