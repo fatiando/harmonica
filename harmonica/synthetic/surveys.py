@@ -23,7 +23,7 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
         The boundaries must be passed in the following order:
         (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic
         coordinate system and in degrees.
-        All subsequent boundaries will be ignored.
+        Only the 4 horizontal boundaries are used. Subsequent boundaries will be ignored.
         If ``None``, the survey points won't be scaled. Default ``None``.
     subsection : tuple or list (optional)
         Region where the original Great Britain magnetic dataset will be sampled.
