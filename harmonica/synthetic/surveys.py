@@ -49,7 +49,7 @@ def airborne_survey(region, cut_region=(-5.0, -4.0, 56.0, 56.5)):
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
-    survey = _adecuate_survey(survey, region, cut_region)
+    survey = _cut_and_scale(survey, region, cut_region)
     return survey
 
 
@@ -92,11 +92,11 @@ def ground_survey(region, cut_region=(13.60, 20.30, -24.20, -17.5)):
     # Cut the region into the cut_region, project it with a mercator projection to
     # convert the coordinates into Cartesian and move this Cartesian region into the
     # passed region
-    survey = _adecuate_survey(survey, region, cut_region)
+    survey = _cut_and_scale(survey, region, cut_region)
     return survey
 
 
-def _adecuate_survey(survey, region, cut_region):
+def _cut_and_scale(survey, region, cut_region):
     """
     Cut, project and move the original survey to the passed region
 
