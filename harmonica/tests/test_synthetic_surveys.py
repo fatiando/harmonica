@@ -9,13 +9,8 @@ def test_ground_survey():
     """
     Test if the sythetic ground survey returns the expected survey
     """
-    # Ground survey without scaling
-    expected_region = (
-        13.60833,
-        20.28333,
-        -24.2,
-        -17.50333,
-    )  # expected region for the default subsection
+    # Expected region for the default subsection
+    expected_region = (13.60833, 20.28333, -24.2, -17.50333)
     survey = ground_survey()
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
     assert survey.longitude.size == 963
@@ -25,7 +20,12 @@ def test_ground_survey():
     npt.assert_allclose(survey.latitude.max(), expected_region[3])
     npt.assert_allclose(survey.height.min(), 0.0)
     npt.assert_allclose(survey.height.max(), 2052.2)
-    # Ground survey with scaling
+
+
+def test_scale_ground_survey():
+    """
+    Test if the synthetic ground survey returns the expected survey after scaled
+    """
     region = (-10.1, 9.7, -20.3, -10.5)  # a random region to scale the survey
     survey = ground_survey(region=region)
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
@@ -42,12 +42,8 @@ def test_airborne_survey():
     """
     Test if the synthetic airborne survey returns the expected survey
     """
-    expected_region = (
-        -4.99975,
-        -4.00003,
-        56.00011,
-        56.49997,
-    )  # expected region for the default subsection
+    # Expected region for the default subsection
+    expected_region = (-4.99975, -4.00003, 56.00011, 56.49997)
     survey = airborne_survey()
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
     assert survey.longitude.size == 5673
@@ -57,7 +53,12 @@ def test_airborne_survey():
     npt.assert_allclose(survey.latitude.max(), expected_region[3])
     npt.assert_allclose(survey.height.min(), 359.0)
     npt.assert_allclose(survey.height.max(), 1255.0)
-    # Ground survey with scaling
+
+
+def test_scale_airborne_survey():
+    """
+    Test if the synthetic airborne survey returns the expected survey after scaled
+    """
     region = (-10.1, 9.7, -20.3, -10.5)  # a random region to scale the survey
     survey = airborne_survey(region=region)
     assert set(survey.columns) == set(["longitude", "latitude", "height"])
