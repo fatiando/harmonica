@@ -49,10 +49,11 @@ def airborne_survey(region=None, subsection=(-5.0, -4.0, 56.0, 56.5)):
     check_region(subsection)
     # Fetch airborne magnetic survey from Great Britain
     survey = fetch_britain_magnetic()
-    # Rename the "altitude_m" column to "height"
-    survey.rename({"altitude_m": "height"})
-    # Keep only the longitude, latitude and height on the DataFrame
-    survey = survey.filter(["longitude", "latitude", "height"])
+    # Rename the "elevation" column to "height" and
+    # keep only the longitude, latitude and height
+    survey = survey.rename(columns={"altitude_m": "height"}).filter(
+        ["longitude", "latitude", "height"]
+    )
     # Cut the survey into the subsection and scale it to the passed region
     survey = _cut_and_scale(survey, region, subsection)
     return survey
@@ -99,10 +100,11 @@ def ground_survey(region=None, subsection=(13.60, 20.30, -24.20, -17.5)):
     check_region(subsection)
     # Fetch ground gravity survey from South Africa
     survey = fetch_south_africa_gravity()
-    # Rename the "elevation" column to "height"
-    survey.rename({"elevation": "height"})
-    # Keep only the longitude, latitude and height on the DataFrame
-    survey = survey.filter(["longitude", "latitude", "height"])
+    # Rename the "elevation" column to "height" and
+    # keep only the longitude, latitude and height
+    survey = survey.rename(columns={"elevation": "height"}).filter(
+        ["longitude", "latitude", "height"]
+    )
     # Cut the survey into the subsection and scale it to the passed region
     survey = _cut_and_scale(survey, region, subsection)
     return survey
