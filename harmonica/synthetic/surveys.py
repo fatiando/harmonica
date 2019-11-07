@@ -88,8 +88,9 @@ def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
     -------
     survey : :class:`pandas.DataFrame`
         Dataframe containing the coordinates of the observation points on a geodetic
-        coordinate system. Longitudes and latitudes are in degrees, and heights in
-        meters.
+        coordinate system. The :class:`pandas.DataFrame` will have the following
+        columns: ``longitude``, ``latitude``, ``height``. Longitudes and latitudes are
+        in degrees, and heights in meters.
 
     See also
     --------
