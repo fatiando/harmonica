@@ -41,6 +41,23 @@ def test_invalid_field():
             )
 
 
+def test_invalid_masses_array():
+    "Check if error is raised when masses shape does not match points shape"
+    # Create a set of 3 point masses
+    points = [[-10, 0, 10], [-10, 0, 10], [-100, 0, 100]]
+    # Generate a two element masses
+    masses = [1000, 2000]
+    coordinates = [0, 0, 250]
+    with pytest.raises(ValueError):
+        point_mass_gravity(
+            coordinates,
+            points,
+            masses,
+            field="potential",
+            coordinate_system="cartesian",
+        )
+
+
 # ---------------------------
 # Cartesian coordinates tests
 # ---------------------------
