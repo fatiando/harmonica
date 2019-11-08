@@ -25,42 +25,46 @@ class EQLHarmonic(vdb.BaseGridder):
 
     It cannot be used for:
 
-    * Joint inversion of multiple data types (e.g., gravity + gravity gradients)
+    * Joint inversion of multiple data types (e.g., gravity + gravity
+      gradients)
     * Reduction to the pole of magnetic total field anomaly data
     * Analytical derivative calculations
 
-    Point sources are located beneath the observed potential-field measurement points by
-    default [Cooper2000]_. Custom source locations can be used by specifying the
-    *points* argument. Coefficients associated with each point source are estimated
-    through linear least-squares with damping (Tikhonov 0th order) regularization.
+    Point sources are located beneath the observed potential-field measurement
+    points by default [Cooper2000]_. Custom source locations can be used by
+    specifying the *points* argument. Coefficients associated with each point
+    source are estimated through linear least-squares with damping (Tikhonov
+    0th order) regularization.
 
-    The Green's function for point mass effects used is the inverse Cartesian distance
-    between the grid coordinates and the point source:
+    The Green's function for point mass effects used is the inverse Cartesian
+    distance between the grid coordinates and the point source:
 
     .. math::
 
         \phi(\bar{x}, \bar{x}') = \frac{1}{||\bar{x} - \bar{x}'||}
 
-    where :math:`\bar{x}` and :math:`\bar{x}'` are the coordinate vectors of the
-    observation point and the source, respectively.
+    where :math:`\bar{x}` and :math:`\bar{x}'` are the coordinate vectors of
+    the observation point and the source, respectively.
 
     Parameters
     ----------
     damping : None or float
-        The positive damping regularization parameter. Controls how much smoothness is
-        imposed on the estimated coefficients. If None, no regularization is used.
+        The positive damping regularization parameter. Controls how much
+        smoothness is imposed on the estimated coefficients. If None, no
+        regularization is used.
     points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as the equivalent
-        layer. Coordinates are assumed to be in the following order: (``easting``,
-        ``northing``, ``upward``). If None, will place one
-        point source bellow each observation point at a fixed relative depth bellow the
-        observation point [Cooper2000]_. Defaults to None.
+        List containing the coordinates of the point sources used as the
+        equivalent layer. Coordinates are assumed to be in the following order:
+        (``easting``, ``northing``, ``upward``). If None, will place one point
+        source bellow each observation point at a fixed relative depth bellow
+        the observation point [Cooper2000]_. Defaults to None.
     relative_depth : float
-        Relative depth at which the point sources are placed beneath the observation
-        points. Each source point will be set beneath each data point at a depth
-        calculated as the elevation of the data point minus this constant
-        *relative_depth*. Use positive numbers (negative numbers would mean point sources
-        are above the data points). Ignored if *points* is specified.
+        Relative depth at which the point sources are placed beneath the
+        observation points. Each source point will be set beneath each data
+        point at a depth calculated as the elevation of the data point minus
+        this constant *relative_depth*. Use positive numbers (negative numbers
+        would mean point sources are above the data points). Ignored if
+        *points* is specified.
 
     Attributes
     ----------
@@ -69,8 +73,9 @@ class EQLHarmonic(vdb.BaseGridder):
     coefs_ : array
         Estimated coefficients of every point source.
     region_ : tuple
-        The boundaries (``[W, E, S, N]``) of the data used to fit the interpolator.
-        Used as the default region for the :meth:`~harmonica.HarmonicEQL.grid` and
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~harmonica.HarmonicEQL.grid` and
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
@@ -84,8 +89,8 @@ class EQLHarmonic(vdb.BaseGridder):
         Fit the coefficients of the equivalent layer.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.HarmonicEQL.grid` and :meth:`~harmonica.HarmonicEQL.scatter`
-        methods.
+        :meth:`~harmonica.HarmonicEQL.grid` and
+        :meth:`~harmonica.HarmonicEQL.scatter` methods.
 
         All input arrays must have the same shape.
 
@@ -94,8 +99,8 @@ class EQLHarmonic(vdb.BaseGridder):
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, upward, ...). Only easting,
-            northing, and upward will be used, all subsequent coordinates will be
-            ignored.
+            northing, and upward will be used, all subsequent coordinates will
+            be ignored.
         data : array
             The data values of each data point.
         weights : None or array
@@ -134,8 +139,8 @@ class EQLHarmonic(vdb.BaseGridder):
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (``easting``, ``northing``, ``upward``, ...). Only
-            ``easting``, ``northing`` and ``upward`` will be used, all subsequent
-            coordinates will be ignored.
+            ``easting``, ``northing`` and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
 
         Returns
         -------
@@ -158,20 +163,20 @@ class EQLHarmonic(vdb.BaseGridder):
         """
         Make the Jacobian matrix for the equivalent layer.
 
-        Each column of the Jacobian is the Green's function for a single point source
-        evaluated on all observation points.
+        Each column of the Jacobian is the Green's function for a single point
+        source evaluated on all observation points.
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (``easting``, ``northing``, ``upward``, ...). Only
-            ``easting``, ``northing`` and ``upward`` will be used, all subsequent
-            coordinates will be ignored.
+            ``easting``, ``northing`` and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
         points : tuple of arrays
-            Tuple of arrays containing the coordinates of the point sources used as
-            equivalent layer in the following order: (``easting``, ``northing``,
-            ``upward``).
+            Tuple of arrays containing the coordinates of the point sources
+            used as equivalent layer in the following order:
+            (``easting``, ``northing``, ``upward``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
