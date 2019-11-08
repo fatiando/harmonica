@@ -50,14 +50,15 @@ class EQLHarmonic(vdb.BaseGridder):
     ----------
     damping : None or float
         The positive damping regularization parameter. Controls how much
-        smoothness is imposed on the estimated coefficients. If None, no
-        regularization is used.
+        smoothness is imposed on the estimated coefficients.
+        If None, no regularization is used.
     points : None or list of arrays (optional)
         List containing the coordinates of the point sources used as the
         equivalent layer. Coordinates are assumed to be in the following order:
-        (``easting``, ``northing``, ``upward``). If None, will place one point
-        source bellow each observation point at a fixed relative depth bellow
-        the observation point [Cooper2000]_. Defaults to None.
+        (``easting``, ``northing``, ``upward``).
+        If None, will place one point source bellow each observation point at
+        a fixed relative depth bellow the observation point [Cooper2000]_.
+        Defaults to None.
     relative_depth : float
         Relative depth at which the point sources are placed beneath the
         observation points. Each source point will be set beneath each data
@@ -98,9 +99,9 @@ class EQLHarmonic(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, upward, ...). Only easting,
-            northing, and upward will be used, all subsequent coordinates will
-            be ignored.
+            following order: (easting, northing, upward, ...).
+            Only easting, northing, and upward will be used, all subsequent
+            coordinates will be ignored.
         data : array
             The data values of each data point.
         weights : None or array
@@ -170,8 +171,8 @@ class EQLHarmonic(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...). Only
-            ``easting``, ``northing`` and ``upward`` will be used, all
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing`` and ``upward`` will be used, all
             subsequent coordinates will be ignored.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the point sources
