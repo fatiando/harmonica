@@ -37,9 +37,9 @@ def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
     -------
     survey : :class:`pandas.DataFrame`
         Dataframe containing the coordinates of the observation points on
-        a geodetic coordinate system. The :class:`pandas.DataFrame` will have the
-        following columns: ``longitude``, ``latitude``, ``height``. Longitudes and
-        latitudes are in degrees, and heights in meters.
+        a geodetic coordinate system. The :class:`pandas.DataFrame` will have
+        the following columns: ``longitude``, ``latitude``, ``height``.
+        Longitudes and latitudes are in degrees, and heights in meters.
 
     See also
     --------
@@ -90,9 +90,9 @@ def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
     -------
     survey : :class:`pandas.DataFrame`
         Dataframe containing the coordinates of the observation points on
-        a geodetic coordinate system. The :class:`pandas.DataFrame` will have the
-        following columns: ``longitude``, ``latitude``, ``height``. Longitudes and
-        latitudes are in degrees, and heights in meters.
+        a geodetic coordinate system. The :class:`pandas.DataFrame` will have
+        the following columns: ``longitude``, ``latitude``, ``height``.
+        Longitudes and latitudes are in degrees, and heights in meters.
 
     See also
     --------
@@ -140,8 +140,8 @@ def _cut_and_scale(survey, region, data_region):
     -------
     survey : :class:`pandas.DataFrame`
         Dataframe containing the coordinates of the observation points on
-        a geodetic coordinate system. Longitudes and latitudes are in degrees, and
-        heights in meters.
+        a geodetic coordinate system. Longitudes and latitudes are in degrees,
+        and heights in meters.
     """
     # Cut the data into the data_region
     inside_points = inside((survey.longitude, survey.latitude), data_region)
