@@ -11,10 +11,11 @@ def load_icgem_gdf(fname, **kwargs):
     Reads data from an ICGEM .gdf file.
 
     The `ICGEM Calculation Service <http://icgem.gfz-potsdam.de/>`__
-    [BarthelmesKohler2016]_ generates gravity field grids from spherical harmonic
-    models. They use a custom ASCII grid format with information in the header. This
-    function can read the format and parse information from the header. It returns the
-    data in a :class:`xarray.Dataset` for convenience and reduced storage requirements.
+    [BarthelmesKohler2016]_ generates gravity field grids from spherical
+    harmonic models. They use a custom ASCII grid format with information in
+    the header. This function can read the format and parse information from
+    the header. It returns the data in a :class:`xarray.Dataset` for
+    convenience and reduced storage requirements.
 
     Parameters
     ----------
@@ -27,8 +28,9 @@ def load_icgem_gdf(fname, **kwargs):
     Returns
     -------
     grid : :class:`xarray.Dataset`
-        An :class:`xarray.Dataset` with the data from the file. The header of the gdf
-        file is available through the ``attr`` attribute of the :class:`xarray.Dataset`.
+        An :class:`xarray.Dataset` with the data from the file.
+        The header of the gdf file is available through the ``attr`` attribute
+        of the :class:`xarray.Dataset`.
 
     """
     rawdata, metadata = _read_gdf_file(fname, **kwargs)
@@ -44,13 +46,14 @@ def load_icgem_gdf(fname, **kwargs):
         for name, value in data.items()
         if name not in dims
     }
-    # If the grid is at constant height, add the height as a matrix for convenience
-    # (otherwise, would have to parse from the attrs)
+    # If the grid is at constant height, add the height as a matrix for
+    # convenience (otherwise, would have to parse from the attrs)
     if "height_over_ell" in metadata:
         height = float(metadata["height_over_ell"].split()[0])
         data_vars["height_over_ell"] = (dims, np.full(shape, height))
-    # Can't have lists in the Dataset metadata to make it compatible with netCDF3. This
-    # way the data can be saved using only scipy as a dependency instead of netcdf4.
+    # Can't have lists in the Dataset metadata to make it compatible with
+    # netCDF3. This way the data can be saved using only scipy as a dependency
+    # instead of netcdf4.
     metadata["attributes"] = " ".join(metadata["attributes"])
     metadata["attributes_units"] = " ".join(metadata["attributes_units"])
     grid = xr.Dataset(data_vars, coords=coords, attrs=metadata)
@@ -76,7 +79,9 @@ def load_icgem_gdf(fname, **kwargs):
 
 
 def _read_gdf_file(fname, **kwargs):
-    "Read ICGEM gdf file and returns metadata dict and data in cols as np.array"
+    """
+    Read ICGEM gdf file and returns metadata dict and data in cols as np.array
+    """
     with open(fname) as gdf_file:
         # Read the header and extract metadata
         metadata = {}
