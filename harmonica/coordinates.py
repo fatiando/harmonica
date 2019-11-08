@@ -10,8 +10,9 @@ def geodetic_to_spherical(longitude, latitude, height):
     """
     Convert from geodetic to geocentric spherical coordinates.
 
-    The geodetic datum is defined by the default :class:`harmonica.ReferenceEllipsoid`
-    set by the :func:`harmonica.set_ellipsoid` function.
+    The geodetic datum is defined by the default
+    :class:`harmonica.ReferenceEllipsoid` set by the
+    :func:`harmonica.set_ellipsoid` function.
     The coordinates are converted following [Vermeille2002]_.
 
     Parameters
@@ -26,25 +27,30 @@ def geodetic_to_spherical(longitude, latitude, height):
     Returns
     -------
     longitude : array
-        Longitude coordinates on geocentric spherical coordinate system in degrees.
+        Longitude coordinates on geocentric spherical coordinate system in
+        degrees.
         The longitude coordinates are not modified during this conversion.
     spherical_latitude : array
-        Converted latitude coordinates on geocentric spherical coordinate system in
-        degrees.
+        Converted latitude coordinates on geocentric spherical coordinate
+        system in degrees.
     radius : array
         Converted spherical radius coordinates in meters.
 
     See also
     --------
-    spherical_to_geodetic : Convert from geocentric spherical to geodetic coordinates.
+    spherical_to_geodetic :
+        Convert from geocentric spherical to geodetic coordinates.
 
     Examples
     --------
 
-    In the poles, the radius should be the reference ellipsoid's semi-minor axis:
+    In the poles, the radius should be the reference ellipsoid's semi-minor
+    axis:
 
     >>> import harmonica as hm
-    >>> spherical = hm.geodetic_to_spherical(longitude=0, latitude=90, height=0)
+    >>> spherical = hm.geodetic_to_spherical(
+    ...     longitude=0, latitude=90, height=0
+    ... )
     >>> print(", ".join("{:.4f}".format(i) for i in spherical))
     0.0000, 90.0000, 6356752.3142
     >>> print("{:.4f}".format(hm.get_ellipsoid().semiminor_axis))
@@ -66,8 +72,8 @@ def geodetic_to_spherical(longitude, latitude, height):
     prime_vertical_radius = ellipsoid.semimajor_axis / np.sqrt(
         1 - ellipsoid.first_eccentricity ** 2 * np.sin(latitude_rad) ** 2
     )
-    # Instead of computing X and Y, we only comupute the projection on the XY plane:
-    # xy_projection = sqrt( X**2 + Y**2 )
+    # Instead of computing X and Y, we only comupute the projection on the XY
+    # plane: xy_projection = sqrt( X**2 + Y**2 )
     xy_projection = (height + prime_vertical_radius) * np.cos(latitude_rad)
     z_cartesian = (
         height + (1 - ellipsoid.first_eccentricity ** 2) * prime_vertical_radius
@@ -81,16 +87,19 @@ def spherical_to_geodetic(longitude, spherical_latitude, radius):
     """
     Convert from geocentric spherical to geodetic coordinates.
 
-    The geodetic datum is defined by the default :class:`harmonica.ReferenceEllipsoid`
-    set by the :func:`harmonica.set_ellipsoid` function.
+    The geodetic datum is defined by the default
+    :class:`harmonica.ReferenceEllipsoid` set by the
+    :func:`harmonica.set_ellipsoid` function.
     The coordinates are converted following [Vermeille2002]_.
 
     Parameters
     ----------
     longitude : array
-        Longitude coordinates on geocentric spherical coordinate system in degrees.
+        Longitude coordinates on geocentric spherical coordinate system in
+        degrees.
     spherical_latitude : array
-        Latitude coordinates on geocentric spherical coordinate system in degrees.
+        Latitude coordinates on geocentric spherical coordinate system in
+        degrees.
     radius : array
         Spherical radius coordinates in meters.
 
@@ -100,28 +109,34 @@ def spherical_to_geodetic(longitude, spherical_latitude, radius):
         Longitude coordinates on geodetic coordinate system in degrees.
         The longitude coordinates are not modified during this conversion.
     latitude : array
-        Converted latitude coordinates on geodetic coordinate system in degrees.
+        Converted latitude coordinates on geodetic coordinate system in
+        degrees.
     height : array
         Converted ellipsoidal height coordinates in meters.
 
     See also
     --------
-    geodetic_to_spherical : Convert from geodetic to geocentric spherical coordinates.
+    geodetic_to_spherical :
+        Convert from geodetic to geocentric spherical coordinates.
 
     Examples
     --------
 
-    In the poles and equator, using the semi-minor or semi-major axis of the ellipsoid
-    as the radius should yield 0 height:
+    In the poles and equator, using the semi-minor or semi-major axis of the
+    ellipsoid as the radius should yield 0 height:
 
     >>> import harmonica as hm
     >>> geodetic = hm.spherical_to_geodetic(
-    ...     longitude=0, spherical_latitude=90, radius=hm.get_ellipsoid().semiminor_axis
+    ...     longitude=0,
+    ...     spherical_latitude=90,
+    ...     radius=hm.get_ellipsoid().semiminor_axis,
     ... )
     >>> print(", ".join("{:.1f}".format(i) for i in geodetic))
     0.0, 90.0, 0.0
     >>> geodetic = hm.spherical_to_geodetic(
-    ...     longitude=0, spherical_latitude=0, radius=hm.get_ellipsoid().semimajor_axis
+    ...     longitude=0,
+    ...     spherical_latitude=0,
+    ...     radius=hm.get_ellipsoid().semimajor_axis,
     ... )
     >>> print(", ".join("{:.1f}".format(i) for i in geodetic))
     0.0, 0.0, 0.0
