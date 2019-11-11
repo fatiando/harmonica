@@ -7,29 +7,30 @@ from numba import jit
 
 def distance(point_p, point_q, coordinate_system="cartesian"):
     """
-    Calculate the distance between two points in Cartesian or spherical coordinates
+    Distance between two points in Cartesian or spherical coordinates
 
     Parameters
     ----------
     point_p : list or tuple or 1d-array
-        List, tuple or array containing the coordinates of the first point in the
-        following order: (``easting``, ``northing`` and ``upward``) if given in Cartesian
-        coordinates, or (``longitude``, ``latitude`` and ``radius``) if given in
-        a spherical geocentric coordiante system.
+        List, tuple or array containing the coordinates of the first point in
+        the following order: (``easting``, ``northing`` and ``upward``) if
+        given in Cartesian coordinates, or (``longitude``, ``latitude`` and
+        ``radius``) if given in a spherical geocentric coordiante system.
         All ``easting``, ``northing`` and ``upward`` must be in meters.
-        Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
-        meters.
+        Both ``longitude`` and ``latitude`` must be in degrees, while
+        ``radius`` in meters.
     point_q : list or tuple or 1d-array
-        List, tuple or array containing the coordinates of the second point in the
-        following order: (``easting``, ``northing`` and ``upward``) if given in Cartesian
-        coordinates, or (``longitude``, ``latitude`` and ``radius``) if given in
-        a spherical geocentric coordiante system.
+        List, tuple or array containing the coordinates of the second point in
+        the following order: (``easting``, ``northing`` and ``upward``) if
+        given in Cartesian coordinates, or (``longitude``, ``latitude`` and
+        ``radius``) if given in a spherical geocentric coordiante system.
         All ``easting``, ``northing`` and ``upward`` must be in meters.
-        Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
-        meters.
+        Both ``longitude`` and ``latitude`` must be in degrees, while
+        ``radius`` in meters.
     coordinate_system : str (optional)
-        Coordinate system of the coordinates of the computation points and the point
-        masses. Available coordinates systems: ``cartesian``, ``spherical``.
+        Coordinate system of the coordinates of the computation points and the
+        point masses.
+        Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
 
     Returns
@@ -108,13 +109,13 @@ def distance_spherical(point_p, point_q):
     point_p : tuple or 1d-array
         Tuple or array containing the coordinates of the first point in the
         following order: (``longitude``, ``latitude`` and ``radius``).
-        Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
-        meters.
+        Both ``longitude`` and ``latitude`` must be in degrees, while
+        ``radius`` in meters.
     point_q : tuple or 1d-array
         Tuple or array containing the coordinates of the second point in the
         following order: (``longitude``, ``latitude`` and ``radius``).
-        Both ``longitude`` and ``latitude`` must be in degrees, while ``radius`` in
-        meters.
+        Both ``longitude`` and ``latitude`` must be in degrees, while
+        ``radius`` in meters.
 
     Returns
     -------
@@ -143,23 +144,26 @@ def distance_spherical_core(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Core computation for the distance between two points in spherical coordinates
+    Core computation of distance between two points in spherical coordinates
 
     It computes the distance between two points in spherical coordinates given
-    precomputed quantities related to the coordinates of both points: the ``longitude``
-    in radians, the sine and cosine of the ``latitude`` and the ``radius`` in meters.
-    Precomputing this quantities may save computation time on some cases.
+    precomputed quantities related to the coordinates of both points: the
+    ``longitude`` in radians, the sine and cosine of the ``latitude`` and the
+    ``radius`` in meters. Precomputing this quantities may save computation
+    time on some cases.
 
     Parameters
     ----------
     longitude, cosphi, sinphi, radius : floats
-        Quantities related to the coordinates of the first point. ``cosphi`` and
-        ``sinphi`` are the cosine and sine of the latitude coordinate of the first
-        point, respectively. ``longitude`` must be in radians and ``radius`` in meters.
+        Quantities related to the coordinates of the first point. ``cosphi``
+        and ``sinphi`` are the cosine and sine of the latitude coordinate of
+        the first point, respectively. ``longitude`` must be in radians and
+        ``radius`` in meters.
     longitude_p, cosphi_p, sinphi_p, radius_p : floats
-        Quantities related to the coordinates of the second point. ``cosphi_p`` and
-        ``sinphi_p`` are the cosine and sine of the latitude coordinate of the second
-        point, respectively. ``longitude`` must be in radians and ``radius`` in meters.
+        Quantities related to the coordinates of the second point. ``cosphi_p``
+        and ``sinphi_p`` are the cosine and sine of the latitude coordinate of
+        the second point, respectively. ``longitude`` must be in radians and
+        ``radius`` in meters.
 
     Returns
     -------
