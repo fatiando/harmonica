@@ -64,7 +64,7 @@ def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
 
 def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
     """
-    Create a synthetic ground survey
+    Create measurement locations for a synthetic ground survey
 
     The observation points are sampled from the South Africa gravity dataset
     (see :func:`harmonica.datasets.fetch_south_africa_gravity`). Only a portion
