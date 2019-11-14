@@ -4,9 +4,9 @@
 
 .. autoclass:: {{ objname }}
 
-    .. rubric:: Methods Summary
+.. rubric:: Methods Summary
 
-    .. autosummary::
+.. autosummary::
     {% for item in members %}
     {% if item in ['__call__'] %}
         {{ objname }}.{{ item }}
