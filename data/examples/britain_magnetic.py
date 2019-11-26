@@ -14,8 +14,9 @@ The columns of the data table are longitude, latitude, total-field
 magnetic anomaly (nanoTesla), observation height relative to the WGS84 datum
 (in meters), survey area, and line number and line segment for each data point.
 
-Latitude, longitude, and elevation data converted from original OSGB36 (epsg:27700)
-coordinate system to WGS84 (epsg:4326) using to_crs function in GeoPandas.
+Latitude, longitude, and elevation data converted from original OSGB36
+(epsg:27700) coordinate system to WGS84 (epsg:4326) using to_crs function in
+GeoPandas.
 
 See the original data for more processing information.
 

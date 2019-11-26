@@ -2,12 +2,12 @@
 Normal Gravity
 ==============
 
-Normal gravity is defined as the magnitude of the gradient of the gravity potential
-(gravitational + centrifugal) of a reference ellipsoid. Function
-:func:`harmonica.normal_gravity` implements a closed form solution [LiGotze2001]_ to
-calculate normal gravity at any latitude and height (it's symmetric in the longitudinal
-direction). The ellipsoid in the calculations used can be changed using
-:func:`harmonica.set_ellipsoid`.
+Normal gravity is defined as the magnitude of the gradient of the gravity
+potential (gravitational + centrifugal) of a reference ellipsoid. Function
+:func:`harmonica.normal_gravity` implements a closed form solution
+[LiGotze2001]_ to calculate normal gravity at any latitude and height (it's
+symmetric in the longitudinal direction). The ellipsoid in the calculations
+used can be changed using :func:`harmonica.set_ellipsoid`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs

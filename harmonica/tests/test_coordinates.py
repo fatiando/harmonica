@@ -14,11 +14,11 @@ from ..ellipsoid import (
 
 
 def test_geodetic_to_spherical_with_spherical_ellipsoid():
-    "Test geodetic to geocentric coordinates conversion if ellipsoid is a sphere."
+    "Test geodetic to geocentric conversion if ellipsoid is a sphere."
     rtol = 1e-10
     sphere_radius = 1.0
-    # Define a "spherical" ellipsoid with radius equal to 1m.
-    # To do so, we define a zero flattening, thus an infinite inverse flattening.
+    # Define a "spherical" ellipsoid with radius equal to 1m. To do so, we
+    # define a zero flattening, thus an infinite inverse flattening.
     spherical_ellipsoid = ReferenceEllipsoid(
         "unit_sphere", sphere_radius, np.infty, 0, 0
     )
@@ -72,11 +72,11 @@ def test_geodetic_to_spherical_on_poles():
 
 
 def test_spherical_to_geodetic_with_spherical_ellipsoid():
-    "Test spherical to geodetic coordinates conversion if ellipsoid is a sphere."
+    "Test spherical to geodetic conversion if ellipsoid is a sphere."
     rtol = 1e-10
     sphere_radius = 1.0
-    # Define a "spherical" ellipsoid with radius equal to 1m.
-    # To do so, we define a zero flattening, thus an infinite inverse flattening.
+    # Define a "spherical" ellipsoid with radius equal to 1m. To do so, we
+    # define a zero flattening, thus an infinite inverse flattening.
     spherical_ellipsoid = ReferenceEllipsoid(
         "unit_sphere", sphere_radius, np.infty, 0, 0
     )
@@ -132,7 +132,7 @@ def test_spherical_to_geodetic_on_poles():
 
 
 def test_spherical_to_geodetic_identity():
-    "Test if geodetic_to_spherical and spherical_to_geodetic is the identity operator"
+    "Test if applying both conversions in serie is the identity operator"
     rtol = 1e-10
     longitude = np.linspace(0, 350, 36)
     latitude = np.linspace(-90, 90, 19)

@@ -22,7 +22,8 @@ from ..forward.tesseroid import (
     MAX_DISCRETIZATIONS,
 )
 
-# Define the accuracy threshold for tesseroids (0.1%) as a relative error (0.001)
+# Define the accuracy threshold for tesseroids (0.1%) as a
+# relative error (0.001)
 ACCURACY_THRESHOLD = 1e-3
 
 
@@ -59,7 +60,9 @@ def test_invalid_field():
 
 
 def test_invalid_distance_size_ratii():
-    "Check if distance_size_ratii argument is well handled by tesseroid_gravity"
+    """
+    Check if distance_size_ratii argument is well handled by tesseroid_gravity
+    """
     tesseroid = [-10, 10, -10, 10, 100, 200]
     density = 1000
     coordinates = [0, 0, 250]
@@ -77,7 +80,9 @@ def test_invalid_distance_size_ratii():
 
 
 def test_invalid_density_array():
-    "Check if error is raised when density shape does not match tesseroids shape"
+    """
+    Check if error is raised when density shape does not match tesseroids shape
+    """
     # Create a set of 4 tesseroids
     tesseroids = [
         [-10, 0, -10, 0, 100, 200],
@@ -169,7 +174,8 @@ def test_disable_checks():
     # By default, an error should be raised for invalid input
     with pytest.raises(ValueError):
         tesseroid_gravity(coordinates, invalid_tesseroid, density, field="potential")
-    # Check if an invalid tesseroid doesn't raise an error with the disable_checks flag set to True
+    # Check if an invalid tesseroid doesn't raise an error with the
+    # disable_checks flag set to True
     invalid_result = tesseroid_gravity(
         coordinates, invalid_tesseroid, density, field="potential", disable_checks=True
     )
@@ -360,7 +366,8 @@ def test_split_tesseroid_only_longitude():
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
     assert splitted.shape[0] == stack_top + 1
-    # Check if the tesseroid hasn't been split on latitudinal and radial direction
+    # Check if the tesseroid hasn't been split on latitudinal and
+    # radial direction
     assert (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
     # Check if the tesseroid has been correctly split on longitudinal direction
@@ -385,7 +392,8 @@ def test_split_tesseroid_only_latitude():
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
     assert splitted.shape[0] == stack_top + 1
-    # Check if the tesseroid hasn't been split on longitudinal and radial direction
+    # Check if the tesseroid hasn't been split on longitudinal and
+    # radial direction
     assert (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
     # Check if the tesseroid has been correctly split on longitudinal direction
@@ -410,7 +418,8 @@ def test_split_tesseroid_only_radius():
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
     assert splitted.shape[0] == 2
     assert splitted.shape[0] == stack_top + 1
-    # Check if the tesseroid hasn't been split on longitudinal and latitudinal direction
+    # Check if the tesseroid hasn't been split on longitudinal and latitudinal
+    # direction
     assert (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
     assert (splitted[0, lat_indexes] == splitted[:, lat_indexes]).all()
     # Check if the tesseroid has been correctly split on longitudinal direction
@@ -450,7 +459,8 @@ def test_adaptive_discretization_on_radii():
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
     for radial_discretization in [True, False]:
         radii = [10.5, 12.0, 13.0, 15.0, 20.0, 30.0]
-        # Only if 2D adaptive discretization set point on the surface of the tesseroid
+        # Only if 2D adaptive discretization set point on the surface of the
+        # tesseroid
         if radial_discretization:
             radii.insert(0, 10.1)
         else:
@@ -497,7 +507,9 @@ def test_adaptive_discretization_vs_distance_size_ratio():
 
 @require_numba
 def test_two_dimensional_adaptive_discretization():
-    "Test if the 2D adaptive discretization produces no splits on radial direction"
+    """
+    Test if 2D adaptive discretization produces no splits on radial direction
+    """
     bottom, top = 1.0, 10.0
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
     coordinates = np.array([0.0, 0.0, top])
@@ -517,7 +529,10 @@ def test_two_dimensional_adaptive_discretization():
 # Compare numerical result vs analytical solution of spherical shell
 # ------------------------------------------------------------------
 def spherical_shell_analytical(top, bottom, density, radius):
-    "Compute analytical solution of gravity fields for an homogeneous spherical shell"
+    """
+    Compute analytical solution of gravity fields for an
+    homogeneous spherical shell
+    """
     potential = (
         4
         / 3
@@ -537,12 +552,16 @@ def spherical_shell_analytical(top, bottom, density, radius):
 
 @require_numba
 def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many-locals
-    "Compare numerical result with analytical solution for 2D adaptive discretization"
+    """
+    Compare numerical result with analytical solution for
+    2D adaptive discretization
+    """
     # Define computation point located on the equator at the mean Earth radius
     ellipsoid = get_ellipsoid()
     radius = ellipsoid.mean_radius
     coordinates = grid_coordinates([0, 350, -90, 90], spacing=10, extra_coords=radius)
-    # Define lon and lat coordinates of spherical shell model made of tesseroids
+    # Define lon and lat coordinates of spherical shell model made of
+    # tesseroids
     shape = (12, 6)
     longitude = np.linspace(0, 360, shape[0] + 1)
     latitude = np.linspace(-90, 90, shape[1] + 1)
@@ -563,7 +582,8 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy threshold
+        # Assert analytical and numerical solution are bellow the accuracy
+        # threshold
         for field in analytical:
             npt.assert_allclose(
                 analytical[field],
@@ -576,8 +596,12 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
 
 @require_numba
 def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-many-locals
-    "Compare numerical result with analytical solution for 3D adaptive discretization"
-    # Define computation point located on the equator at 1km above mean Earth radius
+    """
+    Compare numerical result with analytical solution for
+    3D adaptive discretization
+    """
+    # Define computation point located on the equator at 1km above mean Earth
+    # radius
     ellipsoid = get_ellipsoid()
     radius = ellipsoid.mean_radius + 1e3
     coordinates = [0, 0, radius]
@@ -602,7 +626,8 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy threshold
+        # Assert analytical and numerical solution are bellow the accuracy
+        # threshold
         for field in analytical:
             npt.assert_allclose(
                 analytical[field],
