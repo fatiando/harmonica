@@ -2,23 +2,26 @@
 Airy Isostasy
 =============
 
-According to the Airy hypothesis of isostasy, topography above sea level is supported by
-a thickening of the crust (a root) while oceanic basins are supported by a thinning of
-the crust (an anti-root). Function :func:`harmonica.isostasy_airy` computes the depth to
-crust-mantle interface (the Moho) according to Airy isostasy. One must assume a value
-for the reference thickness of the continental crust in order to convert the
-root/anti-root thickness into Moho depth. The function contains common default values
-for the reference thickness and crust, mantle, and water densities
+According to the Airy hypothesis of isostasy, topography above sea level is
+supported by a thickening of the crust (a root) while oceanic basins are
+supported by a thinning of the crust (an anti-root). Function
+:func:`harmonica.isostasy_airy` computes the depth to crust-mantle interface
+(the Moho) according to Airy isostasy. One must assume a value for the
+reference thickness of the continental crust in order to convert the
+root/anti-root thickness into Moho depth. The function contains common default
+values for the reference thickness and crust, mantle, and water densities
 [TurcotteSchubert2014]_.
 
-We'll use our sample topography data (:func:`harmonica.datasets.fetch_topography_earth`)
-to calculate the Airy isostatic Moho depth of Africa.
+We'll use our sample topography data
+(:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
+isostatic Moho depth of Africa.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import harmonica as hm
 
-# Load the elevation model and cut out the portion of the data corresponding to Africa
+# Load the elevation model and cut out the portion of the data corresponding to
+# Africa
 data = hm.datasets.fetch_topography_earth()
 region = (-20, 60, -40, 45)
 data_africa = data.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))

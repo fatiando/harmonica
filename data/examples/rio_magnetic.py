@@ -2,11 +2,12 @@
 Total Field Magnetic Anomaly from Rio de Janeiro
 ================================================
 
-A subsection from an airborne survey of the state of Rio de Janeiro, Brazil, conducted
-in 1978. The data are stored in a :class:`pandas.DataFrame` with columns: longitude,
-latitude, total field anomaly (nanoTesla), observation height above the WGS84 ellipsoid
-(meters), type of flight line (LINE or TIE), and flight line number. See the
-documentation for :func:`harmonica.datasets.fetch_rio_magnetic` for more information.
+A subsection from an airborne survey of the state of Rio de Janeiro, Brazil,
+conducted in 1978. The data are stored in a :class:`pandas.DataFrame` with
+columns: longitude, latitude, total field anomaly (nanoTesla), observation
+height above the WGS84 ellipsoid (meters), type of flight line (LINE or TIE),
+and flight line number. See the documentation for
+:func:`harmonica.datasets.fetch_rio_magnetic` for more information.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs

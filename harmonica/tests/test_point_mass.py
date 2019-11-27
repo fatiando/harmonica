@@ -296,12 +296,13 @@ def test_potential_cartesian_known_values():
 @pytest.mark.use_numba
 def test_potential_cartesian_symmetry():
     """
-    Test if potential field of a point mass has symmetry in Cartesian coordinates
+    Test if potential field of a point mass has symmetry in Cartesian coords
     """
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
     masses = [2670]
-    # Define a set of computation points at a fixed distance from the point mass
+    # Define a set of computation points at a fixed distance from the point
+    # mass
     distance = 3.3
     easting = point_mass[0] * np.ones(6)
     northing = point_mass[1] * np.ones(6)
@@ -353,7 +354,8 @@ def test_point_mass_on_origin():
     longitude = np.linspace(-180, 180, 37)
     latitude = np.linspace(-90, 90, 19)
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
-    # Analytical solutions (accelerations are in mgal and tensor components in eotvos)
+    # Analytical solutions (accelerations are in mgal and tensor components in
+    # eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
         "g_z": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
@@ -370,7 +372,9 @@ def test_point_mass_on_origin():
 
 @pytest.mark.use_numba
 def test_point_mass_same_radial_direction():
-    "Check potential and g_z of point mass and computation point on same radius"
+    """
+    Check potential and g_z of point mass and computation point on same radius
+    """
     sphere_radius = 3.0
     mass = 2.0
     for longitude in np.linspace(-180, 180, 37):

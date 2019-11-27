@@ -62,7 +62,8 @@ def test_disable_checks():
     # By default, an error should be raised for invalid input
     with pytest.raises(ValueError):
         prism_gravity(coordinates, invalid_prism, density, field="potential")
-    # Check if an invalid prism doesn't raise an error with the disable_checks flag set to True
+    # Check if an invalid prism doesn't raise an error with the disable_checks
+    # flag set to True
     invalid_result = prism_gravity(
         coordinates, invalid_prism, density, field="potential", disable_checks=True
     )
@@ -77,8 +78,8 @@ def test_potential_field_symmetry():
     "Test if the potential field satisfies symmetry"
     prism = [-100, 100, -100, 100, -100, 100]
     density = 2670
-    # Create six outside computation points located on the normal directions to the
-    # prism faces and at the same distance from its center
+    # Create six outside computation points located on the normal directions to
+    # the prism faces and at the same distance from its center
     coordinates = (
         [-200, 200, 0, 0, 0, 0],
         [0, 0, -200, 200, 0, 0],
@@ -86,16 +87,17 @@ def test_potential_field_symmetry():
     )
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
-    # Create six inside computation points located on the normal directions to the prism
-    # faces and at the same distance from its center
+    # Create six inside computation points located on the normal directions to
+    # the prism faces and at the same distance from its center
     coordinates = ([-50, 50, 0, 0, 0, 0], [0, 0, -50, 50, 0, 0], [0, 0, 0, 0, -50, 50])
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
-    # Create twelve outside computation points located on the diagonal directions to the
-    # prism faces and at the same distance from its center. They can be divided into
-    # three sets: one made by those points that live on the horizontal plane that passes
-    # through the prism center, and the other two that live on the pair of vertical
-    # and perpendicular planes that also passes through the center of the prism.
+    # Create twelve outside computation points located on the diagonal
+    # directions to the prism faces and at the same distance from its center.
+    # They can be divided into three sets: one made by those points that live
+    # on the horizontal plane that passes through the prism center, and the
+    # other two that live on the pair of vertical and perpendicular planes that
+    # also passes through the center of the prism.
     coordinates = (
         [-200, -200, 200, 200, -200, -200, 200, 200, 0, 0, 0, 0],
         [-200, 200, -200, 200, 0, 0, 0, 0, -200, -200, 200, 200],
@@ -103,7 +105,8 @@ def test_potential_field_symmetry():
     )
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
-    # Create the same twelve points as before, but now all points fall inside the prism
+    # Create the same twelve points as before, but now all points fall inside
+    # the prism
     coordinates = (
         [-50, -50, 50, 50, -50, -50, 50, 50, 0, 0, 0, 0],
         [-50, 50, -50, 50, 0, 0, 0, 0, -50, -50, 50, 50],
@@ -118,24 +121,24 @@ def test_g_z_symmetry_outside():
     """
     Test if the g_z field satisfies symmetry
 
-    In order to test if the computed g_z satisfies the symmetry of a square prism
-    we will define several set of computation points:
+    In order to test if the computed g_z satisfies the symmetry of a square
+    prism we will define several set of computation points:
 
-    A. Two points located on the vertical axis of the prism (``easting == 0`` and
-       ``northing == 0``), one above and one bellow the prism at the same distance from
-       its center.
-    B. Four points located on the ``upward == 0`` plane around the prism distributed
-       normally to its faces , i.e. only one of the horizontal coordinates will be
-       nonzero.
+    A. Two points located on the vertical axis of the prism (``easting == 0``
+       and ``northing == 0``), one above and one bellow the prism at the same
+       distance from its center.
+    B. Four points located on the ``upward == 0`` plane around the prism
+       distributed normally to its faces , i.e. only one of the horizontal
+       coordinates will be nonzero.
     C. Same as points defined in B, but located on a plane above the prism.
     D. Same as points defined in B, but located on a plane bellow the prism.
     E. Same as points defined in B, but located on a plane slightly above the
        ``upward == 0`` plane.
     F. Same as points defined in B, but located on a plane slightly bellow the
        ``upward == 0`` plane.
-    G. Four points located on the ``upward == 0`` plane around the prism distributed on
-       the diagonal directions , i.e. both horizontal coordinates will be equal and
-       nonzero.
+    G. Four points located on the ``upward == 0`` plane around the prism
+       distributed on the diagonal directions , i.e. both horizontal
+       coordinates will be equal and nonzero.
     H. Same as points defined in G, but located on an plane above the prism.
     I. Same as points defined in G, but located on an plane bellow the prism.
     J. Same as points defined in G, but located on a plane slightly above the
@@ -143,10 +146,11 @@ def test_g_z_symmetry_outside():
     K. Same as points defined in G, but located on a plane slightly bellow the
        ``upward == 0`` plane.
 
-    All computation points defined on the previous groups fall outside of the prism.
+    All computation points defined on the previous groups fall outside of the
+    prism.
 
-    The g_z field for a square prism (the horizontal dimensions of the prism are equal)
-    must satisfy the following symmetry rules:
+    The g_z field for a square prism (the horizontal dimensions of the prism
+    are equal) must satisfy the following symmetry rules:
 
     - The g_z values on points A must be opposite.
     - The g_z values on points B must be all zero.
@@ -186,9 +190,9 @@ def test_g_z_symmetry_outside():
             computation_points[group], prism, density, field="g_z"
         )
     # Check symmetries
-    # Values on A must be opposite, and the value of g_z at the point above the prism
-    # must have the same sign as the density, while the one bellow should have the
-    # opposite
+    # Values on A must be opposite, and the value of g_z at the point above the
+    # prism must have the same sign as the density, while the one bellow should
+    # have the opposite
     npt.assert_allclose(results["A"][0], -results["A"][1])
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
     npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
@@ -199,8 +203,8 @@ def test_g_z_symmetry_outside():
     for group in "B G".split():
         npt.assert_allclose(0, results[group])
     # Values on C and D, E and F, H and I, J and K must be opposite
-    # Moreover, the set of points that are above the prism must have the same sign as
-    # the density, while the ones bellow should have the opposite
+    # Moreover, the set of points that are above the prism must have the same
+    # sign as the density, while the ones bellow should have the opposite
     for above, bellow in (("C", "D"), ("E", "F"), ("H", "I"), ("J", "K")):
         npt.assert_allclose(results[above], -results[bellow])
         npt.assert_allclose(np.sign(results[above]), np.sign(density))
@@ -211,32 +215,33 @@ def test_g_z_symmetry_inside():
     """
     Test g_z symmetry on computation points that fall inside the prism
 
-    In order to test if the computed g_z satisfies the symmetry of a square prism on
-    computation points that fall inside the prism, we will define several set of
-    computation points:
+    In order to test if the computed g_z satisfies the symmetry of a square
+    prism on computation points that fall inside the prism, we will define
+    several set of computation points:
 
-    A. Two points located on the vertical axis of the prism (``easting == 0`` and
-       ``northing == 0``), one above and one bellow the center of prism, but at the same
-       distance from it.
-    B. Four points located on the ``upward == 0`` plane around the prism distributed
-       normally to its faces , i.e. only one of the horizontal coordinates will be
-       nonzero.
-    C. Same as points defined in B, but located on a plane above the ``upward == 0``
-       plane.
-    D. Same as points defined in B, but located on a plane bellow the ``upward == 0``
-       plane.
-    E. Four points located on the ``upward == 0`` plane around the prism distributed on
-       the diagonal directions , i.e. both horizontal coordinates will be equal and
-       nonzero.
-    F. Same as points defined in E, but located on a plane above the ``upward == 0``
-       plane.
-    G. Same as points defined in E, but located on a plane bellow the ``upward == 0``
-       plane.
+    A. Two points located on the vertical axis of the prism (``easting == 0``
+       and ``northing == 0``), one above and one bellow the center of prism,
+       but at the same distance from it.
+    B. Four points located on the ``upward == 0`` plane around the prism
+       distributed normally to its faces , i.e. only one of the horizontal
+       coordinates will be nonzero.
+    C. Same as points defined in B, but located on a plane above the
+       ``upward == 0`` plane.
+    D. Same as points defined in B, but located on a plane bellow the
+       ``upward == 0`` plane.
+    E. Four points located on the ``upward == 0`` plane around the prism
+       distributed on the diagonal directions , i.e. both horizontal
+       coordinates will be equal and nonzero.
+    F. Same as points defined in E, but located on a plane above the
+       ``upward == 0`` plane.
+    G. Same as points defined in E, but located on a plane bellow the
+       ``upward == 0`` plane.
 
-    All computation points defined on the previous groups fall outside of the prism.
+    All computation points defined on the previous groups fall outside of the
+    prism.
 
-    The g_z field for a square prism (the horizontal dimensions of the prism are equal)
-    must satisfy the following symmetry rules:
+    The g_z field for a square prism (the horizontal dimensions of the prism
+    are equal) must satisfy the following symmetry rules:
 
     - The g_z values on points A must be opposite.
     - The g_z values on points B must be all zero.
@@ -266,9 +271,9 @@ def test_g_z_symmetry_inside():
             computation_points[group], prism, density, field="g_z"
         )
     # Check symmetries
-    # Values on A must be opposite, and the value of g_z at the point above the center
-    # of the prism must have the same sign as the density, while the one bellow should
-    # have the opposite
+    # Values on A must be opposite, and the value of g_z at the point above the
+    # center of the prism must have the same sign as the density, while the one
+    # bellow should have the opposite
     npt.assert_allclose(results["A"][0], -results["A"][1])
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
     npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
@@ -279,8 +284,9 @@ def test_g_z_symmetry_inside():
     for group in "B E".split():
         npt.assert_allclose(0, results[group])
     # Values on C and D, F and G must be opposite
-    # Moreover, the set of points that are above the center of the prism must have the
-    # same sign as the density, while the ones bellow should have the opposite
+    # Moreover, the set of points that are above the center of the prism must
+    # have the same sign as the density, while the ones bellow should have the
+    # opposite
     for above, bellow in (("C", "D"), ("F", "G")):
         npt.assert_allclose(results[above], -results[bellow])
         npt.assert_allclose(np.sign(results[above]), np.sign(density))
@@ -328,8 +334,8 @@ def test_prism_against_infinite_slab():
     """
     # Define an observation point 1.5 m above the prism
     coordinates = (0, 0, 1.5)
-    # Define prisms with thickness of 10.5 m and horizontal dimensions from 1e3 to 1e9m
-    # and density of 2670 kg/m^3
+    # Define prisms with thickness of 10.5 m and horizontal dimensions from 1e3
+    # to 1e9m and density of 2670 kg/m^3
     thickness = 10.5
     sizes = np.logspace(3, 9, 7)
     bottom, top = -thickness, 0
@@ -339,8 +345,8 @@ def test_prism_against_infinite_slab():
     for i, size in enumerate(sizes):
         prism = [-size / 2, size / 2, -size / 2, size / 2, bottom, top]
         results[i] = prism_gravity(coordinates, prism, density, field="g_z")
-    # Check convergence: assert if as the prism size increases, the result gets closer
-    # to the analytical solution for an infinite slab
+    # Check convergence: assert if as the prism size increases, the result gets
+    # closer to the analytical solution for an infinite slab
     analytical = bouguer_correction(np.array(thickness), density)
     diffs = abs((results - analytical) / analytical)
     assert (diffs[1:] < diffs[:-1]).all()

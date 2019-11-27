@@ -24,7 +24,7 @@ def test_ground_survey():
 
 def test_scale_ground_survey():
     """
-    Test if the synthetic ground survey returns the expected survey after scaled
+    Test if synthetic ground survey returns the expected survey after scaled
     """
     region = (-10.1, 9.7, -20.3, -10.5)  # a random region to scale the survey
     survey = ground_survey(region=region)
@@ -57,7 +57,7 @@ def test_airborne_survey():
 
 def test_scale_airborne_survey():
     """
-    Test if the synthetic airborne survey returns the expected survey after scaled
+    Test if synthetic airborne survey returns the expected survey after scaled
     """
     region = (-10.1, 9.7, -20.3, -10.5)  # a random region to scale the survey
     survey = airborne_survey(region=region)
