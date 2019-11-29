@@ -366,8 +366,8 @@ def test_g_z_relative_error():
         coordinates, point_mass, mass, "potential", "cartesian"
     )
     # Remember that the ``g_z`` field returns the downward component of the
-    # gravitational acceleration. As a consequence, the numerical derivativative
-    # is multiplied by -1.
+    # gravitational acceleration. As a consequence, the numerical
+    # derivativative is multiplied by -1.
     approximated_deriv = -1e5 * (potential[1] - potential[0]) / (2.0 * delta)
 
     # Compute the relative error
@@ -405,12 +405,14 @@ def test_g_z_sign():
 @pytest.mark.use_numba
 def test_g_northing_symmetry():
     """
-    Test if g_northing field of a point mass has symmetry in Cartesian coordinates
+    Test if g_northing field of a point mass has symmetry in Cartesian
+    coordinates
     """
     # Define a single point mass
     point_mass = [-7.9, 25, -130]
     masses = [2670]
-    # Define a pair of computation points northward and southward the point mass
+    # Define a pair of computation points northward and southward the point
+    # mass
     distance = 6.1
     easting = point_mass[0] + np.zeros(2)
     northing = point_mass[1] + np.zeros(2)
@@ -486,12 +488,14 @@ def test_g_northing_sign():
 @pytest.mark.use_numba
 def test_g_easting_symmetry():
     """
-    Test if g_easting field of a point mass has symmetry in Cartesian coordinates
+    Test if g_easting field of a point mass has symmetry in Cartesian
+    coordinates
     """
     # Define a single point mass
     point_mass = [191, -5, 0]
     masses = [2670]
-    # Define a pair of computation points northward and southward the point mass
+    # Define a pair of computation points northward and southward the point
+    # mass
     distance = 4.6
     easting = point_mass[0] + np.zeros(2)
     northing = point_mass[1] + np.zeros(2)
