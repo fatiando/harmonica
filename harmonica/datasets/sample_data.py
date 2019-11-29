@@ -106,43 +106,6 @@ def fetch_topography_earth():
     return data
 
 
-def fetch_rio_magnetic():
-    """
-    Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.
-
-    These data are a subsection of an airborne survey of the state of Rio de
-    Janeiro, Brazil, conducted in 1978. The data are made available by the
-    Geological Survey of Brazil (CPRM) through their `GEOSGB portal
-    <http://geosgb.cprm.gov.br/>`__.
-
-    The columns of the data table are longitude, latitude, total-field magnetic
-    anomaly (nanoTesla), observation height above the WGS84 ellipsoid (in
-    meters), flight line type (LINE or TIE), and flight line number for each
-    data point.
-
-    The anomaly is calculated with respect to the IGRF field parameters listed
-    on the table below. See the original data for more processing information.
-
-    +----------+-----------+----------------+-------------+-------------+
-    |               IGRF for year 1978.3 at 500 m height                |
-    +----------+-----------+----------------+-------------+-------------+
-    | Latitude | Longitude | Intensity (nT) | Declination | Inclination |
-    +==========+===========+================+=============+=============+
-    |  -22º15' |  -42º15'  |     23834      |   -19º19'   |   -27º33'   |
-    +----------+-----------+----------------+-------------+-------------+
-
-    If the file isn't already in your data directory, it will be downloaded
-    automatically.
-
-    Returns
-    -------
-    data : :class:`pandas.DataFrame`
-        The magnetic anomaly data.
-
-    """
-    return pd.read_csv(POOCH.fetch("rio-magnetic.csv.xz"), compression="xz")
-
-
 def fetch_britain_magnetic():
     """
     Fetch total-field magnetic anomaly data of Great Britain.
