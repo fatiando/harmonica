@@ -70,6 +70,14 @@ Input and Output
 
     load_icgem_gdf
 
+Synthetic models and surveys
+----------------------------
+.. autosummary::
+   :toctree: generated/
+
+    synthetic.airborne_survey
+    synthetic.ground_survey
+
 
 .. automodule:: harmonica.datasets
 

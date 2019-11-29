@@ -11,36 +11,39 @@ def prism_gravity(
     coordinates, prisms, density, field, dtype="float64", disable_checks=False
 ):
     """
-    Compute gravitational fields of right-rectangular prisms in Cartesian coordinates.
+    Gravitational fields of right-rectangular prisms in Cartesian coordinates
 
-    The gravitational fields are computed through the analytical solutions given by
-    [Nagy2000]_ and [Nagy2002]_, which are valid on the entire domain. This means that
-    the computation can be done at any point, either outside or inside the prism.
+    The gravitational fields are computed through the analytical solutions
+    given by [Nagy2000]_ and [Nagy2002]_, which are valid on the entire domain.
+    This means that the computation can be done at any point, either outside or
+    inside the prism.
 
-    This implementation makes use of the modified arctangent function proposed by
-    [Fukushima2019]_ (eq. 12) so that the potential field to satisfies Poisson's
-    equation in the entire domain. Moreover, the logarithm function was also modified in
-    order to solve the singularities that the analytical solution has on some points
-    (see [Nagy2000]_).
+    This implementation makes use of the modified arctangent function proposed
+    by [Fukushima2019]_ (eq. 12) so that the potential field to satisfies
+    Poisson's equation in the entire domain. Moreover, the logarithm function
+    was also modified in order to solve the singularities that the analytical
+    solution has on some points (see [Nagy2000]_).
 
     .. warning::
-        The **z direction points upwards**, i.e. positive and negative values of
-        ``upward`` represent points above and below the surface, respectively. But
-        remember that the ``g_z`` field returns the downward component of the gravitational
-        acceleration so that positive density contrasts produce positive anomalies.
+        The **z direction points upwards**, i.e. positive and negative values
+        of ``upward`` represent points above and below the surface,
+        respectively. But remember that the ``g_z`` field returns the downward
+        component of the gravitational acceleration so that positive density
+        contrasts produce positive anomalies.
 
     Parameters
     ----------
     coordinates : list or 1d-array
-        List or array containing ``easting``, ``northing`` and ``upward`` of the
-        computation points defined on a Cartesian coordinate system. All coordinates
-        should be in meters.
+        List or array containing ``easting``, ``northing`` and ``upward`` of
+        the computation points defined on a Cartesian coordinate system.
+        All coordinates should be in meters.
     prisms : list, 1d-array, or 2d-array
-        List or array containing the coordinates of the prism(s) in the following order:
-        west, east, south, north, bottom, top in a Cartesian coordinate system. All
-        coordinates should be in meters. Coordinates for more than one prism can be
-        provided. In this case, *prisms* should be a list of lists or 2d-array (with one
-        prism per line).
+        List or array containing the coordinates of the prism(s) in the
+        following order:
+        west, east, south, north, bottom, top in a Cartesian coordinate system.
+        All coordinates should be in meters. Coordinates for more than one
+        prism can be provided. In this case, *prisms* should be a list of lists
+        or 2d-array (with one prism per line).
     density : list or array
         List or array containing the density of each prism in kg/m^3.
     field : str
@@ -54,9 +57,10 @@ def prism_gravity(
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
     disable_checks : bool (optional)
-        Flag that controls whether to perform a sanity check on the model. Should be set
-        to ``True`` only when it is certain that the input model is valid and it does not
-        need to be checked. Default to ``False``.
+        Flag that controls whether to perform a sanity check on the model.
+        Should be set to ``True`` only when it is certain that the input model
+        is valid and it does not need to be checked.
+        Default to ``False``.
 
     Returns
     -------
@@ -66,16 +70,20 @@ def prism_gravity(
     Examples
     --------
 
-    Compute a single a prism located beneath the surface with density of 2670 kg/m³:
+    Compute gravitational effect of a single a prism
 
+    >>> # Define prisms boundaries, it must be beneath the surface
     >>> prism = [-34, 5, -18, 14, -345, -146]
+    >>> # Set prism density to 2670 kg/m³
     >>> density = 2670
-    >>> # Define a computation point above its center, at 30 meters above the surface
+    >>> # Define a computation point above its center, at 30 meters above the
+    >>> # surface
     >>> coordinates = (130, 75, 30)
-    >>> # Define three computation points along the easting axe at 30m above the surface
+    >>> # Define three computation points along the easting axe at 30m above
+    >>> # the surface
     >>> coordinates = ([-40, 0, 40], [0, 0, 0], [30, 30, 30])
-    >>> # Compute the downward component of the gravitational acceleration that the prism
-    >>> # generates on the computation points
+    >>> # Compute the downward component of the gravitational acceleration that
+    >>> # the prism generates on the computation points
     >>> gz = prism_gravity(coordinates, prism, density, field="g_z")
     >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
     (0.06551, 0.06628, 0.06173)
@@ -128,7 +136,8 @@ def _check_prisms(prisms):
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries. Run ``_check_prisms`` before.
+        This array of prisms must have valid boundaries.
+        Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
@@ -162,20 +171,22 @@ def jit_prism_gravity(
     Parameters
     ----------
     coordinates : tuple
-        Tuple containing ``easting``, ``northing`` and ``upward`` of the computation
-        points as arrays, all defined on a Cartesian coordinate system and in meters.
+        Tuple containing ``easting``, ``northing`` and ``upward`` of the
+        computation points as arrays, all defined on a Cartesian coordinate
+        system and in meters.
     prisms : 2d-array
         Two dimensional array containing the coordinates of the prism(s) in the
-        following order: west, east, south, north, bottom, top in a Cartesian coordinate
-        system. All coordinates should be in meters.
+        following order: west, east, south, north, bottom, top in a Cartesian
+        coordinate system.
+        All coordinates should be in meters.
     density : 1d-array
-        Array containing the density of each prism in kg/m^3. Must have the same size as
-        the number of prisms.
+        Array containing the density of each prism in kg/m^3. Must have the
+        same size as the number of prisms.
     kernel : func
         Kernel function that will be used to compute the desired field.
     out : 1d-array
-        Array where the resulting field values will be stored. Must have the same size
-        as the arrays contained on ``coordinates``.
+        Array where the resulting field values will be stored.
+        Must have the same size as the arrays contained on ``coordinates``.
     """
     # Iterate over computation points and prisms
     for l in range(coordinates[0].size):
@@ -188,9 +199,9 @@ def jit_prism_gravity(
                         shift_east = prisms[m, 1 - i]
                         shift_north = prisms[m, 3 - j]
                         shift_upward = prisms[m, 5 - k]
-                        # If i, j or k is 1, the shift_* will refer to the lower
-                        # boundary, meaning the corresponding term should have a minus
-                        # sign
+                        # If i, j or k is 1, the shift_* will refer to the
+                        # lower boundary, meaning the corresponding term should
+                        # have a minus sign
                         out[l] += (
                             density[m]
                             * (-1) ** (i + j + k)
@@ -222,7 +233,7 @@ def kernel_potential(easting, northing, upward):
 @jit(nopython=True)
 def kernel_g_z(easting, northing, upward):
     """
-    Kernel function for downward component of gravitational acceleration generated by a prism
+    Kernel for downward component of gravitational acceleration of a prism
     """
     radius = np.sqrt(easting ** 2 + northing ** 2 + upward ** 2)
     kernel = (
@@ -236,12 +247,13 @@ def kernel_g_z(easting, northing, upward):
 @jit(nopython=True)
 def safe_atan2(y, x):
     """
-    Return the principal value of the arctangent expressed as a two variable function
+    Principal value of the arctangent expressed as a two variable function
 
-    This modification has to be made to the arctangent function so the gravitational
-    field of the prism satisfies the Poisson's equation. Therefore, it guarantees that
-    the fields satisfies the symmetry properties of the prism. This modified function
-    has been defined according to [Fukushima2019]_.
+    This modification has to be made to the arctangent function so the
+    gravitational field of the prism satisfies the Poisson's equation.
+    Therefore, it guarantees that the fields satisfies the symmetry properties
+    of the prism. This modified function has been defined according to
+    [Fukushima2019]_.
     """
     if x != 0:
         result = np.arctan(y / x)

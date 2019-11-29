@@ -55,7 +55,7 @@ def test_load_icgem_gdf_with_height():
 
 
 def test_load_icgem_gdf_usecols():
-    "Check if load_icgem_gdf reads an ICGEM file reading only first two columns"
+    "Check if load_icgem_gdf loads ICGEM file reading only first two columns"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     icgem_grd = load_icgem_gdf(fname, usecols=[0, 1])
 

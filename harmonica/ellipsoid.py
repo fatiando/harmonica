@@ -1,16 +1,17 @@
 """
-Module for defining and setting the reference ellipsoid for normal gravity calculations
-and coordinate transformations.
+Module for defining and setting the reference ellipsoid for normal gravity
+calculations and coordinate transformations.
 """
 import math
 
 import attr
 
 
-# Use a list to hold the current ellipsoid because it is mutable and therefore doesn't
-# need the "global" keyword. The current ellipsoid will always be the last element of
-# this list. See get_ellipsoid(). Starts off empty because we have to define
-# set_ellipsoid, etc, first. See the last line of this file for the set_ellipsoid call.
+# Use a list to hold the current ellipsoid because it is mutable and therefore
+# doesn't need the "global" keyword. The current ellipsoid will always be the
+# last element of this list. See get_ellipsoid(). Starts off empty because we
+# have to define set_ellipsoid, etc, first. See the last line of this file for
+# the set_ellipsoid call.
 ELLIPSOID = []
 # Dict with the known ellipsoids and their names. Used when setting the current
 # ellipsoid by name in set_ellipsoid().
@@ -41,25 +42,28 @@ KNOWN_ELLIPSOIDS = {
 @attr.s(frozen=True)
 class ReferenceEllipsoid:
     """
-    A reference ellipsoid for coordinate manipulations and normal gravity calculations.
+    Reference ellipsoid for coordinate manipulations
 
-    The ellipsoid is oblate and spins around it's minor axis. It is defined by four
-    parameters and offers other derived quantities as read-only properties. In fact, all
-    attributes of this class are read-only and cannot be changed after instantiation.
+    Also useful for normal gravity calculations.
+
+    The ellipsoid is oblate and spins around it's minor axis. It is defined by
+    four parameters and offers other derived quantities as read-only
+    properties. In fact, all attributes of this class are read-only and cannot
+    be changed after instantiation.
 
     All ellipsoid parameters are in SI units.
 
     Use :func:`harmonica.set_ellipsoid` to set the default ellipsoid for all
-    calculations in harmonica and :func:`harmonica.get_ellipsoid` to retrieve the
-    currently set ellipsoid.
+    calculations in harmonica and :func:`harmonica.get_ellipsoid` to retrieve
+    the currently set ellipsoid.
 
     Parameters
     ----------
     name : str
         A short name for the ellipsoid, for example ``'WGS84'``.
     semimajor_axis : float
-        The semi-major axis of the ellipsoid (equatorial radius), usually represented by
-        "a" [meters].
+        The semi-major axis of the ellipsoid (equatorial radius), usually
+        represented by "a" [meters].
     inverse_flattening : float
         The inverse of the flattening (1/f) [adimensional].
     geocentric_grav_const : float
@@ -67,17 +71,17 @@ class ReferenceEllipsoid:
     angular_velocity : float
         The angular velocity of the rotating ellipsoid (omega) [rad s^-1].
     long_name : float or None
-        A long name for the ellipsoid, for example ``"World Geodetic System 1984"``
-        (optional).
+        A long name for the ellipsoid, for example ``"World Geodetic System
+        1984"`` (optional).
 
     Examples
     --------
 
     We can create the WGS84 ellipsoid using the values given in
-    [Hofmann-WellenhofMoritz2006]_. This class offers derived attributes that can be
-    used for other purposes. Note that the ellipsoid gravity at the pole differs from
-    [Hofmann-WellenhofMoritz2006]_ on the last digit. This is sufficiently small as to
-    not be a cause for concern.
+    [Hofmann-WellenhofMoritz2006]_. This class offers derived attributes that
+    can be used for other purposes. Note that the ellipsoid gravity at the pole
+    differs from [Hofmann-WellenhofMoritz2006]_ on the last digit. This is
+    sufficiently small as to not be a cause for concern.
 
     >>> wgs84 = ReferenceEllipsoid(
     ...     name="WGS84",
@@ -88,7 +92,7 @@ class ReferenceEllipsoid:
     ...     angular_velocity=7292115e-11
     ... )
     >>> print(wgs84) # doctest: +ELLIPSIS
-    ReferenceEllipsoid(name='WGS84', ... long_name='World Geodetic System 1984')
+    ReferenceEllipsoid(name='WGS84', ...)
     >>> print("{:.4f}".format(wgs84.semiminor_axis))
     6356752.3142
     >>> print("{:.7f}".format(wgs84.flattening))
@@ -145,7 +149,9 @@ class ReferenceEllipsoid:
     @property
     def mean_radius(self):
         """
-        The arithmetic mean radius :math:`R_1 = (2a + b) /3` [Moritz2000]_ [meters]
+        The arithmetic mean radius [meters]
+
+        :math:`R_1 = (2a + b) /3` [Moritz2000]_
         """
         return 1 / 3 * (2 * self.semimajor_axis + self.semiminor_axis)
 
@@ -161,7 +167,9 @@ class ReferenceEllipsoid:
 
     @property
     def gravity_equator(self):
-        "The norm of the gravity vector at the equator on the ellipsoid [m/s^2]"
+        """
+        The norm of the gravity vector at the equator on the ellipsoid [m/s^2]
+        """
         ratio = self.semiminor_axis / self.linear_eccentricity
         arctan = math.atan2(self.linear_eccentricity, self.semiminor_axis)
         aux = (
@@ -193,18 +201,19 @@ def print_ellipsoids(**kwargs):
     """
     Print all available ellipsoids.
 
-    These are the ones that are hard-coded into the library. You can always set your own
-    ellipsoid using :func:`harmonica.set_ellipsoid` and
+    These are the ones that are hard-coded into the library. You can always set
+    your own ellipsoid using :func:`harmonica.set_ellipsoid` and
     :class:`harmonica.ReferenceEllipsoid`.
 
-    Any keyword arguments given to this function will be passed to :func:`print`.
+    Any keyword arguments given to this function will be passed to
+    :func:`print`.
 
     Examples
     --------
 
     >>> print_ellipsoids() # doctest: +ELLIPSIS
-    ReferenceEllipsoid(name='GRS80', ... long_name='Geodetic Reference System 1980')
-    ReferenceEllipsoid(name='WGS84', ... long_name='World Geodetic System 1984')
+    ReferenceEllipsoid(name='GRS80', ...)
+    ReferenceEllipsoid(name='WGS84', ...)
 
     """
     for ellipsoid in sorted(KNOWN_ELLIPSOIDS):
@@ -215,19 +224,20 @@ def set_ellipsoid(ellipsoid="WGS84"):
     """
     Set the reference ellipsoid used throughout the library.
 
-    See :func:`harmonica.print_ellipsoids` for a list of all available ellipsoids. You
-    always set your own ellipsoid by passing a :class:`harmonica.ReferenceEllipsoid`
-    to this function instead.
+    See :func:`harmonica.print_ellipsoids` for a list of all available
+    ellipsoids. You always set your own ellipsoid by passing
+    a :class:`harmonica.ReferenceEllipsoid` to this function instead.
 
-    If used in a ``with`` block, will only set the ellipsoid for the context of the
-    block. Upon exit, will restore the previously used ellipsoid.
+    If used in a ``with`` block, will only set the ellipsoid for the context of
+    the block. Upon exit, will restore the previously used ellipsoid.
 
     Parameters
     ----------
     ellipsoid : str or :class:`~harmonica.ReferenceEllipsoid`
-        The reference ellipsoid to use throughout the library. Either the name of a
-        built-in ellipsoid (see :func:`harmonica.print_ellipsoids`) or a
-        :class:`~harmonica.ReferenceEllipsoid`.
+        The reference ellipsoid to use throughout the library.
+        Either the name of a built-in ellipsoid (see
+        :func:`harmonica.print_ellipsoids`) or
+        a :class:`~harmonica.ReferenceEllipsoid`.
 
     See also
     --------
@@ -274,8 +284,13 @@ def set_ellipsoid(ellipsoid="WGS84"):
 
     Use :class:`harmonica.ReferenceEllipsoid` to set a custom ellipsoid:
 
-    >>> myell = ReferenceEllipsoid(name="TINY", semimajor_axis=1, inverse_flattening=1,
-    ...                            geocentric_grav_const=10, angular_velocity=1)
+    >>> myell = ReferenceEllipsoid(
+    ...     name="TINY",
+    ...     semimajor_axis=1,
+    ...     inverse_flattening=1,
+    ...     geocentric_grav_const=10,
+    ...     angular_velocity=1,
+    ... )
     >>> with set_ellipsoid(myell):
     ...     print(get_ellipsoid().name)
     TINY
@@ -321,8 +336,8 @@ class EllipsoidManager:
     """
 
     ellipsoid = attr.ib()
-    # Allow passing in the ELLIPSOID in the constructor so we can use another list to
-    # test this class without messing with the global ellipsoid.
+    # Allow passing in the ELLIPSOID in the constructor so we can use another
+    # list to test this class without messing with the global ellipsoid.
     global_context = attr.ib(default=ELLIPSOID)
     _enabled = attr.ib(init=False, repr=False, default=False)
     _index = attr.ib(init=False, repr=False, default=None)
@@ -351,7 +366,9 @@ class EllipsoidManager:
             self._index = None
 
     def __enter__(self):
-        "Enter context manager by calling ``set`` to enable the given ellipsoid."
+        """
+        Enter context manager by calling ``set`` to enable the given ellipsoid
+        """
         return self.set()
 
     def __exit__(self, exc_type, exc_val, exc_tb):

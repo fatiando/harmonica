@@ -2,11 +2,11 @@
 Gravity Disturbances
 ====================
 
-Gravity disturbances are the differences between the measured gravity and a reference
-(normal) gravity produced by an ellipsoid. The disturbances are what allows
-geoscientists to infer the internal structure of the Earth. We'll use the
-:func:`harmonica.normal_gravity` function to calculate the global gravity disturbance of
-the Earth using our sample gravity data.
+Gravity disturbances are the differences between the measured gravity and
+a reference (normal) gravity produced by an ellipsoid. The disturbances are
+what allows geoscientists to infer the internal structure of the Earth. We'll
+use the :func:`harmonica.normal_gravity` function to calculate the global
+gravity disturbance of the Earth using our sample gravity data.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
