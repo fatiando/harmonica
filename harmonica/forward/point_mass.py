@@ -44,17 +44,27 @@ def point_mass_gravity(
 
     .. math::
 
-        \vec{g} = \nabla V.
+        \vec{g} = \nabla V
 
-    Therefore, the :math:`z` component of :math:`\vec{g}` at the point
-    :math:`P` can be computed as (remember that :math:`z` points upwards):
+    and has components :math:`g_{northing}(P)`, :math:`g_{easting}(P)` and
+    :math:`g_{upward}(P)` given by
 
     .. math::
 
-        g_{up}(P) = - \frac{G m}{l^3} (z - z_p).
+        g_{northing}(P) = - \frac{G m}{l^3} (x - x_p),
+
+    .. math::
+
+        g_{easting}(P) = - \frac{G m}{l^3} (y - y_p)
+
+    and
+
+    .. math::
+
+        g_{upward}(P) = - \frac{G m}{l^3} (z - z_p).
 
     We define the downward component of the gravitational acceleration as the
-    opposite of :math:`g_{up}`:
+    opposite of :math:`g_{upward}` (remember that :math:`z` points upwards):
 
     .. math::
 
@@ -138,6 +148,8 @@ def point_mass_gravity(
 
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
+        - Northing acceleration: ``g_northing``
+        - Easting acceleration: ``g_easting``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the
@@ -166,6 +178,8 @@ def point_mass_gravity(
         "cartesian": {
             "potential": kernel_potential_cartesian,
             "g_z": kernel_g_z_cartesian,
+            "g_northing": kernel_g_northing_cartesian,
+            "g_easting": kernel_g_easting_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
@@ -195,7 +209,7 @@ def point_mass_gravity(
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
-    if field == "g_z":
+    if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
@@ -242,9 +256,10 @@ def kernel_potential_cartesian(
     """
     Kernel function for gravitational potential field in Cartesian coordinates
     """
-    return 1 / distance_cartesian(
+    distance = distance_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
+    return 1 / distance
 
 
 @jit(nopython=True)
@@ -253,9 +268,41 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     Kernel for downward component of gravitational gradient in Cartesian coords
     """
     distance = distance_cartesian(
-        [easting, northing, upward], [easting_p, northing_p, upward_p]
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
+    # Remember that the ``g_z`` field returns the downward component of the
+    # gravitational acceleration. As a consequence, it is multiplied by -1.
+    # Notice that the ``g_z`` does not have the minus signal observed at the
+    # compoents ``g_northing`` and ``g_easting``.
     return (upward - upward_p) / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_northing_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
+    """
+    Kernel function for northing component of gravitational gradient in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return -(northing - northing_p) / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_easting_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p
+):
+    """
+    Kernel function for easting component of gravitational gradient in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return -(easting - easting_p) / distance ** 3
 
 
 @jit(nopython=True)
