@@ -7,7 +7,11 @@ from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
 
-from ..forward.utils import distance_cartesian
+from ..forward.utils import (
+    distance_cartesian,
+    distance_spherical,
+    check_coordinate_system,
+)
 
 
 class EQLHarmonic(vdb.BaseGridder):
@@ -66,6 +70,10 @@ class EQLHarmonic(vdb.BaseGridder):
         this constant *relative_depth*. Use positive numbers (negative numbers
         would mean point sources are above the data points). Ignored if
         *points* is specified.
+    coordinate_system : str (optional)
+        Coordinate system of the coordinates of the observation and the source
+        points. Available coordinates systems: ``cartesian``, ``spherical``.
+        Default ``cartesian``.
 
     Attributes
     ----------
@@ -80,10 +88,30 @@ class EQLHarmonic(vdb.BaseGridder):
         :meth:`~harmonica.HarmonicEQL.scatter` methods.
     """
 
-    def __init__(self, damping=None, points=None, relative_depth=500):
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        relative_depth=500,
+        coordinate_system="cartesian",
+    ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
+        self.coordinate_system = coordinate_system
+        # Define Green's functions asociated with the corresponding coordinate
+        # system
+        greens_functions = {
+            "cartesian": greens_func_cartesian,
+            "spherical": greens_func_spherical,
+        }
+        # Check if coordiante system is valid
+        check_coordinate_system(
+            coordinate_system, valid_coord_systems=greens_functions.keys()
+        )
+        # Define what greens function should be used based on the chosen
+        # coordiante system
+        self.greens_func = greens_functions[coordinate_system]
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -155,7 +183,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dtype = coordinates[0].dtype
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         data = np.zeros(size, dtype=dtype)
-        predict_numba(coordinates, self.points_, self.coefs_, data)
+        predict_numba(coordinates, self.points_, self.coefs_, data, self.greens_func)
         return data.reshape(shape)
 
     def jacobian(
@@ -186,15 +214,16 @@ class EQLHarmonic(vdb.BaseGridder):
         jacobian : 2D array
             The (n_data, n_points) Jacobian matrix.
         """
+        # Compute Jacobian matrix
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=dtype)
-        jacobian_numba(coordinates, points, jac)
+        jacobian_numba(coordinates, points, jac, self.greens_func)
         return jac
 
 
 @jit(nopython=True)
-def predict_numba(coordinates, points, coeffs, result):
+def predict_numba(coordinates, points, coeffs, result, greens_func):
     """
     Calculate the predicted data using numba for speeding things up.
     """
@@ -213,9 +242,11 @@ def predict_numba(coordinates, points, coeffs, result):
 
 
 @jit(nopython=True)
-def greens_func(east, north, upward, point_east, point_north, point_upward):
+def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
-    Calculate the Green's function for the equivalent layer using Numba.
+    Green's function for the equivalent layer in Cartesian coordinates
+
+    Uses Numba to speed up things.
     """
     distance = distance_cartesian(
         (east, north, upward), (point_east, point_north, point_upward)
@@ -224,9 +255,28 @@ def greens_func(east, north, upward, point_east, point_north, point_upward):
 
 
 @jit(nopython=True)
-def jacobian_numba(coordinates, points, jac):
+def greens_func_spherical(
+    longitude, latitude, radius, point_longitude, point_latitude, point_radius
+):
+    """
+    Green's function for the equivalent layer in spherical coordinates
+
+    Uses Numba to speed up things.
+    """
+    distance = distance_spherical(
+        (longitude, latitude, radius), (point_longitude, point_latitude, point_radius)
+    )
+    return 1 / distance
+
+
+@jit(nopython=True)
+def jacobian_numba(coordinates, points, jac, greens_func):
     """
     Calculate the Jacobian matrix using numba to speed things up.
+
+    It works both for Cartesian and spherical coordiantes.
+    We need to pass the corresponding Green's function through the
+    ``greens_func`` argument.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
