@@ -127,9 +127,9 @@ class EQLHarmonic(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, upward, ...).
-            Only easting, northing, and upward will be used, all subsequent
-            coordinates will be ignored.
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
         data : array
             The data values of each data point.
         weights : None or array
