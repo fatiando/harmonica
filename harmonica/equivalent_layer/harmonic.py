@@ -84,8 +84,8 @@ class EQLHarmonic(vdb.BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.HarmonicEQL.grid` and
-        :meth:`~harmonica.HarmonicEQL.scatter` methods.
+        :meth:`~harmonica.EQLHarmonic.grid` and
+        :meth:`~harmonica.EQLHarmonic.scatter` methods.
     """
 
     def __init__(
@@ -118,8 +118,8 @@ class EQLHarmonic(vdb.BaseGridder):
         Fit the coefficients of the equivalent layer.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.HarmonicEQL.grid` and
-        :meth:`~harmonica.HarmonicEQL.scatter` methods.
+        :meth:`~harmonica.EQLHarmonic.grid` and
+        :meth:`~harmonica.EQLHarmonic.scatter` methods.
 
         All input arrays must have the same shape.
 
@@ -161,7 +161,7 @@ class EQLHarmonic(vdb.BaseGridder):
         """
         Evaluate the estimated equivalent layer on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~harmonica.HarmonicEQL.fit`).
+        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
 
         Parameters
         ----------
