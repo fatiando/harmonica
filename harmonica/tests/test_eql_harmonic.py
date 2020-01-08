@@ -7,11 +7,10 @@ import numpy.testing as npt
 import verde as vd
 import verde.base as vdb
 
-from .. import EQLHarmonic, point_mass_gravity
+from .. import EQLHarmonic, EQLHarmonicSpherical, point_mass_gravity
 from ..equivalent_layer.harmonic import (
     jacobian_numba,
     greens_func_cartesian,
-    greens_func_spherical,
 )
 from .utils import require_numba
 
@@ -158,7 +157,7 @@ def test_eql_harmonic_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic(relative_depth=500e3, coordinate_system="spherical")
+    eql = EQLHarmonicSpherical(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -193,7 +192,7 @@ def test_eql_harmonic_small_data_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic(relative_depth=500e3, coordinate_system="spherical")
+    eql = EQLHarmonicSpherical(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -239,7 +238,7 @@ def test_eql_harmonic_custom_points_spherical():
             region=region, shape=(20, 20), extra_coords=radius - 500e3
         )
     )
-    eql = EQLHarmonic(points=src_points, coordinate_system="spherical")
+    eql = EQLHarmonicSpherical(points=src_points)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
