@@ -158,7 +158,7 @@ class EQLHarmonic(vdb.BaseGridder):
             The data values evaluated on the given points.
         """
         # We know the gridder has been fitted if it has the coefs_
-        check_is_fitted(self, ["coefs_"])
+        check_is_fitted(self)
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
         dtype = coordinates[0].dtype
