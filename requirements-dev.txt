@@ -1,4 +1,5 @@
 # Development requirements
+boule
 pyproj
 matplotlib
 cartopy

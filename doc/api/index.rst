@@ -13,8 +13,9 @@ Gravity Corrections
 .. autosummary::
     :toctree: generated/
 
-    normal_gravity
     bouguer_correction
+
+For the Normal Earth correction, see package :mod:`boule`.
 
 Equivalent Layers
 --------------------------
@@ -41,26 +42,6 @@ Isostasy
     :toctree: generated/
 
     isostasy_airy
-
-Reference Ellipsoids
---------------------
-
-.. autosummary::
-   :toctree: generated/
-
-    ReferenceEllipsoid
-    set_ellipsoid
-    get_ellipsoid
-    print_ellipsoids
-
-Coordinates Conversions
------------------------
-
-.. autosummary::
-   :toctree: generated/
-
-    geodetic_to_spherical
-    spherical_to_geodetic
 
 Input and Output
 ----------------

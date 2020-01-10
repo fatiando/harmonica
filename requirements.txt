@@ -3,6 +3,5 @@ scipy
 pandas
 numba
 pooch
-attrs
 xarray
 verde
