@@ -51,8 +51,8 @@ About
 -----
 
 *Harmonica* is a Python library for processing and modeling gravity and magnetic data.
-It includes common processing steps, like calculation of normal gravity, terrain
-correction, reduction to the pole, upward continuation, equivalent layers, and more.
+It includes common processing steps, like calculation of Bouguer and terrain
+corrections, reduction to the pole, upward continuation, equivalent layers, and more.
 There are forward modeling functions for basic geometric shapes, like spheres, prisms,
 polygonal prisms, and tesseroids. The inversion methods are implemented as classes with
 an interface inspired by scikit-learn (like `Verde <https://www.fatiando.org/verde>`__).

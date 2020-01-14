@@ -118,9 +118,9 @@ def tesseroid_gravity(
     Examples
     --------
 
-    >>> from harmonica import get_ellipsoid
-    >>> # Get WGS84 ellipsoid
-    >>> ellipsoid = get_ellipsoid()
+    >>> # Get WGS84 ellipsoid from the Boule package
+    >>> import boule
+    >>> ellipsoid = boule.WGS84
     >>> # Define tesseroid of 1km of thickness with top surface on the mean
     >>> # Earth radius
     >>> thickness = 1000

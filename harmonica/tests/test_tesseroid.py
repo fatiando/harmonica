@@ -5,10 +5,10 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
+import boule
 
 from .utils import require_numba
 from ..constants import GRAVITATIONAL_CONST
-from ..ellipsoid import get_ellipsoid
 from ..forward.tesseroid import (
     tesseroid_gravity,
     _check_tesseroids,
@@ -30,7 +30,7 @@ ACCURACY_THRESHOLD = 1e-3
 @pytest.mark.use_numba
 def test_single_tesseroid():
     "Test single tesseroid for achieving coverage when Numba is disabled"
-    ellipsoid = get_ellipsoid()
+    ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
     bottom = top - 1e3
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
@@ -246,7 +246,7 @@ def test_stack_overflow_on_adaptive_discretization():
 @pytest.mark.use_numba
 def test_distance_tesseroid_point():
     "Test distance between tesseroid and computation point"
-    ellipsoid = get_ellipsoid()
+    ellipsoid = boule.WGS84
     longitude_p, latitude_p, radius_p = 0.0, 0.0, ellipsoid.mean_radius
     d_lon, d_lat, d_radius = 2.0, 2.0, 1.3
     tesseroid = np.array(
@@ -312,7 +312,7 @@ def test_longitude_continuity():
 
 def test_longitude_continuity_equivalent_tesseroids():
     "Check if two equivalent tesseroids generate the same gravity field"
-    ellipsoid = get_ellipsoid()
+    ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
     bottom = top - 1e4
     w, e, s, n = -10, 10, -10, 10
@@ -557,7 +557,7 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
     2D adaptive discretization
     """
     # Define computation point located on the equator at the mean Earth radius
-    ellipsoid = get_ellipsoid()
+    ellipsoid = boule.WGS84
     radius = ellipsoid.mean_radius
     coordinates = grid_coordinates([0, 350, -90, 90], spacing=10, extra_coords=radius)
     # Define lon and lat coordinates of spherical shell model made of
@@ -602,7 +602,7 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
     """
     # Define computation point located on the equator at 1km above mean Earth
     # radius
-    ellipsoid = get_ellipsoid()
+    ellipsoid = boule.WGS84
     radius = ellipsoid.mean_radius + 1e3
     coordinates = [0, 0, radius]
     # Define shape of spherical shell model made of tesseroids

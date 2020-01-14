@@ -46,7 +46,6 @@ INSTALL_REQUIRES = [
     "pandas",
     "numba",
     "pooch",
-    "attrs",
     "xarray",
     "verde",
 ]

@@ -11,9 +11,9 @@ dependencies:
     - numba
     - pooch
     - verde
-    - attrs
     - xarray
     # Development requirements
+    - boule
     - pyproj
     - matplotlib
     - cartopy

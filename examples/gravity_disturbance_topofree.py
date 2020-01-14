@@ -3,8 +3,8 @@ Topography-free (Bouguer) Gravity Disturbances
 ==============================================
 
 The gravity disturbance is the observed gravity minus the normal gravity
-(:func:`harmonica.normal_gravity`). The signal that is left is assumed to be
-due to the differences between the actual Earth and the reference ellipsoid.
+(:meth:`boule.Ellipsoid.normal_gravity`). The signal that is left is assumed to
+be due to the differences between the actual Earth and the reference ellipsoid.
 Big components in this signal are the effects of topographic masses outside of
 the ellipsoid and residual effects of the oceans (we removed ellipsoid crust
 where there was actually ocean water). These two components are relatively well
@@ -22,6 +22,7 @@ correction.
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import xarray as xr
+import boule as bl
 import harmonica as hm
 
 # Load the global gravity, topography, and geoid grids
@@ -35,7 +36,8 @@ data = xr.merge(
 print(data)
 
 # Calculate normal gravity and the disturbance
-gamma = hm.normal_gravity(data.latitude, data.height_over_ell)
+ellipsoid = bl.WGS84
+gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
 disturbance = data.gravity - gamma
 
 # Reference the topography to the ellipsoid
