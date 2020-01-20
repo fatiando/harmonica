@@ -9,7 +9,7 @@ dependencies:
     - scipy
     - pandas
     - numba
-    - pooch
+    - pooch>=0.7.0
     - verde
     - xarray
     # Development requirements

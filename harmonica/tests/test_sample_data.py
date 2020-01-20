@@ -1,15 +1,27 @@
 """
 Test the sample data loading functions.
 """
+import os
+
 import numpy.testing as npt
 
 from ..datasets.sample_data import (
+    locate,
     fetch_gravity_earth,
     fetch_geoid_earth,
     fetch_topography_earth,
     fetch_britain_magnetic,
     fetch_south_africa_gravity,
 )
+
+
+def test_datasets_locate():
+    "Make sure the data cache location has the right package name"
+    path = locate()
+    assert os.path.exists(path)
+    # This is the most we can check in a platform independent way without
+    # testing appdirs itself.
+    assert "harmonica" in path
 
 
 def test_geoid_earth():

@@ -45,7 +45,7 @@ INSTALL_REQUIRES = [
     "scipy",
     "pandas",
     "numba",
-    "pooch",
+    "pooch>=0.7.0",
     "xarray",
     "verde",
 ]
