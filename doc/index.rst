@@ -17,6 +17,7 @@
     :caption: Getting Started
 
     install.rst
+    citing.rst
     gallery/index.rst
 
 .. toctree::
