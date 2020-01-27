@@ -42,7 +42,7 @@ Available datasets:
 
 Other features:
 
-- Syntetic ground and airborne surveys based on real world data.
+- Synthetic ground and airborne surveys based on real world data.
   (`#120 <https://github.com/fatiando/PROJECT/pull/120>`__)
 - Equivalent Layer for harmonic functions.
   (`#78 <https://github.com/fatiando/PROJECT/pull/78>`__)
