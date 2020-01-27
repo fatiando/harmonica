@@ -19,6 +19,7 @@
     install.rst
     citing.rst
     gallery/index.rst
+    changes.rst
 
 .. toctree::
     :maxdepth: 2
