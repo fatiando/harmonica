@@ -1,12 +1,11 @@
 Citing Harmonica
 ================
 
-This is research software **made by scientists**. Citations help us justify the effort
-that goes into building and maintaining this project.
+This is research software **made by scientists**. Citations help us justify the
+effort that goes into building and maintaining this project.
 
-If you used Harmonica in your research, please consider citing it:
+If you used this software in your research, please consider
+citing the following source: https://doi.org/10.5281/zenodo.3628742
 
-   Uieda, L., Soler, S.R., Oliveira Jr, Vanderlei C., ziebam, Shea, N. and Pesce, A.
-   (2020). Harmonica: Forward modeling, inversion, and processing gravity and
-   magnetic data (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.3628742
-
+The link above includes full citation information and export formats (BibTeX,
+Mendeley, etc).
