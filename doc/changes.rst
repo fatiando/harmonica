@@ -9,7 +9,8 @@ Version 0.1.0
 *Released on: 2020/02/27*
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3628742.svg
-   :target: https://doi.org/10.5281/zenodo.3628742
+    :alt: Digital Object Identifier for the Zenodo archive
+    :target: https://doi.org/10.5281/zenodo.3628742
 
 Fist release of Harmonica. Forward modeling, inversion, and processing gravity
 and magnetic data.
