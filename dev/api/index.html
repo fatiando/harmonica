@@ -22,27 +22,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="harmonica.test" href="generated/harmonica.test.html" />
-    <link rel="prev" title="Placeholder example" href="../gallery/example.html" />
-    
-    <script src="../_static/require.js"></script>
+    <link rel="next" title="harmonica.bouguer_correction" href="generated/harmonica.bouguer_correction.html" />
+    <link rel="prev" title="Land Gravity Data from South Africa" href="../sample_data/south_africa_gravity.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -71,7 +84,7 @@
             
             
               <div class="version">
-                v0.1.0a1
+                dev
               </div>
             
           
@@ -99,17 +112,59 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gravity-corrections">Gravity Corrections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#equivalent-layers">Equivalent Layers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.EQLHarmonic.html">harmonica.EQLHarmonic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#forward-modelling">Forward modelling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.point_mass_gravity.html">harmonica.point_mass_gravity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#isostasy">Isostasy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.isostasy_airy.html">harmonica.isostasy_airy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#input-and-output">Input and Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#synthetic-models-and-surveys">Synthetic models and surveys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.synthetic.airborne_survey.html">harmonica.synthetic.airborne_survey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.synthetic.ground_survey.html">harmonica.synthetic.ground_survey</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.locate.html">harmonica.datasets.locate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.fetch_gravity_earth.html">harmonica.datasets.fetch_gravity_earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.fetch_geoid_earth.html">harmonica.datasets.fetch_geoid_earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.fetch_topography_earth.html">harmonica.datasets.fetch_topography_earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.fetch_britain_magnetic.html">harmonica.datasets.fetch_britain_magnetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.datasets.fetch_south_africa_gravity.html">harmonica.datasets.fetch_south_africa_gravity</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.test.html">harmonica.test</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -132,7 +187,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -204,16 +259,139 @@
             
   <div class="section" id="module-harmonica">
 <span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-harmonica" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gravity-corrections">
+<h2>Gravity Corrections<a class="headerlink" href="#gravity-corrections" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.bouguer_correction.html#harmonica.bouguer_correction" title="harmonica.bouguer_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bouguer_correction</span></code></a>(topography[, …])</p></td>
+<td><p>Gravitational effect of topography using a Bouguer plate approximation</p></td>
+</tr>
+</tbody>
+</table>
+<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.1.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
+</div>
+<div class="section" id="equivalent-layers">
+<h2>Equivalent Layers<a class="headerlink" href="#equivalent-layers" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.EQLHarmonic.html#harmonica.EQLHarmonic" title="harmonica.EQLHarmonic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQLHarmonic</span></code></a>([damping, points, relative_depth])</p></td>
+<td><p>Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="forward-modelling">
+<h2>Forward modelling<a class="headerlink" href="#forward-modelling" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.point_mass_gravity.html#harmonica.point_mass_gravity" title="harmonica.point_mass_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_mass_gravity</span></code></a>(coordinates, points, …)</p></td>
+<td><p>Compute gravitational fields of point masses.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prism_gravity.html#harmonica.prism_gravity" title="harmonica.prism_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_gravity</span></code></a>(coordinates, prisms, density, …)</p></td>
+<td><p>Gravitational fields of right-rectangular prisms in Cartesian coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity" title="harmonica.tesseroid_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code></a>(coordinates, tesseroids, …)</p></td>
+<td><p>Compute gravitational field of tesseroids on computation points.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="isostasy">
+<h2>Isostasy<a class="headerlink" href="#isostasy" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.isostasy_airy.html#harmonica.isostasy_airy" title="harmonica.isostasy_airy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isostasy_airy</span></code></a>(topography[, density_crust, …])</p></td>
+<td><p>Calculate the isostatic Moho depth from topography using Airy’s hypothesis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input-and-output">
+<h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.load_icgem_gdf.html#harmonica.load_icgem_gdf" title="harmonica.load_icgem_gdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_icgem_gdf</span></code></a>(fname, **kwargs)</p></td>
+<td><p>Reads data from an ICGEM .gdf file.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="synthetic-models-and-surveys">
+<h2>Synthetic models and surveys<a class="headerlink" href="#synthetic-models-and-surveys" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.synthetic.airborne_survey.html#harmonica.synthetic.airborne_survey" title="harmonica.synthetic.airborne_survey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.airborne_survey</span></code></a>([region, data_region])</p></td>
+<td><p>Create measurement locations for a synthetic airborne survey</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.synthetic.ground_survey.html#harmonica.synthetic.ground_survey" title="harmonica.synthetic.ground_survey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.ground_survey</span></code></a>([region, data_region])</p></td>
+<td><p>Create measurement locations for a synthetic ground survey</p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-harmonica.datasets"></span></div>
+<div class="section" id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.locate.html#harmonica.datasets.locate" title="harmonica.datasets.locate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.locate</span></code></a>()</p></td>
+<td><p>The absolute path to the sample data storage location on disk.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_gravity_earth.html#harmonica.datasets.fetch_gravity_earth" title="harmonica.datasets.fetch_gravity_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_gravity_earth</span></code></a>()</p></td>
+<td><p>Fetch a global grid of Earth gravity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_geoid_earth.html#harmonica.datasets.fetch_geoid_earth" title="harmonica.datasets.fetch_geoid_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_geoid_earth</span></code></a>()</p></td>
+<td><p>Fetch a global grid of the geoid height.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_topography_earth.html#harmonica.datasets.fetch_topography_earth" title="harmonica.datasets.fetch_topography_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_topography_earth</span></code></a>()</p></td>
+<td><p>Fetch a global grid of Earth relief (topography and bathymetry).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_britain_magnetic.html#harmonica.datasets.fetch_britain_magnetic" title="harmonica.datasets.fetch_britain_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_britain_magnetic</span></code></a>()</p></td>
+<td><p>Fetch total-field magnetic anomaly data of Great Britain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity" title="harmonica.datasets.fetch_south_africa_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_south_africa_gravity</span></code></a>()</p></td>
+<td><p>Fetch gravity station data from South Africa</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="utilities">
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/harmonica.test.html#harmonica.test" title="harmonica.test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></a>([doctest,&nbsp;verbose,&nbsp;coverage,&nbsp;figures])</td>
-<td>Run the test suite.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.test.html#harmonica.test" title="harmonica.test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></a>([doctest, verbose, coverage, figures])</p></td>
+<td><p>Run the test suite.</p></td>
 </tr>
 </tbody>
 </table>
@@ -228,10 +406,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="generated/harmonica.test.html" class="btn btn-neutral float-right" title="harmonica.test" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="generated/harmonica.bouguer_correction.html" class="btn btn-neutral float-right" title="harmonica.bouguer_correction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../gallery/example.html" class="btn btn-neutral" title="Placeholder example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../sample_data/south_africa_gravity.html" class="btn btn-neutral float-left" title="Land Gravity Data from South Africa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -240,8 +418,10 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Sep 20, 2018.
+        &copy; Copyright 2018-2020, The Harmonica Developers
+      <span class="lastupdated">
+        Last updated on Feb 27, 2020.
+      </span>
 
     </p>
   </div>
@@ -258,33 +438,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

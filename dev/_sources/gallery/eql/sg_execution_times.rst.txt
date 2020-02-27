@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_eql_sg_execution_times:
+
+Computation times
+=================
+**00:17.755** total execution time for **gallery_eql** files:
+
++-----------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_eql_harmonic.py` (``harmonic.py``) | 00:17.755 | 0.0 MB |
++-----------------------------------------------------------+-----------+--------+

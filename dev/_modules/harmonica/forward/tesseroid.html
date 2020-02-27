@@ -1,0 +1,1028 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>harmonica.forward.tesseroid &mdash; Harmonica</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/harmonica-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Harmonica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../harmonica.html">harmonica</a> &raquo;</li>
+        
+      <li>harmonica.forward.tesseroid</li>
+    
+    
+    <li class="source-link">
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for harmonica.forward.tesseroid</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Forward modelling for tesseroids</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.polynomial.legendre</span> <span class="kn">import</span> <span class="n">leggauss</span>
+
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">distance_spherical</span>
+<span class="kn">from</span> <span class="nn">.point_mass</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">jit_point_mass_spherical</span><span class="p">,</span>
+    <span class="n">kernel_potential_spherical</span><span class="p">,</span>
+    <span class="n">kernel_g_z_spherical</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">STACK_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">MAX_DISCRETIZATIONS</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">GLQ_DEGREES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">DISTANCE_SIZE_RATII</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;g_z&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="tesseroid_gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity">[docs]</a><span class="k">def</span> <span class="nf">tesseroid_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">tesseroids</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">distance_size_ratii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">glq_degrees</span><span class="o">=</span><span class="n">GLQ_DEGREES</span><span class="p">,</span>
+    <span class="n">stack_size</span><span class="o">=</span><span class="n">STACK_SIZE</span><span class="p">,</span>
+    <span class="n">max_discretizations</span><span class="o">=</span><span class="n">MAX_DISCRETIZATIONS</span><span class="p">,</span>
+    <span class="n">radial_adaptive_discretization</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals, too-many-arguments</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational field of tesseroids on computation points.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The ``g_z`` field returns the downward component of the gravitational</span>
+<span class="sd">        acceleration on the local North oriented coordinate system.</span>
+<span class="sd">        It is equivalent to the opposite of the radial component, therefore</span>
+<span class="sd">        it&#39;s positive if the acceleration vector points inside the spheroid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : list or 1d-array</span>
+<span class="sd">        List or array containing ``longitude``, ``latitude`` and ``radius`` of</span>
+<span class="sd">        the computation points defined on a spherical geocentric coordinate</span>
+<span class="sd">        system.</span>
+<span class="sd">        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``</span>
+<span class="sd">        in meters.</span>
+<span class="sd">    tesseroids : list or 1d-array</span>
+<span class="sd">        List or array containing the coordinates of the tesseroid:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
+<span class="sd">        spherical coordinate system.</span>
+<span class="sd">        The longitudinal and latitudinal boundaries should be in degrees, while</span>
+<span class="sd">        the radial ones must be in meters.</span>
+<span class="sd">    density : list or array</span>
+<span class="sd">        List or array containing the density of each tesseroid in kg/m^3.</span>
+<span class="sd">    field : str</span>
+<span class="sd">        Gravitational field that wants to be computed.</span>
+<span class="sd">        The available fields are:</span>
+
+<span class="sd">        - Gravitational potential: ``potential``</span>
+<span class="sd">        - Downward acceleration: ``g_z``</span>
+
+<span class="sd">    distance_size_ratio : dict or None (optional)</span>
+<span class="sd">        Dictionary containing distance-size ratii for each gravitational field</span>
+<span class="sd">        used on the adaptive discretization algorithm.</span>
+<span class="sd">        Values must be the available fields and keys should be the desired</span>
+<span class="sd">        distance-size ratio.</span>
+<span class="sd">        The greater the distance-size ratio, more discretizations will occur,</span>
+<span class="sd">        increasing the accuracy of the numerical approximation but also the</span>
+<span class="sd">        computation time.</span>
+<span class="sd">        If None, the default values of distance-size ratii will be used:</span>
+<span class="sd">        D = 1 for the potential and D = 2.5 for the gradient.</span>
+<span class="sd">        Default to None.</span>
+<span class="sd">    glq_degrees : tuple (optional)</span>
+<span class="sd">        List containing the GLQ degrees used on each direction:</span>
+<span class="sd">        ``glq_degree_longitude``, ``glq_degree_latitude``,</span>
+<span class="sd">        ``glq_degree_radius``.</span>
+<span class="sd">        The GLQ degree specifies how many point masses will be created along</span>
+<span class="sd">        each direction.</span>
+<span class="sd">        Increasing the GLQ degree will increase the accuracy of the numerical</span>
+<span class="sd">        approximation, but also the computation time.</span>
+<span class="sd">        Default ``[2, 2, 2]``.</span>
+<span class="sd">    stack_size : int (optional)</span>
+<span class="sd">        Size of the tesseroid stack used on the adaptive discretization</span>
+<span class="sd">        algorithm.</span>
+<span class="sd">        If the algorithm will perform too many splits, please increase the</span>
+<span class="sd">        stack size.</span>
+<span class="sd">    max_discretizations : int (optional)</span>
+<span class="sd">        Maximum number of splits made by the adaptive discretization algorithm.</span>
+<span class="sd">        If the algorithm will perform too many splits, please increase the</span>
+<span class="sd">        maximum number of splits.</span>
+<span class="sd">    radial_adaptive_discretization : bool (optional)</span>
+<span class="sd">        If ``False``, the adaptive discretization algorithm will split the</span>
+<span class="sd">        tesseroid only on the horizontal direction.</span>
+<span class="sd">        If ``True``, it will perform a three dimensional adaptive</span>
+<span class="sd">        discretization, splitting the tesseroids on every direction.</span>
+<span class="sd">        Default ``False``.</span>
+<span class="sd">    dtype : data-type (optional)</span>
+<span class="sd">        Data type assigned to the resulting gravitational field. Default to</span>
+<span class="sd">        ``np.float64``.</span>
+<span class="sd">    disable_checks : bool (optional)</span>
+<span class="sd">        Flag that controls whether to perform a sanity check on the model.</span>
+<span class="sd">        Should be set to ``True`` only when it is certain that the input model</span>
+<span class="sd">        is valid and it does not need to be checked.</span>
+<span class="sd">        Default to ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : array</span>
+<span class="sd">        Gravitational field generated by the tesseroids on the computation</span>
+<span class="sd">        points.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get WGS84 ellipsoid from the Boule package</span>
+<span class="sd">    &gt;&gt;&gt; import boule</span>
+<span class="sd">    &gt;&gt;&gt; ellipsoid = boule.WGS84</span>
+<span class="sd">    &gt;&gt;&gt; # Define tesseroid of 1km of thickness with top surface on the mean</span>
+<span class="sd">    &gt;&gt;&gt; # Earth radius</span>
+<span class="sd">    &gt;&gt;&gt; thickness = 1000</span>
+<span class="sd">    &gt;&gt;&gt; top = ellipsoid.mean_radius</span>
+<span class="sd">    &gt;&gt;&gt; bottom = top - thickness</span>
+<span class="sd">    &gt;&gt;&gt; w, e, s, n = -1.0, 1.0, -1.0, 1.0</span>
+<span class="sd">    &gt;&gt;&gt; tesseroid = [w, e, s, n, bottom, top]</span>
+<span class="sd">    &gt;&gt;&gt; # Set a density of 2670 kg/m^3</span>
+<span class="sd">    &gt;&gt;&gt; density = 2670.0</span>
+<span class="sd">    &gt;&gt;&gt; # Define computation point located on the top surface of the tesseroid</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = [0, 0, ellipsoid.mean_radius]</span>
+<span class="sd">    &gt;&gt;&gt; # Compute radial component of the gravitational gradient in mGal</span>
+<span class="sd">    &gt;&gt;&gt; tesseroid_gravity(coordinates, tesseroid, density, field=&quot;g_z&quot;)</span>
+<span class="sd">    array(112.54539933)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="n">kernel_potential_spherical</span><span class="p">,</span> <span class="s2">&quot;g_z&quot;</span><span class="p">:</span> <span class="n">kernel_g_z_spherical</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Gravitational field </span><span class="si">{}</span><span class="s2"> not recognized&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+    <span class="c1"># Figure out the shape and size of the output array</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Convert coordinates, tesseroids and density to arrays</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">density</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="c1"># Sanity checks for tesseroids and computation points</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">disable_checks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">density</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of elements in density (</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">density</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;mismatch the number of tesseroids (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">_check_tesseroids</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)</span>
+        <span class="n">_check_points_outside_tesseroids</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span><span class="p">)</span>
+    <span class="c1"># Get value of D (distance_size_ratio)</span>
+    <span class="k">if</span> <span class="n">distance_size_ratii</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">distance_size_ratii</span> <span class="o">=</span> <span class="n">DISTANCE_SIZE_RATII</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">distance_size_ratii</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Gravitational field &quot;</span><span class="si">{}</span><span class="s1">&quot; not found on distance_size_ratii dictionary&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">field</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">distance_size_ratio</span> <span class="o">=</span> <span class="n">distance_size_ratii</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+    <span class="c1"># Get GLQ unscaled nodes, weights and number of nodes for each small</span>
+    <span class="c1"># tesseroid</span>
+    <span class="n">n_nodes</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span> <span class="o">=</span> <span class="n">glq_nodes_weights</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">)</span>
+    <span class="c1"># Initialize arrays to perform memory allocation only once</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">stack_size</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">small_tesseroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">max_discretizations</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">point_masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_nodes</span> <span class="o">*</span> <span class="n">max_discretizations</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_nodes</span> <span class="o">*</span> <span class="n">max_discretizations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Compute gravitational field</span>
+    <span class="n">jit_tesseroid_gravity</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="p">,</span>
+        <span class="n">tesseroids</span><span class="p">,</span>
+        <span class="n">density</span><span class="p">,</span>
+        <span class="n">stack</span><span class="p">,</span>
+        <span class="n">small_tesseroids</span><span class="p">,</span>
+        <span class="n">point_masses</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">,</span>
+        <span class="n">result</span><span class="p">,</span>
+        <span class="n">distance_size_ratio</span><span class="p">,</span>
+        <span class="n">radial_adaptive_discretization</span><span class="p">,</span>
+        <span class="n">n_nodes</span><span class="p">,</span>
+        <span class="n">glq_nodes</span><span class="p">,</span>
+        <span class="n">glq_weights</span><span class="p">,</span>
+        <span class="n">kernels</span><span class="p">[</span><span class="n">field</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">*=</span> <span class="n">GRAVITATIONAL_CONST</span>
+    <span class="c1"># Convert to more convenient units</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;g_z&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e5</span>  <span class="c1"># SI to mGal</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">jit_tesseroid_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">tesseroids</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">stack</span><span class="p">,</span>
+    <span class="n">small_tesseroids</span><span class="p">,</span>
+    <span class="n">point_masses</span><span class="p">,</span>
+    <span class="n">weights</span><span class="p">,</span>
+    <span class="n">result</span><span class="p">,</span>
+    <span class="n">distance_size_ratio</span><span class="p">,</span>
+    <span class="n">radial_discretization</span><span class="p">,</span>
+    <span class="n">n_nodes</span><span class="p">,</span>
+    <span class="n">glq_nodes</span><span class="p">,</span>
+    <span class="n">glq_weights</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">,</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals,too-many-arguments,invalid-name</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational field of tesseroids on computations points</span>
+
+<span class="sd">    Perform adaptive discretization, convert each small tesseroid to equivalent</span>
+<span class="sd">    point masses through GLQ and use point masses kernel functions to compute</span>
+<span class="sd">    the gravitational field.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple</span>
+<span class="sd">        Tuple containing the coordinates of the computation points in spherical</span>
+<span class="sd">        geocentric coordinate system in the following order:</span>
+<span class="sd">        ``longitude``, ``latitude``, ``radius``.</span>
+<span class="sd">        Each element of the tuple must be a 1d array.</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Array containing the boundaries of each tesseroid:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
+<span class="sd">        spherical coordinate system.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+<span class="sd">        All tesseroids must have valid boundary coordinates.</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        Density of each tesseroid in SI units.</span>
+<span class="sd">    stack : 2d-array</span>
+<span class="sd">        Empty array where tesseroids created by adaptive discretization</span>
+<span class="sd">        algorithm will be processed.</span>
+<span class="sd">    small_tesseroids : 2d-array</span>
+<span class="sd">        Empty array where smaller tesseroids created by adaptive discretization</span>
+<span class="sd">        algorithm will be stored.</span>
+<span class="sd">    point_masses : 2d-array</span>
+<span class="sd">        Empty array where equivalent point masses will be stored.</span>
+<span class="sd">    weights : 1d-array</span>
+<span class="sd">        Empty array where the GLQ weight of each point mass will be stored.</span>
+<span class="sd">    result : 1d-array</span>
+<span class="sd">        Array where the gravitational effect of each tesseroid will be added.</span>
+<span class="sd">    distance_size_ratio : float</span>
+<span class="sd">        Value of the distance size ratio.</span>
+<span class="sd">    radial_discretization : bool</span>
+<span class="sd">        If ``False``, the adaptive discretization algorithm will split the</span>
+<span class="sd">        tesseroid only on the horizontal direction.</span>
+<span class="sd">        If ``True``, it will perform a three dimensional adaptive</span>
+<span class="sd">        discretization, splitting the tesseroids on every direction.</span>
+<span class="sd">    n_nodes : int</span>
+<span class="sd">        Total number of equivalent point masses that will be generated for each</span>
+<span class="sd">        split tesseroid.</span>
+<span class="sd">    glq_nodes : list</span>
+<span class="sd">        List containing unscaled GLQ nodes.</span>
+<span class="sd">    glq_weights : list</span>
+<span class="sd">        List containing GLQ weights of the nodes.</span>
+<span class="sd">    kernel : func</span>
+<span class="sd">        Kernel function for the gravitational field of point masses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">tesseroid</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">l</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="c1"># Apply adaptive discretization on tesseroid</span>
+            <span class="n">n_splits</span> <span class="o">=</span> <span class="n">_adaptive_discretization</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">m</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">m</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">m</span><span class="p">]),</span>
+                <span class="n">tesseroid</span><span class="p">,</span>
+                <span class="n">distance_size_ratio</span><span class="p">,</span>
+                <span class="n">stack</span><span class="p">,</span>
+                <span class="n">small_tesseroids</span><span class="p">,</span>
+                <span class="n">radial_discretization</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Get total number of point masses, their coordinates and weights</span>
+            <span class="n">n_point_masses</span> <span class="o">=</span> <span class="n">n_nodes</span> <span class="o">*</span> <span class="n">n_splits</span>
+            <span class="n">tesseroids_to_point_masses</span><span class="p">(</span>
+                <span class="n">small_tesseroids</span><span class="p">[:</span><span class="n">n_splits</span><span class="p">],</span>
+                <span class="n">glq_nodes</span><span class="p">,</span>
+                <span class="n">glq_weights</span><span class="p">,</span>
+                <span class="n">point_masses</span><span class="p">,</span>
+                <span class="n">weights</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Compute gravitational fields</span>
+            <span class="n">jit_point_mass_spherical</span><span class="p">(</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice lon to pass a single element array</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice lat to pass a single element array</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice rad to pass a single element array</span>
+                <span class="n">point_masses</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
+                <span class="n">point_masses</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
+                <span class="n">point_masses</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
+                <span class="n">density</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[:</span><span class="n">n_point_masses</span><span class="p">],</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">kernel</span><span class="p">,</span>
+            <span class="p">)</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tesseroids_to_point_masses</span><span class="p">(</span>
+    <span class="n">tesseroids</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span><span class="p">,</span> <span class="n">point_masses</span><span class="p">,</span> <span class="n">weights</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals,invalid-name</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert tesseroids to equivalent point masses on nodes of GLQ</span>
+
+<span class="sd">    Each tesseroid is converted into a set of point masses located on the</span>
+<span class="sd">    scaled nodes of the Gauss-Legendre Quadrature. The number of point masses</span>
+<span class="sd">    created from each tesseroid is equal to the product of the GLQ degrees for</span>
+<span class="sd">    each direction (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`). It also</span>
+<span class="sd">    compute a weight value for each point mass defined as the product of the</span>
+<span class="sd">    GLQ weights for each direction (:math:`W_i^r`, :math:`W_j^\phi`,</span>
+<span class="sd">    :math:`W_k^\lambda`), the scale constant :math:`A` and the :math:`\kappa`</span>
+<span class="sd">    factor evaluated on the coordinates of the point mass.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Array containing the boundaries of each tesseroid:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
+<span class="sd">        spherical coordinate system.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+<span class="sd">        All tesseroids must have valid boundary coordinates.</span>
+<span class="sd">    glq_nodes : list</span>
+<span class="sd">        Unscaled location of GLQ nodes for each direction.</span>
+<span class="sd">    glq_weights : list</span>
+<span class="sd">        GLQ weigths for each node for each direction.</span>
+<span class="sd">    point_masses : 2d-array</span>
+<span class="sd">        Empty array with shape ``(3, n)``, where ``n`` is the total number of</span>
+<span class="sd">        point masses computed as the product of number of tesseroids and the</span>
+<span class="sd">        GLQ degrees for each direction.</span>
+<span class="sd">        The location of the point masses will be located inside this array.</span>
+<span class="sd">    weights : 1d-array</span>
+<span class="sd">        Empty array with ``n`` elements.</span>
+<span class="sd">        It will contain the weight constant for each point mass.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack nodes and weights</span>
+    <span class="n">lon_nodes</span><span class="p">,</span> <span class="n">lat_nodes</span><span class="p">,</span> <span class="n">rad_nodes</span> <span class="o">=</span> <span class="n">glq_nodes</span><span class="p">[:]</span>
+    <span class="n">lon_weights</span><span class="p">,</span> <span class="n">lat_weights</span><span class="p">,</span> <span class="n">rad_weights</span> <span class="o">=</span> <span class="n">glq_weights</span><span class="p">[:]</span>
+    <span class="c1"># Recover GLQ degrees from nodes</span>
+    <span class="n">lon_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon_nodes</span><span class="p">)</span>
+    <span class="n">lat_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat_nodes</span><span class="p">)</span>
+    <span class="n">rad_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rad_nodes</span><span class="p">)</span>
+    <span class="c1"># Convert each tesseroid to a point mass</span>
+    <span class="n">mass_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">tesseroid_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="n">A_factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lon_glq_degree</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lat_glq_degree</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rad_glq_degree</span><span class="p">):</span>
+                    <span class="c1"># Compute coordinates of each point mass</span>
+                    <span class="n">longitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">lon_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span>
+                    <span class="n">latitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">lat_nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+                    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">*</span> <span class="n">rad_nodes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">)</span>
+                    <span class="n">kappa</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
+                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
+                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
+                    <span class="n">weights</span><span class="p">[</span><span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">A_factor</span>
+                        <span class="o">*</span> <span class="n">kappa</span>
+                        <span class="o">*</span> <span class="n">lon_weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="o">*</span> <span class="n">lat_weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        <span class="o">*</span> <span class="n">rad_weights</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">mass_index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">glq_nodes_weights</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate GLQ unscaled nodes, weights and total number of nodes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    glq_degrees : list</span>
+<span class="sd">        List of GLQ degrees for each direction: ``longitude``, ``latitude``,</span>
+<span class="sd">        ``radius``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    n_nodes : int</span>
+<span class="sd">        Total number of nodes computed as the product of the GLQ degrees.</span>
+<span class="sd">    glq_nodes : list</span>
+<span class="sd">        Unscaled GLQ nodes for each direction: ``longitude``, ``latitude``,</span>
+<span class="sd">        ``radius``.</span>
+<span class="sd">    glq_weights : list</span>
+<span class="sd">        GLQ weights for each node on each direction: ``longitude``,</span>
+<span class="sd">        ``latitude``, ``radius``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack GLQ degrees</span>
+    <span class="n">lon_degree</span><span class="p">,</span> <span class="n">lat_degree</span><span class="p">,</span> <span class="n">rad_degree</span> <span class="o">=</span> <span class="n">glq_degrees</span><span class="p">[:]</span>
+    <span class="c1"># Get number of point masses</span>
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">)</span>
+    <span class="c1"># Get nodes coordinates and weights</span>
+    <span class="n">lon_node</span><span class="p">,</span> <span class="n">lon_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">lon_degree</span><span class="p">)</span>
+    <span class="n">lat_node</span><span class="p">,</span> <span class="n">lat_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">lat_degree</span><span class="p">)</span>
+    <span class="n">rad_node</span><span class="p">,</span> <span class="n">rad_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">rad_degree</span><span class="p">)</span>
+    <span class="c1"># Reorder nodes and weights</span>
+    <span class="n">glq_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon_node</span><span class="p">,</span> <span class="n">lat_node</span><span class="p">,</span> <span class="n">rad_node</span><span class="p">)</span>
+    <span class="n">glq_weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon_weights</span><span class="p">,</span> <span class="n">lat_weights</span><span class="p">,</span> <span class="n">rad_weights</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n_nodes</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_adaptive_discretization</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">tesseroid</span><span class="p">,</span>
+    <span class="n">distance_size_ratio</span><span class="p">,</span>
+    <span class="n">stack</span><span class="p">,</span>
+    <span class="n">small_tesseroids</span><span class="p">,</span>
+    <span class="n">radial_discretization</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform the adaptive discretization algorithm on a tesseroid</span>
+
+<span class="sd">    It apply the three or two dimensional adaptive discretization algorithm on</span>
+<span class="sd">    a tesseroid after a single computation point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : array</span>
+<span class="sd">        Array containing ``longitude``, ``latitude`` and ``radius`` of a single</span>
+<span class="sd">        computation point.</span>
+<span class="sd">    tesseroid : array</span>
+<span class="sd">        Array containing the boundaries of the tesseroid.</span>
+<span class="sd">    distance_size_ratio : float</span>
+<span class="sd">        Value for the distance-size ratio. A greater value will perform more</span>
+<span class="sd">        discretizations.</span>
+<span class="sd">    stack : 2d-array</span>
+<span class="sd">        Array with shape ``(6, stack_size)`` that will temporarly hold the</span>
+<span class="sd">        small tesseroids that are not yet processed.</span>
+<span class="sd">        If too many discretizations will take place, increase the</span>
+<span class="sd">        ``stack_size``.</span>
+<span class="sd">    small_tesseroids : 2d-array</span>
+<span class="sd">        Array with shape ``(6, max_discretizations)`` that will contain every</span>
+<span class="sd">        small tesseroid produced by the adaptive discretization algorithm.</span>
+<span class="sd">        If too many discretizations will take place, increase the</span>
+<span class="sd">        ``max_discretizations``.</span>
+<span class="sd">    radial_discretization : bool (optional)</span>
+<span class="sd">        If ``True`` the three dimensional adaptive discretization will be</span>
+<span class="sd">        applied.</span>
+<span class="sd">        If ``False`` the two dimensional adaptive discretization will be</span>
+<span class="sd">        applied, i.e. the tesseroid will only be split on the ``longitude`` and</span>
+<span class="sd">        ``latitude`` directions.</span>
+<span class="sd">        Default ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    n_splits : int</span>
+<span class="sd">        Total number of small tesseroids generated by the algorithm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create stack of tesseroids</span>
+    <span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tesseroid</span>
+    <span class="n">stack_top</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_splits</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">stack_top</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Pop the first tesseroid from the stack</span>
+        <span class="n">tesseroid</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">]</span>
+        <span class="n">stack_top</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="c1"># Get its dimensions</span>
+        <span class="n">l_lon</span><span class="p">,</span> <span class="n">l_lat</span><span class="p">,</span> <span class="n">l_rad</span> <span class="o">=</span> <span class="n">_tesseroid_dimensions</span><span class="p">(</span><span class="n">tesseroid</span><span class="p">)</span>
+        <span class="c1"># Get distance between computation point and center of tesseroid</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">_distance_tesseroid_point</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroid</span><span class="p">)</span>
+        <span class="c1"># Check inequality</span>
+        <span class="n">n_lon</span><span class="p">,</span> <span class="n">n_lat</span><span class="p">,</span> <span class="n">n_rad</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">l_lon</span> <span class="o">&lt;</span> <span class="n">distance_size_ratio</span><span class="p">:</span>
+            <span class="n">n_lon</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">l_lat</span> <span class="o">&lt;</span> <span class="n">distance_size_ratio</span><span class="p">:</span>
+            <span class="n">n_lat</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">l_rad</span> <span class="o">&lt;</span> <span class="n">distance_size_ratio</span> <span class="ow">and</span> <span class="n">radial_discretization</span><span class="p">:</span>
+            <span class="n">n_rad</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># Apply discretization</span>
+        <span class="k">if</span> <span class="n">n_lon</span> <span class="o">*</span> <span class="n">n_lat</span> <span class="o">*</span> <span class="n">n_rad</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Raise error if stack overflow</span>
+            <span class="c1"># Number of tesseroids in stack = stack_top + 1</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">stack_top</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_lon</span> <span class="o">*</span> <span class="n">n_lat</span> <span class="o">*</span> <span class="n">n_rad</span> <span class="o">&gt;</span> <span class="n">stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">OverflowError</span><span class="p">(</span><span class="s2">&quot;Stack Overflow. Try to increase the stack size.&quot;</span><span class="p">)</span>
+            <span class="n">stack_top</span> <span class="o">=</span> <span class="n">_split_tesseroid</span><span class="p">(</span>
+                <span class="n">tesseroid</span><span class="p">,</span> <span class="n">n_lon</span><span class="p">,</span> <span class="n">n_lat</span><span class="p">,</span> <span class="n">n_rad</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">stack_top</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Raise error if small_tesseroids overflow</span>
+            <span class="k">if</span> <span class="n">n_splits</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">small_tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">OverflowError</span><span class="p">(</span>
+                    <span class="s2">&quot;Exceeded maximum discretizations.&quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot; Please increase the maximum_discretizations.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">small_tesseroids</span><span class="p">[</span><span class="n">n_splits</span><span class="p">]</span> <span class="o">=</span> <span class="n">tesseroid</span>
+            <span class="n">n_splits</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">n_splits</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_split_tesseroid</span><span class="p">(</span>
+    <span class="n">tesseroid</span><span class="p">,</span> <span class="n">n_lon</span><span class="p">,</span> <span class="n">n_lat</span><span class="p">,</span> <span class="n">n_rad</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">stack_top</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split tesseroid along each dimension</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroid</span><span class="p">[:]</span>
+    <span class="c1"># Compute differential distance</span>
+    <span class="n">d_lon</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_lon</span>
+    <span class="n">d_lat</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_lat</span>
+    <span class="n">d_rad</span> <span class="o">=</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_rad</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_lon</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_lat</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rad</span><span class="p">):</span>
+                <span class="n">stack_top</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">d_lon</span> <span class="o">*</span> <span class="n">i</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">d_lon</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">d_lat</span> <span class="o">*</span> <span class="n">j</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">d_lat</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span> <span class="o">+</span> <span class="n">d_rad</span> <span class="o">*</span> <span class="n">k</span>
+                <span class="n">stack</span><span class="p">[</span><span class="n">stack_top</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span> <span class="o">+</span> <span class="n">d_rad</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">stack_top</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_tesseroid_dimensions</span><span class="p">(</span><span class="n">tesseroid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the dimensions of the tesseroid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroid</span><span class="p">[:]</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">latitude_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">l_lat</span> <span class="o">=</span> <span class="n">top</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="n">l_lon</span> <span class="o">=</span> <span class="n">top</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude_center</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude_center</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">l_rad</span> <span class="o">=</span> <span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span>
+    <span class="k">return</span> <span class="n">l_lon</span><span class="p">,</span> <span class="n">l_lat</span><span class="p">,</span> <span class="n">l_rad</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_distance_tesseroid_point</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroid</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Distance between a computation point and the center of a tesseroid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get center of the tesseroid</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroid</span><span class="p">[:]</span>
+    <span class="n">longitude_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">latitude_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">radius_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">bottom</span> <span class="o">+</span> <span class="n">top</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="c1"># Get distance between computation point and tesseroid center</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">distance_spherical</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="p">(</span><span class="n">longitude_p</span><span class="p">,</span> <span class="n">latitude_p</span><span class="p">,</span> <span class="n">radius_p</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">distance</span>
+
+
+<span class="k">def</span> <span class="nf">_check_tesseroids</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-many-branches</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if tesseroids boundaries are well defined</span>
+
+<span class="sd">    A valid tesseroid should have:</span>
+<span class="sd">        - latitudinal boundaries within the [-90, 90] degrees interval,</span>
+<span class="sd">        - north boundaries greater or equal than the south boundaries,</span>
+<span class="sd">        - radial boundaries positive or zero,</span>
+<span class="sd">        - top boundaries greater or equal than the bottom boundaries,</span>
+<span class="sd">        - longitudinal boundaries within the [-180, 360] degrees interval,</span>
+<span class="sd">        - longitudinal interval must not be greater than one turn around the</span>
+<span class="sd">          globe.</span>
+
+<span class="sd">    Some valid tesseroids have its west boundary greater than the east one,</span>
+<span class="sd">    e.g. ``(350, 10, ...)``. On these cases the ``_longitude_continuity``</span>
+<span class="sd">    function is applied in order to move the longitudinal coordinates to the</span>
+<span class="sd">    [-180, 180) interval. Any valid tesseroid should have east boundaries</span>
+<span class="sd">    greater than the west boundaries before or after applying longitude</span>
+<span class="sd">    continuity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Array containing the boundaries of the tesseroids in the following</span>
+<span class="sd">        order: ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.</span>
+<span class="sd">        Longitudinal and latitudinal boundaries must be in degrees.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tesseroids :  2d-array</span>
+<span class="sd">        Array containing the boundaries of the tesseroids.</span>
+<span class="sd">        If no longitude continuity needs to be applied, the returned array is</span>
+<span class="sd">        the same one as the orignal.</span>
+<span class="sd">        Otherwise, it&#39;s copied and its longitudinal boundaries are modified.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid tesseroid or tesseroids. &quot;</span>
+    <span class="c1"># Check if latitudinal boundaries are inside the [-90, 90] interval</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">south</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">south</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">north</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">north</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;The latitudinal boundaries must be inside the [-90, 90] &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;degrees interval.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Check if south boundary is not greater than the corresponding north</span>
+    <span class="c1"># boundary</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">south</span> <span class="o">&gt;</span> <span class="n">north</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The south boundary can&#39;t be greater than the north one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Check if radial boundaries are positive or zero</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">bottom</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">top</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The bottom and top radii should be positive or zero.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Check if top boundary is not greater than the corresponding bottom</span>
+    <span class="c1"># boundary</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">bottom</span> <span class="o">&gt;</span> <span class="n">top</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The bottom radius boundary can&#39;t be greater than the top one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Check if longitudinal boundaries are inside the [-180, 360] interval</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">west</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="n">west</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">east</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="n">east</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;The longitudinal boundaries must be inside the [-180, 360] &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;degrees interval.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Apply longitude continuity if w &gt; e</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">west</span> <span class="o">&gt;</span> <span class="n">east</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">_longitude_continuity</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)</span>
+        <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">tesseroids</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># Check if west boundary is not greater than the corresponding east</span>
+    <span class="c1"># boundary, even after applying the longitude continuity</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">west</span> <span class="o">&gt;</span> <span class="n">east</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The west boundary can&#39;t be greater than the east one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="c1"># Check if the longitudinal interval is not grater than one turn around the</span>
+    <span class="c1"># globe</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="n">east</span> <span class="o">-</span> <span class="n">west</span> <span class="o">&gt;</span> <span class="mi">360</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">invalid</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;The difference between east and west boundaries cannot be greater than &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;one turn around the globe.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">tess</span> <span class="ow">in</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">invalid</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tess</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tesseroids</span>
+
+
+<span class="k">def</span> <span class="nf">_check_points_outside_tesseroids</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if computation points are not inside the tesseroids</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : 2d-array</span>
+<span class="sd">        Array containing the coordinates of the computation points in the</span>
+<span class="sd">        following order: ``longitude``, ``latitude`` and ``radius``.</span>
+<span class="sd">        Both ``longitude`` and ``latitude`` must be in degrees.</span>
+<span class="sd">        The array must have the following shape: (3, ``n_points``), where</span>
+<span class="sd">        ``n_points`` is the total number of computation points.</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Array containing the boundaries of the tesseroids in the following</span>
+<span class="sd">        order: ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.</span>
+<span class="sd">        Longitudinal and latitudinal boundaries must be in degrees.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+<span class="sd">        This array of tesseroids must have longitude continuity and valid</span>
+<span class="sd">        boundaries.</span>
+<span class="sd">        Run ``_check_tesseroids`` before.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:]</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="c1"># Longitudinal boundaries of the tesseroid must be compared with</span>
+    <span class="c1"># longitudinal coordinates of computation points when moved to</span>
+    <span class="c1"># [0, 360) and [-180, 180).</span>
+    <span class="n">longitude_360</span> <span class="o">=</span> <span class="n">longitude</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="n">longitude_180</span> <span class="o">=</span> <span class="p">((</span><span class="n">longitude</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span><span class="p">)</span> <span class="o">-</span> <span class="mi">180</span>
+    <span class="n">inside_longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
+            <span class="n">west</span> <span class="o">&lt;</span> <span class="n">longitude_360</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">longitude_360</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">east</span>
+        <span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
+            <span class="n">west</span> <span class="o">&lt;</span> <span class="n">longitude_180</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">longitude_180</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">east</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">inside_latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
+        <span class="n">south</span> <span class="o">&lt;</span> <span class="n">latitude</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">latitude</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">north</span>
+    <span class="p">)</span>
+    <span class="n">inside_radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
+        <span class="n">bottom</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">radius</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">top</span>
+    <span class="p">)</span>
+    <span class="c1"># Build array of booleans.</span>
+    <span class="c1"># The (i, j) element is True if the computation point i is inside the</span>
+    <span class="c1"># tesseroid j.</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">inside_longitude</span> <span class="o">*</span> <span class="n">inside_latitude</span> <span class="o">*</span> <span class="n">inside_radius</span>
+    <span class="k">if</span> <span class="n">inside</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Found computation point inside tesseroid. &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;Computation points must be outside of tesseroids.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">point_i</span><span class="p">,</span> <span class="n">tess_i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">inside</span><span class="p">):</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Computation point &#39;</span><span class="si">{}</span><span class="s2">&#39; found inside tesseroid &#39;</span><span class="si">{}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">coordinates</span><span class="p">[:,</span> <span class="n">point_i</span><span class="p">],</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tess_i</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_longitude_continuity</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modify longitudinal boundaries of tesseroids to ensure longitude continuity</span>
+
+<span class="sd">    Longitudinal boundaries of the tesseroids are moved to the ``[-180, 180)``</span>
+<span class="sd">    degrees interval in case the ``west`` boundary is numerically greater than</span>
+<span class="sd">    the ``east`` one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Longitudinal and latitudinal boundaries must be in degrees.</span>
+<span class="sd">        Array containing the boundaries of each tesseroid:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
+<span class="sd">        spherical coordinate system.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Modified boundaries of the tesseroids.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Copy the tesseroids to avoid modifying the original tesseroids array</span>
+    <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">tesseroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">tess_to_be_changed</span> <span class="o">=</span> <span class="n">west</span> <span class="o">&gt;</span> <span class="n">east</span>
+    <span class="n">east</span><span class="p">[</span><span class="n">tess_to_be_changed</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">east</span><span class="p">[</span><span class="n">tess_to_be_changed</span><span class="p">]</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span><span class="p">)</span> <span class="o">-</span> <span class="mi">180</span>
+    <span class="n">west</span><span class="p">[</span><span class="n">tess_to_be_changed</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">west</span><span class="p">[</span><span class="n">tess_to_be_changed</span><span class="p">]</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span><span class="p">)</span> <span class="o">-</span> <span class="mi">180</span>
+    <span class="k">return</span> <span class="n">tesseroids</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, The Harmonica Developers
+      <span class="lastupdated">
+        Last updated on Feb 27, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

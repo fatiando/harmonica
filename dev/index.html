@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
@@ -36,12 +44,18 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installing" href="install.html" />
-    
-    <script src="_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -49,11 +63,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -70,7 +83,7 @@
             
             
               <div class="version">
-                v0.1.0a1
+                dev
               </div>
             
           
@@ -98,11 +111,17 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gallery/index.html">Gallery</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -125,7 +144,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -197,7 +216,7 @@
             
   <div class="banner">
     <img src="_static/readme-banner.png" alt="harmonica">
-    <h2> Forward modeling, inversion, and processing gravity and magnetic data </h2>
+    <h2>Forward modeling, inversion, and processing gravity and magnetic data</h2>
     <p>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</p>
 </div><div class="section" id="disclaimer">
 <h1>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this headline">¶</a></h1>
@@ -206,13 +225,13 @@
 Let us know by submitting
 <a class="reference external" href="https://github.com/fatiando/harmonica/issues">issues on Github</a>
 or send us a message on our
-<a class="reference external" href="https://gitter.im/fatiando/fatiando">Gitter chatroom</a>.</p>
+<a class="reference external" href="http://contact.fatiando.org">Slack chatroom</a>.</p>
 </div>
 <div class="section" id="about">
 <h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
 <p><em>Harmonica</em> is a Python library for processing and modeling gravity and magnetic data.
-It includes common processing steps, like calculation of normal gravity, terrain
-correction, reduction to the pole, upward continuation, equivalent layers, and more.
+It includes common processing steps, like calculation of Bouguer and terrain
+corrections, reduction to the pole, upward continuation, equivalent layers, and more.
 There are forward modeling functions for basic geometric shapes, like spheres, prisms,
 polygonal prisms, and tesseroids. The inversion methods are implemented as classes with
 an interface inspired by scikit-learn (like <a class="reference external" href="https://www.fatiando.org/verde">Verde</a>).</p>
@@ -221,31 +240,31 @@ an interface inspired by scikit-learn (like <a class="reference external" href="
 <h1>Project goals<a class="headerlink" href="#project-goals" title="Permalink to this headline">¶</a></h1>
 <p>These are the long-term goals for Harmonica:</p>
 <ul class="simple">
-<li>Efficient, well designed, and fully tested code for gravity and magnetic data.</li>
-<li>Cover the entire data life-cycle: from raw data to 3D Earth model.</li>
-<li>Focus on best-practices to discourage misuse of methods, particularly inversion.</li>
-<li>Easily extended code to enable research on the development of new methods.</li>
+<li><p>Efficient, well designed, and fully tested code for gravity and magnetic data.</p></li>
+<li><p>Cover the entire data life-cycle: from raw data to 3D Earth model.</p></li>
+<li><p>Focus on best-practices to discourage misuse of methods, particularly inversion.</p></li>
+<li><p>Easily extended code to enable research on the development of new methods.</p></li>
 </ul>
 <p>See the <a class="reference external" href="https://github.com/fatiando/harmonica/milestones">Github milestones</a> for
 short-term goals.</p>
 <p>Things that will <em>not</em> be covered in Harmonica:</p>
 <ul class="simple">
-<li>Multi-physics partial differential equation solvers. Use
-<a class="reference external" href="http://www.simpeg.xyz/">SimPEG</a> or <a class="reference external" href="https://www.pygimli.org/">PyGIMLi</a> instead.</li>
-<li>Generic grid processing methods (like horizontal derivatives and FFT). These should be
-implemented in <a class="reference external" href="https://www.fatiando.org/verde">Verde</a>.</li>
-<li>Data visualization.</li>
-<li>GUI applications.</li>
+<li><p>Multi-physics partial differential equation solvers. Use
+<a class="reference external" href="http://www.simpeg.xyz/">SimPEG</a> or <a class="reference external" href="https://www.pygimli.org/">PyGIMLi</a> instead.</p></li>
+<li><p>Generic grid processing methods (like horizontal derivatives and FFT). These should be
+implemented in <a class="reference external" href="https://www.fatiando.org/verde">Verde</a>.</p></li>
+<li><p>Data visualization.</p></li>
+<li><p>GUI applications.</p></li>
 </ul>
 </div>
 <div class="section" id="contacting-us">
 <h1>Contacting Us<a class="headerlink" href="#contacting-us" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li>Most discussion happens <a class="reference external" href="https://github.com/fatiando/harmonica">on Github</a>.
+<li><p>Most discussion happens <a class="reference external" href="https://github.com/fatiando/harmonica">on Github</a>.
 Feel free to <a class="reference external" href="https://github.com/fatiando/harmonica/issues/new">open an issue</a> or comment
-on any open issue or pull request.</li>
-<li>We have <a class="reference external" href="https://gitter.im/fatiando/fatiando">chat room on Gitter</a>
-where you can ask questions and leave comments.</li>
+on any open issue or pull request.</p></li>
+<li><p>We have <a class="reference external" href="http://contact.fatiando.org">chat room on Slack</a>
+where you can ask questions and leave comments.</p></li>
 </ul>
 </div>
 <div class="section" id="contributing">
@@ -294,10 +313,13 @@ of the <strong>BSD 3-clause License</strong>. A copy of this license is provided
 <div class="section" id="documentation-for-other-versions">
 <h1>Documentation for other versions<a class="headerlink" href="#documentation-for-other-versions" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference external" href="http://www.fatiando.org/harmonica/dev">Development</a> (reflects the <em>master</em> branch on
-Github)</li>
-<li><a class="reference external" href="http://www.fatiando.org/harmonica/latest">Latest release</a></li>
+<li><p><a class="reference external" href="http://www.fatiando.org/harmonica/dev">Development</a> (reflects the <em>master</em> branch on
+Github)</p></li>
+<li><p><a class="reference external" href="http://www.fatiando.org/harmonica/latest">Latest release</a></p></li>
+<li><p><a class="reference external" href="http://www.fatiando.org/harmonica/v0.1.0">v0.1.0</a></p></li>
 </ul>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -322,8 +344,10 @@ Github)</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Sep 20, 2018.
+        &copy; Copyright 2018-2020, The Harmonica Developers
+      <span class="lastupdated">
+        Last updated on Feb 27, 2020.
+      </span>
 
     </p>
   </div>
@@ -340,33 +364,16 @@ Github)</li>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
