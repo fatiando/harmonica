@@ -30,7 +30,7 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628742-blue.svg?style=flat-square
+.. image:: https://zenodo.org/badge/10.5281/zenodo.3628742.svg
     :alt: Digital Object Identifier for the Zenodo archive
     :target: https://doi.org/10.5281/zenodo.3628742
 
