@@ -19,7 +19,6 @@
     install.rst
     citing.rst
     gallery/index.rst
-    changes.rst
 
 .. toctree::
     :maxdepth: 2
@@ -34,4 +33,5 @@
     :caption: Reference documentation
 
     api/index.rst
+    changes.rst
     references.rst
