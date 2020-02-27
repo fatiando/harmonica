@@ -52,3 +52,13 @@ Other features:
   (`#17 <https://github.com/fatiando/PROJECT/pull/17>`__)
 - Function to read ICGEM data files.
   (`#11 <https://github.com/fatiando/PROJECT/pull/11>`__)
+
+
+This release contains contributions from:
+
+- Leonardo Uieda
+- Santiago Soler
+- Vanderlei C Oliveira Jr
+- Agustina Pesce
+- Nicholas Shea
+- ziebam
