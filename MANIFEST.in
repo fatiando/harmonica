@@ -4,6 +4,7 @@ include CODE_OF_CONDUCT.md
 include CONTRIBUTING.md
 include MAINTENANCE.md
 include AUTHORS.md
+include AUTHORSHIP.md
 include versioneer.py
 include harmonica/datasets/registry.txt
 recursive-include harmonica/tests/data *
