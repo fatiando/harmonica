@@ -1,0 +1,421 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>harmonica.synthetic.surveys &mdash; Harmonica</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/harmonica-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/harmonica"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Harmonica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../harmonica.html">harmonica</a> &raquo;</li>
+        
+      <li>harmonica.synthetic.surveys</li>
+    
+    
+    <li class="source-link">
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for harmonica.synthetic.surveys</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create synthetic surveys for gravity and magnetic observations</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">inside</span>
+<span class="kn">from</span> <span class="nn">verde.coordinates</span> <span class="kn">import</span> <span class="n">check_region</span>
+
+<span class="kn">from</span> <span class="nn">..datasets</span> <span class="kn">import</span> <span class="n">fetch_britain_magnetic</span><span class="p">,</span> <span class="n">fetch_south_africa_gravity</span>
+
+
+<div class="viewcode-block" id="airborne_survey"><a class="viewcode-back" href="../../../api/generated/harmonica.synthetic.airborne_survey.html#harmonica.synthetic.airborne_survey">[docs]</a><span class="k">def</span> <span class="nf">airborne_survey</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">56.0</span><span class="p">,</span> <span class="mf">56.5</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create measurement locations for a synthetic airborne survey</span>
+
+<span class="sd">    The observation points are sampled from the Great Britain total-field</span>
+<span class="sd">    magnetic anomaly dataset (see</span>
+<span class="sd">    :func:`harmonica.datasets.fetch_britain_magnetic`). A portion of the</span>
+<span class="sd">    original survey is cut (*data_region*) and the coordinates may be scaled to</span>
+<span class="sd">    the given *region*.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    region : tuple or list (optional)</span>
+<span class="sd">        Survey horizontal coordinates will be scaled to span this area. The</span>
+<span class="sd">        boundaries must be passed in the following order: (``east``, ``west``,</span>
+<span class="sd">        ``south``, ``north``, ...), defined on a geodetic coordinate system and</span>
+<span class="sd">        in degrees. Only the 4 horizontal boundaries are used. Subsequent</span>
+<span class="sd">        boundaries will be ignored. If ``None``, the survey points won&#39;t be</span>
+<span class="sd">        scaled. Default ``None``.</span>
+<span class="sd">    data_region : tuple or list (optional)</span>
+<span class="sd">        Subsection of the original Great Britain magnetic dataset that will be</span>
+<span class="sd">        sampled. The boundaries must be passed in the following order:</span>
+<span class="sd">        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic</span>
+<span class="sd">        coordinate system and in degrees. All subsequent boundaries will be</span>
+<span class="sd">        ignored.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    survey : :class:`pandas.DataFrame`</span>
+<span class="sd">        Dataframe containing the coordinates of the observation points on</span>
+<span class="sd">        a geodetic coordinate system. The :class:`pandas.DataFrame` will have</span>
+<span class="sd">        the following columns: ``longitude``, ``latitude``, ``height``.</span>
+<span class="sd">        Longitudes and latitudes are in degrees, and heights in meters.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    datasets.fetch_britain_magnetic:</span>
+<span class="sd">        Fetch total-field magnetic anomaly data of Great Britain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity checks for region and data_region</span>
+    <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">check_region</span><span class="p">(</span><span class="n">data_region</span><span class="p">)</span>
+    <span class="c1"># Fetch airborne magnetic survey from Great Britain</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">fetch_britain_magnetic</span><span class="p">()</span>
+    <span class="c1"># Rename the &quot;elevation&quot; column to &quot;height&quot; and</span>
+    <span class="c1"># keep only the longitude, latitude and height</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;altitude_m&quot;</span><span class="p">:</span> <span class="s2">&quot;height&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># Cut the survey into the data_region and scale it to the passed region</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">_cut_and_scale</span><span class="p">(</span><span class="n">survey</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">data_region</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">survey</span></div>
+
+
+<div class="viewcode-block" id="ground_survey"><a class="viewcode-back" href="../../../api/generated/harmonica.synthetic.ground_survey.html#harmonica.synthetic.ground_survey">[docs]</a><span class="k">def</span> <span class="nf">ground_survey</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_region</span><span class="o">=</span><span class="p">(</span><span class="mf">13.60</span><span class="p">,</span> <span class="mf">20.30</span><span class="p">,</span> <span class="o">-</span><span class="mf">24.20</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.5</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create measurement locations for a synthetic ground survey</span>
+
+<span class="sd">    The observation points are sampled from the South Africa gravity dataset</span>
+<span class="sd">    (see :func:`harmonica.datasets.fetch_south_africa_gravity`). Only a portion</span>
+<span class="sd">    of the original survey is sampled and its region may be scaled to the</span>
+<span class="sd">    passed ``region``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    region : tuple or list (optional)</span>
+<span class="sd">        Region at which the survey points coordinates will be scaled. The</span>
+<span class="sd">        boundaries must be passed in the following order: (``east``, ``west``,</span>
+<span class="sd">        ``south``, ``north``, ...), defined on a geodetic coordinate system and</span>
+<span class="sd">        in degrees. All subsequent boundaries will be ignored. If ``None``, the</span>
+<span class="sd">        survey points won&#39;t be scaled. Default ``None``.</span>
+<span class="sd">    data_region : tuple or list (optional)</span>
+<span class="sd">        Region where the original Great Britain magnetic dataset will be</span>
+<span class="sd">        sampled. The boundaries must be passed in the following order:</span>
+<span class="sd">        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic</span>
+<span class="sd">        coordinate system and in degrees. All subsequent boundaries will be</span>
+<span class="sd">        ignored.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    survey : :class:`pandas.DataFrame`</span>
+<span class="sd">        Dataframe containing the coordinates of the observation points on</span>
+<span class="sd">        a geodetic coordinate system. The :class:`pandas.DataFrame` will have</span>
+<span class="sd">        the following columns: ``longitude``, ``latitude``, ``height``.</span>
+<span class="sd">        Longitudes and latitudes are in degrees, and heights in meters.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    datasets.fetch_south_africa_gravity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity checks for region and data_region</span>
+    <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">check_region</span><span class="p">(</span><span class="n">data_region</span><span class="p">)</span>
+    <span class="c1"># Fetch ground gravity survey from South Africa</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">fetch_south_africa_gravity</span><span class="p">()</span>
+    <span class="c1"># Rename the &quot;elevation&quot; column to &quot;height&quot; and</span>
+    <span class="c1"># keep only the longitude, latitude and height</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;elevation&quot;</span><span class="p">:</span> <span class="s2">&quot;height&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># Cut the survey into the data_region and scale it to the passed region</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">_cut_and_scale</span><span class="p">(</span><span class="n">survey</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">data_region</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">survey</span></div>
+
+
+<span class="k">def</span> <span class="nf">_cut_and_scale</span><span class="p">(</span><span class="n">survey</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">data_region</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cut a subsection from the original survey and scale it to the given region</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    survey : :class:`pandas.DataFrame`</span>
+<span class="sd">        Original survey as a :class:`pandas.DataFrame` containing the following</span>
+<span class="sd">        columns: ``longitude``, ``latitude`` and ``height``.</span>
+<span class="sd">    region : tuple or list (optional)</span>
+<span class="sd">        Region to which the survey points coordinates will be scaled. The</span>
+<span class="sd">        boundaries must be passed in the following order: (``east``, ``west``,</span>
+<span class="sd">        ``south``, ``north``, ...), defined on a geodetic coordinate system and</span>
+<span class="sd">        in degrees. All subsequent boundaries will be ignored. If ``None``, the</span>
+<span class="sd">        survey points won&#39;t be scaled.</span>
+<span class="sd">    data_region : tuple or list (optional)</span>
+<span class="sd">        Region where the original Great Britain magnetic dataset will be</span>
+<span class="sd">        sampled. The boundaries must be passed in the following order:</span>
+<span class="sd">        (``east``, ``west``, ``south``, ``north``, ...), defined on a geodetic</span>
+<span class="sd">        coordinate system and in degrees. All subsequent boundaries will be</span>
+<span class="sd">        ignored.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    survey : :class:`pandas.DataFrame`</span>
+<span class="sd">        Dataframe containing the coordinates of the observation points on</span>
+<span class="sd">        a geodetic coordinate system. Longitudes and latitudes are in degrees,</span>
+<span class="sd">        and heights in meters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Cut the data into the data_region</span>
+    <span class="n">inside_points</span> <span class="o">=</span> <span class="n">inside</span><span class="p">((</span><span class="n">survey</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">survey</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">data_region</span><span class="p">)</span>
+    <span class="n">survey</span> <span class="o">=</span> <span class="n">survey</span><span class="p">[</span><span class="n">inside_points</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Scale survey coordinates to the passed region</span>
+    <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">longitude_min</span><span class="p">,</span> <span class="n">longitude_max</span><span class="p">,</span> <span class="n">latitude_min</span><span class="p">,</span> <span class="n">latitude_max</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">survey</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">survey</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">survey</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">longitude_max</span> <span class="o">-</span> <span class="n">longitude_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">survey</span><span class="o">.</span><span class="n">longitude</span> <span class="o">-</span> <span class="n">longitude_min</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">w</span>
+        <span class="n">survey</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">latitude_max</span> <span class="o">-</span> <span class="n">latitude_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">survey</span><span class="o">.</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">latitude_min</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">survey</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, The Harmonica Developers
+      <span class="lastupdated">
+        Last updated on Feb 27, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
