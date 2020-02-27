@@ -17,6 +17,7 @@
     :caption: Getting Started
 
     install.rst
+    citing.rst
     gallery/index.rst
 
 .. toctree::
@@ -32,4 +33,5 @@
     :caption: Reference documentation
 
     api/index.rst
+    changes.rst
     references.rst
