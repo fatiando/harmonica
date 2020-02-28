@@ -71,7 +71,7 @@ jobs:
   displayName: 'Mac'
 
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-10.15'
 
   variables:
     CONDA_REQUIREMENTS: requirements.txt
@@ -81,6 +81,9 @@ jobs:
 
   strategy:
     matrix:
+      Python38:
+        python.version: '3.8'
+        PYTHON: '3.8'
       Python37:
         python.version: '3.7'
         PYTHON: '3.7'
@@ -172,6 +175,9 @@ jobs:
 
   strategy:
     matrix:
+      Python38:
+        python.version: '3.8'
+        PYTHON: '3.8'
       Python37:
         python.version: '3.7'
         PYTHON: '3.7'
