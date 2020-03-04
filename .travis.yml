@@ -23,6 +23,7 @@ env:
         # PyPI password for deploying releases (TWINE_PASSWORD)
         - secure: "ufJKNS+JGD3klJglfML+4gerCOntHlfLX8M1zb3wyf6QbOfqZncvijh5ChVSAsqMeqKJG+hHVUgRN0pPgOyhsCetgeS/QdYsehEZO+UZeni+xdaAZgG/pz0pzxDuIOOTu9CImKIn+hnMSo3cnoO9fASem1c77XvLHs6BcShYpUZTRElvDGcvWlU2aZMA2qO9rVBpRBgr8GK6uLdXqV6yzJznWlQVRSJmpVEVfdNr5cbtgy7gxf2IBL2TXEWzzqwcJc3/bkzGFCwqgJ3aouIeHeWuNJEW23BjfIj6Da7ibsC7cPwS0u96MbBTBNOVInlh6Zy7xQvJpzgYBPTE3P3+HMUF7wS6HVkGyn86kh0JMfTwUjSul9SxGDCSn1JWnH5Ya7S5rGekYPcxE+2gKAt3BHjPM8xIDo6fIPH8zWLXl7xQJDHe/TWc3GRUD2OB+y9fWy+xvuXz7DI41oSHMSAEw6Ob2x7dGPbiSGvWmK0Z6Nm1sBVP/3xGhfhuH48587cbVEU27MAIUCzyJYi2750z3LP5pDP4HGiJsiH/kZLTBTgjxKM0m6+A/quAlARUsiXyf5z9fAqed13EcB/0x8YqqGVHNC79+7eIhEWwPU1h1+NeiTqK2wznzvawdfDtFHtquLC0pqWNq+r76walp+wBG0+jGpK+D/orUoW/x0oVrGo="
         - TWINE_USERNAME=Leonardo.Uieda
+        - HARMONICA_DATA_DIR="$HOME/.harmonica/data"
         # The files with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
         - CONDA_REQUIREMENTS_DEV=requirements-dev.txt
@@ -34,6 +35,10 @@ env:
 # Specify the build configurations. Be sure to only deploy from a single build.
 matrix:
     include:
+        - name: "Linux - Python 3.8"
+          os: linux
+          env:
+              - PYTHON=3.8
         - name: "Linux - Python 3.7"
           os: linux
           env:
@@ -49,8 +54,8 @@ matrix:
 # Setup the build environment
 before_install:
     # Copy sample data to the verde data dir to avoid downloading all the time
-    - mkdir -p $HOME/.harmonica/data/master
-    - cp -r data/* $HOME/.harmonica/data/master
+    - mkdir -p $HARMONICA_DATA_DIR/master
+    - cp -r data/* $HARMONICA_DATA_DIR/master
     # Get the Fatiando CI scripts
     - git clone --branch=1.1.1 --depth=1 https://github.com/fatiando/continuous-integration.git
     # Download and install miniconda and setup dependencies

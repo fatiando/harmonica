@@ -71,15 +71,19 @@ jobs:
   displayName: 'Mac'
 
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-10.15'
 
   variables:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
     CONDA_INSTALL_EXTRA: "codecov"
+    HARMONICA_DATA_DIR: "$(Agent.TempDirectory)/.harmonica/data"
 
   strategy:
     matrix:
+      Python38:
+        python.version: '3.8'
+        PYTHON: '3.8'
       Python37:
         python.version: '3.7'
         PYTHON: '3.7'
@@ -116,8 +120,8 @@ jobs:
   # Copy the test data to the cache folder
   - bash: |
       set -x -e
-      mkdir -p $HOME/.harmonica/data/master
-      cp -r data/* $HOME/.harmonica/data/master
+      mkdir -p ${HARMONICA_DATA_DIR}/master
+      cp -r data/* ${HARMONICA_DATA_DIR}/master
     displayName: Copy test data to cache
 
   # Install the package
@@ -167,9 +171,13 @@ jobs:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
     CONDA_INSTALL_EXTRA: "codecov"
+    HARMONICA_DATA_DIR: "$(Agent.TempDirectory)/.harmonica/data"
 
   strategy:
     matrix:
+      Python38:
+        python.version: '3.8'
+        PYTHON: '3.8'
       Python37:
         python.version: '3.7'
         PYTHON: '3.7'
@@ -200,8 +208,8 @@ jobs:
   # Copy the test data to the cache folder
   - bash: |
       set -x -e
-      mkdir -p ~/.harmonica/data/master
-      cp -r data/* ~/.harmonica/data/master
+      mkdir -p ${HARMONICA_DATA_DIR}/master
+      cp -r data/* ${HARMONICA_DATA_DIR}/master
     displayName: Copy test data to cache
 
   # Install the package that we want to test

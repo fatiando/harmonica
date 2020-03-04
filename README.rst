@@ -30,6 +30,9 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/harmonica
+.. image:: https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628741-blue.svg?style=flat-square
+    :alt: Digital Object Identifier for the Zenodo archive
+    :target: https://doi.org/10.5281/zenodo.3628741
 
 
 .. placeholder-for-doc-index
@@ -51,8 +54,8 @@ About
 -----
 
 *Harmonica* is a Python library for processing and modeling gravity and magnetic data.
-It includes common processing steps, like calculation of normal gravity, terrain
-correction, reduction to the pole, upward continuation, equivalent layers, and more.
+It includes common processing steps, like calculation of Bouguer and terrain
+corrections, reduction to the pole, upward continuation, equivalent layers, and more.
 There are forward modeling functions for basic geometric shapes, like spheres, prisms,
 polygonal prisms, and tesseroids. The inversion methods are implemented as classes with
 an interface inspired by scikit-learn (like `Verde <https://www.fatiando.org/verde>`__).
@@ -151,3 +154,4 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/harmonica/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/harmonica/latest>`__
+* `v0.1.0 <http://www.fatiando.org/harmonica/v0.1.0>`__

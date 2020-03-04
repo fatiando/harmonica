@@ -36,6 +36,7 @@ intersphinx_mapping = {
     "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
+    "boule": ("https://www.fatiando.org/boule/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
 }
 

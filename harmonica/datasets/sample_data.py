@@ -1,22 +1,45 @@
 """
 Functions to load sample datasets used in the Harmonica docs.
 """
-import os
-
+import pkg_resources
 import xarray as xr
 import pandas as pd
 import pooch
 
 from ..version import full_version
 
-POOCH = pooch.create(
-    path=["~", ".harmonica", "data"],
+REGISTRY = pooch.create(
+    path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
     version=full_version,
     version_dev="master",
     env="HARMONICA_DATA_DIR",
 )
-POOCH.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
+with pkg_resources.resource_stream(
+    "harmonica.datasets", "registry.txt"
+) as registry_file:
+    REGISTRY.load_registry(registry_file)
+
+
+def locate():
+    r"""
+    The absolute path to the sample data storage location on disk.
+
+    This is where the data are saved on your computer. The location is
+    dependent on the operating system. The folder locations are defined by the
+    ``appdirs``  package (see the `appdirs documentation
+    <https://github.com/ActiveState/appdirs>`__).
+
+    The location can be overwritten by the ``HARMONICA_DATA_DIR`` environment
+    variable to the desired destination.
+
+    Returns
+    -------
+    path : str
+        The local data storage location.
+
+    """
+    return str(REGISTRY.abspath)
 
 
 def fetch_geoid_earth():
@@ -40,7 +63,7 @@ def fetch_geoid_earth():
         longitude.
 
     """
-    fname = POOCH.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
+    fname = REGISTRY.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
     data = xr.open_dataset(fname, engine="scipy").astype("float64")
     return data
 
@@ -68,7 +91,7 @@ def fetch_gravity_earth():
         longitude.
 
     """
-    fname = POOCH.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
+    fname = REGISTRY.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
     # The heights are stored as ints and data as float32 to save space on the
     # data file. Cast them to float64 to avoid integer division errors.
     data = xr.open_dataset(fname, engine="scipy").astype("float64")
@@ -99,7 +122,7 @@ def fetch_topography_earth():
         geodetic latitude and longitude.
 
     """
-    fname = POOCH.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
+    fname = REGISTRY.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
     # The data are stored as int16 to save disk space. Cast them to floats to
     # avoid integer division problems when processing.
     data = xr.open_dataset(fname, engine="scipy").astype("float64")
@@ -136,7 +159,7 @@ def fetch_britain_magnetic():
     data : :class:`pandas.DataFrame`
         The magnetic anomaly data.
     """
-    return pd.read_csv(POOCH.fetch("britain-magnetic.csv.xz"), compression="xz")
+    return pd.read_csv(REGISTRY.fetch("britain-magnetic.csv.xz"), compression="xz")
 
 
 def fetch_south_africa_gravity():
@@ -166,6 +189,6 @@ def fetch_south_africa_gravity():
         The gravity data.
 
     """
-    fname = POOCH.fetch("south-africa-gravity.ast.xz")
+    fname = REGISTRY.fetch("south-africa-gravity.ast.xz")
     columns = ["latitude", "longitude", "elevation", "gravity"]
     return pd.read_csv(fname, sep=r"\s+", names=columns, compression="xz")
