@@ -82,7 +82,7 @@ fig, (ax1, ax2) = plt.subplots(
     ncols=2,
     figsize=(12, 9),
     sharey=True,
-    subplot_kw={'projection': ccrs.PlateCarree()},
+    subplot_kw={"projection": ccrs.PlateCarree()},
 )
 ax1.coastlines()
 ax2.coastlines()
