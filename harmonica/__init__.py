@@ -9,7 +9,7 @@ from .gravity_corrections import bouguer_correction
 from .forward.point_mass import point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
-from .equivalent_layer.harmonic import EQLHarmonic
+from .equivalent_layer.harmonic import EQLHarmonic, EQLHarmonicSpherical
 
 # Get the version number through versioneer
 __version__ = version.full_version

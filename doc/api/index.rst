@@ -24,6 +24,7 @@ Equivalent Layers
     :toctree: generated/
 
     EQLHarmonic
+    EQLHarmonicSpherical
 
 Forward modelling
 -----------------
