@@ -80,7 +80,7 @@ maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
 fig, (ax1, ax2) = plt.subplots(
     nrows=1,
     ncols=2,
-    figsize=(12, 9),
+    figsize=(10, 5),
     sharey=True,
     subplot_kw={"projection": ccrs.PlateCarree()},
 )
@@ -103,7 +103,7 @@ tmp = ax1.scatter(
     vmax=maxabs,
     cmap="seismic",
 )
-plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.05, aspect=40, orientation="horizontal")
+plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
 ax1.set_extent(region, crs=ccrs.PlateCarree())
 
 tmp = grid.gravity_disturbance.plot.pcolormesh(
@@ -114,8 +114,9 @@ tmp = grid.gravity_disturbance.plot.pcolormesh(
     add_colorbar=False,
     add_labels=False,
 )
-plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.05, aspect=40, orientation="horizontal")
+plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
 ax2.set_extent(region, crs=ccrs.PlateCarree())
 
-plt.subplots_adjust(wspace=0.05)
+plt.subplots_adjust(wspace=0.05, top=1, bottom=0, left=0.05, right=0.95)
+plt.savefig("figure.pdf", dpi=300)
 plt.show()
