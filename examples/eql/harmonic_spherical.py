@@ -1,6 +1,6 @@
 """
-Gridding and upward continuation in Spherical coordinates
-=========================================================
+Gridding in Spherical coordinates
+=================================
 
 When gridding magnetic or gravity data on large regions thought the equivalent
 layer technique, the curvature of the Earth must be taken into account.
