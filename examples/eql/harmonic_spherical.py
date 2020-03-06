@@ -118,5 +118,4 @@ plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizo
 ax2.set_extent(region, crs=ccrs.PlateCarree())
 
 plt.subplots_adjust(wspace=0.05, top=1, bottom=0, left=0.05, right=0.95)
-plt.savefig("figure.pdf", dpi=300)
 plt.show()
