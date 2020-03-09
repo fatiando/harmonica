@@ -2,6 +2,8 @@
 Functions for interacting with standarized data files that contain gravity or
 magnetic geophysical data.
 """
+import contextlib
+
 import numpy as np
 import xarray as xr
 
@@ -19,8 +21,8 @@ def load_icgem_gdf(fname, **kwargs):
 
     Parameters
     ----------
-    fname : string
-        Name of the ICGEM .gdf file
+    fname : string or file-like object
+        Name of the ICGEM ``.gdf`` file or an open file object to read from.
     kwargs
         Extra keyword arguments to this function will be passed to
         :func:`numpy.loadtxt`.
@@ -82,7 +84,15 @@ def _read_gdf_file(fname, **kwargs):
     """
     Read ICGEM gdf file and returns metadata dict and data in cols as np.array
     """
-    with open(fname) as gdf_file:
+    # If it's an open file, does nothing. Otherwise, open and add to the
+    # context lib stack to make it close when exiting the with block.
+    with contextlib.ExitStack() as stack:
+        if hasattr(fname, "read"):
+            # It's a file object
+            gdf_file = fname
+        else:
+            # It's a file path
+            gdf_file = stack.enter_context(open(fname))
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
