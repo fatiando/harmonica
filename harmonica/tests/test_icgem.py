@@ -33,6 +33,28 @@ def test_load_icgem_gdf():
     npt.assert_allclose(height, icgem_grd.height_over_ell.values)
 
 
+def test_load_icgem_gdf_open_file():
+    "Check if load_icgem_gdf works if given an open file instead of string"
+    fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
+    with open(fname, "r") as open_file:
+        icgem_grd = load_icgem_gdf(open_file)
+
+    s, n, w, e = 16, 28, 150, 164
+    nlat, nlon = 7, 8
+    shape = (nlat, nlon)
+    lat = np.linspace(s, n, nlat, dtype="float64")
+    lon = np.linspace(w, e, nlon, dtype="float64")
+    true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
+    height = 1100 * np.ones(shape)
+
+    assert icgem_grd.dims["latitude"] == nlat
+    assert icgem_grd.dims["longitude"] == nlon
+    npt.assert_equal(icgem_grd.longitude.values, lon)
+    npt.assert_equal(icgem_grd.latitude.values, lat)
+    npt.assert_allclose(true_data, icgem_grd.sample_data.values)
+    npt.assert_allclose(height, icgem_grd.height_over_ell.values)
+
+
 def test_load_icgem_gdf_with_height():
     "Check if load_icgem_gdf reads an ICGEM file with height column"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample-with-height.gdf")
