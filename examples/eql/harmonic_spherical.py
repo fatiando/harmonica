@@ -6,11 +6,9 @@ The curvature of the Earth must be taken into account when gridding and
 processing magnetic or gravity data on large regions. In these cases, projecting 
 the data may introduce errors due to the distortions caused by the projection.
 
-:class:`harmonica.EQLHarmonicSpherical` is able to estimate the
-coefficients of a set of point sources (the equivalent layer) that fit the
-observed harmonic data given in Spherical coordinates.
-It allows to benefit from the same advantages that the equivalent layer
-technique offers while taking into account the curvature of the Earth.
+:class:`harmonica.EQLHarmonicSpherical` implements the equivalent layer technique
+in spherical coordinates. It has the same advantages as the Cartesian equivalent layer
+(:class:`harmonica.EQLHarmonic`) while taking into account the curvature of the Earth.
 """
 import numpy as np
 import boule as bl
