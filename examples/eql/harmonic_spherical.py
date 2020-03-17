@@ -50,11 +50,11 @@ eql.fit(coordinates, gravity_disturbance)
 print("R² score:", eql.score(coordinates, gravity_disturbance))
 
 # Interpolate data on a regular grid with 0.2 degrees spacing defined on
-# geodetic coordinates. To do so we need to specify we want grid coordinates to
+# geodetic coordinates. To do so we need to specify that we want coordinates to
 # be converted to spherical geocentric coordinates before the prediction is
-# carried out. This can be done though the projection argument. The
-# interpolation requires an extra coordinate (upward height). By passing in
-# 2500 m above the maximum observation radius, we're effectively
+# carried out. This can be done though the "projection" argument. 
+# The interpolation requires an extra coordinate (upward height). By passing in
+# 2500 m above the ellipsoid, we're effectively
 # upward-continuing the data (maximum height of observation points is 2400 m).
 # All the parameters passed to build the grid (region, spacing and
 # extra_coords) are in geodetic coordinates.
