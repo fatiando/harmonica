@@ -11,11 +11,11 @@ in spherical coordinates. It has the same advantages as the Cartesian equivalent
 (:class:`harmonica.EQLHarmonic`) while taking into account the curvature of the Earth.
 """
 import numpy as np
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import boule as bl
 import verde as vd
 import harmonica as hm
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
 
 
 # Fetch the sample gravity data from South Africa
