@@ -2,10 +2,9 @@
 Gridding in spherical coordinates
 =================================
 
-When gridding magnetic or gravity data on large regions thought the equivalent
-layer technique, the curvature of the Earth must be taken into account.
-Projecting data for large regions may introduce projection errors on the
-predictions.
+The curvature of the Earth must be taken into account when gridding and 
+processing magnetic or gravity data on large regions. In these cases, projecting 
+the data may introduce errors due to the distortions caused by the projection.
 
 :class:`harmonica.EQLHarmonicSpherical` is able to estimate the
 coefficients of a set of point sources (the equivalent layer) that fit the
