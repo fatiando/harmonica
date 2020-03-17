@@ -2,13 +2,15 @@
 Gridding in spherical coordinates
 =================================
 
-The curvature of the Earth must be taken into account when gridding and 
-processing magnetic or gravity data on large regions. In these cases, projecting 
-the data may introduce errors due to the distortions caused by the projection.
+The curvature of the Earth must be taken into account when gridding and
+processing magnetic or gravity data on large regions. In these cases,
+projecting the data may introduce errors due to the distortions caused by the
+projection.
 
-:class:`harmonica.EQLHarmonicSpherical` implements the equivalent layer technique
-in spherical coordinates. It has the same advantages as the Cartesian equivalent layer
-(:class:`harmonica.EQLHarmonic`) while taking into account the curvature of the Earth.
+:class:`harmonica.EQLHarmonicSpherical` implements the equivalent layer
+technique in spherical coordinates. It has the same advantages as the Cartesian
+equivalent layer (:class:`harmonica.EQLHarmonic`) while taking into account the
+curvature of the Earth.
 """
 import numpy as np
 import cartopy.crs as ccrs
@@ -21,8 +23,8 @@ import harmonica as hm
 # Fetch the sample gravity data from South Africa
 data = hm.datasets.fetch_south_africa_gravity()
 
-# Downsample the data using a blocked mean to speed-up the computations 
-# for this example. This is preferred over simply discarding points to avoid 
+# Downsample the data using a blocked mean to speed-up the computations
+# for this example. This is preferred over simply discarding points to avoid
 # aliasing effects.
 blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
 (longitude, latitude, elevation), gravity_data = blocked_mean.filter(
@@ -34,7 +36,7 @@ ellipsoid = bl.WGS84
 gamma = ellipsoid.normal_gravity(latitude, height=elevation)
 gravity_disturbance = gravity_data - gamma
 
-# Convert data coordinates from geodetic (longitude, latitude, height) to 
+# Convert data coordinates from geodetic (longitude, latitude, height) to
 # spherical (longitude, spherical_latitude, radius).
 coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
 
@@ -52,7 +54,7 @@ print("R² score:", eql.score(coordinates, gravity_disturbance))
 # Interpolate data on a regular grid with 0.2 degrees spacing defined on
 # geodetic coordinates. To do so we need to specify that we want coordinates to
 # be converted to spherical geocentric coordinates before the prediction is
-# carried out. This can be done though the "projection" argument. 
+# carried out. This can be done though the "projection" argument.
 # The interpolation requires an extra coordinate (upward height). By passing in
 # 2500 m above the ellipsoid, we're effectively
 # upward-continuing the data (maximum height of observation points is 2400 m).
