@@ -1,5 +1,5 @@
 """
-Gridding in Spherical coordinates
+Gridding in spherical coordinates
 =================================
 
 When gridding magnetic or gravity data on large regions thought the equivalent
