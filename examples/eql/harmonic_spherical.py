@@ -34,7 +34,8 @@ ellipsoid = bl.WGS84
 gamma = ellipsoid.normal_gravity(latitude, height=elevation)
 gravity_disturbance = gravity_data - gamma
 
-# Convert data coordinates to spherical
+# Convert data coordinates from geodetic (longitude, latitude, height) to 
+# spherical (longitude, spherical_latitude, radius).
 coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
 
 # Create the equivalent layer
