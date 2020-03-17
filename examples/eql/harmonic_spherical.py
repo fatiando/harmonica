@@ -21,9 +21,11 @@ import harmonica as hm
 # Fetch the sample gravity data from South Africa
 data = hm.datasets.fetch_south_africa_gravity()
 
-# Downsample the number of points to speed-up the computations for this example
-reducer = vd.BlockMean(spacing=0.2, drop_coords=False)
-(longitude, latitude, elevation), gravity_data, _ = reducer.filter(
+# Downsample the data using a blocked mean to speed-up the computations 
+# for this example. This is preferred over simply discarding points to avoid 
+# aliasing effects.
+blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
+(longitude, latitude, elevation), gravity_data = blocked_mean.filter(
     (data.longitude, data.latitude, data.elevation), data.gravity,
 )
 
