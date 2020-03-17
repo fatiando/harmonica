@@ -41,7 +41,7 @@ class EQLHarmonic(vdb.BaseGridder):
     source are estimated through linear least-squares with damping (Tikhonov
     0th order) regularization.
 
-    The Green's function for point mass effects used is the inverse Cartesian
+    The Green's function for point mass effects used is the inverse Euclidean
     distance between the grid coordinates and the point source:
 
     .. math::
@@ -234,7 +234,7 @@ class EQLHarmonicSpherical(EQLHarmonic):
     source are estimated through linear least-squares with damping (Tikhonov
     0th order) regularization.
 
-    The Green's function for point mass effects used is the inverse Cartesian
+    The Green's function for point mass effects used is the inverse Euclidean
     distance between the grid coordinates and the point source:
 
     .. math::
