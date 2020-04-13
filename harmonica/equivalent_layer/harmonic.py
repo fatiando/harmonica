@@ -7,14 +7,14 @@ from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
 
-from .base import BaseEQLHarmonic
+from .base import BaseEQL
 from ..forward.utils import (
     distance_cartesian,
     distance_spherical,
 )
 
 
-class EQLHarmonic(BaseEQLHarmonic):
+class EQLHarmonic(BaseEQL):
     r"""
     Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
 
