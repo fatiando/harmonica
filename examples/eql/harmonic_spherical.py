@@ -58,13 +58,13 @@ print("R² score:", eql.score(coordinates, gravity_disturbance))
 # The interpolation requires an extra coordinate (upward height). By passing in
 # 2500 m above the ellipsoid, we're effectively
 # upward-continuing the data (maximum height of observation points is 2400 m).
-# All the parameters passed to build the grid (region, spacing and
-# extra_coords) are in geodetic coordinates.
+# All the parameters passed to build the grid (region, spacing and upward) are
+# in geodetic coordinates.
 region = vd.get_region((longitude, latitude))
 grid = eql.grid(
+    upward=2500,
     region=region,
     spacing=0.2,
-    extra_coords=2500,
     dims=["latitude", "longitude"],
     data_names=["gravity_disturbance"],
     projection=ellipsoid.geodetic_to_spherical,
