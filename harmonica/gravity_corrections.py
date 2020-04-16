@@ -139,68 +139,7 @@ def spherical_bouguer_cap_correction(topography):
     return spher_cap_corr
 
 
-def free_air_correction(topography, latitude):
-    """
-    Calculates free air correction as per Hinze 2005 eqn 5, including 2nd order
-    terms.
-    
-    Note if the normal gravity is calculated using the station elevation, not
-    on the ellipsoid (0 m), then the free air correction is not required.
-    
-    .. math::
 
-        g_{fac} =  -(0.3087691 - 0.0004398 sin^{2}\phi)h + 7.2125E-08 h^{2}
-
-    in which :math:`h` is the elevation of the station above the ellipsoid,
-    :math: `\phi` is the station latitude and :math:`g_{fac}` is the
-    gravitational effect of the "free air" in mGal.
-
-    Parameters
-    ----------
-    topography : array or :class:`xarray.DataArray`
-        Topography height and bathymetry depth in meters.
-        Should be referenced to the ellipsoid (ie, geometric heights).
-        
-    latitude : array or :class:`xarray.DataArray`
-
-    Returns
-    -------
-    free_air_corr : array or :class:`xarray.DataArray`
-    The gravitational effect of the elevation of the station above the ellipsoid
-    in the absence of topographic mass
-
-    """  
-
-    free_air_corr = -(0.3087691 - 0.0004398*(np.sin(np.radians(latitude)))**2) 
-    * topography + 7.2125e-08 * topography**2
-    
-    return free_air_corr
-
-def eotvos_correction(latitude, velocity, azimuth):
-    """
-    Calculates the eotvos correction for a moving gravity meter.
-
-    Parameters
-    ----------
-    latitude : array or :class:`xarray.DataArray`
-        
-    velocity : array or :class:`xarray.DataArray`
-        DESCRIPTION. in knots
-        
-    azimuth : array or :class:`xarray.DataArray`
-        direction of movement of fhe vehicle measured clockwise from true north
-    
-    Returns 
-    -------
-    eotvos correction in mGal
-    as per Blakely 1995 page 142/143
-
-    """
-    eotvos_corr = 7.503 * velocity * np.sin(np.radians(azimuth)) *
-    np.cos(np.radians(latitude)) + 0.004154 * velocity**2
-    
-    return eotvos_corr
-    
     
     
     
