@@ -1,16 +1,43 @@
 """
 Base class for equivalent layer gridders
 """
-import numpy as np
+from warning import warn
 import verde.base as vdb
 
 
 class BaseEQL(vdb.BaseGridder):
     """
     Base class for equivalent layer gridders
+
+    Most methods of this class requires the implementation of
+    a :meth:`~harmonica.equivalent_layer.base.BaseEQL.predict` method. The data
+    returned by it should be a 1d or 2d numpy array for scalar data or a tuple
+    with 1d or 2d numpy arrays for each component of vector data.
+
+    This is a subclass of :class:`verde.base.BaseGridder`. The main difference
+    is that EQL gridders also need the `upward` coordinate of data points and
+    of points where the predictions will be carried out. So, this class
+    redefines some :class:`verde.base.BaseGridder` methods to improve their
+    usability and development.
+
+    Doesn't define any new attributes.
+
+    Because :class:`verde.base.BaseGridder` is a subclass of
+    :class:`sklearn.base.BaseEstimator`, the
+    :class:`~harmonica.equivalent_layer.base.BaseEQL` must also abide by the
+    same rules of the scikit-learn classes. Mainly:
+
+    * ``__init__`` must **only** assign values to attributes based on the
+      parameters it receives. All parameters must have default values.
+      Parameter checking should be done in ``fit``.
+    * Estimated parameters should be stored as attributes with names ending in
+      ``_``.
+
     """
 
-    upward_name = "upward"
+    # Default name for the upward coordinate used on generated outputs
+    # (pd.DataFrame, xr.Dataset, etc)
+    extra_coords_name = "upward"
 
     def grid(
         self,
@@ -19,7 +46,6 @@ class BaseEQL(vdb.BaseGridder):
         shape=None,
         spacing=None,
         dims=None,
-        upward_name=None,
         data_names=None,
         projection=None,
         **kwargs
@@ -58,9 +84,6 @@ class BaseEQL(vdb.BaseGridder):
             order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        upward_name : str or None
-            The name of the upward coordinate in the output grid. Default is
-            determined from the ``upward_name`` attribute of the class.
         data_names : list of None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']`` for scalar data,
@@ -83,9 +106,9 @@ class BaseEQL(vdb.BaseGridder):
             to the ``attrs`` attribute.
 
         """
-        # Add upward as an extra coordinate
-        _upward_as_extra_coord(upward, kwargs)
-        # Create grid and predict
+        # Ignore extra_coords if passed
+        _pop_extra_coords(kwargs)
+        # Grid data
         grid = super().grid(
             region=region,
             shape=shape,
@@ -93,12 +116,9 @@ class BaseEQL(vdb.BaseGridder):
             dims=dims,
             data_names=data_names,
             projection=projection,
+            extra_coords=upward,
             **kwargs,
         )
-        # Add upward as attribute to the Dataset
-        grid.attrs[upward_name] = upward
-        for data_array in grid:
-            grid[data_array].attrs[upward_name] = upward
         return grid
 
     def scatter(
@@ -108,7 +128,6 @@ class BaseEQL(vdb.BaseGridder):
         size=300,
         random_state=0,
         dims=None,
-        upward_name=None,
         data_names=None,
         projection=None,
         **kwargs
@@ -147,9 +166,6 @@ class BaseEQL(vdb.BaseGridder):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        upward_name : str or None
-            The name of the upward coordinate in the output dataframe. Default
-            is determined from the ``upward_name`` attribute of the class.
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
@@ -171,8 +187,8 @@ class BaseEQL(vdb.BaseGridder):
             The interpolated values on a random set of points.
 
         """
-        # Add upward as an extra coordinate
-        _upward_as_extra_coord(upward, kwargs)
+        # Ignore extra_coords if passed
+        _pop_extra_coords(kwargs)
         # Create scatter points and predict
         table = super().scatter(
             region=region,
@@ -181,10 +197,9 @@ class BaseEQL(vdb.BaseGridder):
             dims=dims,
             data_names=data_names,
             projection=projection,
+            extra_coords=upward,
             **kwargs,
         )
-        # Add upward column to the DataFrame
-        table.insert(2, upward_name, upward)
         return table
 
     def profile(
@@ -194,7 +209,6 @@ class BaseEQL(vdb.BaseGridder):
         upward,
         size,
         dims=None,
-        upward_name=None,
         data_names=None,
         projection=None,
         **kwargs
@@ -243,9 +257,6 @@ class BaseEQL(vdb.BaseGridder):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        upward_name : str or None
-            The name of the upward coordinate in the output dataframe. Default
-            is determined from the ``upward_name`` attribute of the class.
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
@@ -270,24 +281,26 @@ class BaseEQL(vdb.BaseGridder):
             The interpolated values along the profile.
 
         """
-        # Add upward as an extra coordinate
-        _upward_as_extra_coord(upward, kwargs)
+        # Ignore extra_coords if passed
+        _pop_extra_coords(kwargs)
         # Create profile points and predict
         table = super().profile(
-            point1, point2, size, dims=None, data_names=None, projection=None, **kwargs,
+            point1,
+            point2,
+            size,
+            dims=None,
+            data_names=None,
+            projection=None,
+            extra_coords=upward,
+            **kwargs,
         )
-        # Add upward column to the DataFrame
-        table.insert(2, upward_name, upward)
         return table
 
 
-def _upward_as_extra_coord(upward, kwargs):
+def _pop_extra_coords(kwargs):
     """
-    Add upward as the first extra coordinate in kwargs
+    Remove extra_coords from kwargs
     """
     if "extra_coords" in kwargs:
-        extra_coords = np.atleast_1d(kwargs["extra_coords"]).tolist()
-        extra_coords.insert(0, upward)
-        kwargs["extra_coords"] = extra_coords
-    else:
-        kwargs["extra_coords"] = upward
+        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
+        kwargs.pop("extra_coords")
