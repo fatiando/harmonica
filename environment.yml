@@ -10,7 +10,7 @@ dependencies:
     - pandas
     - numba
     - pooch>=0.7.0
-    - verde>=1.4.0
+    - verde>=1.5.0
     - xarray
     # Development requirements
     - boule
