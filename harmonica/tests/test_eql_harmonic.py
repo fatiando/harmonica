@@ -37,9 +37,31 @@ def test_eql_harmonic_cartesian():
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
+    upward = 0
+    shape = (60, 60)
+    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_mass_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eql.predict(grid), rtol=1e-3)
+
+    # Test grid method
+    grid = eql.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(true, grid.scalars, rtol=1e-3)
+
+    # Test scatter method
+    scatter = eql.scatter(upward, size=shape[0], random_state=0)
+    true = point_mass_gravity(
+        (scatter.easting, scatter.northing, scatter.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, scatter.scalars, rtol=1e-3)
+
+    # Test profile method
+    point1 = (region[0], region[2])
+    point2 = (region[0], region[3])
+    profile = eql.profile(point1, point2, upward, shape[0])
+    true = point_mass_gravity(
+        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, profile.scalars, rtol=1e-3)
 
 
 def test_eql_harmonic_small_data_cartesian():
@@ -68,9 +90,31 @@ def test_eql_harmonic_small_data_cartesian():
 
     # Gridding at higher altitude should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region=region, shape=(20, 20), extra_coords=20)
+    upward = 20
+    shape = (20, 20)
+    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_mass_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eql.predict(grid), rtol=0.05)
+
+    # Test grid method
+    grid = eql.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(true, grid.scalars, rtol=0.05)
+
+    # Test scatter method
+    scatter = eql.scatter(upward, size=20, random_state=0)
+    true = point_mass_gravity(
+        (scatter.easting, scatter.northing, scatter.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, scatter.scalars, rtol=0.05)
+
+    # Test profile method
+    point1 = (region[0], region[2])
+    point2 = (region[0], region[3])
+    profile = eql.profile(point1, point2, upward, 10)
+    true = point_mass_gravity(
+        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, profile.scalars, rtol=0.05)
 
 
 def test_eql_harmonic_custom_points_cartesian():
