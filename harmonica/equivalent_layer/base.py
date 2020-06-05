@@ -1,7 +1,7 @@
 """
 Base class for equivalent layer gridders
 """
-from warning import warn
+from warnings import warn
 import verde.base as vdb
 
 
