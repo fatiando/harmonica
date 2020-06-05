@@ -13,6 +13,7 @@ equivalent layer (:class:`harmonica.EQLHarmonic`) while taking into account the
 curvature of the Earth.
 """
 import numpy as np
+import xarray as xr
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import boule as bl
@@ -52,23 +53,28 @@ eql.fit(coordinates, gravity_disturbance)
 print("R² score:", eql.score(coordinates, gravity_disturbance))
 
 # Interpolate data on a regular grid with 0.2 degrees spacing defined on
-# geodetic coordinates. To do so we need to specify that we want coordinates to
-# be converted to spherical geocentric coordinates before the prediction is
-# carried out. This can be done though the "projection" argument.
-# The interpolation requires an extra coordinate (upward height). By passing in
-# 2500 m above the ellipsoid, we're effectively
-# upward-continuing the data (maximum height of observation points is 2400 m).
-# All the parameters passed to build the grid (region, spacing and upward) are
-# in geodetic coordinates.
+# geodetic coordinates. By setting this grid at 2500 m above the ellipsoid,
+# we're effectively upward-continuing the data (maximum height of observation
+# points is 2400 m). Firstly, we must create the regular grid
 region = vd.get_region((longitude, latitude))
-grid = eql.grid(
-    upward=2500,
-    region=region,
-    spacing=0.2,
-    dims=["latitude", "longitude"],
-    data_names=["gravity_disturbance"],
-    projection=ellipsoid.geodetic_to_spherical,
-)
+grid_coords = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=2500)
+
+# Because the gridder is defined in spherical coordinates, we must convert the
+# grid coordinates in grodetic to spherical.
+grid_coords_spherical = ellipsoid.geodetic_to_spherical(*grid_coords)
+
+# Then we can predict gravity disturbance values on the grid points
+grid = eql.predict(grid_coords_spherical)
+
+# Store the resulting grid in a xr.Dataset
+dims = ("latitude", "longitude")
+coords = {
+    "longitude": grid_coords[0][0, :],
+    "latitude": grid_coords[1][:, 0],
+    "upward": (dims, grid_coords[2]),
+}
+data_vars = {"gravity_disturbance": (dims, grid)}
+grid = xr.Dataset(data_vars, coords=coords)
 
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
