@@ -2,13 +2,8 @@
 Test the EQLBase class
 """
 import warnings
-import pytest
-import numpy as np
-import numpy.testing as npt
-import verde as vd
-import verde.base as vdb
 
-from ..equivalent_layer.base import BaseEQL, _pop_extra_coords
+from ..equivalent_layer.base import _pop_extra_coords
 
 
 def test_pop_extra_coords():
