@@ -194,7 +194,7 @@ def distance_geodetic(point_p, point_q, ellipsoid):
     Calculate the distance between two points in geodetic coordinates
 
     Computes the Euclidean distance between two points given in geodetic
-    coordinates using the closed-form formula given by [Vajda2004]
+    coordinates using the closed-form formula given by [Vajda2004]_.
     All angles must be in degrees and height above the ellipsoid in meters.
 
     Parameters
