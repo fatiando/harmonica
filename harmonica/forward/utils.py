@@ -299,17 +299,18 @@ def geodetic_distance_core(
     """
     upward_sum = prime_vertical_radius + height
     upward_sum_p = prime_vertical_radius_p + height_p
-    term_1 = upward_sum_p ** 2 * cosphi_p ** 2
-    term_2 = upward_sum ** 2 * cosphi ** 2
-    term_3 = 2 * upward_sum * upward_sum_p * cosphi * cosphi_p * coslambda
-    term_4 = (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p ** 2
-    term_5 = (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi ** 2
-    term_6 = (
-        2
-        * (upward_sum_p - ecc_sq * prime_vertical_radius_p)
-        * (upward_sum - ecc_sq * prime_vertical_radius)
-        * sinphi
-        * sinphi_p
+    distance = np.sqrt(
+        upward_sum_p ** 2 * cosphi_p ** 2
+        + upward_sum ** 2 * cosphi ** 2
+        - 2 * upward_sum * upward_sum_p * cosphi * cosphi_p * coslambda
+        + (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p ** 2
+        + (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi ** 2
+        - (
+            2
+            * (upward_sum_p - ecc_sq * prime_vertical_radius_p)
+            * (upward_sum - ecc_sq * prime_vertical_radius)
+            * sinphi
+            * sinphi_p
+        )
     )
-    distance_sq = term_1 + term_2 - term_3 + term_4 + term_5 - term_6
-    return np.sqrt(distance_sq)
+    return distance
