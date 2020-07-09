@@ -241,8 +241,8 @@ def distance_geodetic(point_p, point_q, ellipsoid):
     sinphi_p = np.sin(latitude_p)
     coslambda = np.cos(longitude_p - longitude)
     # Compute prime vertical radii for both points
-    prime_vertical_radius = ellipsoid._prime_vertical_radius(sinphi)
-    prime_vertical_radius_p = ellipsoid._prime_vertical_radius(sinphi_p)
+    prime_vertical_radius = ellipsoid.prime_vertical_radius(sinphi)
+    prime_vertical_radius_p = ellipsoid.prime_vertical_radius(sinphi_p)
     # Compute the Euclidean distance using the close-form formula
     return geodetic_distance_core(
         cosphi,
