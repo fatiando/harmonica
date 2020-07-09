@@ -38,7 +38,7 @@ def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
        ``geodetic``. Default ``cartesian``.
     ellipsoid : :class:`boule.Ellipsoid`
         Reference ellipsoid for points coordinates. Ignored if
-        ``coordinate_system`` is not ``geodetic``. Default ``None``.
+        ``coordinate_system`` is not ``"geodetic"``. Default ``None``.
 
     Returns
     -------
