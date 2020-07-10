@@ -225,7 +225,9 @@ def distance_geodetic(point_p, point_q, ellipsoid):
     >>> ellipsoid = bl.WGS84
     >>> point_p = (-72.3, -33.3, 644)
     >>> point_q = (-70.1, -31.6, 1024)
-    >>> distance_geodetic(point_p, point_q, ellipsoid)
+    >>> distance = distance_geodetic(point_p, point_q, ellipsoid)
+    >>> print("{:.2f} m".format(distance))
+    279878.84 m
 
     """
     # Get coordinates of the two points
