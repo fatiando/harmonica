@@ -25,6 +25,7 @@ def test_distance():
     npt.assert_allclose(
         distance(point_a, point_b, coordinate_system="geodetic", ellipsoid=bl.WGS84),
         100,
+        rtol=1e-6,
     )
 
 
