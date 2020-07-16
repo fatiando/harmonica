@@ -89,6 +89,9 @@ class EQLHarmonic(vdb.BaseGridder):
     # (pd.DataFrame, xr.Dataset, etc)
     dims = ("latitude", "longitude")
 
+    # Overwrite the defalt name for the upward coordinate.
+    extra_coords_name = "upward"
+
     def __init__(
         self, damping=None, points=None, relative_depth=500,
     ):
