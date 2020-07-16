@@ -4,6 +4,16 @@ Base class for equivalent layer gridders
 from warnings import warn
 import verde.base as vdb
 
+# BaseEQL is a subclass of Verde's BaseGridder. We will disable pylint
+# abstract-method error because BaseEQL will not override fit and predict
+# methods. Subclasses of BaseEQL should do override them.
+# BaseEQL override grid, scatter and profile methods. On EQLs these methods
+# should take the upward coordinate as a positional argument. We will disable
+# pylint arguments-differ error because we intend to make these methods
+# different from the ones that are being inherited.
+
+# pylint: disable=abstract-method,arguments-differ
+
 
 class BaseEQL(vdb.BaseGridder):
     """
