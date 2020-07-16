@@ -7,7 +7,7 @@ from numba import jit
 
 def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
     """
-    Distance between two points in Cartesian, spherical, or geodetic coordinates
+    Distance between two points in Cartesian, spherical or geodetic coordinates
 
     Parameters
     ----------
