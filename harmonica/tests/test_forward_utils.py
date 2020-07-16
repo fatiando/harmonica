@@ -59,8 +59,8 @@ def test_geodetic_distance_vs_spherical():
     # Compute distance using closed-form formula
     dist = distance(point_a, point_b, coordinate_system="geodetic", ellipsoid=ellipsoid)
     # Convert points to spherical coordiantes
-    point_a_sph = ellipsoid.geodetic_to_spherical(point_a)
-    point_b_sph = ellipsoid.geodetic_to_spherical(point_b)
+    point_a_sph = ellipsoid.geodetic_to_spherical(*point_a)
+    point_b_sph = ellipsoid.geodetic_to_spherical(*point_b)
     # Compute distance using these converted points
     dist_sph = distance(point_a_sph, point_b_sph, coordinate_system="spherical")
     npt.assert_allclose(dist, dist_sph)
