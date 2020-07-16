@@ -87,7 +87,7 @@ class EQLHarmonic(vdb.BaseGridder):
 
     # Set the default dimension names for generated outputs
     # (pd.DataFrame, xr.Dataset, etc)
-    dims = ("latitude", "longitude")
+    dims = ("northing", "easting")
 
     # Overwrite the defalt name for the upward coordinate.
     extra_coords_name = "upward"
