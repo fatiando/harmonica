@@ -30,7 +30,9 @@ class BaseEQL(vdb.BaseGridder):
     redefines some :class:`verde.base.BaseGridder` methods to improve their
     usability and development.
 
-    Doesn't define any new attributes.
+    Overrides class arguments ``dims`` and ``extra_coords_name`` that set
+    default dimensions and upward coordinate name for generated output objects
+    by the ``grid``, ``profile`` and ``scatter`` methods.
 
     Because :class:`verde.base.BaseGridder` is a subclass of
     :class:`sklearn.base.BaseEstimator`, the
@@ -44,6 +46,10 @@ class BaseEQL(vdb.BaseGridder):
       ``_``.
 
     """
+
+    # The default dimension names for generated outputs
+    # (pd.DataFrame, xr.Dataset, etc)
+    dims = ("northing", "easting")
 
     # Default name for the upward coordinate used on generated outputs
     # (pd.DataFrame, xr.Dataset, etc)

@@ -86,6 +86,13 @@ class EQLHarmonic(BaseEQL):
         :meth:`~harmonica.EQLHarmonic.scatter` methods.
     """
 
+    # Set the default dimension names for generated outputs
+    # (pd.DataFrame, xr.Dataset, etc)
+    dims = ("northing", "easting")
+
+    # Overwrite the defalt name for the upward coordinate.
+    extra_coords_name = "upward"
+
     def __init__(
         self, damping=None, points=None, relative_depth=500,
     ):
@@ -279,6 +286,13 @@ class EQLHarmonicSpherical(EQLHarmonic):
         :meth:`~harmonica.EQLHarmonicSpherical.grid` and
         :meth:`~harmonica.EQLHarmonicSpherical.scatter` methods.
     """
+
+    # Set the default dimension names for generated outputs
+    # (pd.DataFrame, xr.Dataset, etc)
+    dims = ("spherical_latitude", "longitude")
+
+    # Overwrite the defalt name for the upward coordinate.
+    extra_coords_name = "radius"
 
     def __init__(
         self, damping=None, points=None, relative_depth=500,
