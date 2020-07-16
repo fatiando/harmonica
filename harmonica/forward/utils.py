@@ -189,7 +189,7 @@ def distance_spherical_core(
     return dist, cospsi, coslambda
 
 
-def distance_geodetic(point_p, point_q, ellipsoid):
+def distance_geodetic(point_p, point_q, ellipsoid):  # pylint: disable=too-many-locals
     """
     Calculate the distance between two points in geodetic coordinates
 
@@ -301,7 +301,7 @@ def geodetic_distance_core(
     """
     upward_sum = prime_vertical_radius + height
     upward_sum_p = prime_vertical_radius_p + height_p
-    distance = np.sqrt(
+    dist = np.sqrt(
         upward_sum_p ** 2 * cosphi_p ** 2
         + upward_sum ** 2 * cosphi ** 2
         - 2 * upward_sum * upward_sum_p * cosphi * cosphi_p * coslambda
@@ -315,4 +315,4 @@ def geodetic_distance_core(
             * sinphi_p
         )
     )
-    return distance
+    return dist
