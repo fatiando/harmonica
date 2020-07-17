@@ -73,7 +73,7 @@ install:
 # Run the actual tests and checks
 script:
     # Run the test suite
-    - travis_wait 30 make test
+    - make test
     # Build the documentation
     - make -C doc clean all
 
