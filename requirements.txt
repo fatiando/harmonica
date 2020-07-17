@@ -1,7 +1,7 @@
 numpy
 scipy
 pandas
-numba
+numba==0.48.0
 pooch>=0.7.0
 xarray
 verde
