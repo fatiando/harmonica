@@ -72,17 +72,8 @@ install:
 
 # Run the actual tests and checks
 script:
-    # Run the test suite
-    - make test
     # Build the documentation
     - make -C doc clean all
-
-# Things to do if the build is successful
-after_success:
-    # Upload coverage information
-    - coverage xml
-    - echo "Uploading coverage to Codecov"
-    - codecov -e PYTHON
 
 # Deploy
 deploy:

@@ -71,6 +71,92 @@ jobs:
     condition: succeededOrFailed()
 
 
+- job:
+  displayName: 'Linux'
+
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  variables:
+    CONDA_REQUIREMENTS: requirements.txt
+    CONDA_REQUIREMENTS_DEV: requirements-dev.txt
+    CONDA_INSTALL_EXTRA: "codecov"
+    HARMONICA_DATA_DIR: "$(Agent.TempDirectory)/.harmonica/data"
+
+  strategy:
+    matrix:
+      Python38:
+        python.version: '3.8'
+        PYTHON: '3.8'
+      Python37:
+        python.version: '3.7'
+        PYTHON: '3.7'
+      Python36:
+        python.version: '3.6'
+        PYTHON: '3.6'
+
+  steps:
+
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to PATH
+
+  # Get the Fatiando CI scripts
+  - bash: git clone --branch=1.1.1 --depth=1 https://github.com/fatiando/continuous-integration.git
+    displayName: Fetch the Fatiando CI scripts
+
+  # Setup dependencies and build a conda environment
+  - bash: source continuous-integration/azure/setup-miniconda.sh
+    displayName: Setup Miniconda
+
+  # Show installed pkg information for postmortem diagnostic
+  - bash: |
+      set -x -e
+      source activate testing
+      conda list
+    displayName: List installed packages
+
+  # Copy the test data to the cache folder
+  - bash: |
+      set -x -e
+      mkdir -p ${HARMONICA_DATA_DIR}/master
+      cp -r data/* ${HARMONICA_DATA_DIR}/master
+    displayName: Copy test data to cache
+
+  # Install the package
+  - bash: |
+      set -x -e
+      source activate testing
+      python setup.py bdist_wheel
+      pip install dist/*
+    displayName: Install the package
+
+  # Run the tests
+  - bash: |
+      set -x -e
+      source activate testing
+      make test
+    displayName: Test
+
+  # Build the documentation
+  - bash: |
+      set -x -e
+      source activate testing
+      make -C doc clean all
+    displayName: Build the documentation
+
+  # Upload test coverage if there were no failures
+  - bash: |
+      set -x -e
+      source activate testing
+      coverage xml
+      echo "Uploading coverage to Codecov"
+      codecov -e PYTHON AGENT_OS
+    env:
+      CODECOV_TOKEN: $(codecov.token)
+    condition: succeeded()
+    displayName: Upload coverage
+
+
 # Mac
 ########################################################################################
 - job:
