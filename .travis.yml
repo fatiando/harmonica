@@ -66,6 +66,8 @@ before_install:
 
 # Install the package that we want to test
 install:
+    # Change Travis wait time to 20 mins
+    - travis_wait 20 mvn install
     # Make a binary wheel for our package and install it
     - python setup.py bdist_wheel
     - pip install dist/*
