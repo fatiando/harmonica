@@ -75,9 +75,9 @@ script:
     # Run the test suite
     # (explicit NUMBA_THREADING_LAYER to bypass Numba v0.5.0 bug that generate
     # an infinite loop on CIs running Ubuntu)
-    - NUMBA_THREADING_LAYER=omp make test
+    - NUMBA_THREADING_LAYER=workqueue make test
     # Build the documentation
-    - NUMBA_THREADING_LAYER=omp make -C doc clean all
+    - NUMBA_THREADING_LAYER=workqueue make -C doc clean all
 
 # Things to do if the build is successful
 after_success:
