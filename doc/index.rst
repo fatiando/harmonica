@@ -26,6 +26,7 @@
     :caption: User Guide
 
     sample_data/index.rst
+    tutorials/coordinate_systems.py
 
 .. toctree::
     :maxdepth: 2
