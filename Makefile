@@ -5,7 +5,7 @@ PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJEC
 NUMBATEST_ARGS=--doctest-modules -v --pyargs -m use_numba
 LINT_FILES=setup.py $(PROJECT)
 BLACK_FILES=setup.py $(PROJECT) examples data/examples doc/conf.py doc/conf.py
-FLAKE8_FILES=setup.py $(PROJECT) examples data/examples doc/conf.py doc/conf.py
+FLAKE8_FILES=setup.py $(PROJECT) examples data/examples doc/conf.py
 
 help:
 	@echo "Commands:"
