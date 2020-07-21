@@ -58,7 +58,6 @@ print("R² score:", eql.score(coordinates, gravity_disturbance))
 grid = eql.grid(
     spacing=0.2,
     extra_coords=coordinates[-1].max(),
-    dims=["spherical_latitude", "longitude"],
     data_names=["gravity_disturbance"],
 )
 
