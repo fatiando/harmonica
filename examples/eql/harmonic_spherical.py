@@ -56,9 +56,7 @@ print("R² score:", eql.score(coordinates, gravity_disturbance))
 # maximum radius of the data, we're effectively upward-continuing the data.
 # The grid will be defined in spherical coordinates.
 grid = eql.grid(
-    spacing=0.2,
-    extra_coords=coordinates[-1].max(),
-    data_names=["gravity_disturbance"],
+    spacing=0.2, extra_coords=coordinates[-1].max(), data_names=["gravity_disturbance"],
 )
 
 # Mask grid points too far from data points
