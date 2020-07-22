@@ -56,8 +56,11 @@ print("R² score:", eql.score(coordinates, gravity_disturbance))
 # maximum radius of the data, we're effectively upward-continuing the data.
 # The grid will be defined in spherical coordinates.
 grid = eql.grid(
-    spacing=0.2, extra_coords=coordinates[-1].max(), data_names=["gravity_disturbance"],
+    upward=coordinates[-1].max(), spacing=0.2, data_names=["gravity_disturbance"],
 )
+
+# The grid is a xarray.Dataset with values, coordinates, and metadata
+print("\nGenerated grid:\n", grid)
 
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
