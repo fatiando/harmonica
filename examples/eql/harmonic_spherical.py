@@ -13,7 +13,6 @@ equivalent layer (:class:`harmonica.EQLHarmonic`) while taking into account the
 curvature of the Earth.
 """
 import numpy as np
-
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import boule as bl
