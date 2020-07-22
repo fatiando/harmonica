@@ -52,29 +52,13 @@ eql.fit(coordinates, gravity_disturbance)
 # interpolation will be.
 print("R² score:", eql.score(coordinates, gravity_disturbance))
 
-# Interpolate data on a regular grid with 0.2 degrees spacing defined on
-# geodetic coordinates. By setting this grid at 2500 m above the ellipsoid,
-# we're effectively upward-continuing the data (maximum height of observation
-# points is 2400 m). Firstly, we must create the regular grid
-region = vd.get_region((longitude, latitude))
-grid_coords = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=2500)
-
-# Because the gridder is defined in spherical coordinates, we must convert the
-# grid coordinates in grodetic to spherical.
-grid_coords_spherical = ellipsoid.geodetic_to_spherical(*grid_coords)
-
-# Then we can predict gravity disturbance values on the grid points
-grid = eql.predict(grid_coords_spherical)
-
-# Store the resulting grid in a xr.Dataset
-dims = ("latitude", "longitude")
-coords = {
-    "longitude": grid_coords[0][0, :],
-    "latitude": grid_coords[1][:, 0],
-    "upward": (dims, grid_coords[2]),
-}
-data_vars = {"gravity_disturbance": (dims, grid)}
-grid = xr.Dataset(data_vars, coords=coords)
+# Interpolate data on a regular grid with 0.2 degrees spacing. The
+# interpolation requires an extra coordinate (radius). By passing in the
+# maximum radius of the data, we're effectively upward-continuing the data.
+# The grid will be defined in spherical coordinates.
+grid = eql.grid(
+    spacing=0.2, extra_coords=coordinates[-1].max(), data_names=["gravity_disturbance"],
+)
 
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
@@ -84,23 +68,11 @@ grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
 # color.
 maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
 
+# Get the region boundaries
+region = vd.get_region(coordinates)
+
 # Plot observed and gridded gravity disturbance
-fig, (ax1, ax2) = plt.subplots(
-    nrows=1,
-    ncols=2,
-    figsize=(10, 5),
-    sharey=True,
-    subplot_kw={"projection": ccrs.PlateCarree()},
-)
-ax1.coastlines()
-ax2.coastlines()
-gl = ax1.gridlines(crs=ccrs.PlateCarree(), draw_labels=True)
-gl.xlabels_top = False
-gl.ylabels_right = False
-gl = ax2.gridlines(crs=ccrs.PlateCarree(), draw_labels=True)
-gl.xlabels_top = False
-gl.ylabels_left = False
-gl.ylabels_right = False
+fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 5), sharey=True,)
 
 tmp = ax1.scatter(
     longitude,
@@ -112,7 +84,9 @@ tmp = ax1.scatter(
     cmap="seismic",
 )
 plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
-ax1.set_extent(region, crs=ccrs.PlateCarree())
+ax1.set_aspect("equal")
+ax1.set_xlim(*region[:2])
+ax1.set_ylim(*region[2:])
 
 tmp = grid.gravity_disturbance.plot.pcolormesh(
     ax=ax2,
@@ -123,7 +97,9 @@ tmp = grid.gravity_disturbance.plot.pcolormesh(
     add_labels=False,
 )
 plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
-ax2.set_extent(region, crs=ccrs.PlateCarree())
+ax2.set_aspect("equal")
+ax2.set_xlim(*region[:2])
+ax2.set_ylim(*region[2:])
 
 plt.subplots_adjust(wspace=0.05, top=1, bottom=0, left=0.05, right=0.95)
 plt.show()
