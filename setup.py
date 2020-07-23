@@ -50,7 +50,7 @@ INSTALL_REQUIRES = [
     "numba",
     "pooch>=0.7.0",
     "xarray",
-    "verde",
+    "verde>=1.5.0",
 ]
 PYTHON_REQUIRES = ">=3.6"
 
