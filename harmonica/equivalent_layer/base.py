@@ -304,9 +304,9 @@ class BaseEQL(vdb.BaseGridder):
             point1,
             point2,
             size,
-            dims=None,
-            data_names=None,
-            projection=None,
+            dims=dims,
+            data_names=data_names,
+            projection=projection,
             extra_coords=upward,
             **kwargs,
         )
