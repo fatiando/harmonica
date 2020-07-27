@@ -2,6 +2,7 @@
 Test utils functions for forward modelling
 """
 import pytest
+import numpy as np
 import numpy.testing as npt
 import boule as bl
 
@@ -65,3 +66,35 @@ def test_geodetic_distance_vs_spherical():
     # Compute distance using these converted points
     dist_sph = distance(point_a_sph, point_b_sph, coordinate_system="spherical")
     npt.assert_allclose(dist, dist_sph)
+
+
+def test_geodetic_distance_equator_poles():
+    """
+    Check geodetic distance between points in equator and the poles
+
+    The Euclidean distance between a point on the equator and a point on the
+    pole, both located on the surface of the ellipsoid and with the same
+    longitude can computed through the semimajor and semiminor axis of the
+    ellipsoid.
+    """
+    # Initialize the WGS84 ellipsoid
+    ellipsoid = bl.WGS84
+    # Compute the expected distance between the two points
+    expected_distance = np.sqrt(
+        ellipsoid.semimajor_axis ** 2 + ellipsoid.semiminor_axis ** 2
+    )
+    # Compute distance for different longitudes and alternate between points on
+    # both poles
+    for pole_lat in (-90, 90):
+        for lon in np.linspace(0, 350, 36):
+            point_equator = (lon, 0, 0)
+            point_pole = (lon, pole_lat, 0)
+            npt.assert_allclose(
+                expected_distance,
+                distance(
+                    point_equator,
+                    point_pole,
+                    coordinate_system="geodetic",
+                    ellipsoid=ellipsoid,
+                ),
+            )
