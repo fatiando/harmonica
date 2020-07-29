@@ -134,6 +134,26 @@ def test_eql_harmonic_jacobian_cartesian():
     npt.assert_allclose(jacobian[nearest_neighbours][0], jacobian[nearest_neighbours])
 
 
+@pytest.mark.use_numba
+def test_eql_harmonic_jacobian_dtype():
+    """
+    Check if jacobian dtype can be properly changed
+    Use EQLHarmonic
+    """
+    size = 50
+    region = (-100, 100, -100, 100)
+    coordinates = vd.scatter_points(region, size=size, extra_coords=100)
+    points = (coordinates[0], coordinates[1], coordinates[2] - 200)
+    # Create EQL with default jacobian_dtype
+    eql = EQLHarmonic()
+    jacobian = eql.jacobian(coordinates, points)
+    assert jacobian.nbytes == 8 * size ** 2
+    # Create EQL with jacobian_dtype=float32
+    eql = EQLHarmonic(jacobian_dtype="float32")
+    jacobian = eql.jacobian(coordinates, points)
+    assert jacobian.nbytes == 4 * size ** 2
+
+
 @require_numba
 def test_eql_harmonic_spherical():
     """
@@ -252,3 +272,23 @@ def test_eql_harmonic_custom_points_spherical():
         grid, points, masses, field="g_z", coordinate_system="spherical"
     )
     npt.assert_allclose(true, eql.predict(grid), rtol=0.05)
+
+
+@pytest.mark.use_numba
+def test_eql_harmonic_spherical_jacobian_dtype():
+    """
+    Check if jacobian dtype can be properly changed
+    Use EQLHarmonicSpherical
+    """
+    size = 50
+    region = (-10, 10, -10, 10)
+    coordinates = vd.scatter_points(region, size=size, extra_coords=6400e3)
+    points = (coordinates[0], coordinates[1], coordinates[2] - 2000)
+    # Create EQL with default jacobian_dtype
+    eql = EQLHarmonicSpherical()
+    jacobian = eql.jacobian(coordinates, points)
+    assert jacobian.nbytes == 8 * size ** 2
+    # Create EQL with jacobian_dtype=float32
+    eql = EQLHarmonicSpherical(jacobian_dtype="float32")
+    jacobian = eql.jacobian(coordinates, points)
+    assert jacobian.nbytes == 4 * size ** 2

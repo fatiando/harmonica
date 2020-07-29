@@ -71,6 +71,10 @@ class EQLHarmonic(vdb.BaseGridder):
         this constant *relative_depth*. Use positive numbers (negative numbers
         would mean point sources are above the data points). Ignored if
         *points* is specified.
+    jacobian_dtype : str, type or numpy dtype
+        Variable type used for defining Jacobian elements. Use
+        ``"float32"`` for reducing memory consumption, but you might expect
+        some accuracy on fitted coefficients. Default ``"float64"``.
 
     Attributes
     ----------
@@ -93,11 +97,12 @@ class EQLHarmonic(vdb.BaseGridder):
     extra_coords_name = "upward"
 
     def __init__(
-        self, damping=None, points=None, relative_depth=500,
+        self, damping=None, points=None, relative_depth=500, jacobian_dtype="float64"
     ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
+        self.jacobian_dtype = jacobian_dtype
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
 
@@ -176,9 +181,7 @@ class EQLHarmonic(vdb.BaseGridder):
         )
         return data.reshape(shape)
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points):  # pylint: disable=no-self-use
         """
         Make the Jacobian matrix for the equivalent layer.
 
@@ -196,8 +199,6 @@ class EQLHarmonic(vdb.BaseGridder):
             Tuple of arrays containing the coordinates of the point sources
             used as equivalent layer in the following order:
             (``easting``, ``northing``, ``upward``).
-        dtype : str or numpy dtype
-            The type of the Jacobian array.
 
         Returns
         -------
@@ -207,7 +208,7 @@ class EQLHarmonic(vdb.BaseGridder):
         # Compute Jacobian matrix
         n_data = coordinates[0].size
         n_points = points[0].size
-        jac = np.zeros((n_data, n_points), dtype=dtype)
+        jac = np.zeros((n_data, n_points), dtype=self.jacobian_dtype)
         jacobian_numba(coordinates, points, jac, self.greens_function)
         return jac
 
@@ -272,6 +273,10 @@ class EQLHarmonicSpherical(EQLHarmonic):
         this constant *relative_depth*. Use positive numbers (negative numbers
         would mean point sources are above the data points). Ignored if
         *points* is specified.
+    jacobian_dtype : str, type or numpy dtype
+        Variable type used for defining Jacobian elements. Use
+        ``"float32"`` for reducing memory consumption, but you might expect
+        some accuracy on fitted coefficients. Default ``"float64"``.
 
     Attributes
     ----------
@@ -294,9 +299,14 @@ class EQLHarmonicSpherical(EQLHarmonic):
     extra_coords_name = "radius"
 
     def __init__(
-        self, damping=None, points=None, relative_depth=500,
+        self, damping=None, points=None, relative_depth=500, jacobian_dtype="float64"
     ):
-        super().__init__(damping=damping, points=points, relative_depth=relative_depth)
+        super().__init__(
+            damping=damping,
+            points=points,
+            relative_depth=relative_depth,
+            jacobian_dtype=jacobian_dtype,
+        )
         # Define Green's function for spherical coordinates
         self.greens_function = greens_func_spherical
 
@@ -355,9 +365,7 @@ class EQLHarmonicSpherical(EQLHarmonic):
         data = super().predict(coordinates)
         return data
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points):  # pylint: disable=no-self-use
         """
         Make the Jacobian matrix for the equivalent layer.
 
@@ -384,7 +392,7 @@ class EQLHarmonicSpherical(EQLHarmonic):
             The (n_data, n_points) Jacobian matrix.
         """
         # Overwrite method just to change the docstring
-        jacobian = super().jacobian(coordinates, points, dtype=dtype)
+        jacobian = super().jacobian(coordinates, points)
         return jacobian
 
 
