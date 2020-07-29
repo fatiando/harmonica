@@ -155,6 +155,36 @@ def test_eql_harmonic_jacobian_dtype():
 
 
 @require_numba
+def test_eql_harmonic_jacobian_dtype_accuracy():
+    """
+    Check if setting jacobian elements to float32 generate accurate predictions
+    Use EQLHarmonic.
+    """
+    region = (-3e3, -1e3, 5e3, 7e3)
+    # Build synthetic point masses
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.scatter_points(region=region, size=600, extra_coords=0)
+    # Get synthetic data
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+
+    # Fit EQL gridder using float32 jacobian elements
+    eql_32 = EQLHarmonic(jacobian_dtype="float32")
+    eql_32.fit(coordinates, data)
+
+    # The interpolation should be perfect on the observation points
+    npt.assert_allclose(data, eql_32.predict(coordinates), rtol=1e-2)
+
+    # Compare predicted results obtained by an EQL gridder that uses the
+    # default dtype for jacobian elements
+    eql = EQLHarmonic()
+    eql.fit(coordinates, data)
+    grid = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
+    npt.assert_allclose(eql.predict(grid), eql_32.predict(grid), rtol=1e-2)
+
+
+@require_numba
 def test_eql_harmonic_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
