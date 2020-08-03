@@ -30,6 +30,7 @@ def test_geoid_earth():
     assert grid.geoid.shape == (361, 721)
     npt.assert_allclose(grid.geoid.min(), -106.257344)
     npt.assert_allclose(grid.geoid.max(), 84.722744)
+    assert grid.attrs
 
 
 def test_gravity_earth():
@@ -40,6 +41,7 @@ def test_gravity_earth():
     npt.assert_allclose(grid.gravity.min(), 9.7476403e05)
     assert grid.height_over_ell.shape == (361, 721)
     npt.assert_allclose(grid.height_over_ell, 10000)
+    assert grid.attrs
 
 
 def test_topography_earth():
@@ -48,6 +50,7 @@ def test_topography_earth():
     assert grid.topography.shape == (361, 721)
     npt.assert_allclose(grid.topography.max(), 5651, atol=1)
     npt.assert_allclose(grid.topography.min(), -8409, atol=1)
+    assert grid.attrs
 
 
 def test_britain_magnetic():
