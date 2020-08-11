@@ -31,6 +31,10 @@ def test_geoid_earth():
     npt.assert_allclose(grid.geoid.min(), -106.257344)
     npt.assert_allclose(grid.geoid.max(), 84.722744)
     assert grid.attrs
+    assert grid.attrs.get("refsysname") == "WGS84"
+    assert grid.attrs.get("max_used_degree") == "1277"
+    assert grid.attrs.get("tide_system") == "tide_free"
+    assert grid.attrs.get("modelname") == "EIGEN-6C4"
 
 
 def test_gravity_earth():
@@ -42,6 +46,10 @@ def test_gravity_earth():
     assert grid.height_over_ell.shape == (361, 721)
     npt.assert_allclose(grid.height_over_ell, 10000)
     assert grid.attrs
+    assert grid.attrs.get("refsysname") == "WGS84"
+    assert grid.attrs.get("max_used_degree") == "1277"
+    assert grid.attrs.get("tide_system") == "tide_free"
+    assert grid.attrs.get("modelname") == "EIGEN-6C4"
 
 
 def test_topography_earth():
@@ -51,6 +59,9 @@ def test_topography_earth():
     npt.assert_allclose(grid.topography.max(), 5651, atol=1)
     npt.assert_allclose(grid.topography.min(), -8409, atol=1)
     assert grid.attrs
+    assert grid.attrs.get("refsysname") == "WGS84"
+    assert grid.attrs.get("max_used_degree") == "1277"
+    assert grid.attrs.get("modelname") == "etopo1-2250"
 
 
 def test_britain_magnetic():
