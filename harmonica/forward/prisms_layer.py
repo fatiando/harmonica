@@ -337,21 +337,3 @@ class PrismsLayer:
         bottom = self._obj.bottom.values[indices]
         top = self._obj.top.values[indices]
         return west, east, south, north, bottom, top
-
-    def __iter__(self):
-        """
-        Initialize iteration by setting counter to zero
-        """
-        self._n = 0
-        return self
-
-    def __next__(self):
-        """
-        Iterate over the prisms of the layer
-        """
-        if self._n >= self.size:
-            raise StopIteration
-        indices = np.unravel_index(self._n, shape=self.shape)
-        prism = self.get_prism(indices)
-        self._n += 1
-        return prism
