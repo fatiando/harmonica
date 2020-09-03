@@ -168,8 +168,6 @@ class PrismsLayer:
 
     def __init__(self, xarray_obj):
         self._obj = xarray_obj
-        self._spacing = None
-        self._size = None
 
     @property
     def spacing(self):
@@ -183,12 +181,10 @@ class PrismsLayer:
         s_east : float
             Spacing between center of prisms on the West-East direction.
         """
-        if self._spacing is None:
-            self._spacing = (
-                self._obj.northing.values[1] - self._obj.northing.values[0],
-                self._obj.easting.values[1] - self._obj.easting.values[0],
-            )
-        return self._spacing
+        return (
+            self._obj.northing.values[1] - self._obj.northing.values[0],
+            self._obj.easting.values[1] - self._obj.easting.values[0],
+        )
 
     @property
     def boundaries(self):
@@ -218,9 +214,7 @@ class PrismsLayer:
         size : int
             Total number of prisms in the layer.
         """
-        if self._size is None:
-            self._size = self._obj.northing.size * self._obj.easting.size
-        return self._size
+        return self._obj.northing.size * self._obj.easting.size
 
     @property
     def shape(self):
