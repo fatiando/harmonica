@@ -292,10 +292,8 @@ class PrismsLayer:
             order: ``west``, ``east``, ``south``, ``north``, ``bottom``,
             ``top``.
         """
-        # The meshgrid must be done on this order (northing and then easting)
-        # to follow the same index ordering as the data_vars
-        northing, easting = np.meshgrid(
-            self._obj.northing.values, self._obj.easting.values
+        easting, northing = np.meshgrid(
+            self._obj.easting.values, self._obj.northing.values
         )
         west, east, south, north = self._get_prism_horizontal_boundaries(
             easting.ravel(), northing.ravel()

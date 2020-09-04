@@ -117,7 +117,8 @@ def test_prisms_layer_pixel_register():
     assert layer.prisms_layer.size == 21
     npt.assert_allclose(layer.prisms_layer.spacing, (5e3, 5e3))
     npt.assert_allclose(
-        layer.prisms_layer.boundaries, (-22.5e3, 12.5e3, -32.5e3, -17.5e3),
+        layer.prisms_layer.boundaries,
+        (-22.5e3, 12.5e3, -32.5e3, -17.5e3),
     )
     # pixel_register to True
     # Now the boundaries should be equal to the passed region
@@ -169,8 +170,8 @@ def test_prisms_layer_get_prisms():
     layer["top"] = (layer.top.dims, (np.arange(4) + 10).reshape(2, 2))
     expected_prisms = [
         [-0.5, 0.5, -0.5, 0.5, 0, 10],
-        [-0.5, 0.5, 0.5, 1.5, 1, 11],
-        [0.5, 1.5, -0.5, 0.5, 2, 12],
+        [0.5, 1.5, -0.5, 0.5, 1, 11],
+        [-0.5, 0.5, 0.5, 1.5, 2, 12],
         [0.5, 1.5, 0.5, 1.5, 3, 13],
     ]
     npt.assert_allclose(expected_prisms, layer.prisms_layer.get_prisms())
@@ -202,8 +203,8 @@ def test_prisms_layer_gravity():
     layer["top"] = (layer.top.dims, (np.arange(4) + 10).reshape(2, 2))
     prisms = [
         [-0.5, 0.5, -0.5, 0.5, 0, 10],
-        [-0.5, 0.5, 0.5, 1.5, 1, 11],
-        [0.5, 1.5, -0.5, 0.5, 2, 12],
+        [0.5, 1.5, -0.5, 0.5, 1, 11],
+        [-0.5, 0.5, 0.5, 1.5, 2, 12],
         [0.5, 1.5, 0.5, 1.5, 3, 13],
     ]
     density = np.ones(4) * 2670
