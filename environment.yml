@@ -14,6 +14,7 @@ dependencies:
     - xarray
     # Development requirements
     - boule
+    - rockhound
     - pyproj
     - matplotlib
     - cartopy
