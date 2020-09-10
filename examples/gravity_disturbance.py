@@ -36,5 +36,4 @@ plt.colorbar(
 )
 ax.set_title("Gravity of disturbance of the Earth")
 ax.coastlines()
-plt.tight_layout()
 plt.show()

@@ -44,5 +44,4 @@ plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.01, aspect=50, label="me
 ax.coastlines()
 ax.set_title("Airy isostatic Moho depth of Africa")
 ax.set_extent(region, crs=ccrs.PlateCarree())
-plt.tight_layout()
 plt.show()
