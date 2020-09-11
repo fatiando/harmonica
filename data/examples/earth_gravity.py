@@ -26,5 +26,4 @@ plt.colorbar(
 )
 ax.set_title("Gravity of the Earth (EIGEN-6C4)")
 ax.coastlines()
-plt.tight_layout()
 plt.show()
