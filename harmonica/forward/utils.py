@@ -9,6 +9,9 @@ def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
     """
     Distance between two points in Cartesian, spherical or geodetic coordinates
 
+    Computes the Euclidean distance between two points given in Cartesian,
+    spherical or geodetic coordinates.
+
     Parameters
     ----------
     point_p : list or tuple or 1d-array
