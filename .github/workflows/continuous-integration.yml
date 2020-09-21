@@ -52,7 +52,7 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
-      HARMONICA_DATA_DIR: "${{ runner.temp }}/.harmonica/data"
+      HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica/data
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
