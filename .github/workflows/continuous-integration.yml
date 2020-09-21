@@ -52,7 +52,8 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
-      HARMONICA_DATA_DIR: ${{ matrix.temp }}/.harmonica/data
+      # Overide cache directory where test data is copyied to
+      HARMONICA_DATA_DIR: $HOME/.harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
