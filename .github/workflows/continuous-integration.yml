@@ -134,7 +134,7 @@ jobs:
         run: pip install --no-deps dist/*.whl
 
       - name: Copy test data to cache
-      - run: |
+        run: |
           set -x -e
           mkdir -p ${HARMONICA_DATA_DIR}/master
           cp -r data/* ${HARMONICA_DATA_DIR}/master
