@@ -52,8 +52,6 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
-      # Overide cache directory where test data is copyied to
-      HARMONICA_DATA_DIR: ${{ HOME }}/.harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -136,9 +134,13 @@ jobs:
 
       - name: Copy test data to cache
         run: |
+          echo "Copy data to " ${HARMONICA_DATA_DIR}/master
           set -x -e
           mkdir -p ${HARMONICA_DATA_DIR}/master
           cp -r data/* ${HARMONICA_DATA_DIR}/master
+        env:
+          # Overide cache directory where test data is copyied to
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       - name: Run the tests
         run: make test
