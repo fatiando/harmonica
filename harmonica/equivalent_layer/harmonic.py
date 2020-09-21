@@ -93,7 +93,10 @@ class EQLHarmonic(vdb.BaseGridder):
     extra_coords_name = "upward"
 
     def __init__(
-        self, damping=None, points=None, relative_depth=500,
+        self,
+        damping=None,
+        points=None,
+        relative_depth=500,
     ):
         self.damping = damping
         self.points = points
@@ -294,7 +297,10 @@ class EQLHarmonicSpherical(EQLHarmonic):
     extra_coords_name = "radius"
 
     def __init__(
-        self, damping=None, points=None, relative_depth=500,
+        self,
+        damping=None,
+        points=None,
+        relative_depth=500,
     ):
         super().__init__(damping=damping, points=points, relative_depth=relative_depth)
         # Define Green's function for spherical coordinates
