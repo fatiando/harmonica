@@ -144,6 +144,9 @@ jobs:
 
       - name: Run the tests
         run: make test
+        env:
+          # Overide cache directory where test data was copyied to
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       - name: Build the documentation
         run: make -C doc clean all
