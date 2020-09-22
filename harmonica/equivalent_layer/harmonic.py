@@ -1,16 +1,21 @@
 """
 Equivalent layer for generic harmonic functions
 """
+from warnings import warn
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
 
-from ..forward.utils import (
-    distance_cartesian,
-    distance_spherical,
-)
+from ..forward.utils import distance_cartesian
+
+
+# EQLHarmonic is a subclass of Verde's BaseGridder.
+# EQLHarmonic overrides grid, scatter and profile methods. On EQLs these
+# methods should take the upward coordinate as a positional argument. We will
+# disable pylint arguments-differ error because we intend to make these methods
+# different from the ones that are being inherited.
 
 
 class EQLHarmonic(vdb.BaseGridder):
@@ -214,184 +219,260 @@ class EQLHarmonic(vdb.BaseGridder):
         jacobian_numba(coordinates, points, jac, self.greens_function)
         return jac
 
-
-class EQLHarmonicSpherical(EQLHarmonic):
-    r"""
-    Equivalent-layer for generic harmonic functions in spherical coordinates
-
-    This equivalent layer can be used for:
-
-    * Spherical coordinates (geographic coordinates must be converted before
-      use)
-    * Regional or global data where Earth's curvature must be taken into
-      account
-    * Gravity and magnetic data (including derivatives)
-    * Single data types
-    * Interpolation
-    * Upward continuation
-    * Finite-difference based derivative calculations
-
-    It cannot be used for:
-
-    * Joint inversion of multiple data types (e.g., gravity + gravity
-      gradients)
-    * Reduction to the pole of magnetic total field anomaly data
-    * Analytical derivative calculations
-
-    Point sources are located beneath the observed potential-field measurement
-    points by default [Cooper2000]_. Custom source locations can be used by
-    specifying the *points* argument. Coefficients associated with each point
-    source are estimated through linear least-squares with damping (Tikhonov
-    0th order) regularization.
-
-    The Green's function for point mass effects used is the inverse Euclidean
-    distance between the grid coordinates and the point source:
-
-    .. math::
-
-        \phi(\bar{x}, \bar{x}') = \frac{1}{||\bar{x} - \bar{x}'||}
-
-    where :math:`\bar{x}` and :math:`\bar{x}'` are the coordinate vectors of
-    the observation point and the source, respectively.
-
-    Parameters
-    ----------
-    damping : None or float
-        The positive damping regularization parameter. Controls how much
-        smoothness is imposed on the estimated coefficients.
-        If None, no regularization is used.
-    points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as the
-        equivalent layer. Coordinates are assumed to be in the following order:
-        (``longitude``, ``latitude``, ``radius``). Both ``longitude`` and
-        ``latitude`` must be in degrees and ``radius`` in meters.
-        If None, will place one point source bellow each observation point at
-        a fixed relative depth bellow the observation point [Cooper2000]_.
-        Defaults to None.
-    relative_depth : float
-        Relative depth at which the point sources are placed beneath the
-        observation points. Each source point will be set beneath each data
-        point at a depth calculated as the radius of the data point minus
-        this constant *relative_depth*. Use positive numbers (negative numbers
-        would mean point sources are above the data points). Ignored if
-        *points* is specified.
-
-    Attributes
-    ----------
-    points_ : 2d-array
-        Coordinates of the point sources used to build the equivalent layer.
-    coefs_ : array
-        Estimated coefficients of every point source.
-    region_ : tuple
-        The boundaries (``[W, E, S, N]``) of the data used to fit the
-        interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` and
-        :meth:`~harmonica.EQLHarmonicSpherical.scatter` methods.
-    """
-
-    # Set the default dimension names for generated outputs
-    # (pd.DataFrame, xr.Dataset, etc)
-    dims = ("spherical_latitude", "longitude")
-
-    # Overwrite the defalt name for the upward coordinate.
-    extra_coords_name = "radius"
-
-    def __init__(
+    def grid(
         self,
-        damping=None,
-        points=None,
-        relative_depth=500,
-    ):
-        super().__init__(damping=damping, points=points, relative_depth=relative_depth)
-        # Define Green's function for spherical coordinates
-        self.greens_function = greens_func_spherical
-
-    def fit(self, coordinates, data, weights=None):
+        upward,
+        region=None,
+        shape=None,
+        spacing=None,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs
+    ):  # pylint: disable=arguments-differ
         """
-        Fit the coefficients of the equivalent layer.
+        Interpolate the data onto a regular grid.
 
-        The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` and
-        :meth:`~harmonica.EQLHarmonicSpherical.scatter` methods.
+        The grid can be specified by either the number of points in each
+        dimension (the *shape*) or by the grid node spacing. See
+        :func:`verde.grid_coordinates` for details. All grid points will be
+        located at the same `upward` coordinate. Other arguments for
+        :func:`verde.grid_coordinates` can be passed as extra keyword arguments
+        (``kwargs``) to this method.
 
-        All input arrays must have the same shape.
+        If the interpolator collected the input data region, then it will be
+        used if ``region=None``. Otherwise, you must specify the grid region.
+        Use the *dims* and *data_names* arguments to set custom names for the
+        dimensions and the data field(s) in the output :class:`xarray.Dataset`.
+        Default names will be provided if none are given.
 
         Parameters
         ----------
-        coordinates : tuple of arrays
-            Arrays with the coordinates of each data point. Should be in the
-            following order: (``longitude``, ``latitude``, ``radius``, ...).
-            Only ``longitude``, ``latitude``, and ``radius`` will be used, all
-            subsequent coordinates will be ignored.
-        data : array
-            The data values of each data point.
-        weights : None or array
-            If not None, then the weights assigned to each data point.
-            Typically, this should be 1 over the data uncertainty squared.
+        upward : float
+            Upward coordinate of the grid points.
+        region : list = [W, E, S, N]
+            The west, east, south, and north boundaries of a given region.
+        shape : tuple = (n_north, n_east) or None
+            The number of points in the South-North and West-East directions,
+            respectively.
+        spacing : tuple = (s_north, s_east) or None
+            The grid spacing in the South-North and West-East directions,
+            respectively.
+        dims : list or None
+            The names of the northing and easting data dimensions,
+            respectively, in the output grid. Default is determined from the
+            ``dims`` attribute of the class. Must be defined in the following
+            order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
+            "northing" pattern but is required for compatibility with xarray.**
+        data_names : list of None
+            The name(s) of the data variables in the output grid. Defaults to
+            ``['scalars']``.
+        projection : callable or None
+            If not None, then should be a callable object
+            ``projection(easting, northing) -> (proj_easting, proj_northing)``
+            that takes in easting and northing coordinate arrays and returns
+            projected northing and easting coordinate arrays. This function
+            will be used to project the generated grid coordinates before
+            passing them into ``predict``. For example, you can use this to
+            generate a geographic grid from a Cartesian gridder.
 
         Returns
         -------
-        self
-            Returns this estimator instance for chaining operations.
-        """
-        # Overwrite method just to change the docstring
-        super().fit(coordinates, data, weights=weights)
-        return self
+        grid : xarray.Dataset
+            The interpolated grid. Metadata about the interpolator is written
+            to the ``attrs`` attribute.
 
-    def predict(self, coordinates):
         """
-        Evaluate the estimated equivalent layer on the given set of points.
+        # Ignore extra_coords if passed
+        pop_extra_coords(kwargs)
+        # Grid data
+        grid = super().grid(
+            region=region,
+            shape=shape,
+            spacing=spacing,
+            dims=dims,
+            data_names=data_names,
+            projection=projection,
+            extra_coords=upward,
+            **kwargs,
+        )
+        return grid
 
-        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
+    def scatter(
+        self,
+        upward,
+        region=None,
+        size=300,
+        random_state=0,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs
+    ):  # pylint: disable=arguments-differ
+        """
+        Interpolate values onto a random scatter of points.
+
+        Point coordinates are generated by :func:`verde.scatter_points`. Other
+        arguments for this function can be passed as extra keyword arguments
+        (``kwargs``) to this method.
+
+        If the interpolator collected the input data region, then it will be
+        used if ``region=None``. Otherwise, you must specify the grid region.
+
+        Use the *dims* and *data_names* arguments to set custom names for the
+        dimensions and the data field(s) in the output
+        :class:`pandas.DataFrame`. Default names are provided.
 
         Parameters
         ----------
-        coordinates : tuple of arrays
-            Arrays with the coordinates of each data point. Should be in the
-            following order: (``longitude``, ``latitude``, ``radius``, ...).
-            Only ``longitude``, ``latitude`` and ``radius`` will be used, all
-            subsequent coordinates will be ignored.
+        upward: float
+            Upward coordinate of the grid points.
+        region : list = [W, E, S, N]
+            The west, east, south, and north boundaries of a given region.
+        size : int
+            The number of points to generate.
+        random_state : numpy.random.RandomState or an int seed
+            A random number generator used to define the state of the random
+            permutations. Use a fixed seed to make sure computations are
+            reproducible. Use ``None`` to choose a seed automatically
+            (resulting in different numbers with each run).
+        dims : list or None
+            The names of the northing and easting data dimensions,
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
+            "northing" pattern but is required for compatibility with xarray.**
+        data_names : list of None
+            The name(s) of the data variables in the output dataframe. Defaults
+            to ``['scalars']`` for scalar data,
+            ``['east_component', 'north_component']`` for 2D vector data, and
+            ``['east_component', 'north_component', 'vertical_component']`` for
+            3D vector data.
+        projection : callable or None
+            If not None, then should be a callable object
+            ``projection(easting, northing) -> (proj_easting, proj_northing)``
+            that takes in easting and northing coordinate arrays and returns
+            projected northing and easting coordinate arrays. This function
+            will be used to project the generated scatter coordinates before
+            passing them into ``predict``. For example, you can use this to
+            generate a geographic scatter from a Cartesian gridder.
 
         Returns
         -------
-        data : array
-            The data values evaluated on the given points.
-        """
-        # Overwrite method just to change the docstring
-        data = super().predict(coordinates)
-        return data
+        table : pandas.DataFrame
+            The interpolated values on a random set of points.
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
         """
-        Make the Jacobian matrix for the equivalent layer.
+        # Ignore extra_coords if passed
+        pop_extra_coords(kwargs)
+        # Create scatter points and predict
+        table = super().scatter(
+            region=region,
+            size=size,
+            random_state=random_state,
+            dims=dims,
+            data_names=data_names,
+            projection=projection,
+            extra_coords=upward,
+            **kwargs,
+        )
+        return table
 
-        Each column of the Jacobian is the Green's function for a single point
-        source evaluated on all observation points.
+    def profile(
+        self,
+        point1,
+        point2,
+        upward,
+        size,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs
+    ):  # pylint: disable=arguments-differ
+        """
+        Interpolate data along a profile between two points.
+
+        Generates the profile along a straight line assuming Cartesian
+        distances and the same upward coordinate for all points. Point
+        coordinates are generated by :func:`verde.profile_coordinates`. Other
+        arguments for this function can be passed as extra keyword arguments
+        (``kwargs``) to this method.
+
+        Use the *dims* and *data_names* arguments to set custom names for the
+        dimensions and the data field(s) in the output
+        :class:`pandas.DataFrame`. Default names are provided.
+
+        Includes the calculated Cartesian distance from *point1* for each data
+        point in the profile.
+
+        To specify *point1* and *point2* in a coordinate system that would
+        require projection to Cartesian (geographic longitude and latitude, for
+        example), use the ``projection`` argument. With this option, the input
+        points will be projected using the given projection function prior to
+        computations. The generated Cartesian profile coordinates will be
+        projected back to the original coordinate system. **Note that the
+        profile points are evenly spaced in projected coordinates, not the
+        original system (e.g., geographic)**.
 
         Parameters
         ----------
-        coordinates : tuple of arrays
-            Arrays with the coordinates of each data point. Should be in the
-            following order: (``longitude``, ``latitude``, ``radius``, ...).
-            Only ``longitude``, ``latitude`` and ``radius`` will be used, all
-            subsequent coordinates will be ignored.
-        points : tuple of arrays
-            Tuple of arrays containing the coordinates of the point sources
-            used as equivalent layer in the following order:
-            (``longitude``, ``latitude``, ``radius``).
-        dtype : str or numpy dtype
-            The type of the Jacobian array.
+        point1 : tuple
+            The easting and northing coordinates, respectively, of the first
+            point.
+        point2 : tuple
+            The easting and northing coordinates, respectively, of the second
+            point.
+        upward : float
+            Upward coordinate of the profile points.
+        size : int
+            The number of points to generate.
+        dims : list or None
+            The names of the northing and easting data dimensions,
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
+            "northing" pattern but is required for compatibility with xarray.**
+        data_names : list of None
+            The name(s) of the data variables in the output dataframe. Defaults
+            to ``['scalars']`` for scalar data,
+            ``['east_component', 'north_component']`` for 2D vector data, and
+            ``['east_component', 'north_component', 'vertical_component']`` for
+            3D vector data.
+        projection : callable or None
+            If not None, then should be a callable object ``projection(easting,
+            northing, inverse=False) -> (proj_easting, proj_northing)`` that
+            takes in easting and northing coordinate arrays and returns
+            projected northing and easting coordinate arrays. Should also take
+            an optional keyword argument ``inverse`` (default to False) that if
+            True will calculate the inverse transform instead. This function
+            will be used to project the profile end points before generating
+            coordinates and passing them into ``predict``. It will also be used
+            to undo the projection of the coordinates before returning the
+            results.
 
         Returns
         -------
-        jacobian : 2D array
-            The (n_data, n_points) Jacobian matrix.
+        table : pandas.DataFrame
+            The interpolated values along the profile.
+
         """
-        # Overwrite method just to change the docstring
-        jacobian = super().jacobian(coordinates, points, dtype=dtype)
-        return jacobian
+        # Ignore extra_coords if passed
+        pop_extra_coords(kwargs)
+        # Create profile points and predict
+        table = super().profile(
+            point1,
+            point2,
+            size,
+            dims=dims,
+            data_names=data_names,
+            projection=projection,
+            extra_coords=upward,
+            **kwargs,
+        )
+        return table
 
 
 @jit(nopython=True)
@@ -431,21 +512,6 @@ def greens_func_cartesian(east, north, upward, point_east, point_north, point_up
 
 
 @jit(nopython=True)
-def greens_func_spherical(
-    longitude, latitude, radius, point_longitude, point_latitude, point_radius
-):
-    """
-    Green's function for the equivalent layer in spherical coordinates
-
-    Uses Numba to speed up things.
-    """
-    distance = distance_spherical(
-        (longitude, latitude, radius), (point_longitude, point_latitude, point_radius)
-    )
-    return 1 / distance
-
-
-@jit(nopython=True)
 def jacobian_numba(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix using numba to speed things up.
@@ -466,3 +532,12 @@ def jacobian_numba(coordinates, points, jac, greens_function):
                 point_north[j],
                 point_upward[j],
             )
+
+
+def pop_extra_coords(kwargs):
+    """
+    Remove extra_coords from kwargs
+    """
+    if "extra_coords" in kwargs:
+        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
+        kwargs.pop("extra_coords")

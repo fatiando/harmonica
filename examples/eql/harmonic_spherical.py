@@ -53,14 +53,18 @@ eql.fit(coordinates, gravity_disturbance)
 print("R² score:", eql.score(coordinates, gravity_disturbance))
 
 # Interpolate data on a regular grid with 0.2 degrees spacing. The
-# interpolation requires an extra coordinate (radius). By passing in the
-# maximum radius of the data, we're effectively upward-continuing the data.
-# The grid will be defined in spherical coordinates.
+# interpolation requires the radius of the grid points (upward coordinate). By
+# passing in the maximum radius of the data, we're effectively
+# upward-continuing the data. The grid will be defined in spherical
+# coordinates.
 grid = eql.grid(
+    upward=coordinates[-1].max(),
     spacing=0.2,
-    extra_coords=coordinates[-1].max(),
     data_names=["gravity_disturbance"],
 )
+
+# The grid is a xarray.Dataset with values, coordinates, and metadata
+print("\nGenerated grid:\n", grid)
 
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
