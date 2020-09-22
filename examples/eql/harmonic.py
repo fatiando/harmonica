@@ -103,5 +103,4 @@ plt.colorbar(tmp, ax=ax2, label="nT", pad=0.05, aspect=40, orientation="horizont
 ax2.set_xlim(easting.min(), easting.max())
 ax2.set_ylim(northing.min(), northing.max())
 
-plt.tight_layout(pad=0)
 plt.show()

@@ -26,5 +26,4 @@ plt.colorbar(
 )
 ax.set_title("Topography of the Earth (ETOPO1)")
 ax.coastlines()
-plt.tight_layout()
 plt.show()

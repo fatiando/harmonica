@@ -28,7 +28,8 @@ data = hm.datasets.fetch_south_africa_gravity()
 # aliasing effects.
 blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
 (longitude, latitude, elevation), gravity_data = blocked_mean.filter(
-    (data.longitude, data.latitude, data.elevation), data.gravity,
+    (data.longitude, data.latitude, data.elevation),
+    data.gravity,
 )
 
 # Compute gravity disturbance by removing the gravity of normal Earth
@@ -74,7 +75,12 @@ maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
 region = vd.get_region(coordinates)
 
 # Plot observed and gridded gravity disturbance
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 5), sharey=True,)
+fig, (ax1, ax2) = plt.subplots(
+    nrows=1,
+    ncols=2,
+    figsize=(10, 5),
+    sharey=True,
+)
 
 tmp = ax1.scatter(
     longitude,

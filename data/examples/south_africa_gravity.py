@@ -39,5 +39,4 @@ plt.colorbar(
 ax.set_extent(vd.get_region((data.longitude, data.latitude)))
 ax.gridlines(draw_labels=True)
 ax.coastlines()
-plt.tight_layout()
 plt.show()

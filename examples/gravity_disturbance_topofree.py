@@ -59,5 +59,4 @@ plt.colorbar(
 )
 ax.set_title("Topography-free (Bouguer) gravity of disturbance of the Earth")
 ax.coastlines()
-plt.tight_layout()
 plt.show()
