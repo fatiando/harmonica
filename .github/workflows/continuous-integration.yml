@@ -135,7 +135,7 @@ jobs:
       - name: Setup cache directory for test data
         uses: actions/cache@v2
         with:
-          path: ${HARMONICA_DATA_DIR}
+          path: ~/cache/harmonica
           key: conda-${{ runner.os }}-${{ matrix.python }}-harmonica_data_dir
 
       - name: Copy test data to cache
