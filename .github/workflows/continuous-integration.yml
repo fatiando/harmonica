@@ -57,11 +57,10 @@ jobs:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-3.8-${{ hashFiles('requirements*.txt') }}
 
-      - name: Setup cache for sample data files
-        uses: actions/cache@v2
-        with:
-          path: ${HARMONICA_DATA_DIR}
-          key: ${{ hashFiles('requirements*.txt') }}
+      - name: Copy sample data to cache directory
+        run: |
+          mkdir -p $HARMONICA_DATA_DIR/master
+          cp -r data/* $HARMONICA_DATA_DIR/master
 
       - name: Setup miniconda
         uses: goanpeca/setup-miniconda@v1
