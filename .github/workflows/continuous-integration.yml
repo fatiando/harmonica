@@ -117,7 +117,7 @@ jobs:
 
       - name: Run the tests
         run: |
-          ls ~
+          ls -a ~
           make test
 
       - name: Build the documentation
