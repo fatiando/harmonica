@@ -35,13 +35,15 @@ jobs:
       # run all of them to catch failures in different combinations.
       fail-fast: false
       matrix:
-        os: [ubuntu]
-        python: [3.8]
+        os: [ubuntu, macos]
+        python: [3.6, 3.7, 3.8]
         # If "optional", will install non-required dependencies in the build
         # environment. Otherwise, only required dependencies are installed.
         dependencies: [""]
         include:
           - os: ubuntu
+            python: 3.8
+          - os: macos
             python: 3.8
     env:
       CONDA_REQUIREMENTS: requirements.txt
