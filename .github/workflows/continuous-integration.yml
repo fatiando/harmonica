@@ -1,0 +1,114 @@
+# Configuration for testing and deploying with GitHub Actions
+#
+# NOTE: Pin actions to a specific commit to avoid having the authentication
+# token stolen if the Action is compromised. See the comments and links here:
+# https://github.com/pypa/gh-action-pypi-publish/issues/27
+#
+name: test
+
+# Only build PRs, the master branch, and releases. Pushes to branches will only
+# be built when a PR is opened. This avoids duplicated buids in PRs comming
+# from branches in the origin repository (1 for PR and 1 for push).
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  release:
+    types:
+      - published
+
+# Use bash by default in all jobs
+defaults:
+  run:
+    # The -l {0} is necessary for conda environments to be activated
+    shell: bash -l {0}
+
+jobs:
+  test:
+    name: ubuntu py3.8
+    runs-on: ubuntu-latest
+    env:
+      CONDA_REQUIREMENTS: requirements.txt
+      CONDA_REQUIREMENTS_DEV: requirements-dev.txt
+      CONDA_INSTALL_EXTRA:
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to fetch more than the last commit so that versioneer can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      # Need the tags so that versioneer can form a valid version number
+      - name: Fetch git tags
+        run: git fetch origin 'refs/tags/*:refs/tags/*'
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-3.8-${{ hashFiles('requirements*.txt') }}
+
+      - name: Setup miniconda
+        uses: goanpeca/setup-miniconda@v1
+        with:
+          python-version: 3.8
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge
+          show-channel-urls: true
+          activate-environment: testing
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Install requirements
+        run: |
+          requirements_file=full-conda-requirements.txt
+          if [ ! -z "$CONDA_REQUIREMENTS" ]; then
+              echo "Capturing dependencies from $CONDA_REQUIREMENTS"
+              cat $CONDA_REQUIREMENTS >> $requirements_file
+          fi
+          if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
+              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
+              cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
+          fi
+          if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
+              echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
+              echo "# Extra" >> $requirements_file
+              # Use xargs to print one argument per line
+              echo $CONDA_INSTALL_EXTRA | xargs -n 1 >> $requirements_file
+          fi
+          if [ -f $requirements_file ]; then
+              echo "Collected dependencies:"
+              cat $requirements_file
+              echo ""
+              conda install --quiet --file $requirements_file python=$PYTHON
+          else
+              echo "No requirements defined."
+          fi
+
+      - name: List installed packages
+        run: conda list
+
+      - name: Build source and wheel distributions
+        run: |
+          python setup.py sdist bdist_wheel
+          echo ""
+          echo "Generated files:"
+          ls -lh dist/
+
+      - name: Install the package
+        run: pip install --no-deps dist/*.whl
+
+      - name: Run the tests
+        run: make test
+
+      - name: Build the documentation
+        run: make -C doc clean all
