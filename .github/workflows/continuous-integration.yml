@@ -59,8 +59,10 @@ jobs:
 
       - name: Copy sample data to cache directory
         run: |
-          mkdir -p $HARMONICA_DATA_DIR/master
-          cp -r data/* $HARMONICA_DATA_DIR/master
+          echo "Copy data to " ${HARMONICA_DATA_DIR}/master
+          set -x -e
+          mkdir -p ${HARMONICA_DATA_DIR}/master
+          cp -r data/* ${HARMONICA_DATA_DIR}/master
 
       - name: Setup miniconda
         uses: goanpeca/setup-miniconda@v1
@@ -114,7 +116,9 @@ jobs:
         run: pip install --no-deps dist/*.whl
 
       - name: Run the tests
-        run: make test
+        run: |
+          ls ~
+          make test
 
       - name: Build the documentation
         run: make -C doc clean all
