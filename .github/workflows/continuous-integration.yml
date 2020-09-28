@@ -148,7 +148,7 @@ jobs:
 
       # The following steps will be run only on Ubuntu with Python 3.8
       - name: Build the documentation
-        if: ${{ matrix.os == "ubuntu" && matrix.python == 3.8 }}
+        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: make -C doc clean all
         env:
           # Override cache directory where test data was copied to
@@ -157,18 +157,18 @@ jobs:
       # Store the docs as a build artifact on GitHub so we can check it if
       # needed.
       - name: Upload HTML documentation as an artifact
-        if: ${{ matrix.os == "ubuntu" && matrix.python == 3.8 }}
+        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         uses: actions/upload-artifact@v2
         with:
           name: docs-${{ matrix.os }}-${{ matrix.python }}${{ matrix.dependencies }}-{{ github.sha }}
           path: doc/_build/html
 
       - name: Convert coverage report to XML for codecov
-        if: ${{ matrix.os == "ubuntu" && matrix.python == 3.8 }}
+        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: coverage xml
 
       - name: Upload coverage to Codecov
-        if: ${{ matrix.os == "ubuntu" && matrix.python == 3.8 }}
+        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage.xml
