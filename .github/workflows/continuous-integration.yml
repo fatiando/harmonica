@@ -137,7 +137,12 @@ jobs:
           HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       - name: Run the tests
-        run: make test
+        run: |
+          if [ ${{ matrix.os }} == 'ubuntu' ]; then
+              NUMBA_THREADING_LAYER=workqueue make test
+          else
+              make test
+          fi
         env:
           # Override cache directory where test data was copied to
           HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
