@@ -32,6 +32,7 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
+      HARMONICA_DATA_DIR: ~/.harmonica
 
     steps:
       - name: Checkout
@@ -55,6 +56,12 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-3.8-${{ hashFiles('requirements*.txt') }}
+
+      - name: Setup cache for sample data files
+        uses: actions/cache@v2
+        with:
+          path: ${HARMONICA_DATA_DIR}
+          key: ${{ hashFiles('requirements*.txt') }}
 
       - name: Setup miniconda
         uses: goanpeca/setup-miniconda@v1
