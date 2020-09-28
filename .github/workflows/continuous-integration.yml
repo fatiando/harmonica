@@ -51,6 +51,8 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
+      # Define directory where sample data will be copied
+      HARMONICA_DATA_DIR: ~/.harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -136,9 +138,6 @@ jobs:
           set -x -e
           mkdir -p ${HARMONICA_DATA_DIR}/master
           cp -r data/* ${HARMONICA_DATA_DIR}/master
-        env:
-          # Override cache directory where test data is copied to
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       - name: Run the tests
         run: |
@@ -147,17 +146,11 @@ jobs:
           else
               make test
           fi
-        env:
-          # Override cache directory where test data was copied to
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       # The following steps will be run only on Ubuntu with Python 3.8
       - name: Build the documentation
         if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: make -C doc clean all
-        env:
-          # Override cache directory where test data was copied to
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/.harmonica
 
       # Store the docs as a build artifact on GitHub so we can check it if
       # needed.
