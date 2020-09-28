@@ -52,7 +52,7 @@ jobs:
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
       # Define directory where sample data will be copied
-      HARMONICA_DATA_DIR: ~/.harmonica
+      HARMONICA_DATA_DIR: ~/.cache/harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -153,7 +153,10 @@ jobs:
               make test
           fi
 
-      # The following steps will be run only on Ubuntu with Python 3.8
+      # -----------------------------------------------------------
+      # The following steps will run only on Ubuntu with Python 3.8
+      # -----------------------------------------------------------
+
       - name: Build the documentation
         if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: make -C doc clean all
