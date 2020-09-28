@@ -78,9 +78,7 @@ jobs:
       - name: Setup caching for conda packages
         uses: actions/cache@v2
         with:
-          path: |
-            ~/conda_pkgs_dir
-            ~/cache/harmonica
+          path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
 
       - name: Setup miniconda
@@ -133,6 +131,12 @@ jobs:
 
       - name: Install the package
         run: pip install --no-deps dist/*.whl
+
+      - name: Setup cache directory for test data
+        uses: actions/cache@v2
+        with:
+          path: ~/cache/harmonica
+          key: conda-${{ runner.os }}-${{ matrix.python }}-harmonica_data_dir
 
       - name: Copy test data to cache
         run: |
