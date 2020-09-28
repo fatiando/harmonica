@@ -132,11 +132,13 @@ jobs:
       - name: Install the package
         run: pip install --no-deps dist/*.whl
 
-      - name: Copy test data to cache
+      - name: Setup cache directory for test data
         uses: actions/cache@v2
         with:
           path: ~/cache/harmonica
           key: conda-${{ runner.os }}-${{ matrix.python }}-harmonica_data_dir
+
+      - name: Copy test data to cache
         run: |
           echo "Copy data to " ${HARMONICA_DATA_DIR}/master
           set -x -e
