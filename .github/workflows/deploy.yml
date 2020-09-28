@@ -30,7 +30,7 @@ jobs:
     name: PyPI
     runs-on: ubuntu-latest
     # Only publish from the origin repository, not forks
-    if: github.repository == 'fatiando/pooch'
+    if: github.repository == 'fatiando/harmonica'
 
     steps:
 
