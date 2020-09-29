@@ -147,9 +147,6 @@ jobs:
 
       - name: Run the tests
         run: |
-          ls -a ~
-          ls -a ~/cache/
-          ls -a ~/cache/harmonica
           if [ ${{ matrix.os }} == 'ubuntu' ]; then
               # Use NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
