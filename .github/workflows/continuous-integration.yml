@@ -136,7 +136,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/cache/harmonica
-          key: conda-${{ runner.os }}-${{ matrix.python }}-harmonica_data_dir
+          key: data-${{ hashFiles('data') }}
 
       - name: Copy test data to cache
         run: |
