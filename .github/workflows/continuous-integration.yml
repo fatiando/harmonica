@@ -51,8 +51,6 @@ jobs:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
-      # Define directory where sample data will be copied
-      HARMONICA_DATA_DIR: $HOME/work/cache/harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -138,9 +136,13 @@ jobs:
           set -x -e
           mkdir -p ${HARMONICA_DATA_DIR}/master
           cp -r data/* ${HARMONICA_DATA_DIR}/master
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Run the tests
         run: |
+          ls $HARMONICA_DATA_DIR
           if [ ${{ matrix.os }} == 'ubuntu' ]; then
               # Use NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
@@ -148,6 +150,9 @@ jobs:
           else
               make test
           fi
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       # -----------------------------------------------------------
       # The following steps will run only on Ubuntu with Python 3.8
