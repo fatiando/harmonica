@@ -11,6 +11,8 @@ name: test
 # from branches in the origin repository (1 for PR and 1 for push).
 on:
   pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
