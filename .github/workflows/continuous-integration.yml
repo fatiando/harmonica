@@ -52,7 +52,7 @@ jobs:
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA:
       # Define directory where sample data will be copied
-      HARMONICA_DATA_DIR: ~/cache/harmonica
+      HARMONICA_DATA_DIR: $HOME/cache/harmonica
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -131,12 +131,6 @@ jobs:
 
       - name: Install the package
         run: pip install --no-deps dist/*.whl
-
-      - name: Setup cache directory for test data
-        uses: actions/cache@v2
-        with:
-          path: ~/cache/harmonica
-          key: data-${{ hashFiles('data') }}
 
       - name: Copy test data to cache
         run: |
