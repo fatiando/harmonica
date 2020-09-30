@@ -151,7 +151,7 @@ jobs:
               make test
           fi
         env:
-          # Define directory where sample data will be copied
+          # Define directory where sample data have been copied
           HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       # -----------------------------------------------------------
@@ -161,6 +161,9 @@ jobs:
       - name: Build the documentation
         if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: make -C doc clean all
+        env:
+          # Define directory where sample data have been copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       # Store the docs as a build artifact on GitHub so we can check it if
       # needed.
