@@ -28,7 +28,7 @@ If you want to make a contribution to the project, see the
   branch. Make a new branch and submit a pull request instead.
 * *gh-pages*: Holds the HTML documentation and is served by Github. Pages for the master
   branch are in the `dev` folder. Pages for each release are in their own folders.
-  **Automatically updated by TravisCI** so you shouldn't have to make commits here.
+  **Automatically updated by GitHub Actions** so you shouldn't have to make commits here.
 
 
 ## Reviewing and merging pull requests
@@ -55,13 +55,13 @@ The main advantages of this are:
 
 ## Continuous Integration
 
-We use TravisCI and Azure Pipelines continuous integration (CI) services to build and
+We use GitHub Actions continuous integration (CI) services to build and
 test the project on Windows, Linux, and Mac.
-The configuration files for these services are `.travis.yml` and `.azure-pipelines.yml`.
-Both rely on the `requirements.txt` file to install the required dependencies using
+The configuration files for these services are inside `.github/workflows`.
+They rely on the `requirements.txt` file to install the required dependencies using
 conda and the `Makefile` to run the tests and checks.
 
-Travis also handles all of our deployments automatically:
+Actions also handle all of our deployments automatically:
 
 * Updating the development documentation by pushing the built HTML pages from the
   *master* branch onto the `dev` folder of the *gh-pages* branch.
@@ -70,11 +70,8 @@ Travis also handles all of our deployments automatically:
 
 This way, most day-to-day maintenance operations are automatic.
 
-The scripts that setup the test environment and run the deployments are loaded from the
-[fatiando/continuous-integration](https://github.com/fatiando/continuous-integration)
-repository to avoid duplicating work across multiple repositories.
-If you find any problems with the test setup and deployment, please create issues and
-submit pull requests to that repository.
+The workflows make use of third-party actions for setting the test environment
+and make the deployments to PyPI and updating the documentation.
 
 
 ## Citations
