@@ -9,9 +9,9 @@ import verde as vd
 import verde.base as vdb
 
 from .. import EQLHarmonic, EQLHarmonicSpherical, point_mass_gravity
-from ..equivalent_layer.harmonic import (
+from ..equivalent_layer.harmonic import greens_func_cartesian
+from ..equivalent_layer.utils import (
     jacobian_numba,
-    greens_func_cartesian,
     pop_extra_coords,
 )
 from .utils import require_numba
@@ -67,13 +67,6 @@ def test_eql_harmonic_cartesian():
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
-    # Test scatter method
-    scatter = eql.scatter(upward, size=shape[0], random_state=0)
-    true = point_mass_gravity(
-        (scatter.easting, scatter.northing, scatter.upward), points, masses, field="g_z"
-    )
-    npt.assert_allclose(true, scatter.scalars, rtol=1e-3)
-
     # Test profile method
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
@@ -119,13 +112,6 @@ def test_eql_harmonic_small_data_cartesian():
     # Test grid method
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
-
-    # Test scatter method
-    scatter = eql.scatter(upward, size=20, random_state=0)
-    true = point_mass_gravity(
-        (scatter.easting, scatter.northing, scatter.upward), points, masses, field="g_z"
-    )
-    npt.assert_allclose(true, scatter.scalars, rtol=0.05)
 
     # Test profile method
     point1 = (region[0], region[2])
@@ -239,17 +225,6 @@ def test_eql_harmonic_spherical():
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
-    # Test scatter method
-    scatter = eql.scatter(upward, size=shape[0], random_state=0)
-    true = point_mass_gravity(
-        (scatter.longitude, scatter.spherical_latitude, scatter.radius),
-        points,
-        masses,
-        field="g_z",
-        coordinate_system="spherical",
-    )
-    npt.assert_allclose(true, scatter.scalars, rtol=1e-3)
-
 
 def test_eql_harmonic_small_data_spherical():
     """
@@ -295,17 +270,6 @@ def test_eql_harmonic_small_data_spherical():
     # Test grid method
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
-
-    # Test scatter method
-    scatter = eql.scatter(upward, size=shape[0], random_state=0)
-    true = point_mass_gravity(
-        (scatter.longitude, scatter.spherical_latitude, scatter.radius),
-        points,
-        masses,
-        field="g_z",
-        coordinate_system="spherical",
-    )
-    npt.assert_allclose(true, scatter.scalars, rtol=0.05)
 
 
 def test_eql_harmonic_custom_points_spherical():

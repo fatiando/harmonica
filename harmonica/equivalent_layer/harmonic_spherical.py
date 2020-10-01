@@ -1,22 +1,17 @@
 """
 Equivalent layer for generic harmonic functions in spherical coordinates
 """
+import numpy as np
 from numba import jit
+from sklearn.utils.validation import check_is_fitted
+import verde as vd
+import verde.base as vdb
 
-from .harmonic import EQLHarmonic
+from .utils import jacobian_numba, predict_numba, pop_extra_coords
 from ..forward.utils import distance_spherical
 
 
-# EQLHarmonicSpherical is a subclass of EQLHarmonic.
-# EQLHarmonicSpherical overrides some methods of its parent to rewrite
-# docstrings according to spherical coordiantes. Besides, the projection
-# argument has been removed from the grid and scatter methods because
-# projections would only work on Cartesians gridders to get objects in geodetic
-# coordinates. We will disable pylint arguments-differ error because we intend
-# to make these methods different from the ones that are being inherited.
-
-
-class EQLHarmonicSpherical(EQLHarmonic):
+class EQLHarmonicSpherical(vdb.BaseGridder):
     r"""
     Equivalent-layer for generic harmonic functions in spherical coordinates
 
@@ -86,12 +81,11 @@ class EQLHarmonicSpherical(EQLHarmonic):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` and
-        :meth:`~harmonica.EQLHarmonicSpherical.scatter` methods.
+        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
     """
 
     # Set the default dimension names for generated outputs
-    # (pd.DataFrame, xr.Dataset, etc)
+    # as xr.Dataset.
     dims = ("spherical_latitude", "longitude")
 
     # Overwrite the defalt name for the upward coordinate.
@@ -103,7 +97,9 @@ class EQLHarmonicSpherical(EQLHarmonic):
         points=None,
         relative_depth=500,
     ):
-        super().__init__(damping=damping, points=points, relative_depth=relative_depth)
+        self.damping = damping
+        self.points = points
+        self.relative_depth = relative_depth
         # Define Green's function for spherical coordinates
         self.greens_function = greens_func_spherical
 
@@ -112,8 +108,7 @@ class EQLHarmonicSpherical(EQLHarmonic):
         Fit the coefficients of the equivalent layer.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` and
-        :meth:`~harmonica.EQLHarmonicSpherical.scatter` methods.
+        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
 
         All input arrays must have the same shape.
 
@@ -135,15 +130,28 @@ class EQLHarmonicSpherical(EQLHarmonic):
         self
             Returns this estimator instance for chaining operations.
         """
-        # Overwrite method just to change the docstring
-        super().fit(coordinates, data, weights=weights)
+        coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
+        # Capture the data region to use as a default when gridding.
+        self.region_ = vd.get_region(coordinates[:2])
+        coordinates = vdb.n_1d_arrays(coordinates, 3)
+        if self.points is None:
+            self.points_ = (
+                coordinates[0],
+                coordinates[1],
+                coordinates[2] - self.relative_depth,
+            )
+        else:
+            self.points_ = vdb.n_1d_arrays(self.points, 3)
+        jacobian = self.jacobian(coordinates, self.points_)
+        self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
 
     def predict(self, coordinates):
         """
         Evaluate the estimated equivalent layer on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
+        Requires a fitted estimator
+        (see :meth:`~harmonica.EQLHarmonicSpherical.fit`).
 
         Parameters
         ----------
@@ -158,9 +166,17 @@ class EQLHarmonicSpherical(EQLHarmonic):
         data : array
             The data values evaluated on the given points.
         """
-        # Overwrite method just to change the docstring
-        data = super().predict(coordinates)
-        return data
+        # We know the gridder has been fitted if it has the coefs_
+        check_is_fitted(self, ["coefs_"])
+        shape = np.broadcast(*coordinates[:3]).shape
+        size = np.broadcast(*coordinates[:3]).size
+        dtype = coordinates[0].dtype
+        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+        data = np.zeros(size, dtype=dtype)
+        predict_numba(
+            coordinates, self.points_, self.coefs_, data, self.greens_function
+        )
+        return data.reshape(shape)
 
     def jacobian(
         self, coordinates, points, dtype="float64"
@@ -190,9 +206,12 @@ class EQLHarmonicSpherical(EQLHarmonic):
         jacobian : 2D array
             The (n_data, n_points) Jacobian matrix.
         """
-        # Overwrite method just to change the docstring
-        jacobian = super().jacobian(coordinates, points, dtype=dtype)
-        return jacobian
+        # Compute Jacobian matrix
+        n_data = coordinates[0].size
+        n_points = points[0].size
+        jac = np.zeros((n_data, n_points), dtype=dtype)
+        jacobian_numba(coordinates, points, jac, self.greens_function)
+        return jac
 
     def grid(
         self,
@@ -250,91 +269,51 @@ class EQLHarmonicSpherical(EQLHarmonic):
             to the ``attrs`` attribute.
 
         """
-        # Overwrite method to ditch projection argument
+        # We override the grid method from BaseGridder so it takes the upward
+        # coordinate as a positional argument. We disable pylint
+        # arguments-differ error because we intend to make this method
+        # different from the inherited one.
+
+        # Ignore extra_coords if passed
+        pop_extra_coords(kwargs)
+        # Grid data
+        # We always pass projection=None because that argument it's intended to
+        # be used only with Cartesian gridders.
         grid = super().grid(
-            upward=upward,
             region=region,
             shape=shape,
             spacing=spacing,
             dims=dims,
             data_names=data_names,
             projection=None,
+            extra_coords=upward,
             **kwargs,
         )
         return grid
 
     def scatter(
         self,
-        upward,
         region=None,
-        size=300,
-        random_state=0,
+        size=None,
+        random_state=None,
         dims=None,
         data_names=None,
+        projection=None,
         **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Interpolate values onto a random scatter of points.
+        .. warning ::
 
-        Point coordinates are generated by :func:`verde.scatter_points`. Other
-        arguments for this function can be passed as extra keyword arguments
-        (``kwargs``) to this method.
-
-        If the interpolator collected the input data region, then it will be
-        used if ``region=None``. Otherwise, you must specify the grid region.
-
-        Use the *dims* and *data_names* arguments to set custom names for the
-        dimensions and the data field(s) in the output
-        :class:`pandas.DataFrame`. Default names are provided.
-
-        Parameters
-        ----------
-        upward: float
-            Upward coordinate of the grid points.
-        region : list = [W, E, S, N]
-            The west, east, south, and north boundaries of a given region.
-        size : int
-            The number of points to generate.
-        random_state : numpy.random.RandomState or an int seed
-            A random number generator used to define the state of the random
-            permutations. Use a fixed seed to make sure computations are
-            reproducible. Use ``None`` to choose a seed automatically
-            (resulting in different numbers with each run).
-        dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Default is determined from
-            the ``dims`` attribute of the class. Must be defined in the
-            following order: northing dimension, easting dimension.
-            **NOTE: This is an exception to the "easting" then
-            "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
-            The name(s) of the data variables in the output dataframe. Defaults
-            to ``['scalars']``.
-
-        Returns
-        -------
-        table : pandas.DataFrame
-            The interpolated values on a random set of points.
+            Not implemented method. The scatter method will be deprecated on
+            Verde v2.0.0.
 
         """
-        # Overwrite method to ditch projection argument
-        table = super().scatter(
-            upward=upward,
-            region=region,
-            size=size,
-            random_state=random_state,
-            dims=dims,
-            data_names=data_names,
-            projection=None,
-            **kwargs,
-        )
-        return table
+        raise NotImplementedError
 
     def profile(
         self,
         point1,
         point2,
-        upward,
         size,
         dims=None,
         data_names=None,
