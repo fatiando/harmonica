@@ -149,6 +149,15 @@ def test_eql_harmonic_custom_points_cartesian():
     npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
 
 
+def test_eql_harmonic_scatter_not_implemented():
+    """
+    Check if scatter method raises a NotImplementedError
+    """
+    eql = EQLHarmonic()
+    with pytest.raises(NotImplementedError):
+        eql.scatter()
+
+
 @pytest.mark.use_numba
 def test_eql_harmonic_jacobian_cartesian():
     """
@@ -294,3 +303,30 @@ def test_eql_harmonic_custom_points_spherical():
 
     # Check that the proper source locations were set
     npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
+
+
+def test_eql_harmonic_spherical_scatter_not_implemented():
+    """
+    Check if scatter method raises a NotImplementedError
+    """
+    eql = EQLHarmonicSpherical()
+    with pytest.raises(NotImplementedError):
+        eql.scatter()
+
+
+def test_eql_harmonic_spherical_profile_not_implemented():
+    """
+    Check if scatter method raises a NotImplementedError
+    """
+    eql = EQLHarmonicSpherical()
+    with pytest.raises(NotImplementedError):
+        eql.profile(point1=(1, 1), point2=(2, 2), size=3)
+
+
+def test_eql_harmonic_spherical_no_projection():
+    """
+    Check if projection is not a valid argument of grid method
+    """
+    eql = EQLHarmonicSpherical()
+    with pytest.raises(TypeError):
+        eql.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
