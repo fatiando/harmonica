@@ -74,14 +74,14 @@ def isostasy_pratt(
     oceans = np.array(topography < 0)
     continent = np.logical_not(oceans)
     scale = np.full(topography.shape, np.nan, dtype="float")
-    scale[continent] = density_crust / (density_mantle - density_crust)
-    scale[oceans] = (density_crust - density_water) / (density_mantle - density_crust)
+    scale[continent] = density_crust * comp_depth / (continent + comp_depth)
+    scale[oceans] = (density_crust*comp+depth - density_water*oceans)/ (comp_depth-oceans)
     moho = topography * scale + reference_depth
     if isinstance(moho, xr.DataArray):
-        moho.name = "moho_depth"
-        moho.attrs["isostasy"] = "Airy"
+        moho.name = "moho_density"
+        moho.attrs["isostasy"] = "Pratt"
         moho.attrs["density_crust"] = str(density_crust)
-        moho.attrs["density_mantle"] = str(density_mantle)
+        moho.attrs["comp_depth"] = str(comp_depth)
         moho.attrs["density_water"] = str(density_water)
         moho.attrs["reference_depth"] = str(reference_depth)
     return moho
