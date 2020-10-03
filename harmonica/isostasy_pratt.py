@@ -8,13 +8,13 @@ import xarray as xr
 
 def isostasy_pratt(
     topography,
-    crust_thickness=15e3
+    comp_depth=100e3
     density_crust = 2.8e3
     density_water=1e3,
     reference_depth=30e3,
 ):
     r"""
-    Calculate the isostatic Moho depth from topography using Airy's hypothesis.
+    Calculate the isostatic density from topography using Pratts's hypothesis.
 
  The Pratt hypothesis, developed by John Henry Pratt, English mathematician and Anglican 
  missionary, supposes that Earth’s crust has a uniform thickness below sea level with its 
@@ -37,17 +37,17 @@ def isostasy_pratt(
 
     .. math ::
 
-      rho_{l} = \frac{thickc}{h+thickc} * rho_{c}
+      rho_{l} = \frac{comp_depth}{h+comp_depth} * rho_{c}
 
     while on the oceans (negative topographic heights):
 
     .. math ::
-        rho_{o} = \frac{\rho_{c}*thickc - \rho_{w}*d}{thickc-d}
+        rho_{o} = \frac{\rho_{c}*comp_depth - \rho_{w}*d}{comp_depth-d}
 
-    in which :math:`d` is the bathymetry, :math:`h` is the topography, :math:`\rho_l` is the
+    in which :math:`d` is the bathymetry, :math:`h` is the topography, :math:`\rho_{l}` is the
     density of the mountain root, :math:`\rho_w` is the density of the water, and
     :math:`\rho_{c}` is the density of the crust, :math:`\rho_o` is the density of the 
-    ocean root.  thickc is also the reference_depth or thickness of the crust. 
+    ocean root.  thickr is the constant root thickness that Pratt assumes 
 
     The computed densities will be added to the given reference Moho
     density (:math:`rho_{x}`).
@@ -62,7 +62,7 @@ def isostasy_pratt(
         Density of the crust in :math:`kg/m^3`.
     density_water : float
         Water density in :math:`kg/m^3`.
-    crust_thickness : float
+   compensation_depth : float
         The reference Moho depth (:math:`H`) in meters.
 
     Returns
