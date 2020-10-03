@@ -28,10 +28,6 @@ def isostasy_pratt(
 
         *Schematic of isostatic compensation following the Pratt hypothesis.*
 
-    The relationship between the topographic/bathymetric heights (:math:`h`)
-    and the root thickness (:math:`r`) is governed by mass balance relations
-    and can be found in classic textbooks like [TurcotteSchubert2014]_ and
-    [Hofmann-WellenhofMoritz2006]_.
 
     On the continents (positive topographic heights):
 
