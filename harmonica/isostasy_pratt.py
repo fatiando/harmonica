@@ -1,5 +1,5 @@
 """
-Function to calculate the thickness of the roots and antiroots assuming the
+Function to calculate the densities of the roots assuming the
 Pratt isostatic hypothesis.
 """
 import numpy as np
