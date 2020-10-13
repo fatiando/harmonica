@@ -3,7 +3,33 @@ Build and install the project.
 
 Uses setuptools_scm to manage version numbers using git tags.
 """
+import os
 from setuptools import setup, find_packages
+
+
+def scm_version():
+    """
+    Return configuration for setuptools_scm
+
+    You can use the environmental variable ``HARMONICA_VERSION_LOCAL_SCHEME``
+    to change the ``local_scheme`` configuration of setupttools_scm.
+    Available options:
+      - node-and-date (default)
+      - node-and-timestamp
+      - dirty-tag
+      - no-local-version (compatible with PyPI)
+    """
+    # Default configuration for setuptools_scm
+    setuptools_scm_version = {
+        "relative_to": __file__,
+        "local_scheme": "node-and-date",
+    }
+    # Modify local_scheme if HARMONICA_VERSION_LOCAL_SCHEME
+    env = "HARMONICA_VERSION_LOCAL_SCHEME"
+    if env in os.environ and os.environ[env]:
+        setuptools_scm_version["local_scheme"] = os.environ[env]
+    # Return configuration as a dictionary
+    return setuptools_scm_version
 
 
 NAME = "harmonica"
@@ -57,7 +83,7 @@ if __name__ == "__main__":
         fullname=FULLNAME,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
-        use_scm_version=True,
+        use_scm_version=scm_version,
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         maintainer=MAINTAINER,
