@@ -51,7 +51,7 @@ INSTALL_REQUIRES = [
 ]
 PYTHON_REQUIRES = ">=3.6"
 
-# Configuration for setupttools_scm
+# Configuration for setuptools-scm
 SETUP_REQUIRES = ["setuptools_scm"]
 USE_SCM_VERSION = {
     "relative_to": __file__,
