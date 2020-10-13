@@ -5,13 +5,15 @@ import pkg_resources
 import xarray as xr
 import pandas as pd
 import pooch
+from setuptools_scm import get_version
 
-from ..version import full_version
+
+version = get_version(root="../..", relative_to=__file__)
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
-    version=full_version,
+    version=version,
     version_dev="master",
     env="HARMONICA_DATA_DIR",
 )

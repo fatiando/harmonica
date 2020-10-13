@@ -29,7 +29,5 @@ plugins:
         enabled: false
 
 exclude_paths:
-- "versioneer.py"
-- "**/_version.py"
-- "doc/**/*"
-- "**/tests/data/*"
+  - "doc/**/*"
+  - "**/tests/data/*"
