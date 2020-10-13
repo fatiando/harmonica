@@ -11,7 +11,7 @@ from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
 from .equivalent_layer.harmonic import EQLHarmonic, EQLHarmonicSpherical
 
-# Get the version number through setuptools_scm
+# Get the version number through setuptools-scm
 __version__ = version.full_version
 
 
