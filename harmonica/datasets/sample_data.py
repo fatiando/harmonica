@@ -7,12 +7,13 @@ import pandas as pd
 import pooch
 
 
-full_version = pkg_resources.get_distribution("harmonica").version
+# Get Harmonica version with the recommended way by setuptools_scm
+VERSION = pkg_resources.get_distribution("harmonica").version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
-    version=full_version,
+    version=VERSION,
     version_dev="master",
     env="HARMONICA_DATA_DIR",
 )
