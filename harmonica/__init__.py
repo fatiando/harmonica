@@ -1,6 +1,6 @@
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
-from pkg_resources import get_distribution, DistributionNotFound
+from . import version
 from . import datasets
 from . import synthetic
 from .io import load_icgem_gdf
@@ -12,7 +12,7 @@ from .forward.prism import prism_gravity
 from .equivalent_layer.harmonic import EQLHarmonic, EQLHarmonicSpherical
 
 
-__version__ = get_distribution(__name__).version
+__version__ = version.full_version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

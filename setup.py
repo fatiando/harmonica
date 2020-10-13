@@ -7,31 +7,6 @@ import os
 from setuptools import setup, find_packages
 
 
-def scm_version():
-    """
-    Return configuration for setuptools_scm
-
-    You can use the environmental variable ``HARMONICA_VERSION_LOCAL_SCHEME``
-    to change the ``local_scheme`` configuration of setupttools_scm.
-    Available options:
-      - node-and-date (default)
-      - node-and-timestamp
-      - dirty-tag
-      - no-local-version (compatible with PyPI)
-    """
-    # Default configuration for setuptools_scm
-    setuptools_scm_version = {
-        "relative_to": __file__,
-        "local_scheme": "node-and-date",
-    }
-    # Modify local_scheme if HARMONICA_VERSION_LOCAL_SCHEME
-    env = "HARMONICA_VERSION_LOCAL_SCHEME"
-    if env in os.environ and os.environ[env]:
-        setuptools_scm_version["local_scheme"] = os.environ[env]
-    # Return configuration as a dictionary
-    return setuptools_scm_version
-
-
 NAME = "harmonica"
 FULLNAME = "Harmonica"
 AUTHOR = "The Harmonica Developers"
@@ -75,7 +50,23 @@ INSTALL_REQUIRES = [
     "verde>=1.5.0",
 ]
 PYTHON_REQUIRES = ">=3.6"
+
+# Configuration for setupttools_scm
 SETUP_REQUIRES = ["setuptools_scm"]
+USE_SCM_VERSION = {
+    "relative_to": __file__,
+    "local_scheme": "node-and-date",
+}
+# Modify local_scheme with HARMONICA_VERSION_LOCAL_SCHEME env variable
+# Available options:
+#   - node-and-date (default)
+#   - node-and-timestamp
+#   - dirty-tag
+#   - no-local-version (compatible with PyPI)
+ENV = "HARMONICA_VERSION_LOCAL_SCHEME"
+if ENV in os.environ and os.environ[ENV]:
+    USE_SCM_VERSION["local_scheme"] = os.environ[ENV]
+
 
 if __name__ == "__main__":
     setup(
@@ -83,7 +74,7 @@ if __name__ == "__main__":
         fullname=FULLNAME,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
-        use_scm_version=scm_version,
+        use_scm_version=USE_SCM_VERSION,
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         maintainer=MAINTAINER,

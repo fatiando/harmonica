@@ -6,11 +6,7 @@ import sphinx_rtd_theme
 import sphinx_gallery
 from sphinx_gallery.sorting import FileNameSortKey
 
-from pkg_resources import get_distribution
-
-release = get_distribution("harmonica").version
-# for example take major/minor
-version = ".".join(release.split(".")[:2])
+from harmonica.version import full_version
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -84,10 +80,10 @@ master_doc = "index"
 year = datetime.date.today().year
 project = "Harmonica"
 copyright = "2018-{}, The Harmonica Developers".format(year)
-if len(version.split("+")) > 1 or version == "unknown":
+if len(full_version.split("+")) > 1 or full_version == "unknown":
     version = "dev"
 else:
-    version = version
+    version = full_version
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
