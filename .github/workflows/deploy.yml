@@ -63,7 +63,7 @@ jobs:
       - name: Build source and wheel distributions
         run: |
           # Use the no-local-version configuration on setuptools_scm because
-          # is the only one compatible with PyPI.
+          # is the only one compatible with Test PyPI.
           HARMONICA_VERSION_LOCAL_SCHEME="no-local-version" python setup.py sdist bdist_wheel
           echo ""
           echo "Generated files:"
