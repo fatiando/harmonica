@@ -6,10 +6,11 @@ import sphinx_rtd_theme
 import sphinx_gallery
 from sphinx_gallery.sorting import FileNameSortKey
 
-from setuptools_scm import get_version
+from pkg_resources import get_distribution
 
-
-version = get_version(root="..", relative_to=__file__)
+release = get_distribution("harmonica").version
+# for example take major/minor
+version = ".".join(release.split(".")[:2])
 
 extensions = [
     "sphinx.ext.autodoc",
