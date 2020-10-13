@@ -5,10 +5,9 @@ import pkg_resources
 import xarray as xr
 import pandas as pd
 import pooch
-from setuptools_scm import get_version
 
 
-version = get_version(root="../..", relative_to=__file__)
+version = pkg_resources.get_distribution("harmonica").version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
