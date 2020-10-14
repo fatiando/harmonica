@@ -12,7 +12,7 @@ from .forward.prism import prism_gravity
 from .equivalent_layer.harmonic import EQLHarmonic, EQLHarmonicSpherical
 
 # Get the version number through setuptools-scm
-__version__ = version.full_version
+__version__ = version.version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
