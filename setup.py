@@ -55,17 +55,8 @@ PYTHON_REQUIRES = ">=3.6"
 SETUP_REQUIRES = ["setuptools_scm"]
 USE_SCM_VERSION = {
     "relative_to": __file__,
-    "local_scheme": "node-and-date",
+    "local_scheme": "no-local-version",
 }
-# Modify local_scheme with HARMONICA_VERSION_LOCAL_SCHEME env variable
-# Available options:
-#   - node-and-date (default)
-#   - node-and-timestamp
-#   - dirty-tag
-#   - no-local-version (compatible with PyPI)
-ENV = "HARMONICA_VERSION_LOCAL_SCHEME"
-if ENV in os.environ and os.environ[ENV]:
-    USE_SCM_VERSION["local_scheme"] = os.environ[ENV]
 
 
 if __name__ == "__main__":
