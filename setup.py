@@ -3,7 +3,6 @@ Build and install the project.
 
 Uses setuptools-scm to manage version numbers using git tags.
 """
-import os
 from setuptools import setup, find_packages
 
 
