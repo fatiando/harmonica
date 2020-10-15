@@ -9,9 +9,9 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmaster&style=flat-square
+.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmaster&style=flat-square&logo=none
     :alt: GitHub Actions status
-    :target: https://actions-badge.atrox.dev/fatiando/harmonica/goto?ref=master
+    :target: https://github.com/fatiando/harmonica/actions
 .. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/harmonica
