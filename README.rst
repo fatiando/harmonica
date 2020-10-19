@@ -9,21 +9,12 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmaster&style=flat-square
+.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmaster&style=flat-square&logo=none
     :alt: GitHub Actions status
-    :target: https://actions-badge.atrox.dev/fatiando/harmonica/goto?ref=master
-.. image:: http://img.shields.io/appveyor/ci/fatiando/harmonica/master.svg?style=flat-square&label=AppVeyor
-    :alt: AppVeyor build status
-    :target: https://ci.appveyor.com/project/fatiando/harmonica
+    :target: https://github.com/fatiando/harmonica/actions
 .. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/harmonica
-.. image:: https://img.shields.io/codeclimate/maintainability/fatiando/harmonica.svg?style=flat-square
-    :alt: Code quality status
-    :target: https://codeclimate.com/github/fatiando/harmonica
-.. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
-    :alt: Code quality grade on codacy
-    :target: https://www.codacy.com/app/leouieda/harmonica
 .. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/harmonica
