@@ -80,7 +80,7 @@ master_doc = "index"
 year = datetime.date.today().year
 project = "Harmonica"
 copyright = "2018-{}, The Harmonica Developers".format(year)
-if "dev" in full_version:
+if len(full_version.split("+")) > 1 or full_version == "unknown":
     version = "dev"
 else:
     version = full_version
