@@ -54,7 +54,7 @@ PYTHON_REQUIRES = ">=3.6"
 SETUP_REQUIRES = ["setuptools_scm"]
 USE_SCM_VERSION = {
     "relative_to": __file__,
-    "local_scheme": "no-local-version",
+    "local_scheme": "node-and-date",
 }
 
 
