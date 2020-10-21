@@ -68,7 +68,6 @@ there::
     pip install .
 
 
-
 Testing your install
 --------------------
 
