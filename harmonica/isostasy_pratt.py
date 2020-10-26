@@ -11,7 +11,6 @@ def isostasy_pratt(
     comp_depth=100e3,
     density_crust=2.8e3,
     density_water=1e3,
-    reference_depth=30e3,
 ):
     r"""
     Calculate the isostatic density from topography using Pratts's hypothesis.
