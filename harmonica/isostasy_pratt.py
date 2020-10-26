@@ -15,14 +15,12 @@ def isostasy_pratt(
     r"""
     Calculate the isostatic density from topography using Pratts's hypothesis.
 
- The Pratt hypothesis, developed by John Henry Pratt, English mathematician and Anglican 
- missionary, supposes that Earth’s crust has a uniform thickness below sea level with its 
+ The Pratt hypothesis, developed by John Henry Pratt, English mathematician, supposes that Earth’s crust has a uniform thickness below sea level with its 
  base everywhere supporting an equal weight per unit area at a depth of compensation. 
  In essence, this says that areas of the Earth of lesser density, such as mountain ranges, 
  project higher above sea level than do those of greater density. 
  The explanation for this was that the mountains resulted from the upward expansion of locally
  heated crustal material, which had a larger volume but a lower density after it had cooled.
- 
  
 
         *Schematic of isostatic compensation following the Pratt hypothesis.*
@@ -44,7 +42,7 @@ def isostasy_pratt(
     :math:`\rho_{c}` is the density of the crust, :math:`\rho_o` is the density of the 
     ocean root.  thickr is the constant root thickness that Pratt assumes 
 
-    The computed densities will be added to the given reference Moho
+    The computed densities will be added to the given reference
     density (:math:`rho_{x}`).
 
     Parameters
@@ -62,8 +60,8 @@ def isostasy_pratt(
 
     Returns
     -------
-    moho_rho : array or :class:`xarray.DataArray`
-         The isostatic Moho density in meters.
+    rhot : array or :class:`xarray.DataArray`
+         The isostatic density in  kg/m3.
 
     """
     
