@@ -1,6 +1,3 @@
-# Copyright (c) 2018 The Harmonica Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
 from . import version
