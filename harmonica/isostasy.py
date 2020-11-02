@@ -162,14 +162,14 @@ def isostasy_pratt(
     # 1D DataArray topography
     oceans = np.array(topography < 0)
     continent = np.logical_not(oceans)
-    scale = np.full(topography.shape, np.nan, dtype="float") #makes empty arrays of scale
-    continent_v = topography*continent #only values where continents are
-    oceans_v = topography*oceans*-1 #positive values 
-    scale[continent_v] = density_crust * comp_depth / (continent_v + comp_depth) 
-    scale[oceans_v] = (density_crust*comp_depth - density_water*oceans_v)/ (comp_depth-oceans_v)
-    rhot = scale
+    values = topography.values
+    continent_v = (density_crust * comp_depth) / (topography.values + comp_depth ) #only values where continents are
+    oceans_v= (density_crust*comp_depth - density_water*topography.values*-1)/ (comp_depth-topography.values*-1)
+    cont = continent_v*continent
+    oce = oceans_v*oceans
+    rhot = cont+oce
     if isinstance(rhot, xr.DataArray):
-        rhot.name = "moho_density"
+        rhot.name = "density of prisms"
         rhot.attrs["isostasy"] = "Pratt"
         rhot.attrs["density_crust"] = str(density_crust)
         rhot.attrs["comp_depth"] = str(comp_depth)
