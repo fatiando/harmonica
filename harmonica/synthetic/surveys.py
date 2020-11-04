@@ -1,3 +1,9 @@
+# Copyright (c) YEAR The PROJECT Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Create synthetic surveys for gravity and magnetic observations
 """
