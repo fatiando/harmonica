@@ -5,19 +5,19 @@ from warnings import warn
 from numba import jit, prange
 
 
-@jit(nopython=True)
+@jit(nopython=True, parallel=True)
 def jacobian_numba(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix using numba to speed things up.
 
-    It works both for Cartesian and spherical coordiantes.
-    We need to pass the corresponding Green's function through the
-    ``greens_function`` argument.
+    It works both for Cartesian and spherical coordiantes. We need to pass the
+    corresponding Green's function through the ``greens_function`` argument.
+    The Jacobian is built in parallel in order to reduce the computation time.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in range(east.size):
-        for j in range(point_east.size):
+    for i in prange(east.size):
+        for j in prange(point_east.size):
             jac[i, j] = greens_function(
                 east[i],
                 north[i],
