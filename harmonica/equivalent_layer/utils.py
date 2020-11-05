@@ -17,7 +17,7 @@ def jacobian_numba(coordinates, points, jac, greens_function):
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
     for i in prange(east.size):
-        for j in prange(point_east.size):
+        for j in range(point_east.size):
             jac[i, j] = greens_function(
                 east[i],
                 north[i],
@@ -42,7 +42,7 @@ def predict_numba(
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
     for i in prange(east.size):
-        for j in prange(point_east.size):
+        for j in range(point_east.size):
             result[i] += coeffs[j] * greens_function(
                 east[i],
                 north[i],
