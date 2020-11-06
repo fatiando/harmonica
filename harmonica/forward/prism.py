@@ -2,7 +2,7 @@
 Forward modelling for prisms
 """
 import numpy as np
-from numba import jit
+from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
 
@@ -161,7 +161,7 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-@jit(nopython=True)
+@jit(nopython=True, parallel=True)
 def jit_prism_gravity(
     coordinates, prisms, density, kernel, out
 ):  # pylint: disable=invalid-name
@@ -189,7 +189,7 @@ def jit_prism_gravity(
         Must have the same size as the arrays contained on ``coordinates``.
     """
     # Iterate over computation points and prisms
-    for l in range(coordinates[0].size):
+    for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
             # Iterate over the prism boundaries to compute the result of the
             # integration (see Nagy et al., 2000)
