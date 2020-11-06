@@ -300,7 +300,7 @@ def gauss_legendre_quadrature(
     glq_nodes,
     glq_weights,
     kernel,
-):
+):  # pylint: disable=too-many-locals
     r"""
     Compute the effect of a tesseroid on a single observation point through GLQ
 
@@ -343,7 +343,7 @@ def gauss_legendre_quadrature(
     # Get tesseroid boundaries
     w, e, s, n, bottom, top = tesseroid[:]
     # Calculate the A factor for the tesseroid
-    A_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
+    a_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
     # Unpack nodes and weights
     lon_nodes, lat_nodes, rad_nodes = glq_nodes[:]
     lon_weights, lat_weights, rad_weights = glq_weights[:]
@@ -362,7 +362,7 @@ def gauss_legendre_quadrature(
                 kappa = radius_p ** 2 * cosphi_p
                 mass = (
                     density
-                    * A_factor
+                    * a_factor
                     * kappa
                     * lon_weights[i]
                     * lat_weights[j]

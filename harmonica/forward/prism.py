@@ -164,7 +164,7 @@ def _check_prisms(prisms):
 @jit(nopython=True, parallel=True)
 def jit_prism_gravity(
     coordinates, prisms, density, kernel, out
-):  # pylint: disable=invalid-name
+):  # pylint: disable=invalid-name,not-an-iterable
     """
     Compute gravitational field of prisms on computations points
 

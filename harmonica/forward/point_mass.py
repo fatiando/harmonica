@@ -217,7 +217,7 @@ def point_mass_gravity(
 @jit(nopython=True, parallel=True)
 def jit_point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
-):  # pylint: disable=invalid-name
+):  # pylint: disable=invalid-name,not-an-iterable
     """
     Compute gravitational field of point masses in Cartesian coordinates
 
@@ -308,7 +308,7 @@ def kernel_g_easting_cartesian(
 @jit(nopython=True, parallel=True)
 def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):  # pylint: disable=invalid-name
+):  # pylint: disable=invalid-name,not-an-iterable
     """
     Compute gravitational field of point masses in spherical coordinates
 
