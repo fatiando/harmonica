@@ -8,7 +8,6 @@ from numpy.polynomial.legendre import leggauss
 from ..constants import GRAVITATIONAL_CONST
 from .utils import distance_spherical
 from .point_mass import (
-    jit_point_mass_spherical,
     kernel_potential_spherical,
     kernel_g_z_spherical,
 )
@@ -168,12 +167,10 @@ def tesseroid_gravity(
     distance_size_ratio = distance_size_ratii[field]
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
-    n_nodes, glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
+    glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
     # Initialize arrays to perform memory allocation only once
     stack = np.empty((stack_size, 6), dtype=dtype)
     small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
-    point_masses = np.empty((3, n_nodes * max_discretizations), dtype=dtype)
-    weights = np.empty(n_nodes * max_discretizations, dtype=dtype)
     # Compute gravitational field
     jit_tesseroid_gravity(
         coordinates,
@@ -181,12 +178,9 @@ def tesseroid_gravity(
         density,
         stack,
         small_tesseroids,
-        point_masses,
-        weights,
         result,
         distance_size_ratio,
         radial_adaptive_discretization,
-        n_nodes,
         glq_nodes,
         glq_weights,
         kernels[field],
@@ -205,12 +199,9 @@ def jit_tesseroid_gravity(
     density,
     stack,
     small_tesseroids,
-    point_masses,
-    weights,
     result,
     distance_size_ratio,
     radial_discretization,
-    n_nodes,
     glq_nodes,
     glq_weights,
     kernel,
@@ -229,6 +220,8 @@ def jit_tesseroid_gravity(
         geocentric coordinate system in the following order:
         ``longitude``, ``latitude``, ``radius``.
         Each element of the tuple must be a 1d array.
+        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``
+        in meters.
     tesseroids : 2d-array
         Array containing the boundaries of each tesseroid:
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric
@@ -236,6 +229,8 @@ def jit_tesseroid_gravity(
         The array must have the following shape: (``n_tesseroids``, 6), where
         ``n_tesseroids`` is the total number of tesseroids.
         All tesseroids must have valid boundary coordinates.
+        Horizontal boundaries should be in degrees while radial boundaries
+        should be in meters.
     density : 1d-array
         Density of each tesseroid in SI units.
     stack : 2d-array
@@ -257,9 +252,6 @@ def jit_tesseroid_gravity(
         tesseroid only on the horizontal direction.
         If ``True``, it will perform a three dimensional adaptive
         discretization, splitting the tesseroids on every direction.
-    n_nodes : int
-        Total number of equivalent point masses that will be generated for each
-        split tesseroid.
     glq_nodes : list
         List containing unscaled GLQ nodes.
     glq_weights : list
@@ -267,121 +259,132 @@ def jit_tesseroid_gravity(
     kernel : func
         Kernel function for the gravitational field of point masses.
     """
-    for l in range(tesseroids.shape[0]):
-        tesseroid = tesseroids[l, :]
-        for m in range(coordinates[0].size):
+    longitude, latitude, radius = coordinates[:]
+    longitude_rad = np.radians(longitude)
+    cosphi = np.cos(np.radians(latitude))
+    sinphi = np.sin(np.radians(latitude))
+    for l in range(longitude.size):
+        for m in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                (coordinates[0][m], coordinates[1][m], coordinates[2][m]),
-                tesseroid,
+                (longitude[l], latitude[l], radius[l]),
+                tesseroids[m, :],
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
                 radial_discretization,
             )
-            # Get total number of point masses, their coordinates and weights
-            n_point_masses = n_nodes * n_splits
-            tesseroids_to_point_masses(
-                small_tesseroids[:n_splits],
-                glq_nodes,
-                glq_weights,
-                point_masses,
-                weights,
-            )
-            # Compute gravitational fields
-            jit_point_mass_spherical(
-                coordinates[0][m : m + 1],  # slice lon to pass a single element array
-                coordinates[1][m : m + 1],  # slice lat to pass a single element array
-                coordinates[2][m : m + 1],  # slice rad to pass a single element array
-                point_masses[0, :n_point_masses],
-                point_masses[1, :n_point_masses],
-                point_masses[2, :n_point_masses],
-                density[l] * weights[:n_point_masses],
-                result[m : m + 1],
-                kernel,
-            )
+            for tess_index in range(n_splits):
+                tesseroid = small_tesseroids[tess_index, :]
+                result[l] += gauss_legendre_quadrature(
+                    longitude_rad[l],
+                    cosphi[l],
+                    sinphi[l],
+                    radius[l],
+                    tesseroid,
+                    density[m],
+                    glq_nodes,
+                    glq_weights,
+                    kernel,
+                )
 
 
 @jit(nopython=True)
-def tesseroids_to_point_masses(
-    tesseroids, glq_nodes, glq_weights, point_masses, weights
-):  # pylint: disable=too-many-locals,invalid-name
+def gauss_legendre_quadrature(
+    longitude,
+    cosphi,
+    sinphi,
+    radius,
+    tesseroid,
+    density,
+    glq_nodes,
+    glq_weights,
+    kernel,
+):
     r"""
-    Convert tesseroids to equivalent point masses on nodes of GLQ
+    Compute the effect of a tesseroid on a single observation point through GLQ
 
-    Each tesseroid is converted into a set of point masses located on the
+    The tesseroid is converted into a set of point masses located on the
     scaled nodes of the Gauss-Legendre Quadrature. The number of point masses
     created from each tesseroid is equal to the product of the GLQ degrees for
-    each direction (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`). It also
-    compute a weight value for each point mass defined as the product of the
-    GLQ weights for each direction (:math:`W_i^r`, :math:`W_j^\phi`,
-    :math:`W_k^\lambda`), the scale constant :math:`A` and the :math:`\kappa`
-    factor evaluated on the coordinates of the point mass.
+    each direction (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`). The mass
+    of each point mass is defined as the product of the tesseroid density
+    (:math:`\rho`), the GLQ weights for each direction (:math:`W_i^r`,
+    :math:`W_j^\phi`, :math:`W_k^\lambda`), the scale constant :math:`A` and
+    the :math:`\kappa` factor evaluated on the coordinates of the point mass.
 
     Parameters
     ----------
-    tesseroids : 2d-array
-        Array containing the boundaries of each tesseroid:
-        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric
-        spherical coordinate system.
-        The array must have the following shape: (``n_tesseroids``, 6), where
-        ``n_tesseroids`` is the total number of tesseroids.
-        All tesseroids must have valid boundary coordinates.
+    longitude : float
+        Longitudinal coordinate of the observation points in radians.
+    cosphi : float
+        Cosine of the latitudinal coordinate of the observation point in
+        radians.
+    sinphi : float
+        Sine of the latitudinal coordinate of the observation point in
+        radians.
+    radius : float
+        Radial coordinate of the observation point in meters.
+    tesseroids : 1d-array
+        Array containing the boundaries of the tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        Horizontal boundaries should be in degrees and radial boundaries in
+        meters.
+    density : float
+        Density of the tesseroid in SI units.
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
         GLQ weigths for each node for each direction.
-    point_masses : 2d-array
-        Empty array with shape ``(3, n)``, where ``n`` is the total number of
-        point masses computed as the product of number of tesseroids and the
-        GLQ degrees for each direction.
-        The location of the point masses will be located inside this array.
-    weights : 1d-array
-        Empty array with ``n`` elements.
-        It will contain the weight constant for each point mass.
+    kernel : func
+        Kernel function for the gravitational field of point masses.
 
     """
+    # Get tesseroid boundaries
+    w, e, s, n, bottom, top = tesseroid[:]
+    # Calculate the A factor for the tesseroid
+    A_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
     # Unpack nodes and weights
     lon_nodes, lat_nodes, rad_nodes = glq_nodes[:]
     lon_weights, lat_weights, rad_weights = glq_weights[:]
-    # Recover GLQ degrees from nodes
-    lon_glq_degree = len(lon_nodes)
-    lat_glq_degree = len(lat_nodes)
-    rad_glq_degree = len(rad_nodes)
-    # Convert each tesseroid to a point mass
-    mass_index = 0
-    for tesseroid_index in range(len(tesseroids)):
-        w = tesseroids[tesseroid_index, 0]
-        e = tesseroids[tesseroid_index, 1]
-        s = tesseroids[tesseroid_index, 2]
-        n = tesseroids[tesseroid_index, 3]
-        bottom = tesseroids[tesseroid_index, 4]
-        top = tesseroids[tesseroid_index, 5]
-        A_factor = 1 / 8 * np.radians(e - w) * np.radians(n - s) * (top - bottom)
-        for i in range(lon_glq_degree):
-            for j in range(lat_glq_degree):
-                for k in range(rad_glq_degree):
-                    # Compute coordinates of each point mass
-                    longitude = 0.5 * (e - w) * lon_nodes[i] + 0.5 * (e + w)
-                    latitude = 0.5 * (n - s) * lat_nodes[j] + 0.5 * (n + s)
-                    radius = 0.5 * (top - bottom) * rad_nodes[k] + 0.5 * (top + bottom)
-                    kappa = radius ** 2 * np.cos(np.radians(latitude))
-                    point_masses[0, mass_index] = longitude
-                    point_masses[1, mass_index] = latitude
-                    point_masses[2, mass_index] = radius
-                    weights[mass_index] = (
-                        A_factor
-                        * kappa
-                        * lon_weights[i]
-                        * lat_weights[j]
-                        * rad_weights[k]
-                    )
-                    mass_index += 1
+    # Compute effect of the tesseroid on the observation point
+    result = 0.0
+    for i, lon_node in enumerate(lon_nodes):
+        for j, lat_node in enumerate(lat_nodes):
+            for k, rad_node in enumerate(rad_nodes):
+                # Get coordinates of the point mass
+                longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
+                latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
+                radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
+                cosphi_p = np.cos(latitude_p)
+                sinphi_p = np.sin(latitude_p)
+                # Get kappa constant and the mass of the point mass
+                kappa = radius_p ** 2 * cosphi_p
+                mass = (
+                    density
+                    * A_factor
+                    * kappa
+                    * lon_weights[i]
+                    * lat_weights[j]
+                    * rad_weights[k]
+                )
+                # Add effect of the current point mass to the result
+                result += mass * kernel(
+                    longitude,
+                    cosphi,
+                    sinphi,
+                    radius,
+                    longitude_p,
+                    cosphi_p,
+                    sinphi_p,
+                    radius_p,
+                )
+    return result
 
 
 def glq_nodes_weights(glq_degrees):
     """
-    Calculate GLQ unscaled nodes, weights and total number of nodes
+    Calculate GLQ unscaled nodes and weights
 
     Parameters
     ----------
@@ -391,8 +394,6 @@ def glq_nodes_weights(glq_degrees):
 
     Returns
     -------
-    n_nodes : int
-        Total number of nodes computed as the product of the GLQ degrees.
     glq_nodes : list
         Unscaled GLQ nodes for each direction: ``longitude``, ``latitude``,
         ``radius``.
@@ -402,8 +403,6 @@ def glq_nodes_weights(glq_degrees):
     """
     # Unpack GLQ degrees
     lon_degree, lat_degree, rad_degree = glq_degrees[:]
-    # Get number of point masses
-    n_nodes = np.prod(glq_degrees)
     # Get nodes coordinates and weights
     lon_node, lon_weights = leggauss(lon_degree)
     lat_node, lat_weights = leggauss(lat_degree)
@@ -411,7 +410,7 @@ def glq_nodes_weights(glq_degrees):
     # Reorder nodes and weights
     glq_nodes = (lon_node, lat_node, rad_node)
     glq_weights = (lon_weights, lat_weights, rad_weights)
-    return n_nodes, glq_nodes, glq_weights
+    return glq_nodes, glq_weights
 
 
 @jit(nopython=True)
