@@ -259,6 +259,8 @@ def jit_tesseroid_gravity(
     kernel : func
         Kernel function for the gravitational field of point masses.
     """
+    # Get coordinates of the observation points
+    # and precompute trigonometric functions
     longitude, latitude, radius = coordinates[:]
     longitude_rad = np.radians(longitude)
     cosphi = np.cos(np.radians(latitude))
@@ -274,6 +276,7 @@ def jit_tesseroid_gravity(
                 small_tesseroids,
                 radial_discretization,
             )
+            # Compute effect of the tesseroid though GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
                 result[l] += gauss_legendre_quadrature(
