@@ -198,7 +198,7 @@ def tesseroid_gravity(
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True)
 def jit_tesseroid_gravity(
     coordinates,
     tesseroids,
