@@ -2,7 +2,7 @@
 Forward modelling for point masses
 """
 import numpy as np
-from numba import jit
+from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
@@ -214,7 +214,7 @@ def point_mass_gravity(
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True)
+@jit(nopython=True, parallel=True)
 def jit_point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
@@ -237,7 +237,7 @@ def jit_point_mass_cartesian(
         Kernel function that will be used to compute the gravitational field on
         the computation points.
     """
-    for l in range(easting.size):
+    for l in prange(easting.size):
         for m in range(easting_p.size):
             out[l] += masses[m] * kernel(
                 easting[l],
@@ -305,7 +305,7 @@ def kernel_g_easting_cartesian(
     return -(easting - easting_p) / distance ** 3
 
 
-@jit(nopython=True)
+@jit(nopython=True, parallel=True)
 def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):  # pylint: disable=invalid-name
@@ -341,7 +341,7 @@ def jit_point_mass_spherical(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravitational field
-    for l in range(longitude.size):
+    for l in prange(longitude.size):
         for m in range(longitude_p.size):
             out[l] += masses[m] * kernel(
                 longitude[l],
