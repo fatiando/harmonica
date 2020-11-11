@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent layer for generic harmonic functions in Cartesian coordinates
+Equivalent layer for generic harmonic functions in spherical coordinates
 """
 import numpy as np
 from numba import jit
@@ -14,16 +14,19 @@ import verde as vd
 import verde.base as vdb
 
 from .utils import jacobian_numba, predict_numba, pop_extra_coords
-from ..forward.utils import distance_cartesian
+from ..forward.utils import distance_spherical
 
 
-class EQLHarmonic(vdb.BaseGridder):
+class EQLHarmonicSpherical(vdb.BaseGridder):
     r"""
-    Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
+    Equivalent-layer for generic harmonic functions in spherical coordinates
 
     This equivalent layer can be used for:
 
-    * Cartesian coordinates (geographic coordinates must be project before use)
+    * Spherical coordinates (geographic coordinates must be converted before
+      use)
+    * Regional or global data where Earth's curvature must be taken into
+      account
     * Gravity and magnetic data (including derivatives)
     * Single data types
     * Interpolation
@@ -32,8 +35,6 @@ class EQLHarmonic(vdb.BaseGridder):
 
     It cannot be used for:
 
-    * Regional or global data where Earth's curvature must be taken into
-      account
     * Joint inversion of multiple data types (e.g., gravity + gravity
       gradients)
     * Reduction to the pole of magnetic total field anomaly data
@@ -64,14 +65,15 @@ class EQLHarmonic(vdb.BaseGridder):
     points : None or list of arrays (optional)
         List containing the coordinates of the point sources used as the
         equivalent layer. Coordinates are assumed to be in the following order:
-        (``easting``, ``northing``, ``upward``).
+        (``longitude``, ``latitude``, ``radius``). Both ``longitude`` and
+        ``latitude`` must be in degrees and ``radius`` in meters.
         If None, will place one point source bellow each observation point at
         a fixed relative depth bellow the observation point [Cooper2000]_.
         Defaults to None.
     relative_depth : float
         Relative depth at which the point sources are placed beneath the
         observation points. Each source point will be set beneath each data
-        point at a depth calculated as the elevation of the data point minus
+        point at a depth calculated as the radius of the data point minus
         this constant *relative_depth*. Use positive numbers (negative numbers
         would mean point sources are above the data points). Ignored if
         *points* is specified.
@@ -85,15 +87,15 @@ class EQLHarmonic(vdb.BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
     """
 
     # Set the default dimension names for generated outputs
     # as xr.Dataset.
-    dims = ("northing", "easting")
+    dims = ("spherical_latitude", "longitude")
 
     # Overwrite the defalt name for the upward coordinate.
-    extra_coords_name = "upward"
+    extra_coords_name = "radius"
 
     def __init__(
         self,
@@ -104,15 +106,15 @@ class EQLHarmonic(vdb.BaseGridder):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
-        # Define Green's function for Cartesian coordinates
-        self.greens_function = greens_func_cartesian
+        # Define Green's function for spherical coordinates
+        self.greens_function = greens_func_spherical
 
     def fit(self, coordinates, data, weights=None):
         """
         Fit the coefficients of the equivalent layer.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
 
         All input arrays must have the same shape.
 
@@ -120,8 +122,8 @@ class EQLHarmonic(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...).
-            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            following order: (``longitude``, ``latitude``, ``radius``, ...).
+            Only ``longitude``, ``latitude``, and ``radius`` will be used, all
             subsequent coordinates will be ignored.
         data : array
             The data values of each data point.
@@ -154,14 +156,15 @@ class EQLHarmonic(vdb.BaseGridder):
         """
         Evaluate the estimated equivalent layer on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
+        Requires a fitted estimator
+        (see :meth:`~harmonica.EQLHarmonicSpherical.fit`).
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...). Only
-            ``easting``, ``northing`` and ``upward`` will be used, all
+            following order: (``longitude``, ``latitude``, ``radius``, ...).
+            Only ``longitude``, ``latitude`` and ``radius`` will be used, all
             subsequent coordinates will be ignored.
 
         Returns
@@ -194,13 +197,13 @@ class EQLHarmonic(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...).
-            Only ``easting``, ``northing`` and ``upward`` will be used, all
+            following order: (``longitude``, ``latitude``, ``radius``, ...).
+            Only ``longitude``, ``latitude`` and ``radius`` will be used, all
             subsequent coordinates will be ignored.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the point sources
             used as equivalent layer in the following order:
-            (``easting``, ``northing``, ``upward``).
+            (``longitude``, ``latitude``, ``radius``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -224,7 +227,6 @@ class EQLHarmonic(vdb.BaseGridder):
         spacing=None,
         dims=None,
         data_names=None,
-        projection=None,
         **kwargs
     ):  # pylint: disable=arguments-differ
         """
@@ -265,14 +267,6 @@ class EQLHarmonic(vdb.BaseGridder):
         data_names : list of None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']``.
-        projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated grid coordinates before
-            passing them into ``predict``. For example, you can use this to
-            generate a geographic grid from a Cartesian gridder.
 
         Returns
         -------
@@ -289,13 +283,15 @@ class EQLHarmonic(vdb.BaseGridder):
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
         # Grid data
+        # We always pass projection=None because that argument it's intended to
+        # be used only with Cartesian gridders.
         grid = super().grid(
             region=region,
             shape=shape,
             spacing=spacing,
             dims=dims,
             data_names=data_names,
-            projection=projection,
+            projection=None,
             extra_coords=upward,
             **kwargs,
         )
@@ -304,8 +300,8 @@ class EQLHarmonic(vdb.BaseGridder):
     def scatter(
         self,
         region=None,
-        size=300,
-        random_state=0,
+        size=None,
+        random_state=None,
         dims=None,
         data_names=None,
         projection=None,
@@ -324,110 +320,32 @@ class EQLHarmonic(vdb.BaseGridder):
         self,
         point1,
         point2,
-        upward,
         size,
         dims=None,
         data_names=None,
         projection=None,
         **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Interpolate data along a profile between two points.
+        .. warning ::
 
-        Generates the profile along a straight line assuming Cartesian
-        distances and the same upward coordinate for all points. Point
-        coordinates are generated by :func:`verde.profile_coordinates`. Other
-        arguments for this function can be passed as extra keyword arguments
-        (``kwargs``) to this method.
-
-        Use the *dims* and *data_names* arguments to set custom names for the
-        dimensions and the data field(s) in the output
-        :class:`pandas.DataFrame`. Default names are provided.
-
-        Includes the calculated Cartesian distance from *point1* for each data
-        point in the profile.
-
-        To specify *point1* and *point2* in a coordinate system that would
-        require projection to Cartesian (geographic longitude and latitude, for
-        example), use the ``projection`` argument. With this option, the input
-        points will be projected using the given projection function prior to
-        computations. The generated Cartesian profile coordinates will be
-        projected back to the original coordinate system. **Note that the
-        profile points are evenly spaced in projected coordinates, not the
-        original system (e.g., geographic)**.
-
-        Parameters
-        ----------
-        point1 : tuple
-            The easting and northing coordinates, respectively, of the first
-            point.
-        point2 : tuple
-            The easting and northing coordinates, respectively, of the second
-            point.
-        upward : float
-            Upward coordinate of the profile points.
-        size : int
-            The number of points to generate.
-        dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Default is determined from
-            the ``dims`` attribute of the class. Must be defined in the
-            following order: northing dimension, easting dimension.
-            **NOTE: This is an exception to the "easting" then
-            "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
-            The name(s) of the data variables in the output dataframe. Defaults
-            to ``['scalars']`` for scalar data,
-            ``['east_component', 'north_component']`` for 2D vector data, and
-            ``['east_component', 'north_component', 'vertical_component']`` for
-            3D vector data.
-        projection : callable or None
-            If not None, then should be a callable object ``projection(easting,
-            northing, inverse=False) -> (proj_easting, proj_northing)`` that
-            takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. Should also take
-            an optional keyword argument ``inverse`` (default to False) that if
-            True will calculate the inverse transform instead. This function
-            will be used to project the profile end points before generating
-            coordinates and passing them into ``predict``. It will also be used
-            to undo the projection of the coordinates before returning the
-            results.
-
-        Returns
-        -------
-        table : pandas.DataFrame
-            The interpolated values along the profile.
+            Not implemented method. The profile on spherical coordinates should
+            be done using great-circle distances through the Haversine formula.
 
         """
-        # We override the profile method from BaseGridder so it takes the
-        # upward coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
-
-        # Ignore extra_coords if passed
-        pop_extra_coords(kwargs)
-        # Create profile points and predict
-        table = super().profile(
-            point1,
-            point2,
-            size,
-            dims=dims,
-            data_names=data_names,
-            projection=projection,
-            extra_coords=upward,
-            **kwargs,
-        )
-        return table
+        raise NotImplementedError
 
 
 @jit(nopython=True)
-def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
+def greens_func_spherical(
+    longitude, latitude, radius, point_longitude, point_latitude, point_radius
+):
     """
-    Green's function for the equivalent layer in Cartesian coordinates
+    Green's function for the equivalent layer in spherical coordinates
 
     Uses Numba to speed up things.
     """
-    distance = distance_cartesian(
-        (east, north, upward), (point_east, point_north, point_upward)
+    distance = distance_spherical(
+        (longitude, latitude, radius), (point_longitude, point_latitude, point_radius)
     )
     return 1 / distance
