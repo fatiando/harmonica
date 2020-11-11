@@ -12,4 +12,5 @@ from .sample_data import (
     fetch_britain_magnetic,
     fetch_geoid_earth,
     fetch_south_africa_gravity,
+    fetch_south_africa_topography,
 )

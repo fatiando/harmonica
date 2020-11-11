@@ -6,25 +6,16 @@ import pyproj
 import numpy as np
 import verde as vd
 import harmonica as hm
-import rockhound as rh
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 
-# Read ETOPO-1 topography
-etopo = rh.fetch_etopo1(version="bedrock")
-
-# Select a subset that corresponds to South Africa
-south_africa_topo = etopo.sel(latitude=slice(-35, -18), longitude=slice(12, 33))
-
-# Downsample the topography to speed up computations
-south_africa_topo = south_africa_topo.sel(
-    longitude=south_africa_topo.longitude[::5], latitude=south_africa_topo.latitude[::5]
-)
+# Read South Africa topography
+south_africa_topo = hm.datasets.fetch_south_africa_topography()
 
 # Project the grid
 projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())
-south_africa_topo = vd.project_grid(south_africa_topo.bedrock, projection=projection)
+south_africa_topo = vd.project_grid(south_africa_topo.topography, projection=projection)
 
 # Create layer of prisms
 region = (

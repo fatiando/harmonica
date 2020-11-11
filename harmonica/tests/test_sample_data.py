@@ -18,6 +18,7 @@ from ..datasets.sample_data import (
     fetch_topography_earth,
     fetch_britain_magnetic,
     fetch_south_africa_gravity,
+    fetch_south_africa_topography,
 )
 
 
@@ -101,3 +102,15 @@ def test_south_africa_gravity():
     npt.assert_allclose(data.elevation.max(), 2622.17)
     npt.assert_allclose(data.gravity.min(), 978131.3)
     npt.assert_allclose(data.gravity.max(), 979766.65)
+
+
+def test_south_africa_topography():
+    "Sanity checks for the loaded dataset"
+    data = fetch_south_africa_topography()
+    assert data.topography.shape == (171, 211)
+    npt.assert_allclose(data.topography.min(), -5007.0, atol=0.1)
+    npt.assert_allclose(data.topography.max(), 3286.0, atol=0.1)
+    npt.assert_allclose(data.longitude.min(), 12)
+    npt.assert_allclose(data.longitude.max(), 33)
+    npt.assert_allclose(data.latitude.min(), -35)
+    npt.assert_allclose(data.latitude.max(), -18)
