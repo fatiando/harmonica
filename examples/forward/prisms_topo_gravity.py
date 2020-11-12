@@ -17,26 +17,22 @@ south_africa_topo = hm.datasets.fetch_south_africa_topography()
 projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())
 south_africa_topo = vd.project_grid(south_africa_topo.topography, projection=projection)
 
-# Create layer of prisms
-region = (
-    south_africa_topo.easting.values.min(),
-    south_africa_topo.easting.values.max(),
-    south_africa_topo.northing.values.min(),
-    south_africa_topo.northing.values.max(),
-)
-spacing = (
-    south_africa_topo.northing.values[1] - south_africa_topo.northing.values[0],
-    south_africa_topo.easting.values[1] - south_africa_topo.easting.values[0],
-)
-prisms = hm.prisms_layer(
-    region, spacing=spacing, bottom=None, top=None, properties={"density": 2670}
-)
-top = south_africa_topo.where(south_africa_topo > 0).fillna(0)
-bottom = south_africa_topo.where(south_africa_topo <= 0).fillna(0)
-prisms["top"] = top
-prisms["bottom"] = bottom
+# Create a 2d array with the desntiy of the prisms Points above the geoid will
+# have a density of 2670 kg/m^3 Points below the geoid will have a density
+# contrast equal to the difference between the density of the ocean and the
+# density of the upper crust: # 1000 kg/m^3 - 2900 kg/m^3
+density = south_africa_topo.topography.copy()  # copy topography to a new xr.DataArray
+density.values[:] = 2670.0  # replace every value for the density of the topography
+# Change density values of ocean points
+density.where(south_africa_topo.topography >= 0, 1000 - 2900)
 
-prisms["density"].where(prisms.bottom >= 0, 1000)
+# Create layer of prisms
+prisms = hm.prisms_layer(
+    (south_africa_topo.easting, south_africa_topo.northing),
+    surface=south_africa_topo.topography,
+    reference=0,
+    properties={"density": density},
+)
 
 prisms.top.plot()
 plt.gca().set_aspect("equal")
@@ -52,8 +48,9 @@ coordinates = vd.grid_coordinates(
 )
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
-prisms_gravity = prisms.prisms_layer.gravity(coordinates_projected, field="g_z")
-
+prisms_gravity = hm.prisms_gravity(
+    coordinates_projected, prisms.get_prisms(), prisms.density, field="g_z"
+)
 
 # Make a plot of the computed gravity
 plt.figure(figsize=(7, 6))
