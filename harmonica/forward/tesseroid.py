@@ -351,18 +351,24 @@ def gauss_legendre_quadrature(
     lon_nodes, lat_nodes, rad_nodes = glq_nodes[:]
     lon_weights, lat_weights, rad_weights = glq_weights[:]
     # Compute effect of the tesseroid on the observation point
+    # by iterating over the location of the point masses
+    # (move the iteration along the longitudinal nodes to the bottom for
+    # optimization: reduce the number of times that the trigonometric functions
+    # are evaluated)
     result = 0.0
-    for i, lon_node in enumerate(lon_nodes):
-        for j, lat_node in enumerate(lat_nodes):
-            for k, rad_node in enumerate(rad_nodes):
-                # Get coordinates of the point mass
+    for j, lat_node in enumerate(lat_nodes):
+        # Get the latitudes of the point masses
+        latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
+        cosphi_p = np.cos(latitude_p)
+        sinphi_p = np.sin(latitude_p)
+        for k, rad_node in enumerate(rad_nodes):
+            # Get the radii of the point masses
+            radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
+            # Get kappa constant and the mass of the point mass
+            kappa = radius_p ** 2 * cosphi_p
+            for i, lon_node in enumerate(lon_nodes):
+                # Get the longitudes of the point masses
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
-                latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
-                radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
-                cosphi_p = np.cos(latitude_p)
-                sinphi_p = np.sin(latitude_p)
-                # Get kappa constant and the mass of the point mass
-                kappa = radius_p ** 2 * cosphi_p
                 mass = (
                     density
                     * a_factor
