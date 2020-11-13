@@ -180,33 +180,10 @@ def point_mass_gravity(
         The potential is given in SI units, the accelerations in mGal and the
         Marussi tensor components in Eotvos.
     """
-    # Organize dispatchers and kernel functions inside dictionaries
-    if parallel:
-        dispatchers = {
-            "cartesian": jit_point_mass_cartesian_parallel,
-            "spherical": jit_point_mass_spherical_parallel,
-        }
-    else:
-        dispatchers = {
-            "cartesian": jit_point_mass_cartesian,
-            "spherical": jit_point_mass_spherical,
-        }
-    kernels = {
-        "cartesian": {
-            "potential": kernel_potential_cartesian,
-            "g_z": kernel_g_z_cartesian,
-            "g_northing": kernel_g_northing_cartesian,
-            "g_easting": kernel_g_easting_cartesian,
-        },
-        "spherical": {
-            "potential": kernel_potential_spherical,
-            "g_z": kernel_g_z_spherical,
-        },
-    }
-    # Sanity checks for coordinate_system and field
-    check_coordinate_system(coordinate_system, valid_coord_systems=("cartesian", "spherical"))
-    if field not in kernels[coordinate_system]:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+    # Sanity checks for coordinate_system
+    check_coordinate_system(
+        coordinate_system, valid_coord_systems=("cartesian", "spherical")
+    )
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -221,14 +198,53 @@ def point_mass_gravity(
             + "mismatch the number of points ({})".format(points[0].size)
         )
     # Compute gravitational field
-    dispatchers[coordinate_system](
-        *coordinates, *points, masses, result, kernels[coordinate_system][field]
+    kernel = get_kernel(coordinate_system, field)
+    dispatcher(coordinate_system, parallel)(
+        *coordinates, *points, masses, result, kernel
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
     if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
+
+
+def dispatcher(coordinate_system, parallel):
+    """
+    Return the appropriate forward model function
+    """
+    if parallel:
+        dispatchers = {
+            "cartesian": jit_point_mass_cartesian_parallel,
+            "spherical": jit_point_mass_spherical_parallel,
+        }
+    else:
+        dispatchers = {
+            "cartesian": jit_point_mass_cartesian,
+            "spherical": jit_point_mass_spherical,
+        }
+    return dispatchers[coordinate_system]
+
+
+def get_kernel(coordinate_system, field):
+    """
+    Return the appropriate kernel
+    """
+    kernels = {
+        "cartesian": {
+            "potential": kernel_potential_cartesian,
+            "g_z": kernel_g_z_cartesian,
+            "g_northing": kernel_g_northing_cartesian,
+            "g_easting": kernel_g_easting_cartesian,
+        },
+        "spherical": {
+            "potential": kernel_potential_spherical,
+            "g_z": kernel_g_z_spherical,
+        },
+    }
+    if field not in kernels[coordinate_system]:
+        raise ValueError("Gravitational field {} not recognized".format(field))
+    return kernels[coordinate_system][field]
 
 
 @jit(nopython=True)
