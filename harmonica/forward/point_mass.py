@@ -204,7 +204,7 @@ def point_mass_gravity(
         },
     }
     # Sanity checks for coordinate_system and field
-    check_coordinate_system(coordinate_system)
+    check_coordinate_system(coordinate_system, valid_coord_systems=("cartesian", "spherical"))
     if field not in kernels[coordinate_system]:
         raise ValueError("Gravitational field {} not recognized".format(field))
     # Figure out the shape and size of the output array
