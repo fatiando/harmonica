@@ -9,7 +9,13 @@ from .utils import check_coordinate_system, distance_cartesian, distance_spheric
 
 
 def point_mass_gravity(
-    coordinates, points, masses, field, coordinate_system="cartesian", dtype="float64"
+    coordinates,
+    points,
+    masses,
+    field,
+    coordinate_system="cartesian",
+    parallel=True,
+    dtype="float64",
 ):
     r"""
     Compute gravitational fields of point masses.
@@ -156,6 +162,11 @@ def point_mass_gravity(
         point masses.
         Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
+    parallel : bool
+        If True the computations will run in parallel using Numba built-in
+        parallelization. If False, the forward model will run on a single core.
+        Might be useful to disable parallelization if the forward model is run
+        by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
         Data type assigned to resulting gravitational field. Default to
         ``np.float64``.
@@ -170,10 +181,16 @@ def point_mass_gravity(
         Marussi tensor components in Eotvos.
     """
     # Organize dispatchers and kernel functions inside dictionaries
-    dispatchers = {
-        "cartesian": jit_point_mass_cartesian,
-        "spherical": jit_point_mass_spherical,
-    }
+    if parallel:
+        dispatchers = {
+            "cartesian": jit_point_mass_cartesian_parallel,
+            "spherical": jit_point_mass_spherical_parallel,
+        }
+    else:
+        dispatchers = {
+            "cartesian": jit_point_mass_cartesian,
+            "spherical": jit_point_mass_spherical,
+        }
     kernels = {
         "cartesian": {
             "potential": kernel_potential_cartesian,
@@ -214,7 +231,7 @@ def point_mass_gravity(
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True)
 def jit_point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
 ):  # pylint: disable=invalid-name,not-an-iterable
@@ -305,7 +322,7 @@ def kernel_g_easting_cartesian(
     return -(easting - easting_p) / distance ** 3
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True)
 def jit_point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):  # pylint: disable=invalid-name,not-an-iterable
@@ -380,3 +397,22 @@ def kernel_g_z_spherical(
     )
     delta_z = radius - radius_p * cospsi
     return delta_z / distance ** 3
+
+
+# Define parallelized version of the forward modelling functions
+if hasattr(jit_point_mass_cartesian, "py_func"):
+    jit_point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(
+        jit_point_mass_cartesian.py_func
+    )
+else:
+    jit_point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(
+        jit_point_mass_cartesian
+    )
+if hasattr(jit_point_mass_spherical, "py_func"):
+    jit_point_mass_spherical_parallel = jit(nopython=True, parallel=True)(
+        jit_point_mass_spherical.py_func
+    )
+else:
+    jit_point_mass_spherical_parallel = jit(nopython=True, parallel=True)(
+        jit_point_mass_spherical
+    )
