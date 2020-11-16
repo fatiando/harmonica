@@ -11,7 +11,7 @@ from warnings import warn
 from numba import jit, prange
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True)
 def jacobian_numba(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix using numba to speed things up.
@@ -34,7 +34,7 @@ def jacobian_numba(coordinates, points, jac, greens_function):
             )
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True)
 def predict_numba(
     coordinates, points, coeffs, result, greens_function
 ):  # pylint: disable=not-an-iterable
@@ -57,6 +57,37 @@ def predict_numba(
                 point_north[j],
                 point_upward[j],
             )
+
+
+# Define parallelized version of the utils functions
+if hasattr(predict_numba, "py_func"):
+    predict_numba_parallel = jit(nopython=True, parallel=True)(predict_numba.py_func)
+else:
+    predict_numba_parallel = jit(nopython=True, parallel=True)(predict_numba)
+if hasattr(jacobian_numba, "py_func"):
+    jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian_numba.py_func)
+else:
+    jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian_numba)
+
+
+def dispatch_predict(parallel):
+    """
+    Return either the parallel or non-parallel predict function
+    """
+    if parallel:
+        return predict_numba_parallel
+    else:
+        return predict_numba
+
+
+def dispatch_jacobian(parallel):
+    """
+    Return either the parallel or non-parallel jacobian function
+    """
+    if parallel:
+        return jacobian_numba_parallel
+    else:
+        return jacobian_numba
 
 
 def pop_extra_coords(kwargs):

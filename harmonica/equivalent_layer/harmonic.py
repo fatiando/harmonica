@@ -13,7 +13,11 @@ from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
 
-from .utils import jacobian_numba, predict_numba, pop_extra_coords
+from .utils import (
+    dispatch_jacobian,
+    dispatch_predict,
+    pop_extra_coords,
+)
 from ..forward.utils import distance_cartesian
 
 
@@ -100,10 +104,12 @@ class EQLHarmonic(vdb.BaseGridder):
         damping=None,
         points=None,
         relative_depth=500,
+        parallel=True,
     ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
+        self.parallel = parallel
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
 
@@ -176,7 +182,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dtype = coordinates[0].dtype
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         data = np.zeros(size, dtype=dtype)
-        predict_numba(
+        dispatch_predict(self.parallel)(
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )
         return data.reshape(shape)
@@ -213,7 +219,7 @@ class EQLHarmonic(vdb.BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=dtype)
-        jacobian_numba(coordinates, points, jac, self.greens_function)
+        dispatch_jacobian(self.parallel)(coordinates, points, jac, self.greens_function)
         return jac
 
     def grid(
