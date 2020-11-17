@@ -240,11 +240,16 @@ def get_kernel(coordinate_system, field):
         "spherical": {
             "potential": kernel_potential_spherical,
             "g_z": kernel_g_z_spherical,
+            "g_northing": None,
+            "g_easting": None,
         },
     }
     if field not in kernels[coordinate_system]:
         raise ValueError("Gravitational field {} not recognized".format(field))
-    return kernels[coordinate_system][field]
+    kernel = kernels[coordinate_system][field]
+    if kernel is None:
+        raise NotImplementedError
+    return kernel
 
 
 @jit(nopython=True)

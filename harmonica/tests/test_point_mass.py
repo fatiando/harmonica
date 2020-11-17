@@ -28,6 +28,25 @@ def test_invalid_coordinate_system():
         )
 
 
+def test_not_implemented_field():
+    """
+    Check if NotImplementedError is raised after asking a non-implemented field
+    """
+    coordinates = [0.0, 0.0, 0.0]
+    point_mass = [0.0, 0.0, 0.0]
+    mass = 1.0
+    coordinate_system = "spherical"
+    for field in ("g_northing", "g_easting"):
+        with pytest.raises(NotImplementedError):
+            point_mass_gravity(
+                coordinates,
+                point_mass,
+                mass,
+                field,
+                coordinate_system,
+            )
+
+
 def test_invalid_field():
     "Check if an invalid gravitational field is passed as argument"
     coordinates = [0.0, 0.0, 0.0]
