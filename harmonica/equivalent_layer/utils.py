@@ -11,6 +11,15 @@ from warnings import warn
 import numba
 
 
+def pop_extra_coords(kwargs):
+    """
+    Remove extra_coords from kwargs
+    """
+    if "extra_coords" in kwargs:
+        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
+        kwargs.pop("extra_coords")
+
+
 def jacobian(
     coordinates, points, jac, greens_function
 ):  # pylint: disable=not-an-iterable
@@ -61,16 +70,8 @@ def predict(
             )
 
 
+# pylint: disable=invalid-name
 predict_numba_serial = numba.jit(nopython=True)(predict)
 predict_numba_parallel = numba.jit(nopython=True, parallel=True)(predict)
 jacobian_numba_serial = numba.jit(nopython=True)(jacobian)
 jacobian_numba_parallel = numba.jit(nopython=True, parallel=True)(jacobian)
-
-
-def pop_extra_coords(kwargs):
-    """
-    Remove extra_coords from kwargs
-    """
-    if "extra_coords" in kwargs:
-        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
-        kwargs.pop("extra_coords")
