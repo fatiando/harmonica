@@ -17,7 +17,7 @@ import verde.base as vdb
 from .. import EQLHarmonic, EQLHarmonicSpherical, point_mass_gravity
 from ..equivalent_layer.harmonic import greens_func_cartesian
 from ..equivalent_layer.utils import (
-    jacobian_numba,
+    jacobian_numba_serial,
     pop_extra_coords,
 )
 from .utils import require_numba
@@ -177,7 +177,7 @@ def test_eql_harmonic_jacobian_cartesian():
     coordinates = vdb.n_1d_arrays((easting, northing, upward), n=3)
     n_points = points[0].size
     jacobian = np.zeros((n_points, n_points), dtype=points[0].dtype)
-    jacobian_numba(coordinates, points, jacobian, greens_func_cartesian)
+    jacobian_numba_serial(coordinates, points, jacobian, greens_func_cartesian)
     # All diagonal elements must be equal
     diagonal = np.diag_indices(4)
     npt.assert_allclose(jacobian[diagonal][0], jacobian[diagonal])
@@ -190,6 +190,33 @@ def test_eql_harmonic_jacobian_cartesian():
     nearest_neighbours[diagonal] = False
     nearest_neighbours[anti_diagonal] = False
     npt.assert_allclose(jacobian[nearest_neighbours][0], jacobian[nearest_neighbours])
+
+
+@require_numba
+def test_eql_harmonic_cartesian_parallel():
+    """
+    Check predictions when parallel is enabled and disabled
+    """
+    region = (-3e3, -1e3, 5e3, 7e3)
+    # Build synthetic point masses
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
+    # Get synthetic data
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+
+    # The predictions should be equal whether are run in parallel or in serial
+    eql_serial = EQLHarmonic(parallel=False)
+    eql_serial.fit(coordinates, data)
+    eql_parallel = EQLHarmonic(parallel=True)
+    eql_parallel.fit(coordinates, data)
+
+    upward = 0
+    shape = (60, 60)
+    grid_serial = eql_serial.grid(upward, shape=shape, region=region)
+    grid_parallel = eql_parallel.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
 @require_numba
@@ -336,3 +363,38 @@ def test_eql_harmonic_spherical_no_projection():
     eql = EQLHarmonicSpherical()
     with pytest.raises(TypeError):
         eql.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
+
+
+@require_numba
+def test_eql_harmonic_spherical_parallel():
+    """
+    Check predictions when parallel is enabled and disabled
+    """
+    region = (-70, -60, -40, -30)
+    radius = 6400e3
+    # Build synthetic point masses
+    points = vd.grid_coordinates(
+        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    )
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(
+        region=region, shape=(40, 40), extra_coords=radius
+    )
+    # Get synthetic data
+    data = point_mass_gravity(
+        coordinates, points, masses, field="g_z", coordinate_system="spherical"
+    )
+
+    # The predictions should be equal whether are run in parallel or in serial
+    relative_depth = 500e3
+    eql_serial = EQLHarmonicSpherical(relative_depth=relative_depth, parallel=False)
+    eql_serial.fit(coordinates, data)
+    eql_parallel = EQLHarmonicSpherical(relative_depth=relative_depth, parallel=True)
+    eql_parallel.fit(coordinates, data)
+
+    upward = radius
+    shape = (60, 60)
+    grid_serial = eql_serial.grid(upward, shape=shape, region=region)
+    grid_parallel = eql_parallel.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)

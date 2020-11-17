@@ -8,21 +8,23 @@
 Utility functions for equivalent layer gridders
 """
 from warnings import warn
-from numba import jit, prange
+import numba
 
 
-@jit(nopython=True)
-def jacobian_numba(coordinates, points, jac, greens_function):
+def jacobian(
+    coordinates, points, jac, greens_function
+):  # pylint: disable=not-an-iterable
     """
-    Calculate the Jacobian matrix using numba to speed things up.
+    Calculate the Jacobian matrix
 
     It works both for Cartesian and spherical coordiantes. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
-    The Jacobian is built in parallel in order to reduce the computation time.
+    The Jacobian can be built in parallel using Numba ``jit`` decorator with
+    ``parallel=True``.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):
+    for i in numba.prange(east.size):
         for j in range(point_east.size):
             jac[i, j] = greens_function(
                 east[i],
@@ -34,20 +36,20 @@ def jacobian_numba(coordinates, points, jac, greens_function):
             )
 
 
-@jit(nopython=True)
-def predict_numba(
+def predict(
     coordinates, points, coeffs, result, greens_function
 ):  # pylint: disable=not-an-iterable
     """
-    Calculate the predicted data using numba for speeding things up.
+    Calculate the predicted data
 
     It works both for Cartesian and spherical coordiantes. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
-    The prediction is run in parallel in order to reduce the computation time.
+    The prediction can be run in parallel using Numba ``jit`` decorator with
+    ``parallel=True``.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):
+    for i in numba.prange(east.size):
         for j in range(point_east.size):
             result[i] += coeffs[j] * greens_function(
                 east[i],
@@ -59,35 +61,10 @@ def predict_numba(
             )
 
 
-# Define parallelized version of the utils functions
-if hasattr(predict_numba, "py_func"):
-    predict_numba_parallel = jit(nopython=True, parallel=True)(predict_numba.py_func)
-else:
-    predict_numba_parallel = jit(nopython=True, parallel=True)(predict_numba)
-if hasattr(jacobian_numba, "py_func"):
-    jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian_numba.py_func)
-else:
-    jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian_numba)
-
-
-def dispatch_predict(parallel):
-    """
-    Return either the parallel or non-parallel predict function
-    """
-    if parallel:
-        return predict_numba_parallel
-    else:
-        return predict_numba
-
-
-def dispatch_jacobian(parallel):
-    """
-    Return either the parallel or non-parallel jacobian function
-    """
-    if parallel:
-        return jacobian_numba_parallel
-    else:
-        return jacobian_numba
+predict_numba_serial = numba.jit(nopython=True)(predict)
+predict_numba_parallel = numba.jit(nopython=True, parallel=True)(predict)
+jacobian_numba_serial = numba.jit(nopython=True)(jacobian)
+jacobian_numba_parallel = numba.jit(nopython=True, parallel=True)(jacobian)
 
 
 def pop_extra_coords(kwargs):
