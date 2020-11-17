@@ -220,7 +220,7 @@ def dispatcher(coordinate_system, parallel):
         },
         "spherical": {
             True: point_mass_spherical_parallel,
-            False: point_mass_cartesian_serial,
+            False: point_mass_spherical_serial,
         },
     }
     return dispatchers[coordinate_system][parallel]

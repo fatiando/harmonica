@@ -4,10 +4,13 @@ Test forward modelling for point masses.
 import numpy as np
 import numpy.testing as npt
 import pytest
+import verde as vd
 
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
 from ..forward.utils import distance_cartesian
+
+from .utils import require_numba
 
 
 def test_invalid_coordinate_system():
@@ -568,6 +571,25 @@ def test_g_easting_sign():
     assert np.sign(mass) == -np.sign(results[2])
 
 
+@require_numba
+def test_point_mass_cartesian_parallel():
+    """
+    Check if parallel and serial runs return the same result
+    """
+    region = (2e3, 10e3, -3e3, 5e3)
+    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    masses = np.arange(points[0].size)
+    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    for field in ("potential", "g_z", "g_northing", "g_easting"):
+        result_serial = point_mass_gravity(
+            coordinates, points, masses, field=field, parallel=False
+        )
+        result_parallel = point_mass_gravity(
+            coordinates, points, masses, field=field, parallel=True
+        )
+        npt.assert_allclose(result_serial, result_parallel)
+
+
 # ---------------------------
 # Spherical coordinates tests
 # ---------------------------
@@ -686,3 +708,35 @@ def test_point_mass_potential_on_same_meridian():
                     ),
                     analytical["potential"],
                 )
+
+
+@require_numba
+def test_point_mass_spherical_parallel():
+    """
+    Check if parallel and serial runs return the same result
+    """
+    region = (2, 10, -3, 5)
+    radius = 6400e3
+    points = vd.scatter_points(
+        region, size=30, extra_coords=radius - 10e3, random_state=0
+    )
+    masses = np.arange(points[0].size)
+    coordinates = vd.grid_coordinates(region=region, spacing=1, extra_coords=radius)
+    for field in ("potential", "g_z"):
+        result_serial = point_mass_gravity(
+            coordinates,
+            points,
+            masses,
+            field=field,
+            coordinate_system="spherical",
+            parallel=False,
+        )
+        result_parallel = point_mass_gravity(
+            coordinates,
+            points,
+            masses,
+            field=field,
+            coordinate_system="spherical",
+            parallel=True,
+        )
+        npt.assert_allclose(result_serial, result_parallel)
