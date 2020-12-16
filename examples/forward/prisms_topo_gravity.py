@@ -21,15 +21,15 @@ south_africa_topo = vd.project_grid(south_africa_topo.topography, projection=pro
 # have a density of 2670 kg/m^3 Points below the geoid will have a density
 # contrast equal to the difference between the density of the ocean and the
 # density of the upper crust: # 1000 kg/m^3 - 2900 kg/m^3
-density = south_africa_topo.topography.copy()  # copy topography to a new xr.DataArray
+density = south_africa_topo.copy()  # copy topography to a new xr.DataArray
 density.values[:] = 2670.0  # replace every value for the density of the topography
 # Change density values of ocean points
-density.where(south_africa_topo.topography >= 0, 1000 - 2900)
+density.where(south_africa_topo >= 0, 1000 - 2900)
 
 # Create layer of prisms
 prisms = hm.prisms_layer(
     (south_africa_topo.easting, south_africa_topo.northing),
-    surface=south_africa_topo.topography,
+    surface=south_africa_topo.values,
     reference=0,
     properties={"density": density},
 )
@@ -48,8 +48,8 @@ coordinates = vd.grid_coordinates(
 )
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
-prisms_gravity = hm.prisms_gravity(
-    coordinates_projected, prisms.get_prisms(), prisms.density, field="g_z"
+prisms_gravity = hm.prism_gravity(
+    coordinates_projected, prisms.prisms_layer.get_prisms(), prisms.density, field="g_z"
 )
 
 # Make a plot of the computed gravity
