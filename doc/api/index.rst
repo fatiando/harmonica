@@ -36,7 +36,7 @@ Forward modelling
     prism_gravity
     tesseroid_gravity
     prisms_layer
-    PrismsLayer
+    DatasetAccessorPrismsLayer
 
 Isostasy
 --------
