@@ -73,7 +73,6 @@ def prisms_layer(
     >>> easting = np.linspace(0, 10, 5)
     >>> northing = np.linspace(2, 8, 4)
     >>> surface = np.arange(20).reshape((4, 5))
-    >>> reference = 0
     >>> density = 2670.0 * np.ones_like(surface)
     >>> # Define a layer of prisms
     >>> prisms = prisms_layer(
