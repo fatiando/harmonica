@@ -49,7 +49,7 @@ def prisms_layer(
     properties : dict or None
         Dictionary containing the physical properties of the prisms. The keys
         must be strings that will be used to name the corresponding ``data_var``
-        inside the :class:`xarray.Dataset`, while the values must be floats.
+        inside the :class:`xarray.Dataset`, while the values must be 2d-arrays.
         All physical properties must be passed in SI units. If None, no
         ``data_var`` will be added to the :class:`xarray.Dataset`. Default is
         None.
