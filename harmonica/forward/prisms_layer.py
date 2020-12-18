@@ -75,25 +75,32 @@ def prisms_layer(
     >>> surface = np.arange(20).reshape((4, 5))
     >>> reference = 0
     >>> density = 2670.0 * np.ones_like(surface)
+    >>> # Define a layer of prisms
     >>> prisms = prisms_layer(
     ...     (easting, northing),
     ...     surface,
     ...     reference=0,
     ...     properties={"density": density},
     ... )
-    >>> # Define a layer of prisms
-    >>> prisms = prisms_layer(
-    ...     region=(0, 3, -2, 2),
-    ...     spacing=1,
-    ...     bottom=0,
-    ...     top=2,
-    ...     properties={"density": density},
-    ... )
     >>> print(prisms)
+    <xarray.Dataset>
+    Dimensions:   (easting: 5, northing: 4)
+    Coordinates:
+      * easting   (easting) float64 0.0 2.5 5.0 7.5 10.0
+      * northing  (northing) float64 2.0 4.0 6.0 8.0
+        top       (northing, easting) int64 0 1 2 3 4 5 6 7 ... 13 14 15 16 17 18 19
+        bottom    (northing, easting) float64 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0
+    Data variables:
+        density   (northing, easting) float64 2.67e+03 2.67e+03 ... 2.67e+03
+    Attributes:
+        coords_units:      meters
+        properties_units:  SI
     >>> # Get the boundaries of the layer (will exceed the region)
     >>> print(prisms.prisms_layer.boundaries)
+    (-1.25, 11.25, 1.0, 9.0)
     >>> # Get the boundaries of one of the prisms
     >>> print(prisms.prisms_layer.get_prism((0, 2)))
+    (3.75, 6.25, 1.0, 3.0, 0.0, 2)
     """  # noqa: W505
     dims = ("northing", "easting")
     # Generate xr.Dataset
