@@ -130,8 +130,8 @@ jobs:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
 
-      - name: Setup miniconda
-        uses: goanpeca/setup-miniconda@v1
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2.0.1
         with:
           python-version: ${{ env.PYTHON }}
           miniconda-version: "latest"
