@@ -72,7 +72,7 @@ def prisms_layer(
     >>> import numpy as np
     >>> easting = np.linspace(0, 10, 5)
     >>> northing = np.linspace(2, 8, 4)
-    >>> surface = np.arange(20).reshape((4, 5))
+    >>> surface = np.arange(20, dtype=float).reshape((4, 5))
     >>> density = 2670.0 * np.ones_like(surface)
     >>> # Define a layer of prisms
     >>> prisms = prisms_layer(
@@ -87,7 +87,7 @@ def prisms_layer(
     Coordinates:
       * easting   (easting) float64 0.0 2.5 5.0 7.5 10.0
       * northing  (northing) float64 2.0 4.0 6.0 8.0
-        top       (northing, easting) int64 0 1 2 3 4 5 6 7 ... 13 14 15 16 17 18 19
+        top       (northing, easting) float64 0.0 1.0 2.0 3.0 ... 17.0 18.0 19.0
         bottom    (northing, easting) float64 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0
     Data variables:
         density   (northing, easting) float64 2.67e+03 2.67e+03 ... 2.67e+03
@@ -99,7 +99,7 @@ def prisms_layer(
     (-1.25, 11.25, 1.0, 9.0)
     >>> # Get the boundaries of one of the prisms
     >>> print(prisms.prisms_layer.get_prism((0, 2)))
-    (3.75, 6.25, 1.0, 3.0, 0.0, 2)
+    (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)
     """  # noqa: W505
     dims = ("northing", "easting")
     # Generate xr.Dataset
