@@ -1,6 +1,16 @@
 """
-Layer of prisms
-===============
+Gravity effect of topography
+============================
+
+One possible application of the :func:`harmonica.prisms_layer` function is to
+create a model of the terrain and compute its gravity effect. Here we will use
+a regular grid of topographic and bathymetric heights for South Africa to
+create a prisms layer that model the terrain with a density of 2670 kg/m^3 and
+the ocean with a density contrast of -1900 kg/m^3 obtained as the difference
+between the density of water (1000 kg/m^3) and the normal density of upper
+crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
+compute the gravity effect of the model on a regular grid of observation
+points.
 """
 import pyproj
 import numpy as np
