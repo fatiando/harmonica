@@ -27,7 +27,7 @@ Dependencies
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
 
-The examples in the :ref:`gallery` also use:
+The examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
 * `boule <http://www.fatiando.org/boule/>`__
 * `matplotlib <https://matplotlib.org/>`__

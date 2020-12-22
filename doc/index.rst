@@ -26,6 +26,7 @@
     :caption: User Guide
 
     sample_data/index.rst
+    tutorials/index.rst
 
 .. toctree::
     :maxdepth: 2

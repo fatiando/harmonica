@@ -53,9 +53,9 @@ napoleon_use_ivar = True
 
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples", "../data/examples"],
+    "examples_dirs": ["../examples", "../tutorials", "../data/examples"],
     # path where to save gallery generated examples
-    "gallery_dirs": ["gallery", "sample_data"],
+    "gallery_dirs": ["gallery", "tutorials", "sample_data"],
     "filename_pattern": r"\.py",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
