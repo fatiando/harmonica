@@ -282,7 +282,7 @@ def jit_tesseroid_gravity(
                 small_tesseroids,
                 radial_discretization,
             )
-            # Compute effect of the tesseroid though GLQ
+            # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
                 result[l] += gauss_legendre_quadrature(
