@@ -363,18 +363,19 @@ def gauss_legendre_quadrature(
     # are evaluated)
     result = 0.0
     for j, lat_node in enumerate(lat_nodes):
-        # Get the latitudes of the point masses
+        # Get the latitudes of the point mass
         latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
         cosphi_p = np.cos(latitude_p)
         sinphi_p = np.sin(latitude_p)
         for k, rad_node in enumerate(rad_nodes):
-            # Get the radii of the point masses
+            # Get the radii of the point mass
             radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
-            # Get kappa constant and the mass of the point mass
+            # Get kappa constant for the point mass
             kappa = radius_p ** 2 * cosphi_p
             for i, lon_node in enumerate(lon_nodes):
-                # Get the longitudes of the point masses
+                # Get the longitudes of the point mass
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
+                # Compute the mass of the point mass
                 mass = (
                     density
                     * a_factor
