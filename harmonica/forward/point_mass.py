@@ -251,7 +251,7 @@ def get_kernel(coordinate_system, field):
         },
     }
     if field not in kernels[coordinate_system]:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+        raise ValueError("Gravitational field '{}' not recognized".format(field))
     kernel = kernels[coordinate_system][field]
     if kernel is None:
         raise NotImplementedError
