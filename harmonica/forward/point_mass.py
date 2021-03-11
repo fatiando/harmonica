@@ -131,7 +131,7 @@ def point_mass_gravity(
     coordinates : list or array
         List or array containing the coordinates of computation points in the
         following order: ``easting``, ``northing`` and ``upward`` (if
-        coordinates given in Cartesian coordiantes), or ``longitude``,
+        coordinates given in Cartesian coordinates), or ``longitude``,
         ``latitude`` and ``radius`` (if given on a spherical geocentric
         coordinate system).
         All ``easting``, ``northing`` and ``upward`` should be in meters.
@@ -140,7 +140,7 @@ def point_mass_gravity(
     points : list or array
         List or array containing the coordinates of the point masses in the
         following order: ``easting``, ``northing`` and ``upward`` (if
-        coordinates given in Cartesian coordiantes), or ``longitude``,
+        coordinates given in Cartesian coordinates), or ``longitude``,
         ``latitude`` and ``radius`` (if given on a spherical geocentric
         coordinate system).
         All ``easting``, ``northing`` and ``upward`` should be in meters.

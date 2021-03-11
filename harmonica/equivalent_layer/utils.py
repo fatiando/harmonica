@@ -16,7 +16,7 @@ def jacobian_numba(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix using numba to speed things up.
 
-    It works both for Cartesian and spherical coordiantes. We need to pass the
+    It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
     The Jacobian is built in parallel in order to reduce the computation time.
     """
@@ -41,7 +41,7 @@ def predict_numba(
     """
     Calculate the predicted data using numba for speeding things up.
 
-    It works both for Cartesian and spherical coordiantes. We need to pass the
+    It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
     The prediction is run in parallel in order to reduce the computation time.
     """
