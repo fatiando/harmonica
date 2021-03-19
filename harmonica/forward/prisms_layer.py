@@ -103,8 +103,8 @@ def prisms_layer(
     (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)
     """  # noqa: W505
     dims = ("northing", "easting")
-    # Initialize data and data_names as empty tuples
-    data, data_names = (), ()
+    # Initialize data and data_names as None
+    data, data_names = None, None
     # If properties were passed, then replace data_names and data for its keys
     # and values, respectively
     if properties:
