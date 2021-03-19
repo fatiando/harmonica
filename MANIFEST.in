@@ -5,6 +5,7 @@ include CONTRIBUTING.md
 include MAINTENANCE.md
 include AUTHORS.md
 include AUTHORSHIP.md
+include requirements.txt
 include harmonica/datasets/registry.txt
 recursive-include harmonica/tests/data *
 recursive-include harmonica/tests/baseline *
