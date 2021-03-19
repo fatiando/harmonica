@@ -3,6 +3,7 @@ Define a layer of prisms
 """
 import numpy as np
 import xarray as xr
+import verde as vd
 
 
 def prisms_layer(
@@ -102,14 +103,21 @@ def prisms_layer(
     (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)
     """  # noqa: W505
     dims = ("northing", "easting")
-    # Generate xr.Dataset
-    # Would use vd.make_xarray_grid, but for now I copy paste the code:
-    coords = {dims[1]: coordinates[0], dims[0]: coordinates[1]}
-    data_vars = None
+    # Initialize data and data_names as empty tuples
+    data, data_names = (), ()
+    # If properties were passed, then replace data_names and data for its keys
+    # and values, respectively
     if properties:
-        data_vars = {prop: (dims, value) for prop, value in properties.items()}
+        data_names = tuple(p for p in properties.keys())
+        data = tuple(p for p in properties.values())
+    # Create xr.Dataset for prisms
+    prisms = vd.make_xarray_grid(
+        coordinates, data=data, data_names=data_names, dims=dims
+    )
+    # Append some attributes to the xr.Dataset
     attrs = {"coords_units": "meters", "properties_units": "SI"}
-    prisms = xr.Dataset(data_vars=data_vars, coords=coords, attrs=attrs)
+    prisms.attrs = attrs
+    # Create the top and bottom coordinates of the prisms
     prisms.prisms_layer.update_top_bottom(surface, reference)
     return prisms
 
