@@ -43,10 +43,11 @@ def prisms_layer(
         ``reference``, the ``surface`` value will be used to set the
         ``bottom`` boundary of that prism, while the ``reference`` value will
         be used to set the ``top`` boundary of the prism.
+        The array must not contain ``numpy.nan``s.
     reference : float or 2d-array
         Reference surface used to create the lowermost boundary of the prisms
         layer. It can be either a plane or an irregular surface passed as 2d
-        array. Height(s) must be in meters.
+        array without ``numpy.nan``s. Height(s) must be in meters.
     properties : dict or None
         Dictionary containing the physical properties of the prisms. The keys
         must be strings that will be used to name the corresponding ``data_var``
@@ -254,6 +255,10 @@ class DatasetAccessorPrismsLayer:
             prisms layer. It can be either a plane or an irregular surface
             passed as 2d array. Height(s) must be in meters.
         """
+        if np.isnan(surface).any():
+            raise ValueError("Invalid surface parameter containing nans.")
+        if np.isnan(reference).any():
+            raise ValueError("Invalid reference parameter containing nans.")
         if surface.shape != self.shape:
             raise ValueError(
                 f"Invalid surface array with shape '{surface.shape}'. "
