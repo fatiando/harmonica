@@ -47,34 +47,6 @@ def test_prisms_layer():
     npt.assert_allclose(layer.bottom, expected_bottom)
 
 
-def test_prisms_layer_nans_on_surface():
-    """
-    Check if prisms_layer raises an error after a nan on surface
-    """
-    easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    reference = 1.5
-    surface = np.arange(20, dtype=float).reshape(4, 5)
-    surface[1, 3] = np.nan
-    with pytest.raises(ValueError):
-        prisms_layer((easting, northing), surface, reference)
-
-
-def test_prisms_layer_nans_on_reference():
-    """
-    Check if prisms_layer raises an error after a nan on referece
-    """
-    easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    surface = np.arange(20, dtype=float).reshape(4, 5)
-    with pytest.raises(ValueError):
-        prisms_layer((easting, northing), surface, reference=np.nan)
-    reference = np.ones_like(surface)
-    reference[1, 3] = np.nan
-    with pytest.raises(ValueError):
-        prisms_layer((easting, northing), surface, reference=reference)
-
-
 def test_prisms_layer_invalid_surface_reference():
     """
     Check if invalid surface and/or reference are caught
