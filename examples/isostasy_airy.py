@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Airy Isostasy
 =============
@@ -44,5 +50,4 @@ plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.01, aspect=50, label="me
 ax.coastlines()
 ax.set_title("Airy isostatic Moho depth of Africa")
 ax.set_extent(region, crs=ccrs.PlateCarree())
-plt.tight_layout()
 plt.show()

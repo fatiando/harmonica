@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Land Gravity Data from South Africa
 ===================================
@@ -39,5 +45,4 @@ plt.colorbar(
 ax.set_extent(vd.get_region((data.longitude, data.latitude)))
 ax.gridlines(draw_labels=True)
 ax.coastlines()
-plt.tight_layout()
 plt.show()

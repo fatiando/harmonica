@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
 from . import version
@@ -9,10 +15,11 @@ from .gravity_corrections import bouguer_correction
 from .forward.point_mass import point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
-from .equivalent_layer.harmonic import EQLHarmonic, EQLHarmonicSpherical
+from .equivalent_layer.harmonic import EQLHarmonic
+from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
 
-# Get the version number through versioneer
-__version__ = version.full_version
+# Get the version number through setuptools-scm
+__version__ = version.version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

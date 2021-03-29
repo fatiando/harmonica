@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the sample data loading functions.
 """
@@ -17,6 +23,9 @@ from ..datasets.sample_data import (
 
 def test_datasets_locate():
     "Make sure the data cache location has the right package name"
+    # Fetch a dataset first to make sure that the cache folder exists. Since
+    # Pooch 1.1.1 the cache isn't created until a download is requested.
+    fetch_gravity_earth()
     path = locate()
     assert os.path.exists(path)
     # This is the most we can check in a platform independent way without

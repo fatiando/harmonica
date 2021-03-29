@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding in spherical coordinates
 =================================
@@ -28,7 +34,8 @@ data = hm.datasets.fetch_south_africa_gravity()
 # aliasing effects.
 blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
 (longitude, latitude, elevation), gravity_data = blocked_mean.filter(
-    (data.longitude, data.latitude, data.elevation), data.gravity,
+    (data.longitude, data.latitude, data.elevation),
+    data.gravity,
 )
 
 # Compute gravity disturbance by removing the gravity of normal Earth
@@ -52,12 +59,18 @@ eql.fit(coordinates, gravity_disturbance)
 print("R² score:", eql.score(coordinates, gravity_disturbance))
 
 # Interpolate data on a regular grid with 0.2 degrees spacing. The
-# interpolation requires an extra coordinate (radius). By passing in the
-# maximum radius of the data, we're effectively upward-continuing the data.
-# The grid will be defined in spherical coordinates.
+# interpolation requires the radius of the grid points (upward coordinate). By
+# passing in the maximum radius of the data, we're effectively
+# upward-continuing the data. The grid will be defined in spherical
+# coordinates.
 grid = eql.grid(
-    spacing=0.2, extra_coords=coordinates[-1].max(), data_names=["gravity_disturbance"],
+    upward=coordinates[-1].max(),
+    spacing=0.2,
+    data_names=["gravity_disturbance"],
 )
+
+# The grid is a xarray.Dataset with values, coordinates, and metadata
+print("\nGenerated grid:\n", grid)
 
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
@@ -71,7 +84,12 @@ maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
 region = vd.get_region(coordinates)
 
 # Plot observed and gridded gravity disturbance
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 5), sharey=True,)
+fig, (ax1, ax2) = plt.subplots(
+    nrows=1,
+    ncols=2,
+    figsize=(10, 5),
+    sharey=True,
+)
 
 tmp = ax1.scatter(
     longitude,

@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Forward modelling for point masses
 """
@@ -125,7 +131,7 @@ def point_mass_gravity(
     coordinates : list or array
         List or array containing the coordinates of computation points in the
         following order: ``easting``, ``northing`` and ``upward`` (if
-        coordinates given in Cartesian coordiantes), or ``longitude``,
+        coordinates given in Cartesian coordinates), or ``longitude``,
         ``latitude`` and ``radius`` (if given on a spherical geocentric
         coordinate system).
         All ``easting``, ``northing`` and ``upward`` should be in meters.
@@ -134,7 +140,7 @@ def point_mass_gravity(
     points : list or array
         List or array containing the coordinates of the point masses in the
         following order: ``easting``, ``northing`` and ``upward`` (if
-        coordinates given in Cartesian coordiantes), or ``longitude``,
+        coordinates given in Cartesian coordinates), or ``longitude``,
         ``latitude`` and ``radius`` (if given on a spherical geocentric
         coordinate system).
         All ``easting``, ``northing`` and ``upward`` should be in meters.
