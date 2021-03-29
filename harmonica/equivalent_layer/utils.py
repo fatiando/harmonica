@@ -12,9 +12,7 @@ from numba import jit, prange
 
 
 @jit(nopython=True, parallel=True)
-def jacobian_numba(
-    coordinates, points, jac, greens_function
-):  # pylint: disable=not-an-iterable
+def jacobian_numba(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix using numba to speed things up.
 
