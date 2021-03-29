@@ -11,14 +11,25 @@ from warnings import warn
 from numba import jit, prange
 
 
-@jit(nopython=True, parallel=True)
-def jacobian_numba(coordinates, points, jac, greens_function):
+def pop_extra_coords(kwargs):
     """
-    Calculate the Jacobian matrix using numba to speed things up.
+    Remove extra_coords from kwargs
+    """
+    if "extra_coords" in kwargs:
+        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
+        kwargs.pop("extra_coords")
+
+
+def jacobian(
+    coordinates, points, jac, greens_function
+):  # pylint: disable=not-an-iterable
+    """
+    Calculate the Jacobian matrix
 
     It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
-    The Jacobian is built in parallel in order to reduce the computation time.
+    The Jacobian can be built in parallel using Numba ``jit`` decorator with
+    ``parallel=True``.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
@@ -34,16 +45,16 @@ def jacobian_numba(coordinates, points, jac, greens_function):
             )
 
 
-@jit(nopython=True, parallel=True)
-def predict_numba(
+def predict(
     coordinates, points, coeffs, result, greens_function
 ):  # pylint: disable=not-an-iterable
     """
-    Calculate the predicted data using numba for speeding things up.
+    Calculate the predicted data
 
     It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
-    The prediction is run in parallel in order to reduce the computation time.
+    The prediction can be run in parallel using Numba ``jit`` decorator with
+    ``parallel=True``.
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
@@ -59,10 +70,8 @@ def predict_numba(
             )
 
 
-def pop_extra_coords(kwargs):
-    """
-    Remove extra_coords from kwargs
-    """
-    if "extra_coords" in kwargs:
-        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
-        kwargs.pop("extra_coords")
+# pylint: disable=invalid-name
+predict_numba_serial = jit(nopython=True)(predict)
+predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
+jacobian_numba_serial = jit(nopython=True)(jacobian)
+jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian)
