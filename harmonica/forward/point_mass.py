@@ -168,7 +168,7 @@ def point_mass_gravity(
         point masses.
         Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
-    parallel : bool
+    parallel : bool (optional)
         If True the computations will run in parallel using Numba built-in
         parallelization. If False, the forward model will run on a single core.
         Might be useful to disable parallelization if the forward model is run
