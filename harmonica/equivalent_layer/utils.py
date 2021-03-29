@@ -8,7 +8,7 @@
 Utility functions for equivalent layer gridders
 """
 from warnings import warn
-import numba
+from numba import jit, prange
 
 
 def pop_extra_coords(kwargs):
@@ -33,7 +33,7 @@ def jacobian(
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in numba.prange(east.size):
+    for i in prange(east.size):
         for j in range(point_east.size):
             jac[i, j] = greens_function(
                 east[i],
@@ -58,7 +58,7 @@ def predict(
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in numba.prange(east.size):
+    for i in prange(east.size):
         for j in range(point_east.size):
             result[i] += coeffs[j] * greens_function(
                 east[i],
@@ -71,7 +71,7 @@ def predict(
 
 
 # pylint: disable=invalid-name
-predict_numba_serial = numba.jit(nopython=True)(predict)
-predict_numba_parallel = numba.jit(nopython=True, parallel=True)(predict)
-jacobian_numba_serial = numba.jit(nopython=True)(jacobian)
-jacobian_numba_parallel = numba.jit(nopython=True, parallel=True)(jacobian)
+predict_numba_serial = jit(nopython=True)(predict)
+predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
+jacobian_numba_serial = jit(nopython=True)(jacobian)
+jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian)
