@@ -10,9 +10,12 @@ Test forward modelling for prisms.
 import pytest
 import numpy as np
 import numpy.testing as npt
+import verde as vd
 
 from ..gravity_corrections import bouguer_correction
 from ..forward.prism import prism_gravity, _check_prisms, safe_atan2, safe_log
+
+from .utils import require_numba
 
 
 def test_invalid_field():
@@ -358,3 +361,28 @@ def test_prism_against_infinite_slab():
     assert (diffs[1:] < diffs[:-1]).all()
     # Check if the largest size is close enough to the analytical solution
     npt.assert_allclose(analytical, results[-1])
+
+
+@require_numba
+def test_prisms_parallel_vs_serial():
+    """
+    Check if the parallelized run returns the same results as the serial one
+    """
+    prisms = [
+        [-100, 0, -100, 0, -10, 0],
+        [0, 100, -100, 0, -10, 0],
+        [-100, 0, 0, 100, -10, 0],
+        [0, 100, 0, 100, -10, 0],
+    ]
+    densities = [2000, 3000, 4000, 5000]
+    coordinates = vd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    )
+    for field in ("potential", "g_z"):
+        result_parallel = prism_gravity(
+            coordinates, prisms, densities, field=field, parallel=True
+        )
+        result_serial = prism_gravity(
+            coordinates, prisms, densities, field=field, parallel=False
+        )
+        npt.assert_allclose(result_parallel, result_serial)
