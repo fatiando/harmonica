@@ -42,12 +42,7 @@ prisms = hm.prisms_layer(
 
 # Compute gravity field of prisms on a regular grid of observation points
 coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=1e3)
-gravity = hm.prism_gravity(
-    coordinates,
-    prisms.prisms_layer.get_prisms(),
-    density=prisms.density.values,
-    field="g_z",
-)
+gravity = prisms.prisms_layer.gravity(coordinates, field="g_z")
 
 # Plot gravity field
 plt.pcolormesh(*coordinates[:2], gravity)

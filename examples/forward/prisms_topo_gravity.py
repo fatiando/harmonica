@@ -64,9 +64,7 @@ coordinates = vd.grid_coordinates(
 )
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
-prisms_gravity = hm.prism_gravity(
-    coordinates_projected, prisms.prisms_layer.get_prisms(), prisms.density, field="g_z"
-)
+prisms_gravity = prisms.prisms_layer.gravity(coordinates_projected, field="g_z")
 
 # Make a plot of the computed gravity
 plt.figure(figsize=(7, 6))
