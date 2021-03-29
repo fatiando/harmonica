@@ -153,14 +153,18 @@ def test_nonans_prisms_mask():
     surface = np.arange(20, dtype=float).reshape(shape)
     # No nan in top nor bottom
     layer = prisms_layer((easting, northing), surface, reference)
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
+    mask = (
+        layer.prisms_layer._get_nonans_prisms_mask()
+    )  # pylint: disable=protected-access
     expected_mask = np.ones(shape, dtype=bool)
     npt.assert_allclose(mask, expected_mask)
     # Nans in top
     layer = prisms_layer((easting, northing), surface, reference)
     layer.top[1, 2] = np.nan
     layer.top[2, 3] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
+    mask = (
+        layer.prisms_layer._get_nonans_prisms_mask()
+    )  # pylint: disable=protected-access
     expected_mask = np.ones(shape, dtype=bool)
     expected_mask[1, 2] = False
     expected_mask[2, 3] = False
@@ -169,7 +173,9 @@ def test_nonans_prisms_mask():
     layer = prisms_layer((easting, northing), surface, reference)
     layer.bottom[2, 1] = np.nan
     layer.bottom[3, 2] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
+    mask = (
+        layer.prisms_layer._get_nonans_prisms_mask()
+    )  # pylint: disable=protected-access
     expected_mask = np.ones(shape, dtype=bool)
     expected_mask[2, 1] = False
     expected_mask[3, 2] = False
@@ -181,7 +187,9 @@ def test_nonans_prisms_mask():
     layer.bottom[1, 2] = np.nan
     layer.bottom[2, 1] = np.nan
     layer.bottom[3, 2] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
+    mask = (
+        layer.prisms_layer._get_nonans_prisms_mask()
+    )  # pylint: disable=protected-access
     expected_mask = np.ones(shape, dtype=bool)
     expected_mask[1, 2] = False
     expected_mask[2, 3] = False
@@ -272,4 +280,4 @@ def test_prisms_layer_gravity_density_nans():
         (easting, northing), surface, reference, properties={"density": density}
     )
     with pytest.raises(ValueError):
-        layer.prisms_layer.gravity(coordinates, field="g_z"),
+        layer.prisms_layer.gravity(coordinates, field="g_z")
