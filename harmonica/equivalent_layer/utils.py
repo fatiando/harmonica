@@ -26,7 +26,7 @@ def jacobian(
     """
     Calculate the Jacobian matrix
 
-    It works both for Cartesian and spherical coordiantes. We need to pass the
+    It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
     The Jacobian can be built in parallel using Numba ``jit`` decorator with
     ``parallel=True``.
@@ -51,7 +51,7 @@ def predict(
     """
     Calculate the predicted data
 
-    It works both for Cartesian and spherical coordiantes. We need to pass the
+    It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
     The prediction can be run in parallel using Numba ``jit`` decorator with
     ``parallel=True``.

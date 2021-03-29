@@ -45,7 +45,7 @@ def test_pop_extra_coords():
 def test_eql_harmonic_cartesian():
     """
     Check that predictions are reasonable when interpolating from one grid to
-    a denser grid. Use Cartesian coordiantes.
+    a denser grid. Use Cartesian coordinates.
     """
     region = (-3e3, -1e3, 5e3, 7e3)
     # Build synthetic point masses
@@ -223,7 +223,7 @@ def test_eql_harmonic_cartesian_parallel():
 def test_eql_harmonic_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
-    a denser grid. Use spherical coordiantes.
+    a denser grid. Use spherical coordinates.
     """
     region = (-70, -60, -40, -30)
     radius = 6400e3

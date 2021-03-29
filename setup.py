@@ -45,15 +45,8 @@ PACKAGE_DATA = {
     "harmonica.datasets": ["registry.txt"],
     "harmonica.tests": ["data/*", "baseline/*"],
 }
-INSTALL_REQUIRES = [
-    "numpy",
-    "scipy",
-    "pandas",
-    "numba",
-    "pooch>=0.7.0",
-    "xarray",
-    "verde>=1.5.0",
-]
+with open("requirements.txt") as f:
+    INSTALL_REQUIRES = f.readlines()
 PYTHON_REQUIRES = ">=3.6"
 
 # Configuration for setuptools-scm
