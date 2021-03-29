@@ -1,10 +1,10 @@
-# Configuration for testing and deploying with GitHub Actions
+# Build the documentation and deploy to GitHub Pages using GitHub Actions.
 #
 # NOTE: Pin actions to a specific commit to avoid having the authentication
 # token stolen if the Action is compromised. See the comments and links here:
 # https://github.com/pypa/gh-action-pypi-publish/issues/27
 #
-name: test
+name: docs
 
 # Only build PRs, the master branch, and releases. Pushes to branches will only
 # be built when a PR is opened. This avoids duplicated buids in PRs comming
@@ -22,38 +22,19 @@ on:
 defaults:
   run:
     # The -l {0} is necessary for conda environments to be activated
+    # But this breaks on MacOS if using actions/setup-python:
+    # https://github.com/actions/setup-python/issues/132
     shell: bash -l {0}
 
 jobs:
   #############################################################################
-  # Run tests, build the docs, and deploy if needed
-  test:
-    name: ${{ matrix.os }} py${{ matrix.python }} ${{ matrix.dependencies }} [test]
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      # Otherwise, the workflow would stop if a single job fails. We want to
-      # run all of them to catch failures in different combinations.
-      fail-fast: false
-      matrix:
-        os: [ubuntu, macos, windows]
-        python: [3.6, 3.7, 3.8]
-        # If "optional", will install non-required dependencies in the build
-        # environment. Otherwise, only required dependencies are installed.
-        dependencies: [""]
-        include:
-          - os: ubuntu
-            python: 3.8
-          - os: macos
-            python: 3.8
-          - os: windows
-            python: 3.8
+  # Build the docs
+  build:
+    runs-on: ubuntu-latest
     env:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
-      CONDA_INSTALL_EXTRA:
-      # Used to tag codecov submissions
-      OS: ${{ matrix.os }}
-      PYTHON: ${{ matrix.python }}
+      PYTHON: 3.8
 
     steps:
       # Cancel any previous run of the test job
@@ -85,12 +66,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.0.1
         with:
-          python-version: ${{ matrix.python }}
+          python-version: ${{ env.PYTHON }}
           miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge
@@ -109,6 +90,10 @@ jobs:
           if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
               echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
               cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
+          fi
+          if [ "$DEPENDENCIES" == "optional" ]; then
+              echo "Capturing optional dependencies from $CONDA_REQUIREMENTS_OPTIONAL"
+              cat $CONDA_REQUIREMENTS_OPTIONAL >> $requirements_file
           fi
           if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
               echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
@@ -138,61 +123,89 @@ jobs:
       - name: Install the package
         run: pip install --no-deps dist/*.whl
 
-      - name: Copy test data to cache
-        run: |
-          echo "Copy data to " ${HARMONICA_DATA_DIR}/master
-          set -x -e
-          mkdir -p ${HARMONICA_DATA_DIR}/master
-          cp -r data/* ${HARMONICA_DATA_DIR}/master
-        env:
-          # Define directory where sample data will be copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
-
-      - name: Run the tests
-        run: |
-          ls $HARMONICA_DATA_DIR
-          if [ ${{ matrix.os }} == 'ubuntu' ]; then
-              # Use NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
-              # endless loop on some test functions that make use of Numba
-              NUMBA_THREADING_LAYER=workqueue make test
-          else
-              make test
-          fi
-        env:
-          # Define directory where sample data have been copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
-
-      # -----------------------------------------------------------
-      # The following steps will run only on Ubuntu with Python 3.8
-      # -----------------------------------------------------------
-
       - name: Build the documentation
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: make -C doc clean all
-        env:
-          # Define directory where sample data have been copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
-      # Store the docs as a build artifact on GitHub so we can check it if
-      # needed.
+      # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         uses: actions/upload-artifact@v2
         with:
-          name: docs-${{ matrix.os }}-${{ matrix.python }}${{ matrix.dependencies }}-{{ github.sha }}
+          name: docs-${{ github.sha }}
           path: doc/_build/html
 
-      - name: Convert coverage report to XML for codecov
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
-        run: coverage xml
+  #############################################################################
+  # Publish the documentation to gh-pages
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release' || github.event_name == 'push'
 
-      - name: Upload coverage to Codecov
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
-        uses: codecov/codecov-action@v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Fetch the built docs from the "build" job
+      - name: Download HTML documentation artifact
+        uses: actions/download-artifact@v2
         with:
-          file: ./coverage.xml
-          env_vars: OS,PYTHON
-          # Don't mark the job as failed if the upload fails for some reason.
-          # It does sometimes but shouldn't be the reason for running
-          # everything again unless something else is broken.
-          fail_ci_if_error: false
+          name: docs-${{ github.sha }}
+          path: doc/_build/html
+
+      - name: Checkout the gh-pages branch in a separate folder
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        with:
+          ref: gh-pages
+          # Checkout to this folder instead of the current one
+          path: deploy
+          # Download the entire history
+          fetch-depth: 0
+
+      - name: Push the built HTML to gh-pages
+        run: |
+          # Detect if this is a release or from the master branch
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+              # Get the tag name without the "refs/tags/" part
+              version="${GITHUB_REF#refs/*/}"
+          else
+              version=dev
+          fi
+          echo "Deploying version: $version"
+          # Make the new commit message. Needs to happen before cd into deploy
+          # to get the right commit hash.
+          message="Deploy $version from $(git rev-parse --short HEAD)"
+          cd deploy
+          # Need to have this file so that Github doesn't try to run Jekyll
+          touch .nojekyll
+          # Delete all the files and replace with our new  set
+          echo -e "\nRemoving old files from previous builds of ${version}:"
+          rm -rvf ${version}
+          echo -e "\nCopying HTML files to ${version}:"
+          cp -Rvf ../doc/_build/html/ ${version}/
+          # If this is a new release, update the link from /latest to it
+          if [[ "${version}" != "dev" ]]; then
+              echo -e "\nSetup link from ${version} to 'latest'."
+              rm -f latest
+              ln -sf ${version} latest
+          fi
+          # Stage the commit
+          git add -A .
+          echo -e "\nChanges to be applied:"
+          git status
+          # Configure git to be the GitHub Actions account
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          # If this is a dev build and the last commit was from a dev build
+          # (detect if "dev" was in the previous commit message), reuse the
+          # same commit
+          if [[ "${version}" == "dev" && `git log -1 --format='%s'` == *"dev"* ]]; then
+              echo -e "\nAmending last commit:"
+              git commit --amend --reset-author -m "$message"
+          else
+              echo -e "\nMaking a new commit:"
+              git commit -m "$message"
+          fi
+          # Make the push quiet just in case there is anything that could leak
+          # sensitive information.
+          echo -e "\nPushing changes to gh-pages."
+          git push -fq origin gh-pages 2>&1 >/dev/null
+          echo -e "\nFinished uploading generated files."
