@@ -13,7 +13,13 @@ from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
 
-from .utils import jacobian_numba, predict_numba, pop_extra_coords
+from .utils import (
+    pop_extra_coords,
+    predict_numba_serial,
+    predict_numba_parallel,
+    jacobian_numba_serial,
+    jacobian_numba_parallel,
+)
 from ..forward.utils import distance_spherical
 
 
@@ -77,6 +83,10 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         this constant *relative_depth*. Use positive numbers (negative numbers
         would mean point sources are above the data points). Ignored if
         *points* is specified.
+    parallel : bool
+        If True any predictions and Jacobian building is carried out in
+        parallel through Numba's ``jit.prange``, reducing the computation time.
+        If False, these tasks will be run on a single CPU. Default to True.
 
     Attributes
     ----------
@@ -97,15 +107,21 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
     # Overwrite the defalt name for the upward coordinate.
     extra_coords_name = "radius"
 
+    # Define dispatcher for Numba functions with or without parallelization
+    _predict_kernel = {False: predict_numba_serial, True: predict_numba_parallel}
+    _jacobian_kernel = {False: jacobian_numba_serial, True: jacobian_numba_parallel}
+
     def __init__(
         self,
         damping=None,
         points=None,
         relative_depth=500,
+        parallel=True,
     ):
         self.damping = damping
         self.points = points
         self.relative_depth = relative_depth
+        self.parallel = parallel
         # Define Green's function for spherical coordinates
         self.greens_function = greens_func_spherical
 
@@ -179,7 +195,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         dtype = coordinates[0].dtype
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         data = np.zeros(size, dtype=dtype)
-        predict_numba(
+        self._predict_kernel[self.parallel](
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )
         return data.reshape(shape)
@@ -216,7 +232,9 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=dtype)
-        jacobian_numba(coordinates, points, jac, self.greens_function)
+        self._jacobian_kernel[self.parallel](
+            coordinates, points, jac, self.greens_function
+        )
         return jac
 
     def grid(
