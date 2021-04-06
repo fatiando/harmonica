@@ -8,8 +8,8 @@
 """
 Test prisms layer
 """
-import pytest
 import warnings
+import pytest
 import numpy as np
 import numpy.testing as npt
 import verde as vd
