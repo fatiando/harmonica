@@ -138,7 +138,7 @@ class DatasetAccessorPrismsLayer:
     .. warning::
 
         This class is not intended to be initialized.
-        Use the :func:`prisms_layer` accessor for accessing the methods and
+        Use the `prisms_layer` accessor for accessing the methods and
         attributes of this class.
 
     See also
