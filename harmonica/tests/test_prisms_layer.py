@@ -22,7 +22,7 @@ def test_prisms_layer():
     Check if a layer of prisms is property constructed
     """
     easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 10, 4)
+    northing = np.linspace(7, 13, 4)
     reference = 0
     surface = np.arange(20, dtype=float).reshape(4, 5)
     layer = prisms_layer((easting, northing), surface, reference)
@@ -85,6 +85,34 @@ def test_prisms_layer_properties():
     )
     npt.assert_allclose(layer.density, density)
     npt.assert_allclose(layer.suceptibility, suceptibility)
+
+
+def test_prisms_layer_no_regular_grid():
+    """
+    Check if error is raised if easting and northing are not regular
+    """
+    reference = 0
+    surface = np.arange(20, dtype=float).reshape(4, 5)
+    # Easting as non evenly spaced set of coordinates
+    easting = np.linspace(-1, 3, 5)
+    northing = np.linspace(7, 13, 4)
+    easting[3] = -22
+    with pytest.raises(ValueError):
+        prisms_layer(
+            (easting, northing),
+            surface,
+            reference,
+        )
+    # Northing as non evenly spaced set of coordinates
+    easting = np.linspace(-1, 3, 5)
+    northing = np.linspace(7, 13, 4)
+    northing[3] = 12.98
+    with pytest.raises(ValueError):
+        prisms_layer(
+            (easting, northing),
+            surface,
+            reference,
+        )
 
 
 def test_prisms_layer_attributes():

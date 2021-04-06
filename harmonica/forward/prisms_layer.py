@@ -45,7 +45,7 @@ def prisms_layer(
         following order: ``easting``, ``northing``. The arrays must be 1d
         arrays containing the coordiantes of the centers per axis, or could be
         2d arrays as the ones returned by :func:``numpy.meshgrid``. All
-        coordinates should be in meters.
+        coordinates should be in meters and should define a regular grid.
     surface : 2d-array
         Array used to create the uppermost boundary of the prisms layer. All
         heights should be in meters. On every point where ``surface`` is below
@@ -123,12 +123,27 @@ def prisms_layer(
     prisms = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
     )
+    _check_regular_grid(prisms.easting.values, prisms.northing.values)
     # Append some attributes to the xr.Dataset
     attrs = {"coords_units": "meters", "properties_units": "SI"}
     prisms.attrs = attrs
     # Create the top and bottom coordinates of the prisms
     prisms.prisms_layer.update_top_bottom(surface, reference)
     return prisms
+
+
+def _check_regular_grid(easting, northing):
+    """
+    Check if the easting and northing coordinates define a regular grid
+
+    .. note:
+
+        This function should live inside Verde in the future
+    """
+    if not np.allclose(easting[1] - easting[0], easting[1:] - easting[:-1]):
+        raise ValueError("Passed easting coordiantes are not evenly spaced.")
+    if not np.allclose(northing[1] - northing[0], northing[1:] - northing[:-1]):
+        raise ValueError("Passed northing coordiantes are not evenly spaced.")
 
 
 @xr.register_dataset_accessor("prisms_layer")
@@ -171,10 +186,10 @@ class DatasetAccessorPrismsLayer:
         s_east : float
             Spacing between center of prisms on the West-East direction.
         """
-        return (
-            self._obj.northing.values[1] - self._obj.northing.values[0],
-            self._obj.easting.values[1] - self._obj.easting.values[0],
-        )
+        easting, northing = self._obj.easting.values, self._obj.northing.values
+        _check_regular_grid(easting, northing)
+        s_north, s_east = northing[1] - northing[0], easting[1] - easting[0]
+        return s_north, s_east
 
     @property
     def boundaries(self):
@@ -231,10 +246,11 @@ class DatasetAccessorPrismsLayer:
         northing : float or array
             Northing coordinate of the center of the prism
         """
-        west = easting - self.spacing[1] / 2
-        east = easting + self.spacing[1] / 2
-        south = northing - self.spacing[0] / 2
-        north = northing + self.spacing[0] / 2
+        spacing = self.spacing
+        west = easting - spacing[1] / 2
+        east = easting + spacing[1] / 2
+        south = northing - spacing[0] / 2
+        north = northing + spacing[0] / 2
         return west, east, south, north
 
     def update_top_bottom(self, surface, reference):
