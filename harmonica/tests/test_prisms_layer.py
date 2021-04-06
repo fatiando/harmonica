@@ -87,9 +87,9 @@ def test_prisms_layer_properties():
     npt.assert_allclose(layer.suceptibility, suceptibility)
 
 
-def test_prisms_layer_methods():
+def test_prisms_layer_attributes():
     """
-    Check methods of the DatasetAccessorPrismsLayer class
+    Check attributes of the DatasetAccessorPrismsLayer class
     """
     easting = np.linspace(1, 3, 5)
     northing = np.linspace(7, 10, 4)
