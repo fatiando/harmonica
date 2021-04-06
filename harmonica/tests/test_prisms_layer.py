@@ -9,6 +9,7 @@
 Test prisms layer
 """
 import pytest
+import warnings
 import numpy as np
 import numpy.testing as npt
 import verde as vd
@@ -107,9 +108,9 @@ def test_prisms_layer_methods():
     assert layer.prisms_layer.shape == (4, 5)
 
 
-def test_prisms_layer_get_prisms():
+def test_prisms_layer_to_prisms():
     """
-    Check the get_prisms() method
+    Check the _to_prisms() method
     """
     coordinates = (np.array([0, 1]), np.array([0, 1]))
     reference = np.arange(4).reshape(2, 2)
@@ -121,7 +122,7 @@ def test_prisms_layer_get_prisms():
         [-0.5, 0.5, 0.5, 1.5, 2, 12],
         [0.5, 1.5, 0.5, 1.5, 3, 13],
     ]
-    npt.assert_allclose(expected_prisms, layer.prisms_layer.get_prisms())
+    npt.assert_allclose(expected_prisms, layer.prisms_layer._to_prisms())
 
 
 def test_prisms_layer_get_prism_by_index():
@@ -152,42 +153,100 @@ def test_nonans_prisms_mask():
     shape = (northing.size, easting.size)
     reference = 0
     surface = np.arange(20, dtype=float).reshape(shape)
+
     # No nan in top nor bottom
+    # ------------------------
     layer = prisms_layer((easting, northing), surface, reference)
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
     expected_mask = np.ones(shape, dtype=bool)
+    mask = layer.prisms_layer._get_nonans_mask()
     npt.assert_allclose(mask, expected_mask)
-    # Nans in top
+
+    # Nans in top only
+    # ----------------
     layer = prisms_layer((easting, northing), surface, reference)
-    layer.top[1, 2] = np.nan
-    layer.top[2, 3] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
     expected_mask = np.ones(shape, dtype=bool)
-    expected_mask[1, 2] = False
-    expected_mask[2, 3] = False
+    for index in ((1, 2), (2, 3)):
+        layer.top[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.prisms_layer._get_nonans_mask()
     npt.assert_allclose(mask, expected_mask)
+
     # Nans in bottom only
+    # -------------------
     layer = prisms_layer((easting, northing), surface, reference)
-    layer.bottom[2, 1] = np.nan
-    layer.bottom[3, 2] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
     expected_mask = np.ones(shape, dtype=bool)
-    expected_mask[2, 1] = False
-    expected_mask[3, 2] = False
+    for index in ((2, 1), (3, 2)):
+        layer.bottom[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.prisms_layer._get_nonans_mask()
     npt.assert_allclose(mask, expected_mask)
+
     # Nans in top and bottom
+    # ----------------------
     layer = prisms_layer((easting, northing), surface, reference)
-    layer.top[1, 2] = np.nan
-    layer.top[2, 3] = np.nan
-    layer.bottom[1, 2] = np.nan
-    layer.bottom[2, 1] = np.nan
-    layer.bottom[3, 2] = np.nan
-    mask = layer.prisms_layer._get_nonans_prisms_mask()
     expected_mask = np.ones(shape, dtype=bool)
-    expected_mask[1, 2] = False
-    expected_mask[2, 3] = False
-    expected_mask[2, 1] = False
-    expected_mask[3, 2] = False
+    for index in ((1, 2), (2, 3)):
+        layer.top[index] = np.nan
+        expected_mask[index] = False
+    for index in ((1, 2), (2, 1), (3, 2)):
+        layer.bottom[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.prisms_layer._get_nonans_mask()
+    npt.assert_allclose(mask, expected_mask)
+
+
+def test_nonans_prisms_mask_property():
+    """
+    Check if the method masks the property and raises a warning
+    """
+    easting = np.linspace(1, 3, 5)
+    northing = np.linspace(7, 10, 4)
+    shape = (northing.size, easting.size)
+    reference = 0
+    surface = np.arange(20, dtype=float).reshape(shape)
+    density = 2670 * np.ones_like(surface)
+
+    # Nans in top and property (on the same prisms)
+    # ---------------------------------------------
+    expected_mask = np.ones_like(surface, dtype=bool)
+    indices = ((1, 2), (2, 3))
+    # Set some elements of surface and density as nans
+    for index in indices:
+        surface[index] = np.nan
+        density[index] = np.nan
+        expected_mask[index] = False
+    layer = prisms_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    # Check if no warning is raised
+    with warnings.catch_warnings(record=True) as warn:
+        mask = layer.prisms_layer._get_nonans_mask(property_name="density")
+        assert len(warn) == 0
+    npt.assert_allclose(mask, expected_mask)
+
+    # Nans in top and property (not precisely on the same prisms)
+    # -----------------------------------------------------------
+    surface = np.arange(20, dtype=float).reshape(shape)
+    density = 2670 * np.ones_like(surface)
+    expected_mask = np.ones_like(surface, dtype=bool)
+    # Set some elements of surface as nans
+    indices = ((1, 2), (2, 3))
+    for index in indices:
+        surface[index] = np.nan
+        expected_mask[index] = False
+    # Set a different set of elements of density as nans
+    indices = ((2, 2), (0, 1))
+    for index in indices:
+        density[index] = np.nan
+        expected_mask[index] = False
+    layer = prisms_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    # Check if warning is raised
+    with warnings.catch_warnings(record=True) as warn:
+        mask = layer.prisms_layer._get_nonans_mask(property_name="density")
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, UserWarning)
     npt.assert_allclose(mask, expected_mask)
 
 
@@ -209,7 +268,7 @@ def test_prisms_layer_gravity():
     for field in ("potential", "g_z"):
         expected_result = prism_gravity(
             coordinates,
-            prisms=layer.prisms_layer.get_prisms(),
+            prisms=layer.prisms_layer._to_prisms(),
             density=density,
             field=field,
         )
@@ -255,22 +314,33 @@ def test_prisms_layer_gravity_with_nans():
 
 def test_prisms_layer_gravity_density_nans():
     """
-    Check if error is raised after a nan is found in density array
+    Check if prisms is ignored after a nan is found in density array
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
     easting = np.linspace(1, 3, 5)
     northing = np.linspace(7, 10, 4)
     shape = (northing.size, easting.size)
     reference = 0
+    # Create one layer that has nans on the density array
     surface = np.arange(20, dtype=float).reshape(shape)
+    indices = [(3, 3), (2, 1)]
+    for index in indices:
+        surface[index] = np.nan
     density = np.ones_like(surface, dtype=float)
-    # Set a nan on the surface array and a nan on a different element of the
-    # density array
-    surface[2, 4] = np.nan
-    density[3, 2] = np.nan
-    # Create a layer of prisms
-    layer = prisms_layer(
+    layer_nans = prisms_layer(
         (easting, northing), surface, reference, properties={"density": density}
     )
-    with pytest.raises(ValueError):
-        layer.prisms_layer.gravity(coordinates, field="g_z")
+    # Create one layer that has zero density but no nans
+    surface = np.arange(20, dtype=float).reshape(shape)
+    density = np.ones_like(surface, dtype=float)
+    for index in indices:
+        density[index] = 0
+    layer_nonans = prisms_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    # Check if the two layers generate the same gravity field
+    for field in ("potential", "g_z"):
+        npt.assert_allclose(
+            layer_nans.prisms_layer.gravity(coordinates, field=field),
+            layer_nonans.prisms_layer.gravity(coordinates, field=field),
+        )

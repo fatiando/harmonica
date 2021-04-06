@@ -7,6 +7,7 @@
 """
 Define a layer of prisms
 """
+import warnings
 import numpy as np
 import xarray as xr
 import verde as vd
@@ -323,21 +324,16 @@ class DatasetAccessorPrismsLayer:
         --------
         harmonica.prism_gravity
         """
-        boundaries = self.get_prisms()
-        # Get the mask for selecting only the boundaries of the prisms that
-        # have no nans on their top and bottom
-        nonans_boundaries = self._get_nonans_prisms_mask().ravel()
-        # Get density array
-        density = getattr(self._obj, density_name).values.ravel()
-        # Select only the boundaries and density elements for nonans prisms
-        boundaries = boundaries[nonans_boundaries]
-        density = density[nonans_boundaries]
-        # Check if the new density array has no nans
-        if np.isnan(density).any():
-            raise ValueError(
-                "Invalid density property found: "
-                + "the density array shouldn't contain any np.nan's."
-            )
+        # Get boundaries and density of the prisms
+        boundaries = self._to_prisms()
+        density = self._obj[density_name].values
+        # Get the mask for selecting only the prisms whose top boundary, bottom
+        # boundary and density have no nans
+        mask = self._get_nonans_mask(property_name=density_name)
+        # Select only the boundaries and density elements for masked prisms
+        boundaries = boundaries[mask.ravel()]
+        density = density[mask]
+        # Return gravity field of prisms
         return prism_gravity(
             coordinates,
             prisms=boundaries,
@@ -346,21 +342,44 @@ class DatasetAccessorPrismsLayer:
             **kwargs,
         )
 
-    def _get_nonans_prisms_mask(self):
+    def _get_nonans_mask(self, property_name=None):
         """
-        Build a mask for selecting prisms with no nans on top and bottom
+        Build a mask for prisms with no nans on top, bottom or a property
+
+        Parameters
+        ----------
+        property_name : str (optional)
+            Name of the property layer (or ``data_var`` of the
+            :class:`xarray.Dataset`) that will be used for masking the prisms
+            in the layer.
 
         Returns
         -------
         mask : 2d-array
             Array of bools that can be used as a mask for selecting prisms with
-            no nans on top and bottom boundaries.
+            no nans on top boundaries, bottom boundaries and the passed
+            property.
         """
-        nonans_top = np.logical_not(np.isnan(self._obj.top.values))
-        nonans_bottom = np.logical_not(np.isnan(self._obj.bottom.values))
-        return np.logical_and(nonans_top, nonans_bottom)
+        # Mask the prisms that contains no nans on top and bottom boundaries
+        mask = np.logical_and(
+            np.logical_not(np.isnan(self._obj.top.values)),
+            np.logical_not(np.isnan(self._obj.bottom.values)),
+        )
+        # Mask the prisms that contains nans on the selected property
+        if property_name is not None:
+            mask_property = np.logical_not(np.isnan(self._obj[property_name].values))
+            # Warn if a nan is found within the masked property
+            if not mask_property[mask].all():
+                warnings.warn(
+                    'Found missing values in "{}" property '.format(property_name)
+                    + "of the prisms layer. "
+                    + "The prisms with a nan as "
+                    + '"{}" will be ignored.'.format(property_name)
+                )
+            mask = np.logical_and(mask, mask_property)
+        return mask
 
-    def get_prisms(self):
+    def _to_prisms(self):
         """
         Return the boundaries of each prism of the layer
 
