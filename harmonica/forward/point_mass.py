@@ -8,14 +8,20 @@
 Forward modelling for point masses
 """
 import numpy as np
-from numba import jit
+from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
 
 
 def point_mass_gravity(
-    coordinates, points, masses, field, coordinate_system="cartesian", dtype="float64"
+    coordinates,
+    points,
+    masses,
+    field,
+    coordinate_system="cartesian",
+    parallel=True,
+    dtype="float64",
 ):
     r"""
     Compute gravitational fields of point masses.
@@ -162,6 +168,11 @@ def point_mass_gravity(
         point masses.
         Available coordinates systems: ``cartesian``, ``spherical``.
         Default ``cartesian``.
+    parallel : bool (optional)
+        If True the computations will run in parallel using Numba built-in
+        parallelization. If False, the forward model will run on a single core.
+        Might be useful to disable parallelization if the forward model is run
+        by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
         Data type assigned to resulting gravitational field. Default to
         ``np.float64``.
@@ -175,27 +186,10 @@ def point_mass_gravity(
         The potential is given in SI units, the accelerations in mGal and the
         Marussi tensor components in Eotvos.
     """
-    # Organize dispatchers and kernel functions inside dictionaries
-    dispatchers = {
-        "cartesian": jit_point_mass_cartesian,
-        "spherical": jit_point_mass_spherical,
-    }
-    kernels = {
-        "cartesian": {
-            "potential": kernel_potential_cartesian,
-            "g_z": kernel_g_z_cartesian,
-            "g_northing": kernel_g_northing_cartesian,
-            "g_easting": kernel_g_easting_cartesian,
-        },
-        "spherical": {
-            "potential": kernel_potential_spherical,
-            "g_z": kernel_g_z_spherical,
-        },
-    }
-    # Sanity checks for coordinate_system and field
-    check_coordinate_system(coordinate_system)
-    if field not in kernels[coordinate_system]:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+    # Sanity checks for coordinate_system
+    check_coordinate_system(
+        coordinate_system, valid_coord_systems=("cartesian", "spherical")
+    )
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -210,8 +204,9 @@ def point_mass_gravity(
             + "mismatch the number of points ({})".format(points[0].size)
         )
     # Compute gravitational field
-    dispatchers[coordinate_system](
-        *coordinates, *points, masses, result, kernels[coordinate_system][field]
+    kernel = get_kernel(coordinate_system, field)
+    dispatcher(coordinate_system, parallel)(
+        *coordinates, *points, masses, result, kernel
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
@@ -220,39 +215,47 @@ def point_mass_gravity(
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True)
-def jit_point_mass_cartesian(
-    easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
-):  # pylint: disable=invalid-name
+def dispatcher(coordinate_system, parallel):
     """
-    Compute gravitational field of point masses in Cartesian coordinates
+    Return the appropriate forward model function
+    """
+    dispatchers = {
+        "cartesian": {
+            True: point_mass_cartesian_parallel,
+            False: point_mass_cartesian_serial,
+        },
+        "spherical": {
+            True: point_mass_spherical_parallel,
+            False: point_mass_spherical_serial,
+        },
+    }
+    return dispatchers[coordinate_system][parallel]
 
-    Parameters
-    ----------
-    easting, northing, upward : 1d-arrays
-        Coordinates of computation points in Cartesian coordinate system.
-    easting_p, northing_p, upward_p : 1d-arrays
-        Coordinates of point masses in Cartesian coordinate system.
-    masses : 1d-array
-        Mass of each point mass in SI units.
-    out : 1d-array
-        Array where the gravitational field on each computation point will be
-        appended.
-        It must have the same size of ``easting``, ``northing`` and ``upward``.
-    kernel : func
-        Kernel function that will be used to compute the gravitational field on
-        the computation points.
+
+def get_kernel(coordinate_system, field):
     """
-    for l in range(easting.size):
-        for m in range(easting_p.size):
-            out[l] += masses[m] * kernel(
-                easting[l],
-                northing[l],
-                upward[l],
-                easting_p[m],
-                northing_p[m],
-                upward_p[m],
-            )
+    Return the appropriate kernel
+    """
+    kernels = {
+        "cartesian": {
+            "potential": kernel_potential_cartesian,
+            "g_z": kernel_g_z_cartesian,
+            "g_northing": kernel_g_northing_cartesian,
+            "g_easting": kernel_g_easting_cartesian,
+        },
+        "spherical": {
+            "potential": kernel_potential_spherical,
+            "g_z": kernel_g_z_spherical,
+            "g_northing": None,
+            "g_easting": None,
+        },
+    }
+    if field not in kernels[coordinate_system]:
+        raise ValueError("Gravitational field '{}' not recognized".format(field))
+    kernel = kernels[coordinate_system][field]
+    if kernel is None:
+        raise NotImplementedError
+    return kernel
 
 
 @jit(nopython=True)
@@ -312,9 +315,69 @@ def kernel_g_easting_cartesian(
 
 
 @jit(nopython=True)
-def jit_point_mass_spherical(
+def kernel_potential_spherical(
+    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+):
+    """
+    Kernel function for potential gravitational field in spherical coordinates
+    """
+    distance, _, _ = distance_spherical_core(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
+    return 1 / distance
+
+
+@jit(nopython=True)
+def kernel_g_z_spherical(
+    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+):
+    """
+    Kernel for downward component of gravitational gradient in spherical coords
+    """
+    distance, cospsi, _ = distance_spherical_core(
+        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
+    )
+    delta_z = radius - radius_p * cospsi
+    return delta_z / distance ** 3
+
+
+def point_mass_cartesian(
+    easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
+):  # pylint: disable=invalid-name,not-an-iterable
+    """
+    Compute gravitational field of point masses in Cartesian coordinates
+
+    Parameters
+    ----------
+    easting, northing, upward : 1d-arrays
+        Coordinates of computation points in Cartesian coordinate system.
+    easting_p, northing_p, upward_p : 1d-arrays
+        Coordinates of point masses in Cartesian coordinate system.
+    masses : 1d-array
+        Mass of each point mass in SI units.
+    out : 1d-array
+        Array where the gravitational field on each computation point will be
+        appended.
+        It must have the same size of ``easting``, ``northing`` and ``upward``.
+    kernel : func
+        Kernel function that will be used to compute the gravitational field on
+        the computation points.
+    """
+    for l in prange(easting.size):
+        for m in range(easting_p.size):
+            out[l] += masses[m] * kernel(
+                easting[l],
+                northing[l],
+                upward[l],
+                easting_p[m],
+                northing_p[m],
+                upward_p[m],
+            )
+
+
+def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):  # pylint: disable=invalid-name
+):  # pylint: disable=invalid-name,not-an-iterable
     """
     Compute gravitational field of point masses in spherical coordinates
 
@@ -347,7 +410,7 @@ def jit_point_mass_spherical(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravitational field
-    for l in range(longitude.size):
+    for l in prange(longitude.size):
         for m in range(longitude_p.size):
             out[l] += masses[m] * kernel(
                 longitude[l],
@@ -361,28 +424,9 @@ def jit_point_mass_spherical(
             )
 
 
-@jit(nopython=True)
-def kernel_potential_spherical(
-    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
-):
-    """
-    Kernel function for potential gravitational field in spherical coordinates
-    """
-    distance, _, _ = distance_spherical_core(
-        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
-    )
-    return 1 / distance
-
-
-@jit(nopython=True)
-def kernel_g_z_spherical(
-    longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
-):
-    """
-    Kernel for downward component of gravitational gradient in spherical coords
-    """
-    distance, cospsi, _ = distance_spherical_core(
-        longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
-    )
-    delta_z = radius - radius_p * cospsi
-    return delta_z / distance ** 3
+# Define jitted versions of the forward modelling functions
+# pylint: disable=invalid-name
+point_mass_cartesian_serial = jit(nopython=True)(point_mass_cartesian)
+point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(point_mass_cartesian)
+point_mass_spherical_serial = jit(nopython=True)(point_mass_spherical)
+point_mass_spherical_parallel = jit(nopython=True, parallel=True)(point_mass_spherical)
