@@ -70,7 +70,14 @@ def fetch_geoid_earth():
 
     """
     fname = REGISTRY.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
+    # The data are stored as ints and data as float32 to save space on the
+    # data file. Cast them to float64 to avoid integer division errors.
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
@@ -98,9 +105,14 @@ def fetch_gravity_earth():
 
     """
     fname = REGISTRY.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
-    # The heights are stored as ints and data as float32 to save space on the
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
+    # The data are stored as ints and data as float32 to save space on the
     # data file. Cast them to float64 to avoid integer division errors.
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
@@ -129,9 +141,14 @@ def fetch_topography_earth():
 
     """
     fname = REGISTRY.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
     # The data are stored as int16 to save disk space. Cast them to floats to
     # avoid integer division problems when processing.
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
