@@ -215,3 +215,31 @@ def fetch_south_africa_gravity():
     fname = REGISTRY.fetch("south-africa-gravity.ast.xz")
     columns = ["latitude", "longitude", "elevation", "gravity"]
     return pd.read_csv(fname, sep=r"\s+", names=columns, compression="xz")
+
+
+def fetch_south_africa_topography():
+    """
+    Fetch downsampled ETOPO1 topography grid for South Africa
+
+    The grid is based on the ETOPO1 model [AmanteEakins2009]_. The original
+    model has 1 arc-minute grid spacing but here we downsampled to 0.1 degree
+    grid spacing to save space and download times and cut it to the South
+    Africa region.
+
+    ETOPO1 heights are referenced to "sea level".
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    grid : :class:`xarray.Dataset`
+        The topography grid (in meters) relative to sea level. Coordinates are
+        geodetic latitude and longitude.
+
+    """
+    fname = REGISTRY.fetch(
+        "south-africa-topography.nc.xz", processor=pooch.Decompress()
+    )
+    data = xr.open_dataset(fname, engine="scipy")
+    return data

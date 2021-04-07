@@ -15,8 +15,10 @@ from .gravity_corrections import bouguer_correction
 from .forward.point_mass import point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
+from .forward.prisms_layer import prisms_layer, DatasetAccessorPrismsLayer
 from .equivalent_layer.harmonic import EQLHarmonic
 from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
+
 
 # Get the version number through setuptools-scm
 __version__ = version.version
