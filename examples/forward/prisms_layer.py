@@ -46,6 +46,11 @@ gravity = prisms.prisms_layer.gravity(coordinates, field="g_z")
 
 # Plot gravity field
 plt.pcolormesh(*coordinates[:2], gravity)
+plt.colorbar(label="mGal", shrink=0.8)
 plt.gca().set_aspect("equal")
-plt.colorbar()
+plt.ticklabel_format(axis="both", style="sci", scilimits=(0, 0))
+plt.title("Gravity acceleration of a layer of prisms")
+plt.xlabel("easting [m]")
+plt.ylabel("northing [m]")
+plt.tight_layout()
 plt.show()
