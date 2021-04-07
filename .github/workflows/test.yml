@@ -44,7 +44,6 @@ jobs:
         dependencies: [""]
     env:
       # Define directory where sample data will be copied
-      HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
       CONDA_INSTALL_EXTRA: ""
@@ -146,6 +145,9 @@ jobs:
           set -x -e
           mkdir -p $HARMONICA_DATA_DIR/master
           cp -r data/* $HARMONICA_DATA_DIR/master
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Run the tests
         run: |
@@ -157,6 +159,9 @@ jobs:
           else
               make test
           fi
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Convert coverage report to XML for codecov
         run: coverage xml
