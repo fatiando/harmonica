@@ -8,13 +8,19 @@
 Forward modelling for prisms
 """
 import numpy as np
-from numba import jit
+from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
 
 
 def prism_gravity(
-    coordinates, prisms, density, field, dtype="float64", disable_checks=False
+    coordinates,
+    prisms,
+    density,
+    field,
+    parallel=True,
+    dtype="float64",
+    disable_checks=False,
 ):
     """
     Gravitational fields of right-rectangular prisms in Cartesian coordinates
@@ -59,6 +65,11 @@ def prism_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
 
+    parallel : bool (optional)
+        If True the computations will run in parallel using Numba built-in
+        parallelization. If False, the forward model will run on a single core.
+        Might be useful to disable parallelization if the forward model is run
+        by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
@@ -123,12 +134,23 @@ def prism_gravity(
             )
         _check_prisms(prisms)
     # Compute gravitational field
-    jit_prism_gravity(coordinates, prisms, density, kernels[field], result)
+    dispatcher(parallel)(coordinates, prisms, density, kernels[field], result)
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
     if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
+
+
+def dispatcher(parallel):
+    """
+    Return the parallelized or serialized forward modelling function
+    """
+    dispatchers = {
+        True: jit_prism_gravity_parallel,
+        False: jit_prism_gravity_serial,
+    }
+    return dispatchers[parallel]
 
 
 def _check_prisms(prisms):
@@ -167,10 +189,9 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-@jit(nopython=True)
 def jit_prism_gravity(
     coordinates, prisms, density, kernel, out
-):  # pylint: disable=invalid-name
+):  # pylint: disable=invalid-name,not-an-iterable
     """
     Compute gravitational field of prisms on computations points
 
@@ -195,7 +216,7 @@ def jit_prism_gravity(
         Must have the same size as the arrays contained on ``coordinates``.
     """
     # Iterate over computation points and prisms
-    for l in range(coordinates[0].size):
+    for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
             # Iterate over the prism boundaries to compute the result of the
             # integration (see Nagy et al., 2000)
@@ -284,3 +305,9 @@ def safe_log(x):
     else:
         result = np.log(x)
     return result
+
+
+# Define jitted versions of the forward modelling function
+# pylint: disable=invalid-name
+jit_prism_gravity_serial = jit(nopython=True)(jit_prism_gravity)
+jit_prism_gravity_parallel = jit(nopython=True, parallel=True)(jit_prism_gravity)
