@@ -12,9 +12,6 @@ Version 0.2.0
    :alt: Digital Object Identifier for the Zenodo archive
    :target: https://doi.org/10.5281/zenodo.4672400
 
-Second release of Harmonica. Forward modeling, inversion, and processing gravity
-and magnetic data.
-
 
 New features:
 
