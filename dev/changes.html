@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="References" href="references.html" />
@@ -109,20 +114,21 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-0">Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-1-0">Version 0.1.0</a></li>
 </ul>
 </li>
@@ -218,9 +224,58 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="changelog">
+  <section id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="version-0-1-0">
+<section id="version-0-2-0">
+<h2>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/04/09</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.4672400"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4672400.svg" /></a>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Add function to create a layer of prisms and add a new South Africa ETOPO1 dataset (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/186">#186</a>)</p></li>
+<li><p>Optimize forward models by parallelizing outer loops for prisms and point masses and refactor the tesseroids forward modelling (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/205">#205</a>)</p></li>
+<li><p>Add parallel flag to EQLs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/207">#207</a>)</p></li>
+<li><p>Parallelize EQLs predictions and Jacobian build (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/203">#203</a>)</p></li>
+<li><p>Improve EQL harmonic classes by splitting classes and adding upward argument to prediction methods (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/190">#190</a>)</p></li>
+<li><p>Add function to compute the distance between points given in geodetic coordinates (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/172">#172</a>)</p></li>
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">load_icgem_gdf</span></code> to take open file objects (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/155">#155</a>)</p></li>
+<li><p>Add new <code class="docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code> class to interpolate data using EQL in spherical coordinates (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/136">#136</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Extend support for Python 3.9 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/219">#219</a>)</p></li>
+<li><p>Separate the Actions jobs into categories (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/218">#218</a>)</p></li>
+<li><p>Automatically check for license notice when checking code style (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/211">#211</a>)</p></li>
+<li><p>Use the OSI version of item 3 in the license (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/206">#206</a>)</p></li>
+<li><p>Add license and copyright notice to every .py file (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/201">#201</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> with <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/196">#196</a>)</p></li>
+<li><p>Remove configuration files for unused CI: Stickler, Codacy and CodeClimate (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/197">#197</a>)</p></li>
+<li><p>Replace TravisCI and Azure for GitHub Actions (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/189">#189</a>)</p></li>
+<li><p>Fetch a sample data before testing locate because Pooch creates cache directory only after the first fetch (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/193">#193</a>)</p></li>
+<li><p>Require Black&gt;=20.8b1 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/187">#187</a>)</p></li>
+<li><p>Add CI builds for Python 3.8 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/150">#150</a>)</p></li>
+<li><p>Replace global Zenodo DOI on badges and citation (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/148">#148</a>)</p></li>
+<li><p>Remove the GitHub templates from the repository and use the shared ones in fatiando/.github (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/149">#149</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Add example for <code class="docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/152">#152</a>)</p></li>
+<li><p>Replace Cartesian distance for Euclidean distance in docs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/156">#156</a>)</p></li>
+</ul>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Keep metadata of sample datasets in the Xarray objects (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/184">#184</a>)</p></li>
+<li><p>Fix infinite loop on CIs after Numba v0.5.0 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/180">#180</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+<li><p>Leonardo Uieda</p></li>
+<li><p>Nicholas Shea</p></li>
+<li><p>Rowan Cockett</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
 <h2>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Released on: 2020/02/27</em></p>
 <a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.3628742"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.3628742.svg" /></a>
@@ -229,39 +284,39 @@ and magnetic data.</p>
 <p>Forward models:</p>
 <ul class="simple">
 <li><p>Point masses in Cartesian coordinates. Gravitational potential with vertical
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/71">#71</a>) and horizontal
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/71">#71</a>) and horizontal
 components of acceleration
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/119">#119</a>).</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/119">#119</a>).</p></li>
 <li><p>Point masses in spherical coordinates.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/60">#60</a>)</p></li>
-<li><p>Rectangular prisms. (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/86">#86</a>)</p></li>
-<li><p>Tesseroids. (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/60">#60</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/60">#60</a>)</p></li>
+<li><p>Rectangular prisms. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/86">#86</a>)</p></li>
+<li><p>Tesseroids. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/60">#60</a>)</p></li>
 </ul>
 <p>Available datasets:</p>
 <ul class="simple">
 <li><p>Great Britain aeromagnetic dataset.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/111">#111</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/111">#111</a>)</p></li>
 <li><p>South Africa gravity station data.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/99">#99</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/99">#99</a>)</p></li>
 <li><p>Geoid grid from EIGEN-6C4.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/34">#34</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/34">#34</a>)</p></li>
 <li><p>Global topography from ETOPO1.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/23">#23</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/23">#23</a>)</p></li>
 <li><p>Global gravity data from EIGEN-6C4.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/12">#12</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/12">#12</a>)</p></li>
 </ul>
 <p>Other features:</p>
 <ul class="simple">
 <li><p>Synthetic ground and airborne surveys based on real world data.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/120">#120</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/120">#120</a>)</p></li>
 <li><p>Equivalent Layer for harmonic functions.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/78">#78</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/78">#78</a>)</p></li>
 <li><p>Planar Bouguer correction.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/38">#38</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/38">#38</a>)</p></li>
 <li><p>Airy Isostasy function.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/17">#17</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/17">#17</a>)</p></li>
 <li><p>Function to read ICGEM data files.
-(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/11">#11</a>)</p></li>
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/11">#11</a>)</p></li>
 </ul>
 <p>This release contains contributions from:</p>
 <ul class="simple">
@@ -272,8 +327,8 @@ components of acceleration
 <li><p>Nicholas Shea</p></li>
 <li><p>ziebam</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -295,9 +350,9 @@ components of acceleration
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

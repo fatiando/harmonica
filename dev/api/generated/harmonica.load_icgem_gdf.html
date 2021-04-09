@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.synthetic.airborne_survey" href="harmonica.synthetic.airborne_survey.html" />
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -232,7 +237,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-load-icgem-gdf">
+  <section id="harmonica-load-icgem-gdf">
 <h1>harmonica.load_icgem_gdf<a class="headerlink" href="#harmonica-load-icgem-gdf" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.load_icgem_gdf">
@@ -242,25 +247,25 @@
 <a class="reference internal" href="../../references.html#barthelmeskohler2016" id="id1"><span>[BarthelmesKohler2016]</span></a> generates gravity field grids from spherical
 harmonic models. They use a custom ASCII grid format with information in
 the header. This function can read the format and parse information from
-the header. It returns the data in a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> for
+the header. It returns the data in a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> for
 convenience and reduced storage requirements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>string</em>) – Name of the ICGEM .gdf file</p></li>
+<li><p><strong>fname</strong> (<em>string</em><em> or </em><em>file-like object</em>) – Name of the ICGEM <code class="docutils literal notranslate"><span class="pre">.gdf</span></code> file or an open file object to read from.</p></li>
 <li><p><strong>kwargs</strong> – Extra keyword arguments to this function will be passed to
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.17)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a>.</p></li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.20)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – An <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the data from the file.
+<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – An <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the data from the file.
 The header of the gdf file is available through the <code class="docutils literal notranslate"><span class="pre">attr</span></code> attribute
-of the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+of the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
            </div>
@@ -282,9 +287,9 @@ of the <a class="reference external" href="http://xarray.pydata.org/en/stable/ge
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

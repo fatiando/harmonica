@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Topography-free (Bouguer) Gravity Disturbances
 ==============================================
@@ -59,5 +65,4 @@ plt.colorbar(
 )
 ax.set_title("Topography-free (Bouguer) gravity of disturbance of the Earth")
 ax.coastlines()
-plt.tight_layout()
 plt.show()

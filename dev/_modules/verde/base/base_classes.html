@@ -39,8 +39,12 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -107,17 +111,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
@@ -211,17 +215,139 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde.base.base_classes</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Base classes for all gridders.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">BaseCrossValidator</span>
 
 <span class="kn">from</span> <span class="nn">..coordinates</span> <span class="kn">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">scatter_points</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">check_fit_input</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">check_data_names</span><span class="p">,</span> <span class="n">score_estimator</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">make_xarray_grid</span>
+
+
+<span class="c1"># Pylint doesn&#39;t like X, y scikit-learn argument names.</span>
+<span class="c1"># pylint: disable=invalid-name,unused-argument</span>
+
+
+<span class="k">class</span> <span class="nc">BaseBlockCrossValidator</span><span class="p">(</span><span class="n">BaseCrossValidator</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for spatially blocked cross-validators.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
+<span class="sd">        The block size in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
+<span class="sd">        directions. If None, then *shape* **must be provided**.</span>
+<span class="sd">    shape : tuple = (n_north, n_east) or None</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively. If None, then *spacing* **must be provided**.</span>
+<span class="sd">    n_splits : int</span>
+<span class="sd">        Number of splitting iterations.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;spacing&#39; or &#39;shape&#39; must be provided.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span>
+
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate indices to split data into training and test set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Columns should be the easting and northing coordinates of data</span>
+<span class="sd">            points, respectively.</span>
+<span class="sd">        y : array-like, shape (n_samples,)</span>
+<span class="sd">            The target variable for supervised learning problems. Always</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        groups : array-like, with shape (n_samples,), optional</span>
+<span class="sd">            Group labels for the samples used while splitting the dataset into</span>
+<span class="sd">            train/test set. Always ignored.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        train : ndarray</span>
+<span class="sd">            The training set indices for that split.</span>
+<span class="sd">        test : ndarray</span>
+<span class="sd">            The testing set indices for that split.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;X must have exactly 2 columns (</span><span class="si">{}</span><span class="s2"> given).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span>
+
+    <span class="k">def</span> <span class="nf">get_n_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of splitting iterations in the cross-validator</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : object</span>
+<span class="sd">            Always ignored, exists for compatibility.</span>
+<span class="sd">        y : object</span>
+<span class="sd">            Always ignored, exists for compatibility.</span>
+<span class="sd">        groups : object</span>
+<span class="sd">            Always ignored, exists for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_splits : int</span>
+<span class="sd">            Returns the number of splitting iterations in the cross-validator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates integer indices corresponding to test sets.</span>
+
+<span class="sd">        MUST BE IMPLEMENTED BY DERIVED CLASSES.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Columns should be the easting and northing coordinates of data</span>
+<span class="sd">            points, respectively.</span>
+<span class="sd">        y : array-like, shape (n_samples,)</span>
+<span class="sd">            The target variable for supervised learning problems. Always</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        groups : array-like, with shape (n_samples,), optional</span>
+<span class="sd">            Group labels for the samples used while splitting the dataset into</span>
+<span class="sd">            train/test set. Always ignored.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        test : ndarray</span>
+<span class="sd">            The testing set indices for that split.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+<span class="c1"># pylint: enable=invalid-name,unused-argument</span>
 
 
 <span class="k">class</span> <span class="nc">BaseGridder</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
@@ -262,7 +388,7 @@
 <span class="sd">    ...     def __init__(self, multiplier=1):</span>
 <span class="sd">    ...         # Init should only assign the parameters to attributes</span>
 <span class="sd">    ...         self.multiplier = multiplier</span>
-<span class="sd">    ...     def fit(self, coordiantes, data):</span>
+<span class="sd">    ...     def fit(self, coordinates, data):</span>
 <span class="sd">    ...         # Argument checking should be done in fit</span>
 <span class="sd">    ...         if self.multiplier &lt;= 0:</span>
 <span class="sd">    ...             raise ValueError(&#39;Invalid multiplier {}&#39;</span>
@@ -282,7 +408,7 @@
 <span class="sd">    &gt;&gt;&gt; # Fit the gridder to our synthetic data</span>
 <span class="sd">    &gt;&gt;&gt; grd = MeanGridder().fit((data.easting, data.northing), data.scalars)</span>
 <span class="sd">    &gt;&gt;&gt; grd</span>
-<span class="sd">    MeanGridder(multiplier=1)</span>
+<span class="sd">    MeanGridder()</span>
 <span class="sd">    &gt;&gt;&gt; # Interpolate on a regular grid</span>
 <span class="sd">    &gt;&gt;&gt; grid = grd.grid(region=(0, 5, -10, -8), shape=(30, 20))</span>
 <span class="sd">    &gt;&gt;&gt; np.allclose(grid.scalars, -32.2182)</span>
@@ -295,6 +421,24 @@
 <span class="sd">    -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># The default dimension names for generated outputs</span>
+    <span class="c1"># (pd.DataFrame, xr.Dataset, etc)</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
+
+    <span class="c1"># The default name for any extra coordinates given to methods below</span>
+    <span class="c1"># through the `extra_coords` keyword argument. Coordinates are</span>
+    <span class="c1"># included in the outputs (pandas.DataFrame or xarray.Dataset)</span>
+    <span class="c1"># using this name as a basis.</span>
+    <span class="n">extra_coords_name</span> <span class="o">=</span> <span class="s2">&quot;extra_coord&quot;</span>
+
+    <span class="c1"># Define default values for data_names depending on the number of data</span>
+    <span class="c1"># arrays returned by predict method.</span>
+    <span class="n">data_names_defaults</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;scalars&quot;</span><span class="p">,),</span>
+        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">,</span> <span class="s2">&quot;vertical_component&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -361,6 +505,8 @@
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
 <span class="sd">            following order: (easting, northing, vertical, ...).</span>
+<span class="sd">            For the specific definition of coordinate systems and what these</span>
+<span class="sd">            names mean, see the class docstring.</span>
 <span class="sd">        data : array or tuple of arrays</span>
 <span class="sd">            The data values of each data point. If the data has more than one</span>
 <span class="sd">            component, *data* must be a tuple of arrays (one for each</span>
@@ -403,6 +549,8 @@
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
 <span class="sd">            following order: (easting, northing, vertical, ...).</span>
+<span class="sd">            For the specific definition of coordinate systems and what these</span>
+<span class="sd">            names mean, see the class docstring.</span>
 <span class="sd">        data : array or tuple of arrays</span>
 <span class="sd">            The data values of each data point. If the data has more than one</span>
 <span class="sd">            component, *data* must be a tuple of arrays (one for each</span>
@@ -418,17 +566,7 @@
 <span class="sd">            The R^2 score</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
-            <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-        <span class="n">pred</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">r2_score</span><span class="p">(</span><span class="n">datai</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">predi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">weighti</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">datai</span><span class="p">,</span> <span class="n">predi</span><span class="p">,</span> <span class="n">weighti</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">score_estimator</span><span class="p">(</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -439,7 +577,7 @@
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
@@ -459,8 +597,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        region : list = [W, E, S, N]</span>
-<span class="sd">            The boundaries of a given region in Cartesian or geographic</span>
-<span class="sd">            coordinates.</span>
+<span class="sd">            The west, east, south, and north boundaries of a given region.</span>
 <span class="sd">        shape : tuple = (n_north, n_east) or None</span>
 <span class="sd">            The number of points in the South-North and West-East directions,</span>
 <span class="sd">            respectively.</span>
@@ -469,12 +606,14 @@
 <span class="sd">            respectively.</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions,</span>
-<span class="sd">            respectively, in the output grid. Defaults to ``[&#39;northing&#39;,</span>
-<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            respectively, in the output grid. Default is determined from the</span>
+<span class="sd">            ``dims`` attribute of the class. Must be defined in the following</span>
+<span class="sd">            order: northing dimension, easting dimension.</span>
+<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
 <span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
-<span class="sd">        data_names : list of None</span>
+<span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output grid. Defaults to</span>
-<span class="sd">            ``[&#39;scalars&#39;]`` for scalar data,</span>
+<span class="sd">            ``&#39;scalars&#39;`` for scalar data,</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
 <span class="sd">            3D vector data.</span>
@@ -498,20 +637,32 @@
 <span class="sd">        verde.grid_coordinates : Generate the coordinate values for the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_instance_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)))</span>
-        <span class="n">data_names</span> <span class="o">=</span> <span class="n">get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]}</span>
-        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="s2">&quot;Generated by </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))}</span>
-        <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="c1"># Get names for data and any extra coordinates</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
+        <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="c1"># Create xarray.Dataset</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">make_xarray_grid</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">data_names</span><span class="p">,</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span>
+            <span class="n">extra_coords_names</span><span class="o">=</span><span class="n">extra_coords_names</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Add metadata as attrs</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="s2">&quot;Generated by </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="n">array</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="k">return</span> <span class="n">dataset</span>
 
     <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -540,8 +691,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        region : list = [W, E, S, N]</span>
-<span class="sd">            The boundaries of a given region in Cartesian or geographic</span>
-<span class="sd">            coordinates.</span>
+<span class="sd">            The west, east, south, and north boundaries of a given region.</span>
 <span class="sd">        size : int</span>
 <span class="sd">            The number of points to generate.</span>
 <span class="sd">        random_state : numpy.random.RandomState or an int seed</span>
@@ -551,12 +701,14 @@
 <span class="sd">            (resulting in different numbers with each run).</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions,</span>
-<span class="sd">            respectively, in the output dataframe. Defaults to ``[&#39;northing&#39;,</span>
-<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            respectively, in the output dataframe. Default is determined from</span>
+<span class="sd">            the ``dims`` attribute of the class. Must be defined in the</span>
+<span class="sd">            following order: northing dimension, easting dimension.</span>
+<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
 <span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
-<span class="sd">        data_names : list of None</span>
+<span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
-<span class="sd">            to ``[&#39;scalars&#39;]`` for scalar data,</span>
+<span class="sd">            to ``&#39;scalars&#39;`` for scalar data,</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
 <span class="sd">            3D vector data.</span>
@@ -575,15 +727,19 @@
 <span class="sd">            The interpolated values on a random set of points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_instance_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)))</span>
-        <span class="n">data_names</span> <span class="o">=</span> <span class="n">get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
         <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">])</span>
 
@@ -612,6 +768,30 @@
 <span class="sd">        Includes the calculated Cartesian distance from *point1* for each data</span>
 <span class="sd">        point in the profile.</span>
 
+<span class="sd">        To specify *point1* and *point2* in a coordinate system that would</span>
+<span class="sd">        require projection to Cartesian (geographic longitude and latitude, for</span>
+<span class="sd">        example), use the ``projection`` argument. With this option, the input</span>
+<span class="sd">        points will be projected using the given projection function prior to</span>
+<span class="sd">        computations. The generated Cartesian profile coordinates will be</span>
+<span class="sd">        projected back to the original coordinate system. **Note that the</span>
+<span class="sd">        profile points are evenly spaced in projected coordinates, not the</span>
+<span class="sd">        original system (e.g., geographic)**.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            **The profile calculation method with a projection has changed in</span>
+<span class="sd">            Verde 1.4.0**. Previous versions generated coordinates (assuming</span>
+<span class="sd">            they were Cartesian) and projected them afterwards. This led to</span>
+<span class="sd">            &quot;distances&quot; being incorrectly handled and returned in unprojected</span>
+<span class="sd">            coordinates. For example, if ``projection`` is from geographic to</span>
+<span class="sd">            Mercator, the distances would be &quot;angles&quot; (incorrectly calculated</span>
+<span class="sd">            as if they were Cartesian). After 1.4.0, *point1* and *point2* are</span>
+<span class="sd">            projected prior to generating coordinates for the profile,</span>
+<span class="sd">            guaranteeing that distances are properly handled in a Cartesian</span>
+<span class="sd">            system. **With this change, the profile points are now evenly</span>
+<span class="sd">            spaced in projected coordinates and the distances are returned in</span>
+<span class="sd">            projected coordinates as well.**</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        point1 : tuple</span>
@@ -624,23 +804,28 @@
 <span class="sd">            The number of points to generate.</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions,</span>
-<span class="sd">            respectively, in the output dataframe. Defaults to ``[&#39;northing&#39;,</span>
-<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            respectively, in the output dataframe. Default is determined from</span>
+<span class="sd">            the ``dims`` attribute of the class. Must be defined in the</span>
+<span class="sd">            following order: northing dimension, easting dimension.</span>
+<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
 <span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
-<span class="sd">        data_names : list of None</span>
+<span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
-<span class="sd">            to ``[&#39;scalars&#39;]`` for scalar data,</span>
+<span class="sd">            to ``&#39;scalars&#39;`` for scalar data,</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
 <span class="sd">            3D vector data.</span>
 <span class="sd">        projection : callable or None</span>
-<span class="sd">            If not None, then should be a callable object</span>
-<span class="sd">            ``projection(easting, northing) -&gt; (proj_easting, proj_northing)``</span>
-<span class="sd">            that takes in easting and northing coordinate arrays and returns</span>
-<span class="sd">            projected northing and easting coordinate arrays. This function</span>
-<span class="sd">            will be used to project the generated profile coordinates before</span>
-<span class="sd">            passing them into ``predict``. For example, you can use this to</span>
-<span class="sd">            generate a geographic profile from a Cartesian gridder.</span>
+<span class="sd">            If not None, then should be a callable object ``projection(easting,</span>
+<span class="sd">            northing, inverse=False) -&gt; (proj_easting, proj_northing)`` that</span>
+<span class="sd">            takes in easting and northing coordinate arrays and returns</span>
+<span class="sd">            projected northing and easting coordinate arrays. Should also take</span>
+<span class="sd">            an optional keyword argument ``inverse`` (default to False) that if</span>
+<span class="sd">            True will calculate the inverse transform instead. This function</span>
+<span class="sd">            will be used to project the profile end points before generating</span>
+<span class="sd">            coordinates and passing them into ``predict``. It will also be used</span>
+<span class="sd">            to undo the projection of the coordinates before returning the</span>
+<span class="sd">            results.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -648,82 +833,141 @@
 <span class="sd">            The interpolated values along the profile.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="c1"># Project the input points to generate the profile in Cartesian</span>
+        <span class="c1"># coordinates (the distance calculation doesn&#39;t make sense in</span>
+        <span class="c1"># geographic coordinates since we don&#39;t do actual distances on a</span>
+        <span class="c1"># sphere).</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">point1</span> <span class="o">=</span> <span class="n">project_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="n">point2</span> <span class="o">=</span> <span class="n">project_coordinates</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)))</span>
-        <span class="n">data_names</span> <span class="o">=</span> <span class="n">get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+        <span class="c1"># Project the coordinates back to have geographic coordinates for the</span>
+        <span class="c1"># profile but Cartesian distances.</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="n">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
             <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">distances</span><span class="p">),</span>
         <span class="p">]</span>
+        <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
         <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">])</span>
 
+    <span class="k">def</span> <span class="nf">_get_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get default dimension names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dims</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span>
 
-<span class="k">def</span> <span class="nf">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get default dimension names.</span>
+    <span class="k">def</span> <span class="nf">_get_extra_coords_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return names for extra coordinates</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
 
-<span class="sd">    &gt;&gt;&gt; get_dims(dims=None)</span>
-<span class="sd">    (&#39;northing&#39;, &#39;easting&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; get_dims(dims=(&#39;john&#39;, &#39;paul&#39;))</span>
-<span class="sd">    (&#39;john&#39;, &#39;paul&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; coordinates = (-5, 4, 3, 5, 1)</span>
+<span class="sd">        &gt;&gt;&gt; grd = BaseGridder()</span>
+<span class="sd">        &gt;&gt;&gt; grd._get_extra_coords_names(coordinates)</span>
+<span class="sd">        [&#39;extra_coord&#39;, &#39;extra_coord_1&#39;, &#39;extra_coord_2&#39;]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">dims</span>
-    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
+<span class="sd">        &gt;&gt;&gt; coordinates = (-5, 4, 3)</span>
+<span class="sd">        &gt;&gt;&gt; grd = BaseGridder()</span>
+<span class="sd">        &gt;&gt;&gt; grd.extra_coords_name = &quot;upward&quot;</span>
+<span class="sd">        &gt;&gt;&gt; grd._get_extra_coords_names(coordinates)</span>
+<span class="sd">        [&#39;upward&#39;]</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_coords_name</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">+=</span> <span class="s2">&quot;_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span>
 
-<span class="k">def</span> <span class="nf">get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get default names for data fields if none are given based on the data.</span>
+    <span class="k">def</span> <span class="nf">_get_data_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get default names for data fields if none are given based on the data.</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
 
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; east, north, up = [np.arange(10)]*3</span>
-<span class="sd">    &gt;&gt;&gt; get_data_names((east,), data_names=None)</span>
-<span class="sd">    (&#39;scalars&#39;,)</span>
-<span class="sd">    &gt;&gt;&gt; get_data_names((east, north), data_names=None)</span>
-<span class="sd">    (&#39;east_component&#39;, &#39;north_component&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; get_data_names((east, north, up), data_names=None)</span>
-<span class="sd">    (&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; get_data_names((up, north), data_names=(&#39;ringo&#39;, &#39;george&#39;))</span>
-<span class="sd">    (&#39;ringo&#39;, &#39;george&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; east, north, up = [np.arange(10)]*3</span>
+<span class="sd">        &gt;&gt;&gt; gridder = BaseGridder()</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=None)</span>
+<span class="sd">        (&#39;scalars&#39;,)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east, north), data_names=None)</span>
+<span class="sd">        (&#39;east_component&#39;, &#39;north_component&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east, north, up), data_names=None)</span>
+<span class="sd">        (&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=&quot;john&quot;)</span>
+<span class="sd">        (&#39;john&#39;,)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=(&quot;paul&quot;,))</span>
+<span class="sd">        (&#39;paul&#39;,)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names(</span>
+<span class="sd">        ...     (up, north), data_names=(&#39;ringo&#39;, &#39;george&#39;)</span>
+<span class="sd">        ... )</span>
+<span class="sd">        (&#39;ringo&#39;, &#39;george&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((north,), data_names=[&quot;brian&quot;])</span>
+<span class="sd">        [&#39;brian&#39;]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">data_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Data has </span><span class="si">{}</span><span class="s2"> components but only </span><span class="si">{}</span><span class="s2"> names provided: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_names</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Return the defaults data_names for the class</span>
+        <span class="k">if</span> <span class="n">data_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_names_defaults</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Default data names only available for up to 3 components. &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;Must provide custom names through the &#39;data_names&#39; argument.&quot;</span>
                 <span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_names_defaults</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Return the passed data_names if valid</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="n">check_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data_names</span>
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;scalars&quot;</span><span class="p">,),</span>
-        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">,</span> <span class="s2">&quot;vertical_component&quot;</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_types</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="s2">&quot;Default data names only available for up to 3 components.&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Must provide custom names through the &#39;data_names&#39; argument.&quot;</span><span class="p">,</span>
-                <span class="p">]</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">return</span> <span class="n">data_types</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply projection to given coordinates</span>
+
+<span class="sd">    Allows to apply projections to any number of coordinates, assuming</span>
+<span class="sd">    that the first ones are ``longitude`` and ``latitude``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; # Define a custom projection function</span>
+<span class="sd">    &gt;&gt;&gt; def projection(lon, lat, inverse=False):</span>
+<span class="sd">    ...     &quot;Simple projection of geographic coordinates&quot;</span>
+<span class="sd">    ...     radius = 1000</span>
+<span class="sd">    ...     if inverse:</span>
+<span class="sd">    ...         return (lon / radius, lat / radius)</span>
+<span class="sd">    ...     return (lon * radius, lat * radius)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Apply the projection to a set of coordinates containing:</span>
+<span class="sd">    &gt;&gt;&gt; # longitude, latitude and height</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = (1., -2., 3.)</span>
+<span class="sd">    &gt;&gt;&gt; project_coordinates(coordinates, projection)</span>
+<span class="sd">    (1000.0, -2000.0, 3.0)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Apply the inverse projection</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = (-500.0, 1500.0, -19.0)</span>
+<span class="sd">    &gt;&gt;&gt; project_coordinates(coordinates, projection, inverse=True)</span>
+<span class="sd">    (-0.5, 1.5, -19.0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proj_coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">proj_coordinates</span> <span class="o">+=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">proj_coordinates</span>
 
 
 <span class="k">def</span> <span class="nf">get_instance_region</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
@@ -747,9 +991,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

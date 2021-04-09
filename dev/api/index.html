@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,12 +40,16 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="harmonica.bouguer_correction" href="generated/harmonica.bouguer_correction.html" />
-    <link rel="prev" title="Land Gravity Data from South Africa" href="../sample_data/south_africa_gravity.html" />
+    <link rel="prev" title="South Africa Topography" href="../sample_data/south_africa_topography.html" />
     <!-- Google Analytics tracking code -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#gravity-corrections">Gravity Corrections</a><ul>
@@ -128,12 +133,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#equivalent-layers">Equivalent Layers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.EQLHarmonic.html">harmonica.EQLHarmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.EQLHarmonicSpherical.html">harmonica.EQLHarmonicSpherical</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#forward-modelling">Forward modelling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.point_mass_gravity.html">harmonica.point_mass_gravity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#isostasy">Isostasy</a><ul>
@@ -257,9 +265,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-harmonica">
+  <section id="module-harmonica">
 <span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-harmonica" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="gravity-corrections">
+<section id="gravity-corrections">
 <h2>Gravity Corrections<a class="headerlink" href="#gravity-corrections" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -272,9 +280,9 @@
 </tr>
 </tbody>
 </table>
-<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.1.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
-</div>
-<div class="section" id="equivalent-layers">
+<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.2.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
+</section>
+<section id="equivalent-layers">
 <h2>Equivalent Layers<a class="headerlink" href="#equivalent-layers" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -282,13 +290,16 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.EQLHarmonic.html#harmonica.EQLHarmonic" title="harmonica.EQLHarmonic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQLHarmonic</span></code></a>([damping, points, relative_depth])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.EQLHarmonic.html#harmonica.EQLHarmonic" title="harmonica.EQLHarmonic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQLHarmonic</span></code></a>([damping, points, …])</p></td>
 <td><p>Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.EQLHarmonicSpherical.html#harmonica.EQLHarmonicSpherical" title="harmonica.EQLHarmonicSpherical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code></a>([damping, points, …])</p></td>
+<td><p>Equivalent-layer for generic harmonic functions in spherical coordinates</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="forward-modelling">
+</section>
+<section id="forward-modelling">
 <h2>Forward modelling<a class="headerlink" href="#forward-modelling" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -305,10 +316,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity" title="harmonica.tesseroid_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code></a>(coordinates, tesseroids, …)</p></td>
 <td><p>Compute gravitational field of tesseroids on computation points.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prisms_layer.html#harmonica.prisms_layer" title="harmonica.prisms_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prisms_layer</span></code></a>(coordinates, surface, reference)</p></td>
+<td><p>Create a layer of prisms of equal size</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer" title="harmonica.DatasetAccessorPrismsLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismsLayer</span></code></a>(xarray_obj)</p></td>
+<td><p>Defines dataset accessor for layer of prisms</p></td>
+</tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="isostasy">
+</section>
+<section id="isostasy">
 <h2>Isostasy<a class="headerlink" href="#isostasy" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -321,8 +338,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="input-and-output">
+</section>
+<section id="input-and-output">
 <h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -335,8 +352,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="synthetic-models-and-surveys">
+</section>
+<section id="synthetic-models-and-surveys">
 <h2>Synthetic models and surveys<a class="headerlink" href="#synthetic-models-and-surveys" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -352,8 +369,8 @@
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-harmonica.datasets"></span></div>
-<div class="section" id="datasets">
+<span class="target" id="module-harmonica.datasets"></span></section>
+<section id="datasets">
 <h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -381,8 +398,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="utilities">
+</section>
+<section id="utilities">
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -395,8 +412,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -409,7 +426,7 @@
         <a href="generated/harmonica.bouguer_correction.html" class="btn btn-neutral float-right" title="harmonica.bouguer_correction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../sample_data/south_africa_gravity.html" class="btn btn-neutral float-left" title="Land Gravity Data from South Africa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../sample_data/south_africa_topography.html" class="btn btn-neutral float-left" title="South Africa Topography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -418,9 +435,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.EQLHarmonic" href="harmonica.EQLHarmonic.html" />
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a><ul class="current">
@@ -235,7 +240,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-bouguer-correction">
+  <section id="harmonica-bouguer-correction">
 <h1>harmonica.bouguer_correction<a class="headerlink" href="#harmonica-bouguer-correction" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.bouguer_correction">
@@ -264,28 +269,30 @@ requires a thickness value (positive).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>topography</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Topography height and bathymetry depth in meters.
+<li><p><strong>topography</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Topography height and bathymetry depth in meters.
 Should be referenced to the ellipsoid (ie, geometric heights).</p></li>
-<li><p><strong>density_crust</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
+<li><p><strong>density_crust</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
 Used as the density of topography on land and the density of the normal
 Earth’s crust in the oceans.</p></li>
-<li><p><strong>density_water</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p></li>
+<li><p><strong>density_water</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>grav_bouguer</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The gravitational effect of topography and residual bathymetry in mGal.</p>
+<dd class="field-even"><p><strong>grav_bouguer</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The gravitational effect of topography and residual bathymetry in mGal.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<div class="section" id="examples-using-harmonica-bouguer-correction">
+<section id="examples-using-harmonica-bouguer-correction">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.bouguer_correction</span></code><a class="headerlink" href="#examples-using-harmonica-bouguer-correction" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" src="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><figure class="align-default" id="id1">
+<img alt="Topography-free (Bouguer) Gravity Disturbances" src="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
            </div>
@@ -307,9 +314,9 @@ Earth’s crust in the oceans.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

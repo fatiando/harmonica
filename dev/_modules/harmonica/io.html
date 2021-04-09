@@ -39,8 +39,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -107,17 +111,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -213,10 +217,18 @@
            <div itemprop="articleBody">
             
   <h1>Source code for harmonica.io</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for interacting with standarized data files that contain gravity or</span>
 <span class="sd">magnetic geophysical data.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
@@ -234,8 +246,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    fname : string</span>
-<span class="sd">        Name of the ICGEM .gdf file</span>
+<span class="sd">    fname : string or file-like object</span>
+<span class="sd">        Name of the ICGEM ``.gdf`` file or an open file object to read from.</span>
 <span class="sd">    kwargs</span>
 <span class="sd">        Extra keyword arguments to this function will be passed to</span>
 <span class="sd">        :func:`numpy.loadtxt`.</span>
@@ -297,7 +309,15 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read ICGEM gdf file and returns metadata dict and data in cols as np.array</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">gdf_file</span><span class="p">:</span>
+    <span class="c1"># If it&#39;s an open file, does nothing. Otherwise, open and add to the</span>
+    <span class="c1"># context lib stack to make it close when exiting the with block.</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+            <span class="c1"># It&#39;s a file object</span>
+            <span class="n">gdf_file</span> <span class="o">=</span> <span class="n">fname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># It&#39;s a file path</span>
+            <span class="n">gdf_file</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
         <span class="c1"># Read the header and extract metadata</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">metadata_line</span> <span class="o">=</span> <span class="kc">True</span>
@@ -384,9 +404,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

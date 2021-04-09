@@ -95,6 +95,32 @@ harmonica.EQLHarmonic
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         EQLHarmonic.filter
     
     

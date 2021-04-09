@@ -39,8 +39,12 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -107,17 +111,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
@@ -213,7 +217,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for harmonica.forward.tesseroid</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Forward modelling for tesseroids</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
@@ -223,7 +233,6 @@
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">distance_spherical</span>
 <span class="kn">from</span> <span class="nn">.point_mass</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">jit_point_mass_spherical</span><span class="p">,</span>
     <span class="n">kernel_potential_spherical</span><span class="p">,</span>
     <span class="n">kernel_g_z_spherical</span><span class="p">,</span>
 <span class="p">)</span>
@@ -383,12 +392,10 @@
     <span class="n">distance_size_ratio</span> <span class="o">=</span> <span class="n">distance_size_ratii</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
     <span class="c1"># Get GLQ unscaled nodes, weights and number of nodes for each small</span>
     <span class="c1"># tesseroid</span>
-    <span class="n">n_nodes</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span> <span class="o">=</span> <span class="n">glq_nodes_weights</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">)</span>
+    <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span> <span class="o">=</span> <span class="n">glq_nodes_weights</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">)</span>
     <span class="c1"># Initialize arrays to perform memory allocation only once</span>
     <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">stack_size</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="n">small_tesseroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">max_discretizations</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="n">point_masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_nodes</span> <span class="o">*</span> <span class="n">max_discretizations</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_nodes</span> <span class="o">*</span> <span class="n">max_discretizations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="c1"># Compute gravitational field</span>
     <span class="n">jit_tesseroid_gravity</span><span class="p">(</span>
         <span class="n">coordinates</span><span class="p">,</span>
@@ -396,12 +403,9 @@
         <span class="n">density</span><span class="p">,</span>
         <span class="n">stack</span><span class="p">,</span>
         <span class="n">small_tesseroids</span><span class="p">,</span>
-        <span class="n">point_masses</span><span class="p">,</span>
-        <span class="n">weights</span><span class="p">,</span>
         <span class="n">result</span><span class="p">,</span>
         <span class="n">distance_size_ratio</span><span class="p">,</span>
         <span class="n">radial_adaptive_discretization</span><span class="p">,</span>
-        <span class="n">n_nodes</span><span class="p">,</span>
         <span class="n">glq_nodes</span><span class="p">,</span>
         <span class="n">glq_weights</span><span class="p">,</span>
         <span class="n">kernels</span><span class="p">[</span><span class="n">field</span><span class="p">],</span>
@@ -413,19 +417,16 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">jit_tesseroid_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">tesseroids</span><span class="p">,</span>
     <span class="n">density</span><span class="p">,</span>
     <span class="n">stack</span><span class="p">,</span>
     <span class="n">small_tesseroids</span><span class="p">,</span>
-    <span class="n">point_masses</span><span class="p">,</span>
-    <span class="n">weights</span><span class="p">,</span>
     <span class="n">result</span><span class="p">,</span>
     <span class="n">distance_size_ratio</span><span class="p">,</span>
     <span class="n">radial_discretization</span><span class="p">,</span>
-    <span class="n">n_nodes</span><span class="p">,</span>
     <span class="n">glq_nodes</span><span class="p">,</span>
     <span class="n">glq_weights</span><span class="p">,</span>
     <span class="n">kernel</span><span class="p">,</span>
@@ -444,6 +445,8 @@
 <span class="sd">        geocentric coordinate system in the following order:</span>
 <span class="sd">        ``longitude``, ``latitude``, ``radius``.</span>
 <span class="sd">        Each element of the tuple must be a 1d array.</span>
+<span class="sd">        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``</span>
+<span class="sd">        in meters.</span>
 <span class="sd">    tesseroids : 2d-array</span>
 <span class="sd">        Array containing the boundaries of each tesseroid:</span>
 <span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
@@ -451,6 +454,8 @@
 <span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
 <span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
 <span class="sd">        All tesseroids must have valid boundary coordinates.</span>
+<span class="sd">        Horizontal boundaries should be in degrees while radial boundaries</span>
+<span class="sd">        should be in meters.</span>
 <span class="sd">    density : 1d-array</span>
 <span class="sd">        Density of each tesseroid in SI units.</span>
 <span class="sd">    stack : 2d-array</span>
@@ -472,9 +477,6 @@
 <span class="sd">        tesseroid only on the horizontal direction.</span>
 <span class="sd">        If ``True``, it will perform a three dimensional adaptive</span>
 <span class="sd">        discretization, splitting the tesseroids on every direction.</span>
-<span class="sd">    n_nodes : int</span>
-<span class="sd">        Total number of equivalent point masses that will be generated for each</span>
-<span class="sd">        split tesseroid.</span>
 <span class="sd">    glq_nodes : list</span>
 <span class="sd">        List containing unscaled GLQ nodes.</span>
 <span class="sd">    glq_weights : list</span>
@@ -482,121 +484,142 @@
 <span class="sd">    kernel : func</span>
 <span class="sd">        Kernel function for the gravitational field of point masses.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">tesseroid</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">l</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+    <span class="c1"># Get coordinates of the observation points</span>
+    <span class="c1"># and precompute trigonometric functions</span>
+    <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:]</span>
+    <span class="n">longitude_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="n">cosphi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+    <span class="n">sinphi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tesseroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="c1"># Apply adaptive discretization on tesseroid</span>
             <span class="n">n_splits</span> <span class="o">=</span> <span class="n">_adaptive_discretization</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">m</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">m</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">m</span><span class="p">]),</span>
-                <span class="n">tesseroid</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="n">latitude</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="n">radius</span><span class="p">[</span><span class="n">l</span><span class="p">]),</span>
+                <span class="n">tesseroids</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:],</span>
                 <span class="n">distance_size_ratio</span><span class="p">,</span>
                 <span class="n">stack</span><span class="p">,</span>
                 <span class="n">small_tesseroids</span><span class="p">,</span>
                 <span class="n">radial_discretization</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="c1"># Get total number of point masses, their coordinates and weights</span>
-            <span class="n">n_point_masses</span> <span class="o">=</span> <span class="n">n_nodes</span> <span class="o">*</span> <span class="n">n_splits</span>
-            <span class="n">tesseroids_to_point_masses</span><span class="p">(</span>
-                <span class="n">small_tesseroids</span><span class="p">[:</span><span class="n">n_splits</span><span class="p">],</span>
-                <span class="n">glq_nodes</span><span class="p">,</span>
-                <span class="n">glq_weights</span><span class="p">,</span>
-                <span class="n">point_masses</span><span class="p">,</span>
-                <span class="n">weights</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="c1"># Compute gravitational fields</span>
-            <span class="n">jit_point_mass_spherical</span><span class="p">(</span>
-                <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice lon to pass a single element array</span>
-                <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice lat to pass a single element array</span>
-                <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># slice rad to pass a single element array</span>
-                <span class="n">point_masses</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
-                <span class="n">point_masses</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
-                <span class="n">point_masses</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="n">n_point_masses</span><span class="p">],</span>
-                <span class="n">density</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[:</span><span class="n">n_point_masses</span><span class="p">],</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-                <span class="n">kernel</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="c1"># Compute effect of the tesseroid through GLQ</span>
+            <span class="k">for</span> <span class="n">tess_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">):</span>
+                <span class="n">tesseroid</span> <span class="o">=</span> <span class="n">small_tesseroids</span><span class="p">[</span><span class="n">tess_index</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">gauss_legendre_quadrature</span><span class="p">(</span>
+                    <span class="n">longitude_rad</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                    <span class="n">cosphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                    <span class="n">sinphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                    <span class="n">radius</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                    <span class="n">tesseroid</span><span class="p">,</span>
+                    <span class="n">density</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                    <span class="n">glq_nodes</span><span class="p">,</span>
+                    <span class="n">glq_weights</span><span class="p">,</span>
+                    <span class="n">kernel</span><span class="p">,</span>
+                <span class="p">)</span>
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">tesseroids_to_point_masses</span><span class="p">(</span>
-    <span class="n">tesseroids</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span><span class="p">,</span> <span class="n">point_masses</span><span class="p">,</span> <span class="n">weights</span>
-<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals,invalid-name</span>
+<span class="k">def</span> <span class="nf">gauss_legendre_quadrature</span><span class="p">(</span>
+    <span class="n">longitude</span><span class="p">,</span>
+    <span class="n">cosphi</span><span class="p">,</span>
+    <span class="n">sinphi</span><span class="p">,</span>
+    <span class="n">radius</span><span class="p">,</span>
+    <span class="n">tesseroid</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">glq_nodes</span><span class="p">,</span>
+    <span class="n">glq_weights</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">,</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert tesseroids to equivalent point masses on nodes of GLQ</span>
+<span class="sd">    Compute the effect of a tesseroid on a single observation point through GLQ</span>
 
-<span class="sd">    Each tesseroid is converted into a set of point masses located on the</span>
+<span class="sd">    The tesseroid is converted into a set of point masses located on the</span>
 <span class="sd">    scaled nodes of the Gauss-Legendre Quadrature. The number of point masses</span>
 <span class="sd">    created from each tesseroid is equal to the product of the GLQ degrees for</span>
-<span class="sd">    each direction (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`). It also</span>
-<span class="sd">    compute a weight value for each point mass defined as the product of the</span>
-<span class="sd">    GLQ weights for each direction (:math:`W_i^r`, :math:`W_j^\phi`,</span>
-<span class="sd">    :math:`W_k^\lambda`), the scale constant :math:`A` and the :math:`\kappa`</span>
-<span class="sd">    factor evaluated on the coordinates of the point mass.</span>
+<span class="sd">    each direction (:math:`N_r`, :math:`N_\lambda`, :math:`N_\phi`). The mass</span>
+<span class="sd">    of each point mass is defined as the product of the tesseroid density</span>
+<span class="sd">    (:math:`\rho`), the GLQ weights for each direction (:math:`W_i^r`,</span>
+<span class="sd">    :math:`W_j^\phi`, :math:`W_k^\lambda`), the scale constant :math:`A` and</span>
+<span class="sd">    the :math:`\kappa` factor evaluated on the coordinates of the point mass.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    tesseroids : 2d-array</span>
-<span class="sd">        Array containing the boundaries of each tesseroid:</span>
-<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric</span>
-<span class="sd">        spherical coordinate system.</span>
-<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
-<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
-<span class="sd">        All tesseroids must have valid boundary coordinates.</span>
+<span class="sd">    longitude : float</span>
+<span class="sd">        Longitudinal coordinate of the observation points in radians.</span>
+<span class="sd">    cosphi : float</span>
+<span class="sd">        Cosine of the latitudinal coordinate of the observation point in</span>
+<span class="sd">        radians.</span>
+<span class="sd">    sinphi : float</span>
+<span class="sd">        Sine of the latitudinal coordinate of the observation point in</span>
+<span class="sd">        radians.</span>
+<span class="sd">    radius : float</span>
+<span class="sd">        Radial coordinate of the observation point in meters.</span>
+<span class="sd">    tesseroids : 1d-array</span>
+<span class="sd">        Array containing the boundaries of the tesseroid:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.</span>
+<span class="sd">        Horizontal boundaries should be in degrees and radial boundaries in</span>
+<span class="sd">        meters.</span>
+<span class="sd">    density : float</span>
+<span class="sd">        Density of the tesseroid in SI units.</span>
 <span class="sd">    glq_nodes : list</span>
 <span class="sd">        Unscaled location of GLQ nodes for each direction.</span>
 <span class="sd">    glq_weights : list</span>
 <span class="sd">        GLQ weigths for each node for each direction.</span>
-<span class="sd">    point_masses : 2d-array</span>
-<span class="sd">        Empty array with shape ``(3, n)``, where ``n`` is the total number of</span>
-<span class="sd">        point masses computed as the product of number of tesseroids and the</span>
-<span class="sd">        GLQ degrees for each direction.</span>
-<span class="sd">        The location of the point masses will be located inside this array.</span>
-<span class="sd">    weights : 1d-array</span>
-<span class="sd">        Empty array with ``n`` elements.</span>
-<span class="sd">        It will contain the weight constant for each point mass.</span>
+<span class="sd">    kernel : func</span>
+<span class="sd">        Kernel function for the gravitational field of point masses.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get tesseroid boundaries</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroid</span><span class="p">[:]</span>
+    <span class="c1"># Calculate the A factor for the tesseroid</span>
+    <span class="n">a_factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
     <span class="c1"># Unpack nodes and weights</span>
     <span class="n">lon_nodes</span><span class="p">,</span> <span class="n">lat_nodes</span><span class="p">,</span> <span class="n">rad_nodes</span> <span class="o">=</span> <span class="n">glq_nodes</span><span class="p">[:]</span>
     <span class="n">lon_weights</span><span class="p">,</span> <span class="n">lat_weights</span><span class="p">,</span> <span class="n">rad_weights</span> <span class="o">=</span> <span class="n">glq_weights</span><span class="p">[:]</span>
-    <span class="c1"># Recover GLQ degrees from nodes</span>
-    <span class="n">lon_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon_nodes</span><span class="p">)</span>
-    <span class="n">lat_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat_nodes</span><span class="p">)</span>
-    <span class="n">rad_glq_degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rad_nodes</span><span class="p">)</span>
-    <span class="c1"># Convert each tesseroid to a point mass</span>
-    <span class="n">mass_index</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">tesseroid_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)):</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">tesseroid_index</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-        <span class="n">A_factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lon_glq_degree</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lat_glq_degree</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rad_glq_degree</span><span class="p">):</span>
-                    <span class="c1"># Compute coordinates of each point mass</span>
-                    <span class="n">longitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">lon_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span>
-                    <span class="n">latitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">lat_nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
-                    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">*</span> <span class="n">rad_nodes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">)</span>
-                    <span class="n">kappa</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
-                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
-                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
-                    <span class="n">point_masses</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
-                    <span class="n">weights</span><span class="p">[</span><span class="n">mass_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">A_factor</span>
-                        <span class="o">*</span> <span class="n">kappa</span>
-                        <span class="o">*</span> <span class="n">lon_weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                        <span class="o">*</span> <span class="n">lat_weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                        <span class="o">*</span> <span class="n">rad_weights</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-                    <span class="p">)</span>
-                    <span class="n">mass_index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># Compute effect of the tesseroid on the observation point</span>
+    <span class="c1"># by iterating over the location of the point masses</span>
+    <span class="c1"># (move the iteration along the longitudinal nodes to the bottom for</span>
+    <span class="c1"># optimization: reduce the number of times that the trigonometric functions</span>
+    <span class="c1"># are evaluated)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">lat_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lat_nodes</span><span class="p">):</span>
+        <span class="c1"># Get the latitude of the point mass</span>
+        <span class="n">latitude_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">lat_node</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">s</span><span class="p">))</span>
+        <span class="n">cosphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
+        <span class="n">sinphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">rad_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rad_nodes</span><span class="p">):</span>
+            <span class="c1"># Get the radius of the point mass</span>
+            <span class="n">radius_p</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">*</span> <span class="n">rad_node</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">)</span>
+            <span class="c1"># Get kappa constant for the point mass</span>
+            <span class="n">kappa</span> <span class="o">=</span> <span class="n">radius_p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cosphi_p</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lon_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lon_nodes</span><span class="p">):</span>
+                <span class="c1"># Get the longitude of the point mass</span>
+                <span class="n">longitude_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">lon_node</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">w</span><span class="p">))</span>
+                <span class="c1"># Compute the mass of the point mass</span>
+                <span class="n">mass</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">density</span>
+                    <span class="o">*</span> <span class="n">a_factor</span>
+                    <span class="o">*</span> <span class="n">kappa</span>
+                    <span class="o">*</span> <span class="n">lon_weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="o">*</span> <span class="n">lat_weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="o">*</span> <span class="n">rad_weights</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="c1"># Add effect of the current point mass to the result</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">mass</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">(</span>
+                    <span class="n">longitude</span><span class="p">,</span>
+                    <span class="n">cosphi</span><span class="p">,</span>
+                    <span class="n">sinphi</span><span class="p">,</span>
+                    <span class="n">radius</span><span class="p">,</span>
+                    <span class="n">longitude_p</span><span class="p">,</span>
+                    <span class="n">cosphi_p</span><span class="p">,</span>
+                    <span class="n">sinphi_p</span><span class="p">,</span>
+                    <span class="n">radius_p</span><span class="p">,</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 
 
 <span class="k">def</span> <span class="nf">glq_nodes_weights</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate GLQ unscaled nodes, weights and total number of nodes</span>
+<span class="sd">    Calculate GLQ unscaled nodes and weights</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -606,8 +629,6 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    n_nodes : int</span>
-<span class="sd">        Total number of nodes computed as the product of the GLQ degrees.</span>
 <span class="sd">    glq_nodes : list</span>
 <span class="sd">        Unscaled GLQ nodes for each direction: ``longitude``, ``latitude``,</span>
 <span class="sd">        ``radius``.</span>
@@ -617,8 +638,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Unpack GLQ degrees</span>
     <span class="n">lon_degree</span><span class="p">,</span> <span class="n">lat_degree</span><span class="p">,</span> <span class="n">rad_degree</span> <span class="o">=</span> <span class="n">glq_degrees</span><span class="p">[:]</span>
-    <span class="c1"># Get number of point masses</span>
-    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">glq_degrees</span><span class="p">)</span>
     <span class="c1"># Get nodes coordinates and weights</span>
     <span class="n">lon_node</span><span class="p">,</span> <span class="n">lon_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">lon_degree</span><span class="p">)</span>
     <span class="n">lat_node</span><span class="p">,</span> <span class="n">lat_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">lat_degree</span><span class="p">)</span>
@@ -626,7 +645,7 @@
     <span class="c1"># Reorder nodes and weights</span>
     <span class="n">glq_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon_node</span><span class="p">,</span> <span class="n">lat_node</span><span class="p">,</span> <span class="n">rad_node</span><span class="p">)</span>
     <span class="n">glq_weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon_weights</span><span class="p">,</span> <span class="n">lat_weights</span><span class="p">,</span> <span class="n">rad_weights</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">n_nodes</span><span class="p">,</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span>
+    <span class="k">return</span> <span class="n">glq_nodes</span><span class="p">,</span> <span class="n">glq_weights</span>
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -993,9 +1012,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

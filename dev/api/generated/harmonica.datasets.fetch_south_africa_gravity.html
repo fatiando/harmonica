@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.test" href="harmonica.test.html" />
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -240,7 +245,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-datasets-fetch-south-africa-gravity">
+  <section id="harmonica-datasets-fetch-south-africa-gravity">
 <h1>harmonica.datasets.fetch_south_africa_gravity<a class="headerlink" href="#harmonica-datasets-fetch-south-africa-gravity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.datasets.fetch_south_africa_gravity">
@@ -262,19 +267,27 @@ level. Both <code class="docutils literal notranslate"><span class="pre">longitu
 <code class="docutils literal notranslate"><span class="pre">elevation</span></code> in meters and <code class="docutils literal notranslate"><span class="pre">gravity</span></code> in mGal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – The gravity data.</p>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – The gravity data.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<div class="section" id="examples-using-harmonica-datasets-fetch-south-africa-gravity">
+<section id="examples-using-harmonica-datasets-fetch-south-africa-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.datasets.fetch_south_africa_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-datasets-fetch-south-africa-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Land gravity survey performed in January 1986 within the boundaries of the Republic of South Af..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_south_africa_gravity_thumb.png" src="../../_images/sphx_glr_south_africa_gravity_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/south_africa_gravity.html#sphx-glr-sample-data-south-africa-gravity-py"><span class="std std-ref">Land Gravity Data from South Africa</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><figure class="align-default" id="id1">
+<img alt="Gridding in spherical coordinates" src="../../_images/sphx_glr_harmonic_spherical_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/eql/harmonic_spherical.html#sphx-glr-gallery-eql-harmonic-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Land gravity survey performed in January 1986 within the boundaries of the Republic of South Af..."><figure class="align-default" id="id2">
+<img alt="Land Gravity Data from South Africa" src="../../_images/sphx_glr_south_africa_gravity_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../sample_data/south_africa_gravity.html#sphx-glr-sample-data-south-africa-gravity-py"><span class="std std-ref">Land Gravity Data from South Africa</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
            </div>
@@ -296,9 +309,9 @@ level. Both <code class="docutils literal notranslate"><span class="pre">longitu
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

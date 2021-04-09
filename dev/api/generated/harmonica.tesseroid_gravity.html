@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,11 +40,15 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="harmonica.isostasy_airy" href="harmonica.isostasy_airy.html" />
+    <link rel="next" title="harmonica.prisms_layer" href="harmonica.prisms_layer.html" />
     <link rel="prev" title="harmonica.prism_gravity" href="harmonica.prism_gravity.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -131,6 +136,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-harmonica-tesseroid-gravity">Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#isostasy">Isostasy</a></li>
@@ -237,7 +244,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-tesseroid-gravity">
+  <section id="harmonica-tesseroid-gravity">
 <h1>harmonica.tesseroid_gravity<a class="headerlink" href="#harmonica-tesseroid-gravity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.tesseroid_gravity">
@@ -253,25 +260,25 @@ it’s positive if the acceleration vector points inside the spheroid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and <code class="docutils literal notranslate"><span class="pre">radius</span></code> of
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and <code class="docutils literal notranslate"><span class="pre">radius</span></code> of
 the computation points defined on a spherical geocentric coordinate
 system.
 Both <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and <code class="docutils literal notranslate"><span class="pre">latitude</span></code> should be in degrees and <code class="docutils literal notranslate"><span class="pre">radius</span></code>
 in meters.</p></li>
-<li><p><strong>tesseroids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing the coordinates of the tesseroid:
+<li><p><strong>tesseroids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing the coordinates of the tesseroid:
 <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> under a geocentric
 spherical coordinate system.
 The longitudinal and latitudinal boundaries should be in degrees, while
 the radial ones must be in meters.</p></li>
-<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>array</em>) – List or array containing the density of each tesseroid in kg/m^3.</p></li>
-<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – <p>Gravitational field that wants to be computed.
+<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><em>array</em>) – List or array containing the density of each tesseroid in kg/m^3.</p></li>
+<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – <p>Gravitational field that wants to be computed.
 The available fields are:</p>
 <ul>
 <li><p>Gravitational potential: <code class="docutils literal notranslate"><span class="pre">potential</span></code></p></li>
 <li><p>Downward acceleration: <code class="docutils literal notranslate"><span class="pre">g_z</span></code></p></li>
 </ul>
 </p></li>
-<li><p><strong>distance_size_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> (</em><em>optional</em><em>)</em>) – Dictionary containing distance-size ratii for each gravitational field
+<li><p><strong>distance_size_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> (</em><em>optional</em><em>)</em>) – Dictionary containing distance-size ratii for each gravitational field
 used on the adaptive discretization algorithm.
 Values must be the available fields and keys should be the desired
 distance-size ratio.
@@ -281,7 +288,7 @@ computation time.
 If None, the default values of distance-size ratii will be used:
 D = 1 for the potential and D = 2.5 for the gradient.
 Default to None.</p></li>
-<li><p><strong>glq_degrees</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em> (</em><em>optional</em><em>)</em>) – List containing the GLQ degrees used on each direction:
+<li><p><strong>glq_degrees</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> (</em><em>optional</em><em>)</em>) – List containing the GLQ degrees used on each direction:
 <code class="docutils literal notranslate"><span class="pre">glq_degree_longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">glq_degree_latitude</span></code>,
 <code class="docutils literal notranslate"><span class="pre">glq_degree_radius</span></code>.
 The GLQ degree specifies how many point masses will be created along
@@ -289,21 +296,21 @@ each direction.
 Increasing the GLQ degree will increase the accuracy of the numerical
 approximation, but also the computation time.
 Default <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></code>.</p></li>
-<li><p><strong>stack_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> (</em><em>optional</em><em>)</em>) – Size of the tesseroid stack used on the adaptive discretization
+<li><p><strong>stack_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> (</em><em>optional</em><em>)</em>) – Size of the tesseroid stack used on the adaptive discretization
 algorithm.
 If the algorithm will perform too many splits, please increase the
 stack size.</p></li>
-<li><p><strong>max_discretizations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> (</em><em>optional</em><em>)</em>) – Maximum number of splits made by the adaptive discretization algorithm.
+<li><p><strong>max_discretizations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> (</em><em>optional</em><em>)</em>) – Maximum number of splits made by the adaptive discretization algorithm.
 If the algorithm will perform too many splits, please increase the
 maximum number of splits.</p></li>
-<li><p><strong>radial_adaptive_discretization</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the adaptive discretization algorithm will split the
+<li><p><strong>radial_adaptive_discretization</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the adaptive discretization algorithm will split the
 tesseroid only on the horizontal direction.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code>, it will perform a three dimensional adaptive
 discretization, splitting the tesseroids on every direction.
 Default <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>dtype</strong> (<em>data-type</em><em> (</em><em>optional</em><em>)</em>) – Data type assigned to the resulting gravitational field. Default to
 <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
-<li><p><strong>disable_checks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – Flag that controls whether to perform a sanity check on the model.
+<li><p><strong>disable_checks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – Flag that controls whether to perform a sanity check on the model.
 Should be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> only when it is certain that the input model
 is valid and it does not need to be checked.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
@@ -336,14 +343,16 @@ points.</p>
 </div>
 </dd></dl>
 
-<div class="section" id="examples-using-harmonica-tesseroid-gravity">
+<section id="examples-using-harmonica-tesseroid-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-tesseroid-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_tesseroid_thumb.png" src="../../_images/sphx_glr_tesseroid_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><figure class="align-default" id="id1">
+<img alt="Tesseroids (spherical prisms)" src="../../_images/sphx_glr_tesseroid_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
            </div>
@@ -353,7 +362,7 @@ points.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="harmonica.isostasy_airy.html" class="btn btn-neutral float-right" title="harmonica.isostasy_airy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="harmonica.prisms_layer.html" class="btn btn-neutral float-right" title="harmonica.prisms_layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="harmonica.prism_gravity.html" class="btn btn-neutral float-left" title="harmonica.prism_gravity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -365,9 +374,9 @@ points.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <!-- Google Analytics tracking code -->
@@ -107,17 +112,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
@@ -218,39 +223,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="computation-times">
+  <section id="computation-times">
 <span id="sphx-glr-sample-data-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this headline">¶</a></h1>
-<p><strong>00:09.090</strong> total execution time for <strong>sample_data</strong> files:</p>
+<p><strong>00:08.489</strong> total execution time for <strong>sample_data</strong> files:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 81%" />
-<col style="width: 11%" />
-<col style="width: 8%" />
+<col style="width: 82%" />
+<col style="width: 10%" />
+<col style="width: 7%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="britain_magnetic.html#sphx-glr-sample-data-britain-magnetic-py"><span class="std std-ref">Total Field Magnetic Anomaly from Great Britain</span></a> (<code class="docutils literal notranslate"><span class="pre">britain_magnetic.py</span></code>)</p></td>
-<td><p>00:07.319</p></td>
+<td><p>00:06.403</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="earth_geoid.html#sphx-glr-sample-data-earth-geoid-py"><span class="std std-ref">Earth Geoid</span></a> (<code class="docutils literal notranslate"><span class="pre">earth_geoid.py</span></code>)</p></td>
-<td><p>00:00.476</p></td>
-<td><p>0.0 MB</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a> (<code class="docutils literal notranslate"><span class="pre">earth_topography.py</span></code>)</p></td>
-<td><p>00:00.452</p></td>
-<td><p>0.0 MB</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="earth_gravity.html#sphx-glr-sample-data-earth-gravity-py"><span class="std std-ref">Earth Gravity</span></a> (<code class="docutils literal notranslate"><span class="pre">earth_gravity.py</span></code>)</p></td>
-<td><p>00:00.442</p></td>
+<td><p>00:00.507</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="south_africa_gravity.html#sphx-glr-sample-data-south-africa-gravity-py"><span class="std std-ref">Land Gravity Data from South Africa</span></a> (<code class="docutils literal notranslate"><span class="pre">south_africa_gravity.py</span></code>)</p></td>
-<td><p>00:00.400</p></td>
+<td><p>00:00.477</p></td>
+<td><p>0.0 MB</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="earth_gravity.html#sphx-glr-sample-data-earth-gravity-py"><span class="std std-ref">Earth Gravity</span></a> (<code class="docutils literal notranslate"><span class="pre">earth_gravity.py</span></code>)</p></td>
+<td><p>00:00.452</p></td>
+<td><p>0.0 MB</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a> (<code class="docutils literal notranslate"><span class="pre">earth_topography.py</span></code>)</p></td>
+<td><p>00:00.447</p></td>
+<td><p>0.0 MB</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="south_africa_topography.html#sphx-glr-sample-data-south-africa-topography-py"><span class="std std-ref">South Africa Topography</span></a> (<code class="docutils literal notranslate"><span class="pre">south_africa_topography.py</span></code>)</p></td>
+<td><p>00:00.203</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 </tbody>
 </table>
-</div>
+</section>
 
 
            </div>
@@ -263,9 +272,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

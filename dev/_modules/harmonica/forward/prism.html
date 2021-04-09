@@ -39,8 +39,12 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -107,17 +111,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
@@ -213,17 +217,29 @@
            <div itemprop="articleBody">
             
   <h1>Source code for harmonica.forward.prism</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Forward modelling for prisms</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
 
 
 <div class="viewcode-block" id="prism_gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity">[docs]</a><span class="k">def</span> <span class="nf">prism_gravity</span><span class="p">(</span>
-    <span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span> <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">prisms</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gravitational fields of right-rectangular prisms in Cartesian coordinates</span>
@@ -268,6 +284,11 @@
 <span class="sd">        - Gravitational potential: ``potential``</span>
 <span class="sd">        - Downward acceleration: ``g_z``</span>
 
+<span class="sd">    parallel : bool (optional)</span>
+<span class="sd">        If True the computations will run in parallel using Numba built-in</span>
+<span class="sd">        parallelization. If False, the forward model will run on a single core.</span>
+<span class="sd">        Might be useful to disable parallelization if the forward model is run</span>
+<span class="sd">        by an already parallelized workflow. Default to True.</span>
 <span class="sd">    dtype : data-type (optional)</span>
 <span class="sd">        Data type assigned to the resulting gravitational field. Default to</span>
 <span class="sd">        ``np.float64``.</span>
@@ -332,12 +353,23 @@
             <span class="p">)</span>
         <span class="n">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">)</span>
     <span class="c1"># Compute gravitational field</span>
-    <span class="n">jit_prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">kernels</span><span class="p">[</span><span class="n">field</span><span class="p">],</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">dispatcher</span><span class="p">(</span><span class="n">parallel</span><span class="p">)(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">kernels</span><span class="p">[</span><span class="n">field</span><span class="p">],</span> <span class="n">result</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">*=</span> <span class="n">GRAVITATIONAL_CONST</span>
     <span class="c1"># Convert to more convenient units</span>
     <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;g_z&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e5</span>  <span class="c1"># SI to mGal</span>
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="n">parallel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the parallelized or serialized forward modelling function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dispatchers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="kc">True</span><span class="p">:</span> <span class="n">jit_prism_gravity_parallel</span><span class="p">,</span>
+        <span class="kc">False</span><span class="p">:</span> <span class="n">jit_prism_gravity_serial</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">dispatchers</span><span class="p">[</span><span class="n">parallel</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">):</span>
@@ -376,10 +408,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">jit_prism_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">out</span>
-<span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name,not-an-iterable</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute gravitational field of prisms on computations points</span>
 
@@ -404,7 +435,7 @@
 <span class="sd">        Must have the same size as the arrays contained on ``coordinates``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Iterate over computation points and prisms</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="c1"># Iterate over the prism boundaries to compute the result of the</span>
             <span class="c1"># integration (see Nagy et al., 2000)</span>
@@ -493,6 +524,12 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="c1"># Define jitted versions of the forward modelling function</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">jit_prism_gravity_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">jit_prism_gravity</span><span class="p">)</span>
+<span class="n">jit_prism_gravity_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">jit_prism_gravity</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -505,9 +542,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

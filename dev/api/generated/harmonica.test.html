@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Changelog" href="../../changes.html" />
@@ -109,17 +114,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -232,7 +237,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-test">
+  <section id="harmonica-test">
 <h1>harmonica.test<a class="headerlink" href="#harmonica-test" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.test">
@@ -242,23 +247,23 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>doctest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will run the doctests as well (code examples that start
+<li><p><strong>doctest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will run the doctests as well (code examples that start
 with a <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> in the docs).</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will print extra information during the test run.</p></li>
-<li><p><strong>coverage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will run test coverage analysis on the code as well.
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will print extra information during the test run.</p></li>
+<li><p><strong>coverage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will run test coverage analysis on the code as well.
 Requires <code class="docutils literal notranslate"><span class="pre">pytest-cov</span></code>.</p></li>
-<li><p><strong>figures</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will test generated figures against saved baseline
+<li><p><strong>figures</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will test generated figures against saved baseline
 figures.  Requires <code class="docutils literal notranslate"><span class="pre">pytest-mpl</span></code> and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.8)"><strong>AssertionError</strong></a> – If pytest returns a non-zero error code indicating that some tests have
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.9)"><strong>AssertionError</strong></a> – If pytest returns a non-zero error code indicating that some tests have
     failed.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
            </div>
@@ -280,9 +285,9 @@ figures.  Requires <code class="docutils literal notranslate"><span class="pre">
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>

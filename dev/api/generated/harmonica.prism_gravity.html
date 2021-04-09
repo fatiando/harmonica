@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -39,8 +40,12 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.tesseroid_gravity" href="harmonica.tesseroid_gravity.html" />
@@ -109,25 +114,30 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#equivalent-layers">Equivalent Layers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#forward-modelling">Forward modelling</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="harmonica.point_mass_gravity.html">harmonica.point_mass_gravity</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">harmonica.prism_gravity</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">harmonica.prism_gravity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-harmonica-prism-gravity">Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#isostasy">Isostasy</a></li>
@@ -234,11 +244,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="harmonica-prism-gravity">
+  <section id="harmonica-prism-gravity">
 <h1>harmonica.prism_gravity<a class="headerlink" href="#harmonica-prism-gravity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="harmonica.prism_gravity">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">prism_gravity</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">prisms</em>, <em class="sig-param">density</em>, <em class="sig-param">field</em>, <em class="sig-param">dtype='float64'</em>, <em class="sig-param">disable_checks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/prism.html#prism_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">prism_gravity</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">prisms</em>, <em class="sig-param">density</em>, <em class="sig-param">field</em>, <em class="sig-param">parallel=True</em>, <em class="sig-param">dtype='float64'</em>, <em class="sig-param">disable_checks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/prism.html#prism_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gravitational fields of right-rectangular prisms in Cartesian coordinates</p>
 <p>The gravitational fields are computed through the analytical solutions
 given by <a class="reference internal" href="../../references.html#nagy2000" id="id1"><span>[Nagy2000]</span></a> and <a class="reference internal" href="../../references.html#nagy2002" id="id2"><span>[Nagy2002]</span></a>, which are valid on the entire domain.
@@ -260,26 +270,30 @@ contrasts produce positive anomalies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code> and <code class="docutils literal notranslate"><span class="pre">upward</span></code> of
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><em>1d-array</em>) – List or array containing <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code> and <code class="docutils literal notranslate"><span class="pre">upward</span></code> of
 the computation points defined on a Cartesian coordinate system.
 All coordinates should be in meters.</p></li>
-<li><p><strong>prisms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><em>1d-array</em><em>, or </em><em>2d-array</em>) – List or array containing the coordinates of the prism(s) in the
+<li><p><strong>prisms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>1d-array</em><em>, or </em><em>2d-array</em>) – List or array containing the coordinates of the prism(s) in the
 following order:
 west, east, south, north, bottom, top in a Cartesian coordinate system.
 All coordinates should be in meters. Coordinates for more than one
 prism can be provided. In this case, <em>prisms</em> should be a list of lists
 or 2d-array (with one prism per line).</p></li>
-<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>array</em>) – List or array containing the density of each prism in kg/m^3.</p></li>
-<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – <p>Gravitational field that wants to be computed.
+<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><em>array</em>) – List or array containing the density of each prism in kg/m^3.</p></li>
+<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – <p>Gravitational field that wants to be computed.
 The available fields are:</p>
 <ul>
 <li><p>Gravitational potential: <code class="docutils literal notranslate"><span class="pre">potential</span></code></p></li>
 <li><p>Downward acceleration: <code class="docutils literal notranslate"><span class="pre">g_z</span></code></p></li>
 </ul>
 </p></li>
+<li><p><strong>parallel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – If True the computations will run in parallel using Numba built-in
+parallelization. If False, the forward model will run on a single core.
+Might be useful to disable parallelization if the forward model is run
+by an already parallelized workflow. Default to True.</p></li>
 <li><p><strong>dtype</strong> (<em>data-type</em><em> (</em><em>optional</em><em>)</em>) – Data type assigned to the resulting gravitational field. Default to
 <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
-<li><p><strong>disable_checks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – Flag that controls whether to perform a sanity check on the model.
+<li><p><strong>disable_checks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em> (</em><em>optional</em><em>)</em>) – Flag that controls whether to perform a sanity check on the model.
 Should be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> only when it is certain that the input model
 is valid and it does not need to be checked.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
@@ -319,7 +333,22 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </div>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<section id="examples-using-harmonica-prism-gravity">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-prism-gravity" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><figure class="align-default" id="id5">
+<img alt="Layer of prisms" src="../../_images/sphx_glr_prisms_layer_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prisms_layer.html#sphx-glr-gallery-forward-prisms-layer-py"><span class="std std-ref">Layer of prisms</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prisms_layer function is to create a model of the ter..."><figure class="align-default" id="id6">
+<img alt="Gravitational effect of topography" src="../../_images/sphx_glr_prisms_topo_gravity_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
            </div>
@@ -341,9 +370,9 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2020, The Harmonica Developers
+        &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Feb 27, 2020.
+        Last updated on Apr 09, 2021.
       </span>
 
     </p>
