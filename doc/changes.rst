@@ -19,7 +19,7 @@ New features:
 - Optimize forward models by parallelizing outer loops for prisms and point masses and refactor the tesseroids forward modelling (`#205 <https://github.com/fatiando/harmonica/pull/205>`__)
 - Add parallel flag to EQLs (`#207 <https://github.com/fatiando/harmonica/pull/207>`__)
 - Parallelize EQLs predictions and Jacobian build (`#203 <https://github.com/fatiando/harmonica/pull/203>`__)
-- Improve EQL harmonic classes by splitting classes and adding upward argument to predictions methods (`#190 <https://github.com/fatiando/harmonica/pull/190>`__)
+- Improve EQL harmonic classes by splitting classes and adding upward argument to prediction methods (`#190 <https://github.com/fatiando/harmonica/pull/190>`__)
 - Add function to compute the distance between points given in geodetic coordinates (`#172 <https://github.com/fatiando/harmonica/pull/172>`__)
 - Allow ``load_icgem_gdf`` to take open file objects (`#155 <https://github.com/fatiando/harmonica/pull/155>`__)
 - Add new ``EQLHarmonicSpherical`` class to interpolate data using EQL in spherical coordinates (`#136 <https://github.com/fatiando/harmonica/pull/136>`__)
