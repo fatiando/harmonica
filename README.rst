@@ -142,4 +142,5 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/harmonica/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/harmonica/latest>`__
+* `v0.2.0 <http://www.fatiando.org/harmonica/v0.2.0>`__
 * `v0.1.0 <http://www.fatiando.org/harmonica/v0.1.0>`__
