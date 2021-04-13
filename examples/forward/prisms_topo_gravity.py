@@ -8,7 +8,7 @@
 Gravitational effect of topography
 ==================================
 
-One possible application of the :func:`harmonica.prisms_layer` function is to
+One possible application of the :func:`harmonica.prism_layer` function is to
 create a model of the terrain and compute its gravity effect. Here we will use
 a regular grid of topographic and bathymetric heights for South Africa to
 create a prisms layer that model the terrain with a density of 2670 kg/m^3 and
@@ -43,7 +43,7 @@ density.values[:] = 2670.0  # replace every value for the density of the topogra
 density = density.where(south_africa_topo >= 0, 1000 - 2900)
 
 # Create layer of prisms
-prisms = hm.prisms_layer(
+prisms = hm.prism_layer(
     (south_africa_topo.easting, south_africa_topo.northing),
     surface=south_africa_topo.values,
     reference=0,
@@ -56,7 +56,7 @@ coordinates = vd.grid_coordinates(
 )
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
-prisms_gravity = prisms.prisms_layer.gravity(coordinates_projected, field="g_z")
+prisms_gravity = prisms.prism_layer.gravity(coordinates_projected, field="g_z")
 
 # Make a plot of the computed gravity
 plt.figure(figsize=(8, 8))

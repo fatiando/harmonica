@@ -15,7 +15,7 @@ import verde as vd
 from .prism import prism_gravity
 
 
-def prisms_layer(
+def prism_layer(
     coordinates,
     surface,
     reference,
@@ -32,7 +32,7 @@ def prisms_layer(
     ``northing`` coordinates correspond to the location of the center of each
     prism.
 
-    The ``prisms_layer`` dataset accessor can be used to access special methods
+    The ``prism_layer`` dataset accessor can be used to access special methods
     and attributes for the layer of prisms, like the horizontal dimensions of
     the prisms, getting the boundaries of each prisms, etc.
     See :class:`XarrayAcessorPrismLayer` for the definition of these methods
@@ -85,7 +85,7 @@ def prisms_layer(
     >>> surface = np.arange(20, dtype=float).reshape((4, 5))
     >>> density = 2670.0 * np.ones_like(surface)
     >>> # Define a layer of prisms
-    >>> prisms = prisms_layer(
+    >>> prisms = prism_layer(
     ...     (easting, northing),
     ...     surface,
     ...     reference=0,
@@ -105,10 +105,10 @@ def prisms_layer(
         coords_units:      meters
         properties_units:  SI
     >>> # Get the boundaries of the layer (will exceed the region)
-    >>> print(prisms.prisms_layer.boundaries)
+    >>> print(prisms.prism_layer.boundaries)
     (-1.25, 11.25, 1.0, 9.0)
     >>> # Get the boundaries of one of the prisms
-    >>> print(prisms.prisms_layer.get_prism((0, 2)))
+    >>> print(prisms.prism_layer.get_prism((0, 2)))
     (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)
     """  # noqa: W505
     dims = ("northing", "easting")
@@ -128,7 +128,7 @@ def prisms_layer(
     attrs = {"coords_units": "meters", "properties_units": "SI"}
     prisms.attrs = attrs
     # Create the top and bottom coordinates of the prisms
-    prisms.prisms_layer.update_top_bottom(surface, reference)
+    prisms.prism_layer.update_top_bottom(surface, reference)
     return prisms
 
 
@@ -146,20 +146,20 @@ def _check_regular_grid(easting, northing):
         raise ValueError("Passed northing coordiantes are not evenly spaced.")
 
 
-@xr.register_dataset_accessor("prisms_layer")
-class DatasetAccessorPrismsLayer:
+@xr.register_dataset_accessor("prism_layer")
+class DatasetAccessorPrismLayer:
     """
     Defines dataset accessor for layer of prisms
 
     .. warning::
 
         This class is not intended to be initialized.
-        Use the `prisms_layer` accessor for accessing the methods and
+        Use the `prism_layer` accessor for accessing the methods and
         attributes of this class.
 
     See also
     --------
-    harmonica.prisms_layer
+    harmonica.prism_layer
     """
 
     def __init__(self, xarray_obj):
