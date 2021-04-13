@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -114,17 +111,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#gravity-corrections">Gravity Corrections</a><ul>
@@ -140,8 +137,8 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.point_mass_gravity.html">harmonica.point_mass_gravity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#isostasy">Isostasy</a><ul>
@@ -265,9 +262,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-harmonica">
+  <div class="section" id="module-harmonica">
 <span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-harmonica" title="Permalink to this headline">¶</a></h1>
-<section id="gravity-corrections">
+<div class="section" id="gravity-corrections">
 <h2>Gravity Corrections<a class="headerlink" href="#gravity-corrections" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -281,8 +278,8 @@
 </tbody>
 </table>
 <p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.2.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
-</section>
-<section id="equivalent-layers">
+</div>
+<div class="section" id="equivalent-layers">
 <h2>Equivalent Layers<a class="headerlink" href="#equivalent-layers" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -298,8 +295,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="forward-modelling">
+</div>
+<div class="section" id="forward-modelling">
 <h2>Forward modelling<a class="headerlink" href="#forward-modelling" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -316,16 +313,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity" title="harmonica.tesseroid_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code></a>(coordinates, tesseroids, …)</p></td>
 <td><p>Compute gravitational field of tesseroids on computation points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prisms_layer.html#harmonica.prisms_layer" title="harmonica.prisms_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prisms_layer</span></code></a>(coordinates, surface, reference)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layer</span></code></a>(coordinates, surface, reference)</p></td>
 <td><p>Create a layer of prisms of equal size</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer" title="harmonica.DatasetAccessorPrismsLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismsLayer</span></code></a>(xarray_obj)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer" title="harmonica.DatasetAccessorPrismLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismLayer</span></code></a>(xarray_obj)</p></td>
 <td><p>Defines dataset accessor for layer of prisms</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="isostasy">
+</div>
+<div class="section" id="isostasy">
 <h2>Isostasy<a class="headerlink" href="#isostasy" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -338,8 +335,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="input-and-output">
+</div>
+<div class="section" id="input-and-output">
 <h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -352,8 +349,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="synthetic-models-and-surveys">
+</div>
+<div class="section" id="synthetic-models-and-surveys">
 <h2>Synthetic models and surveys<a class="headerlink" href="#synthetic-models-and-surveys" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -369,8 +366,8 @@
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-harmonica.datasets"></span></section>
-<section id="datasets">
+<span class="target" id="module-harmonica.datasets"></span></div>
+<div class="section" id="datasets">
 <h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -398,8 +395,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="utilities">
+</div>
+<div class="section" id="utilities">
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -412,8 +409,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
@@ -437,7 +434,7 @@
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

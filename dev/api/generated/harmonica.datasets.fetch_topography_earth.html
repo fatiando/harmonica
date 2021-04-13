@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +111,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -245,11 +242,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-datasets-fetch-topography-earth">
+  <div class="section" id="harmonica-datasets-fetch-topography-earth">
 <h1>harmonica.datasets.fetch_topography_earth<a class="headerlink" href="#harmonica-datasets-fetch-topography-earth" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.datasets.fetch_topography_earth">
-<code class="sig-prename descclassname">harmonica.datasets.</code><code class="sig-name descname">fetch_topography_earth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/datasets/sample_data.html#fetch_topography_earth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.datasets.fetch_topography_earth" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.datasets.</span></code><code class="sig-name descname"><span class="pre">fetch_topography_earth</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/datasets/sample_data.html#fetch_topography_earth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.datasets.fetch_topography_earth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a global grid of Earth relief (topography and bathymetry).</p>
 <p>The grid is based on the ETOPO1 model <a class="reference internal" href="../../references.html#amanteeakins2009" id="id1"><span>[AmanteEakins2009]</span></a>. The original
 model has 1 arc-minute grid spacing but here we downsampled to 0.5 degree
@@ -269,28 +266,22 @@ geodetic latitude and longitude.</p>
 </dl>
 </dd></dl>
 
-<section id="examples-using-harmonica-datasets-fetch-topography-earth">
+<div class="section" id="examples-using-harmonica-datasets-fetch-topography-earth">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.datasets.fetch_topography_earth</span></code><a class="headerlink" href="#examples-using-harmonica-datasets-fetch-topography-earth" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><figure class="align-default" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><div class="figure align-default" id="id2">
 <img alt="Topography-free (Bouguer) Gravity Disturbances" src="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic..."><figure class="align-default" id="id3">
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic..."><div class="figure align-default" id="id3">
 <img alt="Airy Isostasy" src="../../_images/sphx_glr_isostasy_airy_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/isostasy_airy.html#sphx-glr-gallery-isostasy-airy-py"><span class="std std-ref">Airy Isostasy</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of the Earth according to the ETOPO1 model [AmanteEakins2009]_. T..."><figure class="align-default" id="id4">
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/isostasy_airy.html#sphx-glr-gallery-isostasy-airy-py"><span class="std std-ref">Airy Isostasy</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of the Earth according to the ETOPO1 model [AmanteEakins2009]_. T..."><div class="figure align-default" id="id4">
 <img alt="Earth Topography" src="../../_images/sphx_glr_earth_topography_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../sample_data/earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -314,7 +305,7 @@ geodetic latitude and longitude.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -114,13 +111,13 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sample Data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#where-is-my-data">Where is my data?</a></li>
@@ -136,7 +133,7 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
@@ -237,11 +234,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="sample-data">
+  <div class="section" id="sample-data">
 <span id="sphx-glr-sample-data"></span><span id="id1"></span><h1>Sample Data<a class="headerlink" href="#sample-data" title="Permalink to this headline">¶</a></h1>
 <p>Harmonica provides some sample data for testing through the
 <a class="reference internal" href="../api/index.html#module-harmonica.datasets" title="harmonica.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">harmonica.datasets</span></code></a> module.</p>
-<section id="where-is-my-data">
+<div class="section" id="where-is-my-data">
 <h2>Where is my data?<a class="headerlink" href="#where-is-my-data" title="Permalink to this headline">¶</a></h2>
 <p>The sample data files are downloaded automatically by <a class="reference external" href="https://www.fatiando.org/pooch/latest/api/index.html#module-pooch" title="(in Pooch vv1.3.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pooch</span></code></a> the first
 time you load them. The files are saved to the default cache location on your
@@ -250,61 +247,49 @@ configuration. We provide the <a class="reference internal" href="../api/generat
 need to find the data storage location on your system.</p>
 <p>You can change the base data directory by setting the <code class="docutils literal notranslate"><span class="pre">HARMONICA_DATA_DIR</span></code>
 environment variable to a different path.</p>
-</section>
-<section id="available-datasets">
+</div>
+<div class="section" id="available-datasets">
 <h2>Available datasets<a class="headerlink" href="#available-datasets" title="Permalink to this headline">¶</a></h2>
 <p>These are the datasets currently available:</p>
-<div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an..."><figure class="align-default" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an..."><div class="figure align-default" id="id2">
 <img alt="Total Field Magnetic Anomaly from Great Britain" src="../_images/sphx_glr_britain_magnetic_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="britain_magnetic.html#sphx-glr-sample-data-britain-magnetic-py"><span class="std std-ref">Total Field Magnetic Anomaly from Great Britain</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="britain_magnetic.html#sphx-glr-sample-data-britain-magnetic-py"><span class="std std-ref">Total Field Magnetic Anomaly from Great Britain</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The geoid is the equipotential surface of the Earth&#x27;s gravity potential that coincides with mea..."><figure class="align-default" id="id3">
+<div class="sphx-glr-thumbcontainer" tooltip="The geoid is the equipotential surface of the Earth&#x27;s gravity potential that coincides with mea..."><div class="figure align-default" id="id3">
 <img alt="Earth Geoid" src="../_images/sphx_glr_earth_geoid_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="earth_geoid.html#sphx-glr-sample-data-earth-geoid-py"><span class="std std-ref">Earth Geoid</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="earth_geoid.html#sphx-glr-sample-data-earth-geoid-py"><span class="std std-ref">Earth Geoid</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This is the magnitude of the gravity vector of the Earth (gravitational + centrifugal) at 10 km..."><figure class="align-default" id="id4">
+<div class="sphx-glr-thumbcontainer" tooltip="This is the magnitude of the gravity vector of the Earth (gravitational + centrifugal) at 10 km..."><div class="figure align-default" id="id4">
 <img alt="Earth Gravity" src="../_images/sphx_glr_earth_gravity_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="earth_gravity.html#sphx-glr-sample-data-earth-gravity-py"><span class="std std-ref">Earth Gravity</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="earth_gravity.html#sphx-glr-sample-data-earth-gravity-py"><span class="std std-ref">Earth Gravity</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of the Earth according to the ETOPO1 model [AmanteEakins2009]_. T..."><figure class="align-default" id="id5">
+<div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of the Earth according to the ETOPO1 model [AmanteEakins2009]_. T..."><div class="figure align-default" id="id5">
 <img alt="Earth Topography" src="../_images/sphx_glr_earth_topography_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="earth_topography.html#sphx-glr-sample-data-earth-topography-py"><span class="std std-ref">Earth Topography</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Land gravity survey performed in January 1986 within the boundaries of the Republic of South Af..."><figure class="align-default" id="id6">
+<div class="sphx-glr-thumbcontainer" tooltip="Land gravity survey performed in January 1986 within the boundaries of the Republic of South Af..."><div class="figure align-default" id="id6">
 <img alt="Land Gravity Data from South Africa" src="../_images/sphx_glr_south_africa_gravity_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="south_africa_gravity.html#sphx-glr-sample-data-south-africa-gravity-py"><span class="std std-ref">Land Gravity Data from South Africa</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="south_africa_gravity.html#sphx-glr-sample-data-south-africa-gravity-py"><span class="std std-ref">Land Gravity Data from South Africa</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of South Africa according to the ETOPO1 model [AmanteEakins2009]_..."><figure class="align-default" id="id7">
+<div class="sphx-glr-thumbcontainer" tooltip="The topography and bathymetry of South Africa according to the ETOPO1 model [AmanteEakins2009]_..."><div class="figure align-default" id="id7">
 <img alt="South Africa Topography" src="../_images/sphx_glr_south_africa_topography_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="south_africa_topography.html#sphx-glr-sample-data-south-africa-topography-py"><span class="std std-ref">South Africa Topography</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="south_africa_topography.html#sphx-glr-sample-data-south-africa-topography-py"><span class="std std-ref">South Africa Topography</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
 </div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-clear"></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
@@ -328,7 +313,7 @@ environment variable to a different path.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -48,7 +45,7 @@
   <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="harmonica.prisms_layer" href="harmonica.prisms_layer.html" />
+    <link rel="next" title="harmonica.prism_layer" href="harmonica.prism_layer.html" />
     <link rel="prev" title="harmonica.prism_gravity" href="harmonica.prism_gravity.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -114,17 +111,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -136,8 +133,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-harmonica-tesseroid-gravity">Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#isostasy">Isostasy</a></li>
@@ -244,11 +241,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-tesseroid-gravity">
+  <div class="section" id="harmonica-tesseroid-gravity">
 <h1>harmonica.tesseroid_gravity<a class="headerlink" href="#harmonica-tesseroid-gravity" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.tesseroid_gravity">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">tesseroid_gravity</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">tesseroids</em>, <em class="sig-param">density</em>, <em class="sig-param">field</em>, <em class="sig-param">distance_size_ratii=None</em>, <em class="sig-param">glq_degrees=(2</em>, <em class="sig-param">2</em>, <em class="sig-param">2)</em>, <em class="sig-param">stack_size=100</em>, <em class="sig-param">max_discretizations=100000</em>, <em class="sig-param">radial_adaptive_discretization=False</em>, <em class="sig-param">dtype=&lt;class 'numpy.float64'&gt;</em>, <em class="sig-param">disable_checks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/tesseroid.html#tesseroid_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.tesseroid_gravity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">tesseroid_gravity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">coordinates</span></em>, <em class="sig-param"><span class="pre">tesseroids</span></em>, <em class="sig-param"><span class="pre">density</span></em>, <em class="sig-param"><span class="pre">field</span></em>, <em class="sig-param"><span class="pre">distance_size_ratii=None</span></em>, <em class="sig-param"><span class="pre">glq_degrees=(2</span></em>, <em class="sig-param"><span class="pre">2</span></em>, <em class="sig-param"><span class="pre">2)</span></em>, <em class="sig-param"><span class="pre">stack_size=100</span></em>, <em class="sig-param"><span class="pre">max_discretizations=100000</span></em>, <em class="sig-param"><span class="pre">radial_adaptive_discretization=False</span></em>, <em class="sig-param"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></em>, <em class="sig-param"><span class="pre">disable_checks=False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/tesseroid.html#tesseroid_gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.tesseroid_gravity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute gravitational field of tesseroids on computation points.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -322,7 +319,7 @@ points.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get WGS84 ellipsoid from the Boule package</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get WGS84 ellipsoid from the Boule package</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">boule</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">boule</span><span class="o">.</span><span class="n">WGS84</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define tesseroid of 1km of thickness with top surface on the mean</span>
@@ -343,16 +340,14 @@ points.</p>
 </div>
 </dd></dl>
 
-<section id="examples-using-harmonica-tesseroid-gravity">
+<div class="section" id="examples-using-harmonica-tesseroid-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-tesseroid-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><figure class="align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id1">
 <img alt="Tesseroids (spherical prisms)" src="../../_images/sphx_glr_tesseroid_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -362,7 +357,7 @@ points.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="harmonica.prisms_layer.html" class="btn btn-neutral float-right" title="harmonica.prisms_layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="harmonica.prism_layer.html" class="btn btn-neutral float-right" title="harmonica.prism_layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="harmonica.prism_gravity.html" class="btn btn-neutral float-left" title="harmonica.prism_gravity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -376,7 +371,7 @@ points.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

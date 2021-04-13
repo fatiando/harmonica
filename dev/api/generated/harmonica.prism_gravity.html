@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +111,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -136,8 +133,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#isostasy">Isostasy</a></li>
@@ -244,11 +241,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-prism-gravity">
+  <div class="section" id="harmonica-prism-gravity">
 <h1>harmonica.prism_gravity<a class="headerlink" href="#harmonica-prism-gravity" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.prism_gravity">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">prism_gravity</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">prisms</em>, <em class="sig-param">density</em>, <em class="sig-param">field</em>, <em class="sig-param">parallel=True</em>, <em class="sig-param">dtype='float64'</em>, <em class="sig-param">disable_checks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/prism.html#prism_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">prism_gravity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prisms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_checks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/prism.html#prism_gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gravitational fields of right-rectangular prisms in Cartesian coordinates</p>
 <p>The gravitational fields are computed through the analytical solutions
 given by <a class="reference internal" href="../../references.html#nagy2000" id="id1"><span>[Nagy2000]</span></a> and <a class="reference internal" href="../../references.html#nagy2002" id="id2"><span>[Nagy2002]</span></a>, which are valid on the entire domain.
@@ -305,7 +302,7 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </dl>
 <p class="rubric">Examples</p>
 <p>Compute gravitational effect of a single a prism</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define prisms boundaries, it must be beneath the surface</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define prisms boundaries, it must be beneath the surface</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prism</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">34</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">345</span><span class="p">,</span> <span class="o">-</span><span class="mi">146</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set prism density to 2670 kg/m³</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">density</span> <span class="o">=</span> <span class="mi">2670</span>
@@ -323,7 +320,7 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </pre></div>
 </div>
 <p>Define two prisms with positive and negative density contrasts</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prisms</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">]]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prisms</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">densities</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute the g_z that the prisms generate on the computation points</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gz</span> <span class="o">=</span> <span class="n">prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">densities</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
@@ -333,22 +330,18 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </div>
 </dd></dl>
 
-<section id="examples-using-harmonica-prism-gravity">
+<div class="section" id="examples-using-harmonica-prism-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-prism-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><figure class="align-default" id="id5">
-<img alt="Layer of prisms" src="../../_images/sphx_glr_prisms_layer_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prisms_layer.html#sphx-glr-gallery-forward-prisms-layer-py"><span class="std std-ref">Layer of prisms</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prisms_layer function is to create a model of the ter..."><figure class="align-default" id="id6">
+<div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><div class="figure align-default" id="id5">
+<img alt="Layer of prisms" src="../../_images/sphx_glr_prism_layer_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prism_layer.html#sphx-glr-gallery-forward-prism-layer-py"><span class="std std-ref">Layer of prisms</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr..."><div class="figure align-default" id="id6">
 <img alt="Gravitational effect of topography" src="../../_images/sphx_glr_prisms_topo_gravity_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -372,7 +365,7 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

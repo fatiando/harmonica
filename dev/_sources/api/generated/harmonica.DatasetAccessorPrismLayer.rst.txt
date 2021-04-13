@@ -1,9 +1,9 @@
-harmonica.DatasetAccessorPrismsLayer
-====================================
+harmonica.DatasetAccessorPrismLayer
+===================================
 
 .. currentmodule:: harmonica
 
-.. autoclass:: DatasetAccessorPrismsLayer
+.. autoclass:: DatasetAccessorPrismLayer
 
 .. rubric:: Methods Summary
 
@@ -87,15 +87,15 @@ harmonica.DatasetAccessorPrismsLayer
     
     
     
-        DatasetAccessorPrismsLayer.get_prism
+        DatasetAccessorPrismLayer.get_prism
     
     
     
-        DatasetAccessorPrismsLayer.gravity
+        DatasetAccessorPrismLayer.gravity
     
     
     
-        DatasetAccessorPrismsLayer.update_top_bottom
+        DatasetAccessorPrismLayer.update_top_bottom
     
     
 
@@ -105,19 +105,19 @@ harmonica.DatasetAccessorPrismsLayer
 
 
 
-.. automethod:: DatasetAccessorPrismsLayer.get_prism
+.. automethod:: DatasetAccessorPrismLayer.get_prism
 
 
 
-.. automethod:: DatasetAccessorPrismsLayer.gravity
+.. automethod:: DatasetAccessorPrismLayer.gravity
 
 
 
-.. automethod:: DatasetAccessorPrismsLayer.update_top_bottom
+.. automethod:: DatasetAccessorPrismLayer.update_top_bottom
 
 
 
-.. include:: backreferences/harmonica.DatasetAccessorPrismsLayer.examples
+.. include:: backreferences/harmonica.DatasetAccessorPrismLayer.examples
 
 .. raw:: html
 

@@ -97,7 +97,7 @@ EIGEN-6C4 [Forste_etal2014]_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.507 seconds)
+   **Total running time of the script:** ( 0 minutes  0.482 seconds)
 
 
 .. _sphx_glr_download_sample_data_earth_geoid.py:

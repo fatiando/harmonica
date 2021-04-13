@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -49,7 +47,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.load_icgem_gdf" href="harmonica.load_icgem_gdf.html" />
-    <link rel="prev" title="harmonica.DatasetAccessorPrismsLayer" href="harmonica.DatasetAccessorPrismsLayer.html" />
+    <link rel="prev" title="harmonica.DatasetAccessorPrismLayer" href="harmonica.DatasetAccessorPrismLayer.html" />
     <!-- Google Analytics tracking code -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -114,17 +112,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -240,22 +238,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-isostasy-airy">
+  <div class="section" id="harmonica-isostasy-airy">
 <h1>harmonica.isostasy_airy<a class="headerlink" href="#harmonica-isostasy-airy" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.isostasy_airy">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">isostasy_airy</code><span class="sig-paren">(</span><em class="sig-param">topography</em>, <em class="sig-param">density_crust=2800.0</em>, <em class="sig-param">density_mantle=3300.0</em>, <em class="sig-param">density_water=1000.0</em>, <em class="sig-param">reference_depth=30000.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/isostasy.html#isostasy_airy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.isostasy_airy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">isostasy_airy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topography</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_crust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2800.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_mantle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_water</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/isostasy.html#isostasy_airy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.isostasy_airy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the isostatic Moho depth from topography using Airy’s hypothesis.</p>
 <p>According to the Airy hypothesis of isostasy, topography above sea level is
 supported by a thickening of the crust (a root) while oceanic basins are
 supported by a thinning of the crust (an anti-root). This assumption is
 usually</p>
-<figure class="align-center" id="id3">
+<div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="../../_images/airy-isostasy.svg"><img alt="../../_images/airy-isostasy.svg" src="../../_images/airy-isostasy.svg" width="400px" /></a>
-<figcaption>
-<p><span class="caption-text"><em>Schematic of isostatic compensation following the Airy hypothesis.</em></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-text"><em>Schematic of isostatic compensation following the Airy hypothesis.</em></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
 <p>The relationship between the topographic/bathymetric heights (<span class="math notranslate nohighlight">\(h\)</span>)
 and the root thickness (<span class="math notranslate nohighlight">\(r\)</span>) is governed by mass balance relations
 and can be found in classic textbooks like <a class="reference internal" href="../../references.html#turcotteschubert2014" id="id1"><span>[TurcotteSchubert2014]</span></a> and
@@ -291,16 +287,14 @@ division errors.</p></li>
 </dl>
 </dd></dl>
 
-<section id="examples-using-harmonica-isostasy-airy">
+<div class="section" id="examples-using-harmonica-isostasy-airy">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.isostasy_airy</span></code><a class="headerlink" href="#examples-using-harmonica-isostasy-airy" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic..."><figure class="align-default" id="id4">
+<div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic..."><div class="figure align-default" id="id4">
 <img alt="Airy Isostasy" src="../../_images/sphx_glr_isostasy_airy_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/isostasy_airy.html#sphx-glr-gallery-isostasy-airy-py"><span class="std std-ref">Airy Isostasy</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/isostasy_airy.html#sphx-glr-gallery-isostasy-airy-py"><span class="std std-ref">Airy Isostasy</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -313,7 +307,7 @@ division errors.</p></li>
         <a href="harmonica.load_icgem_gdf.html" class="btn btn-neutral float-right" title="harmonica.load_icgem_gdf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="harmonica.DatasetAccessorPrismsLayer.html" class="btn btn-neutral float-left" title="harmonica.DatasetAccessorPrismsLayer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="harmonica.DatasetAccessorPrismLayer.html" class="btn btn-neutral float-left" title="harmonica.DatasetAccessorPrismLayer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -324,7 +318,7 @@ division errors.</p></li>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

@@ -3,6 +3,31 @@
 Changelog
 =========
 
+Version 0.2.1
+-------------
+
+*Released on: 2021/04/14*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4685960.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.4685960
+
+
+Minor changes:
+
+- Rename prisms_layer to prism_layer (`#223 <https://github.com/fatiando/harmonica/pull/223>`__)
+
+
+Bug fixes:
+
+- Unpin Sphinx and fix documentation style (`#224 <https://github.com/fatiando/harmonica/pull/224>`__)
+
+
+This release contains contributions from:
+
+- Santiago Soler
+
+
 Version 0.2.0
 -------------
 

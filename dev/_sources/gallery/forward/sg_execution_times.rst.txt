@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**01:15.951** total execution time for **gallery_forward** files:
+**01:19.450** total execution time for **gallery_forward** files:
 
 +-------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``) | 01:09.737 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``) | 01:13.414 | 0.0 MB |
 +-------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                     | 00:03.232 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                     | 00:03.165 | 0.0 MB |
 +-------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prisms_layer.py` (``prisms_layer.py``)               | 00:02.248 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)                 | 00:02.183 | 0.0 MB |
 +-------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_point_mass.py` (``point_mass.py``)                   | 00:00.734 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_point_mass.py` (``point_mass.py``)                   | 00:00.688 | 0.0 MB |
 +-------------------------------------------------------------------------------------+-----------+--------+

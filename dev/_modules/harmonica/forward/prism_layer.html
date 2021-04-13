@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
-        <title>harmonica.forward.prisms_layer &mdash; Harmonica</title>
+        <title>harmonica.forward.prism_layer &mdash; Harmonica</title>
     
 
 
@@ -26,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -111,17 +109,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
@@ -200,7 +198,7 @@
         
           <li><a href="../../harmonica.html">harmonica</a> &raquo;</li>
         
-      <li>harmonica.forward.prisms_layer</li>
+      <li>harmonica.forward.prism_layer</li>
     
     
     <li class="source-link">
@@ -216,7 +214,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for harmonica.forward.prisms_layer</h1><div class="highlight"><pre>
+  <h1>Source code for harmonica.forward.prism_layer</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
@@ -234,7 +232,7 @@
 <span class="kn">from</span> <span class="nn">.prism</span> <span class="kn">import</span> <span class="n">prism_gravity</span>
 
 
-<div class="viewcode-block" id="prisms_layer"><a class="viewcode-back" href="../../../api/generated/harmonica.prisms_layer.html#harmonica.prisms_layer">[docs]</a><span class="k">def</span> <span class="nf">prisms_layer</span><span class="p">(</span>
+<div class="viewcode-block" id="prism_layer"><a class="viewcode-back" href="../../../api/generated/harmonica.prism_layer.html#harmonica.prism_layer">[docs]</a><span class="k">def</span> <span class="nf">prism_layer</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">,</span>
     <span class="n">reference</span><span class="p">,</span>
@@ -251,7 +249,7 @@
 <span class="sd">    ``northing`` coordinates correspond to the location of the center of each</span>
 <span class="sd">    prism.</span>
 
-<span class="sd">    The ``prisms_layer`` dataset accessor can be used to access special methods</span>
+<span class="sd">    The ``prism_layer`` dataset accessor can be used to access special methods</span>
 <span class="sd">    and attributes for the layer of prisms, like the horizontal dimensions of</span>
 <span class="sd">    the prisms, getting the boundaries of each prisms, etc.</span>
 <span class="sd">    See :class:`XarrayAcessorPrismLayer` for the definition of these methods</span>
@@ -304,7 +302,7 @@
 <span class="sd">    &gt;&gt;&gt; surface = np.arange(20, dtype=float).reshape((4, 5))</span>
 <span class="sd">    &gt;&gt;&gt; density = 2670.0 * np.ones_like(surface)</span>
 <span class="sd">    &gt;&gt;&gt; # Define a layer of prisms</span>
-<span class="sd">    &gt;&gt;&gt; prisms = prisms_layer(</span>
+<span class="sd">    &gt;&gt;&gt; prisms = prism_layer(</span>
 <span class="sd">    ...     (easting, northing),</span>
 <span class="sd">    ...     surface,</span>
 <span class="sd">    ...     reference=0,</span>
@@ -324,10 +322,10 @@
 <span class="sd">        coords_units:      meters</span>
 <span class="sd">        properties_units:  SI</span>
 <span class="sd">    &gt;&gt;&gt; # Get the boundaries of the layer (will exceed the region)</span>
-<span class="sd">    &gt;&gt;&gt; print(prisms.prisms_layer.boundaries)</span>
+<span class="sd">    &gt;&gt;&gt; print(prisms.prism_layer.boundaries)</span>
 <span class="sd">    (-1.25, 11.25, 1.0, 9.0)</span>
 <span class="sd">    &gt;&gt;&gt; # Get the boundaries of one of the prisms</span>
-<span class="sd">    &gt;&gt;&gt; print(prisms.prisms_layer.get_prism((0, 2)))</span>
+<span class="sd">    &gt;&gt;&gt; print(prisms.prism_layer.get_prism((0, 2)))</span>
 <span class="sd">    (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: W505</span>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
@@ -347,7 +345,7 @@
     <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;coords_units&quot;</span><span class="p">:</span> <span class="s2">&quot;meters&quot;</span><span class="p">,</span> <span class="s2">&quot;properties_units&quot;</span><span class="p">:</span> <span class="s2">&quot;SI&quot;</span><span class="p">}</span>
     <span class="n">prisms</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">attrs</span>
     <span class="c1"># Create the top and bottom coordinates of the prisms</span>
-    <span class="n">prisms</span><span class="o">.</span><span class="n">prisms_layer</span><span class="o">.</span><span class="n">update_top_bottom</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+    <span class="n">prisms</span><span class="o">.</span><span class="n">prism_layer</span><span class="o">.</span><span class="n">update_top_bottom</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">prisms</span></div>
 
 
@@ -365,20 +363,20 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Passed northing coordiantes are not evenly spaced.&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DatasetAccessorPrismsLayer"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer">[docs]</a><span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataset_accessor</span><span class="p">(</span><span class="s2">&quot;prisms_layer&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">DatasetAccessorPrismsLayer</span><span class="p">:</span>
+<div class="viewcode-block" id="DatasetAccessorPrismLayer"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer">[docs]</a><span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataset_accessor</span><span class="p">(</span><span class="s2">&quot;prism_layer&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DatasetAccessorPrismLayer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines dataset accessor for layer of prisms</span>
 
 <span class="sd">    .. warning::</span>
 
 <span class="sd">        This class is not intended to be initialized.</span>
-<span class="sd">        Use the `prisms_layer` accessor for accessing the methods and</span>
+<span class="sd">        Use the `prism_layer` accessor for accessing the methods and</span>
 <span class="sd">        attributes of this class.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
-<span class="sd">    harmonica.prisms_layer</span>
+<span class="sd">    harmonica.prism_layer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray_obj</span><span class="p">):</span>
@@ -472,7 +470,7 @@
         <span class="n">north</span> <span class="o">=</span> <span class="n">northing</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span>
 
-<div class="viewcode-block" id="DatasetAccessorPrismsLayer.update_top_bottom"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer.update_top_bottom">[docs]</a>    <span class="k">def</span> <span class="nf">update_top_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetAccessorPrismLayer.update_top_bottom"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.update_top_bottom">[docs]</a>    <span class="k">def</span> <span class="nf">update_top_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update top and bottom boundaries of the layer</span>
 
@@ -521,7 +519,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DatasetAccessorPrismsLayer.gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer.gravity">[docs]</a>    <span class="k">def</span> <span class="nf">gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">density_name</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetAccessorPrismLayer.gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.gravity">[docs]</a>    <span class="k">def</span> <span class="nf">gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">density_name</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the gravity generated by the layer of prisms</span>
 
@@ -637,7 +635,7 @@
         <span class="n">prisms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">prisms</span>
 
-<div class="viewcode-block" id="DatasetAccessorPrismsLayer.get_prism"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismsLayer.html#harmonica.DatasetAccessorPrismsLayer.get_prism">[docs]</a>    <span class="k">def</span> <span class="nf">get_prism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetAccessorPrismLayer.get_prism"><a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.get_prism">[docs]</a>    <span class="k">def</span> <span class="nf">get_prism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the boundaries of the chosen prism</span>
 
@@ -677,7 +675,7 @@
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

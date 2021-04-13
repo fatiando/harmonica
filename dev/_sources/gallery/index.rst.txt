@@ -169,10 +169,10 @@ Forward Modeling
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_prisms_layer_thumb.png
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_prism_layer_thumb.png
      :alt: Layer of prisms
 
-     :ref:`sphx_glr_gallery_forward_prisms_layer.py`
+     :ref:`sphx_glr_gallery_forward_prism_layer.py`
 
 .. raw:: html
 
@@ -182,11 +182,11 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/prisms_layer
+   /gallery/forward/prism_layer
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prisms_layer function is to create a model of the ter...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr...">
 
 .. only:: html
 

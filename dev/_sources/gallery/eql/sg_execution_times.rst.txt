@@ -5,10 +5,10 @@
 
 Computation times
 =================
-**00:20.740** total execution time for **gallery_eql** files:
+**00:18.685** total execution time for **gallery_eql** files:
 
 +-------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_eql_harmonic.py` (``harmonic.py``)                     | 00:15.771 | 0.0 MB |
+| :ref:`sphx_glr_gallery_eql_harmonic.py` (``harmonic.py``)                     | 00:13.840 | 0.0 MB |
 +-------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_eql_harmonic_spherical.py` (``harmonic_spherical.py``) | 00:04.970 | 0.0 MB |
+| :ref:`sphx_glr_gallery_eql_harmonic_spherical.py` (``harmonic_spherical.py``) | 00:04.845 | 0.0 MB |
 +-------------------------------------------------------------------------------+-----------+--------+

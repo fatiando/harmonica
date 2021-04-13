@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +111,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -238,11 +235,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-synthetic-airborne-survey">
+  <div class="section" id="harmonica-synthetic-airborne-survey">
 <h1>harmonica.synthetic.airborne_survey<a class="headerlink" href="#harmonica-synthetic-airborne-survey" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.synthetic.airborne_survey">
-<code class="sig-prename descclassname">harmonica.synthetic.</code><code class="sig-name descname">airborne_survey</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">data_region=(-5.0</em>, <em class="sig-param">-4.0</em>, <em class="sig-param">56.0</em>, <em class="sig-param">56.5)</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/synthetic/surveys.html#airborne_survey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.synthetic.airborne_survey" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.synthetic.</span></code><code class="sig-name descname"><span class="pre">airborne_survey</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">5.0,</span> <span class="pre">-</span> <span class="pre">4.0,</span> <span class="pre">56.0,</span> <span class="pre">56.5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/synthetic/surveys.html#airborne_survey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.synthetic.airborne_survey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create measurement locations for a synthetic airborne survey</p>
 <p>The observation points are sampled from the Great Britain total-field
 magnetic anomaly dataset (see
@@ -266,8 +263,8 @@ ignored.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>survey</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Dataframe containing the coordinates of the observation points on
-a geodetic coordinate system. The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> will have
+<dd class="field-even"><p><strong>survey</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Dataframe containing the coordinates of the observation points on
+a geodetic coordinate system. The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> will have
 the following columns: <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>.
 Longitudes and latitudes are in degrees, and heights in meters.</p>
 </dd>
@@ -275,13 +272,13 @@ Longitudes and latitudes are in degrees, and heights in meters.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">datasets.fetch_britain_magnetic</span></code></dt><dd><p>Fetch total-field magnetic anomaly data of Great Britain.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_britain_magnetic</span></code></dt><dd><p>Fetch total-field magnetic anomaly data of Great Britain.</p>
 </dd>
 </dl>
 </div>
 </dd></dl>
 
-<div style='clear:both'></div></section>
+<div style='clear:both'></div></div>
 
 
            </div>
@@ -305,7 +302,7 @@ Longitudes and latitudes are in degrees, and heights in meters.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

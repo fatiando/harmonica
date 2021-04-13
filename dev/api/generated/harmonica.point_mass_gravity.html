@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +112,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -136,8 +134,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.prisms_layer.html">harmonica.prisms_layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismsLayer.html">harmonica.DatasetAccessorPrismsLayer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#isostasy">Isostasy</a></li>
@@ -244,11 +242,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-point-mass-gravity">
+  <div class="section" id="harmonica-point-mass-gravity">
 <h1>harmonica.point_mass_gravity<a class="headerlink" href="#harmonica-point-mass-gravity" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.point_mass_gravity">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">point_mass_gravity</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">points</em>, <em class="sig-param">masses</em>, <em class="sig-param">field</em>, <em class="sig-param">coordinate_system='cartesian'</em>, <em class="sig-param">parallel=True</em>, <em class="sig-param">dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/point_mass.html#point_mass_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.point_mass_gravity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">point_mass_gravity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cartesian'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/point_mass.html#point_mass_gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.point_mass_gravity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute gravitational fields of point masses.</p>
 <p>It can compute the gravitational fields of point masses on a set of
 computation points defined either in Cartesian or geocentric spherical
@@ -371,16 +369,14 @@ Marussi tensor components in Eotvos.</p>
 </dl>
 </dd></dl>
 
-<section id="examples-using-harmonica-point-mass-gravity">
+<div class="section" id="examples-using-harmonica-point-mass-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.point_mass_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-point-mass-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling..."><figure class="align-default" id="id4">
+<div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling..."><div class="figure align-default" id="id4">
 <img alt="Point Masses in Cartesian Coordinates" src="../../_images/sphx_glr_point_mass_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/forward/point_mass.html#sphx-glr-gallery-forward-point-mass-py"><span class="std std-ref">Point Masses in Cartesian Coordinates</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/point_mass.html#sphx-glr-gallery-forward-point-mass-py"><span class="std std-ref">Point Masses in Cartesian Coordinates</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -404,7 +400,7 @@ Marussi tensor components in Eotvos.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

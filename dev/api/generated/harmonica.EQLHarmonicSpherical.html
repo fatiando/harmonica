@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +112,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a></li>
@@ -241,11 +239,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-eqlharmonicspherical">
+  <div class="section" id="harmonica-eqlharmonicspherical">
 <h1>harmonica.EQLHarmonicSpherical<a class="headerlink" href="#harmonica-eqlharmonicspherical" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="harmonica.EQLHarmonicSpherical">
-<em class="property">class </em><code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">EQLHarmonicSpherical</code><span class="sig-paren">(</span><em class="sig-param">damping=None</em>, <em class="sig-param">points=None</em>, <em class="sig-param">relative_depth=500</em>, <em class="sig-param">parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">EQLHarmonicSpherical</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent-layer for generic harmonic functions in spherical coordinates</p>
 <p>This equivalent layer can be used for:</p>
 <ul class="simple">
@@ -353,9 +351,9 @@ interpolator. Used as the default region for the
 </tbody>
 </table>
 <hr class="docutils" />
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.filter">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">filter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the data through the gridder and produce residuals.</p>
 <p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
 data), and returns the coordinates, residuals, and weights.</p>
@@ -385,9 +383,9 @@ the input data minus the predicted data.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.fit">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the coefficients of the equivalent layer.</p>
 <p>The data region is captured and used as default for the
 <a class="reference internal" href="#harmonica.EQLHarmonicSpherical.grid" title="harmonica.EQLHarmonicSpherical.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method.</p>
@@ -410,9 +408,9 @@ Typically, this should be 1 over the data uncertainty squared.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.get_params">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">get_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -425,9 +423,9 @@ contained subobjects that are estimators.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.grid">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">grid</code><span class="sig-paren">(</span><em class="sig-param">upward</em>, <em class="sig-param">region=None</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
 <p>The grid can be specified by either the number of points in each
 dimension (the <em>shape</em>) or by the grid node spacing. See
@@ -466,9 +464,9 @@ to the <code class="docutils literal notranslate"><span class="pre">attrs</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.jacobian">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">jacobian</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">points</em>, <em class="sig-param">dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.jacobian" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">jacobian</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make the Jacobian matrix for the equivalent layer.</p>
 <p>Each column of the Jacobian is the Green’s function for a single point
 source evaluated on all observation points.</p>
@@ -491,9 +489,9 @@ used as equivalent layer in the following order:
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.predict">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the estimated equivalent layer on the given set of points.</p>
 <p>Requires a fitted estimator
 (see <a class="reference internal" href="#harmonica.EQLHarmonicSpherical.fit" title="harmonica.EQLHarmonicSpherical.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
@@ -510,9 +508,9 @@ subsequent coordinates will be ignored.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.profile">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">profile</code><span class="sig-paren">(</span><em class="sig-param">point1</em>, <em class="sig-param">point2</em>, <em class="sig-param">size</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">profile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.profile" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Not implemented method. The profile on spherical coordinates should
@@ -520,9 +518,9 @@ be done using great-circle distances through the Haversine formula.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.scatter">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">scatter</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">scatter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_layer/harmonic_spherical.html#EQLHarmonicSpherical.scatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.scatter" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Not implemented method. The scatter method will be deprecated on
@@ -530,9 +528,9 @@ Verde v2.0.0.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.score">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">score</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score the gridder predictions against the given data.</p>
 <p>Calculates the R^2 coefficient of determination of between the
 predicted values and the given data values. A maximum score of 1 means
@@ -560,9 +558,9 @@ array for each data component (if not None).</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="harmonica.EQLHarmonicSpherical.set_params">
-<code class="sig-prename descclassname">EQLHarmonicSpherical.</code><code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">EQLHarmonicSpherical.</span></code><code class="sig-name descname"><span class="pre">set_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EQLHarmonicSpherical.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>). The latter have
@@ -578,16 +576,14 @@ possible to update each component of a nested object.</p>
 </dl>
 </dd></dl>
 
-<section id="examples-using-harmonica-eqlharmonicspherical">
+<div class="section" id="examples-using-harmonica-eqlharmonicspherical">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.EQLHarmonicSpherical</span></code><a class="headerlink" href="#examples-using-harmonica-eqlharmonicspherical" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><figure class="align-default" id="id3">
+<div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><div class="figure align-default" id="id3">
 <img alt="Gridding in spherical coordinates" src="../../_images/sphx_glr_harmonic_spherical_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/eql/harmonic_spherical.html#sphx-glr-gallery-eql-harmonic-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/eql/harmonic_spherical.html#sphx-glr-gallery-eql-harmonic-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -611,7 +607,7 @@ possible to update each component of a nested object.</p>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>

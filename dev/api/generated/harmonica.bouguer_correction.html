@@ -6,8 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -27,11 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -114,17 +112,17 @@
               
             
             
-              <p><span class="caption-text">Getting Started</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
 </ul>
-<p><span class="caption-text">User Guide</span></p>
+<p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
-<p><span class="caption-text">Reference documentation</span></p>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#gravity-corrections">Gravity Corrections</a><ul class="current">
@@ -240,11 +238,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="harmonica-bouguer-correction">
+  <div class="section" id="harmonica-bouguer-correction">
 <h1>harmonica.bouguer_correction<a class="headerlink" href="#harmonica-bouguer-correction" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="harmonica.bouguer_correction">
-<code class="sig-prename descclassname">harmonica.</code><code class="sig-name descname">bouguer_correction</code><span class="sig-paren">(</span><em class="sig-param">topography</em>, <em class="sig-param">density_crust=2670</em>, <em class="sig-param">density_water=1040</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/gravity_corrections.html#bouguer_correction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#harmonica.bouguer_correction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">bouguer_correction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topography</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_crust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2670</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_water</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1040</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/gravity_corrections.html#bouguer_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.bouguer_correction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gravitational effect of topography using a Bouguer plate approximation</p>
 <p>Used to remove the gravitational attraction of topography above the
 ellipsoid from the gravity disturbance. The infinite plate approximation is
@@ -283,16 +281,14 @@ Earth’s crust in the oceans.</p></li>
 </dl>
 </dd></dl>
 
-<section id="examples-using-harmonica-bouguer-correction">
+<div class="section" id="examples-using-harmonica-bouguer-correction">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.bouguer_correction</span></code><a class="headerlink" href="#examples-using-harmonica-bouguer-correction" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><figure class="align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><div class="figure align-default" id="id1">
 <img alt="Topography-free (Bouguer) Gravity Disturbances" src="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -316,7 +312,7 @@ Earth’s crust in the oceans.</p></li>
     <p>
         &copy; Copyright 2018-2021, The Harmonica Developers
       <span class="lastupdated">
-        Last updated on Apr 09, 2021.
+        Last updated on Apr 13, 2021.
       </span>
 
     </p>
