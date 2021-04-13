@@ -10,7 +10,7 @@ Layer of prisms
 
 One way to model three dimensional structures is to create a set of prisms that
 approximates their geometry and its physical properties (density,
-susceptibility, etc.). The :func:`harmonica.prisms_layer` offers a simple way
+susceptibility, etc.). The :func:`harmonica.prism_layer` offers a simple way
 to create a layer of prisms: a regular grid of prisms of equal size on the
 horizontal directions with variable top and bottom boundaries. It returns
 a :class:`xarray.Dataset` with the coordinates of the centers of the prisms and
@@ -33,7 +33,7 @@ spacing = 2e3
 (easting, northing) = vd.grid_coordinates(region=region, spacing=spacing)
 surface = 100 * np.exp(-((easting - 50e3) ** 2 + northing ** 2) / 1e9)
 density = 2670.0 * np.ones_like(surface)
-prisms = hm.prisms_layer(
+prisms = hm.prism_layer(
     coordinates=(easting[0, :], northing[:, 0]),
     surface=surface,
     reference=0,
@@ -42,7 +42,7 @@ prisms = hm.prisms_layer(
 
 # Compute gravity field of prisms on a regular grid of observation points
 coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=1e3)
-gravity = prisms.prisms_layer.gravity(coordinates, field="g_z")
+gravity = prisms.prism_layer.gravity(coordinates, field="g_z")
 
 # Plot gravity field
 plt.pcolormesh(*coordinates[:2], gravity)
