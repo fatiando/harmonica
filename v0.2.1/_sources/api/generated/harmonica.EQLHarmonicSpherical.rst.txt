@@ -1,0 +1,214 @@
+harmonica.EQLHarmonicSpherical
+==============================
+
+.. currentmodule:: harmonica
+
+.. autoclass:: EQLHarmonicSpherical
+
+.. rubric:: Methods Summary
+
+.. autosummary::
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        EQLHarmonicSpherical.filter
+    
+    
+    
+        EQLHarmonicSpherical.fit
+    
+    
+    
+        EQLHarmonicSpherical.get_params
+    
+    
+    
+        EQLHarmonicSpherical.grid
+    
+    
+    
+        EQLHarmonicSpherical.jacobian
+    
+    
+    
+        EQLHarmonicSpherical.predict
+    
+    
+    
+        EQLHarmonicSpherical.profile
+    
+    
+    
+        EQLHarmonicSpherical.scatter
+    
+    
+    
+        EQLHarmonicSpherical.score
+    
+    
+    
+        EQLHarmonicSpherical.set_params
+    
+    
+
+----
+
+
+
+
+
+.. automethod:: EQLHarmonicSpherical.filter
+
+
+
+.. automethod:: EQLHarmonicSpherical.fit
+
+
+
+.. automethod:: EQLHarmonicSpherical.get_params
+
+
+
+.. automethod:: EQLHarmonicSpherical.grid
+
+
+
+.. automethod:: EQLHarmonicSpherical.jacobian
+
+
+
+.. automethod:: EQLHarmonicSpherical.predict
+
+
+
+.. automethod:: EQLHarmonicSpherical.profile
+
+
+
+.. automethod:: EQLHarmonicSpherical.scatter
+
+
+
+.. automethod:: EQLHarmonicSpherical.score
+
+
+
+.. automethod:: EQLHarmonicSpherical.set_params
+
+
+
+.. include:: backreferences/harmonica.EQLHarmonicSpherical.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
