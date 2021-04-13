@@ -15,7 +15,7 @@ Version 0.2.1
 
 Minor changes:
 
-- Rename prisms_layer for prism_layer (`#223 <https://github.com/fatiando/harmonica/pull/223>`__)
+- Rename prisms_layer to prism_layer (`#223 <https://github.com/fatiando/harmonica/pull/223>`__)
 
 
 Bug fixes:
