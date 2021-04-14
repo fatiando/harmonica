@@ -1,12 +1,25 @@
 .. title:: Home
 
-.. raw:: html
+========
+|banner|
+========
 
-    <div class="banner">
-        <img src="_static/readme-banner.png" alt="harmonica">
-        <h2>Forward modeling, inversion, and processing gravity and magnetic data</h2>
-        <p>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</p>
-    </div>
+.. |banner| image:: _static/readme-banner.png
+    :alt: Harmonica
+    :align: middle
+
+.. admonition:: This software is in the early stages of design and implementation
+    :class: attention
+
+    We welcome any feedback and ideas! Let us know by submitting
+    `issues on Github <https://github.com/fatiando/harmonica/issues>`__
+    or send us a message on our
+    `Slack chatroom <http://contact.fatiando.org>`__.
+
+.. seealso::
+
+    This software is a part of the
+    `Fatiando a Terra <https://www.fatiando.org/>`_ project.
 
 .. include:: ../README.rst
     :start-after: placeholder-for-doc-index
@@ -35,3 +48,14 @@
     api/index.rst
     changes.rst
     references.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: Getting help and contributing
+
+    Contact <http://contact.fatiando.org>
+    How to contribute <https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md>
+    Code of Conduct <https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md>
+    Source code on GitHub <https://github.com/fatiando/harmonica>
+    The Fatiando a Terra project <https://www.fatiando.org>
