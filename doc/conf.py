@@ -21,7 +21,6 @@ if len(full_version.split("+")) > 1 or full_version == "unknown":
 else:
     version = full_version
 
-
 # General configuration
 # -----------------------------------------------------------------------------
 extensions = [
@@ -101,12 +100,14 @@ sphinx_gallery_conf = {
 
 # HTML output configuration
 # -----------------------------------------------------------------------------
-html_title = project
+html_title = f'{project} <span class="project-version">{version}</span>'
 html_logo = "_static/harmonica-logo.png"
 html_favicon = "_static/favicon.png"
 html_last_updated_fmt = "%b %d, %Y"
 html_copy_source = True
 html_static_path = ["_static"]
+# CSS files are relative to the static path
+html_css_files = ["custom.css"]
 html_extra_path = []
 html_show_sourcelink = False
 html_show_sphinx = True
