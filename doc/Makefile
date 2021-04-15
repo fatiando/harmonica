@@ -20,8 +20,10 @@ help:
 	@echo "  linkcheck  check all external links for integrity"
 	@echo "  doctest    run all doctests embedded in the documentation (if enabled)"
 
-clean:
+clean-html:
 	rm -rf $(BUILDDIR)/html/*
+
+clean: clean-html
 	rm -rf $(BUILDDIR)/doctrees
 	rm -rf $(BUILDDIR)/linkcheck
 	rm -rf api/generated
