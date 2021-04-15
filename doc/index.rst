@@ -5,20 +5,23 @@
 ========
 
 .. |banner| image:: _static/readme-banner.png
-    :alt: Harmonica
+    :alt: Harmonica Documentation
     :align: middle
 
 .. admonition:: This software is in the early stages of design and implementation
     :class: attention
 
-    We welcome any feedback and ideas! Let us know by submitting
+    This means that will occasionally make **backwards incompatible** changes
+    as we try to improve the software, test new ideas, and settle on the
+    project scope.
+    **We welcome any feedback and ideas!** Let us know by submitting
     `issues on Github <https://github.com/fatiando/harmonica/issues>`__
     or send us a message on our
     `Slack chatroom <http://contact.fatiando.org>`__.
 
 .. seealso::
 
-    This software is a part of the
+    Harmonica is a part of the
     `Fatiando a Terra <https://www.fatiando.org/>`_ project.
 
 .. include:: ../README.rst
@@ -54,7 +57,7 @@
     :hidden:
     :caption: Getting help and contributing
 
-    Contact <http://contact.fatiando.org>
+    Join the community <http://contact.fatiando.org>
     How to contribute <https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md>
     Code of Conduct <https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md>
     Source code on GitHub <https://github.com/fatiando/harmonica>
