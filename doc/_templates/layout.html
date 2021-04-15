@@ -19,7 +19,7 @@
 
 {% block htmltitle %}
     {% if title == '' or title == 'Home' %}
-        <title>{{ docstitle|e }}</title>
+        <title>{{ docstitle|striptags|e }}</title>
     {% else %}
         <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
     {% endif %}
