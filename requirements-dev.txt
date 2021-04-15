@@ -8,6 +8,3 @@ pytest-cov
 coverage
 pylint
 flake8
-sphinx==3.5.*
-sphinx-book-theme==0.0.41
-sphinx-gallery==0.8.*
