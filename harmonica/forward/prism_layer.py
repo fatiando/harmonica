@@ -73,7 +73,7 @@ def prism_layer(
 
     See also
     --------
-    harmonica.PrismsLayer
+    harmonica.DatasetAccessorPrismLayer
 
     Examples
     --------
