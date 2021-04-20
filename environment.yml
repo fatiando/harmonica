@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.7
+  - python==3.8
   - pip
   - setuptools_scm
   - numpy
@@ -24,7 +24,6 @@ dependencies:
   - black>=20.8b1
   - pylint
   - flake8
-  - sphinx
-  - sphinx_rtd_theme=0.4.3
-  - sphinx-gallery
-  - numpydoc
+  - sphinx==3.5.*
+  - sphinx-book-theme==0.0.41
+  - sphinx-gallery==0.8.*

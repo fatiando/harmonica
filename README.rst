@@ -22,10 +22,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
     :alt: Digital Object Identifier for the Zenodo archive
     :target: https://doi.org/10.5281/zenodo.3628741
 
-
-.. placeholder-for-doc-index
-
-
 Disclaimer
 ----------
 
@@ -36,6 +32,9 @@ Let us know by submitting
 `issues on Github <https://github.com/fatiando/harmonica/issues>`__
 or send us a message on our
 `Slack chatroom <http://contact.fatiando.org>`__.
+
+
+.. placeholder-for-doc-index
 
 
 About
