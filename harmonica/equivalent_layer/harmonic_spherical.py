@@ -300,6 +300,9 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
+        # Explicitly set dims
+        if dims is None:
+            dims = self.dims
         # Grid data
         # We always pass projection=None because that argument it's intended to
         # be used only with Cartesian gridders.

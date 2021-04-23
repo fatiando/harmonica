@@ -260,6 +260,12 @@ def test_eql_harmonic_spherical():
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
+    # Test grid method with different dims
+    new_dims = ("foo", "bar")
+    eql.dims = new_dims
+    grid = eql.grid(upward, shape=shape, region=region)
+    assert grid.scalars.dims == new_dims
+
 
 def test_eql_harmonic_small_data_spherical():
     """
@@ -303,6 +309,12 @@ def test_eql_harmonic_small_data_spherical():
     # Test grid method
     grid = eql.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
+
+    # Test grid method with different dims
+    new_dims = ("foo", "bar")
+    eql.dims = new_dims
+    grid = eql.grid(upward, shape=shape, region=region)
+    assert grid.scalars.dims == new_dims
 
 
 def test_eql_harmonic_custom_points_spherical():

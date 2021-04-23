@@ -306,6 +306,9 @@ class EQLHarmonic(vdb.BaseGridder):
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
+        # Explicitly set dims
+        if dims is None:
+            dims = self.dims
         # Grid data
         grid = super().grid(
             region=region,
@@ -424,6 +427,9 @@ class EQLHarmonic(vdb.BaseGridder):
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
+        # Explicitly set dims
+        if dims is None:
+            dims = self.dims
         # Create profile points and predict
         table = super().profile(
             point1,
