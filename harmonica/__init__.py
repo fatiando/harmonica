@@ -6,7 +6,6 @@
 #
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
-from . import version
 from . import datasets
 from . import synthetic
 from .io import load_icgem_gdf
@@ -19,9 +18,11 @@ from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
 from .equivalent_layer.harmonic import EQLHarmonic
 from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
 
+# This file is generated automatically by setuptools_scm
+from . import _version
 
-# Get the version number through setuptools-scm
-__version__ = version.version
+# Add a "v" to the version number
+__version__ = f"v{_version.version}"
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
