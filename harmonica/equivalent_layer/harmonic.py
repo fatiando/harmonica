@@ -7,6 +7,7 @@
 """
 Equivalent layer for generic harmonic functions in Cartesian coordinates
 """
+import warnings
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -146,9 +147,10 @@ class EQLHarmonic(vdb.BaseGridder):
             )
         # Check if relative_depth has been passed (will be deprecated)
         if "relative_depth" in kwargs:
-            raise FutureWarning(
+            warnings.warn(
                 "The 'relative_depth' parameter will be deprecated, please use "
-                + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. "
+                + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. ",
+                FutureWarning,
             )
             # Override depth and depth_type
             self.depth, self.depth_type = kwargs["relative_depth"], "relative"
@@ -225,12 +227,13 @@ class EQLHarmonic(vdb.BaseGridder):
                 coordinates[1],
                 coordinates[2] - self.depth,
             )
-        elif self.depth_type == "constant":
+        if self.depth_type == "constant":
             return (
                 coordinates[0],
                 coordinates[1],
-                -self.depth,
+                -self.depth * np.ones_like(coordinates[0]),
             )
+        return None
 
     def predict(self, coordinates):
         """
