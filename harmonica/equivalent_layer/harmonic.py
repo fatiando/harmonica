@@ -309,7 +309,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
@@ -393,7 +393,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -413,7 +413,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate data along a profile between two points.
