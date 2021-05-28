@@ -141,14 +141,14 @@ def test_eql_harmonic_build_points():
 
     # Define a EQLHarmonic with relative depth
     eql = EQLHarmonic(depth=1.5e3, depth_type="relative")
-    points = eql.build_points(coordinates)
+    points = eql._build_points(coordinates)
     # Check output
     expected_points = (easting, northing, upward - 1.5e3)
     npt.assert_allclose(points, expected_points)
 
     # Define a EQLHarmonic with constant depth
     eql = EQLHarmonic(depth=1.5e3, depth_type="constant")
-    points = eql.build_points(coordinates)
+    points = eql._build_points(coordinates)
     # Check output
     expected_points = (easting, northing, -1.5e3 * np.ones_like(easting))
     npt.assert_allclose(points, expected_points)
@@ -160,7 +160,7 @@ def test_eql_harmonic_build_points():
         assert issubclass(warn[-1].category, FutureWarning)
     npt.assert_allclose(eql.depth, 4.5e3)
     assert eql.depth_type == "relative"
-    points = eql.build_points(coordinates)
+    points = eql._build_points(coordinates)
     # Check output
     expected_points = (easting, northing, upward - 4.5e3)
     npt.assert_allclose(points, expected_points)
@@ -206,7 +206,7 @@ def test_eql_harmonic_points_depth():
     # Test with invalid depth_type
     eql = EQLHarmonic(depth=300, depth_type="constant")  # init with valid depth_type
     eql.depth_type = "blabla"  # change depth_type afterwards
-    points = eql.build_points(
+    points = eql._build_points(
         vd.grid_coordinates(region=(-1, 1, -1, 1), spacing=0.25, extra_coords=1)
     )
     assert points is None

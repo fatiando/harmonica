@@ -187,14 +187,14 @@ class EQLHarmonic(vdb.BaseGridder):
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = self.build_points(coordinates)
+            self.points_ = self._build_points(coordinates)
         else:
             self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
 
-    def build_points(self, coordinates):
+    def _build_points(self, coordinates):
         """
         Generate coordinates of point sources based on the data points
 
