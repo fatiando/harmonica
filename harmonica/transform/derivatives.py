@@ -35,7 +35,7 @@ def derivative_easting(grid, order=1, keep_original_coords=True):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _dispatcher(grid, _kernel_easting, order, keep_original_coords)
+    return _derivative(grid, _kernel_easting, order, keep_original_coords)
 
 
 def derivative_northing(grid, order=1, keep_original_coords=True):
@@ -67,7 +67,7 @@ def derivative_northing(grid, order=1, keep_original_coords=True):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _dispatcher(grid, _kernel_northing, order, keep_original_coords)
+    return _derivative(grid, _kernel_northing, order, keep_original_coords)
 
 
 def derivative_upward(grid, order=1, keep_original_coords=True):
@@ -99,10 +99,10 @@ def derivative_upward(grid, order=1, keep_original_coords=True):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _dispatcher(grid, _kernel_upward, order, keep_original_coords)
+    return _derivative(grid, _kernel_upward, order, keep_original_coords)
 
 
-def _dispatcher(grid, kernel, order, keep_original_coords):
+def _derivative(grid, kernel, order, keep_original_coords):
     """
     Calculate the derivative of a potential field in a particular direction
 
