@@ -18,6 +18,11 @@ from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
 from .equivalent_layer.harmonic import EQLHarmonic
 from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
+from .transform.derivatives import (
+    derivative_easting,
+    derivative_northing,
+    derivative_upward,
+)
 
 
 # Get the version number through setuptools-scm
