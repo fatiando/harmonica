@@ -168,7 +168,9 @@ def _kernel_easting(fourier_transform, order):
     # Catch the dims of the Fourier transoformed grid
     dims = fourier_transform.dims
     # Grab the easting coordinates of the Fourier transformed grid
-    k_easting = fourier_transform.coords[dims[1]]
+    freq_easting = fourier_transform.coords[dims[1]]
+    # Convert frequencies to wavenumbers
+    k_easting = 2 * np.pi * freq_easting
     # Compute the easting derivative in the frequency domain
     deriv_ft = fourier_transform * (k_easting * 1j) ** order
     return deriv_ft
@@ -196,7 +198,9 @@ def _kernel_northing(fourier_transform, order):
     # Catch the dims of the Fourier transoformed grid
     dims = fourier_transform.dims
     # Grab the northing coordinates of the Fourier transformed grid
-    k_northing = fourier_transform.coords[dims[0]]
+    freq_northing = fourier_transform.coords[dims[0]]
+    # Convert frequencies to wavenumbers
+    k_northing = 2 * np.pi * freq_northing
     # Compute the northing derivative in the frequency domain
     deriv_ft = fourier_transform * (k_northing * 1j) ** order
     return deriv_ft
@@ -224,8 +228,11 @@ def _kernel_upward(fourier_transform, order):
     # Catch the dims of the Fourier transoformed grid
     dims = fourier_transform.dims
     # Grab the coordinates of the Fourier transformed grid
-    k_easting = fourier_transform.coords[dims[1]]
-    k_northing = fourier_transform.coords[dims[0]]
+    freq_easting = fourier_transform.coords[dims[1]]
+    freq_northing = fourier_transform.coords[dims[0]]
+    # Convert frequencies to wavenumbers
+    k_easting = 2 * np.pi * freq_easting
+    k_northing = 2 * np.pi * freq_northing
     # Compute the upward derivative in the frequency domain
     deriv_ft = fourier_transform * np.sqrt(k_easting ** 2 + k_northing ** 2) ** order
     return deriv_ft
