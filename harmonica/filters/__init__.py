@@ -5,5 +5,6 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Functions for processing data in the frequency domain using FFTs
+Functions for applying filters to regular grids defined in frequency domain
 """
+from .derivatives import derivative_easting, derivative_northing, derivative_upward

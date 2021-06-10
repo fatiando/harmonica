@@ -36,14 +36,16 @@ eql = hm.EQLHarmonic(relative_depth=1000, damping=1).fit(
 )
 grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
 
-# The grid is a xarray.Dataset with values, coordinates, and metadata
-print("\nGenerated grid:\n", grid)
-
 # Compute the spatial derivatives of the grid along the easting, northing and
 # upward directions
 deriv_easting = hm.derivative_easting(grid.magnetic_anomaly)
 deriv_northing = hm.derivative_northing(grid.magnetic_anomaly)
 deriv_upward = hm.derivative_upward(grid.magnetic_anomaly)
+
+# Show the computed derivatives
+print("\nEasting derivative:\n", deriv_easting)
+print("\nNorthing derivative:\n", deriv_northing)
+print("\nUpward derivative:\n", deriv_upward)
 
 # Plot original magnetic anomaly and its derivatives
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
