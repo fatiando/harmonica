@@ -7,14 +7,12 @@
 """
 Compute spatial derivatives of grids
 """
-import numpy as np
-
 from .filters import (
     derivative_easting as fft_derivative_easting,
     derivative_northing as fft_derivative_northing,
     derivative_upward as fft_derivative_upward,
 )
-from .filters.fft import fft, ifft
+from .filters.utils import apply_filter
 
 
 def derivative_easting(grid, order=1):
@@ -41,7 +39,7 @@ def derivative_easting(grid, order=1):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _derivative_fft(grid, fft_derivative_easting, order)
+    return apply_filter(grid, fft_derivative_easting, order=order)
 
 
 def derivative_northing(grid, order=1):
@@ -68,7 +66,7 @@ def derivative_northing(grid, order=1):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _derivative_fft(grid, fft_derivative_northing, order)
+    return apply_filter(grid, fft_derivative_northing, order=order)
 
 
 def derivative_upward(grid, order=1):
@@ -95,59 +93,4 @@ def derivative_upward(grid, order=1):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return _derivative_fft(grid, fft_derivative_upward, order)
-
-
-def _derivative_fft(grid, fft_filter, order):
-    """
-    Calculate the derivative of a potential field in a particular direction
-
-    Use the passed kernel to obtain the derivative along the chosen direction
-    (easting, northing or upward).
-
-    Parameters
-    ----------
-    grid : :class:`xarray.DataArray`
-        A two dimensional :class:`xarray.DataArray` whose coordinates are
-        evenly spaced (regular grid). Its dimensions should be in the following
-        order: *northing*, *easting*. Its coordinates should be defined in the
-        same units.
-    fft_filter : func
-        Callable that applies a filter in the frequency domain, corresponding
-        to the desired direction of the derivative.
-    order : int
-        The order of the derivative.
-
-    Returns
-    -------
-    derivative : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` with the chosen directinoal derivative of
-        the passed ``grid``. Its units are the same units of the ``grid`` per
-        units of its coordinates.
-    """
-    # Catch the dims of the grid
-    dims = grid.dims
-    # Check if the array has two dimensions
-    if len(dims) != 2:
-        raise ValueError(
-            f"Invalid grid with {len(dims)} dimensions. "
-            + "The passed grid must be a 2 dimensional array."
-        )
-    # Check if grid and coordinates has nans
-    if np.isnan(grid).any():
-        raise ValueError(
-            "Found nan(s) on the passed grid. "
-            + "The grid must not have missing values before computing the "
-            + "Fast Fourier Transform."
-        )
-    # Compute Fourier Transform of the grid
-    fourier_transform = fft(grid)
-    # Compute the derivative in the frequency domain
-    deriv_ft = fft_filter(fourier_transform, order)
-    # Compute inverse FFT
-    deriv = ifft(
-        deriv_ft,
-        easting_shift=grid.easting.values.min(),
-        northing_shift=grid.northing.values.min(),
-    ).real
-    return deriv
+    return apply_filter(grid, fft_derivative_upward, order=order)
