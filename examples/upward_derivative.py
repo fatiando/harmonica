@@ -5,8 +5,8 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Derivatives of a regular grid
-=============================
+Upward derivative of a regular grid
+===================================
 """
 import matplotlib.pyplot as plt
 import pyproj
@@ -36,50 +36,42 @@ eql = hm.EQLHarmonic(relative_depth=1000, damping=1).fit(
 )
 grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
 
-# Compute the spatial derivatives of the grid along the easting, northing and
-# upward directions
-deriv_easting = hm.derivative_easting(grid.magnetic_anomaly)
-deriv_northing = hm.derivative_northing(grid.magnetic_anomaly)
+# Compute the upward derivative of the grid
 deriv_upward = hm.derivative_upward(grid.magnetic_anomaly)
 
-# Show the computed derivatives
-print("\nEasting derivative:\n", deriv_easting)
-print("\nNorthing derivative:\n", deriv_northing)
+# Show the upward derivative
 print("\nUpward derivative:\n", deriv_upward)
 
-# Plot original magnetic anomaly and its derivatives
-fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
-    nrows=2, ncols=2, figsize=(9, 18), sharex=True, sharey=True
+# Plot original magnetic anomaly and the upward derivative
+fig, (ax1, ax2) = plt.subplots(
+    nrows=1, ncols=2, figsize=(9, 8), sharex=True, sharey=True
 )
 
 # Plot the magnetic anomaly grid
-grid.magnetic_anomaly.plot(ax=ax1, cbar_kwargs={"label": "nT"})
+grid.magnetic_anomaly.plot(
+    ax=ax1,
+    cbar_kwargs={"label": "nT", "location": "bottom", "shrink": 0.8, "pad": 0.08},
+)
 ax1.set_title("Magnetic anomaly")
-
-# Define keyword arguments for the derivative axes
-kwargs = dict(cmap="RdBu_r", cbar_kwargs={"label": "nT/m"})
-
-# Plot the easting derivative
-scale = np.quantile(np.abs(deriv_easting), q=0.98)  # scale the colorbar
-deriv_easting.plot(ax=ax2, vmin=-scale, vmax=scale, **kwargs)
-ax2.set_title("Easting derivative")
-
-# Plot the northing derivative
-scale = np.quantile(np.abs(deriv_northing), q=0.98)  # scale the colorbar
-deriv_northing.plot(ax=ax3, vmin=-scale, vmax=scale, **kwargs)
-ax3.set_title("Northing derivative")
 
 # Plot the upward derivative
 scale = np.quantile(np.abs(deriv_upward), q=0.98)  # scale the colorbar
-deriv_upward.plot(ax=ax4, vmin=-scale, vmax=scale, **kwargs)
-ax4.set_title("Upward derivative")
+deriv_upward.plot(
+    ax=ax2,
+    vmin=-scale,
+    vmax=scale,
+    cmap="RdBu_r",
+    cbar_kwargs={"label": "nT/m", "location": "bottom", "shrink": 0.8, "pad": 0.08},
+)
+ax2.set_title("Upward derivative")
 
 # Scale the axes
-for ax in (ax1, ax2, ax3, ax4):
+for ax in (ax1, ax2):
     ax.set_aspect("equal")
 
 # Set ticklabels with scientific notation
 ax1.ticklabel_format(axis="x", style="sci", scilimits=(-2, 2))
 ax1.ticklabel_format(axis="y", style="sci", scilimits=(-2, 2))
 
+plt.tight_layout()
 plt.show()

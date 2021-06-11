@@ -7,4 +7,4 @@
 """
 Functions for applying filters to regular grids defined in frequency domain
 """
-from .derivatives import derivative_easting, derivative_northing, derivative_upward
+from .derivatives import derivative_upward
