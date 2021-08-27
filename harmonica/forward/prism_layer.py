@@ -91,7 +91,7 @@ def prism_layer(
     ...     reference=0,
     ...     properties={"density": density},
     ... )
-    >>> print(prisms)
+    >>> print(prisms) # doctest: +SKIP
     <xarray.Dataset>
     Dimensions:   (easting: 5, northing: 4)
     Coordinates:
