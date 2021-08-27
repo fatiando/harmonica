@@ -93,7 +93,7 @@ def prism_layer(
     ... )
     >>> print(prisms) # doctest: +SKIP
     <xarray.Dataset>
-    Dimensions:   (easting: 5, northing: 4)
+    Dimensions:   (northing: 4, easting: 5)
     Coordinates:
       * easting   (easting) float64 0.0 2.5 5.0 7.5 10.0
       * northing  (northing) float64 2.0 4.0 6.0 8.0
