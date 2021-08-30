@@ -47,7 +47,7 @@ prisms = hm.prism_layer(
     (south_africa_topo.easting, south_africa_topo.northing),
     surface=south_africa_topo.values,
     reference=0,
-    properties={"density": density},
+    properties={"density": density.values},
 )
 
 # Compute gravity field on a regular grid located at 4000m above the ellipsoid
