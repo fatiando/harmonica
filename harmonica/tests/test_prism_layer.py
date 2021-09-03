@@ -38,7 +38,7 @@ def dummy_layer(request):
 
 
 @pytest.fixture
-def prism_layer_with_holes(dummy_layer):
+def prism_layer_with_holes(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Return a set of prisms with some missing elements
 
@@ -64,7 +64,7 @@ def prism_layer_with_holes(dummy_layer):
     return prisms, density
 
 
-def test_prism_layer(dummy_layer):
+def test_prism_layer(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Check if a layer of prisms is property constructed
     """
@@ -94,7 +94,9 @@ def test_prism_layer(dummy_layer):
     npt.assert_allclose(layer.bottom, expected_bottom)
 
 
-def test_prism_layer_invalid_surface_reference(dummy_layer):
+def test_prism_layer_invalid_surface_reference(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if invalid surface and/or reference are caught
     """
@@ -110,7 +112,7 @@ def test_prism_layer_invalid_surface_reference(dummy_layer):
         prism_layer(coordinates, surface, reference_invalid)
 
 
-def test_prism_layer_properties(dummy_layer):
+def test_prism_layer_properties(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Check passing physical properties to the prisms layer
     """
@@ -126,7 +128,9 @@ def test_prism_layer_properties(dummy_layer):
     npt.assert_allclose(layer.suceptibility, suceptibility)
 
 
-def test_prism_layer_no_regular_grid(dummy_layer):
+def test_prism_layer_no_regular_grid(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if error is raised if easting and northing are not regular
     """
@@ -209,7 +213,7 @@ def test_prism_layer_get_prism_by_index():
             )
 
 
-def test_nonans_prisms_mask(dummy_layer):
+def test_nonans_prisms_mask(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Check if the mask for nonans prism is correctly created
     """
@@ -257,7 +261,9 @@ def test_nonans_prisms_mask(dummy_layer):
     npt.assert_allclose(mask, expected_mask)
 
 
-def test_nonans_prisms_mask_property(dummy_layer):
+def test_nonans_prisms_mask_property(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if the method masks the property and raises a warning
     """
@@ -310,7 +316,9 @@ def test_nonans_prisms_mask_property(dummy_layer):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
-def test_prism_layer_gravity(field, dummy_layer):
+def test_prism_layer_gravity(
+    field, dummy_layer
+):  # pylint: disable=redefined-outer-name
     """
     Check if gravity method works as expected
     """
@@ -332,7 +340,9 @@ def test_prism_layer_gravity(field, dummy_layer):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
-def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_holes):
+def test_prism_layer_gravity_surface_nans(
+    field, dummy_layer, prism_layer_with_holes
+):  # pylint: disable=redefined-outer-name
     """
     Check if gravity method works as expected when surface has nans
     """
@@ -356,18 +366,20 @@ def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_h
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
-def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_holes):
+def test_prism_layer_gravity_density_nans(
+    field, dummy_layer, prism_layer_with_holes
+):  # pylint: disable=redefined-outer-name
     """
     Check if prisms is ignored after a nan is found in density array
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
-    (easting, northing), surface, reference, density = dummy_layer
+    coordinates, surface, reference, density = dummy_layer
     # Create one layer that has nans on the density array
     indices = [(3, 3), (2, 1)]
     for index in indices:
         density[index] = np.nan
     layer = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
+        coordinates, surface, reference, properties={"density": density}
     )
     # Check if warning is raised after passing density with nans
     with warnings.catch_warnings(record=True) as warn:
