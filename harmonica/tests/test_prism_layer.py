@@ -373,13 +373,13 @@ def test_prism_layer_gravity_density_nans(
     Check if prisms is ignored after a nan is found in density array
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
-    coordinates, surface, reference, density = dummy_layer
+    prisms_coords, surface, reference, density = dummy_layer
     # Create one layer that has nans on the density array
     indices = [(3, 3), (2, 1)]
     for index in indices:
         density[index] = np.nan
     layer = prism_layer(
-        coordinates, surface, reference, properties={"density": density}
+        prisms_coords, surface, reference, properties={"density": density}
     )
     # Check if warning is raised after passing density with nans
     with warnings.catch_warnings(record=True) as warn:
