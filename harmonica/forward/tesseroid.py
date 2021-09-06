@@ -245,10 +245,6 @@ def jit_tesseroid_gravity(
     small_tesseroids : 2d-array
         Empty array where smaller tesseroids created by adaptive discretization
         algorithm will be stored.
-    point_masses : 2d-array
-        Empty array where equivalent point masses will be stored.
-    weights : 1d-array
-        Empty array where the GLQ weight of each point mass will be stored.
     result : 1d-array
         Array where the gravitational effect of each tesseroid will be added.
     distance_size_ratio : float
