@@ -32,7 +32,7 @@ def tesseroid_gravity(
     radial_adaptive_discretization=False,
     dtype=np.float64,
     disable_checks=False,
-):  # pylint: disable=too-many-locals
+):
     """
     Compute gravitational field of tesseroids on computation points.
 
@@ -128,12 +128,75 @@ def tesseroid_gravity(
             )
         tesseroids = _check_tesseroids(tesseroids)
         _check_points_outside_tesseroids(coordinates, tesseroids)
-    # Get value of D (distance_size_ratio)
-    distance_size_ratio = DISTANCE_SIZE_RATII[field]
+    # Compute gravity field
+    _tesseroid_gravity(
+        coordinates,
+        tesseroids,
+        density,
+        result,
+        DISTANCE_SIZE_RATII[field],
+        radial_adaptive_discretization,
+        kernels[field],
+    )
+    result *= GRAVITATIONAL_CONST
+    # Convert to more convenient units
+    if field == "g_z":
+        result *= 1e5  # SI to mGal
+    return result.reshape(cast.shape)
+
+
+def _tesseroid_gravity(
+    coordinates,
+    tesseroids,
+    density,
+    result,
+    distance_size_ratio,
+    radial_adaptive_discretization,
+    kernel,
+):
+    """
+    Prepare and dispatch the computation of gravity fields by tesseroids
+
+    Stores the resulting gravity field in the ``results`` array passed as
+    argument.
+
+    Parameters
+    ----------
+    coordinates : tuple
+        Tuple containing the coordinates of the computation points in spherical
+        geocentric coordinate system in the following order:
+        ``longitude``, ``latitude``, ``radius``.
+        Each element of the tuple must be a 1d array.
+        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``
+        in meters.
+    tesseroids : 2d-array
+        Array containing the boundaries of each tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top`` under a geocentric
+        spherical coordinate system.
+        The array must have the following shape: (``n_tesseroids``, 6), where
+        ``n_tesseroids`` is the total number of tesseroids.
+        All tesseroids must have valid boundary coordinates.
+        Horizontal boundaries should be in degrees while radial boundaries
+        should be in meters.
+    density : 1d-array
+        Density of each tesseroid in SI units.
+    result : 1d-array
+        Array where the gravitational effect of each tesseroid will be added.
+    distance_size_ratio : float
+        Value of the distance size ratio.
+    radial_adaptive_discretization : bool
+        If ``False``, the adaptive discretization algorithm will split the
+        tesseroid only on the horizontal direction.
+        If ``True``, it will perform a three dimensional adaptive
+        discretization, splitting the tesseroids on every direction.
+    kernel : func
+        Kernel function for the gravitational field of point masses.
+    """
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
     # Initialize arrays to perform memory allocation only once
+    dtype = tesseroids.dtype
     stack = np.empty((STACK_SIZE, 6), dtype=dtype)
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
     # Compute gravitational field
@@ -148,13 +211,8 @@ def tesseroid_gravity(
         radial_adaptive_discretization,
         glq_nodes,
         glq_weights,
-        kernels[field],
+        kernel,
     )
-    result *= GRAVITATIONAL_CONST
-    # Convert to more convenient units
-    if field == "g_z":
-        result *= 1e5  # SI to mGal
-    return result.reshape(cast.shape)
 
 
 @jit(nopython=True)
@@ -166,7 +224,7 @@ def jit_tesseroid_gravity(
     small_tesseroids,
     result,
     distance_size_ratio,
-    radial_discretization,
+    radial_adaptive_discretization,
     glq_nodes,
     glq_weights,
     kernel,
@@ -208,7 +266,7 @@ def jit_tesseroid_gravity(
         Array where the gravitational effect of each tesseroid will be added.
     distance_size_ratio : float
         Value of the distance size ratio.
-    radial_discretization : bool
+    radial_adaptive_discretization : bool
         If ``False``, the adaptive discretization algorithm will split the
         tesseroid only on the horizontal direction.
         If ``True``, it will perform a three dimensional adaptive
@@ -237,7 +295,7 @@ def jit_tesseroid_gravity(
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
-                radial_discretization,
+                radial_adaptive_discretization,
             )
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
