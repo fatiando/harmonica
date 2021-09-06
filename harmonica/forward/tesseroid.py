@@ -67,7 +67,7 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
 
-    distance_size_ratio : dict or None (optional)
+    distance_size_ratii : dict or None (optional)
         Dictionary containing distance-size ratii for each gravitational field
         used on the adaptive discretization algorithm.
         Values must be the available fields and keys should be the desired
@@ -437,10 +437,10 @@ def _adaptive_discretization(
         If too many discretizations will take place, increase the
         ``stack_size``.
     small_tesseroids : 2d-array
-        Array with shape ``(6, max_discretizations)`` that will contain every
+        Array with shape ``(6, MAX_DISCRETIZATIONS)`` that will contain every
         small tesseroid produced by the adaptive discretization algorithm.
         If too many discretizations will take place, increase the
-        ``max_discretizations``.
+        ``MAX_DISCRETIZATIONS``.
     radial_discretization : bool (optional)
         If ``True`` the three dimensional adaptive discretization will be
         applied.
@@ -488,7 +488,7 @@ def _adaptive_discretization(
             if n_splits + 1 > small_tesseroids.shape[0]:
                 raise OverflowError(
                     "Exceeded maximum discretizations."
-                    + " Please increase the maximum_discretizations."
+                    + " Please increase the MAX_DISCRETIZATIONS."
                 )
             small_tesseroids[n_splits] = tesseroid
             n_splits += 1
