@@ -30,13 +30,10 @@ def tesseroid_gravity(
     density,
     field,
     distance_size_ratii=None,
-    glq_degrees=GLQ_DEGREES,
-    stack_size=STACK_SIZE,
-    max_discretizations=MAX_DISCRETIZATIONS,
     radial_adaptive_discretization=False,
     dtype=np.float64,
     disable_checks=False,
-):  # pylint: disable=too-many-locals, too-many-arguments
+):  # pylint: disable=too-many-locals
     """
     Compute gravitational field of tesseroids on computation points.
 
@@ -81,24 +78,6 @@ def tesseroid_gravity(
         If None, the default values of distance-size ratii will be used:
         D = 1 for the potential and D = 2.5 for the gradient.
         Default to None.
-    glq_degrees : tuple (optional)
-        List containing the GLQ degrees used on each direction:
-        ``glq_degree_longitude``, ``glq_degree_latitude``,
-        ``glq_degree_radius``.
-        The GLQ degree specifies how many point masses will be created along
-        each direction.
-        Increasing the GLQ degree will increase the accuracy of the numerical
-        approximation, but also the computation time.
-        Default ``[2, 2, 2]``.
-    stack_size : int (optional)
-        Size of the tesseroid stack used on the adaptive discretization
-        algorithm.
-        If the algorithm will perform too many splits, please increase the
-        stack size.
-    max_discretizations : int (optional)
-        Maximum number of splits made by the adaptive discretization algorithm.
-        If the algorithm will perform too many splits, please increase the
-        maximum number of splits.
     radial_adaptive_discretization : bool (optional)
         If ``False``, the adaptive discretization algorithm will split the
         tesseroid only on the horizontal direction.
@@ -173,10 +152,10 @@ def tesseroid_gravity(
     distance_size_ratio = distance_size_ratii[field]
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
-    glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
+    glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
     # Initialize arrays to perform memory allocation only once
-    stack = np.empty((stack_size, 6), dtype=dtype)
-    small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
+    stack = np.empty((STACK_SIZE, 6), dtype=dtype)
+    small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
     # Compute gravitational field
     jit_tesseroid_gravity(
         coordinates,
