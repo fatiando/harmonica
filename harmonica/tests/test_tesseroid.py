@@ -65,26 +65,6 @@ def test_invalid_field():
         tesseroid_gravity(coordinates, tesseroid, density, field="Not a valid field")
 
 
-def test_invalid_distance_size_ratii():
-    """
-    Check if distance_size_ratii argument is well handled by tesseroid_gravity
-    """
-    tesseroid = [-10, 10, -10, 10, 100, 200]
-    density = 1000
-    coordinates = [0, 0, 250]
-    # Check empty distance_size_ratii dictionary
-    distance_size_ratii = {}
-    for field in ("potential", "g_z"):
-        with pytest.raises(ValueError):
-            tesseroid_gravity(
-                coordinates,
-                tesseroid,
-                density,
-                distance_size_ratii=distance_size_ratii,
-                field=field,
-            )
-
-
 def test_invalid_density_array():
     """
     Check if error is raised when density shape does not match tesseroids shape

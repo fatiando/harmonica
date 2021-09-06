@@ -29,7 +29,6 @@ def tesseroid_gravity(
     tesseroids,
     density,
     field,
-    distance_size_ratii=None,
     radial_adaptive_discretization=False,
     dtype=np.float64,
     disable_checks=False,
@@ -67,17 +66,6 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
 
-    distance_size_ratii : dict or None (optional)
-        Dictionary containing distance-size ratii for each gravitational field
-        used on the adaptive discretization algorithm.
-        Values must be the available fields and keys should be the desired
-        distance-size ratio.
-        The greater the distance-size ratio, more discretizations will occur,
-        increasing the accuracy of the numerical approximation but also the
-        computation time.
-        If None, the default values of distance-size ratii will be used:
-        D = 1 for the potential and D = 2.5 for the gradient.
-        Default to None.
     radial_adaptive_discretization : bool (optional)
         If ``False``, the adaptive discretization algorithm will split the
         tesseroid only on the horizontal direction.
@@ -141,15 +129,7 @@ def tesseroid_gravity(
         tesseroids = _check_tesseroids(tesseroids)
         _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get value of D (distance_size_ratio)
-    if distance_size_ratii is None:
-        distance_size_ratii = DISTANCE_SIZE_RATII
-    if field not in distance_size_ratii:
-        raise ValueError(
-            'Gravitational field "{}" not found on distance_size_ratii dictionary'.format(
-                field
-            )
-        )
-    distance_size_ratio = distance_size_ratii[field]
+    distance_size_ratio = DISTANCE_SIZE_RATII[field]
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
