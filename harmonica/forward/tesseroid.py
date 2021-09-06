@@ -267,7 +267,9 @@ def jit_tesseroid_gravity(
     longitude_rad = np.radians(longitude)
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
+    # Loop over computation points
     for l in range(longitude.size):
+        # Loop over tesseroids
         for m in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
