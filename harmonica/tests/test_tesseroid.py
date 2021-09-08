@@ -53,6 +53,37 @@ def test_single_tesseroid():
             )
 
 
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("radial_discretization", [True, False])
+def test_tesseroid_parallel(field, radial_discretization):
+    "Compare tesseroids in parallel with tesseroids in serial"
+    ellipsoid = boule.WGS84
+    top = ellipsoid.mean_radius
+    bottom = top - 1e3
+    tesseroids = [
+        [-10.0, 0, -10.0, 0, bottom, top],
+        [-10.0, 0, 0, 10.0, bottom, top],
+        [0, 10.0, -10.0, 0, bottom, top],
+        [0, 10.0, 0, 10.0, bottom, top],
+    ]
+    densities = 1000.0 * np.ones(len(tesseroids))
+    coordinates = [[-5.0, 0.0, 1.0], [-5.0, 0.0, 5.0], [top + 100] * 3]
+    npt.assert_allclose(
+        *tuple(
+            tesseroid_gravity(
+                coordinates,
+                tesseroids,
+                densities,
+                radial_adaptive_discretization=radial_discretization,
+                field=field,
+                parallel=parallel,
+            )
+            for parallel in (True, False)
+        )
+    )
+
+
 # ------------------
 # Test error raising
 # ------------------
