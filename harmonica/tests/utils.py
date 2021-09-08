@@ -4,6 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+# pylint disable: invalid-name
 """
 Decorators and useful functions for running tests
 """
