@@ -34,7 +34,9 @@ ACCURACY_THRESHOLD = 1e-3
 
 
 @pytest.mark.use_numba
-def test_single_tesseroid():
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("radial_discretization", [True, False])
+def test_single_tesseroid(field, radial_discretization):
     "Test single tesseroid for achieving coverage when Numba is disabled"
     ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
@@ -42,15 +44,13 @@ def test_single_tesseroid():
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
     density = 1000.0
     coordinates = [0.0, 0.0, top + 100]
-    for field in ("potential", "g_z"):
-        for radial_discretization in (True, False):
-            tesseroid_gravity(
-                coordinates,
-                tesseroid,
-                density,
-                radial_adaptive_discretization=radial_discretization,
-                field=field,
-            )
+    tesseroid_gravity(
+        coordinates,
+        tesseroid,
+        density,
+        radial_adaptive_discretization=radial_discretization,
+        field=field,
+    )
 
 
 @pytest.mark.use_numba
@@ -327,7 +327,8 @@ def test_longitude_continuity():
     assert tesseroid[0, 1] == 10
 
 
-def test_longitude_continuity_equivalent_tesseroids():
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_longitude_continuity_equivalent_tesseroids(field):
     "Check if two equivalent tesseroids generate the same gravity field"
     ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
@@ -336,13 +337,12 @@ def test_longitude_continuity_equivalent_tesseroids():
     tesseroid = [w, e, s, n, bottom, top]
     density = 1e3
     coordinates = [0, 0, ellipsoid.mean_radius + 1e3]
-    for field in ("potential", "g_z"):
-        result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
-        # Change longitudinal boundaries of tesseroid but defining the same one
-        tesseroid = [350, 10, s, n, bottom, top]
-        npt.assert_allclose(
-            result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
-        )
+    result = tesseroid_gravity(coordinates, tesseroid, density, field=field)
+    # Change longitudinal boundaries of tesseroid but defining the same one
+    tesseroid = [350, 10, s, n, bottom, top]
+    npt.assert_allclose(
+        result, tesseroid_gravity(coordinates, tesseroid, density, field=field)
+    )
 
 
 # ---------------------
@@ -468,58 +468,58 @@ def test_split_tesseroid_only_horizontal():
 # Test adaptive discretization
 # ----------------------------
 @require_numba
-def test_adaptive_discretization_on_radii():
+@pytest.mark.parametrize("radial_discretization", [True, False])
+def test_adaptive_discretization_on_radii(radial_discretization):
     "Test if closer computation points increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     distance_size_ratio = 10
     stack = np.empty((STACK_SIZE, 6))
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
-    for radial_discretization in [True, False]:
-        radii = [10.5, 12.0, 13.0, 15.0, 20.0, 30.0]
-        # Only if 2D adaptive discretization set point on the surface of the
-        # tesseroid
-        if radial_discretization:
-            radii.insert(0, 10.1)
-        else:
-            radii.insert(0, 10.0)
-        number_of_splits = []
-        for radius in radii:
-            coordinates = np.array([0.0, 0.0, radius])
-            n_splits = _adaptive_discretization(
-                coordinates,
-                tesseroid,
-                distance_size_ratio,
-                stack,
-                small_tesseroids,
-                radial_discretization=radial_discretization,
-            )
-            number_of_splits.append(n_splits)
-        for i in range(1, len(number_of_splits)):
-            assert number_of_splits[i - 1] >= number_of_splits[i]
+    radii = [10.5, 12.0, 13.0, 15.0, 20.0, 30.0]
+    # Only if 2D adaptive discretization set point on the surface of the
+    # tesseroid
+    if radial_discretization:
+        radii.insert(0, 10.1)
+    else:
+        radii.insert(0, 10.0)
+    number_of_splits = []
+    for radius in radii:
+        coordinates = np.array([0.0, 0.0, radius])
+        n_splits = _adaptive_discretization(
+            coordinates,
+            tesseroid,
+            distance_size_ratio,
+            stack,
+            small_tesseroids,
+            radial_discretization=radial_discretization,
+        )
+        number_of_splits.append(n_splits)
+    for i in range(1, len(number_of_splits)):
+        assert number_of_splits[i - 1] >= number_of_splits[i]
 
 
 @require_numba
-def test_adaptive_discretization_vs_distance_size_ratio():
+@pytest.mark.parametrize("radial_discretization", [True, False])
+def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
     "Test if higher distance-size-ratio increase the tesseroid discretization"
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     coordinates = np.array([0.0, 0.0, 10.2])
     distance_size_ratii = np.linspace(1, 10, 10)
     stack = np.empty((STACK_SIZE, 6))
     small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6))
-    for radial_discretization in [True, False]:
-        number_of_splits = []
-        for distance_size_ratio in distance_size_ratii:
-            n_splits = _adaptive_discretization(
-                coordinates,
-                tesseroid,
-                distance_size_ratio,
-                stack,
-                small_tesseroids,
-                radial_discretization=radial_discretization,
-            )
-            number_of_splits.append(n_splits)
-        for i in range(1, len(number_of_splits)):
-            assert number_of_splits[i - 1] <= number_of_splits[i]
+    number_of_splits = []
+    for distance_size_ratio in distance_size_ratii:
+        n_splits = _adaptive_discretization(
+            coordinates,
+            tesseroid,
+            distance_size_ratio,
+            stack,
+            small_tesseroids,
+            radial_discretization=radial_discretization,
+        )
+        number_of_splits.append(n_splits)
+    for i in range(1, len(number_of_splits)):
+        assert number_of_splits[i - 1] <= number_of_splits[i]
 
 
 @require_numba
@@ -568,7 +568,10 @@ def spherical_shell_analytical(top, bottom, density, radius):
 
 
 @require_numba
-def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many-locals
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_spherical_shell_two_dim_adaptive_discret(
+    field,
+):  # pylint: disable=too-many-locals
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization
@@ -601,18 +604,21 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
         analytical = spherical_shell_analytical(top, bottom, density, radius)
         # Assert analytical and numerical solution are bellow the accuracy
         # threshold
-        for field in analytical:
-            npt.assert_allclose(
-                analytical[field],
-                tesseroid_gravity(
-                    coordinates, tesseroids, density * np.ones(shape), field=field
-                ),
-                rtol=ACCURACY_THRESHOLD,
-            )
+        npt.assert_allclose(
+            analytical[field],
+            tesseroid_gravity(
+                coordinates, tesseroids, density * np.ones(shape), field=field
+            ),
+            rtol=ACCURACY_THRESHOLD,
+        )
 
 
 @require_numba
-def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-many-locals
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
+def test_spherical_shell_three_dim_adaptive_discret(
+    thickness, field
+):  # pylint: disable=too-many-locals
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization
@@ -626,30 +632,26 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
     shape = (6, 6)
     # Define a density for the shell
     density = 1000
-    # Define different values for the spherical shell thickness
-    thicknesses = np.logspace(1, 5, 5)
-    for thickness in thicknesses:
-        # Create list of tesseroids for the spherical shell model
-        tesseroids = []
-        # Define boundary coordinates of each tesseroid
-        top = ellipsoid.mean_radius
-        bottom = top - thickness
-        longitude = np.linspace(0, 360, shape[0] + 1)
-        latitude = np.linspace(-90, 90, shape[1] + 1)
-        west, east = longitude[:-1], longitude[1:]
-        south, north = latitude[:-1], latitude[1:]
-        for w, e in zip(west, east):
-            for s, n in zip(south, north):
-                tesseroids.append([w, e, s, n, bottom, top])
-        # Get analytical solutions
-        analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy
-        # threshold
-        for field in analytical:
-            npt.assert_allclose(
-                analytical[field],
-                tesseroid_gravity(
-                    coordinates, tesseroids, density * np.ones(shape), field=field
-                ),
-                rtol=ACCURACY_THRESHOLD,
-            )
+    # Create list of tesseroids for the spherical shell model
+    tesseroids = []
+    # Define boundary coordinates of each tesseroid
+    top = ellipsoid.mean_radius
+    bottom = top - thickness
+    longitude = np.linspace(0, 360, shape[0] + 1)
+    latitude = np.linspace(-90, 90, shape[1] + 1)
+    west, east = longitude[:-1], longitude[1:]
+    south, north = latitude[:-1], latitude[1:]
+    for w, e in zip(west, east):
+        for s, n in zip(south, north):
+            tesseroids.append([w, e, s, n, bottom, top])
+    # Get analytical solutions
+    analytical = spherical_shell_analytical(top, bottom, density, radius)
+    # Assert analytical and numerical solution are bellow the accuracy
+    # threshold
+    npt.assert_allclose(
+        analytical[field],
+        tesseroid_gravity(
+            coordinates, tesseroids, density * np.ones(shape), field=field
+        ),
+        rtol=ACCURACY_THRESHOLD,
+    )
