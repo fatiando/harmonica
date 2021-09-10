@@ -10,6 +10,7 @@ Forward modelling for tesseroids
 from numba import jit, prange
 import numpy as np
 from numpy.polynomial.legendre import leggauss
+from scipy.optimize import minimize_scalar
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import distance_spherical
@@ -22,6 +23,7 @@ STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
 GLQ_DEGREES = (2, 2, 2)
 DISTANCE_SIZE_RATII = {"potential": 1, "g_z": 2.5}
+DELTA_RATIO = 0.1
 
 
 def tesseroid_gravity(
@@ -121,19 +123,26 @@ def tesseroid_gravity(
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
-    # Convert coordinates, tesseroids and density to arrays
+    # Convert coordinates and tesseroids to arrays
     coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
     tesseroids = np.atleast_2d(tesseroids)
-    density = np.atleast_1d(density).ravel()
     # Sanity checks for tesseroids and computation points
     if not disable_checks:
-        if density.size != tesseroids.shape[0]:
+        tesseroids = _check_tesseroids(tesseroids)
+        _check_points_outside_tesseroids(coordinates, tesseroids)
+    # Check if density are homogeneous or variable
+    density_func = None
+    if callable(density):
+        density_func = jit(nopython=True)(density)
+        density = None
+        tesseroids = density_based_discretization(tesseroids, density_func)
+    else:
+        density = np.atleast_1d(density).ravel()
+        if not disable_checks and density.size != tesseroids.shape[0]:
             raise ValueError(
                 "Number of elements in density ({}) ".format(density.size)
                 + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
             )
-        tesseroids = _check_tesseroids(tesseroids)
-        _check_points_outside_tesseroids(coordinates, tesseroids)
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
@@ -142,6 +151,7 @@ def tesseroid_gravity(
         coordinates,
         tesseroids,
         density,
+        density_func,
         result,
         DISTANCE_SIZE_RATII[field],
         radial_adaptive_discretization,
@@ -155,6 +165,122 @@ def tesseroid_gravity(
     if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
+
+
+# --------------------------------------
+# Density-based discretization functions
+# --------------------------------------
+
+
+def density_based_discretization(tesseroids, density):
+    """
+    Apply density_based discretization to a collection of tesseroids
+    """
+    discretized_tesseroids = []
+    for tesseroid in tesseroids:
+        discretized_tesseroids.extend(_density_based_discretization(tesseroid, density))
+    return np.atleast_2d(discretized_tesseroids)
+
+
+def _density_based_discretization(tesseroid, density):
+    """
+    Applies density-based discretization to a single tesseroid
+
+    Splits the tesseroid on the points of maximum density variance
+
+    Parameters
+    ----------
+    tesseroid : tuple
+    density : func
+
+    Returns
+    -------
+    tesseroids : list
+    """
+    # Define normalized density
+    def normalized_density(radius):
+        return (density(radius) - density_min) / (density_max - density_min)
+
+    # Get boundaries of original tesseroid
+    w, e, s, n, bottom, top = tesseroid[:]
+    # Get minimum and maximum values of the density
+    density_min, density_max = density_minmax(density, bottom, top)
+    # Return the original tesseroid if max and min densities are equal
+    if np.isclose(density_min, density_max):
+        return [tesseroid]
+    # Store the size of the original tesseroid
+    size_original_tesseroid = top - bottom
+    # Initialize list of pending and output tesseroids
+    pending, tesseroids = [tesseroid], []
+    # Discretization of the tesseroid
+    while pending:
+        tesseroid = pending.pop(0)
+        bottom, top = tesseroid[-2:]
+        radius_split, max_diff = maximum_absolute_diff(normalized_density, bottom, top)
+        size_ratio = (top - bottom) / size_original_tesseroid
+        if max_diff * size_ratio > DELTA_RATIO:
+            pending.append([w, e, s, n, radius_split, top])
+            pending.append([w, e, s, n, bottom, radius_split])
+        else:
+            tesseroids.append([w, e, s, n, bottom, top])
+    return tesseroids
+
+
+def density_minmax(density, bottom, top):
+    """
+    Compute the minimum and maximum value of a bounded density
+    """
+    minimum = minimize_scalar(
+        lambda radius: density(radius), bounds=[bottom, top], method="bounded"
+    )
+    maximum = minimize_scalar(
+        lambda radius: -density(radius), bounds=[bottom, top], method="bounded"
+    )
+    return minimum.fun, -maximum.fun
+
+
+def maximum_absolute_diff(normalized_density, bottom, top):
+    """
+    Compute maximum abs difference between normalized density and straight line
+
+    The maximum difference is computed within the ``bottom`` and ``top``
+    boundaries.
+    """
+
+    def absolute_difference(radius):
+        """
+        Define absolute difference between normalized density and straight line
+        """
+        return np.abs(
+            normalized_density(radius)
+            - straight_line(radius, normalized_density, bottom, top)
+        )
+
+    # Use scipy.optimize.minimize_scalar for maximizing the absolute difference
+    result = minimize_scalar(
+        lambda radius: -absolute_difference(
+            radius
+        ),  # put a minus to maximize the absolute_difference
+        bounds=[bottom, top],
+        method="bounded",
+    )
+    # Get maximum difference and the radius at which it takes place
+    radius_split = result.x
+    max_diff = -result.fun
+    return radius_split, max_diff
+
+
+def straight_line(radius, normalized_density, bottom, top):
+    """
+    Compute the reference straight line that joins points of normalized density
+    """
+    norm_density_bottom = normalized_density(bottom)
+    norm_density_top = normalized_density(top)
+    slope = (norm_density_top - norm_density_bottom) / (top - bottom)
+    return slope * (radius - bottom) + norm_density_bottom
+
+
+# -----------------------------------------------------------------
 
 
 def dispatcher(parallel):
@@ -172,6 +298,7 @@ def jit_tesseroid_gravity(
     coordinates,
     tesseroids,
     density,
+    density_func,
     result,
     distance_size_ratio,
     radial_adaptive_discretization,
@@ -207,6 +334,8 @@ def jit_tesseroid_gravity(
         should be in meters.
     density : 1d-array
         Density of each tesseroid in SI units.
+    density_func : function
+        Variable density of every tesseroid in SI units.
     stack : 2d-array
         Empty array where tesseroids created by adaptive discretization
         algorithm will be processed.
@@ -256,17 +385,32 @@ def jit_tesseroid_gravity(
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
-                result[l] += gauss_legendre_quadrature(
-                    longitude_rad[l],
-                    cosphi[l],
-                    sinphi[l],
-                    radius[l],
-                    tesseroid,
-                    density[m],
-                    glq_nodes,
-                    glq_weights,
-                    kernel,
-                )
+                if density is None:
+                    result[l] += gauss_legendre_quadrature(
+                        longitude_rad[l],
+                        cosphi[l],
+                        sinphi[l],
+                        radius[l],
+                        tesseroid,
+                        None,
+                        density_func,
+                        glq_nodes,
+                        glq_weights,
+                        kernel,
+                    )
+                else:
+                    result[l] += gauss_legendre_quadrature(
+                        longitude_rad[l],
+                        cosphi[l],
+                        sinphi[l],
+                        radius[l],
+                        tesseroid,
+                        density[m],
+                        None,
+                        glq_nodes,
+                        glq_weights,
+                        kernel,
+                    )
 
 
 @jit(nopython=True)
@@ -277,6 +421,7 @@ def gauss_legendre_quadrature(
     radius,
     tesseroid,
     density,
+    density_func,
     glq_nodes,
     glq_weights,
     kernel,
@@ -312,6 +457,8 @@ def gauss_legendre_quadrature(
         meters.
     density : float
         Density of the tesseroid in SI units.
+    density_func : function
+        Variable density of every tesseroid in SI units.
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
@@ -348,13 +495,12 @@ def gauss_legendre_quadrature(
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
                 # Compute the mass of the point mass
                 mass = (
-                    density
-                    * a_factor
-                    * kappa
-                    * lon_weights[i]
-                    * lat_weights[j]
-                    * rad_weights[k]
+                    a_factor * kappa * lon_weights[i] * lat_weights[j] * rad_weights[k]
                 )
+                if density is None:
+                    mass *= density_func(radius_p)
+                else:
+                    mass *= density
                 # Add effect of the current point mass to the result
                 result += mass * kernel(
                     longitude,
