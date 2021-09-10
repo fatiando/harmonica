@@ -230,9 +230,7 @@ def density_minmax(density, bottom, top):
     """
     Compute the minimum and maximum value of a bounded density
     """
-    minimum = minimize_scalar(
-        lambda radius: density(radius), bounds=[bottom, top], method="bounded"
-    )
+    minimum = minimize_scalar(density, bounds=[bottom, top], method="bounded")
     maximum = minimize_scalar(
         lambda radius: -density(radius), bounds=[bottom, top], method="bounded"
     )
