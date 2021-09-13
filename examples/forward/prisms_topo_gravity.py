@@ -45,7 +45,7 @@ density = density.where(south_africa_topo >= 0, 1000 - 2900)
 # Create layer of prisms
 prisms = hm.prism_layer(
     (south_africa_topo.easting, south_africa_topo.northing),
-    surface=south_africa_topo.values,
+    surface=south_africa_topo,
     reference=0,
     properties={"density": density},
 )
