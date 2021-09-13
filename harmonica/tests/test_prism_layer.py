@@ -13,18 +13,62 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 import verde as vd
+import xarray as xr
 
 from .. import prism_layer, prism_gravity
 
 
-def test_prism_layer():
+@pytest.fixture(params=("numpy", "xarray"))
+def dummy_layer(request):
     """
-    Check if a layer of prisms is property constructed
+    Generate dummy arrays for defining prism layers
     """
     easting = np.linspace(-1, 3, 5)
     northing = np.linspace(7, 13, 4)
+    shape = (northing.size, easting.size)
     reference = 0
-    surface = np.arange(20, dtype=float).reshape(4, 5)
+    surface = np.arange(20, dtype=float).reshape(*shape)
+    density = 2670 * np.ones(shape)
+    if request.param == "xarray":
+        easting = xr.DataArray(easting, dims=("easting",))
+        northing = xr.DataArray(northing, dims=("northing",))
+        reference, surface = xr.DataArray(reference), xr.DataArray(surface)
+        density = xr.DataArray(density)
+    return (easting, northing), surface, reference, density
+
+
+@pytest.fixture
+def prism_layer_with_holes(dummy_layer):  # pylint: disable=redefined-outer-name
+    """
+    Return a set of prisms with some missing elements
+
+    The prisms are returned as a tuple of boundaries, ready to be passed to
+    ``hm.prism_gravity``. They would represent the same prisms that the
+    ``dummy_layer`` generated, but with two missing prisms: the ``(3, 3)`` and
+    the ``(2, 1)``.
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    indices = [(3, 3), (2, 1)]
+    prisms = list(
+        layer.prism_layer.get_prism((i, j))
+        for i in range(4)
+        for j in range(5)
+        if (i, j) not in indices
+    )
+    density = list(
+        density[i, j] for i in range(4) for j in range(5) if (i, j) not in indices
+    )
+    return prisms, density
+
+
+def test_prism_layer(dummy_layer):  # pylint: disable=redefined-outer-name
+    """
+    Check if a layer of prisms is property constructed
+    """
+    (easting, northing), surface, reference, _ = dummy_layer
     layer = prism_layer((easting, northing), surface, reference)
     assert "easting" in layer.coords
     assert "northing" in layer.coords
@@ -37,7 +81,7 @@ def test_prism_layer():
     # Surface below reference on a single point
     surface[1, 1] = -1
     expected_top = surface.copy()
-    expected_bottom = reference * np.ones_like(surface)
+    expected_bottom = np.zeros_like(surface)
     expected_top[1, 1], expected_bottom[1, 1] = reference, surface[1, 1]
     layer = prism_layer((easting, northing), surface, reference)
     assert "easting" in layer.coords
@@ -50,35 +94,32 @@ def test_prism_layer():
     npt.assert_allclose(layer.bottom, expected_bottom)
 
 
-def test_prism_layer_invalid_surface_reference():
+def test_prism_layer_invalid_surface_reference(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if invalid surface and/or reference are caught
     """
-    coordinates = np.linspace(-1, 3, 5), np.linspace(7, 10, 4)
+    coordinates, surface, reference, _ = dummy_layer
     # Surface with wrong shape
-    reference = 0
-    surface = np.arange(20, dtype=float)
+    surface_invalid = np.arange(20, dtype=float)
     with pytest.raises(ValueError):
-        prism_layer(coordinates, surface, reference)
+        prism_layer(coordinates, surface_invalid, reference)
     # Reference with wrong shape
-    reference = np.zeros(20)
+    reference_invalid = np.zeros(20)
     surface = np.arange(20, dtype=float).reshape(4, 5)
     with pytest.raises(ValueError):
-        prism_layer(coordinates, surface, reference)
+        prism_layer(coordinates, surface, reference_invalid)
 
 
-def test_prism_layer_properties():
+def test_prism_layer_properties(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Check passing physical properties to the prisms layer
     """
-    easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    reference = 0
-    surface = np.arange(20, dtype=float).reshape(4, 5)
-    density = 2670 * np.ones_like(surface)
-    suceptibility = np.arange(20, dtype=float).reshape(4, 5)
+    coordinates, surface, reference, density = dummy_layer
+    suceptibility = 0 * density + 1e-3
     layer = prism_layer(
-        (easting, northing),
+        coordinates,
         surface,
         reference,
         properties={"density": density, "suceptibility": suceptibility},
@@ -87,29 +128,29 @@ def test_prism_layer_properties():
     npt.assert_allclose(layer.suceptibility, suceptibility)
 
 
-def test_prism_layer_no_regular_grid():
+def test_prism_layer_no_regular_grid(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if error is raised if easting and northing are not regular
     """
-    reference = 0
-    surface = np.arange(20, dtype=float).reshape(4, 5)
+    (easting, northing), surface, reference, _ = dummy_layer
     # Easting as non evenly spaced set of coordinates
-    easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 13, 4)
-    easting[3] = -22
+    easting_invalid = easting.copy()
+    easting_invalid[3] = -22
     with pytest.raises(ValueError):
         prism_layer(
-            (easting, northing),
+            (easting_invalid, northing),
             surface,
             reference,
         )
     # Northing as non evenly spaced set of coordinates
-    easting = np.linspace(-1, 3, 5)
-    northing = np.linspace(7, 13, 4)
+    northing_invalid = northing.copy()
+    northing_invalid[3] = -22
     northing[3] = 12.98
     with pytest.raises(ValueError):
         prism_layer(
-            (easting, northing),
+            (easting, northing_invalid),
             surface,
             reference,
         )
@@ -172,15 +213,12 @@ def test_prism_layer_get_prism_by_index():
             )
 
 
-def test_nonans_prisms_mask():
+def test_nonans_prisms_mask(dummy_layer):  # pylint: disable=redefined-outer-name
     """
     Check if the mask for nonans prism is correctly created
     """
-    easting = np.linspace(1, 3, 5)
-    northing = np.linspace(7, 10, 4)
+    (easting, northing), surface, reference, _ = dummy_layer
     shape = (northing.size, easting.size)
-    reference = 0
-    surface = np.arange(20, dtype=float).reshape(shape)
 
     # No nan in top nor bottom
     # ------------------------
@@ -223,16 +261,14 @@ def test_nonans_prisms_mask():
     npt.assert_allclose(mask, expected_mask)
 
 
-def test_nonans_prisms_mask_property():
+def test_nonans_prisms_mask_property(
+    dummy_layer,
+):  # pylint: disable=redefined-outer-name
     """
     Check if the method masks the property and raises a warning
     """
-    easting = np.linspace(1, 3, 5)
-    northing = np.linspace(7, 10, 4)
+    (easting, northing), surface, reference, density = dummy_layer
     shape = (northing.size, easting.size)
-    reference = 0
-    surface = np.arange(20, dtype=float).reshape(shape)
-    density = 2670 * np.ones_like(surface)
 
     # Nans in top and property (on the same prisms)
     # ---------------------------------------------
@@ -279,96 +315,79 @@ def test_nonans_prisms_mask_property():
 
 
 @pytest.mark.use_numba
-def test_prism_layer_gravity():
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_prism_layer_gravity(
+    field, dummy_layer
+):  # pylint: disable=redefined-outer-name
     """
     Check if gravity method works as expected
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
-    easting = np.linspace(1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    shape = (northing.size, easting.size)
-    reference = 0
-    surface = np.arange(20, dtype=float).reshape(shape)
-    density = np.ones_like(surface, dtype=float)
+    (easting, northing), surface, reference, density = dummy_layer
     layer = prism_layer(
         (easting, northing), surface, reference, properties={"density": density}
     )
-    for field in ("potential", "g_z"):
-        expected_result = prism_gravity(
-            coordinates,
-            prisms=layer.prism_layer._to_prisms(),
-            density=density,
-            field=field,
-        )
-        npt.assert_allclose(
-            expected_result, layer.prism_layer.gravity(coordinates, field=field)
-        )
+    expected_result = prism_gravity(
+        coordinates,
+        prisms=layer.prism_layer._to_prisms(),
+        density=density,
+        field=field,
+    )
+    npt.assert_allclose(
+        expected_result, layer.prism_layer.gravity(coordinates, field=field)
+    )
 
 
 @pytest.mark.use_numba
-def test_prism_layer_gravity_with_nans():
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_prism_layer_gravity_surface_nans(
+    field, dummy_layer, prism_layer_with_holes
+):  # pylint: disable=redefined-outer-name
     """
-    Check if gravity method works as expected when one of the prisms has nans
+    Check if gravity method works as expected when surface has nans
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
-    easting = np.linspace(1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    shape = (northing.size, easting.size)
-    reference = 0
+    (easting, northing), surface, reference, density = dummy_layer
     # Create one layer that has nans on the surface array
-    surface = np.arange(20, dtype=float).reshape(shape)
+    surface_w_nans = surface.copy()
     indices = [(3, 3), (2, 1)]
     for index in indices:
-        surface[index] = np.nan
-    density = np.ones_like(surface, dtype=float)
-    layer_nans = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
+        surface_w_nans[index] = np.nan
+    layer = prism_layer(
+        (easting, northing), surface_w_nans, reference, properties={"density": density}
     )
-    # Create one layer that has zero density but no nans
-    surface = np.arange(20, dtype=float).reshape(shape)
-    density = np.ones_like(surface, dtype=float)
-    for index in indices:
-        density[index] = 0
-    layer_nonans = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
+    # Check if it generates the expected gravity field
+    prisms, rho = prism_layer_with_holes
+    npt.assert_allclose(
+        layer.prism_layer.gravity(coordinates, field=field),
+        prism_gravity(coordinates, prisms, rho, field=field),
     )
-    # Check if the two layers generate the same gravity field
-    for field in ("potential", "g_z"):
-        npt.assert_allclose(
-            layer_nans.prism_layer.gravity(coordinates, field=field),
-            layer_nonans.prism_layer.gravity(coordinates, field=field),
-        )
 
 
-def test_prism_layer_gravity_density_nans():
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_prism_layer_gravity_density_nans(
+    field, dummy_layer, prism_layer_with_holes
+):  # pylint: disable=redefined-outer-name
     """
     Check if prisms is ignored after a nan is found in density array
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
-    easting = np.linspace(1, 3, 5)
-    northing = np.linspace(7, 10, 4)
-    shape = (northing.size, easting.size)
-    reference = 0
+    prisms_coords, surface, reference, density = dummy_layer
     # Create one layer that has nans on the density array
-    surface = np.arange(20, dtype=float).reshape(shape)
     indices = [(3, 3), (2, 1)]
     for index in indices:
-        surface[index] = np.nan
-    density = np.ones_like(surface, dtype=float)
-    layer_nans = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
+        density[index] = np.nan
+    layer = prism_layer(
+        prisms_coords, surface, reference, properties={"density": density}
     )
-    # Create one layer that has zero density but no nans
-    surface = np.arange(20, dtype=float).reshape(shape)
-    density = np.ones_like(surface, dtype=float)
-    for index in indices:
-        density[index] = 0
-    layer_nonans = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
+    # Check if warning is raised after passing density with nans
+    with warnings.catch_warnings(record=True) as warn:
+        result = layer.prism_layer.gravity(coordinates, field=field)
+        assert len(warn) == 1
+    # Check if it generates the expected gravity field
+    prisms, rho = prism_layer_with_holes
+    npt.assert_allclose(
+        result,
+        prism_gravity(coordinates, prisms, rho, field=field),
     )
-    # Check if the two layers generate the same gravity field
-    for field in ("potential", "g_z"):
-        npt.assert_allclose(
-            layer_nans.prism_layer.gravity(coordinates, field=field),
-            layer_nonans.prism_layer.gravity(coordinates, field=field),
-        )
