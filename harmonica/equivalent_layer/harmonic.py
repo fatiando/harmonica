@@ -148,7 +148,7 @@ class EQLHarmonic(vdb.BaseGridder):
         # Check if relative_depth has been passed (will be deprecated)
         if "relative_depth" in kwargs:
             warnings.warn(
-                "The 'relative_depth' parameter will be deprecated, please use "
+                "The 'relative_depth' parameter is deprecated, please use "
                 + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. ",
                 FutureWarning,
             )
