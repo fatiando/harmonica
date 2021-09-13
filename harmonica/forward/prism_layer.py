@@ -91,9 +91,9 @@ def prism_layer(
     ...     reference=0,
     ...     properties={"density": density},
     ... )
-    >>> print(prisms)
+    >>> print(prisms) # doctest: +SKIP
     <xarray.Dataset>
-    Dimensions:   (easting: 5, northing: 4)
+    Dimensions:   (northing: 4, easting: 5)
     Coordinates:
       * easting   (easting) float64 0.0 2.5 5.0 7.5 10.0
       * northing  (northing) float64 2.0 4.0 6.0 8.0
@@ -118,7 +118,7 @@ def prism_layer(
     # and values, respectively
     if properties:
         data_names = tuple(p for p in properties.keys())
-        data = tuple(p for p in properties.values())
+        data = tuple(np.asarray(p) for p in properties.values())
     # Create xr.Dataset for prisms
     prisms = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
@@ -279,13 +279,14 @@ class DatasetAccessorPrismLayer:
             prisms layer. It can be either a plane or an irregular surface
             passed as 2d array. Height(s) must be in meters.
         """
+        surface, reference = np.asarray(surface), np.asarray(reference)
         if surface.shape != self.shape:
             raise ValueError(
                 f"Invalid surface array with shape '{surface.shape}'. "
                 + "Its shape should be compatible with the coordinates "
                 + "of the layer of prisms."
             )
-        if isinstance(reference, np.ndarray):
+        if reference.ndim != 0:
             if reference.shape != self.shape:
                 raise ValueError(
                     f"Invalid reference array with shape '{reference.shape}'. "
@@ -293,7 +294,7 @@ class DatasetAccessorPrismLayer:
                     + "of the layer of prisms."
                 )
         else:
-            reference *= np.ones(self.shape)
+            reference = reference * np.ones(self.shape)
         top = surface.copy()
         bottom = reference.copy()
         reverse = surface < reference
