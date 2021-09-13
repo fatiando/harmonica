@@ -12,12 +12,12 @@ import xarray as xr
 import pandas as pd
 import pooch
 
-from ..version import full_version
+from .._version import version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
-    version=full_version,
+    version=version,
     version_dev="master",
     env="HARMONICA_DATA_DIR",
 )
