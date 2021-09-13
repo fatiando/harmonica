@@ -143,7 +143,7 @@ class EQLHarmonic(vdb.BaseGridder):
         # Check if depth_type is valid
         if depth_type not in ("constant", "relative"):
             raise ValueError(
-               f"Invalid depth type '{depth_type}'. Should be either be 'constant' or 'relative'."
+                f"Invalid depth type '{depth_type}'. Should be either be 'constant' or 'relative'."
             )
         # Check if relative_depth has been passed (will be deprecated)
         if "relative_depth" in kwargs:
