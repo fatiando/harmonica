@@ -1,11 +1,13 @@
-include README.rst
-include LICENSE.txt
-include CODE_OF_CONDUCT.md
-include CONTRIBUTING.md
-include MAINTENANCE.md
-include AUTHORS.md
-include AUTHORSHIP.md
-include requirements.txt
-include harmonica/datasets/registry.txt
-recursive-include harmonica/tests/data *
-recursive-include harmonica/tests/baseline *
+# Exclude these files from source distributions.
+# setuptools_scm includes everything else by default.
+prune .github
+prune data
+prune doc
+prune paper
+exclude .*.yml
+exclude .*rc
+exclude requirements*.txt
+exclude Makefile
+exclude .gitignore
+exclude .gitattributes
+exclude environment.yml
