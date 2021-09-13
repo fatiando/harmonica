@@ -9,17 +9,17 @@ import datetime
 import sphinx_gallery
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
-from harmonica.version import full_version
+import harmonica
 
 
 # Project information
 # -----------------------------------------------------------------------------
 project = "Harmonica"
 copyright = f"2018-{datetime.date.today().year}, The {project} Developers"
-if len(full_version.split("+")) > 1 or full_version == "unknown":
+if len(harmonica.__version__.split("+")) > 1 or harmonica.__version__ == "unknown":
     version = "dev"
 else:
-    version = full_version
+    version = harmonica.__version__
 
 # General configuration
 # -----------------------------------------------------------------------------

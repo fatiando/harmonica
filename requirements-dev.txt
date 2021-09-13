@@ -1,4 +1,5 @@
 # Development requirements
+setuptools_scm
 boule
 pyproj
 matplotlib
