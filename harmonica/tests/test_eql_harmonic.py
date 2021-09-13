@@ -130,41 +130,63 @@ def test_eql_harmonic_small_data_cartesian():
     npt.assert_allclose(true, profile.scalars, rtol=0.05)
 
 
-def test_eql_harmonic_build_points():
+@pytest.fixture(name="coordinates")
+def fixture_coordinates():
     """
-    Check if build_points method works as expected
+    Return a set of sample coordinates intended to be used in tests
     """
     region = (-3e3, -1e3, 5e3, 7e3)
     # Define a set of observation points with variable elevation coordinates
     easting, northing = vd.grid_coordinates(region=region, shape=(8, 8))
     upward = np.arange(64, dtype=float).reshape((8, 8))
     coordinates = (easting, northing, upward)
+    return coordinates
 
-    # Define a EQLHarmonic with relative depth
-    eql = EQLHarmonic(depth=1.5e3, depth_type="relative")
+
+@pytest.mark.parametrize(
+    "depth_type, upward_expected",
+    [
+        ("relative", np.arange(64, dtype=float).reshape((8, 8)) - 1.5e3),
+        ("constant", -1.5e3 * np.ones((8, 8))),
+    ],
+    ids=["relative", "constant"],
+)
+def test_eql_harmonic_build_points(
+    coordinates,
+    depth_type,
+    upward_expected,
+):
+    """
+    Check if build_points method works as expected
+    """
+    eql = EQLHarmonic(depth=1.5e3, depth_type=depth_type)
     points = eql._build_points(coordinates)
-    # Check output
-    expected_points = (easting, northing, upward - 1.5e3)
-    npt.assert_allclose(points, expected_points)
+    expected = (*coordinates[:2], upward_expected)
+    npt.assert_allclose(points, expected)
 
-    # Define a EQLHarmonic with constant depth
-    eql = EQLHarmonic(depth=1.5e3, depth_type="constant")
-    points = eql._build_points(coordinates)
-    # Check output
-    expected_points = (easting, northing, -1.5e3 * np.ones_like(easting))
-    npt.assert_allclose(points, expected_points)
 
-    # Define a EQLHarmonic passing the old relative_depth parameter
+def test_eql_harmonic_build_points_bacwkards(coordinates):
+    """
+    Check if the old relative_depth argument is well supported
+
+    This test is intended to check if backward compatibility is working
+    correctly. The ``relative_depth`` parameter will be deprecated on the next
+    major release.
+    """
+    depth = 4.5e3
+    expected_upward = coordinates[2] - depth
+    # Check if FutureWarning is raised after passing relative_depth
     with warnings.catch_warnings(record=True) as warn:
-        eql = EQLHarmonic(relative_depth=4.5e3)
+        eql = EQLHarmonic(relative_depth=depth)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, FutureWarning)
-    npt.assert_allclose(eql.depth, 4.5e3)
+    # Check if the `depth` and `depth_type` attributes are well fixed
+    npt.assert_allclose(eql.depth, depth)
     assert eql.depth_type == "relative"
+    # Check if location of sources are correct
     points = eql._build_points(coordinates)
-    # Check output
-    expected_points = (easting, northing, upward - 4.5e3)
-    npt.assert_allclose(points, expected_points)
+    expected = (*coordinates[:2], expected_upward)
+    npt.assert_allclose(points, expected)
 
 
 def test_eql_harmonic_invalid_depth_type():
