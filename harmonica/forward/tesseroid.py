@@ -131,12 +131,12 @@ def tesseroid_gravity(
         tesseroids = _check_tesseroids(tesseroids)
         _check_points_outside_tesseroids(coordinates, tesseroids)
     # Check if density are homogeneous or variable
-    density_func = None
     if callable(density):
         density_func = jit(nopython=True)(density)
         density = None
         tesseroids = density_based_discretization(tesseroids, density_func)
     else:
+        density_func = jit(nopython=True)(lambda r: r)
         density = np.atleast_1d(density).ravel()
         if not disable_checks and density.size != tesseroids.shape[0]:
             raise ValueError(
@@ -382,31 +382,21 @@ def jit_tesseroid_gravity(
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
                 if density is None:
-                    result[l] += gauss_legendre_quadrature(
-                        longitude_rad[l],
-                        cosphi[l],
-                        sinphi[l],
-                        radius[l],
-                        tesseroid,
-                        None,
-                        density_func,
-                        glq_nodes,
-                        glq_weights,
-                        kernel,
-                    )
+                    density_m = None
                 else:
-                    result[l] += gauss_legendre_quadrature(
-                        longitude_rad[l],
-                        cosphi[l],
-                        sinphi[l],
-                        radius[l],
-                        tesseroid,
-                        density[m],
-                        None,
-                        glq_nodes,
-                        glq_weights,
-                        kernel,
-                    )
+                    density_m = density[m]
+                result[l] += gauss_legendre_quadrature(
+                    longitude_rad[l],
+                    cosphi[l],
+                    sinphi[l],
+                    radius[l],
+                    tesseroid,
+                    density_m,
+                    density_func,
+                    glq_nodes,
+                    glq_weights,
+                    kernel,
+                )
 
 
 @jit(nopython=True)
