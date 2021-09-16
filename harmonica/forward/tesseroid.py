@@ -245,20 +245,18 @@ def maximum_absolute_diff(normalized_density, bottom, top):
     boundaries.
     """
 
-    def absolute_difference(radius):
+    def neg_absolute_difference(radius):
         """
-        Define absolute difference between normalized density and straight line
+        Define minus absolute diff between normalized density and straight line
         """
-        return np.abs(
+        return -np.abs(
             normalized_density(radius)
             - straight_line(radius, normalized_density, bottom, top)
         )
 
     # Use scipy.optimize.minimize_scalar for maximizing the absolute difference
     result = minimize_scalar(
-        lambda radius: -absolute_difference(
-            radius
-        ),  # put a minus to maximize the absolute_difference
+        neg_absolute_difference,
         bounds=[bottom, top],
         method="bounded",
     )
