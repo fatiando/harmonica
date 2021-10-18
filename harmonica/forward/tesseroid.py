@@ -7,7 +7,7 @@
 """
 Forward modelling for tesseroids
 """
-from numba import jit
+from numba import jit, prange
 import numpy as np
 from numpy.polynomial.legendre import leggauss
 
@@ -29,14 +29,11 @@ def tesseroid_gravity(
     tesseroids,
     density,
     field,
-    distance_size_ratii=None,
-    glq_degrees=GLQ_DEGREES,
-    stack_size=STACK_SIZE,
-    max_discretizations=MAX_DISCRETIZATIONS,
+    parallel=True,
     radial_adaptive_discretization=False,
     dtype=np.float64,
     disable_checks=False,
-):  # pylint: disable=too-many-locals, too-many-arguments
+):
     """
     Compute gravitational field of tesseroids on computation points.
 
@@ -70,35 +67,11 @@ def tesseroid_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
 
-    distance_size_ratio : dict or None (optional)
-        Dictionary containing distance-size ratii for each gravitational field
-        used on the adaptive discretization algorithm.
-        Values must be the available fields and keys should be the desired
-        distance-size ratio.
-        The greater the distance-size ratio, more discretizations will occur,
-        increasing the accuracy of the numerical approximation but also the
-        computation time.
-        If None, the default values of distance-size ratii will be used:
-        D = 1 for the potential and D = 2.5 for the gradient.
-        Default to None.
-    glq_degrees : tuple (optional)
-        List containing the GLQ degrees used on each direction:
-        ``glq_degree_longitude``, ``glq_degree_latitude``,
-        ``glq_degree_radius``.
-        The GLQ degree specifies how many point masses will be created along
-        each direction.
-        Increasing the GLQ degree will increase the accuracy of the numerical
-        approximation, but also the computation time.
-        Default ``[2, 2, 2]``.
-    stack_size : int (optional)
-        Size of the tesseroid stack used on the adaptive discretization
-        algorithm.
-        If the algorithm will perform too many splits, please increase the
-        stack size.
-    max_discretizations : int (optional)
-        Maximum number of splits made by the adaptive discretization algorithm.
-        If the algorithm will perform too many splits, please increase the
-        maximum number of splits.
+    parallel : bool (optional)
+        If True the computations will run in parallel using Numba built-in
+        parallelization. If False, the forward model will run on a single core.
+        Might be useful to disable parallelization if the forward model is run
+        by an already parallelized workflow. Default to True.
     radial_adaptive_discretization : bool (optional)
         If ``False``, the adaptive discretization algorithm will split the
         tesseroid only on the horizontal direction.
@@ -161,35 +134,21 @@ def tesseroid_gravity(
             )
         tesseroids = _check_tesseroids(tesseroids)
         _check_points_outside_tesseroids(coordinates, tesseroids)
-    # Get value of D (distance_size_ratio)
-    if distance_size_ratii is None:
-        distance_size_ratii = DISTANCE_SIZE_RATII
-    if field not in distance_size_ratii:
-        raise ValueError(
-            'Gravitational field "{}" not found on distance_size_ratii dictionary'.format(
-                field
-            )
-        )
-    distance_size_ratio = distance_size_ratii[field]
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
-    glq_nodes, glq_weights = glq_nodes_weights(glq_degrees)
-    # Initialize arrays to perform memory allocation only once
-    stack = np.empty((stack_size, 6), dtype=dtype)
-    small_tesseroids = np.empty((max_discretizations, 6), dtype=dtype)
+    glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
     # Compute gravitational field
-    jit_tesseroid_gravity(
+    dispatcher(parallel)(
         coordinates,
         tesseroids,
         density,
-        stack,
-        small_tesseroids,
         result,
-        distance_size_ratio,
+        DISTANCE_SIZE_RATII[field],
         radial_adaptive_discretization,
         glq_nodes,
         glq_weights,
         kernels[field],
+        dtype,
     )
     result *= GRAVITATIONAL_CONST
     # Convert to more convenient units
@@ -198,20 +157,29 @@ def tesseroid_gravity(
     return result.reshape(cast.shape)
 
 
-@jit(nopython=True)
+def dispatcher(parallel):
+    """
+    Return the parallelized or serialized forward modelling function
+    """
+    dispatchers = {
+        True: jit_tesseroid_gravity_parallel,
+        False: jit_tesseroid_gravity_serial,
+    }
+    return dispatchers[parallel]
+
+
 def jit_tesseroid_gravity(
     coordinates,
     tesseroids,
     density,
-    stack,
-    small_tesseroids,
     result,
     distance_size_ratio,
-    radial_discretization,
+    radial_adaptive_discretization,
     glq_nodes,
     glq_weights,
     kernel,
-):  # pylint: disable=too-many-locals,too-many-arguments,invalid-name
+    dtype,
+):  # pylint: disable=too-many-locals,invalid-name,not-an-iterable
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -245,15 +213,11 @@ def jit_tesseroid_gravity(
     small_tesseroids : 2d-array
         Empty array where smaller tesseroids created by adaptive discretization
         algorithm will be stored.
-    point_masses : 2d-array
-        Empty array where equivalent point masses will be stored.
-    weights : 1d-array
-        Empty array where the GLQ weight of each point mass will be stored.
     result : 1d-array
         Array where the gravitational effect of each tesseroid will be added.
     distance_size_ratio : float
         Value of the distance size ratio.
-    radial_discretization : bool
+    radial_adaptive_discretization : bool
         If ``False``, the adaptive discretization algorithm will split the
         tesseroid only on the horizontal direction.
         If ``True``, it will perform a three dimensional adaptive
@@ -264,6 +228,8 @@ def jit_tesseroid_gravity(
         List containing GLQ weights of the nodes.
     kernel : func
         Kernel function for the gravitational field of point masses.
+    dtype : data-type
+        Data type assigned to the resulting gravitational field.
     """
     # Get coordinates of the observation points
     # and precompute trigonometric functions
@@ -271,7 +237,12 @@ def jit_tesseroid_gravity(
     longitude_rad = np.radians(longitude)
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
-    for l in range(longitude.size):
+    # Loop over computation points
+    for l in prange(longitude.size):
+        # Initialize arrays to perform memory allocation only once
+        stack = np.empty((STACK_SIZE, 6), dtype=dtype)
+        small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
+        # Loop over tesseroids
         for m in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
@@ -280,7 +251,7 @@ def jit_tesseroid_gravity(
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
-                radial_discretization,
+                radial_adaptive_discretization,
             )
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
@@ -460,10 +431,10 @@ def _adaptive_discretization(
         If too many discretizations will take place, increase the
         ``stack_size``.
     small_tesseroids : 2d-array
-        Array with shape ``(6, max_discretizations)`` that will contain every
+        Array with shape ``(6, MAX_DISCRETIZATIONS)`` that will contain every
         small tesseroid produced by the adaptive discretization algorithm.
         If too many discretizations will take place, increase the
-        ``max_discretizations``.
+        ``MAX_DISCRETIZATIONS``.
     radial_discretization : bool (optional)
         If ``True`` the three dimensional adaptive discretization will be
         applied.
@@ -511,7 +482,7 @@ def _adaptive_discretization(
             if n_splits + 1 > small_tesseroids.shape[0]:
                 raise OverflowError(
                     "Exceeded maximum discretizations."
-                    + " Please increase the maximum_discretizations."
+                    + " Please increase the MAX_DISCRETIZATIONS."
                 )
             small_tesseroids[n_splits] = tesseroid
             n_splits += 1
@@ -781,3 +752,11 @@ def _longitude_continuity(tesseroids):
     east[tess_to_be_changed] = ((east[tess_to_be_changed] + 180) % 360) - 180
     west[tess_to_be_changed] = ((west[tess_to_be_changed] + 180) % 360) - 180
     return tesseroids
+
+
+# Define jitted versions of the forward modelling function
+# pylint: disable=invalid-name
+jit_tesseroid_gravity_serial = jit(nopython=True)(jit_tesseroid_gravity)
+jit_tesseroid_gravity_parallel = jit(nopython=True, parallel=True)(
+    jit_tesseroid_gravity
+)
