@@ -94,7 +94,7 @@ class EQLHarmonic(vdb.BaseGridder):
     depth_type : str
         Strategy used for setting the depth of the point sources.
         The two available strategies are ``"constant"`` and ``"relative"``.
-        This parameter is ignored if *points* is *points* is specified.
+        This parameter is ignored if *points* is specified.
         Defaults to ``"relative"``.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
