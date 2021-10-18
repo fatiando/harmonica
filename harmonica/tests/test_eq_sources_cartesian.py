@@ -43,7 +43,7 @@ def test_pop_extra_coords():
 
 
 @require_numba
-def test_eql_harmonic_cartesian():
+def test_equivalent_sources_cartesian():
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
@@ -84,7 +84,7 @@ def test_eql_harmonic_cartesian():
     npt.assert_allclose(true, profile.scalars, rtol=1e-3)
 
 
-def test_eql_harmonic_small_data_cartesian():
+def test_equivalent_sources_small_data_cartesian():
     """
     Check predictions against synthetic data using few data points for speed
     Use Cartesian coordinates.
@@ -151,7 +151,7 @@ def fixture_coordinates():
     ],
     ids=["relative", "constant"],
 )
-def test_eql_harmonic_build_points(
+def test_equivalent_sources_build_points(
     coordinates,
     depth_type,
     upward_expected,
@@ -165,7 +165,7 @@ def test_eql_harmonic_build_points(
     npt.assert_allclose(points, expected)
 
 
-def test_eql_harmonic_build_points_bacwkards(coordinates):
+def test_equivalent_sources_build_points_bacwkards(coordinates):
     """
     Check if the old relative_depth argument is well supported
 
@@ -189,7 +189,7 @@ def test_eql_harmonic_build_points_bacwkards(coordinates):
     npt.assert_allclose(points, expected)
 
 
-def test_eql_harmonic_invalid_depth_type():
+def test_equivalent_sources_invalid_depth_type():
     """
     Check if ValueError is raised if invalid depth_type is passed
     """
@@ -197,7 +197,7 @@ def test_eql_harmonic_invalid_depth_type():
         EquivalentSources(depth=300, depth_type="blabla")
 
 
-def test_eql_harmonic_points_depth():
+def test_equivalent_sources_points_depth():
     """
     Check if the points coordinates are properly defined by the fit method
     """
@@ -237,7 +237,7 @@ def test_eql_harmonic_points_depth():
     assert points is None
 
 
-def test_eql_harmonic_custom_points_cartesian():
+def test_equivalent_sources_custom_points_cartesian():
     """
     Check that passing in custom points works and actually uses the points
     Use Cartesian coordinates.
@@ -263,7 +263,7 @@ def test_eql_harmonic_custom_points_cartesian():
     npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
 
 
-def test_eql_harmonic_scatter_not_implemented():
+def test_equivalent_sources_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
@@ -273,7 +273,7 @@ def test_eql_harmonic_scatter_not_implemented():
 
 
 @pytest.mark.use_numba
-def test_eql_harmonic_jacobian_cartesian():
+def test_equivalent_sources_jacobian_cartesian():
     """
     Test Jacobian matrix under symmetric system of point sources.
     Use Cartesian coordinates.
@@ -301,7 +301,7 @@ def test_eql_harmonic_jacobian_cartesian():
 
 
 @require_numba
-def test_eql_harmonic_cartesian_parallel():
+def test_equivalent_sources_cartesian_parallel():
     """
     Check predictions when parallel is enabled and disabled
     """

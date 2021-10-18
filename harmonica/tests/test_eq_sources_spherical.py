@@ -17,10 +17,10 @@ from .utils import require_numba
 
 
 @require_numba
-def test_eql_harmonic_spherical():
+def test_equivalent_sources_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
-    a denser grid. Use spherical coordinates.
+    a denser grid.
     """
     region = (-70, -60, -40, -30)
     radius = 6400e3
@@ -58,7 +58,7 @@ def test_eql_harmonic_spherical():
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
 
-def test_eql_harmonic_small_data_spherical():
+def test_equivalent_sources_small_data_spherical():
     """
     Check predictions against synthetic data using few data points for speed
     Use spherical coordinates.
@@ -102,7 +102,7 @@ def test_eql_harmonic_small_data_spherical():
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
 
 
-def test_eql_harmonic_custom_points_spherical():
+def test_equivalent_sources_custom_points_spherical():
     """
     Check that passing in custom points works and actually uses the points
     Use spherical coordinates.
@@ -135,7 +135,7 @@ def test_eql_harmonic_custom_points_spherical():
     npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
 
 
-def test_eql_harmonic_spherical_scatter_not_implemented():
+def test_equivalent_sources_spherical_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
@@ -144,7 +144,7 @@ def test_eql_harmonic_spherical_scatter_not_implemented():
         eql.scatter()
 
 
-def test_eql_harmonic_spherical_profile_not_implemented():
+def test_equivalent_sources_spherical_profile_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
@@ -153,7 +153,7 @@ def test_eql_harmonic_spherical_profile_not_implemented():
         eql.profile(point1=(1, 1), point2=(2, 2), size=3)
 
 
-def test_eql_harmonic_spherical_no_projection():
+def test_equivalent_sources_spherical_no_projection():
     """
     Check if projection is not a valid argument of grid method
     """
@@ -163,7 +163,7 @@ def test_eql_harmonic_spherical_no_projection():
 
 
 @require_numba
-def test_eql_harmonic_spherical_parallel():
+def test_equivalent_sources_spherical_parallel():
     """
     Check predictions when parallel is enabled and disabled
     """
