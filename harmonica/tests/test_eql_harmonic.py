@@ -16,7 +16,7 @@ import verde as vd
 import verde.base as vdb
 
 from .. import EquivalentSources, EQLHarmonicSpherical, point_mass_gravity
-from ..equivalent_sources.harmonic import greens_func_cartesian
+from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import (
     jacobian_numba_serial,
     pop_extra_coords,
