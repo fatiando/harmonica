@@ -506,6 +506,38 @@ class EquivalentSources(vdb.BaseGridder):
         return table
 
 
+class EQLHarmonic(EquivalentSources):
+    """
+    DEPRECATED, use ``harmonica.EquivalentSources`` instead.
+
+    This class exists to support backward compatibility until next release.
+    """
+
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        depth=500,
+        depth_type="relative",
+        parallel=True,
+        **kwargs,
+    ):
+        warnings.warn(
+            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
+            + "and will be deprecated on the next release, "
+            + "please use 'EquivalentSources' instead.",
+            FutureWarning,
+        )
+        super().__init__(
+            damping=damping,
+            points=points,
+            depth=depth,
+            depth_type=depth_type,
+            parallel=parallel,
+            **kwargs,
+        )
+
+
 @jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
