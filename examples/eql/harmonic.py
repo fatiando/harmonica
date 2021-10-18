@@ -56,7 +56,7 @@ coordinates = (easting, northing, data.altitude_m)
 # Create the equivalent layer. We'll use the default point source configuration
 # at a relative depth beneath each observation point.
 # The damping parameter helps smooth the predicted data and ensure stability.
-eql = hm.EQLHarmonic(depth=1000, damping=1)
+eql = hm.EquivalentSources(depth=1000, damping=1)
 
 # Fit the layer coefficients to the observed magnetic anomaly.
 eql.fit(coordinates, data.total_field_anomaly_nt)

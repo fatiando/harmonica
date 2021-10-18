@@ -15,7 +15,7 @@ import numpy.testing as npt
 import verde as vd
 import verde.base as vdb
 
-from .. import EQLHarmonic, EQLHarmonicSpherical, point_mass_gravity
+from .. import EquivalentSources, EQLHarmonicSpherical, point_mass_gravity
 from ..equivalent_layer.harmonic import greens_func_cartesian
 from ..equivalent_layer.utils import (
     jacobian_numba_serial,
@@ -58,7 +58,7 @@ def test_eql_harmonic_cartesian():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic()
+    eql = EquivalentSources()
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -99,7 +99,7 @@ def test_eql_harmonic_small_data_cartesian():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic(depth=500)
+    eql = EquivalentSources(depth=500)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -159,7 +159,7 @@ def test_eql_harmonic_build_points(
     """
     Check if build_points method works as expected
     """
-    eql = EQLHarmonic(depth=1.5e3, depth_type=depth_type)
+    eql = EquivalentSources(depth=1.5e3, depth_type=depth_type)
     points = eql._build_points(coordinates)
     expected = (*coordinates[:2], upward_expected)
     npt.assert_allclose(points, expected)
@@ -177,7 +177,7 @@ def test_eql_harmonic_build_points_bacwkards(coordinates):
     expected_upward = coordinates[2] - depth
     # Check if FutureWarning is raised after passing relative_depth
     with warnings.catch_warnings(record=True) as warn:
-        eql = EQLHarmonic(relative_depth=depth)
+        eql = EquivalentSources(relative_depth=depth)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, FutureWarning)
     # Check if the `depth` and `depth_type` attributes are well fixed
@@ -194,7 +194,7 @@ def test_eql_harmonic_invalid_depth_type():
     Check if ValueError is raised if invalid depth_type is passed
     """
     with pytest.raises(ValueError):
-        EQLHarmonic(depth=300, depth_type="blabla")
+        EquivalentSources(depth=300, depth_type="blabla")
 
 
 def test_eql_harmonic_points_depth():
@@ -213,7 +213,7 @@ def test_eql_harmonic_points_depth():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # Test with constant depth
-    eql = EQLHarmonic(depth=1.3e3, depth_type="constant")
+    eql = EquivalentSources(depth=1.3e3, depth_type="constant")
     eql.fit(coordinates, data)
     expected_points = vdb.n_1d_arrays(
         (easting, northing, -1.3e3 * np.ones_like(easting)), n=3
@@ -221,13 +221,15 @@ def test_eql_harmonic_points_depth():
     npt.assert_allclose(expected_points, eql.points_)
 
     # Test with relative depth
-    eql = EQLHarmonic(depth=1.3e3, depth_type="relative")
+    eql = EquivalentSources(depth=1.3e3, depth_type="relative")
     eql.fit(coordinates, data)
     expected_points = vdb.n_1d_arrays((easting, northing, upward - 1.3e3), n=3)
     npt.assert_allclose(expected_points, eql.points_)
 
     # Test with invalid depth_type
-    eql = EQLHarmonic(depth=300, depth_type="constant")  # init with valid depth_type
+    eql = EquivalentSources(
+        depth=300, depth_type="constant"
+    )  # init with valid depth_type
     eql.depth_type = "blabla"  # change depth_type afterwards
     points = eql._build_points(
         vd.grid_coordinates(region=(-1, 1, -1, 1), spacing=0.25, extra_coords=1)
@@ -254,7 +256,7 @@ def test_eql_harmonic_custom_points_cartesian():
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
     )
-    eql = EQLHarmonic(points=points_custom)
+    eql = EquivalentSources(points=points_custom)
     eql.fit(coordinates, data)
 
     # Check that the proper source locations were set
@@ -265,7 +267,7 @@ def test_eql_harmonic_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EQLHarmonic()
+    eql = EquivalentSources()
     with pytest.raises(NotImplementedError):
         eql.scatter()
 
@@ -313,9 +315,9 @@ def test_eql_harmonic_cartesian_parallel():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The predictions should be equal whether are run in parallel or in serial
-    eql_serial = EQLHarmonic(parallel=False)
+    eql_serial = EquivalentSources(parallel=False)
     eql_serial.fit(coordinates, data)
-    eql_parallel = EQLHarmonic(parallel=True)
+    eql_parallel = EquivalentSources(parallel=True)
     eql_parallel.fit(coordinates, data)
 
     upward = 0
