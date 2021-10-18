@@ -15,7 +15,7 @@ import numpy.testing as npt
 import verde as vd
 import verde.base as vdb
 
-from .. import EquivalentSources, EQLHarmonicSpherical, point_mass_gravity
+from .. import EquivalentSources, EquivalentSourcesSpherical, point_mass_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import (
     jacobian_numba_serial,
@@ -350,7 +350,7 @@ def test_eql_harmonic_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonicSpherical(relative_depth=500e3)
+    eql = EquivalentSourcesSpherical(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -389,7 +389,7 @@ def test_eql_harmonic_small_data_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonicSpherical(relative_depth=500e3)
+    eql = EquivalentSourcesSpherical(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -439,7 +439,7 @@ def test_eql_harmonic_custom_points_spherical():
             region=region, shape=(3, 3), extra_coords=radius - 500e3
         )
     )
-    eql = EQLHarmonicSpherical(points=points_custom)
+    eql = EquivalentSourcesSpherical(points=points_custom)
     eql.fit(coordinates, data)
 
     # Check that the proper source locations were set
@@ -450,7 +450,7 @@ def test_eql_harmonic_spherical_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EQLHarmonicSpherical()
+    eql = EquivalentSourcesSpherical()
     with pytest.raises(NotImplementedError):
         eql.scatter()
 
@@ -459,7 +459,7 @@ def test_eql_harmonic_spherical_profile_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EQLHarmonicSpherical()
+    eql = EquivalentSourcesSpherical()
     with pytest.raises(NotImplementedError):
         eql.profile(point1=(1, 1), point2=(2, 2), size=3)
 
@@ -468,7 +468,7 @@ def test_eql_harmonic_spherical_no_projection():
     """
     Check if projection is not a valid argument of grid method
     """
-    eql = EQLHarmonicSpherical()
+    eql = EquivalentSourcesSpherical()
     with pytest.raises(TypeError):
         eql.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
 
@@ -496,9 +496,13 @@ def test_eql_harmonic_spherical_parallel():
 
     # The predictions should be equal whether are run in parallel or in serial
     relative_depth = 500e3
-    eql_serial = EQLHarmonicSpherical(relative_depth=relative_depth, parallel=False)
+    eql_serial = EquivalentSourcesSpherical(
+        relative_depth=relative_depth, parallel=False
+    )
     eql_serial.fit(coordinates, data)
-    eql_parallel = EQLHarmonicSpherical(relative_depth=relative_depth, parallel=True)
+    eql_parallel = EquivalentSourcesSpherical(
+        relative_depth=relative_depth, parallel=True
+    )
     eql_parallel.fit(coordinates, data)
 
     upward = radius

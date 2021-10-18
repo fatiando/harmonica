@@ -48,7 +48,7 @@ gravity_disturbance = gravity_data - gamma
 coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
 
 # Create the equivalent layer
-eql = hm.EQLHarmonicSpherical(damping=1e-3, relative_depth=10000)
+eql = hm.EquivalentSourcesSpherical(damping=1e-3, relative_depth=10000)
 
 # Fit the layer coefficients to the observed magnetic anomaly
 eql.fit(coordinates, gravity_disturbance)
