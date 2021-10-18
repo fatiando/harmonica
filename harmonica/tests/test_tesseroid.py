@@ -602,7 +602,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy
+        # Assert analytical and numerical solution are below the accuracy
         # threshold
         npt.assert_allclose(
             analytical[field],
@@ -646,7 +646,7 @@ def test_spherical_shell_three_dim_adaptive_discret(
             tesseroids.append([w, e, s, n, bottom, top])
     # Get analytical solutions
     analytical = spherical_shell_analytical(top, bottom, density, radius)
-    # Assert analytical and numerical solution are bellow the accuracy
+    # Assert analytical and numerical solution are below the accuracy
     # threshold
     npt.assert_allclose(
         analytical[field],

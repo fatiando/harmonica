@@ -358,7 +358,7 @@ def test_g_z_symmetry():
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
     masses = [2670]
-    # Define a pair of computation points above and bellow the point mass
+    # Define a pair of computation points above and below the point mass
     distance = 3.3
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
@@ -418,7 +418,7 @@ def test_g_z_sign():
     point_mass = [-10, 100.2, -300.7]
     mass = [2670]
     # Define three computation points located above, at the same depth and
-    # bellow the point mass
+    # below the point mass
     easting = np.zeros(3)
     northing = np.zeros(3) + 52.3
     upward = np.array([100.11, -300.7, -400])
