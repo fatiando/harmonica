@@ -93,9 +93,6 @@ def prism_gravity(
     >>> prism = [-34, 5, -18, 14, -345, -146]
     >>> # Set prism density to 2670 kg/m³
     >>> density = 2670
-    >>> # Define a computation point above its center, at 30 meters above the
-    >>> # surface
-    >>> coordinates = (130, 75, 30)
     >>> # Define three computation points along the easting axe at 30m above
     >>> # the surface
     >>> coordinates = ([-40, 0, 40], [0, 0, 0], [30, 30, 30])
