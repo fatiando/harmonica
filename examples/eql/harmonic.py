@@ -20,7 +20,7 @@ coefficients of a set of point sources (the equivalent layer) that fit the
 observed data. The fitted layer can then be used to predict data values
 wherever we want, like on a grid at a certain altitude. The sources for
 :class:`~harmonica.EQLHarmonic` in particular are placed one beneath each data
-point at a constant relative depth from the elevation of the data point
+point at a relative depth from the elevation of the data point
 following [Cooper2000]_.
 
 The advantage of using an equivalent layer is that it takes into account the 3D
@@ -54,9 +54,9 @@ easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
 
 # Create the equivalent layer. We'll use the default point source configuration
-# at a constant relative depth beneath each observation point. The damping
-# parameter helps smooth the predicted data and ensure stability.
-eql = hm.EQLHarmonic(relative_depth=1000, damping=1)
+# at a relative depth beneath each observation point.
+# The damping parameter helps smooth the predicted data and ensure stability.
+eql = hm.EQLHarmonic(depth=1000, damping=1)
 
 # Fit the layer coefficients to the observed magnetic anomaly.
 eql.fit(coordinates, data.total_field_anomaly_nt)
