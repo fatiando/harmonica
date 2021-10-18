@@ -7,6 +7,7 @@
 """
 Equivalent sources for generic harmonic functions in spherical coordinates
 """
+import warnings
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -245,7 +246,7 @@ class EquivalentSourcesSpherical(vdb.BaseGridder):
         spacing=None,
         dims=None,
         data_names=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
@@ -323,7 +324,7 @@ class EquivalentSourcesSpherical(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -342,7 +343,7 @@ class EquivalentSourcesSpherical(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -352,6 +353,34 @@ class EquivalentSourcesSpherical(vdb.BaseGridder):
 
         """
         raise NotImplementedError
+
+
+class EQLHarmonicSpherical(EquivalentSourcesSpherical):
+    """
+    DEPRECATED, use ``harmonica.EquivalentSourcesSpherical`` instead.
+
+    This class exists to support backward compatibility until next release.
+    """
+
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        relative_depth=500,
+        parallel=True,
+    ):
+        warnings.warn(
+            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
+            + "and will be deprecated on the next release, "
+            + "please use 'EquivalentSources' instead.",
+            FutureWarning,
+        )
+        super().__init__(
+            damping=damping,
+            points=points,
+            relative_depth=relative_depth,
+            parallel=parallel,
+        )
 
 
 @jit(nopython=True)

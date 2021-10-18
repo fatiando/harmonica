@@ -8,11 +8,13 @@
 """
 Test the EquivalentSourcesSpherical gridder
 """
+import warnings
 import pytest
 import numpy.testing as npt
+import xarray.testing as xrt
 import verde as vd
 
-from .. import EquivalentSourcesSpherical, point_mass_gravity
+from .. import EquivalentSourcesSpherical, EQLHarmonicSpherical, point_mass_gravity
 from .utils import require_numba
 
 
@@ -199,3 +201,44 @@ def test_equivalent_sources_spherical_parallel():
     grid_serial = eql_serial.grid(upward, shape=shape, region=region)
     grid_parallel = eql_parallel.grid(upward, shape=shape, region=region)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
+
+
+def test_backward_eqlharmonicspherical():
+    """
+    Check backward compatibility with to-be-deprecated EQLHarmonicSpherical
+
+    Check if FutureWarning is raised on initialization
+    """
+    region = (-70, -60, -40, -30)
+    radius = 6400e3
+    # Build synthetic point masses
+    points = vd.grid_coordinates(
+        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    )
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
+    # Get synthetic data
+    data = point_mass_gravity(
+        coordinates, points, masses, field="g_z", coordinate_system="spherical"
+    )
+
+    # Fit EquivalentSourcesSpherical instance
+    eql = EquivalentSourcesSpherical(relative_depth=1.3e3)
+    eql.fit(coordinates, data)
+
+    # Fit deprecated EQLHarmonicSpherical instance
+    # (check if FutureWarning is raised)
+    with warnings.catch_warnings(record=True) as warn:
+        eql_harmonic = EQLHarmonicSpherical(relative_depth=1.3e3)
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, FutureWarning)
+    eql_harmonic.fit(coordinates, data)
+
+    # Check if both gridders are equivalent
+    npt.assert_allclose(eql.points_, eql_harmonic.points_)
+    shape = (8, 8)
+    xrt.assert_allclose(
+        eql.grid(upward=6405e3, shape=shape, region=region),
+        eql_harmonic.grid(upward=6405e3, shape=shape, region=region),
+    )

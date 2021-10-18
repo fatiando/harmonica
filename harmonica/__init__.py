@@ -17,7 +17,10 @@ from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
 from .equivalent_sources.cartesian import EquivalentSources, EQLHarmonic
-from .equivalent_sources.spherical import EquivalentSourcesSpherical
+from .equivalent_sources.spherical import (
+    EquivalentSourcesSpherical,
+    EQLHarmonicSpherical,
+)
 
 # This file is generated automatically by setuptools_scm
 from . import _version
