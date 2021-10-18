@@ -4,6 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+# pylint: disable=protected-access
 """
 Test the EQLHarmonic gridder
 """
@@ -98,7 +99,7 @@ def test_eql_harmonic_small_data_cartesian():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EQLHarmonic(relative_depth=500)
+    eql = EQLHarmonic(depth=500)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -127,6 +128,111 @@ def test_eql_harmonic_small_data_cartesian():
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=0.05)
+
+
+@pytest.fixture(name="coordinates")
+def fixture_coordinates():
+    """
+    Return a set of sample coordinates intended to be used in tests
+    """
+    region = (-3e3, -1e3, 5e3, 7e3)
+    # Define a set of observation points with variable elevation coordinates
+    easting, northing = vd.grid_coordinates(region=region, shape=(8, 8))
+    upward = np.arange(64, dtype=float).reshape((8, 8))
+    coordinates = (easting, northing, upward)
+    return coordinates
+
+
+@pytest.mark.parametrize(
+    "depth_type, upward_expected",
+    [
+        ("relative", np.arange(64, dtype=float).reshape((8, 8)) - 1.5e3),
+        ("constant", -1.5e3 * np.ones((8, 8))),
+    ],
+    ids=["relative", "constant"],
+)
+def test_eql_harmonic_build_points(
+    coordinates,
+    depth_type,
+    upward_expected,
+):
+    """
+    Check if build_points method works as expected
+    """
+    eql = EQLHarmonic(depth=1.5e3, depth_type=depth_type)
+    points = eql._build_points(coordinates)
+    expected = (*coordinates[:2], upward_expected)
+    npt.assert_allclose(points, expected)
+
+
+def test_eql_harmonic_build_points_bacwkards(coordinates):
+    """
+    Check if the old relative_depth argument is well supported
+
+    This test is intended to check if backward compatibility is working
+    correctly. The ``relative_depth`` parameter will be deprecated on the next
+    major release.
+    """
+    depth = 4.5e3
+    expected_upward = coordinates[2] - depth
+    # Check if FutureWarning is raised after passing relative_depth
+    with warnings.catch_warnings(record=True) as warn:
+        eql = EQLHarmonic(relative_depth=depth)
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, FutureWarning)
+    # Check if the `depth` and `depth_type` attributes are well fixed
+    npt.assert_allclose(eql.depth, depth)
+    assert eql.depth_type == "relative"
+    # Check if location of sources are correct
+    points = eql._build_points(coordinates)
+    expected = (*coordinates[:2], expected_upward)
+    npt.assert_allclose(points, expected)
+
+
+def test_eql_harmonic_invalid_depth_type():
+    """
+    Check if ValueError is raised if invalid depth_type is passed
+    """
+    with pytest.raises(ValueError):
+        EQLHarmonic(depth=300, depth_type="blabla")
+
+
+def test_eql_harmonic_points_depth():
+    """
+    Check if the points coordinates are properly defined by the fit method
+    """
+    region = (-3e3, -1e3, 5e3, 7e3)
+    # Build synthetic point masses
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points with variable elevation coordinates
+    easting, northing = vd.grid_coordinates(region=region, shape=(5, 5))
+    upward = np.arange(25, dtype=float).reshape((5, 5))
+    coordinates = (easting, northing, upward)
+    # Get synthetic data
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+
+    # Test with constant depth
+    eql = EQLHarmonic(depth=1.3e3, depth_type="constant")
+    eql.fit(coordinates, data)
+    expected_points = vdb.n_1d_arrays(
+        (easting, northing, -1.3e3 * np.ones_like(easting)), n=3
+    )
+    npt.assert_allclose(expected_points, eql.points_)
+
+    # Test with relative depth
+    eql = EQLHarmonic(depth=1.3e3, depth_type="relative")
+    eql.fit(coordinates, data)
+    expected_points = vdb.n_1d_arrays((easting, northing, upward - 1.3e3), n=3)
+    npt.assert_allclose(expected_points, eql.points_)
+
+    # Test with invalid depth_type
+    eql = EQLHarmonic(depth=300, depth_type="constant")  # init with valid depth_type
+    eql.depth_type = "blabla"  # change depth_type afterwards
+    points = eql._build_points(
+        vd.grid_coordinates(region=(-1, 1, -1, 1), spacing=0.25, extra_coords=1)
+    )
+    assert points is None
 
 
 def test_eql_harmonic_custom_points_cartesian():
