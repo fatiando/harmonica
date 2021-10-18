@@ -588,7 +588,7 @@ def test_spherical_shell_two_dim_adaptive_discret():  # pylint: disable=too-many
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy
+        # Assert analytical and numerical solution are below the accuracy
         # threshold
         for field in analytical:
             npt.assert_allclose(
@@ -632,7 +632,7 @@ def test_spherical_shell_three_dim_adaptive_discret():  # pylint: disable=too-ma
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
-        # Assert analytical and numerical solution are bellow the accuracy
+        # Assert analytical and numerical solution are below the accuracy
         # threshold
         for field in analytical:
             npt.assert_allclose(

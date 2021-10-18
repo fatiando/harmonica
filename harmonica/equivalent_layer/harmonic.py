@@ -71,8 +71,8 @@ class EQLHarmonic(vdb.BaseGridder):
         List containing the coordinates of the point sources used as the
         equivalent layer. Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
-        If None, will place one point source bellow each observation point at
-        a fixed relative depth bellow the observation point [Cooper2000]_.
+        If None, will place one point source below each observation point at
+        a fixed relative depth below the observation point [Cooper2000]_.
         Defaults to None.
     relative_depth : float
         Relative depth at which the point sources are placed beneath the
