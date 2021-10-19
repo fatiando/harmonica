@@ -137,7 +137,7 @@ def test_equivalent_sources_custom_points_spherical():
     npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
 
 
-def test_equivalent_sources_spherical_scatter_not_implemented():
+def test_equivalent_sources_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
@@ -146,7 +146,7 @@ def test_equivalent_sources_spherical_scatter_not_implemented():
         eql.scatter()
 
 
-def test_equivalent_sources_spherical_profile_not_implemented():
+def test_equivalent_sources_profile_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
