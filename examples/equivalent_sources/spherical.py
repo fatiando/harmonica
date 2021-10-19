@@ -13,10 +13,10 @@ processing magnetic or gravity data on large regions. In these cases,
 projecting the data may introduce errors due to the distortions caused by the
 projection.
 
-:class:`harmonica.EQLHarmonicSpherical` implements the equivalent layer
+:class:`harmonica.EquivalentSourcesSph` implements the equivalent sources
 technique in spherical coordinates. It has the same advantages as the Cartesian
-equivalent layer (:class:`harmonica.EQLHarmonic`) while taking into account the
-curvature of the Earth.
+equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
+account the curvature of the Earth.
 """
 import numpy as np
 import cartopy.crs as ccrs
@@ -47,23 +47,23 @@ gravity_disturbance = gravity_data - gamma
 # spherical (longitude, spherical_latitude, radius).
 coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
 
-# Create the equivalent layer
-eql = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
+# Create the equivalent sources
+eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
 
-# Fit the layer coefficients to the observed magnetic anomaly
-eql.fit(coordinates, gravity_disturbance)
+# Fit the sources coefficients to the observed magnetic anomaly
+eqs.fit(coordinates, gravity_disturbance)
 
 # Evaluate the data fit by calculating an R² score against the observed data.
-# This is a measure of how well layer the fits the data NOT how good the
+# This is a measure of how well the sources fit the data, NOT how good the
 # interpolation will be.
-print("R² score:", eql.score(coordinates, gravity_disturbance))
+print("R² score:", eqs.score(coordinates, gravity_disturbance))
 
 # Interpolate data on a regular grid with 0.2 degrees spacing. The
 # interpolation requires the radius of the grid points (upward coordinate). By
 # passing in the maximum radius of the data, we're effectively
 # upward-continuing the data. The grid will be defined in spherical
 # coordinates.
-grid = eql.grid(
+grid = eqs.grid(
     upward=coordinates[-1].max(),
     spacing=0.2,
     data_names=["gravity_disturbance"],
