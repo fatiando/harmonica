@@ -6,7 +6,7 @@
 #
 # pylint: disable=protected-access
 """
-Test the EquivalentSourcesSpherical gridder
+Test the EquivalentSourcesSph gridder
 """
 import warnings
 import pytest
@@ -201,7 +201,7 @@ def test_equivalent_sources_spherical_parallel():
 
 def test_backward_eqlharmonicspherical():
     """
-    Check backward compatibility with to-be-deprecated EQLHarmonicSpherical
+    Check backward compatibility with to-be-deprecated EQLHarmonicSph
 
     Check if FutureWarning is raised on initialization
     """
@@ -219,7 +219,7 @@ def test_backward_eqlharmonicspherical():
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 
-    # Fit EquivalentSourcesSpherical instance
+    # Fit EquivalentSourcesSph instance
     eql = EquivalentSourcesSph(relative_depth=1.3e3)
     eql.fit(coordinates, data)
 

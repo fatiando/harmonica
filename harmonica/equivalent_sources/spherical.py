@@ -98,7 +98,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
+        :meth:`~harmonica.EQLHarmonicSph.grid` method.
     """
 
     # Set the default dimension names for generated outputs
@@ -357,7 +357,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
 class EQLHarmonicSpherical(EquivalentSourcesSph):
     """
-    DEPRECATED, use ``harmonica.EquivalentSourcesSpherical`` instead.
+    DEPRECATED, use ``harmonica.EquivalentSourcesSph`` instead.
 
     This class exists to support backward compatibility until next release.
     """
