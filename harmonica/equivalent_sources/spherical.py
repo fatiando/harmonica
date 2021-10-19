@@ -371,7 +371,7 @@ class EQLHarmonicSpherical(EquivalentSourcesSpherical):
     ):
         warnings.warn(
             "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
-            + "and will be deprecated on the next release, "
+            + "and will be removed on the next release, "
             + "please use 'EquivalentSources' instead.",
             FutureWarning,
         )
