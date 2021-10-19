@@ -19,9 +19,10 @@ Both tasks can be done simultaneously through an *equivalent sources*
 :class:`harmonica.EquivalentSources` to estimate the coefficients of a set of
 point sources that fit the observed data. The fitted sources can then be used
 to predict data values wherever we want, like on a grid at a certain altitude.
-The sources for :class:`~harmonica.EquivalentSources` in particular are placed
+By default, the sources for :class:`~harmonica.EquivalentSources` are placed
 one beneath each data point at a relative depth from the elevation of the data
-point following [Cooper2000]_.
+point following [Cooper2000]_. This behaviour can be changed throught the
+`depth_type` optional argument.
 
 The advantage of using equivalent sources is that it takes into account the 3D
 nature of the observations, not just their horizontal positions. It also allows
