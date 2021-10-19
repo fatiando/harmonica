@@ -15,13 +15,13 @@ Upward-continuation is also a routine task for smoothing, noise attenuation,
 source separation, etc.
 
 Both tasks can be done simultaneously through an *equivalent sources*
-[Dampney1969]_. We will use :class:`harmonica.EquivalentSources` to estimate
-the coefficients of a set of point sources that fit the observed data. The
-fitted sources can then be used to predict data values wherever we want, like
-on a grid at a certain altitude. The sources for
-:class:`~harmonica.EquivalentSources` in particular are placed one beneath each
-data point at a relative depth from the elevation of the data point following
-[Cooper2000]_.
+[Dampney1969]_ (a.k.a *equivalent layer*). We will use
+:class:`harmonica.EquivalentSources` to estimate the coefficients of a set of
+point sources that fit the observed data. The fitted sources can then be used
+to predict data values wherever we want, like on a grid at a certain altitude.
+The sources for :class:`~harmonica.EquivalentSources` in particular are placed
+one beneath each data point at a relative depth from the elevation of the data
+point following [Cooper2000]_.
 
 The advantage of using equivalent sources is that it takes into account the 3D
 nature of the observations, not just their horizontal positions. It also allows
