@@ -14,16 +14,17 @@ interpolate these data points onto a regular grid at a constant altitude.
 Upward-continuation is also a routine task for smoothing, noise attenuation,
 source separation, etc.
 
-Both tasks can be done simultaneously through an *equivalent layer*
-[Dampney1969]_. We will use :class:`harmonica.EQLHarmonic` to estimate the
-coefficients of a set of point sources (the equivalent layer) that fit the
-observed data. The fitted layer can then be used to predict data values
-wherever we want, like on a grid at a certain altitude. The sources for
-:class:`~harmonica.EQLHarmonic` in particular are placed one beneath each data
-point at a relative depth from the elevation of the data point
-following [Cooper2000]_.
+Both tasks can be done simultaneously through an *equivalent sources*
+[Dampney1969]_ (a.k.a *equivalent layer*). We will use
+:class:`harmonica.EquivalentSources` to estimate the coefficients of a set of
+point sources that fit the observed data. The fitted sources can then be used
+to predict data values wherever we want, like on a grid at a certain altitude.
+By default, the sources for :class:`~harmonica.EquivalentSources` are placed
+one beneath each data point at a relative depth from the elevation of the data
+point following [Cooper2000]_. This behaviour can be changed throught the
+`depth_type` optional argument.
 
-The advantage of using an equivalent layer is that it takes into account the 3D
+The advantage of using equivalent sources is that it takes into account the 3D
 nature of the observations, not just their horizontal positions. It also allows
 data uncertainty to be taken into account and noise to be suppressed though the
 least-squares fitting process. The main disadvantage is the increased
@@ -53,24 +54,25 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
 
-# Create the equivalent layer. We'll use the default point source configuration
-# at a relative depth beneath each observation point.
+# Create the equivalent sources.
+# We'll use the default point source configuration at a relative depth beneath
+# each observation point.
 # The damping parameter helps smooth the predicted data and ensure stability.
-eql = hm.EQLHarmonic(depth=1000, damping=1)
+eqs = hm.EquivalentSources(depth=1000, damping=1)
 
-# Fit the layer coefficients to the observed magnetic anomaly.
-eql.fit(coordinates, data.total_field_anomaly_nt)
+# Fit the sources coefficients to the observed magnetic anomaly.
+eqs.fit(coordinates, data.total_field_anomaly_nt)
 
 # Evaluate the data fit by calculating an R² score against the observed data.
-# This is a measure of how well layer the fits the data NOT how good the
+# This is a measure of how well the sources fit the data, NOT how good the
 # interpolation will be.
-print("R² score:", eql.score(coordinates, data.total_field_anomaly_nt))
+print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
 
 # Interpolate data on a regular grid with 500 m spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1500 m, we're effectively upward-continuing the data (mean flight height is
 # 500 m).
-grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
+grid = eqs.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata
 print("\nGenerated grid:\n", grid)
