@@ -25,24 +25,25 @@ New features:
 
 Maintenance:
 
-- Generate version string on _version.py on build (`#237 <https://github.com/fatiando/harmonica/pull/237>`__)
+- Generate version string on `_version.py` on build (`#237 <https://github.com/fatiando/harmonica/pull/237>`__)
 - Run CIs only on the two ends of supported Python versions (`#256 <https://github.com/fatiando/harmonica/pull/256>`__)
-- Transform require_numba decorator into a global variable (`#245 <https://github.com/fatiando/harmonica/pull/245>`__)
-- Use the Jupyter book sphinx theme instead of RTD (`#227 <https://github.com/fatiando/harmonica/pull/227>`__)
+- Transform `require_numba` decorator into a global variable (`#245 <https://github.com/fatiando/harmonica/pull/245>`__)
 
 Documentation:
 
-- Replace bellow for below across docstrings (`#253 <https://github.com/fatiando/harmonica/pull/253>`__)
+- Fix typo: replace bellow for below across docstrings (`#253 <https://github.com/fatiando/harmonica/pull/253>`__)
 - Fix version display in the HTML title (`#249 <https://github.com/fatiando/harmonica/pull/249>`__)
 - Remove unneeded line in prism_gravity example (`#248 <https://github.com/fatiando/harmonica/pull/248>`__)
 - Update Fukushima2020 citation on References (`#246 <https://github.com/fatiando/harmonica/pull/246>`__)
-- Change order of dims in example of prism_layer (`#241 <https://github.com/fatiando/harmonica/pull/241>`__)
-- Fix class name on See also section in prism_layer (`#230 <https://github.com/fatiando/harmonica/pull/230>`__)
+- Change order of dims in example of `prism_layer` (`#241 <https://github.com/fatiando/harmonica/pull/241>`__)
+- Fix class name on See also section in `prism_layer` (`#230 <https://github.com/fatiando/harmonica/pull/230>`__)
+- Use the Jupyter book Sphinx theme instead of RTD (`#227 <https://github.com/fatiando/harmonica/pull/227>`__)
 
 This release contains contributions from:
 
 - Santiago Soler
 - Leonardo Uieda
+
 
 Version 0.2.1
 -------------
