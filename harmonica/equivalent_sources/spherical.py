@@ -24,7 +24,7 @@ from .utils import (
 from ..forward.utils import distance_spherical
 
 
-class EquivalentSourcesSpherical(vdb.BaseGridder):
+class EquivalentSourcesSph(vdb.BaseGridder):
     r"""
     Equivalent sources for generic harmonic functions in spherical coordinates
 
@@ -355,7 +355,7 @@ class EquivalentSourcesSpherical(vdb.BaseGridder):
         raise NotImplementedError
 
 
-class EQLHarmonicSpherical(EquivalentSourcesSpherical):
+class EQLHarmonicSpherical(EquivalentSourcesSph):
     """
     DEPRECATED, use ``harmonica.EquivalentSourcesSpherical`` instead.
 

@@ -14,7 +14,7 @@ import numpy.testing as npt
 import xarray.testing as xrt
 import verde as vd
 
-from .. import EquivalentSourcesSpherical, EQLHarmonicSpherical, point_mass_gravity
+from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_mass_gravity
 from .utils import require_numba
 
 
@@ -41,7 +41,7 @@ def test_equivalent_sources_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EquivalentSourcesSpherical(relative_depth=500e3)
+    eql = EquivalentSourcesSph(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -80,7 +80,7 @@ def test_equivalent_sources_small_data_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eql = EquivalentSourcesSpherical(relative_depth=500e3)
+    eql = EquivalentSourcesSph(relative_depth=500e3)
     eql.fit(coordinates, data)
     npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
 
@@ -130,7 +130,7 @@ def test_equivalent_sources_custom_points_spherical():
             region=region, shape=(3, 3), extra_coords=radius - 500e3
         )
     )
-    eql = EquivalentSourcesSpherical(points=points_custom)
+    eql = EquivalentSourcesSph(points=points_custom)
     eql.fit(coordinates, data)
 
     # Check that the proper source locations were set
@@ -141,7 +141,7 @@ def test_equivalent_sources_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EquivalentSourcesSpherical()
+    eql = EquivalentSourcesSph()
     with pytest.raises(NotImplementedError):
         eql.scatter()
 
@@ -150,7 +150,7 @@ def test_equivalent_sources_profile_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EquivalentSourcesSpherical()
+    eql = EquivalentSourcesSph()
     with pytest.raises(NotImplementedError):
         eql.profile(point1=(1, 1), point2=(2, 2), size=3)
 
@@ -159,7 +159,7 @@ def test_equivalent_sources_spherical_no_projection():
     """
     Check if projection is not a valid argument of grid method
     """
-    eql = EquivalentSourcesSpherical()
+    eql = EquivalentSourcesSph()
     with pytest.raises(TypeError):
         eql.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
 
@@ -187,13 +187,9 @@ def test_equivalent_sources_spherical_parallel():
 
     # The predictions should be equal whether are run in parallel or in serial
     relative_depth = 500e3
-    eql_serial = EquivalentSourcesSpherical(
-        relative_depth=relative_depth, parallel=False
-    )
+    eql_serial = EquivalentSourcesSph(relative_depth=relative_depth, parallel=False)
     eql_serial.fit(coordinates, data)
-    eql_parallel = EquivalentSourcesSpherical(
-        relative_depth=relative_depth, parallel=True
-    )
+    eql_parallel = EquivalentSourcesSph(relative_depth=relative_depth, parallel=True)
     eql_parallel.fit(coordinates, data)
 
     upward = radius
@@ -224,7 +220,7 @@ def test_backward_eqlharmonicspherical():
     )
 
     # Fit EquivalentSourcesSpherical instance
-    eql = EquivalentSourcesSpherical(relative_depth=1.3e3)
+    eql = EquivalentSourcesSph(relative_depth=1.3e3)
     eql.fit(coordinates, data)
 
     # Fit deprecated EQLHarmonicSpherical instance

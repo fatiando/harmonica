@@ -18,7 +18,7 @@ from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
 from .equivalent_sources.cartesian import EquivalentSources, EQLHarmonic
 from .equivalent_sources.spherical import (
-    EquivalentSourcesSpherical,
+    EquivalentSourcesSph,
     EQLHarmonicSpherical,
 )
 
