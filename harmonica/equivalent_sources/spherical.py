@@ -325,7 +325,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=abstract-method
+    ):
         """
         .. warning ::
 
@@ -344,7 +344,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=abstract-method
+    ):
         """
         .. warning ::
 

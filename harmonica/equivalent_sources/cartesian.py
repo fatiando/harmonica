@@ -396,7 +396,7 @@ class EquivalentSources(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=abstract-method
+    ):
         """
         .. warning ::
 
@@ -416,7 +416,7 @@ class EquivalentSources(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ,abstract-method
+    ):  # pylint: disable=arguments-differ
         """
         Interpolate data along a profile between two points.
 
