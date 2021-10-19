@@ -59,9 +59,9 @@ def test_equivalent_sources_cartesian():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EquivalentSources()
-    eql.fit(coordinates, data)
-    npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
+    eqs = EquivalentSources()
+    eqs.fit(coordinates, data)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
@@ -69,16 +69,16 @@ def test_equivalent_sources_cartesian():
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_mass_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eql.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
     # Test grid method
-    grid = eql.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
     # Test profile method
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
-    profile = eql.profile(point1, point2, upward, shape[0])
+    profile = eqs.profile(point1, point2, upward, shape[0])
     true = point_mass_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
@@ -100,14 +100,14 @@ def test_equivalent_sources_small_data_cartesian():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
-    eql = EquivalentSources(depth=500)
-    eql.fit(coordinates, data)
-    npt.assert_allclose(data, eql.predict(coordinates), rtol=1e-5)
+    eqs = EquivalentSources(depth=500)
+    eqs.fit(coordinates, data)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
 
     # Check that the proper source locations were set
     tmp = [i.ravel() for i in coordinates]
-    npt.assert_allclose(tmp[:2], eql.points_[:2], rtol=1e-5)
-    npt.assert_allclose(tmp[2] - 500, eql.points_[2], rtol=1e-5)
+    npt.assert_allclose(tmp[:2], eqs.points_[:2], rtol=1e-5)
+    npt.assert_allclose(tmp[2] - 500, eqs.points_[2], rtol=1e-5)
 
     # Gridding at higher altitude should be reasonably accurate when compared
     # to synthetic values
@@ -115,16 +115,16 @@ def test_equivalent_sources_small_data_cartesian():
     shape = (8, 8)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_mass_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eql.predict(grid), rtol=0.08)
+    npt.assert_allclose(true, eqs.predict(grid), rtol=0.08)
 
     # Test grid method
-    grid = eql.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(upward, shape=shape, region=region)
     npt.assert_allclose(true, grid.scalars, rtol=0.08)
 
     # Test profile method
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
-    profile = eql.profile(point1, point2, upward, 10)
+    profile = eqs.profile(point1, point2, upward, 10)
     true = point_mass_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
@@ -160,8 +160,8 @@ def test_equivalent_sources_build_points(
     """
     Check if build_points method works as expected
     """
-    eql = EquivalentSources(depth=1.5e3, depth_type=depth_type)
-    points = eql._build_points(coordinates)
+    eqs = EquivalentSources(depth=1.5e3, depth_type=depth_type)
+    points = eqs._build_points(coordinates)
     expected = (*coordinates[:2], upward_expected)
     npt.assert_allclose(points, expected)
 
@@ -178,14 +178,14 @@ def test_equivalent_sources_build_points_bacwkards(coordinates):
     expected_upward = coordinates[2] - depth
     # Check if FutureWarning is raised after passing relative_depth
     with warnings.catch_warnings(record=True) as warn:
-        eql = EquivalentSources(relative_depth=depth)
+        eqs = EquivalentSources(relative_depth=depth)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, FutureWarning)
     # Check if the `depth` and `depth_type` attributes are well fixed
-    npt.assert_allclose(eql.depth, depth)
-    assert eql.depth_type == "relative"
+    npt.assert_allclose(eqs.depth, depth)
+    assert eqs.depth_type == "relative"
     # Check if location of sources are correct
-    points = eql._build_points(coordinates)
+    points = eqs._build_points(coordinates)
     expected = (*coordinates[:2], expected_upward)
     npt.assert_allclose(points, expected)
 
@@ -214,25 +214,25 @@ def test_equivalent_sources_points_depth():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # Test with constant depth
-    eql = EquivalentSources(depth=1.3e3, depth_type="constant")
-    eql.fit(coordinates, data)
+    eqs = EquivalentSources(depth=1.3e3, depth_type="constant")
+    eqs.fit(coordinates, data)
     expected_points = vdb.n_1d_arrays(
         (easting, northing, -1.3e3 * np.ones_like(easting)), n=3
     )
-    npt.assert_allclose(expected_points, eql.points_)
+    npt.assert_allclose(expected_points, eqs.points_)
 
     # Test with relative depth
-    eql = EquivalentSources(depth=1.3e3, depth_type="relative")
-    eql.fit(coordinates, data)
+    eqs = EquivalentSources(depth=1.3e3, depth_type="relative")
+    eqs.fit(coordinates, data)
     expected_points = vdb.n_1d_arrays((easting, northing, upward - 1.3e3), n=3)
-    npt.assert_allclose(expected_points, eql.points_)
+    npt.assert_allclose(expected_points, eqs.points_)
 
     # Test with invalid depth_type
-    eql = EquivalentSources(
+    eqs = EquivalentSources(
         depth=300, depth_type="constant"
     )  # init with valid depth_type
-    eql.depth_type = "blabla"  # change depth_type afterwards
-    points = eql._build_points(
+    eqs.depth_type = "blabla"  # change depth_type afterwards
+    points = eqs._build_points(
         vd.grid_coordinates(region=(-1, 1, -1, 1), spacing=0.25, extra_coords=1)
     )
     assert points is None
@@ -257,20 +257,20 @@ def test_equivalent_sources_custom_points_cartesian():
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
     )
-    eql = EquivalentSources(points=points_custom)
-    eql.fit(coordinates, data)
+    eqs = EquivalentSources(points=points_custom)
+    eqs.fit(coordinates, data)
 
     # Check that the proper source locations were set
-    npt.assert_allclose(points_custom, eql.points_, rtol=1e-5)
+    npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
 
 
 def test_equivalent_sources_scatter_not_implemented():
     """
     Check if scatter method raises a NotImplementedError
     """
-    eql = EquivalentSources()
+    eqs = EquivalentSources()
     with pytest.raises(NotImplementedError):
-        eql.scatter()
+        eqs.scatter()
 
 
 @pytest.mark.use_numba
@@ -316,15 +316,15 @@ def test_equivalent_sources_cartesian_parallel():
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # The predictions should be equal whether are run in parallel or in serial
-    eql_serial = EquivalentSources(parallel=False)
-    eql_serial.fit(coordinates, data)
-    eql_parallel = EquivalentSources(parallel=True)
-    eql_parallel.fit(coordinates, data)
+    eqs_serial = EquivalentSources(parallel=False)
+    eqs_serial.fit(coordinates, data)
+    eqs_parallel = EquivalentSources(parallel=True)
+    eqs_parallel.fit(coordinates, data)
 
     upward = 0
     shape = (60, 60)
-    grid_serial = eql_serial.grid(upward, shape=shape, region=region)
-    grid_parallel = eql_parallel.grid(upward, shape=shape, region=region)
+    grid_serial = eqs_serial.grid(upward, shape=shape, region=region)
+    grid_parallel = eqs_parallel.grid(upward, shape=shape, region=region)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
@@ -347,8 +347,8 @@ def test_backward_eqlharmonic(depth_type):
     data = point_mass_gravity(coordinates, points, masses, field="g_z")
 
     # Fit EquivalentSources instance
-    eql = EquivalentSources(depth=1.3e3, depth_type=depth_type)
-    eql.fit(coordinates, data)
+    eqs = EquivalentSources(depth=1.3e3, depth_type=depth_type)
+    eqs.fit(coordinates, data)
 
     # Fit deprecated EQLHarmonic instance
     # (check if FutureWarning is raised)
@@ -359,9 +359,9 @@ def test_backward_eqlharmonic(depth_type):
     eql_harmonic.fit(coordinates, data)
 
     # Check if both gridders are equivalent
-    npt.assert_allclose(eql.points_, eql_harmonic.points_)
+    npt.assert_allclose(eqs.points_, eql_harmonic.points_)
     shape = (8, 8)
     xrt.assert_allclose(
-        eql.grid(upward=2e3, shape=shape, region=region),
+        eqs.grid(upward=2e3, shape=shape, region=region),
         eql_harmonic.grid(upward=2e3, shape=shape, region=region),
     )
