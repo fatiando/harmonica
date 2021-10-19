@@ -7,6 +7,7 @@
 """
 Equivalent layer for generic harmonic functions in Cartesian coordinates
 """
+import warnings
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -71,16 +72,30 @@ class EQLHarmonic(vdb.BaseGridder):
         List containing the coordinates of the point sources used as the
         equivalent layer. Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
-        If None, will place one point source bellow each observation point at
-        a fixed relative depth bellow the observation point [Cooper2000]_.
+        If None, will place one point source below each observation point at
+        a fixed relative depth below the observation point [Cooper2000]_.
         Defaults to None.
-    relative_depth : float
-        Relative depth at which the point sources are placed beneath the
+    depth : float
+        Parameter used to control the depth at which the point sources will be
+        located.
+        If ``depth_type`` is equal to ``"relative"``, the ``depth`` specifies
+        the relative depth at which the point sources are placed beneath the
         observation points. Each source point will be set beneath each data
         point at a depth calculated as the elevation of the data point minus
-        this constant *relative_depth*. Use positive numbers (negative numbers
-        would mean point sources are above the data points). Ignored if
-        *points* is specified.
+        this *depth*. Use positive numbers (negative numbers would mean point
+        sources are above the data points).
+        If ``depth_type`` is equal to ``"constant"``, the ``depth`` specifies
+        the constant depth at which the point sources are placed beneath the
+        observation points. Every source point will be located at this *depth*.
+        Use positive numbers (negative numbers would mean point sources are
+        located above the zeroth level).
+        This parameter is ignored if *points* is specified.
+        Defaults to 500.
+    depth_type : str
+        Strategy used for setting the depth of the point sources.
+        The two available strategies are ``"constant"`` and ``"relative"``.
+        This parameter is ignored if *points* is specified.
+        Defaults to ``"relative"``.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -113,15 +128,32 @@ class EQLHarmonic(vdb.BaseGridder):
         self,
         damping=None,
         points=None,
-        relative_depth=500,
+        depth=500,
+        depth_type="relative",
         parallel=True,
+        **kwargs,
     ):
         self.damping = damping
         self.points = points
-        self.relative_depth = relative_depth
+        self.depth = depth
+        self.depth_type = depth_type
         self.parallel = parallel
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
+        # Check if depth_type is valid
+        if depth_type not in ("constant", "relative"):
+            raise ValueError(
+                f"Invalid depth type '{depth_type}'. Should be either be 'constant' or 'relative'."
+            )
+        # Check if relative_depth has been passed (will be deprecated)
+        if "relative_depth" in kwargs:
+            warnings.warn(
+                "The 'relative_depth' parameter is deprecated, please use "
+                + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. ",
+                FutureWarning,
+            )
+            # Override depth and depth_type
+            self.depth, self.depth_type = kwargs["relative_depth"], "relative"
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -155,16 +187,53 @@ class EQLHarmonic(vdb.BaseGridder):
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = (
-                coordinates[0],
-                coordinates[1],
-                coordinates[2] - self.relative_depth,
-            )
+            self.points_ = self._build_points(coordinates)
         else:
             self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
+
+    def _build_points(self, coordinates):
+        """
+        Generate coordinates of point sources based on the data points
+
+        Locate the point sources following the chosen ``depth_type`` strategy.
+        If ``depth_type`` is equal to ``"relative"``, the point sources will be
+        placed beneath the observation points at a depth calculated as the
+        elevation of the data point minus the ``depth``.
+        If ``depth_type`` is equal to ``"constant"``, the point sources will be
+        placed beneath the observation points at the same height equal to minus
+        ``depth``.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
+
+        Returns
+        -------
+        points : tuple of arrays
+            Tuple containing the coordinates of the point sources used as the
+            equivalent layer, in the following order:
+            (``easting``, ``northing``, ``upward``).
+        """
+        if self.depth_type == "relative":
+            return (
+                coordinates[0],
+                coordinates[1],
+                coordinates[2] - self.depth,
+            )
+        if self.depth_type == "constant":
+            return (
+                coordinates[0],
+                coordinates[1],
+                -self.depth * np.ones_like(coordinates[0]),
+            )
+        return None
 
     def predict(self, coordinates):
         """
@@ -243,7 +312,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
@@ -327,7 +396,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -347,7 +416,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate data along a profile between two points.
