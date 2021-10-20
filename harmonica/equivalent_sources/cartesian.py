@@ -96,6 +96,14 @@ class EquivalentSources(vdb.BaseGridder):
         The two available strategies are ``"constant"`` and ``"relative"``.
         This parameter is ignored if *points* is specified.
         Defaults to ``"relative"``.
+    block_size: float, tuple = (s_north, s_east) or None
+        Size of the blocks used on block-averaged equivalent sources.
+        If a single value is passed, the blocks will have a square shape.
+        Alternatively, the dimensions of the blocks in the South-North and
+        West-East directions can be specified by passing a tuple.
+        If None, no block-averaging is applied.
+        This parameter is ignored if *points* are specified.
+        Default to None.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -111,6 +119,10 @@ class EquivalentSources(vdb.BaseGridder):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~harmonica.EQLHarmonic.grid` method.
+
+    References
+    ----------
+    [Soler2021]_
     """
 
     # Set the default dimension names for generated outputs
@@ -130,6 +142,7 @@ class EquivalentSources(vdb.BaseGridder):
         points=None,
         depth=500,
         depth_type="relative",
+        block_size=None,
         parallel=True,
         **kwargs,
     ):
@@ -137,6 +150,7 @@ class EquivalentSources(vdb.BaseGridder):
         self.points = points
         self.depth = depth
         self.depth_type = depth_type
+        self.block_size = block_size
         self.parallel = parallel
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
@@ -198,13 +212,14 @@ class EquivalentSources(vdb.BaseGridder):
         """
         Generate coordinates of point sources based on the data points
 
-        Locate the point sources following the chosen ``depth_type`` strategy.
+        Locate the point sources following the chosen ``depth_type`` strategy
+        and apply block-averaging if ``block_size`` is not None.
         If ``depth_type`` is equal to ``"relative"``, the point sources will be
-        placed beneath the observation points at a depth calculated as the
-        elevation of the data point minus the ``depth``.
+        placed beneath the (averaged) observation points at a depth calculated
+        as the elevation of the data point minus the ``depth``.
         If ``depth_type`` is equal to ``"constant"``, the point sources will be
-        placed beneath the observation points at the same height equal to minus
-        ``depth``.
+        placed beneath the (averaged) observation points at the same height
+        equal to minus ``depth``.
 
         Parameters
         ----------
@@ -220,6 +235,8 @@ class EquivalentSources(vdb.BaseGridder):
             Tuple containing the coordinates of the equivalent point sources,
             in the following order: (``easting``, ``northing``, ``upward``).
         """
+        if self.block_size is not None:
+            coordinates = self._block_average_coordinates(coordinates)
         if self.depth_type == "relative":
             return (
                 coordinates[0],
@@ -233,6 +250,33 @@ class EquivalentSources(vdb.BaseGridder):
                 -self.depth * np.ones_like(coordinates[0]),
             )
         return None
+
+    def _block_average_coordinates(self, coordinates):
+        """
+        Run a block-averaging process on observation points
+
+        Apply a median as the reduction function. The blocks will have the size
+        specified through the ``block_size`` argument on the constructor.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+
+        Returns
+        -------
+        blocked_coords : tuple of arrays
+            Tuple containing the coordinates of the block-averaged observation
+            points.
+        """
+        reducer = vd.BlockReduce(
+            spacing=self.block_size, reduction=np.median, drop_coords=False
+        )
+        # Must pass a dummy data array to BlockReduce.filter(), we choose an
+        # array full of zeros. We will ignore the returned reduced dummy array.
+        blocked_coords, _ = reducer.filter(coordinates, np.zeros_like(coordinates[0]))
+        return blocked_coords
 
     def predict(self, coordinates):
         """
