@@ -7,7 +7,6 @@ dependencies:
   - pip
   - setuptools_scm
   - numpy
-  - scipy
   - pandas
   - numba
   - pooch>=0.7.0
