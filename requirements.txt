@@ -1,5 +1,4 @@
 numpy
-scipy
 pandas
 numba
 pooch>=0.7.0
