@@ -14,8 +14,8 @@ Version 0.3.0
 
 Deprecations:
 
-- Rename equivalent sources classes to ``EquivalentSources`` and ``EquivalentSourcesSph``. (`#255 <https://github.com/fatiando/harmonica/pull/255>`__)
-- Rename the ``relative_depth`` parameters in ``EquivalentSources`` to ``depth`` (`#236 <https://github.com/fatiando/harmonica/pull/236>`__)
+- Rename equivalent sources classes to ``EquivalentSources`` and ``EquivalentSourcesSph``. The old ``EQLHarmonic`` and ``EQLHarmonicSpherical`` will be removed on v0.5 (`#255 <https://github.com/fatiando/harmonica/pull/255>`__)
+- Rename the ``relative_depth`` parameters in ``EquivalentSources`` to ``depth``. The old ``relative_depth`` parameter will be deleted on v0.5 (`#236 <https://github.com/fatiando/harmonica/pull/236>`__)
 
 New features:
 
