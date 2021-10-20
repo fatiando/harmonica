@@ -137,31 +137,28 @@ def fixture_coordinates():
     Return a set of sample coordinates intended to be used in tests
     """
     region = (-3e3, -1e3, 5e3, 7e3)
+    shape = (9, 9)
     # Define a set of observation points with variable elevation coordinates
-    easting, northing = vd.grid_coordinates(region=region, shape=(8, 8))
-    upward = np.arange(64, dtype=float).reshape((8, 8))
+    easting, northing = vd.grid_coordinates(region=region, shape=shape)
+    upward = np.arange(shape[0] * shape[1], dtype=float).reshape(shape)
     coordinates = (easting, northing, upward)
     return coordinates
 
 
-@pytest.mark.parametrize(
-    "depth_type, upward_expected",
-    [
-        ("relative", np.arange(64, dtype=float).reshape((8, 8)) - 1.5e3),
-        ("constant", -1.5e3 * np.ones((8, 8))),
-    ],
-    ids=["relative", "constant"],
-)
-def test_equivalent_sources_build_points(
-    coordinates,
-    depth_type,
-    upward_expected,
-):
+@pytest.mark.parametrize("depth_type", ("relative", "constant"))
+def test_equivalent_sources_build_points(coordinates, depth_type):
     """
     Check if build_points method works as expected
+
+    Test only with block-averaging disabled
     """
-    eqs = EquivalentSources(depth=1.5e3, depth_type=depth_type)
+    depth = 1.5e3
+    eqs = EquivalentSources(depth=depth, depth_type=depth_type)
     points = eqs._build_points(coordinates)
+    if depth_type == "constant":
+        upward_expected = -depth * np.ones_like(coordinates[0])
+    else:
+        upward_expected = coordinates[-1] - depth
     expected = (*coordinates[:2], upward_expected)
     npt.assert_allclose(points, expected)
 
