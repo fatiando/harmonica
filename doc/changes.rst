@@ -3,6 +3,48 @@
 Changelog
 =========
 
+Version 0.3.0
+-------------
+
+*Released on: 2021/10/20*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5579324.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.5579324
+
+Deprecations:
+
+- Rename equivalent sources classes to ``EquivalentSources`` and ``EquivalentSourcesSph``. The old ``EQLHarmonic`` and ``EQLHarmonicSpherical`` will be removed on v0.5 (`#255 <https://github.com/fatiando/harmonica/pull/255>`__)
+- Rename the ``relative_depth`` parameters in ``EquivalentSources`` to ``depth``. The old ``relative_depth`` parameter will be deleted on v0.5 (`#236 <https://github.com/fatiando/harmonica/pull/236>`__)
+
+New features:
+
+- Enable parallelization on tesseroids forward modelling and refactor its code (`#244 <https://github.com/fatiando/harmonica/pull/244>`__)
+- Add option to set ``EquivalentSources`` points to constant depth (`#236 <https://github.com/fatiando/harmonica/pull/236>`__)
+- Allow ``prism_layer`` to take Xarray objects as arguments (`#243 <https://github.com/fatiando/harmonica/pull/243>`__)
+
+Maintenance:
+
+- Generate version string on ``_version.py`` on build (`#237 <https://github.com/fatiando/harmonica/pull/237>`__)
+- Run CIs only on the two ends of supported Python versions (`#256 <https://github.com/fatiando/harmonica/pull/256>`__)
+- Transform ``require_numba`` decorator into a global variable (`#245 <https://github.com/fatiando/harmonica/pull/245>`__)
+
+Documentation:
+
+- Fix typo: replace bellow for below across docstrings (`#253 <https://github.com/fatiando/harmonica/pull/253>`__)
+- Fix version display in the HTML title (`#249 <https://github.com/fatiando/harmonica/pull/249>`__)
+- Remove unneeded line in prism_gravity example (`#248 <https://github.com/fatiando/harmonica/pull/248>`__)
+- Update Fukushima2020 citation on References (`#246 <https://github.com/fatiando/harmonica/pull/246>`__)
+- Change order of dims in example of ``prism_layer`` (`#241 <https://github.com/fatiando/harmonica/pull/241>`__)
+- Fix class name on See also section in ``prism_layer`` (`#230 <https://github.com/fatiando/harmonica/pull/230>`__)
+- Use the Jupyter book Sphinx theme instead of RTD (`#227 <https://github.com/fatiando/harmonica/pull/227>`__)
+
+This release contains contributions from:
+
+- Santiago Soler
+- Leonardo Uieda
+
+
 Version 0.2.1
 -------------
 
