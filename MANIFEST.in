@@ -6,7 +6,6 @@ prune doc
 prune paper
 exclude .*.yml
 exclude .*rc
-exclude requirements*.txt
 exclude Makefile
 exclude .gitignore
 exclude .gitattributes
