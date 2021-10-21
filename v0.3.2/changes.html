@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Changelog | Harmonica v0.3.2</title>
+    
+
+    
+  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.c441f2ba0852f4cabcb80105e3a46ae6.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="harmonica.test" href="api/generated/harmonica.test.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/harmonica-logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.3.2</span></h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Harmonica Documentation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="gallery/index.html">
+   Gallery
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/isostasy_airy.html">
+     Airy Isostasy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/point_mass.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="sample_data/index.html">
+   Sample Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/earth_geoid.html">
+     Earth Geoid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/earth_gravity.html">
+     Earth Gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/earth_topography.html">
+     Earth Topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/south_africa_gravity.html">
+     Land Gravity Data from South Africa
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/south_africa_topography.html">
+     South Africa Topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sample_data/britain_magnetic.html">
+     Total Field Magnetic Anomaly from Great Britain
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="api/index.html">
+   API Reference
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.EQLHarmonic.html">
+     harmonica.EQLHarmonic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.EQLHarmonicSpherical.html">
+     harmonica.EQLHarmonicSpherical
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.point_mass_gravity.html">
+     harmonica.point_mass_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Getting help and contributing
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+   How to contribute
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+   Code of Conduct
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/changes.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fchanges.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/master/doc/changes.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-3-2">
+   Version 0.3.2
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-3-1">
+   Version 0.3.1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-3-0">
+   Version 0.3.0
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-2-1">
+   Version 0.2.1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-2-0">
+   Version 0.2.0
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-1-0">
+   Version 0.1.0
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="changelog">
+<span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-0-3-2">
+<h2>Version 0.3.2<a class="headerlink" href="#version-0-3-2" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/10/21</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.5589989"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5589989.svg" /></a>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Fix import of Harmonica version on sample datasets: solves a problem whenbuilding docs for releases. Define the <code class="docutils literal notranslate"><span class="pre">__version__</span></code> variable inside a new <code class="docutils literal notranslate"><span class="pre">version.py</span></code> file. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/264">#264</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-3-1">
+<h2>Version 0.3.1<a class="headerlink" href="#version-0-3-1" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/10/20</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.5585665"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5585665.svg" /></a>
+<p>Bug fix:</p>
+<ul class="simple">
+<li><p>Package <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> and update the dependencies list: remove
+<code class="docutils literal notranslate"><span class="pre">scipy</span></code> and add <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Exclude <code class="docutils literal notranslate"><span class="pre">license_notice.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">.flake8</span></code> from the <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/261">#261</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-3-0">
+<h2>Version 0.3.0<a class="headerlink" href="#version-0-3-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/10/20</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.5579324"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5579324.svg" /></a>
+<p>Deprecations:</p>
+<ul class="simple">
+<li><p>Rename equivalent sources classes to <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code> and <code class="docutils literal notranslate"><span class="pre">EquivalentSourcesSph</span></code>. The old <code class="docutils literal notranslate"><span class="pre">EQLHarmonic</span></code> and <code class="docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code> will be removed on v0.5 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/255">#255</a>)</p></li>
+<li><p>Rename the <code class="docutils literal notranslate"><span class="pre">relative_depth</span></code> parameters in <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code> to <code class="docutils literal notranslate"><span class="pre">depth</span></code>. The old <code class="docutils literal notranslate"><span class="pre">relative_depth</span></code> parameter will be deleted on v0.5 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/236">#236</a>)</p></li>
+</ul>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Enable parallelization on tesseroids forward modelling and refactor its code (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/244">#244</a>)</p></li>
+<li><p>Add option to set <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code> points to constant depth (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/236">#236</a>)</p></li>
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">prism_layer</span></code> to take Xarray objects as arguments (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/243">#243</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Generate version string on <code class="docutils literal notranslate"><span class="pre">_version.py</span></code> on build (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/237">#237</a>)</p></li>
+<li><p>Run CIs only on the two ends of supported Python versions (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/256">#256</a>)</p></li>
+<li><p>Transform <code class="docutils literal notranslate"><span class="pre">require_numba</span></code> decorator into a global variable (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/245">#245</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Fix typo: replace bellow for below across docstrings (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/253">#253</a>)</p></li>
+<li><p>Fix version display in the HTML title (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/249">#249</a>)</p></li>
+<li><p>Remove unneeded line in prism_gravity example (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/248">#248</a>)</p></li>
+<li><p>Update Fukushima2020 citation on References (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/246">#246</a>)</p></li>
+<li><p>Change order of dims in example of <code class="docutils literal notranslate"><span class="pre">prism_layer</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/241">#241</a>)</p></li>
+<li><p>Fix class name on See also section in <code class="docutils literal notranslate"><span class="pre">prism_layer</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/230">#230</a>)</p></li>
+<li><p>Use the Jupyter book Sphinx theme instead of RTD (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/227">#227</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+<li><p>Leonardo Uieda</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-2-1">
+<h2>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/04/14</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.4685960"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4685960.svg" /></a>
+<p>Minor changes:</p>
+<ul class="simple">
+<li><p>Rename prisms_layer to prism_layer (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/223">#223</a>)</p></li>
+</ul>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Unpin Sphinx and fix documentation style (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/224">#224</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-2-0">
+<h2>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/04/09</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.4672400"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4672400.svg" /></a>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Add function to create a layer of prisms and add a new South Africa ETOPO1 dataset (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/186">#186</a>)</p></li>
+<li><p>Optimize forward models by parallelizing outer loops for prisms and point masses and refactor the tesseroids forward modelling (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/205">#205</a>)</p></li>
+<li><p>Add parallel flag to EQLs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/207">#207</a>)</p></li>
+<li><p>Parallelize EQLs predictions and Jacobian build (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/203">#203</a>)</p></li>
+<li><p>Improve EQL harmonic classes by splitting classes and adding upward argument to prediction methods (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/190">#190</a>)</p></li>
+<li><p>Add function to compute the distance between points given in geodetic coordinates (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/172">#172</a>)</p></li>
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">load_icgem_gdf</span></code> to take open file objects (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/155">#155</a>)</p></li>
+<li><p>Add new <code class="docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code> class to interpolate data using EQL in spherical coordinates (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/136">#136</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Extend support for Python 3.9 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/219">#219</a>)</p></li>
+<li><p>Separate the Actions jobs into categories (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/218">#218</a>)</p></li>
+<li><p>Automatically check for license notice when checking code style (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/211">#211</a>)</p></li>
+<li><p>Use the OSI version of item 3 in the license (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/206">#206</a>)</p></li>
+<li><p>Add license and copyright notice to every .py file (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/201">#201</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> with <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/196">#196</a>)</p></li>
+<li><p>Remove configuration files for unused CI: Stickler, Codacy and CodeClimate (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/197">#197</a>)</p></li>
+<li><p>Replace TravisCI and Azure for GitHub Actions (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/189">#189</a>)</p></li>
+<li><p>Fetch a sample data before testing locate because Pooch creates cache directory only after the first fetch (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/193">#193</a>)</p></li>
+<li><p>Require Black&gt;=20.8b1 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/187">#187</a>)</p></li>
+<li><p>Add CI builds for Python 3.8 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/150">#150</a>)</p></li>
+<li><p>Replace global Zenodo DOI on badges and citation (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/148">#148</a>)</p></li>
+<li><p>Remove the GitHub templates from the repository and use the shared ones in fatiando/.github (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/149">#149</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Add example for <code class="docutils literal notranslate"><span class="pre">EQLHarmonicSpherical</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/152">#152</a>)</p></li>
+<li><p>Replace Cartesian distance for Euclidean distance in docs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/156">#156</a>)</p></li>
+</ul>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Keep metadata of sample datasets in the Xarray objects (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/184">#184</a>)</p></li>
+<li><p>Fix infinite loop on CIs after Numba v0.5.0 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/180">#180</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+<li><p>Leonardo Uieda</p></li>
+<li><p>Nicholas Shea</p></li>
+<li><p>Rowan Cockett</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-1-0">
+<h2>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2020/02/27</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.3628742"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.3628742.svg" /></a>
+<p>Fist release of Harmonica. Forward modeling, inversion, and processing gravity
+and magnetic data.</p>
+<p>Forward models:</p>
+<ul class="simple">
+<li><p>Point masses in Cartesian coordinates. Gravitational potential with vertical
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/71">#71</a>) and horizontal
+components of acceleration
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/119">#119</a>).</p></li>
+<li><p>Point masses in spherical coordinates.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/60">#60</a>)</p></li>
+<li><p>Rectangular prisms. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/86">#86</a>)</p></li>
+<li><p>Tesseroids. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/60">#60</a>)</p></li>
+</ul>
+<p>Available datasets:</p>
+<ul class="simple">
+<li><p>Great Britain aeromagnetic dataset.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/111">#111</a>)</p></li>
+<li><p>South Africa gravity station data.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/99">#99</a>)</p></li>
+<li><p>Geoid grid from EIGEN-6C4.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/34">#34</a>)</p></li>
+<li><p>Global topography from ETOPO1.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/23">#23</a>)</p></li>
+<li><p>Global gravity data from EIGEN-6C4.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/12">#12</a>)</p></li>
+</ul>
+<p>Other features:</p>
+<ul class="simple">
+<li><p>Synthetic ground and airborne surveys based on real world data.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/120">#120</a>)</p></li>
+<li><p>Equivalent Layer for harmonic functions.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/78">#78</a>)</p></li>
+<li><p>Planar Bouguer correction.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/38">#38</a>)</p></li>
+<li><p>Airy Isostasy function.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/17">#17</a>)</p></li>
+<li><p>Function to read ICGEM data files.
+(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/11">#11</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Leonardo Uieda</p></li>
+<li><p>Santiago Soler</p></li>
+<li><p>Vanderlei C Oliveira Jr</p></li>
+<li><p>Agustina Pesce</p></li>
+<li><p>Nicholas Shea</p></li>
+<li><p>ziebam</p></li>
+</ul>
+</div>
+</div>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="api/generated/harmonica.test.html" title="previous page">harmonica.test</a>
+    <a class='right-next' id="next-link" href="references.html" title="next page">References</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
+          Last updated on Oct 21, 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

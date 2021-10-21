@@ -1,0 +1,14 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_equivalent_sources_sg_execution_times:
+
+Computation times
+=================
+**00:19.905** total execution time for **gallery_equivalent_sources** files:
+
++----------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``cartesian.py``) | 00:15.114 | 0.0 MB |
++----------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``spherical.py``) | 00:04.791 | 0.0 MB |
++----------------------------------------------------------------------------+-----------+--------+
