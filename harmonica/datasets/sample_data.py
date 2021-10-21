@@ -12,11 +12,7 @@ import xarray as xr
 import pandas as pd
 import pooch
 
-from .._version import version
-
-# Add a "v" to the version number
-# (we can't import ..__version__ because it triggers a circular import)
-version = f"v{version}"
+from ..version import __version__ as version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),

@@ -22,11 +22,7 @@ from .equivalent_sources.spherical import (
     EQLHarmonicSpherical,
 )
 
-# This file is generated automatically by setuptools_scm
-from . import _version
-
-# Add a "v" to the version number
-__version__ = f"v{_version.version}"
+from .version import __version__
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
