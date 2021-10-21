@@ -14,7 +14,7 @@ Version 0.3.2
 
 Bug fixes:
 
-- Fix import of Harmonica version on sample datasets: solves a problem whenbuilding docs for releases. Define the ``__version__`` variable inside a new `version.py`` file. (`#264 <https://github.com/fatiando/harmonica/pull/264>`__)
+- Fix import of Harmonica version on sample datasets: solves a problem whenbuilding docs for releases. Define the ``__version__`` variable inside a new ``version.py`` file. (`#264 <https://github.com/fatiando/harmonica/pull/264>`__)
 
 This release contains contributions from:
 
