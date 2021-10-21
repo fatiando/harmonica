@@ -63,6 +63,20 @@ correction.
         height_over_ell  (latitude, longitude) float64 1e+04 1e+04 ... 1e+04 1e+04
         geoid            (latitude, longitude) float64 -29.5 -29.5 ... 15.37 15.37
         topography       (latitude, longitude) float64 2.762e+03 ... -4.179e+03
+    Attributes: (12/35)
+        generating_institute:  gfz-potsdam
+        generating_date:       2018/11/07
+        product_type:          gravity_field
+        body:                  earth
+        modelname:             EIGEN-6C4
+        max_used_degree:       1277
+        ...                    ...
+        maxvalue:              9.8018358E+05 mgal
+        minvalue:              9.7476403E+05 mgal
+        signal_wrms:           1.5467865E+03 mgal
+        grid_format:           long_lat_value
+        attributes:            longitude latitude gravity_ell
+        attributes_units:      deg. deg. mgal
 
 
 
@@ -118,7 +132,7 @@ correction.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.675 seconds)
+   **Total running time of the script:** ( 0 minutes  1.035 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:

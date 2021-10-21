@@ -15,6 +15,27 @@ This gallery contains a selection examples of what Harmonica can do.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic...">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_isostasy_airy_thumb.png
+     :alt: Airy Isostasy
+
+     :ref:`sphx_glr_gallery_isostasy_airy.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/isostasy_airy
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Gravity disturbances are the differences between the measured gravity and a reference (normal) ...">
 
 .. only:: html
@@ -54,37 +75,16 @@ This gallery contains a selection examples of what Harmonica can do.
    :hidden:
 
    /gallery/gravity_disturbance_topofree
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic...">
-
-.. only:: html
-
- .. figure:: /gallery/images/thumb/sphx_glr_isostasy_airy_thumb.png
-     :alt: Airy Isostasy
-
-     :ref:`sphx_glr_gallery_isostasy_airy.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /gallery/isostasy_airy
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
 
 
 
-.. _sphx_glr_gallery_eql:
+.. _sphx_glr_gallery_equivalent_sources:
 
-Equivalent Layers
------------------
+Equivalent Sources
+------------------
 
 
 
@@ -94,10 +94,10 @@ Equivalent Layers
 
 .. only:: html
 
- .. figure:: /gallery/eql/images/thumb/sphx_glr_harmonic_thumb.png
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_cartesian_thumb.png
      :alt: Gridding and upward continuation
 
-     :ref:`sphx_glr_gallery_eql_harmonic.py`
+     :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py`
 
 .. raw:: html
 
@@ -107,7 +107,7 @@ Equivalent Layers
 .. toctree::
    :hidden:
 
-   /gallery/eql/harmonic
+   /gallery/equivalent_sources/cartesian
 
 .. raw:: html
 
@@ -115,10 +115,10 @@ Equivalent Layers
 
 .. only:: html
 
- .. figure:: /gallery/eql/images/thumb/sphx_glr_harmonic_spherical_thumb.png
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_spherical_thumb.png
      :alt: Gridding in spherical coordinates
 
-     :ref:`sphx_glr_gallery_eql_harmonic_spherical.py`
+     :ref:`sphx_glr_gallery_equivalent_sources_spherical.py`
 
 .. raw:: html
 
@@ -128,7 +128,7 @@ Equivalent Layers
 .. toctree::
    :hidden:
 
-   /gallery/eql/harmonic_spherical
+   /gallery/equivalent_sources/spherical
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -144,14 +144,14 @@ Forward Modeling
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr...">
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_point_mass_thumb.png
-     :alt: Point Masses in Cartesian Coordinates
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_prisms_topo_gravity_thumb.png
+     :alt: Gravitational effect of topography
 
-     :ref:`sphx_glr_gallery_forward_point_mass.py`
+     :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py`
 
 .. raw:: html
 
@@ -161,7 +161,7 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/point_mass
+   /gallery/forward/prisms_topo_gravity
 
 .. raw:: html
 
@@ -186,14 +186,14 @@ Forward Modeling
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling...">
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_prisms_topo_gravity_thumb.png
-     :alt: Gravitational effect of topography
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_point_mass_thumb.png
+     :alt: Point Masses in Cartesian Coordinates
 
-     :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py`
+     :ref:`sphx_glr_gallery_forward_point_mass.py`
 
 .. raw:: html
 
@@ -203,7 +203,7 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/prisms_topo_gravity
+   /gallery/forward/point_mass
 
 .. raw:: html
 

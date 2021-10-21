@@ -40,8 +40,21 @@ points.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
+      result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
 
+
+
+
+
+|
 
 .. code-block:: default
 
@@ -72,7 +85,7 @@ points.
     # Create layer of prisms
     prisms = hm.prism_layer(
         (south_africa_topo.easting, south_africa_topo.northing),
-        surface=south_africa_topo.values,
+        surface=south_africa_topo,
         reference=0,
         properties={"density": density},
     )
@@ -107,7 +120,7 @@ points.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  13.414 seconds)
+   **Total running time of the script:** ( 1 minutes  5.658 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prisms_topo_gravity.py:

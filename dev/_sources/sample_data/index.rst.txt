@@ -35,27 +35,6 @@ These are the datasets currently available:
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an...">
-
-.. only:: html
-
- .. figure:: /sample_data/images/thumb/sphx_glr_britain_magnetic_thumb.png
-     :alt: Total Field Magnetic Anomaly from Great Britain
-
-     :ref:`sphx_glr_sample_data_britain_magnetic.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /sample_data/britain_magnetic
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The geoid is the equipotential surface of the Earth&#x27;s gravity potential that coincides with mea...">
 
 .. only:: html
@@ -158,6 +137,27 @@ These are the datasets currently available:
    :hidden:
 
    /sample_data/south_africa_topography
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an...">
+
+.. only:: html
+
+ .. figure:: /sample_data/images/thumb/sphx_glr_britain_magnetic_thumb.png
+     :alt: Total Field Magnetic Anomaly from Great Britain
+
+     :ref:`sphx_glr_sample_data_britain_magnetic.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /sample_data/britain_magnetic
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

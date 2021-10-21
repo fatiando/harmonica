@@ -42,7 +42,7 @@ Heights are referenced to sea level.
  .. code-block:: none
 
     <xarray.Dataset>
-    Dimensions:     (latitude: 171, longitude: 211)
+    Dimensions:     (longitude: 211, latitude: 171)
     Coordinates:
       * longitude   (longitude) float64 12.0 12.1 12.2 12.3 ... 32.7 32.8 32.9 33.0
       * latitude    (latitude) float64 -35.0 -34.9 -34.8 -34.7 ... -18.2 -18.1 -18.0
@@ -82,7 +82,7 @@ Heights are referenced to sea level.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.211 seconds)
+   **Total running time of the script:** ( 0 minutes  0.218 seconds)
 
 
 .. _sphx_glr_download_sample_data_south_africa_topography.py:

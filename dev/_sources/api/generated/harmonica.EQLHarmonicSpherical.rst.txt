@@ -121,6 +121,8 @@ harmonica.EQLHarmonicSpherical
     
     
     
+    
+    
         EQLHarmonicSpherical.filter
     
     
