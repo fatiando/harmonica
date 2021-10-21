@@ -1,5 +1,5 @@
 """
-Define the __version__ variable with a leading "v" before the version number
+Define the __version__ variable as the version number with leading "v"
 """
 # This file is generated automatically by setuptools_scm
 from ._version import version
