@@ -3,6 +3,44 @@
 Changelog
 =========
 
+Version 0.3.2
+-------------
+
+*Released on: 2021/10/21*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5589989.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.5589989
+
+Bug fixes:
+
+- Fix import of Harmonica version on sample datasets: solves a problem whenbuilding docs for releases. Define the ``__version__`` variable inside a new ``version.py`` file. (`#264 <https://github.com/fatiando/harmonica/pull/264>`__)
+
+This release contains contributions from:
+
+- Santiago Soler
+
+
+Version 0.3.1
+-------------
+
+*Released on: 2021/10/20*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5585665.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.5585665
+
+Bug fix:
+
+- Package ``requirements.txt`` and update the dependencies list: remove
+  ``scipy`` and add ``scikit-learn``. Exclude ``license_notice.py`` and
+  ``.flake8`` from the ``MANIFEST.in`` (`#261 <https://github.com/fatiando/harmonica/pull/261>`__)
+
+This release contains contributions from:
+
+- Santiago Soler
+
+
 Version 0.3.0
 -------------
 
