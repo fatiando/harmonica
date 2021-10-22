@@ -23,8 +23,8 @@ Equivalent Layers
 .. autosummary::
     :toctree: generated/
 
-    EQLHarmonic
-    EQLHarmonicSpherical
+    EquivalentSources
+    EquivalentSourcesSph
 
 Forward modelling
 -----------------

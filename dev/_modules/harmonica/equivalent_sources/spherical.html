@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>harmonica.equivalent_sources.spherical | Harmonica v0.3.2</title>
+        <title>harmonica.equivalent_sources.spherical | Harmonica dev</title>
     
 
     
@@ -76,7 +76,7 @@
   <img src="../../../_static/harmonica-logo.png" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.3.2</span></h1>
+  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -225,13 +225,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.EQLHarmonic.html">
-     harmonica.EQLHarmonic
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.EQLHarmonicSpherical.html">
-     harmonica.EQLHarmonicSpherical
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
@@ -469,7 +469,7 @@
 <span class="kn">from</span> <span class="nn">..forward.utils</span> <span class="kn">import</span> <span class="n">distance_spherical</span>
 
 
-<span class="k">class</span> <span class="nc">EquivalentSourcesSph</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
+<div class="viewcode-block" id="EquivalentSourcesSph"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph">[docs]</a><span class="k">class</span> <span class="nc">EquivalentSourcesSph</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equivalent sources for generic harmonic functions in spherical coordinates</span>
 
@@ -571,7 +571,7 @@
         <span class="c1"># Define Green&#39;s function for spherical coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span> <span class="o">=</span> <span class="n">greens_func_spherical</span>
 
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.fit"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
@@ -612,9 +612,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.predict"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the estimated equivalent sources on the given set of points.</span>
 
@@ -644,9 +644,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_predict_kernel</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">](</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.jacobian"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span>
     <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -681,9 +681,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_kernel</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">](</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">jac</span>
+        <span class="k">return</span> <span class="n">jac</span></div>
 
-    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.grid"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.grid">[docs]</a>    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">upward</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -759,9 +759,9 @@
             <span class="n">extra_coords</span><span class="o">=</span><span class="n">upward</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">grid</span>
+        <span class="k">return</span> <span class="n">grid</span></div>
 
-    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.scatter"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.scatter">[docs]</a>    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -778,9 +778,9 @@
 <span class="sd">            Verde v2.0.0.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.profile"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.profile">[docs]</a>    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">point1</span><span class="p">,</span>
         <span class="n">point2</span><span class="p">,</span>
@@ -797,10 +797,10 @@
 <span class="sd">            be done using great-circle distances through the Haversine formula.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
-<div class="viewcode-block" id="EQLHarmonicSpherical"><a class="viewcode-back" href="../../../api/generated/harmonica.EQLHarmonicSpherical.html#harmonica.EQLHarmonicSpherical">[docs]</a><span class="k">class</span> <span class="nc">EQLHarmonicSpherical</span><span class="p">(</span><span class="n">EquivalentSourcesSph</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">EQLHarmonicSpherical</span><span class="p">(</span><span class="n">EquivalentSourcesSph</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    DEPRECATED, use ``harmonica.EquivalentSourcesSph`` instead.</span>
 
@@ -825,7 +825,7 @@
             <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span>
             <span class="n">relative_depth</span><span class="o">=</span><span class="n">relative_depth</span><span class="p">,</span>
             <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -858,7 +858,7 @@
       <p>
         
             &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 21, 2021.<br/>
+          Last updated on Oct 22, 2021.<br/>
       </p>
     </div>
   </footer>

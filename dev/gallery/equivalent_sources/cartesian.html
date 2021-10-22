@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>Gridding and upward continuation | Harmonica v0.3.2</title>
+        <title>Gridding and upward continuation | Harmonica dev</title>
     
 
     
@@ -78,7 +78,7 @@
   <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
   
   
-  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.3.2</span></h1>
+  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
   
 </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -227,13 +227,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.EQLHarmonic.html">
-     harmonica.EQLHarmonic
+    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.EQLHarmonicSpherical.html">
-     harmonica.EQLHarmonicSpherical
+    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
@@ -477,10 +477,10 @@ Upward-continuation is also a routine task for smoothing, noise attenuation,
 source separation, etc.</p>
 <p>Both tasks can be done simultaneously through an <em>equivalent sources</em>
 <a class="reference internal" href="../../references.html#dampney1969" id="id1"><span>[Dampney1969]</span></a> (a.k.a <em>equivalent layer</em>). We will use
-<code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code> to estimate the coefficients of a set of
+<a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code></a> to estimate the coefficients of a set of
 point sources that fit the observed data. The fitted sources can then be used
 to predict data values wherever we want, like on a grid at a certain altitude.
-By default, the sources for <code class="xref py py-class docutils literal notranslate"><span class="pre">EquivalentSources</span></code> are placed
+By default, the sources for <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-class docutils literal notranslate"><span class="pre">EquivalentSources</span></code></a> are placed
 one beneath each data point at a relative depth from the elevation of the data
 point following <a class="reference internal" href="../../references.html#cooper2000" id="id2"><span>[Cooper2000]</span></a>. This behaviour can be changed throught the
 <cite>depth_type</cite> optional argument.</p>
@@ -495,7 +495,7 @@ computational load (both in terms of time and memory).</p>
 Mean height of observations: 541.8293166997448
 /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: &#39;normalize&#39; was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
   warnings.warn(
-R² score: 0.9988789670714455
+R² score: 0.9988789670714462
 
 Generated grid:
  &lt;xarray.Dataset&gt;
@@ -541,21 +541,21 @@ Attributes:
 <span class="c1"># We&#39;ll use the default point source configuration at a relative depth beneath</span>
 <span class="c1"># each observation point.</span>
 <span class="c1"># The damping parameter helps smooth the predicted data and ensure stability.</span>
-<span class="n">eqs</span> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder" title="verde.base.BaseGridder" class="sphx-glr-backref-module-verde-base sphx-glr-backref-type-py-class"><span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSources</span></a><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">eqs</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-class"><span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSources</span></a><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Fit the sources coefficients to the observed magnetic anomaly.</span>
-<a href="https://www.fatiando.org/verde/latest/api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.fit" title="verde.base.BaseGridder.fit" class="sphx-glr-backref-module-verde-base sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">)</span>
+<a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.fit" title="harmonica.EquivalentSources.fit" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">)</span>
 
 <span class="c1"># Evaluate the data fit by calculating an R² score against the observed data.</span>
 <span class="c1"># This is a measure of how well the sources fit the data, NOT how good the</span>
 <span class="c1"># interpolation will be.</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.score" title="verde.base.BaseGridder.score" class="sphx-glr-backref-module-verde-base sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.score" title="harmonica.EquivalentSources.score" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">))</span>
 
 <span class="c1"># Interpolate data on a regular grid with 500 m spacing. The interpolation</span>
 <span class="c1"># requires the height of the grid points (upward coordinate). By passing in</span>
 <span class="c1"># 1500 m, we&#39;re effectively upward-continuing the data (mean flight height is</span>
 <span class="c1"># 500 m).</span>
-<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid" class="sphx-glr-backref-module-verde-base sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">upward</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetic_anomaly&quot;</span><span class="p">])</span>
+<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">upward</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetic_anomaly&quot;</span><span class="p">])</span>
 
 <span class="c1"># The grid is a xarray.Dataset with values, coordinates, and metadata</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
@@ -598,7 +598,7 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.820 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.551 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-equivalent-sources-cartesian-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e1c23c0ced71577b6dc2ff78b5cd656b/cartesian.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cartesian.py</span></code></a></p>
@@ -628,7 +628,7 @@ Attributes:
       <p>
         
             &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 21, 2021.<br/>
+          Last updated on Oct 22, 2021.<br/>
       </p>
     </div>
   </footer>
