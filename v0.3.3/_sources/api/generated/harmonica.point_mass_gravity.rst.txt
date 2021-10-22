@@ -1,0 +1,12 @@
+harmonica.point\_mass\_gravity
+==============================
+
+.. currentmodule:: harmonica
+
+.. autofunction:: point_mass_gravity
+
+.. include:: backreferences/harmonica.point_mass_gravity.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
