@@ -22,6 +22,7 @@ Dependencies
 * `numpy <http://www.numpy.org/>`__
 * `pandas <http://pandas.pydata.org/>`__
 * `numba <https://numba.pydata.org/>`__
+* `scipy <https://www.scipy.org/>`__
 * `xarray <https://xarray.pydata.org/>`__
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
