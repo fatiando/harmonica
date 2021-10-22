@@ -3,6 +3,24 @@
 Changelog
 =========
 
+Version 0.3.3
+-------------
+
+*Released on: 2021/10/22*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5593112.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.5593112
+
+Bug fix:
+
+- Add ``EquivalentSources`` and ``EquivalentSourcesSph`` to API index. Replace the old equivalent layer classes. (`#270 <https://github.com/fatiando/harmonica/pull/270>`__)
+
+This release contains contributions from:
+
+- Santiago Soler
+
+
 Version 0.3.2
 -------------
 
