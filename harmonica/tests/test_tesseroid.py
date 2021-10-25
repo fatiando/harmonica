@@ -13,7 +13,7 @@ import pytest
 from verde import grid_coordinates
 import boule
 
-from .utils import run_only_with_numba
+from .utils import test_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.tesseroid import (
     tesseroid_gravity,
@@ -467,7 +467,7 @@ def test_split_tesseroid_only_horizontal():
 # ----------------------------
 # Test adaptive discretization
 # ----------------------------
-@run_only_with_numba
+@test_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_adaptive_discretization_on_radii(radial_discretization):
     "Test if closer computation points increase the tesseroid discretization"
@@ -498,7 +498,7 @@ def test_adaptive_discretization_on_radii(radial_discretization):
         assert number_of_splits[i - 1] >= number_of_splits[i]
 
 
-@run_only_with_numba
+@test_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
     "Test if higher distance-size-ratio increase the tesseroid discretization"
@@ -522,7 +522,7 @@ def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
         assert number_of_splits[i - 1] <= number_of_splits[i]
 
 
-@run_only_with_numba
+@test_only_with_numba
 def test_two_dimensional_adaptive_discretization():
     """
     Test if 2D adaptive discretization produces no splits on radial direction
@@ -567,7 +567,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
     return analytical
 
 
-@run_only_with_numba
+@test_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_spherical_shell_two_dim_adaptive_discret(
     field,
@@ -613,7 +613,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
         )
 
 
-@run_only_with_numba
+@test_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
 def test_spherical_shell_three_dim_adaptive_discret(
