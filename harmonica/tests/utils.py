@@ -14,7 +14,7 @@ import pytest
 
 def combine_decorators(*decorators):
     """
-    Merge several decorators
+    Combine several decorators into a single one
     """
 
     def combination(func):
