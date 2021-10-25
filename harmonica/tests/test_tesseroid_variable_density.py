@@ -7,11 +7,11 @@
 """
 Test forward modelling for tesseroids with variable density
 """
+import pytest
 import numpy as np
 import numpy.testing as npt
-import harmonica
-import pytest
 from verde import grid_coordinates
+import harmonica
 
 from .utils import run_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
@@ -36,18 +36,21 @@ ACCURACY_THRESHOLD = 1e-3
 
 @pytest.fixture(name="bottom")
 def fixture_bottom():
+    """Return a bottom boundary"""
     bottom = 2e3
     return bottom
 
 
 @pytest.fixture(name="top")
 def fixture_top():
+    """Return a top boundary"""
     top = 5e3
     return top
 
 
 @pytest.fixture(name="quadratic_params")
 def fixture_quadratic_params():
+    """Return parameters for building a quadratic density function"""
     factor = 1e-3
     vertex_radius = 3e3
     vertex_density = 1900.0
@@ -240,7 +243,7 @@ def test_density_based_discret_with_delta(
     bottom,
     top,
     quadratic_density,
-):
+):  # pylint: disable=protected-access
     """
     Test the density-based discretization algorithm against values of DELTA
     """
@@ -287,7 +290,7 @@ def test_density_based_discret_constant_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    def stupid_constant_density(radius):
+    def stupid_constant_density(radius):  # pylint: disable=unused-argument
         """Define a dummy constant density function"""
         return 3
 
@@ -313,7 +316,7 @@ def test_single_tesseroid_against_constant_density(field):
     density = 2900.0
 
     # Define a constant density
-    def constant_density(radius):
+    def constant_density(radius):  # pylint: disable=unused-argument
         return density
 
     # Define a set of observation points
@@ -350,7 +353,7 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
 
 def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
-):
+):  # pylint: disable=too-many-locals
     r"""
     Analytical solutions of a spherical shell with exponential density
 
@@ -385,7 +388,9 @@ def analytical_spherical_shell_exponential(
     return data
 
 
-def build_spherical_shell(bottom, top, shape=(6, 12)):
+def build_spherical_shell(
+    bottom, top, shape=(6, 12)
+):  # pylint: disable=too-many-locals
     """
     Return a set of tesseroids modelling a spherical shell
 

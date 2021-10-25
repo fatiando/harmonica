@@ -7,7 +7,7 @@
 """
 Utils functions for tesseroids with variable density
 """
-from numba import jit, prange
+from numba import jit
 import numpy as np
 from scipy.optimize import minimize_scalar
 
@@ -127,7 +127,9 @@ def density_based_discretization(tesseroids, density):
     return np.atleast_2d(discretized_tesseroids)
 
 
-def _density_based_discretization(tesseroid, density):
+def _density_based_discretization(
+    tesseroid, density
+):  # pylint: disable=too-many-locals
     """
     Applies density-based discretization to a single tesseroid
 
