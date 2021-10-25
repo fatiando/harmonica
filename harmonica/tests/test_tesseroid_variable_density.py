@@ -421,7 +421,7 @@ def test_spherical_shell_linear_density(field, thickness):
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
 @pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
-@pytest.mark.parametrize("b_factor", (1, 2, 5, 10, 30, 100))
+@pytest.mark.parametrize("b_factor", (5, 100))
 def test_spherical_shell_exponential_density(field, thickness, b_factor):
     """
     Test numerical results against analytical solution for exponential density
