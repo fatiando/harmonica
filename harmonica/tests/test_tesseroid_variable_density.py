@@ -411,7 +411,6 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
 
 
 @require_numba
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
 @pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
 def test_spherical_shell_linear_density(field, thickness):
@@ -450,7 +449,6 @@ def test_spherical_shell_linear_density(field, thickness):
 
 
 @require_numba
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
 @pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
 @pytest.mark.parametrize("b_factor", (5, 100))
