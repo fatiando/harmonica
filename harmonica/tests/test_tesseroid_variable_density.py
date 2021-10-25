@@ -296,6 +296,38 @@ def test_density_based_discret_constant_density():
     npt.assert_allclose(tesseroids[0], tesseroid)
 
 
+# ----------------------------------------------
+# Test single tesseroid against constant density
+# ----------------------------------------------
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ("potential", "g_z"))
+def test_single_tesseroid_against_constant_density(field):
+    """
+    Test the output of a single tesseroid against one with constant density
+    """
+    # Define a single tesseroid with constant density
+    bottom, top = 5400e3, 6300e3
+    tesseroid = [-3, 3, -2, 2, bottom, top]
+    density = 2900.0
+
+    # Define a constant density
+    def constant_density(radius):
+        return density
+
+    # Define a set of observation points
+    coordinates = grid_coordinates(region=(-5, 5, -5, 5), spacing=1, extra_coords=top)
+
+    # Compare effects against the constant density implementation
+    npt.assert_allclose(
+        tesseroid_gravity(coordinates, [tesseroid], density=[density], field=field),
+        tesseroid_gravity(
+            coordinates, [tesseroid], density=constant_density, field=field
+        ),
+    )
+
+
 # ----------------------------
 # Test against spherical shell
 # ----------------------------
