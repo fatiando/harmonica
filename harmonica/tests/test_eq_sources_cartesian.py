@@ -23,7 +23,7 @@ from ..equivalent_sources.utils import (
     jacobian_numba_serial,
     pop_extra_coords,
 )
-from .utils import require_numba
+from .utils import run_only_with_numba
 
 
 def test_pop_extra_coords():
@@ -44,7 +44,7 @@ def test_pop_extra_coords():
     assert kwargs == {"bla": 1, "blabla": 2}
 
 
-@require_numba
+@run_only_with_numba
 def test_equivalent_sources_cartesian():
     """
     Check that predictions are reasonable when interpolating from one grid to
@@ -343,7 +343,7 @@ def test_equivalent_sources_jacobian_cartesian():
     npt.assert_allclose(jacobian[nearest_neighbours][0], jacobian[nearest_neighbours])
 
 
-@require_numba
+@run_only_with_numba
 def test_equivalent_sources_cartesian_parallel():
     """
     Check predictions when parallel is enabled and disabled

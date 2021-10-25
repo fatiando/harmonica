@@ -11,6 +11,20 @@ Decorators and useful functions for running tests
 import os
 import pytest
 
+
+def combine_decorators(*decorators):
+    """
+    Combine several decorators into a single one
+    """
+
+    def combination(func):
+        for decorator in reversed(decorators):
+            func = decorator(func)
+        return func
+
+    return combination
+
+
 # Check if Numba is disabled
 # (if NUMBA_DISABLE_JIT is not defined, we assume Numba jit is enabled)
 NUMBA_IS_DISABLED = bool(os.environ.get("NUMBA_DISABLE_JIT", default="0") != "0")
@@ -29,4 +43,7 @@ NUMBA_IS_DISABLED = bool(os.environ.get("NUMBA_DISABLE_JIT", default="0") != "0"
 # ``@pytest.mark.use_numba`` instead. Therefore the test function will be run
 # twice: one with Numba jit enabled, and another one with Numba jit disable to
 # check coverage.
-require_numba = pytest.mark.skipif(NUMBA_IS_DISABLED, reason="Numba jit is disabled")
+run_only_with_numba = combine_decorators(
+    pytest.mark.skipif(NUMBA_IS_DISABLED, reason="Numba jit is disabled"),
+    pytest.mark.use_numba,
+)
