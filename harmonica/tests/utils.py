@@ -43,7 +43,7 @@ NUMBA_IS_DISABLED = bool(os.environ.get("NUMBA_DISABLE_JIT", default="0") != "0"
 # ``@pytest.mark.use_numba`` instead. Therefore the test function will be run
 # twice: one with Numba jit enabled, and another one with Numba jit disable to
 # check coverage.
-test_only_with_numba = combine_decorators(
+run_only_with_numba = combine_decorators(
     pytest.mark.skipif(NUMBA_IS_DISABLED, reason="Numba jit is disabled"),
     pytest.mark.use_numba,
 )

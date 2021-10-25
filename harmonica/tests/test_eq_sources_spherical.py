@@ -15,10 +15,10 @@ import xarray.testing as xrt
 import verde as vd
 
 from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_mass_gravity
-from .utils import test_only_with_numba
+from .utils import run_only_with_numba
 
 
-@test_only_with_numba
+@run_only_with_numba
 def test_equivalent_sources_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
@@ -164,7 +164,7 @@ def test_equivalent_sources_spherical_no_projection():
         eqs.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
 
 
-@test_only_with_numba
+@run_only_with_numba
 def test_equivalent_sources_spherical_parallel():
     """
     Check predictions when parallel is enabled and disabled
