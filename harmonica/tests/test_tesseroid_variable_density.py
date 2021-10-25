@@ -181,6 +181,32 @@ def test_density_minmax(bottom, top, quadratic_density, quadratic_density_minmax
     npt.assert_allclose(density_max, expected_max)
 
 
+def test_density_minmax_exponential_function(bottom, top):
+    """
+    Test density_minmax with an extreme function
+
+    A previous implementation of density_minmax failed this test
+    """
+    # Define an expontential density that has a strong L shape
+    thickness = top - bottom
+    b_factor = 50
+
+    def exponential_density(radius):
+        """
+        Create a dummy exponential density
+        """
+        density_outer, density_inner = 2500.0, 3300.0
+        a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
+        constant_term = density_inner - a_factor
+        return (
+            a_factor * np.exp(-b_factor * (radius - bottom) / thickness) + constant_term
+        )
+
+    density_min, density_max = density_minmax(exponential_density, bottom, top)
+    npt.assert_allclose(density_min, exponential_density(top))
+    npt.assert_allclose(density_max, exponential_density(bottom))
+
+
 def test_single_density_based_discretization(
     bottom, top, quadratic_density, max_abs_diff_analytic
 ):
@@ -275,13 +301,7 @@ def test_density_based_discret_constant_density():
 # ----------------------------
 
 
-def spherical_shell_linear(
-    radius,
-    bottom,
-    top,
-    slope,
-    constant_term,
-):
+def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term):
     """
     Analytical solutions of a spherical shell with linear density
     """
@@ -289,6 +309,43 @@ def spherical_shell_linear(
         top ** 4 - bottom ** 4
     ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top ** 3 - bottom ** 3)
     potential = constant / radius
+    data = {
+        "potential": potential,
+        "g_z": 1e5 * (potential / radius),
+    }
+    return data
+
+
+def analytical_spherical_shell_exponential(
+    radius, bottom, top, a_factor, b_factor, constant_term
+):
+    r"""
+    Analytical solutions of a spherical shell with exponential density
+
+    .. math :
+        \rho(r') = a e^{- b * (r' - R_1) / T} + c
+    """
+    thickness = top - bottom
+    k = b_factor / thickness
+    potential = (
+        4
+        * np.pi
+        * GRAVITATIONAL_CONST
+        * a_factor
+        / k ** 3
+        / radius
+        * (
+            ((bottom * k) ** 2 + 2 * bottom * k + 2)
+            - ((top * k) ** 2 + 2 * top * k + 2) * np.exp(-k * thickness)
+        )
+        + 4
+        / 3
+        * np.pi
+        * GRAVITATIONAL_CONST
+        * constant_term
+        * (top ** 3 - bottom ** 3)
+        / radius
+    )
     data = {
         "potential": potential,
         "g_z": 1e5 * (potential / radius),
@@ -324,7 +381,7 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
 @require_numba
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
-@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e4, 1e5, 1e6))
+@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
 def test_spherical_shell_linear_density(field, thickness):
     """
     Test numerical results against analytical solution for linear density
@@ -333,11 +390,6 @@ def test_spherical_shell_linear_density(field, thickness):
     top = 6371e3
     bottom = top - thickness
     tesseroids = build_spherical_shell(bottom, top)
-    # Create a set of observation points located on the shell outer radius
-    region = (-180, 180, -90, 90)
-    shape = (19, 13)
-    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
-
     # Define a linear density
     density_outer, density_inner = 2500.0, 3300.0
     slope = (density_outer - density_inner) / (top - bottom)
@@ -349,14 +401,59 @@ def test_spherical_shell_linear_density(field, thickness):
         """
         return slope * radius + constant_term
 
+    # Create a set of observation points located on the shell outer radius
+    region = (-180, 180, -90, 90)
+    shape = (19, 13)
+    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
     # Get analytic solution
-    analytic = spherical_shell_linear(
+    analytic = analytical_spherical_shell_linear(
         coordinates[-1], bottom, top, slope, constant_term
     )
-
     # Check if numerical results are accurate enough
     npt.assert_allclose(
         tesseroid_gravity(coordinates, tesseroids, linear_density, field=field),
+        analytic[field],
+        rtol=ACCURACY_THRESHOLD,
+    )
+
+
+@require_numba
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ("potential", "g_z"))
+@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
+@pytest.mark.parametrize("b_factor", (1, 2, 5, 10, 30, 100))
+def test_spherical_shell_exponential_density(field, thickness, b_factor):
+    """
+    Test numerical results against analytical solution for exponential density
+    """
+    # Define a spherical shell made out of tesseroids
+    top = 6371e3
+    bottom = top - thickness
+    tesseroids = build_spherical_shell(bottom, top)
+    # Define a linear density
+    density_outer, density_inner = 2670.0, 3300.0
+    a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
+    constant_term = density_inner - a_factor
+
+    def exponential_density(radius):
+        """
+        Create a dummy exponential density
+        """
+        return (
+            a_factor * np.exp(-b_factor * (radius - bottom) / thickness) + constant_term
+        )
+
+    # Create a set of observation points located on the shell outer radius
+    region = (-180, 180, -90, 90)
+    shape = (19, 13)
+    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
+    # Get analytic solution
+    analytic = analytical_spherical_shell_exponential(
+        coordinates[-1], bottom, top, a_factor, b_factor, constant_term
+    )
+    # Check if numerical results are accurate enough
+    npt.assert_allclose(
+        tesseroid_gravity(coordinates, tesseroids, exponential_density, field=field),
         analytic[field],
         rtol=ACCURACY_THRESHOLD,
     )
