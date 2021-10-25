@@ -175,11 +175,24 @@ def density_minmax(density, bottom, top):
     """
     Compute the minimum and maximum value of a bounded density
     """
-    minimum = minimize_scalar(density, bounds=[bottom, top], method="bounded")
-    maximum = minimize_scalar(
-        lambda radius: -density(radius), bounds=[bottom, top], method="bounded"
+    # Calculate min and max density values at the top and bottom boundaries
+    density_bounds_min, density_bounds_max = np.sort([density(bottom), density(top)])
+    # Estimate the minimum value of the density function withing bounds
+    kwargs = dict(bounds=[bottom, top], method="bounded")
+    minimum = np.min(
+        (
+            minimize_scalar(density, **kwargs).fun,
+            density_bounds_min,
+        )
     )
-    return minimum.fun, -maximum.fun
+    # Estimate the maximum value of the density function withing bounds
+    maximum = np.max(
+        (
+            -minimize_scalar(lambda radius: -density(radius), **kwargs).fun,
+            density_bounds_max,
+        )
+    )
+    return minimum, maximum
 
 
 def maximum_absolute_diff(normalized_density, bottom, top):
