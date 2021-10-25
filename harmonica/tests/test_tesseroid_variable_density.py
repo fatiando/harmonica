@@ -13,7 +13,7 @@ import harmonica
 import pytest
 from verde import grid_coordinates
 
-from .utils import require_numba
+from .utils import run_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
 from .. import tesseroid_gravity
 from ..forward._tesseroid_variable_density import (
@@ -410,7 +410,7 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
     return tesseroids
 
 
-@require_numba
+@run_only_with_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
 @pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
 def test_spherical_shell_linear_density(field, thickness):
@@ -448,7 +448,7 @@ def test_spherical_shell_linear_density(field, thickness):
     )
 
 
-@require_numba
+@run_only_with_numba
 @pytest.mark.parametrize("field", ("potential", "g_z"))
 @pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
 @pytest.mark.parametrize("b_factor", (5, 100))
