@@ -11,7 +11,11 @@ import numpy as np
 import numpy.testing as npt
 import harmonica
 import pytest
+from verde import grid_coordinates
 
+from .utils import require_numba
+from ..constants import GRAVITATIONAL_CONST
+from .. import tesseroid_gravity
 from ..forward._tesseroid_variable_density import (
     straight_line,
     maximum_absolute_diff,
@@ -23,6 +27,11 @@ from ..forward._tesseroid_variable_density import (
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
 ACCURACY_THRESHOLD = 1e-3
+
+
+# ---------------------------------
+# Test density-based discretization
+# ---------------------------------
 
 
 @pytest.fixture(name="bottom")
@@ -259,3 +268,95 @@ def test_density_based_discret_constant_density():
     tesseroids = _density_based_discretization(tesseroid, stupid_constant_density)
     assert len(tesseroids) == 1
     npt.assert_allclose(tesseroids[0], tesseroid)
+
+
+# ----------------------------
+# Test against spherical shell
+# ----------------------------
+
+
+def spherical_shell_linear(
+    radius,
+    bottom,
+    top,
+    slope,
+    constant_term,
+):
+    """
+    Analytical solutions of a spherical shell with linear density
+    """
+    constant = np.pi * GRAVITATIONAL_CONST * slope * (
+        top ** 4 - bottom ** 4
+    ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top ** 3 - bottom ** 3)
+    potential = constant / radius
+    data = {
+        "potential": potential,
+        "g_z": 1e5 * (potential / radius),
+    }
+    return data
+
+
+def build_spherical_shell(bottom, top, shape=(6, 12)):
+    """
+    Return a set of tesseroids modelling a spherical shell
+
+    Parameters
+    ----------
+    bottom : float
+        Inner radius of the spherical shell
+    top : float
+        Outer radius of the spherical shell
+    shape : tuple (n_latitude, n_longitude)
+    """
+    region = (-180, 180, -90, 90)
+    n_lat, n_lon = shape[:]
+    longitude = np.linspace(*region[:2], n_lon + 1, dtype="float64")
+    latitude = np.linspace(*region[2:], n_lat + 1, dtype="float64")
+    west, east = longitude[:-1], longitude[1:]
+    south, north = latitude[:-1], latitude[1:]
+    tesseroids = []
+    for w, e in zip(west, east):
+        for s, n in zip(south, north):
+            tesseroids.append([w, e, s, n, bottom, top])
+    return tesseroids
+
+
+@require_numba
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ("potential", "g_z"))
+@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e4, 1e5, 1e6))
+def test_spherical_shell_linear_density(field, thickness):
+    """
+    Test numerical results against analytical solution for linear density
+    """
+    # Define a spherical shell made out of tesseroids
+    top = 6371e3
+    bottom = top - thickness
+    tesseroids = build_spherical_shell(bottom, top)
+    # Create a set of observation points located on the shell outer radius
+    region = (-180, 180, -90, 90)
+    shape = (19, 13)
+    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
+
+    # Define a linear density
+    density_outer, density_inner = 2500.0, 3300.0
+    slope = (density_outer - density_inner) / (top - bottom)
+    constant_term = density_outer - slope * top
+
+    def linear_density(radius):
+        """
+        Create a dummy linear density
+        """
+        return slope * radius + constant_term
+
+    # Get analytic solution
+    analytic = spherical_shell_linear(
+        coordinates[-1], bottom, top, slope, constant_term
+    )
+
+    # Check if numerical results are accurate enough
+    npt.assert_allclose(
+        tesseroid_gravity(coordinates, tesseroids, linear_density, field=field),
+        analytic[field],
+        rtol=ACCURACY_THRESHOLD,
+    )
