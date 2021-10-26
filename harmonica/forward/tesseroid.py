@@ -67,13 +67,13 @@ def tesseroid_gravity(
         spherical coordinate system.
         The longitudinal and latitudinal boundaries should be in degrees, while
         the radial ones must be in meters.
-    density : list, array or func (decorated with :func:`numba.njit`)
+    density : list, array or func decorated with :func:`numba.jit`
         List or array containing the density of each tesseroid in kg/m^3.
         Alternatively, it can be a continuous function within the boundaries of
         the tesseroids, in which case the variable density tesseroids method
         introduced in [Soler2019]_ will be used.
         If ``density`` is a function, it should be decorated with
-        :func:`numba.njit`.
+        :func:`numba.jit`.
     field : str
         Gravitational field that wants to be computed.
         The available fields are:
@@ -134,8 +134,8 @@ def tesseroid_gravity(
 
     >>> # Define a linear density function for the same tesseroid.
     >>> # It should be decorated with numba.njit
-    >>> from numba import njit
-    >>> @njit
+    >>> from numba import jit
+    >>> @jit
     ... def linear_density(radius):
     ...     density_top = 2670.
     ...     density_bottom = 3300.
