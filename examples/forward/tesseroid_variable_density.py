@@ -13,6 +13,7 @@ import cartopy.crs as ccrs
 import verde as vd
 import boule as bl
 import harmonica as hm
+from numba import njit
 
 
 # Use the WGS84 ellipsoid to obtain the mean Earth radius which we'll use to
@@ -29,7 +30,11 @@ tesseroids = (
     [-60, -50, -30, -20, mean_radius - 10e3, mean_radius],
 )
 
+# Define a linear density function. We should use the njit decorator so Numba
+# can run the forward model efficiently.
 
+
+@njit
 def density(radius):
     """Linear density function"""
     top = mean_radius

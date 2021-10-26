@@ -11,6 +11,7 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 from verde import grid_coordinates
+from numba import njit
 import harmonica
 
 from .utils import run_only_with_numba
@@ -94,6 +95,7 @@ def fixture_quadratic_density(quadratic_params):
     """
     factor, vertex_radius, vertex_density = quadratic_params
 
+    @njit
     def density(radius):
         """Quadratic density function"""
         return factor * (radius - vertex_radius) ** 2 + vertex_density
@@ -109,6 +111,7 @@ def fixture_straight_line_analytic(bottom, top, quadratic_density):
     density_bottom, density_top = quadratic_density(bottom), quadratic_density(top)
     slope = (density_top - density_bottom) / (top - bottom)
 
+    @njit
     def line(radius):
         return slope * (radius - bottom) + density_bottom
 
@@ -194,6 +197,7 @@ def test_density_minmax_exponential_function(bottom, top):
     thickness = top - bottom
     b_factor = 50
 
+    @njit
     def exponential_density(radius):
         """
         Create a dummy exponential density
@@ -272,6 +276,7 @@ def test_density_based_discret_linear_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
+    @njit
     def linear_density(radius):
         """Define a dummy linear density"""
         return 3 * radius + 2
@@ -316,6 +321,7 @@ def test_single_tesseroid_against_constant_density(field):
     density = 2900.0
 
     # Define a constant density
+    @njit
     def constant_density(radius):  # pylint: disable=unused-argument
         return density
 
@@ -431,6 +437,7 @@ def test_spherical_shell_linear_density(field, thickness):
     slope = (density_outer - density_inner) / (top - bottom)
     constant_term = density_outer - slope * top
 
+    @njit
     def linear_density(radius):
         """
         Create a dummy linear density
@@ -470,6 +477,7 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
     a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
     constant_term = density_inner - a_factor
 
+    @njit
     def exponential_density(radius):
         """
         Create a dummy exponential density

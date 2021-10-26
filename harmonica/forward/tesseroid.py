@@ -130,8 +130,11 @@ def tesseroid_gravity(
     >>> tesseroid_gravity(coordinates, tesseroid, density, field="g_z")
     array(112.54539933)
 
-    >>> # Define a linear density function for the same tesseroid
-    >>> def linear_density(radius):
+    >>> # Define a linear density function for the same tesseroid.
+    >>> # It should be decorated with numba.njit
+    >>> from numba import njit
+    >>> @njit
+    ... def linear_density(radius):
     ...     density_top = 2670.
     ...     density_bottom = 3300.
     ...     slope = (density_top - density_bottom) / (top - bottom)
@@ -156,8 +159,7 @@ def tesseroid_gravity(
         _check_points_outside_tesseroids(coordinates, tesseroids)
     # Check if density is a function or constant values
     if callable(density):
-        # Compile the density function and run density-based discretization
-        density = jit(nopython=True)(density)
+        # Run density-based discretization on each tesseroid
         tesseroids = density_based_discretization(tesseroids, density)
     else:
         density = np.atleast_1d(density).ravel()
