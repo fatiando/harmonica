@@ -12,5 +12,6 @@ References
 .. [Hofmann-WellenhofMoritz2006] Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien ; New York: Springer.
 .. [Nagy2000] Nagy, D., Papp, G. & Benedek, J.(2000). The gravitational potential and its derivatives for the prism. Journal of Geodesy 74: 552. doi:`10.1007/s001900000116 <https://doi.org/10.1007/s001900000116>`__
 .. [Nagy2002] Nagy, D., Papp, G. & Benedek, J.(2002). Corrections to "The gravitational potential and its derivatives for the prism". Journal of Geodesy. doi:`10.1007/s00190-002-0264-7 <https://doi.org/10.1007/s00190-002-0264-7>`__
+.. [Soler2019] Soler, S. R., Pesce, A., Gimenez, M. E., & Uieda, L. (2019). Gravitational field calculation in spherical coordinates using variable densities in depth, Geophysical Journal International. doi: `10.1093/gji/ggz277 <https://doi.org/10.1093/gji/ggz277>`__
 .. [Vajda2004] Vajda, P., Vaníček, P., Novák, P. and Meurers, B. (2004). On evaluation of Newton integrals in geodetic coordinates: Exact formulation and spherical approximation. Contributions to Geophysics and Geodesy, 34(4), 289-314.
 .. [TurcotteSchubert2014] Turcotte, D. L., & Schubert, G. (2014). Geodynamics (3 edition). Cambridge, United Kingdom: Cambridge University Press.

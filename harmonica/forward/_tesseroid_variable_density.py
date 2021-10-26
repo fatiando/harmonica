@@ -120,6 +120,23 @@ def gauss_legendre_quadrature_variable_density(
 def density_based_discretization(tesseroids, density):
     """
     Apply density_based discretization to a collection of tesseroids
+
+    Parameters
+    ----------
+    tesseroids : 2d-array
+        Array containing the coordinates of the tesseroid. Each row of the
+        array should contain the boundaries of each tesseroid in the following
+        order: ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The longitudinal and latitudinal boundaries should be in degrees, while
+        the radial ones must be in meters.
+    density : func
+        Continuous density function of the tesseroid in SI units.
+
+    Returns
+    -------
+    discretized_tesseroids : 2d-array
+        Array containing the coordinates of radially discretized tesseriods.
+        Each row of the array will have the boundaries for each new tesseroid.
     """
     discretized_tesseroids = []
     for tesseroid in tesseroids:
@@ -138,11 +155,17 @@ def _density_based_discretization(
     Parameters
     ----------
     tesseroid : tuple
+        Tuple containing the boundaries of the tesseroid:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        Horizontal boundaries should be in degrees and radial boundaries in
+        meters.
     density : func
+        Density func of the tesseroid in SI units.
 
     Returns
     -------
     tesseroids : list
+        List containing the boundaries of discretized tesseroids.
     """
     # Define normalized density
     def normalized_density(radius):
