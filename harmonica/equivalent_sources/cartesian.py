@@ -46,14 +46,39 @@ class EquivalentSources(vdb.BaseGridder):
     * Reduction to the pole of magnetic total field anomaly data
     * Analytical derivative calculations
 
-    Point sources are located beneath the observed potential-field measurement
-    points by default [Cooper2000]_. Custom source locations can be used by
-    specifying the *points* argument. Coefficients associated with each point
-    source are estimated through linear least-squares with damping (Tikhonov
-    0th order) regularization.
+    By default, the point sources are located beneath the observed
+    potential-field measurement points [Cooper2000]_ that are passed as
+    arguments to the :meth:`EquivalentSources.fit` method, producing the same
+    number of sources as data points.
+    Alternatively, we can reduce the number of sources by using block-averaged
+    sources [Soler2021]_: we divide the data region in blocks of equal size and
+    compute the median location of the observations points that fall under each
+    block. Then, we locate one point source beneath each one of these
+    locations. The size of the blocks, that indirectly controls how many
+    sources will be created, can be specified through the ``block_size``
+    argument.
+    We recommend choosing a ``block_size`` no larger than the resolution of the
+    grid where interpolations will be carried out.
+
+    The depth of the sources can be controlled by the ``depth`` argument.
+    If ``depth_type`` is set to ``"relative"``, then each source is located
+    beneath each data point or block-averaged location at a depth equal to its
+    elevation minus the value of the ``depth`` argument.
+    If ``depth_type`` is set to ``"constant"``, then every source is located at
+    a constant depth given by the ``depth`` argument.
+    In both cases a positive value of ``depth`` locates sources _beneath_ the
+    data points or the block-averaged locations, thus a negative ``depth`` will
+    put the sources _above_ them.
+
+    Custom source locations can be chosen by specifying the ``points``
+    argument, in which case the ``depth_type``, ``bloc_size`` and ``depth``
+    arguments will be ignored.
+
+    The corresponding coefficient for each point source is estimated through
+    linear least-squares with damping (Tikhonov 0th order) regularization.
 
     The Green's function for point mass effects used is the inverse Euclidean
-    distance between the grid coordinates and the point source:
+    distance between the observation points and the point sources:
 
     .. math::
 
@@ -78,17 +103,11 @@ class EquivalentSources(vdb.BaseGridder):
     depth : float
         Parameter used to control the depth at which the point sources will be
         located.
-        If ``depth_type`` is equal to ``"relative"``, the ``depth`` specifies
-        the relative depth at which the point sources are placed beneath the
-        observation points. Each source point will be set beneath each data
-        point at a depth calculated as the elevation of the data point minus
-        this *depth*. Use positive numbers (negative numbers would mean point
-        sources are above the data points).
-        If ``depth_type`` is equal to ``"constant"``, the ``depth`` specifies
-        the constant depth at which the point sources are placed beneath the
-        observation points. Every source point will be located at this *depth*.
-        Use positive numbers (negative numbers would mean point sources are
-        located above the zeroth level).
+        If ``depth_type`` is ``"constant"``, each source is located at the same
+        depth specified through the ``depth`` argument.
+        If ``depth_type`` is ``"relative"``, each source is located beneath
+        each data point (or block-averaged location) at a depth equal to its
+        elevation minus the ``depth`` value.
         This parameter is ignored if *points* is specified.
         Defaults to 500.
     depth_type : str
