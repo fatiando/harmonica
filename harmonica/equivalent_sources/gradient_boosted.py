@@ -162,7 +162,7 @@ class EquivalentSourcesGB(EquivalentSources):
         # Compute window spacing based on overlapping
         window_spacing = self.window_size * (1 - self.overlapping)
         # Get the region that contains every data point and every source
-        region = self._get_region_data_sources(coordinates, self.points_)
+        region = _get_region_data_sources(coordinates, self.points_)
         # The windows for sources and data points are the same, but the
         # verde.rolling_window function creates indices for the given
         # coordinates. That's why we need to create two set of window indices:
@@ -189,25 +189,26 @@ class EquivalentSourcesGB(EquivalentSources):
                 data_windows_nonempty.append(data)
         return source_windows_nonempty, data_windows_nonempty
 
-    def _get_region_data_sources(self, coordinates, points):
-        """
-        Return the region that contains every observation and every source
 
-        Parameters
-        ----------
-        coordinates : tuple
-        points : tuple
+def _get_region_data_sources(coordinates, points):
+    """
+    Return the region that contains every observation and every source
 
-        Returns
-        -------
-        region : tuple
-        """
-        data_region = get_region(coordinates)
-        sources_region = get_region(points)
-        region = (
-            min(data_region[0], sources_region[0]),
-            max(data_region[1], sources_region[1]),
-            min(data_region[2], sources_region[2]),
-            max(data_region[3], sources_region[3]),
-        )
-        return region
+    Parameters
+    ----------
+    coordinates : tuple
+    points : tuple
+
+    Returns
+    -------
+    region : tuple
+    """
+    data_region = get_region(coordinates)
+    sources_region = get_region(points)
+    region = (
+        min(data_region[0], sources_region[0]),
+        max(data_region[1], sources_region[1]),
+        min(data_region[2], sources_region[2]),
+        max(data_region[3], sources_region[3]),
+    )
+    return region
