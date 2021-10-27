@@ -35,7 +35,7 @@ def prism_layer(
     The ``prism_layer`` dataset accessor can be used to access special methods
     and attributes for the layer of prisms, like the horizontal dimensions of
     the prisms, getting the boundaries of each prisms, etc.
-    See :class:`XarrayAcessorPrismLayer` for the definition of these methods
+    See :class:`DatasetAccessorPrismLayer` for the definition of these methods
     and attributes.
 
     Parameters
