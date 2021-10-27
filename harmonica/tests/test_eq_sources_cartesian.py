@@ -8,6 +8,7 @@
 """
 Test the EquivalentSources gridder
 """
+from collections.abc import Iterable
 import warnings
 import pytest
 import numpy as np
@@ -137,31 +138,28 @@ def fixture_coordinates():
     Return a set of sample coordinates intended to be used in tests
     """
     region = (-3e3, -1e3, 5e3, 7e3)
+    shape = (9, 9)
     # Define a set of observation points with variable elevation coordinates
-    easting, northing = vd.grid_coordinates(region=region, shape=(8, 8))
-    upward = np.arange(64, dtype=float).reshape((8, 8))
+    easting, northing = vd.grid_coordinates(region=region, shape=shape)
+    upward = np.arange(shape[0] * shape[1], dtype=float).reshape(shape)
     coordinates = (easting, northing, upward)
     return coordinates
 
 
-@pytest.mark.parametrize(
-    "depth_type, upward_expected",
-    [
-        ("relative", np.arange(64, dtype=float).reshape((8, 8)) - 1.5e3),
-        ("constant", -1.5e3 * np.ones((8, 8))),
-    ],
-    ids=["relative", "constant"],
-)
-def test_equivalent_sources_build_points(
-    coordinates,
-    depth_type,
-    upward_expected,
-):
+@pytest.mark.parametrize("depth_type", ("relative", "constant"))
+def test_equivalent_sources_build_points(coordinates, depth_type):
     """
     Check if build_points method works as expected
+
+    Test only with block-averaging disabled
     """
-    eqs = EquivalentSources(depth=1.5e3, depth_type=depth_type)
+    depth = 1.5e3
+    eqs = EquivalentSources(depth=depth, depth_type=depth_type)
     points = eqs._build_points(coordinates)
+    if depth_type == "constant":
+        upward_expected = -depth * np.ones_like(coordinates[0])
+    else:
+        upward_expected = coordinates[-1] - depth
     expected = (*coordinates[:2], upward_expected)
     npt.assert_allclose(points, expected)
 
@@ -188,6 +186,50 @@ def test_equivalent_sources_build_points_bacwkards(coordinates):
     points = eqs._build_points(coordinates)
     expected = (*coordinates[:2], expected_upward)
     npt.assert_allclose(points, expected)
+
+
+@pytest.mark.parametrize(
+    "block_size", (750, (750, 1e3)), ids=["block_size as float", "block_size as tuple"]
+)
+def test_block_averaging_coordinates(coordinates, block_size):
+    """
+    Test the _block_averaging_coordinates method
+    """
+    depth = 1.5e3
+    eqs = EquivalentSources(depth=depth, block_size=block_size)
+    if isinstance(block_size, Iterable):
+        expected = (
+            [-2500.0, -1375.0, -2500.0, -1375.0, -2500.0, -1375.0],
+            [5250.0, 5250.0, 6000.0, 6000.0, 6750.0, 6750.0],
+            [11.0, 15.5, 38.0, 42.5, 65.0, 69.5],
+        )
+    else:
+        expected = (
+            [-2750, -2000, -1250, -2750, -2000, -1250, -2750, -2000, -1250],
+            [5250, 5250, 5250, 6000, 6000, 6000, 6750, 6750, 6750],
+            [10.0, 13.0, 16.0, 37.0, 40.0, 43.0, 64.0, 67.0, 70.0],
+        )
+    npt.assert_allclose(expected, eqs._block_average_coordinates(coordinates))
+
+
+@pytest.mark.parametrize("depth_type", ("constant", "relative"))
+def test_build_points_block_average(coordinates, depth_type):
+    """
+    Test the _build_points method with block-averaging
+    """
+    depth = 1.5e3
+    block_size = 750
+    eqs = EquivalentSources(depth=depth, depth_type=depth_type, block_size=block_size)
+    expected = [
+        np.array([-2750, -2000, -1250, -2750, -2000, -1250, -2750, -2000, -1250]),
+        np.array([5250, 5250, 5250, 6000, 6000, 6000, 6750, 6750, 6750]),
+        np.array([10.0, 13.0, 16.0, 37.0, 40.0, 43.0, 64.0, 67.0, 70.0]),
+    ]
+    if depth_type == "relative":
+        expected[-1] -= depth
+    if depth_type == "constant":
+        expected[-1] = np.zeros_like(expected[0]) - depth
+    npt.assert_allclose(expected, eqs._build_points(coordinates))
 
 
 def test_equivalent_sources_invalid_depth_type():
