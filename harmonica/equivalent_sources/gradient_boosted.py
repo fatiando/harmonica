@@ -102,7 +102,7 @@ class EquivalentSourcesGB(EquivalentSources):
         point_windows, data_windows = self._create_windows(coordinates)
         # Get number of windows
         n_windows = len(point_windows)
-        # Initialize errors array
+        # Initialize RMSE array
         errors = [np.sqrt(np.mean(data ** 2))]
         # Set weights_chunk to None (will be changed unless weights is None)
         weights_chunk = None
@@ -119,10 +119,9 @@ class EquivalentSourcesGB(EquivalentSources):
             # Choose weights for data points inside the window (if not None)
             if weights is not None:
                 weights_chunk = weights[data_window]
-            # Compute jacobian (for sources and data points in current window)
+            # Compute Jacobian (for sources and data points in current window)
             jacobian = self.jacobian(coords_chunk, points_chunk)
-            # Fit coefficients of sources with data points inside window
-            # (we need to copy the jacobian so it doesn't get overwritten)
+            # Fit coefficients of sources with residue points inside window
             coeffs_chunk = vdb.least_squares(
                 jacobian,
                 residue[data_window],
@@ -141,7 +140,7 @@ class EquivalentSourcesGB(EquivalentSources):
             )
             # Update the residue
             residue -= predicted
-            # Add RMS of the residue
+            # Add RMS of the residue to the RMSE
             errors.append(np.sqrt(np.mean(residue ** 2)))
             # Update source coefficients
             self.coefs_[point_window] += coeffs_chunk
