@@ -13,8 +13,8 @@ citing the following source: https://doi.org/10.5281/zenodo.3628741
 The link above includes full citation information and export formats (BibTeX,
 Mendeley, etc).
 
-Citing methods
---------------
+Citing the methods
+------------------
 
 Harmonica offers implementations of some methods that have been published in
 scientific journals. We appreciate citations of these publications as well in
