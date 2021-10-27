@@ -127,7 +127,6 @@ class EquivalentSourcesGB(EquivalentSources):
                 residue[data_window],
                 weights_chunk,
                 self.damping,
-                copy_jacobian=True,
             )
             # Predict field of the sources in the window on every data point
             predicted[:] = 0
