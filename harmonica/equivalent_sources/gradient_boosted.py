@@ -88,14 +88,13 @@ class EquivalentSourcesGB(EquivalentSources):
             self.points_ = self._build_points(coordinates)
         else:
             self.points_ = vdb.n_1d_arrays(self.points, 3)
-        # Initialize coefficients and residue arrays
+        # Initialize coefficients
         self.coefs_ = np.zeros_like(self.points_[0])
-        residue = data.copy()
         # Fit coefficients through gradient boosting
-        self._gradient_boosting(coordinates, residue, weights)
+        self._gradient_boosting(coordinates, data, weights)
         return self
 
-    def _gradient_boosting(self, coordinates, residue, weights):
+    def _gradient_boosting(self, coordinates, data, weights):
         """
         Fit source coefficients through gradient boosting
         """
@@ -104,10 +103,12 @@ class EquivalentSourcesGB(EquivalentSources):
         # Get number of windows
         n_windows = len(point_windows)
         # Initialize errors array
-        errors = [np.sqrt(np.mean(residue ** 2))]
+        errors = [np.sqrt(np.mean(data ** 2))]
         # Set weights_chunk to None (will be changed unless weights is None)
         weights_chunk = None
-        predicted = np.empty_like(residue)
+        # Initialized the predicted and residue arrays
+        predicted = np.empty_like(data)
+        residue = data.copy()
         # Iterate over the windows
         for window in range(n_windows):
             # Get source and data points indices for current window
