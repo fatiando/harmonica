@@ -98,7 +98,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonicSph.grid` method.
+        :meth:`~harmonica.EquivalentSources.grid` method.
     """
 
     # Set the default dimension names for generated outputs
@@ -131,7 +131,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         Fit the coefficients of the equivalent sources.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
+        :meth:`~harmonica.EquivalentSourcesSph.grid` method.
 
         All input arrays must have the same shape.
 
@@ -174,7 +174,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         Evaluate the estimated equivalent sources on the given set of points.
 
         Requires a fitted estimator
-        (see :meth:`~harmonica.EQLHarmonicSpherical.fit`).
+        (see :meth:`~harmonica.EquivalentSourcesSph.fit`).
 
         Parameters
         ----------
