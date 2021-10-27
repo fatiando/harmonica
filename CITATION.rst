@@ -20,4 +20,8 @@ Harmonica offers implementations of some methods that have been published in
 scientific journals. We appreciate citations of these publications as well in
 case you made use of them.
 
-* :class:`harmonica.EquivalentSources` with ``block_size`` set (block averaged sources): Soler and Uieda (2021) https://doi.org/10.1093/gji/ggab297
+* :class:`harmonica.EquivalentSources` with ``block_size`` set (block-averaged
+  sources):
+
+    Soler, S. R. and Uieda, L. (2021). Gradient-boosted equivalent sources, Geophysical Journal International.
+    doi:`10.1093/gji/ggab297 <https://doi.org/10.1093/gji/ggab297>`__
