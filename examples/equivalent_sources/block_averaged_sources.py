@@ -10,7 +10,7 @@ Gridding with block-averaged equivalent sources
 
 By default, the :class:`harmonica.EquivalentSources` class locates one point
 source beneath each data point during the fitting process. Alternatively, we
-can use another strategy: the `block-averaged sources`, introduced in
+can use another strategy: the *block-averaged sources*, introduced in
 [Soler2021]_.
 
 This method divides the survey region (defined by the data) into square blocks
