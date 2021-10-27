@@ -44,7 +44,7 @@ def prism_layer(
         List containing the coordinates of the centers of the prisms in the
         following order: ``easting``, ``northing``. The arrays must be 1d
         arrays containing the coordiantes of the centers per axis, or could be
-        2d arrays as the ones returned by :func:``numpy.meshgrid``. All
+        2d arrays as the ones returned by :func:`numpy.meshgrid`. All
         coordinates should be in meters and should define a regular grid.
     surface : 2d-array
         Array used to create the uppermost boundary of the prisms layer. All
