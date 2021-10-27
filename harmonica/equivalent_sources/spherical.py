@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent layer for generic harmonic functions in spherical coordinates
+Equivalent sources for generic harmonic functions in spherical coordinates
 """
+import warnings
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -23,11 +24,11 @@ from .utils import (
 from ..forward.utils import distance_spherical
 
 
-class EQLHarmonicSpherical(vdb.BaseGridder):
+class EquivalentSourcesSph(vdb.BaseGridder):
     r"""
-    Equivalent-layer for generic harmonic functions in spherical coordinates
+    Equivalent sources for generic harmonic functions in spherical coordinates
 
-    This equivalent layer can be used for:
+    These equivalent sources can be used for:
 
     * Spherical coordinates (geographic coordinates must be converted before
       use)
@@ -39,7 +40,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
     * Upward continuation
     * Finite-difference based derivative calculations
 
-    It cannot be used for:
+    They cannot be used for:
 
     * Joint inversion of multiple data types (e.g., gravity + gravity
       gradients)
@@ -69,8 +70,8 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         smoothness is imposed on the estimated coefficients.
         If None, no regularization is used.
     points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as the
-        equivalent layer. Coordinates are assumed to be in the following order:
+        List containing the coordinates of the equivalent point sources.
+        Coordinates are assumed to be in the following order:
         (``longitude``, ``latitude``, ``radius``). Both ``longitude`` and
         ``latitude`` must be in degrees and ``radius`` in meters.
         If None, will place one point source below each observation point at
@@ -91,13 +92,13 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
     Attributes
     ----------
     points_ : 2d-array
-        Coordinates of the point sources used to build the equivalent layer.
+        Coordinates of the equivalent point sources.
     coefs_ : array
         Estimated coefficients of every point source.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
+        :meth:`~harmonica.EQLHarmonicSph.grid` method.
     """
 
     # Set the default dimension names for generated outputs
@@ -127,7 +128,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the coefficients of the equivalent layer.
+        Fit the coefficients of the equivalent sources.
 
         The data region is captured and used as default for the
         :meth:`~harmonica.EQLHarmonicSpherical.grid` method.
@@ -170,7 +171,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
 
     def predict(self, coordinates):
         """
-        Evaluate the estimated equivalent layer on the given set of points.
+        Evaluate the estimated equivalent sources on the given set of points.
 
         Requires a fitted estimator
         (see :meth:`~harmonica.EQLHarmonicSpherical.fit`).
@@ -204,7 +205,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         self, coordinates, points, dtype="float64"
     ):  # pylint: disable=no-self-use
         """
-        Make the Jacobian matrix for the equivalent layer.
+        Make the Jacobian matrix for the equivalent sources.
 
         Each column of the Jacobian is the Green's function for a single point
         source evaluated on all observation points.
@@ -217,8 +218,8 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
             Only ``longitude``, ``latitude`` and ``radius`` will be used, all
             subsequent coordinates will be ignored.
         points : tuple of arrays
-            Tuple of arrays containing the coordinates of the point sources
-            used as equivalent layer in the following order:
+            Tuple of arrays containing the coordinates of the equivalent point
+            sources in the following order:
             (``longitude``, ``latitude``, ``radius``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
@@ -245,7 +246,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         spacing=None,
         dims=None,
         data_names=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
@@ -323,7 +324,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -342,7 +343,7 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -354,12 +355,40 @@ class EQLHarmonicSpherical(vdb.BaseGridder):
         raise NotImplementedError
 
 
+class EQLHarmonicSpherical(EquivalentSourcesSph):
+    """
+    DEPRECATED, use ``harmonica.EquivalentSourcesSph`` instead.
+
+    This class exists to support backward compatibility until next release.
+    """
+
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        relative_depth=500,
+        parallel=True,
+    ):
+        warnings.warn(
+            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
+            + "and will be removed on the next release, "
+            + "please use 'EquivalentSources' instead.",
+            FutureWarning,
+        )
+        super().__init__(
+            damping=damping,
+            points=points,
+            relative_depth=relative_depth,
+            parallel=parallel,
+        )
+
+
 @jit(nopython=True)
 def greens_func_spherical(
     longitude, latitude, radius, point_longitude, point_latitude, point_radius
 ):
     """
-    Green's function for the equivalent layer in spherical coordinates
+    Green's function for the equivalent sources in spherical coordinates
 
     Uses Numba to speed up things.
     """

@@ -15,7 +15,7 @@ import verde as vd
 from ..gravity_corrections import bouguer_correction
 from ..forward.prism import prism_gravity, _check_prisms, safe_atan2, safe_log
 
-from .utils import require_numba
+from .utils import run_only_with_numba
 
 
 def test_invalid_field():
@@ -363,7 +363,7 @@ def test_prism_against_infinite_slab():
     npt.assert_allclose(analytical, results[-1])
 
 
-@require_numba
+@run_only_with_numba
 def test_prisms_parallel_vs_serial():
     """
     Check if the parallelized run returns the same results as the serial one

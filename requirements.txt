@@ -1,6 +1,6 @@
 numpy
-scipy
 pandas
+scikit-learn
 numba
 pooch>=0.7.0
 xarray

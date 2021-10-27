@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent layer for generic harmonic functions in Cartesian coordinates
+Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
 import warnings
 import numpy as np
@@ -24,11 +24,11 @@ from .utils import (
 from ..forward.utils import distance_cartesian
 
 
-class EQLHarmonic(vdb.BaseGridder):
+class EquivalentSources(vdb.BaseGridder):
     r"""
-    Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
+    Equivalent sources for generic harmonic functions (gravity, magnetics).
 
-    This equivalent layer can be used for:
+    These equivalent sources can be used for:
 
     * Cartesian coordinates (geographic coordinates must be project before use)
     * Gravity and magnetic data (including derivatives)
@@ -37,7 +37,7 @@ class EQLHarmonic(vdb.BaseGridder):
     * Upward continuation
     * Finite-difference based derivative calculations
 
-    It cannot be used for:
+    They cannot be used for:
 
     * Regional or global data where Earth's curvature must be taken into
       account
@@ -69,8 +69,8 @@ class EQLHarmonic(vdb.BaseGridder):
         smoothness is imposed on the estimated coefficients.
         If None, no regularization is used.
     points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as the
-        equivalent layer. Coordinates are assumed to be in the following order:
+        List containing the coordinates of the equivalent point sources.
+        Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
         If None, will place one point source below each observation point at
         a fixed relative depth below the observation point [Cooper2000]_.
@@ -104,7 +104,7 @@ class EQLHarmonic(vdb.BaseGridder):
     Attributes
     ----------
     points_ : 2d-array
-        Coordinates of the point sources used to build the equivalent layer.
+        Coordinates of the equivalent point sources.
     coefs_ : array
         Estimated coefficients of every point source.
     region_ : tuple
@@ -157,7 +157,7 @@ class EQLHarmonic(vdb.BaseGridder):
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the coefficients of the equivalent layer.
+        Fit the coefficients of the equivalent sources.
 
         The data region is captured and used as default for the
         :meth:`~harmonica.EQLHarmonic.grid` method.
@@ -217,9 +217,8 @@ class EQLHarmonic(vdb.BaseGridder):
         Returns
         -------
         points : tuple of arrays
-            Tuple containing the coordinates of the point sources used as the
-            equivalent layer, in the following order:
-            (``easting``, ``northing``, ``upward``).
+            Tuple containing the coordinates of the equivalent point sources,
+            in the following order: (``easting``, ``northing``, ``upward``).
         """
         if self.depth_type == "relative":
             return (
@@ -237,7 +236,7 @@ class EQLHarmonic(vdb.BaseGridder):
 
     def predict(self, coordinates):
         """
-        Evaluate the estimated equivalent layer on the given set of points.
+        Evaluate the estimated equivalent sources on the given set of points.
 
         Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
 
@@ -270,7 +269,7 @@ class EQLHarmonic(vdb.BaseGridder):
         self, coordinates, points, dtype="float64"
     ):  # pylint: disable=no-self-use
         """
-        Make the Jacobian matrix for the equivalent layer.
+        Make the Jacobian matrix for the equivalent sources.
 
         Each column of the Jacobian is the Green's function for a single point
         source evaluated on all observation points.
@@ -283,8 +282,8 @@ class EQLHarmonic(vdb.BaseGridder):
             Only ``easting``, ``northing`` and ``upward`` will be used, all
             subsequent coordinates will be ignored.
         points : tuple of arrays
-            Tuple of arrays containing the coordinates of the point sources
-            used as equivalent layer in the following order:
+            Tuple of arrays containing the coordinates of the equivalent point
+            sources in the following order:
             (``easting``, ``northing``, ``upward``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
@@ -507,10 +506,42 @@ class EQLHarmonic(vdb.BaseGridder):
         return table
 
 
+class EQLHarmonic(EquivalentSources):
+    """
+    DEPRECATED, use ``harmonica.EquivalentSources`` instead.
+
+    This class exists to support backward compatibility until next release.
+    """
+
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        depth=500,
+        depth_type="relative",
+        parallel=True,
+        **kwargs,
+    ):
+        warnings.warn(
+            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
+            + "and will be deprecated on the next release, "
+            + "please use 'EquivalentSources' instead.",
+            FutureWarning,
+        )
+        super().__init__(
+            damping=damping,
+            points=points,
+            depth=depth,
+            depth_type=depth_type,
+            parallel=parallel,
+            **kwargs,
+        )
+
+
 @jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
-    Green's function for the equivalent layer in Cartesian coordinates
+    Green's function for the equivalent sources in Cartesian coordinates
 
     Uses Numba to speed up things.
     """

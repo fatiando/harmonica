@@ -16,14 +16,13 @@ from .forward.point_mass import point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
-from .equivalent_layer.harmonic import EQLHarmonic
-from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
+from .equivalent_sources.cartesian import EquivalentSources, EQLHarmonic
+from .equivalent_sources.spherical import (
+    EquivalentSourcesSph,
+    EQLHarmonicSpherical,
+)
 
-# This file is generated automatically by setuptools_scm
-from . import _version
-
-# Add a "v" to the version number
-__version__ = f"v{_version.version}"
+from .version import __version__
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
