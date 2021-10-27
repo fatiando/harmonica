@@ -25,6 +25,7 @@ Equivalent Sources
 
     EquivalentSources
     EquivalentSourcesSph
+    EquivalentSourcesGB
 
 Forward modelling
 -----------------

@@ -21,6 +21,7 @@ from .equivalent_sources.spherical import (
     EquivalentSourcesSph,
     EQLHarmonicSpherical,
 )
+from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
 
 from .version import __version__
 

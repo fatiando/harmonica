@@ -40,7 +40,7 @@ class EquivalentSourcesGB(EquivalentSources):
             points=points,
             depth=depth,
             depth_type=depth_type,
-            #  block_size=None,
+            block_size=None,
             parallel=parallel,
         )
         self.random_state = random_state
