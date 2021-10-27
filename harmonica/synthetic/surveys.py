@@ -49,8 +49,7 @@ def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
 
     See also
     --------
-    datasets.fetch_britain_magnetic:
-        Fetch total-field magnetic anomaly data of Great Britain.
+    harmonica.datasets.fetch_britain_magnetic
     """
     # Sanity checks for region and data_region
     if region is not None:
@@ -102,7 +101,7 @@ def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
 
     See also
     --------
-    datasets.fetch_south_africa_gravity
+    harmonica.datasets.fetch_south_africa_gravity
     """
     # Sanity checks for region and data_region
     if region is not None:
