@@ -8,9 +8,10 @@
 Gridding with block-averaged equivalent sources
 ===============================================
 
-By default, the ``EquivalentSources`` class locates one point source beneath
-each data point during the fitting process. Alternatively, we can use another
-strategy: the `block-averaged sources`, introduced in [Soler2021]_.
+By default, the :class:`harmonica.EquivalentSources` class locates one point
+source beneath each data point during the fitting process. Alternatively, we
+can use another strategy: the `block-averaged sources`, introduced in
+[Soler2021]_.
 
 This method divides the survey region (defined by the data) into square blocks
 of equal size, computes the median coordinates of the data points that fall
@@ -21,15 +22,16 @@ blocks that won't get any source.
 This method has two main benefits:
 
 - It lowers the amount of sources involved in the interpolation, therefore it
-reduces the computer memory requirements and the computation time of the
-fitting and prediction processes.
+  reduces the computer memory requirements and the computation time of the
+  fitting and prediction processes.
 - It might avoid to produce aliasing on the output grids, specially for
-anisotropic surveys, like airborne ones.
+  surveys with oversampling along a particular direction, like airborne ones.
 
-We can make use of the block-averaged sources within the ``EquivalentSources``
-class by passing a value to the ``block_size`` parameter, which controls the
-size of the blocks. We recommend using a ``block_size`` not larger than the
-desired resolution of the interpolation grid.
+We can make use of the block-averaged sources within the
+:class:`harmonica.EquivalentSources` class by passing a value to the
+``block_size`` parameter, which controls the size of the blocks. We recommend
+using a ``block_size`` not larger than the desired resolution of the
+interpolation grid.
 
 The depth of the sources can be set analogously to the regular equivalent
 sources: we can use a ``constant`` depth (every source is located at the same
