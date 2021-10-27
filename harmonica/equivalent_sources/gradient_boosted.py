@@ -147,13 +147,14 @@ class EquivalentSourcesGB(EquivalentSources):
             self.coefs_[point_window] += coeffs_chunk
         self.errors_ = np.array(errors)
 
-    def _create_windows(self, coordinates):
+    def _create_windows(self, coordinates, shuffle_windows=True):
         """
         Create indices of sources and data points for each overlapping window
 
         Parameters
         ----------
         coordinates : tuple
+        shuffle_windows : bool
 
         Returns
         -------
@@ -175,9 +176,10 @@ class EquivalentSourcesGB(EquivalentSources):
         source_windows = [i[0] for i in source_windows.ravel()]
         data_windows = [i[0] for i in data_windows.ravel()]
         # Shuffle windows
-        source_windows, data_windows = shuffle(
-            source_windows, data_windows, random_state=self.random_state
-        )
+        if shuffle_windows:
+            source_windows, data_windows = shuffle(
+                source_windows, data_windows, random_state=self.random_state
+            )
         # Remove empty windows
         source_windows_nonempty = []
         data_windows_nonempty = []
