@@ -40,7 +40,7 @@ class EquivalentSourcesGB(EquivalentSources):
             points=points,
             depth=depth,
             depth_type=depth_type,
-            block_size=None,
+            block_size=block_size,
             parallel=parallel,
         )
         self.random_state = random_state
@@ -51,7 +51,7 @@ class EquivalentSourcesGB(EquivalentSources):
         Fit the coefficients of the equivalent sources.
 
         The fitting process is carried out through the gradient-boosting
-        algoritm.
+        algorithm.
         The data region is captured and used as default for the
         :meth:`~harmonica.EquivalentSourcesGB.grid` method.
 
