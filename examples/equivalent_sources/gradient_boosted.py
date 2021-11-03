@@ -12,7 +12,7 @@ When trying to grid a very large dataset, the regular
 :class:`harmonica.EquivalentSources` might not be the best option: they will
 require a lot of memory for storing the Jacobian matrices involved in the
 fitting process of the source coefficients. Instead, we can make use of the
-gradient-boosted equivalent sources, introduced in [Soler2021]__ and available
+gradient-boosted equivalent sources, introduced in [Soler2021]_ and available
 in Harmonica through the :class:`harmonica.EquivalentSourcesGB` class. The
 gradient-boosted equivalent sources divide the survey region in overlapping
 windows of equal size and fit the source coefficients iteratively, considering
@@ -21,11 +21,11 @@ which the windows are visited is randomized to improve convergence of the
 algorithm.
 
 Here we will produce a grid out of a portion of the ground gravity survey from
-South Africa (see :func:`harmonica.fetch_south_africa_gravity`) using the
-gradient-boosted equivalent sources. This particlar dataset is not very large,
-in fact we could use the :class:`harmonica.EquivalentSources` instead. But we
-will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how to use
-them on a simple example.
+South Africa (see :func:`harmonica.datasets.fetch_south_africa_gravity`) using
+the gradient-boosted equivalent sources. This particlar dataset is not very
+large, in fact we could use the :class:`harmonica.EquivalentSources` instead.
+But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
+to use them on a simple example.
 
 """
 import matplotlib.pyplot as plt
