@@ -85,14 +85,6 @@ print("Number of sources:", eqs_gb.points_[0].size)
 # interpolation will be.
 print("R² score:", eqs_gb.score(coordinates, data.gravity_disturbance))
 
-# Plot the fitting errors on each iteration of the gradient-boosting algorithm.
-# The curve must decrease and approach asymptotically to its minimum.
-plt.plot(eqs_gb.errors_)
-plt.ylabel("RMS error [mGal]")
-plt.xlabel("Iteration number")
-plt.title("RMS error after each iteration of the gradient-boosting algorithm")
-plt.show()
-
 # Interpolate data on a regular grid with 2 km spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1000 m, we're effectively upward-continuing the data.
