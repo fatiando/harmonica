@@ -78,6 +78,26 @@ def test_custom_points(region):
     npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
 
 
+@pytest.mark.parametrize("spacing", (100, 500, 1e3))
+@pytest.mark.parametrize("window_size", (1e3, 2e3, 4e3))
+@pytest.mark.parametrize("dtype, itemsize", [("float32", 4), ("float64", 8)])
+def test_memory_estimation(spacing, window_size, dtype, itemsize):
+    """
+    Test the estimate_required_memory class method
+    """
+    region = (-1e3, 5e3, 2e3, 8e3)
+    coordinates = vd.grid_coordinates(region=region, spacing=spacing, extra_coords=0)
+    # Compute expected required memory
+    sources_p_window = (int(window_size / spacing) + 1) ** 2
+    data_p_window = (int(window_size / spacing) + 1) ** 2
+    expected_required_memory = data_p_window * sources_p_window * itemsize
+    # Estimate required memory
+    required_memory = EquivalentSourcesGB.estimate_required_memory(
+        coordinates, window_size=window_size, dtype=dtype
+    )
+    assert required_memory == expected_required_memory
+
+
 # -----------------------------------------------------------------------
 # Test the fitting and predictions of gradient-boosted equivalent sources
 # -----------------------------------------------------------------------

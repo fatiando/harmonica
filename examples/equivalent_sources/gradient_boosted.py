@@ -67,6 +67,12 @@ data["gravity_disturbance"] = data.gravity - ellipsoid.normal_gravity(
 # run.
 window_size = 100e3
 block_size = 2e3
+
+jacobian_max_size = hm.EquivalentSourcesGB.estimate_required_memory(
+    coordinates, window_size, block_size=block_size
+)
+print(jacobian_max_size)
+
 eqs_gb = hm.EquivalentSourcesGB(
     depth=9e3,
     damping=10,
