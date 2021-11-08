@@ -59,20 +59,23 @@ data["gravity_disturbance"] = data.gravity - ellipsoid.normal_gravity(
     data.latitude, data.elevation
 )
 
-# Create the equivalent sources.
-# We'll use the block-averaged sources with a block size of 2km, and we will
-# set the sources at a relative depth of 9km.
-# Lets use a damping of 10, and a window size of 100km x 100km.
-# By specifying the random_state, we ensure to get the same solution on every
-# run.
+# Start building the equivalent sources.
+# We'll use the block-averaged sources with a block size of 2km and windows of
+# 100km x 100km.
 window_size = 100e3
 block_size = 2e3
 
-jacobian_max_size = hm.EquivalentSourcesGB.estimate_required_memory(
-    coordinates, window_size, block_size=block_size
+# Let's estimate the memory required to store the largest Jacobian when using
+# these values for the window_size and the block_size.
+jacobian_req_memory = hm.EquivalentSourcesGB.estimate_required_memory(
+    coordinates, window_size=window_size, block_size=block_size
 )
-print(jacobian_max_size)
+print(f"Required memory for storing the largest Jacobian: {jacobian_req_memory} bytes")
 
+# Create the equivalent sources
+# Let's use a damping of 10 and set the sources at a relative depth of 9km.
+# By specifying the random_state, we ensure to get the same solution on every
+# run.
 eqs_gb = hm.EquivalentSourcesGB(
     depth=9e3,
     damping=10,
