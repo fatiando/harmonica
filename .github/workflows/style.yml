@@ -39,9 +39,6 @@ jobs:
       - name: Check code format
         run: make black-check
 
-      - name: Check license notice in source files
-        run: make license-check
-
   flake8:
     name: flake8 [style]
     runs-on: ubuntu-latest
@@ -87,3 +84,23 @@ jobs:
 
       - name: Linting (pylint)
         run: make lint
+
+  license:
+    name: license notice [style]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: List installed packages
+        run: pip freeze
+
+      - name: Check code style
+        run: make license-check
