@@ -72,10 +72,10 @@ class EquivalentSourcesGB(EquivalentSources):
         Default to None.
     window_size : float
         Size of overlapping windows used during the gradient-boosting
-        algorithm. Smaller windows reduce the memory requirements of the
-        source coefficients fitting process. Very small windows may impact on
+        algorithm. Smaller windows reduce the memory requirements of the source
+        coefficients fitting process. Very small windows may impact on the
+        accuracy of the interpolations.
         Defaults to 5000.
-        the accuracy of the interpolations.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
