@@ -39,6 +39,9 @@ jobs:
       - name: Check code format
         run: make black-check
 
+      - name: Check license notice in source files
+        run: make license-check
+
   flake8:
     name: flake8 [style]
     runs-on: ubuntu-latest
