@@ -180,7 +180,7 @@ def test_gradient_boosted_eqs_random_state(region):
     npt.assert_allclose(eqs_a.coefs_, eqs_b.coefs_)
 
 
-def test_same_number_of_windows_data_and_sources():  # pytest: disable=protected-access
+def test_same_number_of_windows_data_and_sources():  # pylint: disable=protected-access
     """
     Test if _create_windows generates the same num of windows for data and srcs
     """
@@ -203,7 +203,7 @@ def test_same_number_of_windows_data_and_sources():  # pytest: disable=protected
     assert len(source_windows) == len(data_windows)
 
 
-def test_same_windows_data_and_sources():  # pytest: disable=protected-access
+def test_same_windows_data_and_sources():  # pylint: disable=protected-access
     """
     Test if _create_windows generates the same windows for data and sources
     """
