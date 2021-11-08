@@ -46,14 +46,39 @@ class EquivalentSources(vdb.BaseGridder):
     * Reduction to the pole of magnetic total field anomaly data
     * Analytical derivative calculations
 
-    Point sources are located beneath the observed potential-field measurement
-    points by default [Cooper2000]_. Custom source locations can be used by
-    specifying the *points* argument. Coefficients associated with each point
-    source are estimated through linear least-squares with damping (Tikhonov
-    0th order) regularization.
+    By default, the point sources are located beneath the observed
+    potential-field measurement points [Cooper2000]_ that are passed as
+    arguments to the :meth:`EquivalentSources.fit` method, producing the same
+    number of sources as data points.
+    Alternatively, we can reduce the number of sources by using block-averaged
+    sources [Soler2021]_: we divide the data region in blocks of equal size and
+    compute the median location of the observations points that fall under each
+    block. Then, we locate one point source beneath each one of these
+    locations. The size of the blocks, that indirectly controls how many
+    sources will be created, can be specified through the ``block_size``
+    argument.
+    We recommend choosing a ``block_size`` no larger than the resolution of the
+    grid where interpolations will be carried out.
+
+    The depth of the sources can be controlled by the ``depth`` argument.
+    If ``depth_type`` is set to ``"relative"``, then each source is located
+    beneath each data point or block-averaged location at a depth equal to its
+    elevation minus the value of the ``depth`` argument.
+    If ``depth_type`` is set to ``"constant"``, then every source is located at
+    a constant depth given by the ``depth`` argument.
+    In both cases a positive value of ``depth`` locates sources _beneath_ the
+    data points or the block-averaged locations, thus a negative ``depth`` will
+    put the sources _above_ them.
+
+    Custom source locations can be chosen by specifying the ``points``
+    argument, in which case the ``depth_type``, ``block_size`` and ``depth``
+    arguments will be ignored.
+
+    The corresponding coefficient for each point source is estimated through
+    linear least-squares with damping (Tikhonov 0th order) regularization.
 
     The Green's function for point mass effects used is the inverse Euclidean
-    distance between the grid coordinates and the point source:
+    distance between the observation points and the point sources:
 
     .. math::
 
@@ -78,17 +103,11 @@ class EquivalentSources(vdb.BaseGridder):
     depth : float
         Parameter used to control the depth at which the point sources will be
         located.
-        If ``depth_type`` is equal to ``"relative"``, the ``depth`` specifies
-        the relative depth at which the point sources are placed beneath the
-        observation points. Each source point will be set beneath each data
-        point at a depth calculated as the elevation of the data point minus
-        this *depth*. Use positive numbers (negative numbers would mean point
-        sources are above the data points).
-        If ``depth_type`` is equal to ``"constant"``, the ``depth`` specifies
-        the constant depth at which the point sources are placed beneath the
-        observation points. Every source point will be located at this *depth*.
-        Use positive numbers (negative numbers would mean point sources are
-        located above the zeroth level).
+        If ``depth_type`` is ``"constant"``, each source is located at the same
+        depth specified through the ``depth`` argument.
+        If ``depth_type`` is ``"relative"``, each source is located beneath
+        each data point (or block-averaged location) at a depth equal to its
+        elevation minus the ``depth`` value.
         This parameter is ignored if *points* is specified.
         Defaults to 500.
     depth_type : str
@@ -96,6 +115,14 @@ class EquivalentSources(vdb.BaseGridder):
         The two available strategies are ``"constant"`` and ``"relative"``.
         This parameter is ignored if *points* is specified.
         Defaults to ``"relative"``.
+    block_size: float, tuple = (s_north, s_east) or None
+        Size of the blocks used on block-averaged equivalent sources.
+        If a single value is passed, the blocks will have a square shape.
+        Alternatively, the dimensions of the blocks in the South-North and
+        West-East directions can be specified by passing a tuple.
+        If None, no block-averaging is applied.
+        This parameter is ignored if *points* are specified.
+        Default to None.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -110,7 +137,11 @@ class EquivalentSources(vdb.BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EquivalentSources.grid` method.
+
+    References
+    ----------
+    [Soler2021]_
     """
 
     # Set the default dimension names for generated outputs
@@ -130,6 +161,7 @@ class EquivalentSources(vdb.BaseGridder):
         points=None,
         depth=500,
         depth_type="relative",
+        block_size=None,
         parallel=True,
         **kwargs,
     ):
@@ -137,6 +169,7 @@ class EquivalentSources(vdb.BaseGridder):
         self.points = points
         self.depth = depth
         self.depth_type = depth_type
+        self.block_size = block_size
         self.parallel = parallel
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
@@ -160,7 +193,7 @@ class EquivalentSources(vdb.BaseGridder):
         Fit the coefficients of the equivalent sources.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EquivalentSources.grid` method.
 
         All input arrays must have the same shape.
 
@@ -198,13 +231,14 @@ class EquivalentSources(vdb.BaseGridder):
         """
         Generate coordinates of point sources based on the data points
 
-        Locate the point sources following the chosen ``depth_type`` strategy.
+        Locate the point sources following the chosen ``depth_type`` strategy
+        and apply block-averaging if ``block_size`` is not None.
         If ``depth_type`` is equal to ``"relative"``, the point sources will be
-        placed beneath the observation points at a depth calculated as the
-        elevation of the data point minus the ``depth``.
+        placed beneath the (averaged) observation points at a depth calculated
+        as the elevation of the data point minus the ``depth``.
         If ``depth_type`` is equal to ``"constant"``, the point sources will be
-        placed beneath the observation points at the same height equal to minus
-        ``depth``.
+        placed beneath the (averaged) observation points at the same height
+        equal to minus ``depth``.
 
         Parameters
         ----------
@@ -220,6 +254,8 @@ class EquivalentSources(vdb.BaseGridder):
             Tuple containing the coordinates of the equivalent point sources,
             in the following order: (``easting``, ``northing``, ``upward``).
         """
+        if self.block_size is not None:
+            coordinates = self._block_average_coordinates(coordinates)
         if self.depth_type == "relative":
             return (
                 coordinates[0],
@@ -234,11 +270,39 @@ class EquivalentSources(vdb.BaseGridder):
             )
         return None
 
+    def _block_average_coordinates(self, coordinates):
+        """
+        Run a block-averaging process on observation points
+
+        Apply a median as the reduction function. The blocks will have the size
+        specified through the ``block_size`` argument on the constructor.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+
+        Returns
+        -------
+        blocked_coords : tuple of arrays
+            Tuple containing the coordinates of the block-averaged observation
+            points.
+        """
+        reducer = vd.BlockReduce(
+            spacing=self.block_size, reduction=np.median, drop_coords=False
+        )
+        # Must pass a dummy data array to BlockReduce.filter(), we choose an
+        # array full of zeros. We will ignore the returned reduced dummy array.
+        blocked_coords, _ = reducer.filter(coordinates, np.zeros_like(coordinates[0]))
+        return blocked_coords
+
     def predict(self, coordinates):
         """
         Evaluate the estimated equivalent sources on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
+        Requires a fitted estimator (see
+        :meth:`~harmonica.EquivalentSources.fit`).
 
         Parameters
         ----------
