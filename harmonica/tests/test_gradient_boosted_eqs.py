@@ -59,6 +59,25 @@ def test_get_region_data_sources(data_region, sources_region, expected_region):
     npt.assert_allclose(region, expected_region)
 
 
+def test_custom_points(region):
+    """
+    Check that passing in custom points works and actually uses the points
+    """
+    # Define sample data
+    _, _, coordinates, data = build_sample_sources_and_data(
+        region=region, coords_shape=(8, 8)
+    )
+    # Pass a custom set of point sources
+    points_custom = tuple(
+        i.ravel()
+        for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
+    )
+    eqs = EquivalentSourcesGB(points=points_custom, window_size=500)
+    eqs.fit(coordinates, data)
+    # Check that the proper source locations were set
+    npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
+
+
 # -----------------------------------------------------------------------
 # Test the fitting and predictions of gradient-boosted equivalent sources
 # -----------------------------------------------------------------------
