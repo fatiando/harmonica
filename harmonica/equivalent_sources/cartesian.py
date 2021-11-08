@@ -71,7 +71,7 @@ class EquivalentSources(vdb.BaseGridder):
     put the sources _above_ them.
 
     Custom source locations can be chosen by specifying the ``points``
-    argument, in which case the ``depth_type``, ``bloc_size`` and ``depth``
+    argument, in which case the ``depth_type``, ``block_size`` and ``depth``
     arguments will be ignored.
 
     The corresponding coefficient for each point source is estimated through
