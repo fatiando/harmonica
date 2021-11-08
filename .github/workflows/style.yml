@@ -99,6 +99,9 @@ jobs:
         with:
           python-version: "3.8"
 
+      - name: Install requirements
+        run: pip install pathspec
+
       - name: List installed packages
         run: pip freeze
 
