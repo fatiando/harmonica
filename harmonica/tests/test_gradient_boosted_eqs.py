@@ -14,7 +14,7 @@ import numpy.testing as npt
 import verde as vd
 import harmonica as hm
 
-from .utils import run_only_with_numba, assert_mse
+from .utils import run_only_with_numba
 from .. import EquivalentSourcesGB
 from ..equivalent_sources.gradient_boosted import _get_region_data_sources
 
@@ -143,26 +143,22 @@ def test_gradient_boosted_eqs_single_window(region):
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_large_region():
+def test_gradient_boosted_eqs_predictions(region):
     """
-    Test GB eq-sources on a large region
-
-    The iterative process ignores the effect of sources on far observation
-    points. If the region is very large, this error should be diminished.
+    Test GB eq-sources predictions
     """
     # Define a large region
-    region = (-1000e3, 1000e3, -1000e3, 1000e3)
-    points, masses, coordinates, data = build_sample_sources_and_data(region=region)
+    points, masses, coordinates, data = build_sample_sources_and_data(region)
     # The interpolation should be sufficiently accurate on the data points
-    eqs = EquivalentSourcesGB(window_size=100e3)
+    eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
     eqs.fit(coordinates, data)
-    assert_mse(data, eqs.predict(coordinates), tol=1e-5 * vd.maxabs(data))
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=1e-2 * vd.maxabs(data))
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
     true = hm.point_mass_gravity(grid, points, masses, field="g_z")
-    assert_mse(true, eqs.predict(grid), tol=1e-3 * vd.maxabs(data))
+    npt.assert_allclose(true, eqs.predict(grid), atol=1e-2 * vd.maxabs(true))
 
 
 @run_only_with_numba

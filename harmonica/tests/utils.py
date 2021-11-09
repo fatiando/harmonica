@@ -11,8 +11,6 @@ Decorators and useful functions for running tests
 import os
 import pytest
 
-from sklearn.metrics import mean_squared_error
-
 
 def combine_decorators(*decorators):
     """
@@ -49,11 +47,3 @@ run_only_with_numba = combine_decorators(
     pytest.mark.skipif(NUMBA_IS_DISABLED, reason="Numba jit is disabled"),
     pytest.mark.use_numba,
 )
-
-
-def assert_mse(x, y, tol):
-    """
-    Assert that the MSE between two arrays is lower than a tolerance
-    """
-    mse = mean_squared_error(x, y)
-    assert mse < tol
