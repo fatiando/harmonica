@@ -54,7 +54,7 @@ def apply_filter(grid, fft_filter, **kwargs):
         )
     # Compute Fourier Transform of the grid
     fourier_transform = fft(grid)
-    # Compute the derivative in the frequency domain
+    # Apply the filter in the frequency domain
     filtered_ft = fft_filter(fourier_transform, **kwargs)
     # Compute inverse FFT
     output_grid = ifft(
