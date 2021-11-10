@@ -19,29 +19,32 @@ import verde.base as vdb
 
 from .. import EquivalentSources, EQLHarmonic, point_mass_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
-from ..equivalent_sources.utils import (
-    jacobian_numba_serial,
-    pop_extra_coords,
-)
+from ..equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba
 
 
-def test_pop_extra_coords():
+def build_sample_sources_and_data(region, coords_shape=(40, 40)):
     """
-    Test _pop_extra_coords private function
+    Build a set of sample point sources, data and observation points
     """
-    # Check if extra_coords is removed from kwargs
-    kwargs = {"bla": 1, "blabla": 2, "extra_coords": 1400.0}
-    with warnings.catch_warnings(record=True) as warn:
-        pop_extra_coords(kwargs)
-        assert len(warn) == 1
-        assert issubclass(warn[0].category, UserWarning)
-    assert "extra_coords" not in kwargs
+    # Build synthetic point masses
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    # Define a set of observation points
+    coordinates = vd.grid_coordinates(region=region, shape=coords_shape, extra_coords=0)
+    # Get synthetic data
+    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    # Create synthetic weights
+    weights = np.ones_like(data)
+    return points, masses, coordinates, data, weights
 
-    # Check if kwargs is not touched if no extra_coords are present
-    kwargs = {"bla": 1, "blabla": 2}
-    pop_extra_coords(kwargs)
-    assert kwargs == {"bla": 1, "blabla": 2}
+
+@pytest.fixture(name="region")
+def fixture_region():
+    """
+    Return a sample region
+    """
+    return (-3e3, -1e3, 5e3, 7e3)
 
 
 @run_only_with_numba
@@ -407,3 +410,61 @@ def test_backward_eqlharmonic(depth_type):
         eqs.grid(upward=2e3, shape=shape, region=region),
         eql_harmonic.grid(upward=2e3, shape=shape, region=region),
     )
+
+
+#  @pytest.mark.use_numba
+
+
+@run_only_with_numba
+@pytest.mark.parametrize(
+    "block_size", (None, 500), ids=["block_size_none", "block_size_500"]
+)
+@pytest.mark.parametrize(
+    "custom_points", (False, True), ids=["no_custom_points", "custom_points"]
+)
+@pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
+@pytest.mark.parametrize("dtype", ("float64", "float32"))
+def test_dtype(region, block_size, custom_points, weights_none, dtype):
+    """
+    Test dtype argument on EquivalentSources
+    """
+    _, _, coordinates, data, weights = build_sample_sources_and_data(region)
+    # Define the points argument for EquivalentSources
+    points = None
+    if custom_points:
+        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+    # Define the points argument for EquivalentSources.fit()
+    if weights_none:
+        weights = None
+    # Initialize and fit the equivalent sources
+    eqs = EquivalentSources(points=points, block_size=block_size, dtype=dtype)
+    eqs.fit(coordinates, data, weights)
+    # Make some predictions
+    prediction = eqs.predict(coordinates)
+    # Check data type of created objects
+    for p in eqs.points_:
+        assert p.dtype == np.dtype(dtype)
+    assert prediction.dtype == np.dtype(dtype)
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("dtype", ("float64", "float32"))
+def test_jacobian_dtype(region, dtype):
+    """
+    Test dtype of Jacobian when changing dtype argument on EquivalentSources
+    """
+    _, _, coordinates, data, weights = build_sample_sources_and_data(
+        region, coords_shape=(10, 10)
+    )
+    # Create custom set of point sources
+    points = tuple(
+        p.ravel() for p in vd.grid_coordinates(region, shape=(6, 6), extra_coords=-2e3)
+    )
+    # Ravel the coordinates
+    coordinates = tuple(c.ravel() for c in coordinates)
+    # Initialize and fit the equivalent sources
+    eqs = EquivalentSources(points=points, dtype=dtype)
+    # Build jacobian matrix
+    jacobian = eqs.jacobian(coordinates, points)
+    # Check data type of the Jacobian
+    assert jacobian.dtype == np.dtype(dtype)

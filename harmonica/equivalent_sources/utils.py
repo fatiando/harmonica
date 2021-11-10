@@ -11,6 +11,32 @@ from warnings import warn
 from numba import jit, prange
 
 
+def cast_fit_input(coordinates, data, weights, dtype):
+    """
+    Cast the inputs of the fit method to the given dtype
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...).
+    data : array
+        The data values of each data point.
+    weights : None or array
+        If not None, then the weights assigned to each data point.
+
+    Returns
+    -------
+    casted_inputs
+        The casted inputs in the same order.
+    """
+    coordinates = tuple(c.astype(dtype) for c in coordinates)
+    data = data.astype(dtype)
+    if weights is not None:
+        weights = weights.astype(dtype)
+    return coordinates, data, weights
+
+
 def pop_extra_coords(kwargs):
     """
     Remove extra_coords from kwargs
