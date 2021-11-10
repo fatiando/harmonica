@@ -15,7 +15,7 @@ import verde as vd
 from ..gravity_corrections import bouguer_correction
 from ..forward.prism import prism_gravity, _check_prisms, safe_atan2, safe_log
 
-from .utils import require_numba
+from .utils import run_only_with_numba
 
 
 def test_invalid_field():
@@ -134,25 +134,25 @@ def test_g_z_symmetry_outside():
     prism we will define several set of computation points:
 
     A. Two points located on the vertical axis of the prism (``easting == 0``
-       and ``northing == 0``), one above and one bellow the prism at the same
+       and ``northing == 0``), one above and one below the prism at the same
        distance from its center.
     B. Four points located on the ``upward == 0`` plane around the prism
        distributed normally to its faces , i.e. only one of the horizontal
        coordinates will be nonzero.
     C. Same as points defined in B, but located on a plane above the prism.
-    D. Same as points defined in B, but located on a plane bellow the prism.
+    D. Same as points defined in B, but located on a plane below the prism.
     E. Same as points defined in B, but located on a plane slightly above the
        ``upward == 0`` plane.
-    F. Same as points defined in B, but located on a plane slightly bellow the
+    F. Same as points defined in B, but located on a plane slightly below the
        ``upward == 0`` plane.
     G. Four points located on the ``upward == 0`` plane around the prism
        distributed on the diagonal directions , i.e. both horizontal
        coordinates will be equal and nonzero.
     H. Same as points defined in G, but located on an plane above the prism.
-    I. Same as points defined in G, but located on an plane bellow the prism.
+    I. Same as points defined in G, but located on an plane below the prism.
     J. Same as points defined in G, but located on a plane slightly above the
        ``upward == 0`` plane.
-    K. Same as points defined in G, but located on a plane slightly bellow the
+    K. Same as points defined in G, but located on a plane slightly below the
        ``upward == 0`` plane.
 
     All computation points defined on the previous groups fall outside of the
@@ -200,7 +200,7 @@ def test_g_z_symmetry_outside():
         )
     # Check symmetries
     # Values on A must be opposite, and the value of g_z at the point above the
-    # prism must have the same sign as the density, while the one bellow should
+    # prism must have the same sign as the density, while the one below should
     # have the opposite
     npt.assert_allclose(results["A"][0], -results["A"][1])
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
@@ -213,11 +213,11 @@ def test_g_z_symmetry_outside():
         npt.assert_allclose(0, results[group])
     # Values on C and D, E and F, H and I, J and K must be opposite
     # Moreover, the set of points that are above the prism must have the same
-    # sign as the density, while the ones bellow should have the opposite
-    for above, bellow in (("C", "D"), ("E", "F"), ("H", "I"), ("J", "K")):
-        npt.assert_allclose(results[above], -results[bellow])
+    # sign as the density, while the ones below should have the opposite
+    for above, below in (("C", "D"), ("E", "F"), ("H", "I"), ("J", "K")):
+        npt.assert_allclose(results[above], -results[below])
         npt.assert_allclose(np.sign(results[above]), np.sign(density))
-        npt.assert_allclose(np.sign(results[bellow]), -np.sign(density))
+        npt.assert_allclose(np.sign(results[below]), -np.sign(density))
 
 
 def test_g_z_symmetry_inside():
@@ -229,21 +229,21 @@ def test_g_z_symmetry_inside():
     several set of computation points:
 
     A. Two points located on the vertical axis of the prism (``easting == 0``
-       and ``northing == 0``), one above and one bellow the center of prism,
+       and ``northing == 0``), one above and one below the center of prism,
        but at the same distance from it.
     B. Four points located on the ``upward == 0`` plane around the prism
        distributed normally to its faces , i.e. only one of the horizontal
        coordinates will be nonzero.
     C. Same as points defined in B, but located on a plane above the
        ``upward == 0`` plane.
-    D. Same as points defined in B, but located on a plane bellow the
+    D. Same as points defined in B, but located on a plane below the
        ``upward == 0`` plane.
     E. Four points located on the ``upward == 0`` plane around the prism
        distributed on the diagonal directions , i.e. both horizontal
        coordinates will be equal and nonzero.
     F. Same as points defined in E, but located on a plane above the
        ``upward == 0`` plane.
-    G. Same as points defined in E, but located on a plane bellow the
+    G. Same as points defined in E, but located on a plane below the
        ``upward == 0`` plane.
 
     All computation points defined on the previous groups fall outside of the
@@ -282,7 +282,7 @@ def test_g_z_symmetry_inside():
     # Check symmetries
     # Values on A must be opposite, and the value of g_z at the point above the
     # center of the prism must have the same sign as the density, while the one
-    # bellow should have the opposite
+    # below should have the opposite
     npt.assert_allclose(results["A"][0], -results["A"][1])
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
     npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
@@ -294,12 +294,12 @@ def test_g_z_symmetry_inside():
         npt.assert_allclose(0, results[group])
     # Values on C and D, F and G must be opposite
     # Moreover, the set of points that are above the center of the prism must
-    # have the same sign as the density, while the ones bellow should have the
+    # have the same sign as the density, while the ones below should have the
     # opposite
-    for above, bellow in (("C", "D"), ("F", "G")):
-        npt.assert_allclose(results[above], -results[bellow])
+    for above, below in (("C", "D"), ("F", "G")):
+        npt.assert_allclose(results[above], -results[below])
         npt.assert_allclose(np.sign(results[above]), np.sign(density))
-        npt.assert_allclose(np.sign(results[bellow]), -np.sign(density))
+        npt.assert_allclose(np.sign(results[below]), -np.sign(density))
 
 
 @pytest.mark.use_numba
@@ -363,7 +363,7 @@ def test_prism_against_infinite_slab():
     npt.assert_allclose(analytical, results[-1])
 
 
-@require_numba
+@run_only_with_numba
 def test_prisms_parallel_vs_serial():
     """
     Check if the parallelized run returns the same results as the serial one

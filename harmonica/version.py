@@ -4,14 +4,11 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=invalid-name
 """
-Get the version number and commit hash from setuptools-scm.
+Define the __version__ variable as the version number with leading "v"
 """
-from pkg_resources import get_distribution
+# This file is generated automatically by setuptools_scm
+from ._version import version
 
-
-# Get semantic version through setuptools-scm
-version = get_distribution("harmonica").version
-# Append a "v" before the semver version so it looks like: v0.1.0
-full_version = "v" + version
+# Add a "v" to the version number
+__version__ = f"v{version}"

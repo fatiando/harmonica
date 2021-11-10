@@ -16,7 +16,7 @@ from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
 from ..forward.utils import distance_cartesian
 
-from .utils import require_numba
+from .utils import run_only_with_numba
 
 
 def test_invalid_coordinate_system():
@@ -358,7 +358,7 @@ def test_g_z_symmetry():
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
     masses = [2670]
-    # Define a pair of computation points above and bellow the point mass
+    # Define a pair of computation points above and below the point mass
     distance = 3.3
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
@@ -418,7 +418,7 @@ def test_g_z_sign():
     point_mass = [-10, 100.2, -300.7]
     mass = [2670]
     # Define three computation points located above, at the same depth and
-    # bellow the point mass
+    # below the point mass
     easting = np.zeros(3)
     northing = np.zeros(3) + 52.3
     upward = np.array([100.11, -300.7, -400])
@@ -596,7 +596,7 @@ def test_g_easting_sign():
     assert np.sign(mass) == -np.sign(results[2])
 
 
-@require_numba
+@run_only_with_numba
 def test_point_mass_cartesian_parallel():
     """
     Check if parallel and serial runs return the same result
@@ -735,7 +735,7 @@ def test_point_mass_potential_on_same_meridian():
                 )
 
 
-@require_numba
+@run_only_with_numba
 def test_point_mass_spherical_parallel():
     """
     Check if parallel and serial runs return the same result

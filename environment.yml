@@ -7,9 +7,9 @@ dependencies:
   - pip
   - setuptools_scm
   - numpy
-  - scipy
   - pandas
   - numba
+  - scikit-learn
   - pooch>=0.7.0
   - verde>=1.5.0
   - xarray

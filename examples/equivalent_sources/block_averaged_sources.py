@@ -5,29 +5,40 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Gridding and upward continuation
-================================
+Gridding with block-averaged equivalent sources
+===============================================
 
-Most potential field surveys gather data along scattered and uneven flight
-lines or ground measurements. For a great number of applications we may need to
-interpolate these data points onto a regular grid at a constant altitude.
-Upward-continuation is also a routine task for smoothing, noise attenuation,
-source separation, etc.
+By default, the :class:`harmonica.EquivalentSources` class locates one point
+source beneath each data point during the fitting process. Alternatively, we
+can use another strategy: the *block-averaged sources*, introduced in
+[Soler2021]_.
 
-Both tasks can be done simultaneously through an *equivalent layer*
-[Dampney1969]_. We will use :class:`harmonica.EQLHarmonic` to estimate the
-coefficients of a set of point sources (the equivalent layer) that fit the
-observed data. The fitted layer can then be used to predict data values
-wherever we want, like on a grid at a certain altitude. The sources for
-:class:`~harmonica.EQLHarmonic` in particular are placed one beneath each data
-point at a constant relative depth from the elevation of the data point
-following [Cooper2000]_.
+This method divides the survey region (defined by the data) into square blocks
+of equal size, computes the median coordinates of the data points that fall
+inside each block and locates one source beneath every averaged position. This
+way, we define one equivalent source per block, with the exception of empty
+blocks that won't get any source.
 
-The advantage of using an equivalent layer is that it takes into account the 3D
-nature of the observations, not just their horizontal positions. It also allows
-data uncertainty to be taken into account and noise to be suppressed though the
-least-squares fitting process. The main disadvantage is the increased
-computational load (both in terms of time and memory).
+This method has two main benefits:
+
+- It lowers the amount of sources involved in the interpolation, therefore it
+  reduces the computer memory requirements and the computation time of the
+  fitting and prediction processes.
+- It might avoid to produce aliasing on the output grids, specially for
+  surveys with oversampling along a particular direction, like airborne ones.
+
+We can make use of the block-averaged sources within the
+:class:`harmonica.EquivalentSources` class by passing a value to the
+``block_size`` parameter, which controls the size of the blocks. We recommend
+using a ``block_size`` not larger than the desired resolution of the
+interpolation grid.
+
+The depth of the sources can be set analogously to the regular equivalent
+sources: we can use a ``constant`` depth (every source is located at the same
+depth) or a ``relative`` depth (where each source is located at a constant
+shift beneath the median location obtained during the block-averaging process).
+The depth of the sources and which strategy to use can be set up through the
+``depth`` and the ``depth_type`` parameters, respectively.
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -53,24 +64,26 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
 
-# Create the equivalent layer. We'll use the default point source configuration
-# at a constant relative depth beneath each observation point. The damping
-# parameter helps smooth the predicted data and ensure stability.
-eql = hm.EQLHarmonic(relative_depth=1000, damping=1)
+# Create the equivalent sources.
+# We'll use block-averaged sources at a constant depth beneath the observation
+# points. We will interpolate on a grid with a resolution of 500m, so we will
+# use blocks of the same size. The damping parameter helps smooth the predicted
+# data and ensure stability.
+eqs = hm.EquivalentSources(depth=1000, damping=1, block_size=500, depth_type="constant")
 
-# Fit the layer coefficients to the observed magnetic anomaly.
-eql.fit(coordinates, data.total_field_anomaly_nt)
+# Fit the sources coefficients to the observed magnetic anomaly.
+eqs.fit(coordinates, data.total_field_anomaly_nt)
 
 # Evaluate the data fit by calculating an R² score against the observed data.
-# This is a measure of how well layer the fits the data NOT how good the
+# This is a measure of how well the sources fit the data, NOT how good the
 # interpolation will be.
-print("R² score:", eql.score(coordinates, data.total_field_anomaly_nt))
+print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
 
 # Interpolate data on a regular grid with 500 m spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1500 m, we're effectively upward-continuing the data (mean flight height is
 # 500 m).
-grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
+grid = eqs.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata
 print("\nGenerated grid:\n", grid)

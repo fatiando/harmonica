@@ -31,7 +31,7 @@ def prism_gravity(
     inside the prism.
 
     This implementation makes use of the modified arctangent function proposed
-    by [Fukushima2019]_ (eq. 12) so that the potential field to satisfies
+    by [Fukushima2020]_ (eq. 12) so that the potential field to satisfies
     Poisson's equation in the entire domain. Moreover, the logarithm function
     was also modified in order to solve the singularities that the analytical
     solution has on some points (see [Nagy2000]_).
@@ -93,9 +93,6 @@ def prism_gravity(
     >>> prism = [-34, 5, -18, 14, -345, -146]
     >>> # Set prism density to 2670 kg/m³
     >>> density = 2670
-    >>> # Define a computation point above its center, at 30 meters above the
-    >>> # surface
-    >>> coordinates = (130, 75, 30)
     >>> # Define three computation points along the easting axe at 30m above
     >>> # the surface
     >>> coordinates = ([-40, 0, 40], [0, 0, 0], [30, 30, 30])
@@ -280,7 +277,7 @@ def safe_atan2(y, x):
     gravitational field of the prism satisfies the Poisson's equation.
     Therefore, it guarantees that the fields satisfies the symmetry properties
     of the prism. This modified function has been defined according to
-    [Fukushima2019]_.
+    [Fukushima2020]_.
     """
     if x != 0:
         result = np.arctan(y / x)

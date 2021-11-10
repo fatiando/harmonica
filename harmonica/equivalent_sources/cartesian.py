@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent layer for generic harmonic functions in Cartesian coordinates
+Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
+import warnings
 import numpy as np
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -23,11 +24,11 @@ from .utils import (
 from ..forward.utils import distance_cartesian
 
 
-class EQLHarmonic(vdb.BaseGridder):
+class EquivalentSources(vdb.BaseGridder):
     r"""
-    Equivalent-layer for generic harmonic functions (gravity, magnetics, etc).
+    Equivalent sources for generic harmonic functions (gravity, magnetics).
 
-    This equivalent layer can be used for:
+    These equivalent sources can be used for:
 
     * Cartesian coordinates (geographic coordinates must be project before use)
     * Gravity and magnetic data (including derivatives)
@@ -36,7 +37,7 @@ class EQLHarmonic(vdb.BaseGridder):
     * Upward continuation
     * Finite-difference based derivative calculations
 
-    It cannot be used for:
+    They cannot be used for:
 
     * Regional or global data where Earth's curvature must be taken into
       account
@@ -45,14 +46,39 @@ class EQLHarmonic(vdb.BaseGridder):
     * Reduction to the pole of magnetic total field anomaly data
     * Analytical derivative calculations
 
-    Point sources are located beneath the observed potential-field measurement
-    points by default [Cooper2000]_. Custom source locations can be used by
-    specifying the *points* argument. Coefficients associated with each point
-    source are estimated through linear least-squares with damping (Tikhonov
-    0th order) regularization.
+    By default, the point sources are located beneath the observed
+    potential-field measurement points [Cooper2000]_ that are passed as
+    arguments to the :meth:`EquivalentSources.fit` method, producing the same
+    number of sources as data points.
+    Alternatively, we can reduce the number of sources by using block-averaged
+    sources [Soler2021]_: we divide the data region in blocks of equal size and
+    compute the median location of the observations points that fall under each
+    block. Then, we locate one point source beneath each one of these
+    locations. The size of the blocks, that indirectly controls how many
+    sources will be created, can be specified through the ``block_size``
+    argument.
+    We recommend choosing a ``block_size`` no larger than the resolution of the
+    grid where interpolations will be carried out.
+
+    The depth of the sources can be controlled by the ``depth`` argument.
+    If ``depth_type`` is set to ``"relative"``, then each source is located
+    beneath each data point or block-averaged location at a depth equal to its
+    elevation minus the value of the ``depth`` argument.
+    If ``depth_type`` is set to ``"constant"``, then every source is located at
+    a constant depth given by the ``depth`` argument.
+    In both cases a positive value of ``depth`` locates sources _beneath_ the
+    data points or the block-averaged locations, thus a negative ``depth`` will
+    put the sources _above_ them.
+
+    Custom source locations can be chosen by specifying the ``points``
+    argument, in which case the ``depth_type``, ``block_size`` and ``depth``
+    arguments will be ignored.
+
+    The corresponding coefficient for each point source is estimated through
+    linear least-squares with damping (Tikhonov 0th order) regularization.
 
     The Green's function for point mass effects used is the inverse Euclidean
-    distance between the grid coordinates and the point source:
+    distance between the observation points and the point sources:
 
     .. math::
 
@@ -68,19 +94,35 @@ class EQLHarmonic(vdb.BaseGridder):
         smoothness is imposed on the estimated coefficients.
         If None, no regularization is used.
     points : None or list of arrays (optional)
-        List containing the coordinates of the point sources used as the
-        equivalent layer. Coordinates are assumed to be in the following order:
+        List containing the coordinates of the equivalent point sources.
+        Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
-        If None, will place one point source bellow each observation point at
-        a fixed relative depth bellow the observation point [Cooper2000]_.
+        If None, will place one point source below each observation point at
+        a fixed relative depth below the observation point [Cooper2000]_.
         Defaults to None.
-    relative_depth : float
-        Relative depth at which the point sources are placed beneath the
-        observation points. Each source point will be set beneath each data
-        point at a depth calculated as the elevation of the data point minus
-        this constant *relative_depth*. Use positive numbers (negative numbers
-        would mean point sources are above the data points). Ignored if
-        *points* is specified.
+    depth : float
+        Parameter used to control the depth at which the point sources will be
+        located.
+        If ``depth_type`` is ``"constant"``, each source is located at the same
+        depth specified through the ``depth`` argument.
+        If ``depth_type`` is ``"relative"``, each source is located beneath
+        each data point (or block-averaged location) at a depth equal to its
+        elevation minus the ``depth`` value.
+        This parameter is ignored if *points* is specified.
+        Defaults to 500.
+    depth_type : str
+        Strategy used for setting the depth of the point sources.
+        The two available strategies are ``"constant"`` and ``"relative"``.
+        This parameter is ignored if *points* is specified.
+        Defaults to ``"relative"``.
+    block_size: float, tuple = (s_north, s_east) or None
+        Size of the blocks used on block-averaged equivalent sources.
+        If a single value is passed, the blocks will have a square shape.
+        Alternatively, the dimensions of the blocks in the South-North and
+        West-East directions can be specified by passing a tuple.
+        If None, no block-averaging is applied.
+        This parameter is ignored if *points* are specified.
+        Default to None.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -89,13 +131,17 @@ class EQLHarmonic(vdb.BaseGridder):
     Attributes
     ----------
     points_ : 2d-array
-        Coordinates of the point sources used to build the equivalent layer.
+        Coordinates of the equivalent point sources.
     coefs_ : array
         Estimated coefficients of every point source.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EquivalentSources.grid` method.
+
+    References
+    ----------
+    [Soler2021]_
     """
 
     # Set the default dimension names for generated outputs
@@ -113,22 +159,41 @@ class EQLHarmonic(vdb.BaseGridder):
         self,
         damping=None,
         points=None,
-        relative_depth=500,
+        depth=500,
+        depth_type="relative",
+        block_size=None,
         parallel=True,
+        **kwargs,
     ):
         self.damping = damping
         self.points = points
-        self.relative_depth = relative_depth
+        self.depth = depth
+        self.depth_type = depth_type
+        self.block_size = block_size
         self.parallel = parallel
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
+        # Check if depth_type is valid
+        if depth_type not in ("constant", "relative"):
+            raise ValueError(
+                f"Invalid depth type '{depth_type}'. Should be either be 'constant' or 'relative'."
+            )
+        # Check if relative_depth has been passed (will be deprecated)
+        if "relative_depth" in kwargs:
+            warnings.warn(
+                "The 'relative_depth' parameter is deprecated, please use "
+                + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. ",
+                FutureWarning,
+            )
+            # Override depth and depth_type
+            self.depth, self.depth_type = kwargs["relative_depth"], "relative"
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the coefficients of the equivalent layer.
+        Fit the coefficients of the equivalent sources.
 
         The data region is captured and used as default for the
-        :meth:`~harmonica.EQLHarmonic.grid` method.
+        :meth:`~harmonica.EquivalentSources.grid` method.
 
         All input arrays must have the same shape.
 
@@ -155,22 +220,89 @@ class EQLHarmonic(vdb.BaseGridder):
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = (
-                coordinates[0],
-                coordinates[1],
-                coordinates[2] - self.relative_depth,
-            )
+            self.points_ = self._build_points(coordinates)
         else:
             self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
 
+    def _build_points(self, coordinates):
+        """
+        Generate coordinates of point sources based on the data points
+
+        Locate the point sources following the chosen ``depth_type`` strategy
+        and apply block-averaging if ``block_size`` is not None.
+        If ``depth_type`` is equal to ``"relative"``, the point sources will be
+        placed beneath the (averaged) observation points at a depth calculated
+        as the elevation of the data point minus the ``depth``.
+        If ``depth_type`` is equal to ``"constant"``, the point sources will be
+        placed beneath the (averaged) observation points at the same height
+        equal to minus ``depth``.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
+
+        Returns
+        -------
+        points : tuple of arrays
+            Tuple containing the coordinates of the equivalent point sources,
+            in the following order: (``easting``, ``northing``, ``upward``).
+        """
+        if self.block_size is not None:
+            coordinates = self._block_average_coordinates(coordinates)
+        if self.depth_type == "relative":
+            return (
+                coordinates[0],
+                coordinates[1],
+                coordinates[2] - self.depth,
+            )
+        if self.depth_type == "constant":
+            return (
+                coordinates[0],
+                coordinates[1],
+                -self.depth * np.ones_like(coordinates[0]),
+            )
+        return None
+
+    def _block_average_coordinates(self, coordinates):
+        """
+        Run a block-averaging process on observation points
+
+        Apply a median as the reduction function. The blocks will have the size
+        specified through the ``block_size`` argument on the constructor.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+
+        Returns
+        -------
+        blocked_coords : tuple of arrays
+            Tuple containing the coordinates of the block-averaged observation
+            points.
+        """
+        reducer = vd.BlockReduce(
+            spacing=self.block_size, reduction=np.median, drop_coords=False
+        )
+        # Must pass a dummy data array to BlockReduce.filter(), we choose an
+        # array full of zeros. We will ignore the returned reduced dummy array.
+        blocked_coords, _ = reducer.filter(coordinates, np.zeros_like(coordinates[0]))
+        return blocked_coords
+
     def predict(self, coordinates):
         """
-        Evaluate the estimated equivalent layer on the given set of points.
+        Evaluate the estimated equivalent sources on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).
+        Requires a fitted estimator (see
+        :meth:`~harmonica.EquivalentSources.fit`).
 
         Parameters
         ----------
@@ -201,7 +333,7 @@ class EQLHarmonic(vdb.BaseGridder):
         self, coordinates, points, dtype="float64"
     ):  # pylint: disable=no-self-use
         """
-        Make the Jacobian matrix for the equivalent layer.
+        Make the Jacobian matrix for the equivalent sources.
 
         Each column of the Jacobian is the Green's function for a single point
         source evaluated on all observation points.
@@ -214,8 +346,8 @@ class EQLHarmonic(vdb.BaseGridder):
             Only ``easting``, ``northing`` and ``upward`` will be used, all
             subsequent coordinates will be ignored.
         points : tuple of arrays
-            Tuple of arrays containing the coordinates of the point sources
-            used as equivalent layer in the following order:
+            Tuple of arrays containing the coordinates of the equivalent point
+            sources in the following order:
             (``easting``, ``northing``, ``upward``).
         dtype : str or numpy dtype
             The type of the Jacobian array.
@@ -243,7 +375,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
@@ -327,7 +459,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         .. warning ::
@@ -347,7 +479,7 @@ class EQLHarmonic(vdb.BaseGridder):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=arguments-differ
         """
         Interpolate data along a profile between two points.
@@ -438,10 +570,42 @@ class EQLHarmonic(vdb.BaseGridder):
         return table
 
 
+class EQLHarmonic(EquivalentSources):
+    """
+    DEPRECATED, use ``harmonica.EquivalentSources`` instead.
+
+    This class exists to support backward compatibility until next release.
+    """
+
+    def __init__(
+        self,
+        damping=None,
+        points=None,
+        depth=500,
+        depth_type="relative",
+        parallel=True,
+        **kwargs,
+    ):
+        warnings.warn(
+            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
+            + "and will be deprecated on the next release, "
+            + "please use 'EquivalentSources' instead.",
+            FutureWarning,
+        )
+        super().__init__(
+            damping=damping,
+            points=points,
+            depth=depth,
+            depth_type=depth_type,
+            parallel=parallel,
+            **kwargs,
+        )
+
+
 @jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
-    Green's function for the equivalent layer in Cartesian coordinates
+    Green's function for the equivalent sources in Cartesian coordinates
 
     Uses Numba to speed up things.
     """

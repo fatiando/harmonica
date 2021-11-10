@@ -17,14 +17,14 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
-Equivalent Layers
---------------------------
+Equivalent Sources
+------------------
 
 .. autosummary::
     :toctree: generated/
 
-    EQLHarmonic
-    EQLHarmonicSpherical
+    EquivalentSources
+    EquivalentSourcesSph
 
 Forward modelling
 -----------------

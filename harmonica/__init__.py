@@ -4,9 +4,9 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring,import-outside-toplevel
+# pylint: disable=missing-docstring,import-outside-toplevel,import-self
+#
 # Import functions/classes to make the public API
-from . import version
 from . import datasets
 from . import synthetic
 from .io import load_icgem_gdf
@@ -16,13 +16,14 @@ from .forward.point_mass import point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
-from .equivalent_layer.harmonic import EQLHarmonic
-from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
+from .equivalent_sources.cartesian import EquivalentSources, EQLHarmonic
+from .equivalent_sources.spherical import (
+    EquivalentSourcesSph,
+    EQLHarmonicSpherical,
+)
 from .derivatives import derivative_upward
 
-
-# Get the version number through setuptools-scm
-__version__ = version.version
+from .version import __version__
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
