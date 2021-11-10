@@ -57,7 +57,5 @@ def apply_filter(grid, fft_filter, **kwargs):
     # Apply the filter in the frequency domain
     filtered_ft = fft_filter(fourier_transform, **kwargs)
     # Compute inverse FFT
-    output_grid = ifft(
-        filtered_ft,
-    ).real
+    output_grid = ifft(filtered_ft).real
     return output_grid
