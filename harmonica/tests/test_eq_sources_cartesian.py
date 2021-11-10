@@ -86,7 +86,7 @@ def fixture_coordinates_small(region):
 
 
 @pytest.fixture(name="data_small")
-def fixture_data_small(region, points, masses, coordinates_small):
+def fixture_data_small(points, masses, coordinates_small):
     """
     Return some sample data for the small set of coordinates
     """
@@ -274,9 +274,7 @@ def test_equivalent_sources_invalid_depth_type():
         EquivalentSources(depth=300, depth_type="blabla")
 
 
-def test_equivalent_sources_points_depth(
-    region, points, masses, coordinates_small, data_small
-):
+def test_equivalent_sources_points_depth(points, coordinates_small, data_small):
     """
     Check if the points coordinates are properly defined by the fit method
     """
@@ -378,9 +376,7 @@ def test_equivalent_sources_cartesian_parallel(region, coordinates, data):
 
 
 @pytest.mark.parametrize("depth_type", ("constant", "relative"))
-def test_backward_eqlharmonic(
-    region, points, masses, coordinates_small, data_small, depth_type
-):
+def test_backward_eqlharmonic(region, coordinates_small, data_small, depth_type):
     """
     Check backward compatibility with to-be-deprecated EQLHarmonic class
 
