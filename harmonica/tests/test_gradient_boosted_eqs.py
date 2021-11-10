@@ -152,13 +152,13 @@ def test_gradient_boosted_eqs_predictions(region):
     # The interpolation should be sufficiently accurate on the data points
     eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=1e-2 * vd.maxabs(data))
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.02 * vd.maxabs(data))
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
     true = hm.point_mass_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), atol=1e-2 * vd.maxabs(true))
+    npt.assert_allclose(true, eqs.predict(grid), atol=0.02 * vd.maxabs(true))
 
 
 @run_only_with_numba
