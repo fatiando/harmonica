@@ -12,25 +12,11 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 import verde as vd
-import harmonica as hm
 
+from .. import point_mass_gravity
 from .utils import run_only_with_numba
 from .. import EquivalentSourcesGB
 from ..equivalent_sources.gradient_boosted import _get_region_data_sources
-
-
-def build_sample_sources_and_data(region, coords_shape=(40, 40)):
-    """
-    Build a set of sample point sources, data and observation points
-    """
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=coords_shape, extra_coords=0)
-    # Get synthetic data
-    data = hm.point_mass_gravity(coordinates, points, masses, field="g_z")
-    return points, masses, coordinates, data
 
 
 @pytest.fixture(name="region")
@@ -39,6 +25,57 @@ def fixture_region():
     Return a sample region
     """
     return (-3e3, -1e3, 5e3, 7e3)
+
+
+@pytest.fixture(name="coordinates")
+def fixture_coordinates(region):
+    """
+    Return a set of sample coordinates at zero height
+    """
+    shape = (40, 40)
+    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+
+
+@pytest.fixture(name="points")
+def fixture_points(region):
+    """
+    Return the coordinates of some sample point masses
+    """
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    return points
+
+
+@pytest.fixture(name="masses")
+def fixture_masses(region, points):
+    """
+    Return the masses some sample point masses
+    """
+    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+
+
+@pytest.fixture(name="data")
+def fixture_data(coordinates, points, masses):
+    """
+    Return some sample data
+    """
+    return point_mass_gravity(coordinates, points, masses, field="g_z")
+
+
+@pytest.fixture(name="coordinates_small")
+def fixture_coordinates_small(region):
+    """
+    Return a small set of 25 coordinates and variable elevation
+    """
+    shape = (8, 8)
+    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+
+
+@pytest.fixture(name="data_small")
+def fixture_data_small(region, points, masses, coordinates_small):
+    """
+    Return some sample data for the small set of coordinates
+    """
+    return point_mass_gravity(coordinates_small, points, masses, field="g_z")
 
 
 @pytest.mark.parametrize(
@@ -63,21 +100,17 @@ def test_get_region_data_sources(data_region, sources_region, expected_region):
     npt.assert_allclose(region, expected_region)
 
 
-def test_custom_points(region):
+def test_custom_points(region, coordinates_small, data_small):
     """
     Check that passing in custom points works and actually uses the points
     """
-    # Define sample data
-    _, _, coordinates, data = build_sample_sources_and_data(
-        region=region, coords_shape=(8, 8)
-    )
     # Pass a custom set of point sources
     points_custom = tuple(
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
     )
     eqs = EquivalentSourcesGB(points=points_custom, window_size=500)
-    eqs.fit(coordinates, data)
+    eqs.fit(coordinates_small, data_small)
     # Check that the proper source locations were set
     npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
 
@@ -109,46 +142,42 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("weights", [None, np.ones((8, 8))])
-def test_gb_eqs_small_data(region, weights):
+def test_gb_eqs_small_data(region, coordinates_small, data_small, weights):
     """
     Check predictions against synthetic data using few data points for speed
     """
-    _, _, coordinates, data = build_sample_sources_and_data(
-        region=region, coords_shape=(8, 8)
-    )
     # The interpolation should be good enought on the data points
     # Gradient-boosted equivalent sources don't perform well on small data, so
     # we will check if the error is no larger than 1mGal
     # (sample data ranges from approximately -7mGal to 7mGal)
     eqs = EquivalentSourcesGB(depth=1e3, damping=None, window_size=1e3, random_state=42)
-    eqs.fit(coordinates, data, weights=weights)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.05 * vd.maxabs(data))
+    eqs.fit(coordinates_small, data_small, weights=weights)
+    npt.assert_allclose(
+        data_small, eqs.predict(coordinates_small), atol=0.05 * vd.maxabs(data_small)
+    )
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_single_window(region):
+def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates, data):
     """
     Test GB eq-sources with a single window that covers the whole region
     """
-    points, masses, coordinates, data = build_sample_sources_and_data(region)
     # The interpolation should be perfect on the data points
     eqs = EquivalentSourcesGB(window_size=region[1] - region[0])
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
-    true = hm.point_mass_gravity(grid, points, masses, field="g_z")
+    grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_predictions(region):
+def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, data):
     """
     Test GB eq-sources predictions
     """
-    # Define a large region
-    points, masses, coordinates, data = build_sample_sources_and_data(region)
     # The interpolation should be sufficiently accurate on the data points
     eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
     eqs.fit(coordinates, data)
@@ -156,17 +185,16 @@ def test_gradient_boosted_eqs_predictions(region):
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region=region, shape=(60, 60), extra_coords=0)
-    true = hm.point_mass_gravity(grid, points, masses, field="g_z")
+    grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), atol=0.02 * vd.maxabs(true))
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_random_state(region):
+def test_gradient_boosted_eqs_random_state(coordinates, data):
     """
     Check if EquivalentSourcesGB produces same result by setting random_state
     """
-    _, _, coordinates, data = build_sample_sources_and_data(region=region)
     # Initialize two EquivalentSourcesGB with the same random_state
     eqs_a = EquivalentSourcesGB(window_size=500, random_state=0)
     eqs_a.fit(coordinates, data)
