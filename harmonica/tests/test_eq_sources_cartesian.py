@@ -408,16 +408,21 @@ def test_backward_eqlharmonic(
 
 
 @run_only_with_numba
-@pytest.mark.parametrize(
-    "block_size", (None, 500), ids=["block_size_none", "block_size_500"]
-)
-@pytest.mark.parametrize(
-    "custom_points", (False, True), ids=["no_custom_points", "custom_points"]
-)
+@pytest.mark.parametrize("block_size", (None, 500), ids=["no_blocks", "blocks"])
+@pytest.mark.parametrize("custom_points", (False, True), ids=["no_points", "points"])
 @pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
+@pytest.mark.parametrize("damping", (None, 0.1), ids=["damping_none", "damping"])
 @pytest.mark.parametrize("dtype", ("float64", "float32"))
 def test_dtype(
-    region, coordinates, data, weights, block_size, custom_points, weights_none, dtype
+    region,
+    coordinates,
+    data,
+    weights,
+    block_size,
+    custom_points,
+    weights_none,
+    damping,
+    dtype,
 ):
     """
     Test dtype argument on EquivalentSources
@@ -430,7 +435,9 @@ def test_dtype(
     if weights_none:
         weights = None
     # Initialize and fit the equivalent sources
-    eqs = EquivalentSources(points=points, block_size=block_size, dtype=dtype)
+    eqs = EquivalentSources(
+        damping=damping, points=points, block_size=block_size, dtype=dtype
+    )
     eqs.fit(coordinates, data, weights)
     # Make some predictions
     prediction = eqs.predict(coordinates)
@@ -438,6 +445,8 @@ def test_dtype(
     for coord in eqs.points_:
         assert coord.dtype == np.dtype(dtype)
     assert prediction.dtype == np.dtype(dtype)
+    # Check the data type of the source coefficients
+    #  assert eqs.coefs_.dtype == np.dtype(dtype)
 
 
 @pytest.mark.use_numba
