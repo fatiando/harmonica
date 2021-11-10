@@ -31,7 +31,7 @@ easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
 
 # Grid the scatter data using an equivalent layer
-eql = hm.EQLHarmonic(relative_depth=1000, damping=1).fit(
+eql = hm.EquivalentSources(depth=1000, damping=1).fit(
     coordinates, data.total_field_anomaly_nt
 )
 grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
