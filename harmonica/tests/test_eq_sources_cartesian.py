@@ -412,9 +412,6 @@ def test_backward_eqlharmonic(depth_type):
     )
 
 
-#  @pytest.mark.use_numba
-
-
 @run_only_with_numba
 @pytest.mark.parametrize(
     "block_size", (None, 500), ids=["block_size_none", "block_size_500"]
