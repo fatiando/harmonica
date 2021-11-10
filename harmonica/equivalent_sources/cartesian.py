@@ -341,7 +341,7 @@ class EquivalentSources(vdb.BaseGridder):
         )
         return data.reshape(shape)
 
-    def jacobian(self, coordinates, points):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points):
         """
         Make the Jacobian matrix for the equivalent sources.
 
@@ -352,13 +352,13 @@ class EquivalentSources(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...).
-            Only ``easting``, ``northing`` and ``upward`` will be used, all
-            subsequent coordinates will be ignored.
+            following order: (``easting``, ``northing``, ``upward``).
+            Each array must be 1D.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the equivalent point
             sources in the following order:
             (``easting``, ``northing``, ``upward``).
+            Each array must be 1D.
 
         Returns
         -------
