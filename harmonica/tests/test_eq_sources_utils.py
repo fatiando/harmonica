@@ -49,8 +49,8 @@ def test_cast_fit_input(weights_none, dtype):
         weights = np.ones_like(data)
     coordinates, data, weights = cast_fit_input(coordinates, data, weights, dtype)
     # Check dtype of the outputs
-    for c in coordinates:
-        assert c.dtype == np.dtype(dtype)
+    for coord in coordinates:
+        assert coord.dtype == np.dtype(dtype)
     assert data.dtype == np.dtype(dtype)
     if weights_none:
         assert weights is None

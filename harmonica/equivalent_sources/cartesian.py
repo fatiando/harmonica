@@ -25,7 +25,9 @@ from .utils import (
 from ..forward.utils import distance_cartesian
 
 
-class EquivalentSources(vdb.BaseGridder):
+class EquivalentSources(
+    vdb.BaseGridder
+):  # pylint: disable=too-many-instance-attributes
     r"""
     Equivalent sources for generic harmonic functions (gravity, magnetics).
 

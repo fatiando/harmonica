@@ -442,8 +442,8 @@ def test_dtype(region, block_size, custom_points, weights_none, dtype):
     # Make some predictions
     prediction = eqs.predict(coordinates)
     # Check data type of created objects
-    for p in eqs.points_:
-        assert p.dtype == np.dtype(dtype)
+    for coord in eqs.points_:
+        assert coord.dtype == np.dtype(dtype)
     assert prediction.dtype == np.dtype(dtype)
 
 
@@ -453,8 +453,9 @@ def test_jacobian_dtype(region, dtype):
     """
     Test dtype of Jacobian when changing dtype argument on EquivalentSources
     """
-    _, _, coordinates, data, weights = build_sample_sources_and_data(
-        region, coords_shape=(10, 10)
+    # Build a set of custom coordinates
+    coordinates = tuple(
+        c.ravel() for c in vd.grid_coordinates(region, shape=(10, 10), extra_coords=0)
     )
     # Create custom set of point sources
     points = tuple(
