@@ -120,9 +120,9 @@ def test_gb_eqs_small_data(region, weights):
     # Gradient-boosted equivalent sources don't perform well on small data, so
     # we will check if the error is no larger than 1mGal
     # (sample data ranges from approximately -7mGal to 7mGal)
-    eqs = EquivalentSourcesGB(depth=1e3, window_size=1e3, random_state=42)
+    eqs = EquivalentSourcesGB(depth=1e3, damping=None, window_size=1e3, random_state=42)
     eqs.fit(coordinates, data, weights=weights)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=1)
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.05 * vd.maxabs(data))
 
 
 @run_only_with_numba
