@@ -11,7 +11,7 @@ Wrap xrft functions to compute FFTs and inverse FFTs
 from xrft.xrft import fft as _fft, ifft as _ifft
 
 
-def fft(grid, **kwargs):
+def fft(grid, true_phase=True, true_amplitude=True, **kwargs):
     """
     Compute Fast Fourier Transform of a 2D regular grid
 
@@ -22,16 +22,25 @@ def fft(grid, **kwargs):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
+    true_phase : bool (optional)
+        Take the coordinates into consideration, keeping the original phase of
+        the coordinates in the spatial domain (``direct_lag``) and multiplies
+        the FFT with an exponential function corresponding to this phase.
+        Defaults to True.
+    true_amplitude : bool (optional)
+        If True, the FFT is multiplied by the spacing of the transformed
+        variables to match theoretical FT amplitude.
+        Defaults to True.
 
     Returns
     -------
     fourier_transform : :class:`xarray.DataArray`
         Array with the Fourier transform of the original grid.
     """
-    return _fft(grid, **kwargs)
+    return _fft(grid, true_phase=true_phase, true_amplitude=true_amplitude, **kwargs)
 
 
-def ifft(fourier_transform, easting_shift=None, northing_shift=None, **kwargs):
+def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
     """
     Compute Inverse Fast Fourier Transform of a 2D regular grid
 
@@ -41,45 +50,25 @@ def ifft(fourier_transform, easting_shift=None, northing_shift=None, **kwargs):
         Array with a regular grid defined in the frequency domain.
         Its dimensions should be in the following order:
         *freq_northing*, *freq_easting*.
-    easting_shift : float or None (optional)
-        Minimum value of the easting coordinates of the original grid in the
-        spatial domain.
-        This value is used to shift the easting coordinate of the ifft grid,
-        otherwise :func:`xrft.xrft.ifft` will center them around zero.
-        If None, the easting coordinates will be centered around zero.
-        Defaults to None.
-    northing_shift : float or None (optional)
-        Minimum value of the northing coordinates of the original grid in the
-        spatial domain.
-        This value is used to shift the northing coordinate of the ifft grid,
-        otherwise :func:`xrft.xrft.ifft` will center them around zero.
-        If None, the northing coordinates will be centered around zero.
-        Defaults to None.
+    true_phase : bool (optional)
+        Take the coordinates into consideration, recovering the original
+        coordinates in the spatial domain returning to the the original phase
+        (``direct_lag``), and multiplies the iFFT with an exponential function
+        corresponding to this phase.
+        Defaults to True.
+    true_amplitude : bool (optional)
+        If True, output is divided by the spacing of the transformed variables
+        to match theoretical IFT amplitude.
+        Defaults to True.
 
     Returns
     -------
     grid : :class:`xarray.DataArray`
         Array with the inverse Fourier transform of the passed grid.
     """
-    grid = _ifft(fourier_transform, **kwargs)
-    # Move recovered coordinates to original range
-    if easting_shift is not None or northing_shift is not None:
-        coords = {dim: grid.coords[dim] for dim in grid.dims}
-        if easting_shift is not None:
-            # Grab the easting dimension name from grid.dims
-            dim = grid.dims[1]
-            # Define a new easting dimension by shifting the one in grid
-            easting = easting_shift + (
-                grid.coords[dim].values - grid.coords[dim].values.min()
-            )
-            coords[dim] = easting
-        if northing_shift is not None:
-            # Grab the northing dimension name from grid.dims
-            dim = grid.dims[0]
-            # Define a new northing dimension by shifting the one in grid
-            northing = northing_shift + (
-                grid.coords[dim].values - grid.coords[dim].values.min()
-            )
-            coords[dim] = northing
-        grid = grid.assign_coords(coords)
-    return grid
+    return _ifft(
+        fourier_transform,
+        true_phase=true_phase,
+        true_amplitude=true_amplitude,
+        **kwargs
+    )

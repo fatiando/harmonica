@@ -59,7 +59,5 @@ def apply_filter(grid, fft_filter, **kwargs):
     # Compute inverse FFT
     output_grid = ifft(
         filtered_ft,
-        easting_shift=grid.coords[dims[1]].values.min(),
-        northing_shift=grid.coords[dims[0]].values.min(),
     ).real
     return output_grid
