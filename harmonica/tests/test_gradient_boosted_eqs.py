@@ -71,7 +71,7 @@ def fixture_coordinates_small(region):
 
 
 @pytest.fixture(name="data_small")
-def fixture_data_small(region, points, masses, coordinates_small):
+def fixture_data_small(points, masses, coordinates_small):
     """
     Return some sample data for the small set of coordinates
     """
@@ -142,7 +142,7 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("weights", [None, np.ones((8, 8))])
-def test_gb_eqs_small_data(region, coordinates_small, data_small, weights):
+def test_gb_eqs_small_data(coordinates_small, data_small, weights):
     """
     Check predictions against synthetic data using few data points for speed
     """
