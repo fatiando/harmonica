@@ -11,7 +11,7 @@ Wrap xrft functions to compute FFTs and inverse FFTs
 from xrft.xrft import fft as _fft, ifft as _ifft
 
 
-def fft(grid, true_phase=True, true_amplitude=True, **kwargs):
+def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwargs):
     """
     Compute Fast Fourier Transform of a 2D regular grid
 
@@ -31,12 +31,20 @@ def fft(grid, true_phase=True, true_amplitude=True, **kwargs):
         If True, the FFT is multiplied by the spacing of the transformed
         variables to match theoretical FT amplitude.
         Defaults to True.
+    drop_bad_coords : bool (optional)
+        If True, only the indexes of the array will be kept before passing it
+        to :func:`xrft.fft`. Any extra coordinate should be drooped, otherwise
+        :func:`xrft.fft` raises an error after finding *bad coordinates*.
+        Defaults to True.
 
     Returns
     -------
     fourier_transform : :class:`xarray.DataArray`
         Array with the Fourier transform of the original grid.
     """
+    if drop_bad_coords:
+        bad_coords = tuple(c for c in grid.coords if c not in grid.indexes)
+        grid = grid.drop(bad_coords)
     return _fft(grid, true_phase=true_phase, true_amplitude=true_amplitude, **kwargs)
 
 
