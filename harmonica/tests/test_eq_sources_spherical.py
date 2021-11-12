@@ -14,7 +14,7 @@ import numpy.testing as npt
 import xarray.testing as xrt
 import verde as vd
 
-from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_mass_gravity
+from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_gravity
 from .utils import run_only_with_numba
 
 
@@ -36,7 +36,7 @@ def test_equivalent_sources_spherical():
         region=region, shape=(40, 40), extra_coords=radius
     )
     # Get synthetic data
-    data = point_mass_gravity(
+    data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 
@@ -50,7 +50,7 @@ def test_equivalent_sources_spherical():
     upward = radius
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(
+    true = point_gravity(
         grid, points, masses, field="g_z", coordinate_system="spherical"
     )
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
@@ -75,7 +75,7 @@ def test_equivalent_sources_small_data_spherical():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
     # Get synthetic data
-    data = point_mass_gravity(
+    data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 
@@ -94,7 +94,7 @@ def test_equivalent_sources_small_data_spherical():
     upward = radius + 2e3
     shape = (8, 8)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(
+    true = point_gravity(
         grid, points, masses, field="g_z", coordinate_system="spherical"
     )
     npt.assert_allclose(true, eqs.predict(grid), rtol=0.05)
@@ -119,7 +119,7 @@ def test_equivalent_sources_custom_points_spherical():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(5, 5), extra_coords=radius)
     # Get synthetic data
-    data = point_mass_gravity(
+    data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 
@@ -181,7 +181,7 @@ def test_equivalent_sources_spherical_parallel():
         region=region, shape=(40, 40), extra_coords=radius
     )
     # Get synthetic data
-    data = point_mass_gravity(
+    data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 
@@ -215,7 +215,7 @@ def test_backward_eqlharmonicspherical():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
     # Get synthetic data
-    data = point_mass_gravity(
+    data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
     )
 

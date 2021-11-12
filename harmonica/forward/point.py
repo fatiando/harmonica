@@ -14,7 +14,7 @@ from ..constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
 
 
-def point_mass_gravity(
+def point_gravity(
     coordinates,
     points,
     masses,

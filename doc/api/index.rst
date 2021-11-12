@@ -32,7 +32,7 @@ Forward modelling
 .. autosummary::
     :toctree: generated/
 
-    point_mass_gravity
+    point_gravity
     prism_gravity
     tesseroid_gravity
     prism_layer

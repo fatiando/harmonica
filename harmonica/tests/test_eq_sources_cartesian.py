@@ -17,7 +17,7 @@ import xarray.testing as xrt
 import verde as vd
 import verde.base as vdb
 
-from .. import EquivalentSources, EQLHarmonic, point_mass_gravity
+from .. import EquivalentSources, EQLHarmonic, point_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import (
     jacobian_numba_serial,
@@ -57,7 +57,7 @@ def test_equivalent_sources_cartesian():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
     eqs = EquivalentSources()
@@ -69,7 +69,7 @@ def test_equivalent_sources_cartesian():
     upward = 0
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
     # Test grid method
@@ -80,7 +80,7 @@ def test_equivalent_sources_cartesian():
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=1e-3)
@@ -98,7 +98,7 @@ def test_equivalent_sources_small_data_cartesian():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
     eqs = EquivalentSources(depth=500)
@@ -115,7 +115,7 @@ def test_equivalent_sources_small_data_cartesian():
     upward = 20
     shape = (8, 8)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=0.08)
 
     # Test grid method
@@ -126,7 +126,7 @@ def test_equivalent_sources_small_data_cartesian():
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, 10)
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=0.05)
@@ -253,7 +253,7 @@ def test_equivalent_sources_points_depth():
     upward = np.arange(25, dtype=float).reshape((5, 5))
     coordinates = (easting, northing, upward)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # Test with constant depth
     eqs = EquivalentSources(depth=1.3e3, depth_type="constant")
@@ -292,7 +292,7 @@ def test_equivalent_sources_custom_points_cartesian():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(5, 5), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # Pass a custom set of point sources
     points_custom = tuple(
@@ -355,7 +355,7 @@ def test_equivalent_sources_cartesian_parallel():
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # The predictions should be equal whether are run in parallel or in serial
     eqs_serial = EquivalentSources(parallel=False)
@@ -386,7 +386,7 @@ def test_backward_eqlharmonic(depth_type):
     upward = np.arange(25, dtype=float).reshape((5, 5))
     coordinates = (easting, northing, upward)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # Fit EquivalentSources instance
     eqs = EquivalentSources(depth=1.3e3, depth_type=depth_type)

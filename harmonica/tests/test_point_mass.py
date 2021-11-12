@@ -13,7 +13,7 @@ import pytest
 import verde as vd
 
 from ..constants import GRAVITATIONAL_CONST
-from ..forward.point import point_mass_gravity
+from ..forward.point import point_gravity
 from ..forward.utils import distance_cartesian
 
 from .utils import run_only_with_numba
@@ -25,7 +25,7 @@ def test_invalid_coordinate_system():
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     with pytest.raises(ValueError):
-        point_mass_gravity(
+        point_gravity(
             coordinates,
             point_mass,
             mass,
@@ -44,7 +44,7 @@ def test_not_implemented_field():
     coordinate_system = "spherical"
     for field in ("g_northing", "g_easting"):
         with pytest.raises(NotImplementedError):
-            point_mass_gravity(
+            point_gravity(
                 coordinates,
                 point_mass,
                 mass,
@@ -60,7 +60,7 @@ def test_invalid_field():
     mass = 1.0
     for coordinate_system in ("spherical", "cartesian"):
         with pytest.raises(ValueError):
-            point_mass_gravity(
+            point_gravity(
                 coordinates,
                 point_mass,
                 mass,
@@ -77,7 +77,7 @@ def test_invalid_masses_array():
     masses = [1000, 2000]
     coordinates = [0, 0, 250]
     with pytest.raises(ValueError):
-        point_mass_gravity(
+        point_gravity(
             coordinates,
             points,
             masses,
@@ -316,9 +316,7 @@ def test_potential_cartesian_known_values():
         ]
     )
     # Compute potential gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, mass, "potential", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
     npt.assert_allclose(results, reference_values)
 
 
@@ -344,9 +342,7 @@ def test_potential_cartesian_symmetry():
     upward[5] -= distance
     coordinates = [easting, northing, upward]
     # Compute potential gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, masses, "potential", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, masses, "potential", "cartesian")
     npt.assert_allclose(*results)
 
 
@@ -367,7 +363,7 @@ def test_g_z_symmetry():
     upward[1] -= distance
     coordinates = [easting, northing, upward]
     # Compute g_z gravity field on each computation point
-    results = point_mass_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
+    results = point_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
 
@@ -381,18 +377,14 @@ def test_g_z_relative_error():
     mass = 250
     coordinates_p = (0, -39, -13)
     # Compute the z component
-    exact_deriv = point_mass_gravity(
-        coordinates_p, point_mass, mass, "g_z", "cartesian"
-    )
+    exact_deriv = point_gravity(coordinates_p, point_mass, mass, "g_z", "cartesian")
     # Compute the numerical derivative of potential
     delta = 0.1
     easting = np.zeros(2) + coordinates_p[0]
     northing = np.zeros(2) + coordinates_p[1]
     upward = np.array([coordinates_p[2] - delta, coordinates_p[2] + delta])
     coordinates = (easting, northing, upward)
-    potential = point_mass_gravity(
-        coordinates, point_mass, mass, "potential", "cartesian"
-    )
+    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, the numerical
     # derivativative is multiplied by -1.
@@ -424,7 +416,7 @@ def test_g_z_sign():
     upward = np.array([100.11, -300.7, -400])
     coordinates = [easting, northing, upward]
     # Compute g_z gravity field on each computation point
-    results = point_mass_gravity(coordinates, point_mass, mass, "g_z", "cartesian")
+    results = point_gravity(coordinates, point_mass, mass, "g_z", "cartesian")
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
@@ -449,9 +441,7 @@ def test_g_northing_symmetry():
     northing[1] -= distance
     coordinates = [easting, northing, upward]
     # Compute g_northing gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, masses, "g_northing", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, masses, "g_northing", "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
 
@@ -465,7 +455,7 @@ def test_g_northing_relative_error():
     mass = 250
     coordinates_p = (0, -39, -13)
     # Compute the northing component
-    exact_deriv = point_mass_gravity(
+    exact_deriv = point_gravity(
         coordinates_p, point_mass, mass, "g_northing", "cartesian"
     )
     # Compute the numerical derivative of potential
@@ -474,9 +464,7 @@ def test_g_northing_relative_error():
     northing = np.array([coordinates_p[1] - delta, coordinates_p[1] + delta])
     upward = np.zeros(2) + coordinates_p[2]
     coordinates = (easting, northing, upward)
-    potential = point_mass_gravity(
-        coordinates, point_mass, mass, "potential", "cartesian"
-    )
+    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
     approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
 
     # Compute the relative error
@@ -505,9 +493,7 @@ def test_g_northing_sign():
     upward = np.zeros(3)
     coordinates = [easting, northing, upward]
     # Compute g_northing gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, mass, "g_northing", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, mass, "g_northing", "cartesian")
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
@@ -532,9 +518,7 @@ def test_g_easting_symmetry():
     easting[1] -= distance
     coordinates = [easting, northing, upward]
     # Compute g_easting gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, masses, "g_easting", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, masses, "g_easting", "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
 
@@ -548,7 +532,7 @@ def test_g_easting_relative_error():
     mass = 200
     coordinates_p = (-3, 24, -10)
     # Compute the easting component
-    exact_deriv = point_mass_gravity(
+    exact_deriv = point_gravity(
         coordinates_p, point_mass, mass, "g_easting", "cartesian"
     )
     # Compute the numerical derivative of potential
@@ -557,9 +541,7 @@ def test_g_easting_relative_error():
     northing = np.zeros(2) + coordinates_p[1]
     upward = np.zeros(2) + coordinates_p[2]
     coordinates = (easting, northing, upward)
-    potential = point_mass_gravity(
-        coordinates, point_mass, mass, "potential", "cartesian"
-    )
+    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
     approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
 
     # Compute the relative error
@@ -588,9 +570,7 @@ def test_g_easting_sign():
     upward = np.zeros(3)
     coordinates = [easting, northing, upward]
     # Compute g_easting gravity field on each computation point
-    results = point_mass_gravity(
-        coordinates, point_mass, mass, "g_easting", "cartesian"
-    )
+    results = point_gravity(coordinates, point_mass, mass, "g_easting", "cartesian")
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
@@ -606,10 +586,10 @@ def test_point_mass_cartesian_parallel():
     masses = np.arange(points[0].size)
     coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
     for field in ("potential", "g_z", "g_northing", "g_easting"):
-        result_serial = point_mass_gravity(
+        result_serial = point_gravity(
             coordinates, points, masses, field=field, parallel=False
         )
-        result_parallel = point_mass_gravity(
+        result_parallel = point_gravity(
             coordinates, points, masses, field=field, parallel=True
         )
         npt.assert_allclose(result_serial, result_parallel)
@@ -636,7 +616,7 @@ def test_point_mass_on_origin():
     # Compare results with analytical solutions
     for field in analytical:
         npt.assert_allclose(
-            point_mass_gravity(
+            point_gravity(
                 [longitude, latitude, radius], point_mass, mass, field, "spherical"
             ),
             analytical[field],
@@ -668,7 +648,7 @@ def test_point_mass_same_radial_direction():
                 # Compare results with analytical solutions
                 for field in analytical:
                     npt.assert_allclose(
-                        point_mass_gravity(
+                        point_gravity(
                             coordinates, point_mass, mass, field, "spherical"
                         ),
                         analytical[field],
@@ -698,7 +678,7 @@ def test_point_mass_potential_on_equator():
                 analytical = {"potential": GRAVITATIONAL_CONST * mass / distance}
                 # Compare results with analytical solutions
                 npt.assert_allclose(
-                    point_mass_gravity(
+                    point_gravity(
                         coordinates, point_mass, mass, "potential", "spherical"
                     ),
                     analytical["potential"],
@@ -728,7 +708,7 @@ def test_point_mass_potential_on_same_meridian():
                 analytical = {"potential": GRAVITATIONAL_CONST * mass / distance}
                 # Compare results with analytical solutions
                 npt.assert_allclose(
-                    point_mass_gravity(
+                    point_gravity(
                         coordinates, point_mass, mass, "potential", "spherical"
                     ),
                     analytical["potential"],
@@ -748,7 +728,7 @@ def test_point_mass_spherical_parallel():
     masses = np.arange(points[0].size)
     coordinates = vd.grid_coordinates(region=region, spacing=1, extra_coords=radius)
     for field in ("potential", "g_z"):
-        result_serial = point_mass_gravity(
+        result_serial = point_gravity(
             coordinates,
             points,
             masses,
@@ -756,7 +736,7 @@ def test_point_mass_spherical_parallel():
             coordinate_system="spherical",
             parallel=False,
         )
-        result_parallel = point_mass_gravity(
+        result_parallel = point_gravity(
             coordinates,
             points,
             masses,
