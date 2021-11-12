@@ -7,13 +7,28 @@
 """
 Tesseroids with variable density
 ================================
+
+The :func:`harmonica.tesseroid_gravity` is capable of computing the
+gravitational effects of tesseroids whose density is defined through
+a continuous function of the radial coordinate. This is achieved by the
+application of the method introduced in [Soler2021]_.
+
+To do so we need to define a regular Python function for the density, which
+should have a single argument (the ``radius`` coordinate) and return the
+density of the tesseroids at that radial coordinate.
+In addition, we need to decorate the density function with
+:func:`numba.jit(nopython=True)` or ``numba.njit`` for short.
+
+On this example we will show how we can compute the gravitational effect of
+four tesseroids whose densities are given by a custom linear ``density``
+function.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import verde as vd
 import boule as bl
 import harmonica as hm
-from numba import jit
+from numba import njit
 
 
 # Use the WGS84 ellipsoid to obtain the mean Earth radius which we'll use to
@@ -34,7 +49,7 @@ tesseroids = (
 # can run the forward model efficiently.
 
 
-@jit
+@njit
 def density(radius):
     """Linear density function"""
     top = mean_radius
