@@ -13,7 +13,7 @@ from numpy.polynomial.legendre import leggauss
 
 from ..constants import GRAVITATIONAL_CONST
 from .utils import distance_spherical
-from .point_mass import (
+from .point import (
     kernel_potential_spherical,
     kernel_g_z_spherical,
 )
