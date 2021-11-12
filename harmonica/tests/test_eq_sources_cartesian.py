@@ -138,6 +138,41 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     npt.assert_allclose(true, profile.scalars, rtol=1e-3)
 
 
+@run_only_with_numba
+def test_equivalent_sources_cartesian_float32(
+    region, points, masses, coordinates, data
+):
+    """
+    Check that predictions are reasonable when interpolating from one grid to
+    a denser grid, using float32 as dtype.
+    """
+    # The interpolation should be perfect on the data points
+    eqs = EquivalentSources(dtype="float32")
+    eqs.fit(coordinates, data)
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=1e-3 * vd.maxabs(data))
+
+    # Gridding onto a denser grid should be reasonably accurate when compared
+    # to synthetic values
+    upward = 0
+    shape = (60, 60)
+    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    true = point_mass_gravity(grid, points, masses, field="g_z")
+    npt.assert_allclose(true, eqs.predict(grid), atol=1e-3 * vd.maxabs(true))
+
+    # Test grid method
+    grid = eqs.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(true, grid.scalars, atol=1e-3 * vd.maxabs(true))
+
+    # Test profile method
+    point1 = (region[0], region[2])
+    point2 = (region[0], region[3])
+    profile = eqs.profile(point1, point2, upward, shape[0])
+    true = point_mass_gravity(
+        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, profile.scalars, atol=1e-3 * vd.maxabs(true))
+
+
 def test_equivalent_sources_small_data_cartesian(region, points, masses):
     """
     Check predictions against synthetic data using few data points for speed
