@@ -19,14 +19,17 @@ from ..forward.tesseroid import (
     tesseroid_gravity,
     _check_tesseroids,
     _check_points_outside_tesseroids,
-    _distance_tesseroid_point,
-    _tesseroid_dimensions,
-    _split_tesseroid,
     _adaptive_discretization,
-    _longitude_continuity,
     STACK_SIZE,
     MAX_DISCRETIZATIONS,
 )
+from ..forward._tesseroid_utils import (
+    _distance_tesseroid_point,
+    _tesseroid_dimensions,
+    _split_tesseroid,
+    _longitude_continuity,
+)
+
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
