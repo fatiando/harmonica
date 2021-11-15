@@ -253,9 +253,7 @@ def test_same_windows_data_and_sources():
     eqs.points_ = points
     # Create windows for data points and sources
     # Set suffhle to False so we can compare the windows with expected values
-    source_windows, data_windows = eqs._create_windows(
-        coordinates, shuffle_windows=False
-    )
+    source_windows, data_windows = eqs._create_windows(coordinates, shuffle=False)
     # Check number of windows
     assert len(source_windows) == 9
     assert len(data_windows) == 9
