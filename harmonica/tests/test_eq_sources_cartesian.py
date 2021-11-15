@@ -62,7 +62,7 @@ def fixture_data(coordinates, points, masses):
     """
     Return some sample data
     """
-    return point_mass_gravity(coordinates, points, masses, field="g_z")
+    return point_gravity(coordinates, points, masses, field="g_z")
 
 
 @pytest.fixture(name="weights")
@@ -90,7 +90,7 @@ def fixture_data_small(points, masses, coordinates_small):
     """
     Return some sample data for the small set of coordinates
     """
-    return point_mass_gravity(coordinates_small, points, masses, field="g_z")
+    return point_gravity(coordinates_small, points, masses, field="g_z")
 
 
 @pytest.fixture(name="coordinates_9x9")
@@ -156,7 +156,7 @@ def test_equivalent_sources_cartesian_float32(
     upward = 0
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), atol=1e-3 * vd.maxabs(true))
 
     # Test grid method
@@ -167,7 +167,7 @@ def test_equivalent_sources_cartesian_float32(
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, atol=1e-3 * vd.maxabs(true))
