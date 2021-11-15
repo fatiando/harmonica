@@ -320,7 +320,7 @@ def test_dtype(
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_float32(region, points, masses, coordinates, data):
+def test_gradient_boosted_eqs_float32(coordinates, data):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid, using float32 as dtype.
