@@ -61,6 +61,14 @@ def fixture_data(coordinates, points, masses):
     return point_mass_gravity(coordinates, points, masses, field="g_z")
 
 
+@pytest.fixture(name="weights")
+def fixture_weights(data):
+    """
+    Return some sample data
+    """
+    return np.ones_like(data)
+
+
 @pytest.fixture(name="coordinates_small")
 def fixture_coordinates_small(region):
     """
@@ -162,7 +170,6 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     """
     Test GB eq-sources with a single window that covers the whole region
     """
-    # The interpolation should be perfect on the data points
     eqs = EquivalentSourcesGB(window_size=region[1] - region[0])
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
@@ -261,3 +268,65 @@ def test_same_windows_data_and_sources():
         assert len(window) == expected_data_windows[i]
     for i, window in enumerate(source_windows):
         assert len(window) == expected_source_windows[i]
+
+
+# -------------------------------------------------
+# Test dtype on gradient_boosted equivalent sources
+# -------------------------------------------------
+
+
+@run_only_with_numba
+@pytest.mark.parametrize("block_size", (None, 500), ids=["no_blocks", "blocks"])
+@pytest.mark.parametrize("custom_points", (False, True), ids=["no_points", "points"])
+@pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
+@pytest.mark.parametrize("damping", (None, 0.1), ids=["damping_none", "damping"])
+@pytest.mark.parametrize("dtype", ("float64", "float32"))
+def test_dtype(
+    region,
+    coordinates,
+    data,
+    weights,
+    block_size,
+    custom_points,
+    weights_none,
+    damping,
+    dtype,
+):
+    """
+    Test dtype argument on EquivalentSources
+    """
+    # Define the points argument for EquivalentSources
+    points = None
+    if custom_points:
+        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+    # Define the points argument for EquivalentSources.fit()
+    if weights_none:
+        weights = None
+    # Initialize and fit the equivalent sources
+    eqs = EquivalentSourcesGB(
+        window_size=1e3,
+        damping=damping,
+        points=points,
+        block_size=block_size,
+        dtype=dtype,
+    )
+    eqs.fit(coordinates, data, weights)
+    # Make some predictions
+    prediction = eqs.predict(coordinates)
+    # Check data type of created objects
+    for coord in eqs.points_:
+        assert coord.dtype == np.dtype(dtype)
+    assert prediction.dtype == np.dtype(dtype)
+
+
+@run_only_with_numba
+def test_gradient_boosted_eqs_float32(region, points, masses, coordinates, data):
+    """
+    Check that predictions are reasonable when interpolating from one grid to
+    a denser grid, using float32 as dtype.
+    """
+    eqs = EquivalentSourcesGB(
+        depth=500, damping=None, window_size=1e3, random_state=42, dtype="float32"
+    )
+    eqs.fit(coordinates, data)
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.05 * vd.maxabs(data))
