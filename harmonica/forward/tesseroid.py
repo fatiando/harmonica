@@ -11,7 +11,6 @@ from numba import jit, prange
 import numpy as np
 
 from ..constants import GRAVITATIONAL_CONST
-from .utils import distance_spherical
 from .point import (
     kernel_potential_spherical,
     kernel_g_z_spherical,
