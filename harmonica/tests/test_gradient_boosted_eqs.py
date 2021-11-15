@@ -159,8 +159,12 @@ def test_gb_eqs_small_data(coordinates_small, data_small, weights):
     # (sample data ranges from approximately -7mGal to 7mGal)
     eqs = EquivalentSourcesGB(depth=1e3, damping=None, window_size=1e3, random_state=42)
     eqs.fit(coordinates_small, data_small, weights=weights)
+    # Error tolerance is 5% of the maximum data.
     npt.assert_allclose(
-        data_small, eqs.predict(coordinates_small), atol=0.05 * vd.maxabs(data_small)
+        data_small,
+        eqs.predict(coordinates_small),
+        rtol=0,
+        atol=0.05 * vd.maxabs(data_small),
     )
 
 
@@ -187,13 +191,17 @@ def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, d
     # The interpolation should be sufficiently accurate on the data points
     eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.02 * vd.maxabs(data))
+    # Error tolerance is 2% of the maximum data.
+    npt.assert_allclose(
+        data, eqs.predict(coordinates), rtol=0, atol=0.02 * vd.maxabs(data)
+    )
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
     true = point_mass_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), atol=0.02 * vd.maxabs(true))
+    # Error tolerance is 2% of the maximum data.
+    npt.assert_allclose(true, eqs.predict(grid), rtol=0, atol=0.02 * vd.maxabs(true))
 
 
 @run_only_with_numba
@@ -326,4 +334,7 @@ def test_gradient_boosted_eqs_float32(coordinates, data):
         depth=500, damping=None, window_size=1e3, random_state=42, dtype="float32"
     )
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=0.05 * vd.maxabs(data))
+    # Error tolerance is 5% of the maximum data.
+    npt.assert_allclose(
+        data, eqs.predict(coordinates), rtol=0, atol=0.05 * vd.maxabs(data)
+    )
