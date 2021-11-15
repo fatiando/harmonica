@@ -278,7 +278,7 @@ class EquivalentSourcesGB(EquivalentSources):
             errors.append(np.sqrt(np.mean(residue ** 2)))
             # Update source coefficients
             self.coefs_[point_window] += coeffs_chunk
-        self.errors_ = np.array(errors)
+        self.rmse_per_iteration_ = np.array(errors)
 
     def _create_windows(self, coordinates, shuffle=True):
         """
