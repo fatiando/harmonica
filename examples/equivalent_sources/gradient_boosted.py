@@ -29,7 +29,6 @@ to use them on a small example.
 
 """
 import matplotlib.pyplot as plt
-import numpy as np
 import pyproj
 import boule as bl
 import verde as vd
@@ -59,23 +58,13 @@ data["gravity_disturbance"] = data.gravity - ellipsoid.normal_gravity(
     data.latitude, data.elevation
 )
 
-# Start building the equivalent sources.
+# Create the equivalent sources
 # We'll use the block-averaged sources with a block size of 2km and windows of
-# 100km x 100km.
+# 100km x 100km, a damping of 10 and set the sources at a relative depth of
+# 9km. By specifying the random_state, we ensure to get the same solution on
+# every run.
 window_size = 100e3
 block_size = 2e3
-
-# Let's estimate the memory required to store the largest Jacobian when using
-# these values for the window_size and the block_size.
-jacobian_req_memory = hm.EquivalentSourcesGB.estimate_required_memory(
-    coordinates, window_size=window_size, block_size=block_size
-)
-print(f"Required memory for storing the largest Jacobian: {jacobian_req_memory} bytes")
-
-# Create the equivalent sources
-# Let's use a damping of 10 and set the sources at a relative depth of 9km.
-# By specifying the random_state, we ensure to get the same solution on every
-# run.
 eqs_gb = hm.EquivalentSourcesGB(
     depth=9e3,
     damping=10,
@@ -83,6 +72,11 @@ eqs_gb = hm.EquivalentSourcesGB(
     block_size=block_size,
     random_state=42,
 )
+
+# Let's estimate the memory required to store the largest Jacobian when using
+# these values for the window_size and the block_size.
+jacobian_req_memory = eqs_gb.estimate_required_memory(coordinates)
+print(f"Required memory for storing the largest Jacobian: {jacobian_req_memory} bytes")
 
 # Fit the sources coefficients to the observed magnetic anomaly.
 eqs_gb.fit(coordinates, data.gravity_disturbance)

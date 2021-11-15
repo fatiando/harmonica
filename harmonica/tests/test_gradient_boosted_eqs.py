@@ -137,9 +137,8 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
     data_p_window = (int(window_size / spacing) + 1) ** 2
     expected_required_memory = data_p_window * sources_p_window * itemsize
     # Estimate required memory
-    required_memory = EquivalentSourcesGB.estimate_required_memory(
-        coordinates, window_size=window_size, dtype=dtype
-    )
+    eqs = EquivalentSourcesGB(window_size=window_size, dtype=dtype)
+    required_memory = eqs.estimate_required_memory(coordinates)
     assert required_memory == expected_required_memory
 
 

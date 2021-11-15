@@ -128,10 +128,7 @@ class EquivalentSourcesGB(EquivalentSources):
         self.random_state = random_state
         self.window_size = window_size
 
-    @classmethod
-    def estimate_required_memory(
-        cls, coordinates, window_size=5e3, block_size=None, points=None, dtype="float64"
-    ):  # pylint: disable=protected-access
+    def estimate_required_memory(self, coordinates):
         """
         Estimate the memory required for storing the largest Jacobian matrix
 
@@ -142,30 +139,6 @@ class EquivalentSourcesGB(EquivalentSources):
             following order: (``easting``, ``northing``, ``upward``, ...).
             Only ``easting``, ``northing``, and ``upward`` will be used, all
             subsequent coordinates will be ignored.
-        window_size : float
-            Size of overlapping windows used during the gradient-boosting
-            algorithm. Smaller windows reduce the memory requirements of the
-            source coefficients fitting process. Very small windows may impact
-            on the accuracy of the interpolations.
-            Defaults to 5000.
-        block_size: float, tuple = (s_north, s_east) or None
-            Size of the blocks used on block-averaged equivalent sources.
-            If a single value is passed, the blocks will have a square shape.
-            Alternatively, the dimensions of the blocks in the South-North and
-            West-East directions can be specified by passing a tuple.
-            If None, no block-averaging is applied.
-            This parameter is ignored if *points* are specified.
-            Default to None.
-        points : None or list of arrays (optional)
-            List containing the coordinates of the equivalent point sources.
-            Coordinates are assumed to be in the following order:
-            (``easting``, ``northing``, ``upward``).
-            If None, will place one point source below each observation point
-            at a fixed relative depth below the observation point
-            [Cooper2000]_.
-            Defaults to None.
-        dtype : type
-            Data type for the Jacobian matrix. Default to ``"float64"``.
 
         Returns
         -------
@@ -183,26 +156,23 @@ class EquivalentSourcesGB(EquivalentSources):
         ...     extra_coords=100,
         ...     random_state=42,
         ... )
-        >>> EquivalentSourcesGB.estimate_required_memory(
-        ...     coordinates, window_size=2e3
-        ... )
+        >>> eqs = EquivalentSourcesGB(window_size=2e3)
+        >>> eqs.estimate_required_memory(coordinates)
         9800
         """
-        # Initialize a dummy instance
-        eqs = cls(points=points, block_size=block_size, window_size=window_size)
         # Build the sources and assign the points_ attribute
         coordinates = vdb.n_1d_arrays(coordinates, 3)
-        points = eqs._build_points(coordinates)
-        eqs.points_ = points
+        points = self._build_points(coordinates)
+        self.points_ = points
         # Build the windows and get the indices
-        source_windows, data_windows = eqs._create_windows(coordinates)
+        source_windows, data_windows = self._create_windows(coordinates)
         # Get the number of sources and data for each window
         source_sizes = np.array([w.size for w in source_windows])
         data_sizes = np.array([w.size for w in data_windows])
         # Compute the size of the Jacobian matrix for each window
         jacobian_sizes = source_sizes * data_sizes
         # Estimate size of a single element of the Jacobian matrix in bytes
-        return jacobian_sizes.max() * np.dtype(dtype).itemsize
+        return jacobian_sizes.max() * np.dtype(self.dtype).itemsize
 
     def fit(self, coordinates, data, weights=None):
         """
