@@ -25,7 +25,7 @@ South Africa (see :func:`harmonica.datasets.fetch_south_africa_gravity`) using
 the gradient-boosted equivalent sources. This particlar dataset is not very
 large, in fact we could use the :class:`harmonica.EquivalentSources` instead.
 But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
-to use them on a simple example.
+to use them on a small example.
 
 """
 import matplotlib.pyplot as plt
