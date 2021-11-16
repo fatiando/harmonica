@@ -24,7 +24,7 @@ defaults:
     # The -l {0} is necessary for conda environments to be activated
     # But this breaks on MacOS if using actions/setup-python:
     # https://github.com/actions/setup-python/issues/132
-    shell: bash
+    shell: bash -l {0}
 
 jobs:
   #############################################################################
@@ -61,10 +61,23 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
         with:
-          python-version: ${{ matrix.python }}
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2.0.1
+        with:
+          python-version: ${{ env.PYTHON }}
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge
+          show-channel-urls: true
+          activate-environment: testing
+          # Needed for caching
+          use-only-tar-bz2: true
 
       - name: Install requirements
         run: |
@@ -80,16 +93,13 @@ jobs:
               echo "Collected dependencies:"
               cat $requirements_file
               echo ""
-              # Install wheel before anything else so pip can use wheels for
-              # other packages.
-              python -m pip install -r env/requirements-build.txt
-              python -m pip install -r $requirements_file
+              conda install --quiet --file $requirements_file python=$PYTHON
           else
               echo "No requirements defined."
           fi
 
       - name: List installed packages
-        run: python -m pip freeze
+        run: conda list
 
       - name: Build source and wheel distributions
         run: |
