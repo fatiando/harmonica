@@ -78,7 +78,7 @@ eqs_gb = hm.EquivalentSourcesGB(
 jacobian_req_memory = eqs_gb.estimate_required_memory(coordinates)
 print(f"Required memory for storing the largest Jacobian: {jacobian_req_memory} bytes")
 
-# Fit the sources coefficients to the observed magnetic anomaly.
+# Fit the sources coefficients to the observed gravity disturbance.
 eqs_gb.fit(coordinates, data.gravity_disturbance)
 
 print("Number of sources:", eqs_gb.points_[0].size)
@@ -98,7 +98,8 @@ grid = eqs_gb.grid(
 )
 print(grid)
 
-# Plot original magnetic anomaly and the gridded and upward-continued version
+# Plot the original gravity disturbance and the gridded and upward-continued
+# version
 fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
 
 # Get the maximum absolute value between the original and gridded data so we
@@ -106,7 +107,7 @@ fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
 # color.
 maxabs = vd.maxabs(data.gravity_disturbance, grid.gravity_disturbance)
 
-ax1.set_title("Observed magnetic anomaly data")
+ax1.set_title("Observed gravity disturbance data")
 tmp = ax1.scatter(
     easting,
     northing,
