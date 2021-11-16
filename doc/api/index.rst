@@ -24,6 +24,7 @@ Equivalent Sources
     :toctree: generated/
 
     EquivalentSources
+    EquivalentSourcesGB
     EquivalentSourcesSph
 
 Forward modelling
