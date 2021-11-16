@@ -58,7 +58,7 @@ The main advantages of this are:
 We use GitHub Actions continuous integration (CI) services to build and
 test the project on Windows, Linux, and Mac.
 The configuration files for this service are in `.github/workflows`.
-They rely on the `requirements.txt`, `requirements-optional.txt`, etc 
+They rely on the `requirements.txt` and `env/requirements-*.txt`
 files to install the required dependencies using conda or pip.
 
 The CI jobs include:
