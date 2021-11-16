@@ -24,7 +24,7 @@ defaults:
     # The -l {0} is necessary for conda environments to be activated
     # But this breaks on MacOS if using actions/setup-python:
     # https://github.com/actions/setup-python/issues/132
-    shell: bash -l {0}
+    shell: bash
 
 jobs:
   #############################################################################
@@ -32,10 +32,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CONDA_REQUIREMENTS: requirements.txt
-      CONDA_REQUIREMENTS_DEV: requirements-dev.txt
-      CONDA_REQUIREMENTS_DOC: requirements-doc.txt
-      PYTHON: 3.8
+      REQUIREMENTS: requirements.txt env/requirements-docs.txt
+      PYTHON: 3.9
 
     steps:
       # Cancel any previous run of the test job
@@ -69,54 +67,48 @@ jobs:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
 
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2.0.1
+      - name: Setup Python
+        uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON }}
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge
-          show-channel-urls: true
-          activate-environment: testing
-          # Needed for caching
-          use-only-tar-bz2: true
+          python-version: ${{ matrix.python }}
+
+      - name: Get the pip cache folder
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: Setup caching for pip packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install requirements
         run: |
-          requirements_file=full-conda-requirements.txt
-          if [ ! -z "$CONDA_REQUIREMENTS" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS"
-              cat $CONDA_REQUIREMENTS >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
-              cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_REQUIREMENTS_DOC" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DOC"
-              cat $CONDA_REQUIREMENTS_DOC >> $requirements_file
-          fi
-          if [ "$DEPENDENCIES" == "optional" ]; then
-              echo "Capturing optional dependencies from $CONDA_REQUIREMENTS_OPTIONAL"
-              cat $CONDA_REQUIREMENTS_OPTIONAL >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
-              echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
-              echo "# Extra" >> $requirements_file
-              # Use xargs to print one argument per line
-              echo $CONDA_INSTALL_EXTRA | xargs -n 1 >> $requirements_file
+          requirements_file=requirements-full.txt
+          if [ ! -z "$REQUIREMENTS" ]; then
+              echo "Capturing dependencies from $REQUIREMENTS"
+              for requirement in $REQUIREMENTS
+              do
+                cat $requirement >> $requirements_file
+              done
           fi
           if [ -f $requirements_file ]; then
               echo "Collected dependencies:"
               cat $requirements_file
               echo ""
-              conda install --quiet --file $requirements_file python=$PYTHON
+              # Install wheel before anything else so pip can use wheels for
+              # other packages.
+              python -m pip install -r env/requirements-build.txt
+              python -m pip install -r $requirements_file
           else
               echo "No requirements defined."
           fi
 
       - name: List installed packages
-        run: conda list
+        run: python -m pip freeze
 
       - name: Build source and wheel distributions
         run: |
@@ -127,6 +119,16 @@ jobs:
 
       - name: Install the package
         run: pip install --no-deps dist/*.whl
+
+      - name: Copy test data to cache
+        run: |
+          echo "Copy data to " $HARMONICA_DATA_DIR/master
+          set -x -e
+          mkdir -p $HARMONICA_DATA_DIR/master
+          cp -r data/* $HARMONICA_DATA_DIR/master
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Build the documentation
         run: make -C doc clean all
