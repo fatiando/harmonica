@@ -1,4 +1,6 @@
 # Requirements for running the tests
+boule
+verde
 pytest
 pytest-cov
 coverage
