@@ -247,7 +247,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         dims=None,
         data_names=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ,arguments-renamed
+    ):  # pylint: disable=arguments-differ
         """
         Interpolate the data onto a regular grid.
 
