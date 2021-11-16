@@ -8,7 +8,7 @@
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
 import numpy as np
-from sklearn.utils import shuffle as sklearn_shuffle
+from sklearn import utils
 from verde import get_region, rolling_window
 import verde.base as vdb
 
@@ -326,7 +326,7 @@ class EquivalentSourcesGB(EquivalentSources):
         data_windows = [i[0] for i in data_windows.ravel()]
         # Shuffle windows
         if shuffle:
-            source_windows, data_windows = sklearn_shuffle(
+            source_windows, data_windows = utils.shuffle(
                 source_windows, data_windows, random_state=self.random_state
             )
         # Remove empty windows
