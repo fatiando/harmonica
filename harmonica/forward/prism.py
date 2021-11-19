@@ -186,9 +186,7 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-def jit_prism_gravity(
-    coordinates, prisms, density, kernel, out
-):  
+def jit_prism_gravity(coordinates, prisms, density, kernel, out):
     """
     Compute gravitational field of prisms on computations points
 

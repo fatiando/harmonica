@@ -247,7 +247,7 @@ def test_density_based_discret_with_delta(
     bottom,
     top,
     quadratic_density,
-):  
+):
     """
     Test the density-based discretization algorithm against values of DELTA
     """
@@ -295,7 +295,7 @@ def test_density_based_discret_constant_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    def stupid_constant_density(radius):  
+    def stupid_constant_density(radius):
         """Define a dummy constant density function"""
         return 3
 
@@ -322,7 +322,7 @@ def test_single_tesseroid_against_constant_density(field):
 
     # Define a constant density
     @jit
-    def constant_density(radius):  
+    def constant_density(radius):
         return density
 
     # Define a set of observation points
@@ -359,7 +359,7 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
 
 def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
-):  
+):
     r"""
     Analytical solutions of a spherical shell with exponential density
 
@@ -394,9 +394,7 @@ def analytical_spherical_shell_exponential(
     return data
 
 
-def build_spherical_shell(
-    bottom, top, shape=(6, 12)
-):  
+def build_spherical_shell(bottom, top, shape=(6, 12)):
     """
     Return a set of tesseroids modelling a spherical shell
 

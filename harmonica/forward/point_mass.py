@@ -343,7 +343,7 @@ def kernel_g_z_spherical(
 
 def point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
-):  
+):
     """
     Compute gravitational field of point masses in Cartesian coordinates
 
@@ -377,7 +377,7 @@ def point_mass_cartesian(
 
 def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):  
+):
     """
     Compute gravitational field of point masses in spherical coordinates
 

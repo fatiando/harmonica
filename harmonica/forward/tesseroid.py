@@ -221,7 +221,7 @@ def jit_tesseroid_gravity(
     glq_weights,
     kernel,
     dtype,
-):  
+):
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -316,7 +316,7 @@ def jit_tesseroid_gravity_variable_density(
     glq_weights,
     kernel,
     dtype,
-):  
+):
     """
     Compute gravitational field of tesseroids on computations points
 

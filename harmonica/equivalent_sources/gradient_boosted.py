@@ -224,9 +224,7 @@ class EquivalentSourcesGB(EquivalentSources):
         self._gradient_boosting(coordinates, data, weights)
         return self
 
-    def _gradient_boosting(
-        self, coordinates, data, weights
-    ):  
+    def _gradient_boosting(self, coordinates, data, weights):
         """
         Fit source coefficients through gradient boosting
         """

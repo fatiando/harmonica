@@ -47,9 +47,7 @@ def pop_extra_coords(kwargs):
         kwargs.pop("extra_coords")
 
 
-def jacobian(
-    coordinates, points, jac, greens_function
-):  
+def jacobian(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix
 
@@ -72,9 +70,7 @@ def jacobian(
             )
 
 
-def predict(
-    coordinates, points, coeffs, result, greens_function
-):  
+def predict(coordinates, points, coeffs, result, greens_function):
     """
     Calculate the predicted data
 

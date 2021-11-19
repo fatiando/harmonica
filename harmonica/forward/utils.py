@@ -198,7 +198,7 @@ def distance_spherical_core(
     return dist, cospsi, coslambda
 
 
-def distance_geodetic(point_p, point_q, ellipsoid):  
+def distance_geodetic(point_p, point_q, ellipsoid):
     """
     Calculate the distance between two points in geodetic coordinates
 
