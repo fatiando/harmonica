@@ -1,4 +1,24 @@
 [flake8]
-ignore = E203, E266, E501, W503, F401, E741
 max-line-length = 88
 max-doc-length = 79
+ignore =
+    # Too many leading '#' for block comment
+    E266,
+    # Line too long (82 > 79 characters)
+    E501,
+exclude =
+    .git,
+    __pycache__,
+    .ipynb_checkpoints,
+per-file-ignores =
+    # disable unused-imports errors on __init__.py
+    __init__.py: F401
+# Configure flake8-rst-docstrings
+rst-roles =
+    class,
+    func,
+    mod,
+    meth,
+extend-ignore = RST306
+# Configure flake8-functions (allow a max of 10 arguments per function)
+max-parameters-amount = 10
