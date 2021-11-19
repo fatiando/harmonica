@@ -20,7 +20,6 @@ points.
 """
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
-import numpy as np
 import pyproj
 import verde as vd
 

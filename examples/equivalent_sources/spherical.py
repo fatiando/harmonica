@@ -19,7 +19,6 @@ equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
 import boule as bl
-import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
 import verde as vd

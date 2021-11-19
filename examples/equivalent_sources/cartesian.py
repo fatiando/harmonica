@@ -31,7 +31,6 @@ least-squares fitting process. The main disadvantage is the increased
 computational load (both in terms of time and memory).
 """
 import matplotlib.pyplot as plt
-import numpy as np
 import pyproj
 import verde as vd
 

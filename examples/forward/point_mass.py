@@ -19,7 +19,6 @@ grid given in Cartesian coordinates using the
 :func:`harmonica.point_mass_gravity` function.
 """
 import matplotlib.pyplot as plt
-import matplotlib.ticker
 import verde as vd
 
 import harmonica as hm

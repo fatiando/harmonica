@@ -5,9 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import datetime
-import os
 
-import sphinx_gallery
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
 import harmonica
