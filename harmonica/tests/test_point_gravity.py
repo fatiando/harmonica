@@ -443,12 +443,12 @@ def test_point_mass_on_origin():
         "g_z": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
     }
     # Compare results with analytical solutions
-    for field in analytical:
+    for field, solution in analytical.items():
         npt.assert_allclose(
             point_gravity(
                 [longitude, latitude, radius], point_mass, mass, field, "spherical"
             ),
-            analytical[field],
+            solution,
         )
 
 
@@ -475,12 +475,12 @@ def test_point_mass_same_radial_direction():
                     "g_z": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
                 }
                 # Compare results with analytical solutions
-                for field in analytical:
+                for field, solution in analytical.items():
                     npt.assert_allclose(
                         point_gravity(
                             coordinates, point_mass, mass, field, "spherical"
                         ),
-                        analytical[field],
+                        solution,
                     )
 
 
