@@ -48,7 +48,7 @@ isort:
 	isort $(STYLE_CHECK_FILES)
 
 isort-check:
-	isort --check --color $(STYLE_CHECK_FILES)
+	isort --check $(STYLE_CHECK_FILES)
 
 license:
 	python license_notice.py
