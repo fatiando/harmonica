@@ -249,7 +249,7 @@ def _split_tesseroid(
     for i in range(n_lon):
         for j in range(n_lat):
             for k in range(n_rad):
-                stack_top += 1
+                stack_top += 1  # noqa: SIM113, don't want to use enumerate here
                 stack[stack_top, 0] = w + d_lon * i
                 stack[stack_top, 1] = w + d_lon * (i + 1)
                 stack[stack_top, 2] = s + d_lat * j
