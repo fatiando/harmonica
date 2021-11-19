@@ -8,6 +8,7 @@
 Testing ICGEM gdf files loading.
 """
 import os
+
 import numpy as np
 import numpy.testing as npt
 from pytest import raises

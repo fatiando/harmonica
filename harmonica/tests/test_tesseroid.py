@@ -7,29 +7,28 @@
 """
 Test forward modelling for tesseroids.
 """
+import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
-import boule
 
-from .utils import run_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
-from ..forward.tesseroid import (
-    tesseroid_gravity,
-    _check_tesseroids,
-    _check_points_outside_tesseroids,
-    _adaptive_discretization,
-    STACK_SIZE,
-    MAX_DISCRETIZATIONS,
-)
 from ..forward._tesseroid_utils import (
     _distance_tesseroid_point,
-    _tesseroid_dimensions,
-    _split_tesseroid,
     _longitude_continuity,
+    _split_tesseroid,
+    _tesseroid_dimensions,
 )
-
+from ..forward.tesseroid import (
+    MAX_DISCRETIZATIONS,
+    STACK_SIZE,
+    _adaptive_discretization,
+    _check_points_outside_tesseroids,
+    _check_tesseroids,
+    tesseroid_gravity,
+)
+from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)

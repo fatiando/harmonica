@@ -7,8 +7,8 @@
 """
 Utils functions for tesseroid forward modelling
 """
-from numba import jit
 import numpy as np
+from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from .utils import distance_spherical

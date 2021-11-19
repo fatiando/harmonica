@@ -8,15 +8,14 @@
 """
 Test functions for gradient-boosted equivalent sources
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 import verde as vd
 
-from .. import point_mass_gravity
-from .utils import run_only_with_numba
-from .. import EquivalentSourcesGB
+from .. import EquivalentSourcesGB, point_mass_gravity
 from ..equivalent_sources.gradient_boosted import _get_region_data_sources
+from .utils import run_only_with_numba
 
 
 @pytest.fixture(name="region")

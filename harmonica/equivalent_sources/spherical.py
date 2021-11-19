@@ -8,20 +8,21 @@
 Equivalent sources for generic harmonic functions in spherical coordinates
 """
 import warnings
+
 import numpy as np
-from numba import jit
-from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
+from numba import jit
+from sklearn.utils.validation import check_is_fitted
 
-from .utils import (
-    pop_extra_coords,
-    predict_numba_serial,
-    predict_numba_parallel,
-    jacobian_numba_serial,
-    jacobian_numba_parallel,
-)
 from ..forward.utils import distance_spherical
+from .utils import (
+    jacobian_numba_parallel,
+    jacobian_numba_serial,
+    pop_extra_coords,
+    predict_numba_parallel,
+    predict_numba_serial,
+)
 
 
 class EquivalentSourcesSph(vdb.BaseGridder):

@@ -9,13 +9,14 @@
 Test prisms layer
 """
 import warnings
-import pytest
+
 import numpy as np
 import numpy.testing as npt
+import pytest
 import verde as vd
 import xarray as xr
 
-from .. import prism_layer, prism_gravity
+from .. import prism_gravity, prism_layer
 
 
 @pytest.fixture(params=("numpy", "xarray"))

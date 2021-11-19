@@ -7,23 +7,23 @@
 """
 Test forward modelling for tesseroids with variable density
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
-from verde import grid_coordinates
+import pytest
 from numba import jit
+from verde import grid_coordinates
+
 import harmonica
 
-from .utils import run_only_with_numba
-from ..constants import GRAVITATIONAL_CONST
 from .. import tesseroid_gravity
+from ..constants import GRAVITATIONAL_CONST
 from ..forward._tesseroid_variable_density import (
-    straight_line,
-    maximum_absolute_diff,
-    density_minmax,
     _density_based_discretization,
+    density_minmax,
+    maximum_absolute_diff,
+    straight_line,
 )
-
+from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)

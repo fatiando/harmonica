@@ -8,6 +8,7 @@
 Utility functions for equivalent sources gridders
 """
 from warnings import warn
+
 from numba import jit, prange
 
 

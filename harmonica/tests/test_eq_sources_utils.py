@@ -9,11 +9,12 @@
 Test equivalent sources utility functions
 """
 import warnings
-import pytest
+
 import numpy as np
+import pytest
 from verde import scatter_points
 
-from ..equivalent_sources.utils import pop_extra_coords, cast_fit_input
+from ..equivalent_sources.utils import cast_fit_input, pop_extra_coords
 
 
 def test_pop_extra_coords():

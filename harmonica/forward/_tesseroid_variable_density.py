@@ -7,8 +7,8 @@
 """
 Utils functions for tesseroids with variable density
 """
-from numba import jit
 import numpy as np
+from numba import jit
 from scipy.optimize import minimize_scalar
 
 DELTA_RATIO = 0.1

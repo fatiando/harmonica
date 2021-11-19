@@ -15,7 +15,6 @@ import verde as vd
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point_mass import point_mass_gravity
 from ..forward.utils import distance_cartesian
-
 from .utils import run_only_with_numba
 
 

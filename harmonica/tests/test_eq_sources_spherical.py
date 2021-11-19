@@ -9,12 +9,13 @@
 Test the EquivalentSourcesSph gridder
 """
 import warnings
-import pytest
-import numpy.testing as npt
-import xarray.testing as xrt
-import verde as vd
 
-from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_mass_gravity
+import numpy.testing as npt
+import pytest
+import verde as vd
+import xarray.testing as xrt
+
+from .. import EQLHarmonicSpherical, EquivalentSourcesSph, point_mass_gravity
 from .utils import run_only_with_numba
 
 

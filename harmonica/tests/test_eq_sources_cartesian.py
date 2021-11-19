@@ -8,16 +8,17 @@
 """
 Test the EquivalentSources gridder
 """
-from collections.abc import Iterable
 import warnings
-import pytest
+from collections.abc import Iterable
+
 import numpy as np
 import numpy.testing as npt
-import xarray.testing as xrt
+import pytest
 import verde as vd
 import verde.base as vdb
+import xarray.testing as xrt
 
-from .. import EquivalentSources, EQLHarmonic, point_mass_gravity
+from .. import EQLHarmonic, EquivalentSources, point_mass_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba

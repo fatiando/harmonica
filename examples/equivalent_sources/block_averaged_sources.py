@@ -44,8 +44,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyproj
 import verde as vd
-import harmonica as hm
 
+import harmonica as hm
 
 # Fetch the sample total-field magnetic anomaly data from Great Britain
 data = hm.datasets.fetch_britain_magnetic()
