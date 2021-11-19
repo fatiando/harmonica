@@ -224,13 +224,12 @@ Our continuous integration systems will warn us and you can make a new commit wi
 formatted code.
 
 We also use [flake8](http://flake8.pycqa.org/en/latest/) and
-[pylint](https://www.pylint.org/) to check the quality of the code and quickly catch
-common errors.
+[isort](https://pycqa.github.io/isort/) to check the quality of the code and
+quickly catch common errors.
 The [`Makefile`](Makefile) contains rules for running both checks:
 
 ```bash
-make check   # Runs flake8 and black (in check mode)
-make lint    # Runs pylint, which is a bit slower
+make check   # Runs flake8, black and isort (in check mode)
 ```
 
 #### Docstrings
