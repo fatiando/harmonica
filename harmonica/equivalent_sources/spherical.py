@@ -202,9 +202,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         )
         return data.reshape(shape)
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points, dtype="float64"):
         """
         Make the Jacobian matrix for the equivalent sources.
 
@@ -248,7 +246,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         dims=None,
         data_names=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -296,9 +294,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
         """
         # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)

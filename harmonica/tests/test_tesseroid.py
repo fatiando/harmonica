@@ -573,7 +573,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_spherical_shell_two_dim_adaptive_discret(
     field,
-):  # pylint: disable=too-many-locals
+):  
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization
@@ -620,7 +620,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
 def test_spherical_shell_three_dim_adaptive_discret(
     thickness, field
-):  # pylint: disable=too-many-locals
+):  
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization

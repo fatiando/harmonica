@@ -49,7 +49,7 @@ def pop_extra_coords(kwargs):
 
 def jacobian(
     coordinates, points, jac, greens_function
-):  # pylint: disable=not-an-iterable
+):  
     """
     Calculate the Jacobian matrix
 
@@ -74,7 +74,7 @@ def jacobian(
 
 def predict(
     coordinates, points, coeffs, result, greens_function
-):  # pylint: disable=not-an-iterable
+):  
     """
     Calculate the predicted data
 
@@ -97,7 +97,6 @@ def predict(
             )
 
 
-# pylint: disable=invalid-name
 predict_numba_serial = jit(nopython=True)(predict)
 predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
 jacobian_numba_serial = jit(nopython=True)(jacobian)

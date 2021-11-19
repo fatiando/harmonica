@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring,import-outside-toplevel,import-self
 #
 # Import functions/classes to make the public API
 from . import datasets, synthetic

@@ -221,7 +221,7 @@ def jit_tesseroid_gravity(
     glq_weights,
     kernel,
     dtype,
-):  # pylint: disable=too-many-locals,invalid-name,not-an-iterable
+):  
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -316,7 +316,7 @@ def jit_tesseroid_gravity_variable_density(
     glq_weights,
     kernel,
     dtype,
-):  # pylint: disable=too-many-locals,invalid-name,not-an-iterable
+):  
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -401,7 +401,6 @@ def jit_tesseroid_gravity_variable_density(
 
 
 # Define jitted versions of the forward modelling function
-# pylint: disable=invalid-name
 jit_tesseroid_gravity_serial = jit(nopython=True)(jit_tesseroid_gravity)
 jit_tesseroid_gravity_parallel = jit(nopython=True, parallel=True)(
     jit_tesseroid_gravity

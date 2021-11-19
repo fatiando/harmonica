@@ -188,7 +188,7 @@ def _check_prisms(prisms):
 
 def jit_prism_gravity(
     coordinates, prisms, density, kernel, out
-):  # pylint: disable=invalid-name,not-an-iterable
+):  
     """
     Compute gravitational field of prisms on computations points
 
@@ -305,6 +305,5 @@ def safe_log(x):
 
 
 # Define jitted versions of the forward modelling function
-# pylint: disable=invalid-name
 jit_prism_gravity_serial = jit(nopython=True)(jit_prism_gravity)
 jit_prism_gravity_parallel = jit(nopython=True, parallel=True)(jit_prism_gravity)

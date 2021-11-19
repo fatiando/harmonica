@@ -26,9 +26,7 @@ from .utils import (
 )
 
 
-class EquivalentSources(
-    vdb.BaseGridder
-):  # pylint: disable=too-many-instance-attributes
+class EquivalentSources(vdb.BaseGridder):
     r"""
     Equivalent sources for generic harmonic functions (gravity, magnetics).
 
@@ -387,7 +385,7 @@ class EquivalentSources(
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -443,9 +441,7 @@ class EquivalentSources(
 
         """
         # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
@@ -491,7 +487,7 @@ class EquivalentSources(
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate data along a profile between two points.
 
@@ -561,9 +557,7 @@ class EquivalentSources(
 
         """
         # We override the profile method from BaseGridder so it takes the
-        # upward coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # upward coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)

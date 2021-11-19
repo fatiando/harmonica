@@ -25,7 +25,7 @@ def gauss_legendre_quadrature(
     glq_nodes,
     glq_weights,
     kernel,
-):  # pylint: disable=too-many-locals
+):  
     r"""
     Compute the effect of a tesseroid on a single observation point through GLQ
 
@@ -237,7 +237,7 @@ def _adaptive_discretization(
 @jit(nopython=True)
 def _split_tesseroid(
     tesseroid, n_lon, n_lat, n_rad, stack, stack_top
-):  # pylint: disable=too-many-locals
+):  
     """
     Split tesseroid along each dimension
     """
@@ -278,7 +278,7 @@ def _tesseroid_dimensions(tesseroid):
 @jit(nopython=True)
 def _distance_tesseroid_point(
     coordinates, tesseroid
-):  # pylint: disable=too-many-locals
+):  
     """
     Distance between a computation point and the center of a tesseroid
     """
@@ -292,7 +292,7 @@ def _distance_tesseroid_point(
     return distance
 
 
-def _check_tesseroids(tesseroids):  # pylint: disable=too-many-branches
+def _check_tesseroids(tesseroids):  
     """
     Check if tesseroids boundaries are well defined
 
@@ -408,7 +408,7 @@ def _check_tesseroids(tesseroids):  # pylint: disable=too-many-branches
 
 def _check_points_outside_tesseroids(
     coordinates, tesseroids
-):  # pylint: disable=too-many-locals
+):  
     """
     Check if computation points are not inside the tesseroids
 

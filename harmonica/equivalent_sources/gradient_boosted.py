@@ -226,7 +226,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
     def _gradient_boosting(
         self, coordinates, data, weights
-    ):  # pylint: disable=too-many-locals
+    ):  
         """
         Fit source coefficients through gradient boosting
         """

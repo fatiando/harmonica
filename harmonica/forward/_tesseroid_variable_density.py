@@ -25,7 +25,7 @@ def gauss_legendre_quadrature_variable_density(
     glq_nodes,
     glq_weights,
     kernel,
-):  # pylint: disable=too-many-locals
+):  
     r"""
     Compute the effect of a tesseroid on a single observation point through GLQ
 
@@ -146,7 +146,7 @@ def density_based_discretization(tesseroids, density):
 
 def _density_based_discretization(
     tesseroid, density
-):  # pylint: disable=too-many-locals
+):  
     """
     Applies density-based discretization to a single tesseroid
 

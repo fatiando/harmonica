@@ -343,7 +343,7 @@ def kernel_g_z_spherical(
 
 def point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
-):  # pylint: disable=invalid-name,not-an-iterable
+):  
     """
     Compute gravitational field of point masses in Cartesian coordinates
 
@@ -377,7 +377,7 @@ def point_mass_cartesian(
 
 def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):  # pylint: disable=invalid-name,not-an-iterable
+):  
     """
     Compute gravitational field of point masses in spherical coordinates
 
@@ -425,7 +425,6 @@ def point_mass_spherical(
 
 
 # Define jitted versions of the forward modelling functions
-# pylint: disable=invalid-name
 point_mass_cartesian_serial = jit(nopython=True)(point_mass_cartesian)
 point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(point_mass_cartesian)
 point_mass_spherical_serial = jit(nopython=True)(point_mass_spherical)
