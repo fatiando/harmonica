@@ -10,5 +10,4 @@ flake8-functions
 flake8-mutable
 flake8-rst-docstrings
 flake8-simplify
-flake8-variables-names
 pep8-naming
