@@ -59,9 +59,6 @@ license-check:
 flake8:
 	flake8 $(STYLE_CHECK_FILES)
 
-lint:
-	pylint --jobs=0 $(LINT_FILES)
-
 clean:
 	find . -name "*.pyc" -exec rm -v {} \;
 	find . -name ".coverage.*" -exec rm -v {} \;
