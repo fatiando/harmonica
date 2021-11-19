@@ -407,6 +407,7 @@ def build_spherical_shell(
     top : float
         Outer radius of the spherical shell
     shape : tuple (n_latitude, n_longitude)
+        Number of tesseroids used along each dimension.
     """
     region = (-180, 180, -90, 90)
     n_lat, n_lon = shape[:]
