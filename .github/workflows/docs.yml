@@ -32,10 +32,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CONDA_REQUIREMENTS: requirements.txt
-      CONDA_REQUIREMENTS_DEV: requirements-dev.txt
-      CONDA_REQUIREMENTS_DOC: requirements-doc.txt
-      PYTHON: 3.8
+      REQUIREMENTS: requirements.txt env/requirements-docs.txt
+      PYTHON: 3.9
 
     steps:
       # Cancel any previous run of the test job
@@ -83,28 +81,13 @@ jobs:
 
       - name: Install requirements
         run: |
-          requirements_file=full-conda-requirements.txt
-          if [ ! -z "$CONDA_REQUIREMENTS" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS"
-              cat $CONDA_REQUIREMENTS >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
-              cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_REQUIREMENTS_DOC" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DOC"
-              cat $CONDA_REQUIREMENTS_DOC >> $requirements_file
-          fi
-          if [ "$DEPENDENCIES" == "optional" ]; then
-              echo "Capturing optional dependencies from $CONDA_REQUIREMENTS_OPTIONAL"
-              cat $CONDA_REQUIREMENTS_OPTIONAL >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
-              echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
-              echo "# Extra" >> $requirements_file
-              # Use xargs to print one argument per line
-              echo $CONDA_INSTALL_EXTRA | xargs -n 1 >> $requirements_file
+          requirements_file=requirements-full.txt
+          if [ ! -z "$REQUIREMENTS" ]; then
+              echo "Capturing dependencies from $REQUIREMENTS"
+              for requirement in $REQUIREMENTS
+              do
+                cat $requirement >> $requirements_file
+              done
           fi
           if [ -f $requirements_file ]; then
               echo "Collected dependencies:"
@@ -127,6 +110,16 @@ jobs:
 
       - name: Install the package
         run: pip install --no-deps dist/*.whl
+
+      - name: Copy test data to cache
+        run: |
+          echo "Copy data to " $HARMONICA_DATA_DIR/master
+          set -x -e
+          mkdir -p $HARMONICA_DATA_DIR/master
+          cp -r data/* $HARMONICA_DATA_DIR/master
+        env:
+          # Define directory where sample data will be copied
+          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Build the documentation
         run: make -C doc clean all

@@ -1,0 +1,5 @@
+# Requirements for checking code style
+black
+flake8
+pylint
+pathspec
