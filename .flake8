@@ -13,12 +13,19 @@ exclude =
 per-file-ignores =
     # disable unused-imports errors on __init__.py
     __init__.py: F401
+
 # Configure flake8-rst-docstrings
+# -------------------------------
+# Add some roles used in our docstrings
 rst-roles =
     class,
     func,
     mod,
     meth,
+# Ignore "Unknown target name" raised on citations
 extend-ignore = RST306
-# Configure flake8-functions (allow a max of 10 arguments per function)
+
+# Configure flake8-functions
+# --------------------------
+# Allow a max of 10 arguments per function
 max-parameters-amount = 10
