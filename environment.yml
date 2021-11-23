@@ -36,3 +36,7 @@ dependencies:
   - flake8-rst-docstrings
   - flake8-simplify
   - pep8-naming
+  - pip:
+      # Install flake8-unused-arguments through pip
+      # (not available through conda yet)
+      - flake8-unused-arguments
