@@ -8,8 +8,9 @@
 Test forward modelling for point masses.
 """
 import os
-from pathlib import Path
 import warnings
+from pathlib import Path
+
 import numpy as np
 import numpy.testing as npt
 import pytest

@@ -14,7 +14,7 @@ import pytest
 import verde as vd
 import xarray.testing as xrt
 
-from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_gravity
+from .. import EQLHarmonicSpherical, EquivalentSourcesSph, point_gravity
 from .utils import run_only_with_numba
 
 

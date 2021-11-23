@@ -8,6 +8,7 @@
 Forward modelling for point masses
 """
 import warnings
+
 import numpy as np
 from numba import jit, prange
 
