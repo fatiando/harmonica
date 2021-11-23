@@ -12,7 +12,7 @@ from . import synthetic
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
 from .gravity_corrections import bouguer_correction
-from .forward.point_mass import point_mass_gravity
+from .forward.point import point_gravity, point_mass_gravity
 from .forward.tesseroid import tesseroid_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
