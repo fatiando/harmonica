@@ -460,13 +460,13 @@ class EquivalentSources(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,
-        size=300,
-        random_state=0,
-        dims=None,
-        data_names=None,
-        projection=None,
-        **kwargs,
+        region=None,  # noqa: U100
+        size=300,  # noqa: U100
+        random_state=0,  # noqa: U100
+        dims=None,  # noqa: U100
+        data_names=None,  # noqa: U100
+        projection=None,  # noqa: U100
+        **kwargs,  # noqa: U100
     ):
         """
         .. warning ::

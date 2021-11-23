@@ -295,7 +295,9 @@ def test_density_based_discret_constant_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    def stupid_constant_density(radius):
+    def stupid_constant_density(
+        radius,  # noqa: U100 # the radius argument is needed for the density function
+    ):
         """Define a dummy constant density function"""
         return 3
 
@@ -322,7 +324,9 @@ def test_single_tesseroid_against_constant_density(field):
 
     # Define a constant density
     @jit
-    def constant_density(radius):
+    def constant_density(
+        radius,  # noqa: U100 # the radius argument is needed for the density function
+    ):
         return density
 
     # Define a set of observation points
