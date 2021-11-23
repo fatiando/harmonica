@@ -11,6 +11,10 @@ import numpy as np
 from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
+from .point import (
+    kernel_potential_spherical,
+    kernel_g_z_spherical,
+)
 from ._tesseroid_utils import (
     _adaptive_discretization,
     _check_points_outside_tesseroids,
@@ -22,7 +26,6 @@ from ._tesseroid_variable_density import (
     density_based_discretization,
     gauss_legendre_quadrature_variable_density,
 )
-from .point_mass import kernel_g_z_spherical, kernel_potential_spherical
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
