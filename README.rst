@@ -1,4 +1,4 @@
-.. image:: https://github.com/fatiando/harmonica/raw/master/doc/_static/readme-banner.png
+.. image:: https://github.com/fatiando/harmonica/raw/main/doc/_static/readme-banner.png
     :alt: Harmonica
 
 `Documentation <http://www.fatiando.org/harmonica>`__ |
@@ -9,10 +9,10 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/harmonica.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/harmonica
-.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmaster&style=flat-square&logo=none
+.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmain&style=flat-square&logo=none
     :alt: GitHub Actions status
     :target: https://github.com/fatiando/harmonica/actions
-.. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/master.svg?style=flat-square
+.. image:: https://img.shields.io/codecov/c/github/fatiando/harmonica/main.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/harmonica
 .. image:: https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square
@@ -89,14 +89,14 @@ Code of conduct
 +++++++++++++++
 
 Please note that this project is released with a
-`Contributor Code of Conduct <https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md>`__.
+`Contributor Code of Conduct <https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md>`__.
 By participating in this project you agree to abide by its terms.
 
 Contributing Guidelines
 +++++++++++++++++++++++
 
 Please read our
-`Contributing Guide <https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md>`__
+`Contributing Guide <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>`__
 to see how you can help and give feedback.
 
 Imposter syndrome disclaimer
@@ -132,13 +132,13 @@ License
 
 This is free software: you can redistribute it and/or modify it under the terms
 of the **BSD 3-clause License**. A copy of this license is provided in
-`LICENSE.txt <https://github.com/fatiando/harmonica/blob/master/LICENSE.txt>`__.
+`LICENSE.txt <https://github.com/fatiando/harmonica/blob/main/LICENSE.txt>`__.
 
 
 Documentation for other versions
 --------------------------------
 
-* `Development <http://www.fatiando.org/harmonica/dev>`__ (reflects the *master* branch on
+* `Development <http://www.fatiando.org/harmonica/dev>`__ (reflects the *main* branch on
   Github)
 * `Latest release <http://www.fatiando.org/harmonica/latest>`__
 * `v0.3.3 <http://www.fatiando.org/harmonica/v0.3.3>`__
