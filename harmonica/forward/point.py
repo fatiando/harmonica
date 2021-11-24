@@ -374,7 +374,7 @@ def kernel_g_easting_cartesian(
 @jit(nopython=True)
 def kernel_g_ee_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
     """
-    Kernel function for g_zz component of gravitational tensor in
+    Kernel function for g_ee component of gravitational tensor in
     Cartesian coordinates
     """
     distance = distance_cartesian(
@@ -386,7 +386,7 @@ def kernel_g_ee_cartesian(easting, northing, upward, easting_p, northing_p, upwa
 @jit(nopython=True)
 def kernel_g_nn_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
     """
-    Kernel function for g_zz component of gravitational tensor in
+    Kernel function for g_nn component of gravitational tensor in
     Cartesian coordinates
     """
     distance = distance_cartesian(
