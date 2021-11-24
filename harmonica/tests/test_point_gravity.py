@@ -345,7 +345,7 @@ def test_laplace_equation_cartesian():
     g_ee = point_gravity(coordinates, points, masses, field="g_ee")
     g_nn = point_gravity(coordinates, points, masses, field="g_nn")
     g_zz = point_gravity(coordinates, points, masses, field="g_zz")
-    # Check if the laplacian of the gravitational field is close to zero
+    # Check if the Laplacian of the gravitational field is close to zero
     npt.assert_allclose(g_ee + g_nn, -g_zz)
 
 
