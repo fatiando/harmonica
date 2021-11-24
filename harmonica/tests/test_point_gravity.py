@@ -177,10 +177,11 @@ def test_potential_symmetry_cartesian():
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
-def test_gradient_symmetry_cartesian(field):
+def test_acceleration_symmetry_cartesian(field):
     """
-    Test if the gradient components verify the expected symmetry in Cartesian
-    coordinates
+    Test if the acceleration components verify the expected symmetry
+
+    Use Cartesian coordinates
     """
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
@@ -201,34 +202,34 @@ def test_gradient_symmetry_cartesian(field):
         upward[0] += distance
         upward[1] -= distance
     coordinates = [easting, northing, upward]
-    # Compute gravity gradient component on each computation point
+    # Compute gravity acceleration component on each computation point
     results = point_gravity(coordinates, point_mass, masses, field, "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
 
-def gradient_finite_differences(coordinates, point, mass, field, delta=0.05):
+def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05):
     """
-    Compute gradient components of the potential through finite differences
+    Compute acceleration components through finite differences
 
     Parameters
     ----------
     coordinates : tuple
-        The coordinates of the computation point where the apptoximated
-        gradient components will be computed.
+        The coordinates of the computation point where the approximated
+        acceleration components will be computed.
     point : tuple
         The coordinates of the point source.
     mass : float
         Mass of the point source.
     field : str
-        Gradient component that needs to be approximated ("g_easting",
+        acceleration component that needs to be approximated ("g_easting",
         "g_northing", "g_z").
     delta : float
-        Distance use to compute the finite differece in meters.
+        Distance use to compute the finite difference in meters.
 
     Returns
     -------
     finite_diff : float
-        Gradient component approximation.
+        Approximation of the acceleration component.
     error : float
         Relative error of the approximation (unitless).
     """
@@ -253,7 +254,7 @@ def gradient_finite_differences(coordinates, point, mass, field, delta=0.05):
     finite_diff *= 1e5
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, the numerical
-    # derivativative is multiplied by -1.
+    # derivative dive is multiplied by -1.
     if field == "g_z":
         finite_diff *= -1
     # Compute the bounding error of the approximation
@@ -272,14 +273,14 @@ def gradient_finite_differences(coordinates, point, mass, field, delta=0.05):
     ),
     ids=["set1", "set2"],
 )
-def test_gradient_finite_diff_cartesian(coordinates, point, mass, field):
+def test_acceleration_finite_diff_cartesian(coordinates, point, mass, field):
     """
-    Test the gradient components against a finite difference of the potential
+    Test acceleration components against a finite difference of the potential
     """
     # Compute the z component
     result = point_gravity(coordinates, point, mass, field, "cartesian")
     # Compute the derivative of potential through finite differences
-    finite_diff, relative_error = gradient_finite_differences(
+    finite_diff, relative_error = acceleration_finite_differences(
         coordinates, point, mass, field
     )
     # Compare the results
@@ -288,9 +289,9 @@ def test_gradient_finite_diff_cartesian(coordinates, point, mass, field):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
-def test_gradient_sign(field):
+def test_acceleration_sign(field):
     """
-    Test if gradient components of a positive point mass has the correct sign
+    Test if acceleration components have the correct sign
     """
     # Define a single point mass
     point_mass = [-10, 100.2, -300.7]
@@ -303,7 +304,7 @@ def test_gradient_sign(field):
         coordinates[1] = np.array([0, 100.2, 210.7])
     elif field == "g_z":
         coordinates[2] = np.array([100.11, -300.7, -400])
-    # Compute gradient component
+    # Compute acceleration component
     results = point_gravity(coordinates, point_mass, mass, field, "cartesian")
     # Check if the sign of the results is right
     assert np.sign(mass) == np.sign(results[0])
