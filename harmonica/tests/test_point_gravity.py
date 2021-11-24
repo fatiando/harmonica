@@ -424,6 +424,24 @@ def test_point_mass_cartesian_parallel():
         npt.assert_allclose(result_serial, result_parallel)
 
 
+@pytest.mark.use_numba
+def test_laplace_equation_cartesian():
+    """
+    Check if the diagonal components of the tensor satisfy Laplace equation
+
+    Use Cartesian coordinates.
+    """
+    region = (2e3, 10e3, -3e3, 5e3)
+    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    masses = np.arange(points[0].size)
+    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    g_ee = point_gravity(coordinates, points, masses, field="g_ee")
+    g_nn = point_gravity(coordinates, points, masses, field="g_nn")
+    g_zz = point_gravity(coordinates, points, masses, field="g_zz")
+    # Check if the laplacian of the gravitational field is close to zero
+    npt.assert_allclose(g_ee + g_nn, -g_zz)
+
+
 # ---------------------------
 # Spherical coordinates tests
 # ---------------------------

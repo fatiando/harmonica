@@ -163,6 +163,13 @@ def point_gravity(
         - Downward acceleration: ``g_z``
         - Northing acceleration: ``g_northing``
         - Easting acceleration: ``g_easting``
+        - Tensor components:
+            - ``g_ee``
+            - ``g_nn``
+            - ``g_zz``
+            - ``g_en``
+            - ``g_ez``
+            - ``g_nz``
 
     coordinate_system : str (optional)
         Coordinate system of the coordinates of the computation points and the
@@ -213,6 +220,8 @@ def point_gravity(
     # Convert to more convenient units
     if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
+    if field in ("g_ee", "g_nn", "g_zz"):
+        result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
 
 
@@ -274,6 +283,9 @@ def get_kernel(coordinate_system, field):
             "g_z": kernel_g_z_cartesian,
             "g_northing": kernel_g_northing_cartesian,
             "g_easting": kernel_g_easting_cartesian,
+            "g_ee": kernel_g_ee_cartesian,
+            "g_nn": kernel_g_nn_cartesian,
+            "g_zz": kernel_g_zz_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
@@ -290,6 +302,11 @@ def get_kernel(coordinate_system, field):
     return kernel
 
 
+# ------------------------------------------
+# Kernel functions for Cartesian coordinates
+# ------------------------------------------
+
+
 @jit(nopython=True)
 def kernel_potential_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p
@@ -301,6 +318,10 @@ def kernel_potential_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
     return 1 / distance
+
+
+#  Gradient components
+#  -------------------
 
 
 @jit(nopython=True)
@@ -346,6 +367,51 @@ def kernel_g_easting_cartesian(
     return -(easting - easting_p) / distance ** 3
 
 
+#  Tensor components
+#  -----------------
+
+
+@jit(nopython=True)
+def kernel_g_ee_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_zz component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return 3 * (easting - easting_p) ** 2 / distance ** 5 - 1 / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_nn_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_zz component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return 3 * (northing - northing_p) ** 2 / distance ** 5 - 1 / distance ** 3
+
+
+@jit(nopython=True)
+def kernel_g_zz_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_zz component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return 3 * (upward - upward_p) ** 2 / distance ** 5 - 1 / distance ** 3
+
+
+# ------------------------------------------
+# Kernel functions for Cartesian coordinates
+# ------------------------------------------
+
+
 @jit(nopython=True)
 def kernel_potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
@@ -357,6 +423,10 @@ def kernel_potential_spherical(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
     return 1 / distance
+
+
+#  Gradient components
+#  -------------------
 
 
 @jit(nopython=True)
