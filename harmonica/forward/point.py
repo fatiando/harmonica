@@ -407,6 +407,44 @@ def kernel_g_zz_cartesian(easting, northing, upward, easting_p, northing_p, upwa
     return 3 * (upward - upward_p) ** 2 / distance ** 5 - 1 / distance ** 3
 
 
+@jit(nopython=True)
+def kernel_g_en_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_en component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    return 3 * (easting - easting_p) * (northing - northing_p) / distance ** 5
+
+
+@jit(nopython=True)
+def kernel_g_ez_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_ez component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    # Add a minus sign to account that the z axis points downwards.
+    return -3 * (easting - easting_p) * (upward - upward_p) / distance ** 5
+
+
+@jit(nopython=True)
+def kernel_g_nz_cartesian(easting, northing, upward, easting_p, northing_p, upward_p):
+    """
+    Kernel function for g_nz component of gravitational tensor in
+    Cartesian coordinates
+    """
+    distance = distance_cartesian(
+        (easting, northing, upward), (easting_p, northing_p, upward_p)
+    )
+    # Add a minus sign to account that the z axis points downwards.
+    return -3 * (northing - northing_p) * (upward - upward_p) / distance ** 5
+
+
 # ------------------------------------------
 # Kernel functions for Cartesian coordinates
 # ------------------------------------------
