@@ -221,7 +221,7 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
     mass : float
         Mass of the point source.
     field : str
-        acceleration component that needs to be approximated ("g_easting",
+        Acceleration component that needs to be approximated ("g_easting",
         "g_northing", "g_z").
     delta : float
         Distance use to compute the finite difference in meters.
@@ -347,6 +347,101 @@ def test_laplace_equation_cartesian():
     g_zz = point_gravity(coordinates, points, masses, field="g_zz")
     # Check if the Laplacian of the gravitational field is close to zero
     npt.assert_allclose(g_ee + g_nn, -g_zz)
+
+
+def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
+    """
+    Compute tensor components through finite differences
+
+    Parameters
+    ----------
+    coordinates : tuple
+        The coordinates of the computation point where the approximated
+        tensor components will be computed.
+    point : tuple
+        The coordinates of the point source.
+    mass : float
+        Mass of the point source.
+    field : str
+        Tensor component that needs to be approximated ("g_ee",
+        "g_nn", "g_zz", "g_en", "g_ez", "g_nz").
+    delta : float
+        Distance use to compute the finite difference in meters.
+
+    Returns
+    -------
+    finite_diff : float
+        Approximation of the tensor component.
+    error : float
+        Relative error of the approximation (unitless).
+    """
+    # Determine the direction along which the finite difference will be
+    # computed
+    direction_i, direction_j = field[-2], field[-1]
+    if direction_i == "e":
+        direction_i = "easting"
+    if direction_i == "n":
+        direction_i = "northing"
+    if direction_j == "e":
+        direction_j = "easting"
+    if direction_j == "n":
+        direction_j = "northing"
+    # Build a two computation points slightly shifted from the original
+    # computation point by a small delta
+    coordinates_pair = tuple([coord, coord] for coord in coordinates)
+    if direction_j == "easting":
+        index = 0
+    elif direction_j == "northing":
+        index = 1
+    elif direction_j == "z":
+        index = 2
+    coordinates_pair[index][0] -= delta
+    coordinates_pair[index][1] += delta
+    # Compute the acceleration on both points
+    acceleration = point_gravity(
+        coordinates_pair,
+        point,
+        mass,
+        field=f"g_{direction_i}",
+        coordinate_system="cartesian",
+    )
+    # Compute the difference between the two values
+    finite_diff = (acceleration[1] - acceleration[0]) / (2 * delta)
+    # Convert to Eotvos
+    finite_diff *= 1e-5  # convert back from mGal to SI
+    finite_diff *= 1e9  # convert to Eotvos
+    # The z axis points downwards, so the finite_diff should be multiplied by
+    # -1
+    if direction_i == "z" or direction_j == "z":
+        finite_diff *= -1
+    # Compute the bounding error of the approximation
+    distance = distance_cartesian(coordinates, point)
+    relative_error = 6 * (delta / distance) ** 2
+    return finite_diff, relative_error
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"))
+@pytest.mark.parametrize(
+    "coordinates, point, mass",
+    (
+        [(0, -39, -13), (1, -67, -300.7), 250],
+        [(-3, 24, -10), (20, 54, -500.7), 200],
+    ),
+    ids=["set1", "set2"],
+)
+def test_tensor_finite_diff_cartesian(coordinates, point, mass, field):
+    """
+    Test tensor components against a finite difference of the acceleration
+    """
+    # Compute the z component
+    result = point_gravity(coordinates, point, mass, field, "cartesian")
+    # Compute the derivative of potential through finite differences
+    finite_diff, relative_error = tensor_finite_differences(
+        coordinates, point, mass, field
+    )
+    # Compare the results
+    npt.assert_allclose(result, finite_diff, rtol=relative_error)
 
 
 # ---------------------------

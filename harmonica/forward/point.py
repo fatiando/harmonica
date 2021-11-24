@@ -220,7 +220,7 @@ def point_gravity(
     # Convert to more convenient units
     if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
-    if field in ("g_ee", "g_nn", "g_zz"):
+    if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
         result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
 
@@ -286,6 +286,9 @@ def get_kernel(coordinate_system, field):
             "g_ee": kernel_g_ee_cartesian,
             "g_nn": kernel_g_nn_cartesian,
             "g_zz": kernel_g_zz_cartesian,
+            "g_en": kernel_g_en_cartesian,
+            "g_ez": kernel_g_ez_cartesian,
+            "g_nz": kernel_g_nz_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
