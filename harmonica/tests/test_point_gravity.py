@@ -150,7 +150,7 @@ def test_point_mass_gravity_deprecated(point_mass, sample_coordinates_potential)
 
 
 @pytest.mark.use_numba
-def test_potential_cartesian_symmetry():
+def test_potential_symmetry_cartesian():
     """
     Test if potential field of a point mass has symmetry in Cartesian coords
     """
@@ -176,237 +176,144 @@ def test_potential_cartesian_symmetry():
 
 
 @pytest.mark.use_numba
-def test_g_z_symmetry():
+@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+def test_gradient_symmetry_cartesian(field):
     """
-    Test if g_z field of a point mass has symmetry in Cartesian coordinates
+    Test if the gradient components verify the expected symmetry in Cartesian
+    coordinates
     """
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
     masses = [2670]
-    # Define a pair of computation points above and below the point mass
+    # Define a pair of computation points at each side of the point mass along
+    # the direction given by the field parameter
     distance = 3.3
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
     upward = point_mass[2] * np.ones(2)
-    upward[0] += distance
-    upward[1] -= distance
+    if field == "g_northing":
+        northing[0] += distance
+        northing[1] -= distance
+    elif field == "g_easting":
+        easting[0] += distance
+        easting[1] -= distance
+    elif field == "g_z":
+        upward[0] += distance
+        upward[1] -= distance
     coordinates = [easting, northing, upward]
-    # Compute g_z gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, masses, "g_z", "cartesian")
+    # Compute gravity gradient component on each computation point
+    results = point_gravity(coordinates, point_mass, masses, field, "cartesian")
     npt.assert_allclose(results[0], -results[1])
 
 
-@pytest.mark.use_numba
-def test_g_z_relative_error():
+def gradient_finite_differences(coordinates, point, mass, field, delta=0.05):
     """
-    Test the relative error in computing the g_z component
+    Compute gradient components of the potential through finite differences
+
+    Parameters
+    ----------
+    coordinates : tuple
+        The coordinates of the computation point where the apptoximated
+        gradient components will be computed.
+    point : tuple
+        The coordinates of the point source.
+    mass : float
+        Mass of the point source.
+    field : str
+        Gradient component that needs to be approximated ("g_easting",
+        "g_northing", "g_z").
+    delta : float
+        Distance use to compute the finite differece in meters.
+
+    Returns
+    -------
+    finite_diff : float
+        Gradient component approximation.
+    error : float
+        Relative error of the approximation (unitless).
     """
-    # Define a single point mass
-    point_mass = (1, -67, -300.7)
-    mass = 250
-    coordinates_p = (0, -39, -13)
-    # Compute the z component
-    exact_deriv = point_gravity(coordinates_p, point_mass, mass, "g_z", "cartesian")
-    # Compute the numerical derivative of potential
-    delta = 0.1
-    easting = np.zeros(2) + coordinates_p[0]
-    northing = np.zeros(2) + coordinates_p[1]
-    upward = np.array([coordinates_p[2] - delta, coordinates_p[2] + delta])
-    coordinates = (easting, northing, upward)
-    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
+    # Build a two computation points slightly shifted from the original
+    # computation point by a small delta
+    coordinates_pair = tuple([coord, coord] for coord in coordinates)
+    if field == "g_easting":
+        index = 0
+    elif field == "g_northing":
+        index = 1
+    elif field == "g_z":
+        index = 2
+    coordinates_pair[index][0] -= delta
+    coordinates_pair[index][1] += delta
+    # Compute the potential on both points
+    potential = point_gravity(
+        coordinates_pair, point, mass, field="potential", coordinate_system="cartesian"
+    )
+    # Compute the difference between the two values
+    finite_diff = (potential[1] - potential[0]) / (2 * delta)
+    # Convert to mGal
+    finite_diff *= 1e5
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, the numerical
     # derivativative is multiplied by -1.
-    approximated_deriv = -1e5 * (potential[1] - potential[0]) / (2.0 * delta)
-
-    # Compute the relative error
-    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
-
-    # Bound value
-    distance = distance_cartesian(coordinates_p, point_mass)
-    bound_value = 1.5 * (delta / distance) ** 2
-
-    # Compare the results
-    npt.assert_array_less(relative_error, bound_value)
+    if field == "g_z":
+        finite_diff *= -1
+    # Compute the bounding error of the approximation
+    distance = distance_cartesian(coordinates, point)
+    relative_error = 3 / 2 * (delta / distance) ** 2
+    return finite_diff, relative_error
 
 
 @pytest.mark.use_numba
-def test_g_z_sign():
+@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+@pytest.mark.parametrize(
+    "coordinates, point, mass",
+    (
+        [(0, -39, -13), (1, -67, -300.7), 250],
+        [(-3, 24, -10), (20, 54, -500.7), 200],
+    ),
+    ids=["set1", "set2"],
+)
+def test_gradient_finite_diff_cartesian(coordinates, point, mass, field):
     """
-    Test if g_z field of a positive point mass has the correct sign
+    Test the gradient components against a finite difference of the potential
     """
-    # Define a single point mass
-    point_mass = [-10, 100.2, -300.7]
-    mass = [2670]
-    # Define three computation points located above, at the same depth and
-    # below the point mass
-    easting = np.zeros(3)
-    northing = np.zeros(3) + 52.3
-    upward = np.array([100.11, -300.7, -400])
-    coordinates = [easting, northing, upward]
-    # Compute g_z gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, mass, "g_z", "cartesian")
-    assert np.sign(mass) == np.sign(results[0])
-    npt.assert_allclose(results[1], 0)
-    assert np.sign(mass) == -np.sign(results[2])
-
-
-@pytest.mark.use_numba
-def test_g_northing_symmetry():
-    """
-    Test if g_northing field of a point mass has symmetry in Cartesian
-    coordinates
-    """
-    # Define a single point mass
-    point_mass = [-7.9, 25, -130]
-    masses = [2670]
-    # Define a pair of computation points northward and southward the point
-    # mass
-    distance = 6.1
-    easting = point_mass[0] + np.zeros(2)
-    northing = point_mass[1] + np.zeros(2)
-    upward = point_mass[2] + np.zeros(2)
-    northing[0] += distance
-    northing[1] -= distance
-    coordinates = [easting, northing, upward]
-    # Compute g_northing gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, masses, "g_northing", "cartesian")
-    npt.assert_allclose(results[0], -results[1])
-
-
-@pytest.mark.use_numba
-def test_g_northing_relative_error():
-    """
-    Test the relative error in computing the g_northing component
-    """
-    # Define a single point mass
-    point_mass = (1, -67, -300.7)
-    mass = 250
-    coordinates_p = (0, -39, -13)
-    # Compute the northing component
-    exact_deriv = point_gravity(
-        coordinates_p, point_mass, mass, "g_northing", "cartesian"
+    # Compute the z component
+    result = point_gravity(coordinates, point, mass, field, "cartesian")
+    # Compute the derivative of potential through finite differences
+    finite_diff, relative_error = gradient_finite_differences(
+        coordinates, point, mass, field
     )
-    # Compute the numerical derivative of potential
-    delta = 0.1
-    easting = np.zeros(2) + coordinates_p[0]
-    northing = np.array([coordinates_p[1] - delta, coordinates_p[1] + delta])
-    upward = np.zeros(2) + coordinates_p[2]
-    coordinates = (easting, northing, upward)
-    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
-    approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
-
-    # Compute the relative error
-    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
-
-    # Bound value
-    distance = distance_cartesian(coordinates_p, point_mass)
-    bound_value = 1.5 * (delta / distance) ** 2
-
     # Compare the results
-    npt.assert_array_less(relative_error, bound_value)
+    npt.assert_allclose(result, finite_diff, rtol=relative_error)
 
 
 @pytest.mark.use_numba
-def test_g_northing_sign():
+@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+def test_gradient_sign(field):
     """
-    Test if g_northing field of a positive point mass has the correct sign
+    Test if gradient components of a positive point mass has the correct sign
     """
     # Define a single point mass
     point_mass = [-10, 100.2, -300.7]
     mass = [2670]
-    # Define three computation points located above the point mass, along the
-    # north axis
-    easting = np.zeros(3)
-    northing = np.array([0, 100.2, 210.7])
-    upward = np.zeros(3)
-    coordinates = [easting, northing, upward]
-    # Compute g_northing gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, mass, "g_northing", "cartesian")
-    assert np.sign(mass) == np.sign(results[0])
-    npt.assert_allclose(results[1], 0)
-    assert np.sign(mass) == -np.sign(results[2])
-
-
-@pytest.mark.use_numba
-def test_g_easting_symmetry():
-    """
-    Test if g_easting field of a point mass has symmetry in Cartesian
-    coordinates
-    """
-    # Define a single point mass
-    point_mass = [191, -5, 0]
-    masses = [2670]
-    # Define a pair of computation points northward and southward the point
-    # mass
-    distance = 4.6
-    easting = point_mass[0] + np.zeros(2)
-    northing = point_mass[1] + np.zeros(2)
-    upward = point_mass[2] + np.zeros(2)
-    easting[0] += distance
-    easting[1] -= distance
-    coordinates = [easting, northing, upward]
-    # Compute g_easting gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, masses, "g_easting", "cartesian")
-    npt.assert_allclose(results[0], -results[1])
-
-
-@pytest.mark.use_numba
-def test_g_easting_relative_error():
-    """
-    Test the relative error in computing the g_easting component
-    """
-    # Define a single point mass
-    point_mass = (20, 54, -500.7)
-    mass = 200
-    coordinates_p = (-3, 24, -10)
-    # Compute the easting component
-    exact_deriv = point_gravity(
-        coordinates_p, point_mass, mass, "g_easting", "cartesian"
-    )
-    # Compute the numerical derivative of potential
-    delta = 0.1
-    easting = np.array([coordinates_p[0] - delta, coordinates_p[0] + delta])
-    northing = np.zeros(2) + coordinates_p[1]
-    upward = np.zeros(2) + coordinates_p[2]
-    coordinates = (easting, northing, upward)
-    potential = point_gravity(coordinates, point_mass, mass, "potential", "cartesian")
-    approximated_deriv = 1e5 * (potential[1] - potential[0]) / (2.0 * delta)
-
-    # Compute the relative error
-    relative_error = np.abs((approximated_deriv - exact_deriv) / exact_deriv)
-
-    # Bound value
-    distance = distance_cartesian(coordinates_p, point_mass)
-    bound_value = 1.5 * (delta / distance) ** 2
-
-    # Compare the results
-    npt.assert_array_less(relative_error, bound_value)
-
-
-@pytest.mark.use_numba
-def test_g_easting_sign():
-    """
-    Test if g_easting field of a positive point mass has the correct sign
-    """
-    # Define a single point mass
-    point_mass = [-10, 100.2, -300.7]
-    mass = [2670]
-    # Define three computation points located above the point mass, along the
-    # east axis
-    easting = np.array([-150.7, -10, 79])
-    northing = np.zeros(3)
-    upward = np.zeros(3)
-    coordinates = [easting, northing, upward]
-    # Compute g_easting gravity field on each computation point
-    results = point_gravity(coordinates, point_mass, mass, "g_easting", "cartesian")
+    # Define computation points
+    coordinates = [np.zeros(3) for i in range(3)]
+    if field == "g_easting":
+        coordinates[0] = np.array([-150.7, -10, 79])
+    elif field == "g_northing":
+        coordinates[1] = np.array([0, 100.2, 210.7])
+    elif field == "g_z":
+        coordinates[2] = np.array([100.11, -300.7, -400])
+    # Compute gradient component
+    results = point_gravity(coordinates, point_mass, mass, field, "cartesian")
+    # Check if the sign of the results is right
     assert np.sign(mass) == np.sign(results[0])
     npt.assert_allclose(results[1], 0)
     assert np.sign(mass) == -np.sign(results[2])
 
 
 @run_only_with_numba
-def test_point_mass_cartesian_parallel():
+@pytest.mark.parametrize("field", ("potential", "g_z", "g_northing", "g_easting"))
+def test_point_mass_cartesian_parallel(field):
     """
     Check if parallel and serial runs return the same result
     """
@@ -414,14 +321,13 @@ def test_point_mass_cartesian_parallel():
     points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
     masses = np.arange(points[0].size)
     coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
-    for field in ("potential", "g_z", "g_northing", "g_easting"):
-        result_serial = point_gravity(
-            coordinates, points, masses, field=field, parallel=False
-        )
-        result_parallel = point_gravity(
-            coordinates, points, masses, field=field, parallel=True
-        )
-        npt.assert_allclose(result_serial, result_parallel)
+    result_serial = point_gravity(
+        coordinates, points, masses, field=field, parallel=False
+    )
+    result_parallel = point_gravity(
+        coordinates, points, masses, field=field, parallel=True
+    )
+    npt.assert_allclose(result_serial, result_parallel)
 
 
 @pytest.mark.use_numba
@@ -471,7 +377,8 @@ def test_point_mass_on_origin():
 
 
 @pytest.mark.use_numba
-def test_point_mass_same_radial_direction():
+@pytest.mark.parametrize("field", ("potential", "g_z"))
+def test_point_mass_same_radial_direction(field):
     """
     Check potential and g_z of point mass and computation point on same radius
     """
@@ -493,13 +400,10 @@ def test_point_mass_same_radial_direction():
                     "g_z": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
                 }
                 # Compare results with analytical solutions
-                for field, solution in analytical.items():
-                    npt.assert_allclose(
-                        point_gravity(
-                            coordinates, point_mass, mass, field, "spherical"
-                        ),
-                        solution,
-                    )
+                npt.assert_allclose(
+                    point_gravity(coordinates, point_mass, mass, field, "spherical"),
+                    analytical[field],
+                )
 
 
 @pytest.mark.use_numba
