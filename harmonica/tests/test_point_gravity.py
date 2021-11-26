@@ -368,7 +368,7 @@ class TestTensorSymmetryCartesian:
     nondiagonal_fields = ["g_en", "g_ez", "g_nz"]
     tensor_fields = diagonal_fields + nondiagonal_fields
 
-    def mirrored_computation_points(self, direction):
+    def mirrored_computation_points(self, directions):
         """
         Create mirrored computation points to the point source
 
@@ -387,9 +387,11 @@ class TestTensorSymmetryCartesian:
 
         Parameters
         ----------
-        direction : str
-            Direction along which the computation points will be mirrored.
-            For example: ``"n"``
+        directions : str
+            Directions along which the computation points will be mirrored.
+            The computation points will be shifted an equal distance along the
+            first direction and then they'll be mirrored along the second one.
+            For example: ``("n", "z")``
 
         Returns
         -------
@@ -401,13 +403,25 @@ class TestTensorSymmetryCartesian:
         easting = self.point[0] * np.ones(2)
         northing = self.point[1] * np.ones(2)
         upward = self.point[2] * np.ones(2)
-        if direction == "n":
+        direction_shift, direction_mirror = directions[:]
+        # Shift computation points
+        if direction_shift == "n":
+            northing[0] += distance
+            northing[1] += distance
+        elif direction_shift == "e":
+            easting[0] += distance
+            easting[1] += distance
+        elif direction_shift == "z":
+            upward[0] += distance
+            upward[1] += distance
+        # Mirror computation points
+        if direction_mirror == "n":
             northing[0] += distance
             northing[1] -= distance
-        elif direction == "e":
+        elif direction_mirror == "e":
             easting[0] += distance
             easting[1] -= distance
-        elif direction == "z":
+        elif direction_mirror == "z":
             upward[0] += distance
             upward[1] -= distance
         return (easting, northing, upward)
@@ -480,39 +494,21 @@ class TestTensorSymmetryCartesian:
         npt.assert_allclose(results[0], results[1])
 
     @pytest.mark.use_numba
-    @pytest.mark.parametrize("field", diagonal_fields)
-    def test_mirrored_diagonals(self, field):
-        """
-        Test diagonal tensor components symmetry on mirrored computation points
-
-        For diagonal tensor components, their values should be the same on
-        mirrored computation points.
-        """
-        # Choose the direction corresponding to the diagonal tensor component
-        direction = field[-1]
-        # Define mirrored computation points
-        coordinates = self.mirrored_computation_points(direction)
-        # Compute gravity tensor component on each computation point
-        results = point_gravity(coordinates, self.point, self.mass, field, "cartesian")
-        # Check for expected symmetry
-        npt.assert_allclose(results[0], results[1])
-
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", nondiagonal_fields)
-    @pytest.mark.parametrize("mirror_plane", (0, 1))
-    def test_mirrored_nondiagonals(self, field, mirror_plane):
+    @pytest.mark.parametrize("swap_directions", (False, True), ids=["noswap", "swap"])
+    def test_mirrored_nondiagonals(self, field, swap_directions):
         """
         Test nondiagonal tensor components symmetry on mirrored points
 
         For non-diagonal tensor components, their values should be opposite on
         mirrored computation points.
         """
-        # Choose one of the directions of the tensor component to mirror the
-        # computation points
+        # Choose the direction corresponding to the diagonal tensor component
         directions = (field[-2], field[-1])
-        direction = directions[mirror_plane]
+        if swap_directions:
+            directions = directions[::-1]
         # Define mirrored computation points
-        coordinates = self.mirrored_computation_points(direction)
+        coordinates = self.mirrored_computation_points(directions)
         # Compute gravity tensor component on each computation point
         results = point_gravity(coordinates, self.point, self.mass, field, "cartesian")
         # Check for expected symmetry
