@@ -313,7 +313,15 @@ def test_acceleration_sign(field):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("field", ("potential", "g_z", "g_northing", "g_easting"))
+@pytest.mark.parametrize(
+    "field",
+    # fmt: off
+    (
+        "potential", "g_z", "g_northing", "g_easting",
+        "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"
+    ),
+    # fmt: on
+)
 def test_point_mass_cartesian_parallel(field):
     """
     Check if parallel and serial runs return the same result
