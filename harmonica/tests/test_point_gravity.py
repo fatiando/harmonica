@@ -349,6 +349,168 @@ def test_laplace_equation_cartesian():
     npt.assert_allclose(g_ee + g_nn, -g_zz)
 
 
+class TestTensorSymmetryCartesian:
+
+    # Define sample point source and its mass
+    point = [1.1, 1.2, 1.3]
+    mass = [2670]
+
+    # Define tensor components tuple
+    diagonal_fields = ["g_ee", "g_nn", "g_zz"]
+    nondiagonal_fields = ["g_en", "g_ez", "g_nz"]
+    tensor_fields = diagonal_fields + nondiagonal_fields
+
+    def mirrored_computation_points(self, direction):
+        """
+        Create mirrored computation points to the point source
+
+        The mirrored computation points will be mirror images along one of the
+        planes given by the tensor component.
+
+                |
+           *    |    *     m: point source of mass m
+                |          *: each one of the mirrored computation points
+                |
+        --------m--------
+                |
+                |
+                |
+                |
+
+        Parameters
+        ----------
+        direction : str
+            Direction along which the computation points will be mirrored.
+            For example: ``"n"``
+
+        Returns
+        -------
+        coordinates : tuple
+            Tuple containing the coordinates of the mirrored computation points
+            in the following order: easting, northing, upward.
+        """
+        distance = 3.3
+        easting = self.point[0] * np.ones(2)
+        northing = self.point[1] * np.ones(2)
+        upward = self.point[2] * np.ones(2)
+        if direction == "n":
+            northing[0] += distance
+            northing[1] -= distance
+        elif direction == "e":
+            easting[0] += distance
+            easting[1] -= distance
+        elif direction == "z":
+            upward[0] += distance
+            upward[1] -= distance
+        return (easting, northing, upward)
+
+    def opposite_computation_points(self, directions):
+        """
+        Create opposite computation points to the point source
+
+        The opposite computation points will live in the diagonal given by the
+        direction of the tensor component and be equidistant to the point
+        source.
+        For example:
+          - if ``directions=("e", "n")``, the two computation points will be
+            along the easting-northing diagonal, equidistant to the point mass.
+          - if ``directions=("n", "z")``, the two computation points will be
+            along the northing-upward diagonal, equidistant to the point mass.
+
+                |
+                |    *     m: point source of mass m
+                |          *: each one of the opposite computation points
+                |
+        --------m--------
+                |
+                |
+           *    |
+                |
+
+        Parameters
+        ----------
+        directions : tuple
+            Tuple with the directions along which the opposition will be
+            carried out. For example: ``("n", "z")``
+
+        Returns
+        -------
+        coordinates : tuple
+            Tuple containing the coordinates of the opposite computation points
+            in the following order: easting, northing, upward.
+        """
+        distance = 3.3
+        easting = self.point[0] * np.ones(2)
+        northing = self.point[1] * np.ones(2)
+        upward = self.point[2] * np.ones(2)
+        if "n" in directions:
+            northing[0] += distance
+            northing[1] -= distance
+        if "e" in directions:
+            easting[0] += distance
+            easting[1] -= distance
+        if "z" in directions:
+            upward[0] += distance
+            upward[1] -= distance
+        return (easting, northing, upward)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", tensor_fields)
+    def test_opposite(self, field):
+        """
+        Test tensor components symmetry on opposite computation points
+
+        The values of each tensor component should be the same on opposite
+        points.
+        """
+        # Define opposite computation points
+        directions = (field[-2], field[-1])
+        coordinates = self.opposite_computation_points(directions)
+        # Compute gravity tensor component on each computation point
+        results = point_gravity(coordinates, self.point, self.mass, field, "cartesian")
+        # Check for expected symmetry
+        npt.assert_allclose(results[0], results[1])
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", diagonal_fields)
+    def test_mirrored_diagonals(self, field):
+        """
+        Test diagonal tensor components symmetry on mirrored computation points
+
+        For diagonal tensor components, their values should be the same on
+        mirrored computation points.
+        """
+        # Choose the direction corresponding to the diagonal tensor component
+        direction = field[-1]
+        # Define mirrored computation points
+        coordinates = self.mirrored_computation_points(direction)
+        # Compute gravity tensor component on each computation point
+        results = point_gravity(coordinates, self.point, self.mass, field, "cartesian")
+        # Check for expected symmetry
+        npt.assert_allclose(results[0], results[1])
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", nondiagonal_fields)
+    @pytest.mark.parametrize("mirror_plane", (0, 1))
+    def test_mirrored_nondiagonals(self, field, mirror_plane):
+        """
+        Test nondiagonal tensor components symmetry on mirrored points
+
+        For non-diagonal tensor components, their values should be opposite on
+        mirrored computation points.
+        """
+        # Choose one of the directions of the tensor component to mirror the
+        # computation points
+        directions = (field[-2], field[-1])
+        direction = directions[mirror_plane]
+        # Define mirrored computation points
+        coordinates = self.mirrored_computation_points(direction)
+        # Compute gravity tensor component on each computation point
+        results = point_gravity(coordinates, self.point, self.mass, field, "cartesian")
+        # Check for expected symmetry
+        npt.assert_allclose(results[0], -results[1])
+
+
 def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
     """
     Compute tensor components through finite differences
