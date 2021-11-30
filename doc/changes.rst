@@ -22,10 +22,10 @@ Bug fixes:
 
 New features:
 
-- Allow ``EquivalentSources`` to define block-averaged sources through a new ``block_size`` argument. (`#260 <https://github.com/fatiando/harmonica/pull/260>`__)
+- Allow ``EquivalentSources`` to define block-averaged sources through a new ``block_size`` argument [Soler2021]_. (`#260 <https://github.com/fatiando/harmonica/pull/260>`__)
 - Add ``dtype`` argument to ``EquivalentSources``. Allows to select the data type used to allocate the Jacobian matrix. (`#278 <https://github.com/fatiando/harmonica/pull/278>`__)
-- Add a new ``EquivalentSourcesGB`` class that implements gradient-boosted equivalent sources. Provides a method to estimate the amount of computer memory needed to allocate the largest Jacobian matrix. (`#275 <https://github.com/fatiando/harmonica/pull/275>`__)
-- Allow ``tesseroid_gravity`` to compute gravitational fields of variable density tesseroids. Implements the density-based discretization algorithm and takes ``numba.njit`` decorated density functions as input. (`#269 <https://github.com/fatiando/harmonica/pull/269>`__)
+- Add a new ``EquivalentSourcesGB`` class that implements gradient-boosted equivalent sources. Provides a method to estimate the amount of computer memory needed to allocate the largest Jacobian matrix [Soler2021]_. (`#275 <https://github.com/fatiando/harmonica/pull/275>`__)
+- Allow ``tesseroid_gravity`` to compute gravitational fields of variable density tesseroids. Implements the density-based discretization algorithm and takes ``numba.njit`` decorated density functions as input [Soler2019]_. (`#269 <https://github.com/fatiando/harmonica/pull/269>`__)
 
 Maintenance:
 
