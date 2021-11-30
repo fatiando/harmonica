@@ -8,26 +8,25 @@
 Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
 import warnings
+
 import numpy as np
-from numba import jit
-from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
+from numba import jit
+from sklearn.utils.validation import check_is_fitted
 
+from ..forward.utils import distance_cartesian
 from .utils import (
     cast_fit_input,
-    pop_extra_coords,
-    predict_numba_serial,
-    predict_numba_parallel,
-    jacobian_numba_serial,
     jacobian_numba_parallel,
+    jacobian_numba_serial,
+    pop_extra_coords,
+    predict_numba_parallel,
+    predict_numba_serial,
 )
-from ..forward.utils import distance_cartesian
 
 
-class EquivalentSources(
-    vdb.BaseGridder
-):  # pylint: disable=too-many-instance-attributes
+class EquivalentSources(vdb.BaseGridder):
     r"""
     Equivalent sources for generic harmonic functions (gravity, magnetics).
 
@@ -386,7 +385,7 @@ class EquivalentSources(
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -442,9 +441,7 @@ class EquivalentSources(
 
         """
         # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
@@ -463,13 +460,13 @@ class EquivalentSources(
 
     def scatter(
         self,
-        region=None,
-        size=300,
-        random_state=0,
-        dims=None,
-        data_names=None,
-        projection=None,
-        **kwargs,
+        region=None,  # noqa: U100
+        size=300,  # noqa: U100
+        random_state=0,  # noqa: U100
+        dims=None,  # noqa: U100
+        data_names=None,  # noqa: U100
+        projection=None,  # noqa: U100
+        **kwargs,  # noqa: U100
     ):
         """
         .. warning ::
@@ -490,7 +487,7 @@ class EquivalentSources(
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate data along a profile between two points.
 
@@ -560,9 +557,7 @@ class EquivalentSources(
 
         """
         # We override the profile method from BaseGridder so it takes the
-        # upward coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # upward coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)

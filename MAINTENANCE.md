@@ -65,7 +65,7 @@ The CI jobs include:
 
 * Running the test suite on multiple combinations of OS, Python version,
   with and without optional dependencies.
-* Running Black, flake8, and pylint to check the code for style.
+* Running Black, flake8, and isort to check the code for style.
 * Building the documentation to make sure it works.
 * Pushing the built documentation HTML to the `gh-pages` branch.
 * Upload source and wheel distributions to TestPyPI (on main) and PyPI

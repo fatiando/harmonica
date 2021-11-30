@@ -8,8 +8,9 @@
 Test forward modelling for point masses.
 """
 import os
-from pathlib import Path
 import warnings
+from pathlib import Path
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -18,7 +19,6 @@ import verde as vd
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point import point_gravity, point_mass_gravity
 from ..forward.utils import distance_cartesian
-
 from .utils import run_only_with_numba
 
 MODULE_DIR = Path(os.path.dirname(__file__))

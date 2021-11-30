@@ -7,29 +7,28 @@
 """
 Test forward modelling for tesseroids.
 """
+import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
-import boule
 
-from .utils import run_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
-from ..forward.tesseroid import (
-    tesseroid_gravity,
-    _check_tesseroids,
-    _check_points_outside_tesseroids,
-    _adaptive_discretization,
-    STACK_SIZE,
-    MAX_DISCRETIZATIONS,
-)
 from ..forward._tesseroid_utils import (
     _distance_tesseroid_point,
-    _tesseroid_dimensions,
-    _split_tesseroid,
     _longitude_continuity,
+    _split_tesseroid,
+    _tesseroid_dimensions,
 )
-
+from ..forward.tesseroid import (
+    MAX_DISCRETIZATIONS,
+    STACK_SIZE,
+    _adaptive_discretization,
+    _check_points_outside_tesseroids,
+    _check_tesseroids,
+    tesseroid_gravity,
+)
+from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
@@ -574,7 +573,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_spherical_shell_two_dim_adaptive_discret(
     field,
-):  # pylint: disable=too-many-locals
+):
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization
@@ -619,9 +618,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
 @run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
-def test_spherical_shell_three_dim_adaptive_discret(
-    thickness, field
-):  # pylint: disable=too-many-locals
+def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization

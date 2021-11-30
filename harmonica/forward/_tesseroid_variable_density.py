@@ -7,8 +7,8 @@
 """
 Utils functions for tesseroids with variable density
 """
-from numba import jit
 import numpy as np
+from numba import jit
 from scipy.optimize import minimize_scalar
 
 DELTA_RATIO = 0.1
@@ -25,7 +25,7 @@ def gauss_legendre_quadrature_variable_density(
     glq_nodes,
     glq_weights,
     kernel,
-):  # pylint: disable=too-many-locals
+):
     r"""
     Compute the effect of a tesseroid on a single observation point through GLQ
 
@@ -144,9 +144,7 @@ def density_based_discretization(tesseroids, density):
     return np.atleast_2d(discretized_tesseroids)
 
 
-def _density_based_discretization(
-    tesseroid, density
-):  # pylint: disable=too-many-locals
+def _density_based_discretization(tesseroid, density):
     """
     Applies density-based discretization to a single tesseroid
 

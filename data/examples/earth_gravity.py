@@ -13,8 +13,9 @@ This is the magnitude of the gravity vector of the Earth (gravitational
 spacing at 10km ellipsoidal height. It was generated from the spherical
 harmonic model EIGEN-6C4 [Forste_etal2014]_.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import harmonica as hm
 
 # Load the gravity grid
