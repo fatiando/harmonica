@@ -18,13 +18,12 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
-import numpy as np
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
 import boule as bl
+import matplotlib.pyplot as plt
+import numpy as np
 import verde as vd
-import harmonica as hm
 
+import harmonica as hm
 
 # Fetch the sample gravity data from South Africa
 data = hm.datasets.fetch_south_africa_gravity()

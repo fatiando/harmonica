@@ -7,14 +7,13 @@
 """
 Test forward modelling for prisms.
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 import verde as vd
 
+from ..forward.prism import _check_prisms, prism_gravity, safe_atan2, safe_log
 from ..gravity_corrections import bouguer_correction
-from ..forward.prism import prism_gravity, _check_prisms, safe_atan2, safe_log
-
 from .utils import run_only_with_numba
 
 

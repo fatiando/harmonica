@@ -4,18 +4,16 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import os
 import datetime
-import sphinx_gallery
+
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
 import harmonica
 
-
 # Project information
 # -----------------------------------------------------------------------------
 project = "Harmonica"
-copyright = f"2018-{datetime.date.today().year}, The {project} Developers"
+copyright_info = f"2018-{datetime.date.today().year}, The {project} Developers"
 if len(harmonica.__version__.split("+")) > 1 or harmonica.__version__ == "unknown":
     version = "dev"
 else:

@@ -8,6 +8,7 @@
 Test functions to create synthetic surveys
 """
 import numpy.testing as npt
+
 from ..synthetic import airborne_survey, ground_survey
 
 

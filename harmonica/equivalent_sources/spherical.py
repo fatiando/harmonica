@@ -8,20 +8,21 @@
 Equivalent sources for generic harmonic functions in spherical coordinates
 """
 import warnings
+
 import numpy as np
-from numba import jit
-from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
+from numba import jit
+from sklearn.utils.validation import check_is_fitted
 
-from .utils import (
-    pop_extra_coords,
-    predict_numba_serial,
-    predict_numba_parallel,
-    jacobian_numba_serial,
-    jacobian_numba_parallel,
-)
 from ..forward.utils import distance_spherical
+from .utils import (
+    jacobian_numba_parallel,
+    jacobian_numba_serial,
+    pop_extra_coords,
+    predict_numba_parallel,
+    predict_numba_serial,
+)
 
 
 class EquivalentSourcesSph(vdb.BaseGridder):
@@ -201,9 +202,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         )
         return data.reshape(shape)
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points, dtype="float64"):
         """
         Make the Jacobian matrix for the equivalent sources.
 
@@ -247,7 +246,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         dims=None,
         data_names=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -295,9 +294,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
         """
         # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
@@ -318,13 +315,13 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,
-        size=None,
-        random_state=None,
-        dims=None,
-        data_names=None,
-        projection=None,
-        **kwargs,
+        region=None,  # noqa: U100
+        size=None,  # noqa: U100
+        random_state=None,  # noqa: U100
+        dims=None,  # noqa: U100
+        data_names=None,  # noqa: U100
+        projection=None,  # noqa: U100
+        **kwargs,  # noqa: U100
     ):
         """
         .. warning ::
@@ -337,13 +334,13 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def profile(
         self,
-        point1,
-        point2,
-        size,
-        dims=None,
-        data_names=None,
-        projection=None,
-        **kwargs,
+        point1,  # noqa: U100
+        point2,  # noqa: U100
+        size,  # noqa: U100
+        dims=None,  # noqa: U100
+        data_names=None,  # noqa: U100
+        projection=None,  # noqa: U100
+        **kwargs,  # noqa: U100
     ):
         """
         .. warning ::

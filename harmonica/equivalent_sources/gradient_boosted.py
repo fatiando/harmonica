@@ -8,15 +8,12 @@
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
 import numpy as np
+import verde.base as vdb
 from sklearn import utils
 from verde import get_region, rolling_window
-import verde.base as vdb
 
 from .cartesian import EquivalentSources
-from .utils import (
-    cast_fit_input,
-    predict_numba_parallel,
-)
+from .utils import cast_fit_input, predict_numba_parallel
 
 
 class EquivalentSourcesGB(EquivalentSources):
@@ -227,9 +224,7 @@ class EquivalentSourcesGB(EquivalentSources):
         self._gradient_boosting(coordinates, data, weights)
         return self
 
-    def _gradient_boosting(
-        self, coordinates, data, weights
-    ):  # pylint: disable=too-many-locals
+    def _gradient_boosting(self, coordinates, data, weights):
         """
         Fit source coefficients through gradient boosting
         """

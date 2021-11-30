@@ -13,8 +13,9 @@ The topography and bathymetry of South Africa according to the ETOPO1 model
 we downsampled to 0.1 degree grid spacing to save space and download times.
 Heights are referenced to sea level.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import harmonica as hm
 
 # Load the topography grid

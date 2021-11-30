@@ -28,12 +28,12 @@ But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
 to use them on a small example.
 
 """
+import boule as bl
 import matplotlib.pyplot as plt
 import pyproj
-import boule as bl
 import verde as vd
-import harmonica as hm
 
+import harmonica as hm
 
 # Fetch the sample gravity data from South Africa
 data = hm.datasets.fetch_south_africa_gravity()
