@@ -18,7 +18,7 @@ REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
     version=version,
-    version_dev="master",
+    version_dev="main",
     env="HARMONICA_DATA_DIR",
 )
 with pkg_resources.resource_stream(

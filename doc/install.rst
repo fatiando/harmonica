@@ -59,7 +59,7 @@ Installing the latest development version
 
 You can use ``pip`` to install the latest source from Github::
 
-    pip install https://github.com/fatiando/harmonica/archive/master.zip
+    pip install https://github.com/fatiando/harmonica/archive/main.zip
 
 Alternatively, you can clone the git repository locally and install from
 there::
