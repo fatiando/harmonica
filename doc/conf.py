@@ -5,6 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import datetime
+import pyvista
 
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
@@ -95,7 +96,20 @@ sphinx_gallery_conf = {
     "doc_module": "harmonica",
     # Insert links to documentation of objects in the examples
     "reference_url": {"harmonica": None},
+    # Add pyvista to the image scrapers
+    "image_scrapers": ("pyvista"),
 }
+
+
+# Pyvista configurations
+# -----------------------------------------------------------------------------
+# necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
+pyvista.OFF_SCREEN = True
+
+# Optional - set parameters like theme or window size
+pyvista.set_plot_theme("document")
+pyvista.global_theme.window_size = (1024 * 2, 768 * 2)
 
 
 # HTML output configuration

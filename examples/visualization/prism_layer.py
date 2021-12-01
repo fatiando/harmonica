@@ -38,8 +38,14 @@ prisms = hm.prism_layer(
     properties={"density": density},
 )
 
+# Create a pyvista UnstructuredGrid from the prism layer
+pv_grid = prisms.prism_layer.to_pyvista()
+print(pv_grid)
+
 # Plot with pyvista
 plotter = pv.Plotter()
-plotter.add_mesh(prisms.prism_layer.to_pyvista())
-plotter.set_scale(zscale=100)  # exaggerate the vertical coordinate
+plotter.add_mesh(pv_grid, scalars="density")
+plotter.set_scale(zscale=75)  # exaggerate the vertical coordinate
+plotter.camera_position = "xz"
+plotter.camera.elevation = 15
 plotter.show()
