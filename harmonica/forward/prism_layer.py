@@ -14,6 +14,7 @@ import verde as vd
 import xarray as xr
 
 from .prism import prism_gravity
+from ..visualization.prism import prisms_to_pyvista
 
 
 def prism_layer(
@@ -446,3 +447,21 @@ class DatasetAccessorPrismLayer:
         bottom = self._obj.bottom.values[indices]
         top = self._obj.top.values[indices]
         return west, east, south, north, bottom, top
+
+    def to_pyvista(self):
+        """
+        Return a pyvista UnstructuredGrid to plot the PrismLayer
+
+        Returns
+        -------
+        pv_grid : :class:`pyvista.UnstructuredGrid`
+            :class:`pyvista.UnstructuredGrid` containing each prism of the
+            layer as a hexahedron along with their properties.
+        """
+        prisms = self._to_prisms()
+        properties = None
+        if self._obj.data_vars:
+            properties = {
+                data_var: self._obj[data_var] for data_var in self._obj.data_vars
+            }
+        return prisms_to_pyvista(prisms, properties=properties)
