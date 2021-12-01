@@ -16,7 +16,7 @@ dependencies:
   - xarray
   # Optional requirements
   - pyvista
-  - vtk>9
+  - vtk>=9
   # Development requirements
   - boule
   - pyproj
