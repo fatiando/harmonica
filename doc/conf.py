@@ -5,8 +5,8 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import datetime
-import pyvista
 
+import pyvista
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
 import harmonica

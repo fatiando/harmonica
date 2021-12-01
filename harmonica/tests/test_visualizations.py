@@ -7,9 +7,9 @@
 """
 Test functions from the visualization module.
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 import xarray as xr
 
 from ..visualization.prism import prisms_to_pyvista

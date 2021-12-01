@@ -10,9 +10,10 @@
 
 """
 import pyproj
-import verde as vd
-import harmonica as hm
 import pyvista as pv
+import verde as vd
+
+import harmonica as hm
 
 # Read South Africa topography
 south_africa_topo = hm.datasets.fetch_south_africa_topography()

@@ -13,8 +13,8 @@ import numpy as np
 import verde as vd
 import xarray as xr
 
-from .prism import prism_gravity
 from ..visualization.prism import prisms_to_pyvista
+from .prism import prism_gravity
 
 
 def prism_layer(
