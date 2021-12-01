@@ -43,7 +43,7 @@ def prisms_to_pyvista(prisms, properties=None):
     Examples
     --------
 
-    >>> pv_grid = prisms_to_pyvista(
+    >>> pv_grid = prisms_to_pyvista( # doctest: +SKIP
     ...     [0, 1e3, -2e3, 2e3, -5e3, -3e3],
     ...     properties={"density": 2670},
     ... )
