@@ -398,15 +398,21 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
 
 
 @pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
-def test_to_pyvista(dummy_layer):
+@pytest.mark.parametrize("properties", (False, True))
+def test_to_pyvista(dummy_layer, properties):
     """
     Test the conversion of the prism layer to pyvista.UnstructuredGrid
     """
     (easting, northing), surface, reference, density = dummy_layer
-    layer = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
-    )
+    # Build the layer with or without properties
+    if properties:
+        properties = {"density": density}
+    else:
+        properties = None
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Convert the layer to pyvista UnstructuredGrid
     pv_grid = layer.prism_layer.to_pyvista()
+    # Check properties of the pyvista grid
     assert pv_grid.n_cells == 20
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
@@ -421,7 +427,11 @@ def test_to_pyvista(dummy_layer):
     npt.assert_allclose(layer.bottom.min(), pv_upward.min())
     npt.assert_allclose(layer.top.max(), pv_upward.max())
     # Check properties of the prisms
-    assert pv_grid.n_arrays == 1
-    assert pv_grid.array_names == ["density"]
-    assert pv_grid.get_array("density").ndim == 1
-    npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+    if properties is None:
+        assert pv_grid.n_arrays == 0
+        assert pv_grid.array_names == []
+    else:
+        assert pv_grid.n_arrays == 1
+        assert pv_grid.array_names == ["density"]
+        assert pv_grid.get_array("density").ndim == 1
+        npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
