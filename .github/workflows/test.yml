@@ -30,7 +30,7 @@ jobs:
   #############################################################################
   # Run tests and upload to codecov
   test:
-    name: ${{ matrix.os }} py${{ matrix.python }}
+    name: ${{ matrix.os }} py${{ matrix.python }} ${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
       # Otherwise, the workflow would stop if a single job fails. We want to
@@ -41,9 +41,11 @@ jobs:
         python: ["3.6", "3.9"]
         # If "optional", will install non-required dependencies in the build
         # environment. Otherwise, only required dependencies are installed.
-        dependencies: [""]
+        dependencies: ["", "optional"]
     env:
       REQUIREMENTS: requirements.txt env/requirements-tests.txt
+      REQUIREMENTS_OPTIONAL: requirements-optional.txt
+      DEPENDENCIES: ${{ matrix.dependencies }}
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -102,6 +104,10 @@ jobs:
                 cat $requirement >> $requirements_file
               done
           fi
+          if [ "$DEPENDENCIES" == "optional" ]; then
+              echo "Capturing optional dependencies from $REQUIREMENTS_OPTIONAL"
+              cat $REQUIREMENTS_OPTIONAL >> $requirements_file
+          fi
           if [ -f $requirements_file ]; then
               echo "Collected dependencies:"
               cat $requirements_file
@@ -159,7 +165,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          env_vars: OS,PYTHON
+          env_vars: OS,PYTHON,DEPENDENCIES
           # Don't mark the job as failed if the upload fails for some reason.
           # It does sometimes but shouldn't be the reason for running
           # everything again unless something else is broken.
