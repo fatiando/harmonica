@@ -39,24 +39,6 @@ def prisms_to_pyvista(prisms, properties=None):
     pv_grid : :class:`pyvista.UnstructuredGrid`
         :class:`pyvista.UnstructuredGrid` that represents the prisms with their
         properties (if any).
-
-    Examples
-    --------
-
-    >>> pv_grid = prisms_to_pyvista( # doctest: +SKIP
-    ...     [0, 1e3, -2e3, 2e3, -5e3, -3e3],
-    ...     properties={"density": 2670},
-    ... )
-    >>> pv_grid.n_cells
-    1
-    >>> pv_grid.n_points
-    8
-    >>> pv_grid.cell_data["density"]
-    pyvista_ndarray([2670])
-    >>> pv_grid.cell_bounds(0)
-    [0.0, 1000.0, -2000.0, 2000.0, -5000.0, -3000.0]
-
-
     """
     # Check if pyvista are installed
     if pyvista is None:
