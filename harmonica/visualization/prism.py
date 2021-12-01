@@ -10,14 +10,11 @@ Functions for visualizing prisms through pyvista
 import numpy as np
 
 try:
-    import vtk
-except ImportError:
-    vtk = None
-
-try:
     import pyvista
 except ImportError:
     pyvista = None
+else:
+    import vtk
 
 
 def prisms_to_pyvista(prisms, properties=None):
@@ -61,13 +58,11 @@ def prisms_to_pyvista(prisms, properties=None):
 
 
     """
-    # Check if vkt and pyvista are installed
-    msg = "Missing optional dependency '{}' required for generating pyvista grids."
-    if vtk is None:
-        raise ValueError(msg.format("vtk"))
+    # Check if pyvista are installed
     if pyvista is None:
-        raise ValueError(msg.format("pyvista"))
-
+        raise ValueError(
+            "Missing optional dependency 'pyvista' required for building pyvista grids."
+        )
     # Get prisms and number of prisms
     prisms = np.atleast_2d(prisms)
     n_prisms = prisms.shape[0]

@@ -18,11 +18,6 @@ import xarray as xr
 from .. import prism_gravity, prism_layer
 
 try:
-    import vtk
-except ImportError:
-    vtk = None
-
-try:
     import pyvista
 except ImportError:
     pyvista = None
@@ -397,7 +392,7 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
     )
 
 
-@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 @pytest.mark.parametrize("properties", (False, True))
 def test_to_pyvista(dummy_layer, properties):
     """

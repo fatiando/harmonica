@@ -15,25 +15,9 @@ import xarray as xr
 from ..visualization.prism import prisms_to_pyvista
 
 try:
-    import vtk
-except ImportError:
-    vtk = None
-
-try:
     import pyvista
 except ImportError:
     pyvista = None
-
-
-@pytest.mark.skipif(vtk is not None, reason="vtk must be missing")
-def test_prisms_to_pyvista_missing_vtk():
-    """
-    Check error raise after calling prisms_to_pyvista when vtk is missing
-    """
-    prism = [0, 1, 0, 1, 0, 1]
-    with pytest.raises(ValueError) as exception:
-        prisms_to_pyvista(prism)
-    assert "'vtk'" in str(exception.value)
 
 
 @pytest.mark.skipif(pyvista is not None, reason="pyvista must be missing")
@@ -82,7 +66,7 @@ def fixture_susceptibility(request):
     return susceptibility
 
 
-@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 def test_prisms_to_pyvista(prisms, density):
     """
     Test output of prisms_to_pyvista
@@ -106,7 +90,7 @@ def test_prisms_to_pyvista(prisms, density):
     npt.assert_allclose(pv_grid.get_array("density"), density)
 
 
-@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 @pytest.mark.parametrize("n_props", [0, 1, 2])
 def test_prisms_to_pyvista_properties(n_props, prisms, density, susceptibility):
     """
@@ -129,7 +113,7 @@ def test_prisms_to_pyvista_properties(n_props, prisms, density, susceptibility):
             npt.assert_allclose(pv_grid.get_array(prop), properties[prop])
 
 
-@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 def test_prisms_to_pyvista_2d_property(prisms, density):
     """
     Test if prisms_to_pyvista handles a 2d property array
