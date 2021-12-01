@@ -82,6 +82,7 @@ def fixture_susceptibility(request):
     return susceptibility
 
 
+@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
 def test_prisms_to_pyvista(prisms, density):
     """
     Test output of prisms_to_pyvista
@@ -105,6 +106,7 @@ def test_prisms_to_pyvista(prisms, density):
     npt.assert_allclose(pv_grid.get_array("density"), density)
 
 
+@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
 @pytest.mark.parametrize("n_props", [0, 1, 2])
 def test_prisms_to_pyvista_properties(n_props, prisms, density, susceptibility):
     """
@@ -127,6 +129,7 @@ def test_prisms_to_pyvista_properties(n_props, prisms, density, susceptibility):
             npt.assert_allclose(pv_grid.get_array(prop), properties[prop])
 
 
+@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
 def test_prisms_to_pyvista_2d_property(prisms, density):
     """
     Test if prisms_to_pyvista handles a 2d property array
