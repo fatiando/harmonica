@@ -6,3 +6,5 @@ boule
 pyproj
 matplotlib
 cartopy>=0.18
+pyvista
+vtk>=9
