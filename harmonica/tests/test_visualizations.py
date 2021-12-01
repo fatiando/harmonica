@@ -75,15 +75,8 @@ def test_prisms_to_pyvista(prisms, density):
     assert pv_grid.n_cells == 4
     assert pv_grid.n_points == 32
     # Check coordinates of prisms
-    easting = pv_grid.points[:, 0]
-    northing = pv_grid.points[:, 1]
-    upward = pv_grid.points[:, 2]
-    npt.assert_allclose(easting.min(), -10e3)
-    npt.assert_allclose(easting.max(), 5e3)
-    npt.assert_allclose(northing.min(), -10e3)
-    npt.assert_allclose(northing.max(), 15e3)
-    npt.assert_allclose(upward.min(), -10e3)
-    npt.assert_allclose(upward.max(), 2e3)
+    for i, prism in enumerate(prisms):
+        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
     # Check properties of the prisms
     assert pv_grid.n_arrays == 1
     assert pv_grid.array_names == ["density"]

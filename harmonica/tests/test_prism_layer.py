@@ -411,16 +411,8 @@ def test_to_pyvista(dummy_layer, properties):
     assert pv_grid.n_cells == 20
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
-    pv_easting = pv_grid.points[:, 0]
-    pv_northing = pv_grid.points[:, 1]
-    pv_upward = pv_grid.points[:, 2]
-    d_easting, d_northing = 1, 2
-    npt.assert_allclose(layer.easting.min() - d_easting / 2, pv_easting.min())
-    npt.assert_allclose(layer.easting.max() + d_easting / 2, pv_easting.max())
-    npt.assert_allclose(layer.northing.min() - d_northing / 2, pv_northing.min())
-    npt.assert_allclose(layer.northing.max() + d_northing / 2, pv_northing.max())
-    npt.assert_allclose(layer.bottom.min(), pv_upward.min())
-    npt.assert_allclose(layer.top.max(), pv_upward.max())
+    for i, prism in enumerate(layer.prism_layer._to_prisms()):
+        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
     # Check properties of the prisms
     if properties is None:
         assert pv_grid.n_arrays == 0
