@@ -17,6 +17,16 @@ import xarray as xr
 
 from .. import prism_gravity, prism_layer
 
+try:
+    import vtk
+except ImportError:
+    vtk = None
+
+try:
+    import pyvista
+except ImportError:
+    pyvista = None
+
 
 @pytest.fixture(params=("numpy", "xarray"))
 def dummy_layer(request):
@@ -385,3 +395,33 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
         result,
         prism_gravity(coordinates, prisms, rho, field=field),
     )
+
+
+@pytest.mark.skipif(vtk is None or pyvista is None, reason="requires vtk and pyvista")
+def test_to_pyvista(dummy_layer):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    pv_grid = layer.prism_layer.to_pyvista()
+    assert pv_grid.n_cells == 20
+    assert pv_grid.n_points == 20 * 8
+    # Check coordinates of prisms
+    pv_easting = pv_grid.points[:, 0]
+    pv_northing = pv_grid.points[:, 1]
+    pv_upward = pv_grid.points[:, 2]
+    d_easting, d_northing = 1, 2
+    npt.assert_allclose(layer.easting.min() - d_easting / 2, pv_easting.min())
+    npt.assert_allclose(layer.easting.max() + d_easting / 2, pv_easting.max())
+    npt.assert_allclose(layer.northing.min() - d_northing / 2, pv_northing.min())
+    npt.assert_allclose(layer.northing.max() + d_northing / 2, pv_northing.max())
+    npt.assert_allclose(layer.bottom.min(), pv_upward.min())
+    npt.assert_allclose(layer.top.max(), pv_upward.max())
+    # Check properties of the prisms
+    assert pv_grid.n_arrays == 1
+    assert pv_grid.array_names == ["density"]
+    assert pv_grid.get_array("density").ndim == 1
+    npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
