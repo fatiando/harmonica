@@ -7,6 +7,8 @@
 """
 Forward modelling for point masses
 """
+import warnings
+
 import numpy as np
 from numba import jit, prange
 
@@ -14,7 +16,7 @@ from ..constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
 
 
-def point_mass_gravity(
+def point_gravity(
     coordinates,
     points,
     masses,
@@ -215,6 +217,37 @@ def point_mass_gravity(
     return result.reshape(cast.shape)
 
 
+def point_mass_gravity(
+    coordinates,
+    points,
+    masses,
+    field,
+    coordinate_system="cartesian",
+    parallel=True,
+    dtype="float64",
+):
+    """
+    DEPRECATED. Use :func:`harmonica.point_gravity` instead.
+
+    This function exists to support backward compatibility until next release.
+    """
+    warnings.warn(
+        "The 'point_mass_gravity' function has been renamed to 'point_gravity' "
+        + "and will be deprecated on the next release, "
+        + "please use 'point_gravity' instead.",
+        FutureWarning,
+    )
+    return point_gravity(
+        coordinates=coordinates,
+        points=points,
+        masses=masses,
+        field=field,
+        coordinate_system=coordinate_system,
+        parallel=parallel,
+        dtype=dtype,
+    )
+
+
 def dispatcher(coordinate_system, parallel):
     """
     Return the appropriate forward model function
@@ -343,7 +376,7 @@ def kernel_g_z_spherical(
 
 def point_mass_cartesian(
     easting, northing, upward, easting_p, northing_p, upward_p, masses, out, kernel
-):  # pylint: disable=invalid-name,not-an-iterable
+):
     """
     Compute gravitational field of point masses in Cartesian coordinates
 
@@ -377,7 +410,7 @@ def point_mass_cartesian(
 
 def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
-):  # pylint: disable=invalid-name,not-an-iterable
+):
     """
     Compute gravitational field of point masses in spherical coordinates
 
@@ -425,7 +458,6 @@ def point_mass_spherical(
 
 
 # Define jitted versions of the forward modelling functions
-# pylint: disable=invalid-name
 point_mass_cartesian_serial = jit(nopython=True)(point_mass_cartesian)
 point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(point_mass_cartesian)
 point_mass_spherical_serial = jit(nopython=True)(point_mass_spherical)

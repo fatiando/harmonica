@@ -21,11 +21,11 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 """
+import matplotlib.pyplot as plt
 import numpy as np
 import verde as vd
-import harmonica as hm
-import matplotlib.pyplot as plt
 
+import harmonica as hm
 
 # Create a layer of prisms
 region = (0, 100e3, -40e3, 40e3)

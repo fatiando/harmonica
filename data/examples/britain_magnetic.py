@@ -29,11 +29,12 @@ See the original data for more processing information.
 If the file isn't already in your data directory, it will be downloaded
 automatically.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import verde as vd
-import harmonica as hm
+import matplotlib.pyplot as plt
 import numpy as np
+import verde as vd
+
+import harmonica as hm
 
 # Fetch the data in a pandas.DataFrame
 data = hm.datasets.fetch_britain_magnetic()

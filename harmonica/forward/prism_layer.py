@@ -8,9 +8,10 @@
 Define a layer of prisms
 """
 import warnings
+
 import numpy as np
-import xarray as xr
 import verde as vd
+import xarray as xr
 
 from .prism import prism_gravity
 

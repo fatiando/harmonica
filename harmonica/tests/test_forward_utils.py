@@ -7,12 +7,12 @@
 """
 Test utils functions for forward modelling
 """
-import pytest
+import boule as bl
 import numpy as np
 import numpy.testing as npt
-import boule as bl
+import pytest
 
-from ..forward.utils import distance, check_coordinate_system
+from ..forward.utils import check_coordinate_system, distance
 
 
 @pytest.mark.use_numba

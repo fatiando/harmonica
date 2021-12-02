@@ -4,20 +4,20 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=protected-access
 """
 Test the EquivalentSources gridder
 """
-from collections.abc import Iterable
 import warnings
-import pytest
+from collections.abc import Iterable
+
 import numpy as np
 import numpy.testing as npt
-import xarray.testing as xrt
+import pytest
 import verde as vd
 import verde.base as vdb
+import xarray.testing as xrt
 
-from .. import EquivalentSources, EQLHarmonic, point_mass_gravity
+from .. import EQLHarmonic, EquivalentSources, point_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba
@@ -62,7 +62,7 @@ def fixture_data(coordinates, points, masses):
     """
     Return some sample data
     """
-    return point_mass_gravity(coordinates, points, masses, field="g_z")
+    return point_gravity(coordinates, points, masses, field="g_z")
 
 
 @pytest.fixture(name="weights")
@@ -90,7 +90,7 @@ def fixture_data_small(points, masses, coordinates_small):
     """
     Return some sample data for the small set of coordinates
     """
-    return point_mass_gravity(coordinates_small, points, masses, field="g_z")
+    return point_gravity(coordinates_small, points, masses, field="g_z")
 
 
 @pytest.fixture(name="coordinates_9x9")
@@ -121,7 +121,7 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     upward = 0
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
     # Test grid method
@@ -132,7 +132,7 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=1e-3)
@@ -156,7 +156,7 @@ def test_equivalent_sources_cartesian_float32(
     upward = 0
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), atol=1e-3 * vd.maxabs(true))
 
     # Test grid method
@@ -167,7 +167,7 @@ def test_equivalent_sources_cartesian_float32(
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, atol=1e-3 * vd.maxabs(true))
@@ -181,7 +181,7 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     # Define a small set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
     eqs = EquivalentSources(depth=500)
@@ -198,7 +198,7 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     upward = 20
     shape = (8, 8)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=0.08)
 
     # Test grid method
@@ -209,7 +209,7 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, 10)
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=0.05)

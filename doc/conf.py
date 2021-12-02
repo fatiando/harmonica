@@ -4,18 +4,16 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import os
 import datetime
-import sphinx_gallery
+
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
 import harmonica
 
-
 # Project information
 # -----------------------------------------------------------------------------
 project = "Harmonica"
-copyright = f"2018-{datetime.date.today().year}, The {project} Developers"
+copyright_info = f"2018-{datetime.date.today().year}, The {project} Developers"
 if len(harmonica.__version__.split("+")) > 1 or harmonica.__version__ == "unknown":
     version = "dev"
 else:
@@ -117,7 +115,7 @@ html_show_copyright = True
 html_theme = "sphinx_book_theme"
 html_theme_options = {
     "repository_url": "https://github.com/fatiando/harmonica",
-    "repository_branch": "master",
+    "repository_branch": "main",
     "path_to_docs": "doc",
     "launch_buttons": {
         "binderhub_url": "https://mybinder.org",

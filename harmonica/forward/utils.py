@@ -44,7 +44,7 @@ def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
         Coordinate system of the coordinates of the computation points and the
         point masses.
         Available coordinates systems: ``cartesian``, ``spherical`` and
-       ``geodetic``. Default ``cartesian``.
+        ``geodetic``. Default ``cartesian``.
     ellipsoid : :class:`boule.Ellipsoid`
         Reference ellipsoid for points coordinates. Ignored if
         ``coordinate_system`` is not ``"geodetic"``. Default ``None``.
@@ -198,7 +198,7 @@ def distance_spherical_core(
     return dist, cospsi, coslambda
 
 
-def distance_geodetic(point_p, point_q, ellipsoid):  # pylint: disable=too-many-locals
+def distance_geodetic(point_p, point_q, ellipsoid):
     """
     Calculate the distance between two points in geodetic coordinates
 

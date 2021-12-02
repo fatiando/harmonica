@@ -7,25 +7,22 @@
 """
 Forward modelling for tesseroids
 """
-from numba import jit, prange
 import numpy as np
+from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
-from .point_mass import (
-    kernel_potential_spherical,
-    kernel_g_z_spherical,
-)
 from ._tesseroid_utils import (
-    _check_tesseroids,
-    _check_points_outside_tesseroids,
     _adaptive_discretization,
-    glq_nodes_weights,
+    _check_points_outside_tesseroids,
+    _check_tesseroids,
     gauss_legendre_quadrature,
+    glq_nodes_weights,
 )
 from ._tesseroid_variable_density import (
     density_based_discretization,
     gauss_legendre_quadrature_variable_density,
 )
+from .point import kernel_g_z_spherical, kernel_potential_spherical
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
@@ -224,7 +221,7 @@ def jit_tesseroid_gravity(
     glq_weights,
     kernel,
     dtype,
-):  # pylint: disable=too-many-locals,invalid-name,not-an-iterable
+):
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -319,7 +316,7 @@ def jit_tesseroid_gravity_variable_density(
     glq_weights,
     kernel,
     dtype,
-):  # pylint: disable=too-many-locals,invalid-name,not-an-iterable
+):
     """
     Compute gravitational field of tesseroids on computations points
 
@@ -404,7 +401,6 @@ def jit_tesseroid_gravity_variable_density(
 
 
 # Define jitted versions of the forward modelling function
-# pylint: disable=invalid-name
 jit_tesseroid_gravity_serial = jit(nopython=True)(jit_tesseroid_gravity)
 jit_tesseroid_gravity_parallel = jit(nopython=True, parallel=True)(
     jit_tesseroid_gravity

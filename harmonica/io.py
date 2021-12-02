@@ -98,7 +98,9 @@ def _read_gdf_file(fname, **kwargs):
             gdf_file = fname
         else:
             # It's a file path
-            gdf_file = stack.enter_context(open(fname))
+            gdf_file = stack.enter_context(
+                open(fname)  # noqa: SIM115, the open file is closed by contextlib
+            )
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
@@ -146,10 +148,9 @@ def _check_gdf_integrity(metadata):
     ]
     # Check for needed arguments in metadata dictionary
     for arg in needed_args:
-        if arg in metadata:
-            metadata[arg] = metadata[arg].split()[0]
-        else:
+        if arg not in metadata:
             raise IOError("Couldn't read {} field from gdf file header".format(arg))
+        metadata[arg] = metadata[arg].split()[0]
     if "attributes" not in metadata:
         raise IOError("Couldn't read column names.")
     if "attributes_units" not in metadata:

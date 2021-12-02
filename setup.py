@@ -9,8 +9,7 @@ Build and install the project.
 
 Uses setuptools-scm to manage version numbers using git tags.
 """
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 NAME = "harmonica"
 FULLNAME = "Harmonica"
@@ -38,7 +37,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3 :: Only",
-    "License :: OSI Approved :: {}".format(LICENSE),
+    f"License :: OSI Approved :: {LICENSE}",
 ]
 PLATFORMS = "Any"
 PACKAGES = find_packages(exclude=["doc"])
