@@ -122,7 +122,8 @@ jobs:
           HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Build the documentation
-        run: make -C doc clean all
+        # Configure DISPLAY env variable tu run pyvista on headless system
+        run: DISPLAY=:99.0; make -C doc clean all
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
