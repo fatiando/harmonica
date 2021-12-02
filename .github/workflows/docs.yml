@@ -122,8 +122,17 @@ jobs:
           HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Build the documentation
-        # Configure DISPLAY env variable tu run pyvista on headless system
-        run: DISPLAY=:99.0 make -C doc clean all
+        run: |
+          # Install xvfb and run some commands to allow pyvista to run on
+          # a headless system.
+          sudo apt-get install xvfb
+          export DISPLAY=:99.0
+          export PYVISTA_OFF_SCREEN=true
+          export PYVISTA_USE_IPYVTK=true
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          sleep 3
+          # Build the docs
+          make -C doc clean all
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
