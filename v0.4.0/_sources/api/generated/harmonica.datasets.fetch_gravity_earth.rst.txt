@@ -1,0 +1,12 @@
+harmonica.datasets.fetch\_gravity\_earth
+========================================
+
+.. currentmodule:: harmonica.datasets
+
+.. autofunction:: fetch_gravity_earth
+
+.. include:: backreferences/harmonica.datasets.fetch_gravity_earth.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

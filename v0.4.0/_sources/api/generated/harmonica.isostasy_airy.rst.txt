@@ -1,0 +1,12 @@
+harmonica.isostasy\_airy
+========================
+
+.. currentmodule:: harmonica
+
+.. autofunction:: isostasy_airy
+
+.. include:: backreferences/harmonica.isostasy_airy.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

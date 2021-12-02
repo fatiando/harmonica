@@ -1,0 +1,993 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica.EquivalentSources | Harmonica v0.4.0</title>
+    
+
+    
+  <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.c441f2ba0852f4cabcb80105e3a46ae6.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="harmonica.EquivalentSourcesGB" href="harmonica.EquivalentSourcesGB.html" />
+    <link rel="prev" title="harmonica.bouguer_correction" href="harmonica.bouguer_correction.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.4.0</span></h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../index.html">
+   Harmonica Documentation
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../../gallery/index.html">
+   Gallery
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/isostasy_airy.html">
+     Airy Isostasy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../../sample_data/index.html">
+   Sample Data
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/earth_geoid.html">
+     Earth Geoid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/earth_gravity.html">
+     Earth Gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/earth_topography.html">
+     Earth Topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/south_africa_gravity.html">
+     Land Gravity Data from South Africa
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/south_africa_topography.html">
+     South Africa Topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../sample_data/britain_magnetic.html">
+     Total Field Magnetic Anomaly from Great Britain
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="../index.html">
+   API Reference
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Getting help and contributing
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+   <i class="fas fa-external-link-alt">
+   </i>
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/api/generated/harmonica.EquivalentSources.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/generated/harmonica.EquivalentSources.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/api/generated/harmonica.EquivalentSources.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-harmonica-equivalentsources">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     harmonica.EquivalentSources
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="harmonica-equivalentsources">
+<h1>harmonica.EquivalentSources<a class="headerlink" href="#harmonica-equivalentsources" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="harmonica.EquivalentSources">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">EquivalentSources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relative'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent sources for generic harmonic functions (gravity, magnetics).</p>
+<p>These equivalent sources can be used for:</p>
+<ul class="simple">
+<li><p>Cartesian coordinates (geographic coordinates must be project before use)</p></li>
+<li><p>Gravity and magnetic data (including derivatives)</p></li>
+<li><p>Single data types</p></li>
+<li><p>Interpolation</p></li>
+<li><p>Upward continuation</p></li>
+<li><p>Finite-difference based derivative calculations</p></li>
+</ul>
+<p>They cannot be used for:</p>
+<ul class="simple">
+<li><p>Regional or global data where Earth’s curvature must be taken into
+account</p></li>
+<li><p>Joint inversion of multiple data types (e.g., gravity + gravity
+gradients)</p></li>
+<li><p>Reduction to the pole of magnetic total field anomaly data</p></li>
+<li><p>Analytical derivative calculations</p></li>
+</ul>
+<p>By default, the point sources are located beneath the observed
+potential-field measurement points <a class="reference internal" href="../../references.html#cooper2000" id="id1"><span>[Cooper2000]</span></a> that are passed as
+arguments to the <a class="reference internal" href="#harmonica.EquivalentSources.fit" title="harmonica.EquivalentSources.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">EquivalentSources.fit</span></code></a> method, producing the same
+number of sources as data points.
+Alternatively, we can reduce the number of sources by using block-averaged
+sources <a class="reference internal" href="../../references.html#soler2021" id="id2"><span>[Soler2021]</span></a>: we divide the data region in blocks of equal size and
+compute the median location of the observations points that fall under each
+block. Then, we locate one point source beneath each one of these
+locations. The size of the blocks, that indirectly controls how many
+sources will be created, can be specified through the <code class="docutils literal notranslate"><span class="pre">block_size</span></code>
+argument.
+We recommend choosing a <code class="docutils literal notranslate"><span class="pre">block_size</span></code> no larger than the resolution of the
+grid where interpolations will be carried out.</p>
+<p>The depth of the sources can be controlled by the <code class="docutils literal notranslate"><span class="pre">depth</span></code> argument.
+If <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> is set to <code class="docutils literal notranslate"><span class="pre">&quot;relative&quot;</span></code>, then each source is located
+beneath each data point or block-averaged location at a depth equal to its
+elevation minus the value of the <code class="docutils literal notranslate"><span class="pre">depth</span></code> argument.
+If <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> is set to <code class="docutils literal notranslate"><span class="pre">&quot;constant&quot;</span></code>, then every source is located at
+a constant depth given by the <code class="docutils literal notranslate"><span class="pre">depth</span></code> argument.
+In both cases a positive value of <code class="docutils literal notranslate"><span class="pre">depth</span></code> locates sources _beneath_ the
+data points or the block-averaged locations, thus a negative <code class="docutils literal notranslate"><span class="pre">depth</span></code> will
+put the sources _above_ them.</p>
+<p>Custom source locations can be chosen by specifying the <code class="docutils literal notranslate"><span class="pre">points</span></code>
+argument, in which case the <code class="docutils literal notranslate"><span class="pre">depth_type</span></code>, <code class="docutils literal notranslate"><span class="pre">block_size</span></code> and <code class="docutils literal notranslate"><span class="pre">depth</span></code>
+arguments will be ignored.</p>
+<p>The corresponding coefficient for each point source is estimated through
+linear least-squares with damping (Tikhonov 0th order) regularization.</p>
+<p>The Green’s function for point mass effects used is the inverse Euclidean
+distance between the observation points and the point sources:</p>
+<div class="math notranslate nohighlight">
+\[\phi(\bar{x}, \bar{x}') = \frac{1}{||\bar{x} - \bar{x}'||}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{x}\)</span> and <span class="math notranslate nohighlight">\(\bar{x}'\)</span> are the coordinate vectors of
+the observation point and the source, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>damping</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
+smoothness is imposed on the estimated coefficients.
+If None, no regularization is used.</p></li>
+<li><p><strong>points</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>list of arrays</em><em> (</em><em>optional</em><em>)</em>) – List containing the coordinates of the equivalent point sources.
+Coordinates are assumed to be in the following order:
+(<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">upward</span></code>).
+If None, will place one point source below each observation point at
+a fixed relative depth below the observation point <a class="reference internal" href="../../references.html#cooper2000" id="id3"><span>[Cooper2000]</span></a>.
+Defaults to None.</p></li>
+<li><p><strong>depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Parameter used to control the depth at which the point sources will be
+located.
+If <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;constant&quot;</span></code>, each source is located at the same
+depth specified through the <code class="docutils literal notranslate"><span class="pre">depth</span></code> argument.
+If <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;relative&quot;</span></code>, each source is located beneath
+each data point (or block-averaged location) at a depth equal to its
+elevation minus the <code class="docutils literal notranslate"><span class="pre">depth</span></code> value.
+This parameter is ignored if <em>points</em> is specified.
+Defaults to 500.</p></li>
+<li><p><strong>depth_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Strategy used for setting the depth of the point sources.
+The two available strategies are <code class="docutils literal notranslate"><span class="pre">&quot;constant&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;relative&quot;</span></code>.
+This parameter is ignored if <em>points</em> is specified.
+Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;relative&quot;</span></code>.</p></li>
+<li><p><strong>block_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – Size of the blocks used on block-averaged equivalent sources.
+If a single value is passed, the blocks will have a square shape.
+Alternatively, the dimensions of the blocks in the South-North and
+West-East directions can be specified by passing a tuple.
+If None, no block-averaging is applied.
+This parameter is ignored if <em>points</em> are specified.
+Default to None.</p></li>
+<li><p><strong>parallel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True any predictions and Jacobian building is carried out in
+parallel through Numba’s <code class="docutils literal notranslate"><span class="pre">jit.prange</span></code>, reducing the computation time.
+If False, these tasks will be run on a single CPU. Default to True.</p></li>
+<li><p><strong>dtype</strong> (<em>data-type</em>) – The desired data-type for the predictions and the Jacobian matrix.
+Default to <code class="docutils literal notranslate"><span class="pre">&quot;float64&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>points_</strong> (<em>2d-array</em>) – Coordinates of the equivalent point sources.</p></li>
+<li><p><strong>coefs_</strong> (<em>array</em>) – Estimated coefficients of every point source.</p></li>
+<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
+interpolator. Used as the default region for the
+<a class="reference internal" href="#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><a class="reference internal" href="../../references.html#soler2021" id="id4"><span>[Soler2021]</span></a></p>
+</dd></dl>
+
+<p class="rubric">Methods Summary</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.filter" title="harmonica.EquivalentSources.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.filter</span></code></a>(coordinates, data)</p></td>
+<td><p>Filter the data through the gridder and produce residuals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.fit" title="harmonica.EquivalentSources.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.fit</span></code></a>(coordinates, data[, …])</p></td>
+<td><p>Fit the coefficients of the equivalent sources.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.get_params" title="harmonica.EquivalentSources.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.get_params</span></code></a>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.grid</span></code></a>(upward[, region, …])</p></td>
+<td><p>Interpolate the data onto a regular grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.jacobian" title="harmonica.EquivalentSources.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.jacobian</span></code></a>(coordinates, points)</p></td>
+<td><p>Make the Jacobian matrix for the equivalent sources.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.predict" title="harmonica.EquivalentSources.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.predict</span></code></a>(coordinates)</p></td>
+<td><p>Evaluate the estimated equivalent sources on the given set of points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.profile" title="harmonica.EquivalentSources.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.profile</span></code></a>(point1, point2, …)</p></td>
+<td><p>Interpolate data along a profile between two points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.scatter" title="harmonica.EquivalentSources.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.scatter</span></code></a>([region, size, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.score" title="harmonica.EquivalentSources.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.score</span></code></a>(coordinates, data[, …])</p></td>
+<td><p>Score the gridder predictions against the given data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSources.set_params" title="harmonica.EquivalentSources.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources.set_params</span></code></a>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.filter">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">filter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSources.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the data through the gridder and produce residuals.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
+data), and returns the coordinates, residuals, and weights.</p>
+<p>No very useful by itself but this interface makes gridders compatible
+with other processing operations and is used by <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.Chain.html#verde.Chain" title="(in Verde vv1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
+join them together (for example, so you can fit a spline on the
+residuals of a trend).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).
+For the specific definition of coordinate systems and what these
+names mean, see the class docstring.</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>coordinates, residuals, weights</em> – The coordinates and weights are same as the input. Residuals are
+the input data minus the predicted data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.fit">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the coefficients of the equivalent sources.</p>
+<p>The data region is captured and used as default for the
+<a class="reference internal" href="#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method.</p>
+<p>All input arrays must have the same shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">upward</span></code>, …).
+Only <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, and <code class="docutils literal notranslate"><span class="pre">upward</span></code> will be used, all
+subsequent coordinates will be ignored.</p></li>
+<li><p><strong>data</strong> (<em>array</em>) – The data values of each data point.</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em>) – If not None, then the weights assigned to each data point.
+Typically, this should be 1 over the data uncertainty squared.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>self</em> – Returns this estimator instance for chaining operations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.get_params">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">get_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSources.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>params</strong> (<em>dict</em>) – Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.grid">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the data onto a regular grid.</p>
+<p>The grid can be specified by either the number of points in each
+dimension (the <em>shape</em>) or by the grid node spacing. See
+<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.6.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for details. All grid points will be
+located at the same <cite>upward</cite> coordinate. Other arguments for
+<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.6.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be
+used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.
+Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+Default names will be provided if none are given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Upward coordinate of the grid points.</p></li>
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output grid. Default is determined from the
+<code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the following
+order: northing dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output grid. Defaults to
+<code class="docutils literal notranslate"><span class="pre">['scalars']</span></code>.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated grid coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic grid from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>grid</strong> (<em>xarray.Dataset</em>) – The interpolated grid. Metadata about the interpolator is written
+to the <code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.jacobian">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">jacobian</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the Jacobian matrix for the equivalent sources.</p>
+<p>Each column of the Jacobian is the Green’s function for a single point
+source evaluated on all observation points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">upward</span></code>).
+Each array must be 1D.</p></li>
+<li><p><strong>points</strong> (<em>tuple of arrays</em>) – Tuple of arrays containing the coordinates of the equivalent point
+sources in the following order:
+(<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">upward</span></code>).
+Each array must be 1D.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>jacobian</strong> (<em>2D array</em>) – The (n_data, n_points) Jacobian matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.predict">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the estimated equivalent sources on the given set of points.</p>
+<p>Requires a fitted estimator (see
+<a class="reference internal" href="#harmonica.EquivalentSources.fit" title="harmonica.EquivalentSources.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">upward</span></code>, …). Only
+<code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code> and <code class="docutils literal notranslate"><span class="pre">upward</span></code> will be used, all
+subsequent coordinates will be ignored.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> (<em>array</em>) – The data values evaluated on the given points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.profile">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">profile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate data along a profile between two points.</p>
+<p>Generates the profile along a straight line assuming Cartesian
+distances and the same upward coordinate for all points. Point
+coordinates are generated by <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.profile_coordinates.html#verde.profile_coordinates" title="(in Verde vv1.6.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other
+arguments for this function can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<p>Includes the calculated Cartesian distance from <em>point1</em> for each data
+point in the profile.</p>
+<p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
+require projection to Cartesian (geographic longitude and latitude, for
+example), use the <code class="docutils literal notranslate"><span class="pre">projection</span></code> argument. With this option, the input
+points will be projected using the given projection function prior to
+computations. The generated Cartesian profile coordinates will be
+projected back to the original coordinate system. <strong>Note that the
+profile points are evenly spaced in projected coordinates, not the
+original system (e.g., geographic)</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
+point.</p></li>
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
+point.</p></li>
+<li><p><strong>upward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Upward coordinate of the profile points.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output dataframe. Default is determined from
+the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
+following order: northing dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<span class="pre">northing,</span> <span class="pre">inverse=False)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
+takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. Should also take
+an optional keyword argument <code class="docutils literal notranslate"><span class="pre">inverse</span></code> (default to False) that if
+True will calculate the inverse transform instead. This function
+will be used to project the profile end points before generating
+coordinates and passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. It will also be used
+to undo the projection of the coordinates before returning the
+results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>table</strong> (<em>pandas.DataFrame</em>) – The interpolated values along the profile.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.scatter">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">scatter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/cartesian.html#EquivalentSources.scatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSources.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Not implemented method. The scatter method will be deprecated on
+Verde v2.0.0.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.score">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">score</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSources.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score the gridder predictions against the given data.</p>
+<p>Calculates the R^2 coefficient of determination of between the
+predicted values and the given data values. A maximum score of 1 means
+a perfect fit. The score can be negative.</p>
+<p>If the data has more than 1 component, the scores of each component
+will be averaged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).
+For the specific definition of coordinate systems and what these
+names mean, see the class docstring.</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> (<em>float</em>) – The R^2 score</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harmonica.EquivalentSources.set_params">
+<code class="sig-prename descclassname"><span class="pre">EquivalentSources.</span></code><code class="sig-name descname"><span class="pre">set_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSources.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as <code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>). The latter have
+parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
+possible to update each component of a nested object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – Estimator parameters.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> (<em>estimator instance</em>) – Estimator instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="examples-using-harmonica-equivalentsources">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code><a class="headerlink" href="#examples-using-harmonica-equivalentsources" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="When trying to grid a very large dataset, the regular harmonica.EquivalentSources might not be ..."><div class="figure align-default" id="id5">
+<img alt="Gradient-boosted equivalent sources" src="../../_images/sphx_glr_gradient_boosted_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html#sphx-glr-gallery-equivalent-sources-gradient-boosted-py"><span class="std std-ref">Gradient-boosted equivalent sources</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Most potential field surveys gather data along scattered and uneven flight lines or ground meas..."><div class="figure align-default" id="id6">
+<img alt="Gridding and upward continuation" src="../../_images/sphx_glr_cartesian_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html#sphx-glr-gallery-equivalent-sources-cartesian-py"><span class="std std-ref">Gridding and upward continuation</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><div class="figure align-default" id="id7">
+<img alt="Gridding in spherical coordinates" src="../../_images/sphx_glr_spherical_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/equivalent_sources/spherical.html#sphx-glr-gallery-equivalent-sources-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="By default, the harmonica.EquivalentSources class locates one point source beneath each data po..."><div class="figure align-default" id="id8">
+<img alt="Gridding with block-averaged equivalent sources" src="../../_images/sphx_glr_block_averaged_sources_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html#sphx-glr-gallery-equivalent-sources-block-averaged-sources-py"><span class="std std-ref">Gridding with block-averaged equivalent sources</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="harmonica.bouguer_correction.html" title="previous page">harmonica.bouguer_correction</a>
+    <a class='right-next' id="next-link" href="harmonica.EquivalentSourcesGB.html" title="next page">harmonica.EquivalentSourcesGB</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
