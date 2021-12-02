@@ -5,8 +5,27 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-3D plot of layer of prisms
-==========================
+Plot a prism layer in 3D
+========================
+
+The :func:`harmonica.prism_layer` allows to easily create a layer of prisms
+whose top and bottom boundaries might drape a certain surface, like topography,
+bathymetry or the Moho discontinuity. It returns a :class:`xarray.Dataset`
+object with the horizontal coordinates of the center of each prism, their top
+and bottom boundaries and their physical properties, like their density.
+Through the ``prism_layer`` accessor (see
+:class:`harmonica.DatasetAccessorPrismLayer`) we can call some methods for our
+prism layer. For example, the
+:meth:`harmonica.DatasetAccessorPrismLayer.gravity` method lets us compute the
+gravitational fields of the layer on any set of observation points.
+Another interesting method is the
+:meth:`harmonica.DatasetAccessorPrismLayer.to_pyvista`: it converts the prism
+layer into a :class:`pyvista.UnstructuredGrid` that could be easily plotted
+through ``pyvista``.
+
+In this example we will show how we can build a prism layer out of a topography
+and bathymetry grid for South Africa and how we can visualize the layer as a 3D
+plot using ``pyvista``.
 
 """
 import pyproj
