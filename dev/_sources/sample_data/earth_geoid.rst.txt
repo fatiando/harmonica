@@ -29,7 +29,7 @@ surface and positive values that it is above. The data are on a regular grid
 with 0.5 degree spacing and was generated from the spherical harmonic model
 EIGEN-6C4 [Forste_etal2014]_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-37
+.. GENERATED FROM PYTHON SOURCE LINES 19-38
 
 
 
@@ -75,8 +75,9 @@ EIGEN-6C4 [Forste_etal2014]_.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+
     import harmonica as hm
 
     # Load the geoid grid
@@ -97,7 +98,7 @@ EIGEN-6C4 [Forste_etal2014]_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.579 seconds)
+   **Total running time of the script:** ( 0 minutes  0.527 seconds)
 
 
 .. _sphx_glr_download_sample_data_earth_geoid.py:

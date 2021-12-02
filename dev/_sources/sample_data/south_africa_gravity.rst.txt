@@ -31,7 +31,7 @@ longitude, latitude, elevation (above sea level) and gravity(mGal). See the
 documentation for :func:`harmonica.datasets.fetch_south_africa_gravity` for
 more information.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-49
+.. GENERATED FROM PYTHON SOURCE LINES 21-50
 
 
 
@@ -70,9 +70,10 @@ more information.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import verde as vd
+
     import harmonica as hm
 
     # Fetch the data in a pandas.DataFrame
@@ -102,7 +103,7 @@ more information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.785 seconds)
+   **Total running time of the script:** ( 0 minutes  0.708 seconds)
 
 
 .. _sphx_glr_download_sample_data_south_africa_gravity.py:

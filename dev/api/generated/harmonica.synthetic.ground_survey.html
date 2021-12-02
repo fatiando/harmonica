@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -137,6 +142,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -150,13 +160,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -232,13 +247,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -345,14 +365,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -435,7 +455,7 @@
             href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/generated/harmonica.synthetic.ground_survey.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/master/doc/api/generated/harmonica.synthetic.ground_survey.rst"><button
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/api/generated/harmonica.synthetic.ground_survey.rst"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -470,9 +490,9 @@
 <code class="sig-prename descclassname"><span class="pre">harmonica.synthetic.</span></code><code class="sig-name descname"><span class="pre">ground_survey</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(13.6,</span> <span class="pre">20.3,</span> <span class="pre">-</span> <span class="pre">24.2,</span> <span class="pre">-</span> <span class="pre">17.5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/synthetic/surveys.html#ground_survey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.synthetic.ground_survey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create measurement locations for a synthetic ground survey</p>
 <p>The observation points are sampled from the South Africa gravity dataset
-(see <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity" title="harmonica.datasets.fetch_south_africa_gravity"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.datasets.fetch_south_africa_gravity</span></code></a>). Only a portion
-of the original survey is sampled and its region may be scaled to the
-passed <code class="docutils literal notranslate"><span class="pre">region</span></code>.</p>
+(see <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity" title="harmonica.datasets.fetch_south_africa_gravity"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_south_africa_gravity</span></code></a>). Only
+a portion of the original survey is sampled and its region may be scaled to
+the passed <code class="docutils literal notranslate"><span class="pre">region</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -497,7 +517,7 @@ Longitudes and latitudes are in degrees, and heights in meters.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_south_africa_gravity</span></code></p>
+<p><a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity" title="harmonica.datasets.fetch_south_africa_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">harmonica.datasets.fetch_south_africa_gravity</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -520,8 +540,8 @@ Longitudes and latitudes are in degrees, and heights in meters.</p>
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

@@ -26,7 +26,7 @@ The topography and bathymetry of the Earth according to the ETOPO1 model
 we downsampled to 0.5 degree grid spacing to save space and download times.
 Heights are referenced to sea level.
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-36
+.. GENERATED FROM PYTHON SOURCE LINES 16-37
 
 
 
@@ -72,8 +72,9 @@ Heights are referenced to sea level.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+
     import harmonica as hm
 
     # Load the topography grid
@@ -96,7 +97,7 @@ Heights are referenced to sea level.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.582 seconds)
+   **Total running time of the script:** ( 0 minutes  0.511 seconds)
 
 
 .. _sphx_glr_download_sample_data_earth_topography.py:

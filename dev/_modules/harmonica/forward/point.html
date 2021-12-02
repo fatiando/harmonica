@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>harmonica.forward.point_mass | Harmonica dev</title>
+        <title>harmonica.forward.point | Harmonica dev</title>
     
 
     
@@ -128,6 +128,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -135,6 +140,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -148,13 +158,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -230,13 +245,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -343,14 +363,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -413,7 +433,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/forward/point_mass.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/forward/point.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -442,7 +462,7 @@
         
               <div>
                 
-  <h1>Source code for harmonica.forward.point_mass</h1><div class="highlight"><pre>
+  <h1>Source code for harmonica.forward.point</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
@@ -452,6 +472,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Forward modelling for point masses</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 
@@ -459,7 +481,7 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_coordinate_system</span><span class="p">,</span> <span class="n">distance_cartesian</span><span class="p">,</span> <span class="n">distance_spherical_core</span>
 
 
-<div class="viewcode-block" id="point_mass_gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.point_mass_gravity.html#harmonica.point_mass_gravity">[docs]</a><span class="k">def</span> <span class="nf">point_mass_gravity</span><span class="p">(</span>
+<div class="viewcode-block" id="point_gravity"><a class="viewcode-back" href="../../../api/generated/harmonica.point_gravity.html#harmonica.point_gravity">[docs]</a><span class="k">def</span> <span class="nf">point_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">points</span><span class="p">,</span>
     <span class="n">masses</span><span class="p">,</span>
@@ -660,6 +682,37 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
 
+<span class="k">def</span> <span class="nf">point_mass_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">points</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">coordinate_system</span><span class="o">=</span><span class="s2">&quot;cartesian&quot;</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DEPRECATED. Use :func:`harmonica.point_gravity` instead.</span>
+
+<span class="sd">    This function exists to support backward compatibility until next release.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;The &#39;point_mass_gravity&#39; function has been renamed to &#39;point_gravity&#39; &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;and will be deprecated on the next release, &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;please use &#39;point_gravity&#39; instead.&quot;</span><span class="p">,</span>
+        <span class="ne">FutureWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">point_gravity</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+        <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span>
+        <span class="n">masses</span><span class="o">=</span><span class="n">masses</span><span class="p">,</span>
+        <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
+        <span class="n">coordinate_system</span><span class="o">=</span><span class="n">coordinate_system</span><span class="p">,</span>
+        <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">parallel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the appropriate forward model function</span>
@@ -788,7 +841,7 @@
 
 <span class="k">def</span> <span class="nf">point_mass_cartesian</span><span class="p">(</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span><span class="p">,</span> <span class="n">easting_p</span><span class="p">,</span> <span class="n">northing_p</span><span class="p">,</span> <span class="n">upward_p</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">kernel</span>
-<span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name,not-an-iterable</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute gravitational field of point masses in Cartesian coordinates</span>
 
@@ -822,7 +875,7 @@
 
 <span class="k">def</span> <span class="nf">point_mass_spherical</span><span class="p">(</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">latitude_p</span><span class="p">,</span> <span class="n">radius_p</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">kernel</span>
-<span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name,not-an-iterable</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute gravitational field of point masses in spherical coordinates</span>
 
@@ -870,7 +923,6 @@
 
 
 <span class="c1"># Define jitted versions of the forward modelling functions</span>
-<span class="c1"># pylint: disable=invalid-name</span>
 <span class="n">point_mass_cartesian_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_cartesian</span><span class="p">)</span>
 <span class="n">point_mass_cartesian_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_cartesian</span><span class="p">)</span>
 <span class="n">point_mass_spherical_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_spherical</span><span class="p">)</span>
@@ -891,8 +943,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

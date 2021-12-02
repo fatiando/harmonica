@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -137,6 +142,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -150,13 +160,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -232,13 +247,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -345,14 +365,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -435,7 +455,7 @@
             href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/generated/harmonica.tesseroid_gravity.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/master/doc/api/generated/harmonica.tesseroid_gravity.rst"><button
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/api/generated/harmonica.tesseroid_gravity.rst"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -509,7 +529,12 @@ in meters.</p></li>
 spherical coordinate system.
 The longitudinal and latitudinal boundaries should be in degrees, while
 the radial ones must be in meters.</p></li>
-<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><em>array</em>) – List or array containing the density of each tesseroid in kg/m^3.</p></li>
+<li><p><strong>density</strong> (list, array or func decorated with <a class="reference external" href="https://numba.pydata.org/numba-doc/latest/reference/jit-compilation.html#numba.jit" title="(in Numba v0.50)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a>) – List or array containing the density of each tesseroid in kg/m^3.
+Alternatively, it can be a continuous function within the boundaries of
+the tesseroids, in which case the variable density tesseroids method
+introduced in <a class="reference internal" href="../../references.html#soler2019" id="id1"><span>[Soler2019]</span></a> will be used.
+If <code class="docutils literal notranslate"><span class="pre">density</span></code> is a function, it should be decorated with
+<a class="reference external" href="https://numba.pydata.org/numba-doc/latest/reference/jit-compilation.html#numba.jit" title="(in Numba v0.50)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a>.</p></li>
 <li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>Gravitational field that wants to be computed.
 The available fields are:</p>
 <ul>
@@ -539,6 +564,8 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 points.</p>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<p><a class="reference internal" href="../../references.html#soler2019" id="id2"><span>[Soler2019]</span></a></p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get WGS84 ellipsoid from the Boule package</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">boule</span>
@@ -559,13 +586,31 @@ points.</p>
 <span class="go">array(112.54539933)</span>
 </pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a linear density function for the same tesseroid.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># It should be decorated with numba.njit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@jit</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">linear_density</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">density_top</span> <span class="o">=</span> <span class="mf">2670.</span>
+<span class="gp">... </span>    <span class="n">density_bottom</span> <span class="o">=</span> <span class="mf">3300.</span>
+<span class="gp">... </span>    <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">density_top</span> <span class="o">-</span> <span class="n">density_bottom</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">slope</span> <span class="o">*</span> <span class="p">(</span><span class="n">radius</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">+</span> <span class="n">density_bottom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute the downward acceleration it generates</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroid</span><span class="p">,</span> <span class="n">linear_density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
+<span class="go">array(125.80498632)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div class="section" id="examples-using-harmonica-tesseroid-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-tesseroid-gravity" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id3">
 <img alt="Tesseroids (spherical prisms)" src="../../_images/sphx_glr_tesseroid_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The harmonica.tesseroid_gravity is capable of computing the gravitational effects of tesseroids..."><div class="figure align-default" id="id4">
+<img alt="Tesseroids with variable density" src="../../_images/sphx_glr_tesseroid_variable_density_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html#sphx-glr-gallery-forward-tesseroid-variable-density-py"><span class="std std-ref">Tesseroids with variable density</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -587,8 +632,8 @@ points.</p>
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

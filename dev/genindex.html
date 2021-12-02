@@ -128,6 +128,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -135,6 +140,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -148,13 +158,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/forward/point_mass.html">
+    <a class="reference internal" href="gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -230,13 +245,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -343,14 +363,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -492,9 +512,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources">EquivalentSources (class in harmonica)</a>
 </li>
+      <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB">EquivalentSourcesGB (class in harmonica)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph">EquivalentSourcesSph (class in harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">estimate_required_memory() (harmonica.EquivalentSourcesGB method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -510,19 +534,23 @@
 </li>
       <li><a href="api/generated/harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity">fetch_south_africa_gravity() (in module harmonica.datasets)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.datasets.fetch_topography_earth.html#harmonica.datasets.fetch_topography_earth">fetch_topography_earth() (in module harmonica.datasets)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.filter">filter() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.filter">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.filter">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.fit">fit() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.fit">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.fit">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -535,6 +563,8 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.get_params">get_params() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.get_params">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.get_params">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -547,6 +577,8 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid">grid() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.grid">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.grid">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -591,6 +623,8 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.jacobian">jacobian() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.jacobian">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.jacobian">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -627,11 +661,13 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.point_mass_gravity.html#harmonica.point_mass_gravity">point_mass_gravity() (in module harmonica)</a>
+      <li><a href="api/generated/harmonica.point_gravity.html#harmonica.point_gravity">point_gravity() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.predict">predict() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.predict">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.predict">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -644,6 +680,8 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.profile">profile() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.profile">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.profile">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -656,12 +694,16 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.scatter">scatter() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.scatter">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.scatter">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.score">score() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.score">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.score">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -670,6 +712,8 @@
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.set_params">set_params() (harmonica.EquivalentSources method)</a>
 
       <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.set_params">(harmonica.EquivalentSourcesGB method)</a>
+</li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.set_params">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
@@ -712,8 +756,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

@@ -43,7 +43,7 @@ data uncertainty to be taken into account and noise to be suppressed though the
 least-squares fitting process. The main disadvantage is the increased
 computational load (both in terms of time and memory).
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-116
+.. GENERATED FROM PYTHON SOURCE LINES 33-115
 
 
 
@@ -60,7 +60,7 @@ computational load (both in terms of time and memory).
 
     Number of data points: 7054
     Mean height of observations: 541.8293166997448
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
+    /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
       warnings.warn(
     R² score: 0.9988789670714462
 
@@ -86,11 +86,10 @@ computational load (both in terms of time and memory).
 .. code-block:: default
 
     import matplotlib.pyplot as plt
-    import numpy as np
     import pyproj
     import verde as vd
-    import harmonica as hm
 
+    import harmonica as hm
 
     # Fetch the sample total-field magnetic anomaly data from Great Britain
     data = hm.datasets.fetch_britain_magnetic()
@@ -172,7 +171,7 @@ computational load (both in terms of time and memory).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.551 seconds)
+   **Total running time of the script:** ( 0 minutes  7.767 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_cartesian.py:

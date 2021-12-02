@@ -31,7 +31,7 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-79
+.. GENERATED FROM PYTHON SOURCE LINES 21-78
 
 
 
@@ -40,31 +40,17 @@ points.
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
-      result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
 
-
-
-
-
-|
 
 .. code-block:: default
 
-    import pyproj
-    import numpy as np
-    import verde as vd
-    import harmonica as hm
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+    import pyproj
+    import verde as vd
 
+    import harmonica as hm
 
     # Read South Africa topography
     south_africa_topo = hm.datasets.fetch_south_africa_topography()
@@ -120,7 +106,7 @@ points.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  0.271 seconds)
+   **Total running time of the script:** ( 0 minutes  59.378 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prisms_topo_gravity.py:

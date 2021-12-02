@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -137,6 +142,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -150,13 +160,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="forward/point_mass.html">
+    <a class="reference internal" href="forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -232,13 +247,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -345,14 +365,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -435,7 +455,7 @@
             href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fgallery/index.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/master/doc/gallery/index.rst"><button
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/gallery/index.rst"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -510,42 +530,60 @@
 </div>
 <div class="sphx-glr-clear"></div><div class="section" id="equivalent-sources">
 <span id="sphx-glr-gallery-equivalent-sources"></span><h2>Equivalent Sources<a class="headerlink" href="#equivalent-sources" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Most potential field surveys gather data along scattered and uneven flight lines or ground meas..."><div class="figure align-default" id="id5">
-<img alt="Gridding and upward continuation" src="../_images/sphx_glr_cartesian_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/cartesian.html#sphx-glr-gallery-equivalent-sources-cartesian-py"><span class="std std-ref">Gridding and upward continuation</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="When trying to grid a very large dataset, the regular harmonica.EquivalentSources might not be ..."><div class="figure align-default" id="id5">
+<img alt="Gradient-boosted equivalent sources" src="../_images/sphx_glr_gradient_boosted_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/gradient_boosted.html#sphx-glr-gallery-equivalent-sources-gradient-boosted-py"><span class="std std-ref">Gradient-boosted equivalent sources</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><div class="figure align-default" id="id6">
+<div class="sphx-glr-thumbcontainer" tooltip="Most potential field surveys gather data along scattered and uneven flight lines or ground meas..."><div class="figure align-default" id="id6">
+<img alt="Gridding and upward continuation" src="../_images/sphx_glr_cartesian_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/cartesian.html#sphx-glr-gallery-equivalent-sources-cartesian-py"><span class="std std-ref">Gridding and upward continuation</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ..."><div class="figure align-default" id="id7">
 <img alt="Gridding in spherical coordinates" src="../_images/sphx_glr_spherical_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/spherical.html#sphx-glr-gallery-equivalent-sources-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/spherical.html#sphx-glr-gallery-equivalent-sources-spherical-py"><span class="std std-ref">Gridding in spherical coordinates</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="By default, the harmonica.EquivalentSources class locates one point source beneath each data po..."><div class="figure align-default" id="id8">
+<img alt="Gridding with block-averaged equivalent sources" src="../_images/sphx_glr_block_averaged_sources_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="equivalent_sources/block_averaged_sources.html#sphx-glr-gallery-equivalent-sources-block-averaged-sources-py"><span class="std std-ref">Gridding with block-averaged equivalent sources</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-clear"></div></div>
 <div class="section" id="forward-modeling">
 <span id="sphx-glr-gallery-forward"></span><h2>Forward Modeling<a class="headerlink" href="#forward-modeling" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr..."><div class="figure align-default" id="id7">
+<div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr..."><div class="figure align-default" id="id9">
 <img alt="Gravitational effect of topography" src="../_images/sphx_glr_prisms_topo_gravity_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><div class="figure align-default" id="id8">
+<div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><div class="figure align-default" id="id10">
 <img alt="Layer of prisms" src="../_images/sphx_glr_prism_layer_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/prism_layer.html#sphx-glr-gallery-forward-prism-layer-py"><span class="std std-ref">Layer of prisms</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/prism_layer.html#sphx-glr-gallery-forward-prism-layer-py"><span class="std std-ref">Layer of prisms</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling..."><div class="figure align-default" id="id9">
-<img alt="Point Masses in Cartesian Coordinates" src="../_images/sphx_glr_point_mass_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/point_mass.html#sphx-glr-gallery-forward-point-mass-py"><span class="std std-ref">Point Masses in Cartesian Coordinates</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling..."><div class="figure align-default" id="id11">
+<img alt="Point Masses in Cartesian Coordinates" src="../_images/sphx_glr_point_gravity_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/point_gravity.html#sphx-glr-gallery-forward-point-gravity-py"><span class="std std-ref">Point Masses in Cartesian Coordinates</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id10">
+<div class="sphx-glr-thumbcontainer" tooltip="Computing the gravitational fields generated by regional or global scale structures require to ..."><div class="figure align-default" id="id12">
 <img alt="Tesseroids (spherical prisms)" src="../_images/sphx_glr_tesseroid_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/tesseroid.html#sphx-glr-gallery-forward-tesseroid-py"><span class="std std-ref">Tesseroids (spherical prisms)</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The harmonica.tesseroid_gravity is capable of computing the gravitational effects of tesseroids..."><div class="figure align-default" id="id13">
+<img alt="Tesseroids with variable density" src="../_images/sphx_glr_tesseroid_variable_density_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="forward/tesseroid_variable_density.html#sphx-glr-gallery-forward-tesseroid-variable-density-py"><span class="std std-ref">Tesseroids with variable density</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
@@ -570,8 +608,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

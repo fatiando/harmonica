@@ -42,7 +42,7 @@ See the original data for more processing information.
 If the file isn't already in your data directory, it will be downloaded
 automatically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-70
+.. GENERATED FROM PYTHON SOURCE LINES 32-71
 
 
 
@@ -81,11 +81,12 @@ automatically.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
-    import verde as vd
-    import harmonica as hm
+    import matplotlib.pyplot as plt
     import numpy as np
+    import verde as vd
+
+    import harmonica as hm
 
     # Fetch the data in a pandas.DataFrame
     data = hm.datasets.fetch_britain_magnetic()
@@ -123,7 +124,7 @@ automatically.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.996 seconds)
+   **Total running time of the script:** ( 0 minutes  5.350 seconds)
 
 
 .. _sphx_glr_download_sample_data_britain_magnetic.py:

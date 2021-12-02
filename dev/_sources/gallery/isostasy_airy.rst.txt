@@ -35,7 +35,7 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-54
+.. GENERATED FROM PYTHON SOURCE LINES 25-55
 
 
 
@@ -101,8 +101,9 @@ isostatic Moho depth of Africa.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+
     import harmonica as hm
 
     # Load the elevation model and cut out the portion of the data corresponding to
@@ -134,7 +135,7 @@ isostatic Moho depth of Africa.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.065 seconds)
+   **Total running time of the script:** ( 0 minutes  1.112 seconds)
 
 
 .. _sphx_glr_download_gallery_isostasy_airy.py:

@@ -128,6 +128,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -135,6 +140,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -148,13 +158,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -230,13 +245,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -343,14 +363,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -453,9 +473,10 @@
 <span class="sd">Define a layer of prisms</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">.prism</span> <span class="kn">import</span> <span class="n">prism_gravity</span>
 
@@ -480,7 +501,7 @@
 <span class="sd">    The ``prism_layer`` dataset accessor can be used to access special methods</span>
 <span class="sd">    and attributes for the layer of prisms, like the horizontal dimensions of</span>
 <span class="sd">    the prisms, getting the boundaries of each prisms, etc.</span>
-<span class="sd">    See :class:`XarrayAcessorPrismLayer` for the definition of these methods</span>
+<span class="sd">    See :class:`DatasetAccessorPrismLayer` for the definition of these methods</span>
 <span class="sd">    and attributes.</span>
 
 <span class="sd">    Parameters</span>
@@ -489,7 +510,7 @@
 <span class="sd">        List containing the coordinates of the centers of the prisms in the</span>
 <span class="sd">        following order: ``easting``, ``northing``. The arrays must be 1d</span>
 <span class="sd">        arrays containing the coordiantes of the centers per axis, or could be</span>
-<span class="sd">        2d arrays as the ones returned by :func:``numpy.meshgrid``. All</span>
+<span class="sd">        2d arrays as the ones returned by :func:`numpy.meshgrid`. All</span>
 <span class="sd">        coordinates should be in meters and should define a regular grid.</span>
 <span class="sd">    surface : 2d-array</span>
 <span class="sd">        Array used to create the uppermost boundary of the prisms layer. All</span>
@@ -906,8 +927,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

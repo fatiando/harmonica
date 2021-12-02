@@ -17,13 +17,14 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
-Equivalent Layers
---------------------------
+Equivalent Sources
+------------------
 
 .. autosummary::
     :toctree: generated/
 
     EquivalentSources
+    EquivalentSourcesGB
     EquivalentSourcesSph
 
 Forward modelling
@@ -32,7 +33,7 @@ Forward modelling
 .. autosummary::
     :toctree: generated/
 
-    point_mass_gravity
+    point_gravity
     prism_gravity
     tesseroid_gravity
     prism_layer

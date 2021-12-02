@@ -58,7 +58,7 @@
     :caption: Getting help and contributing
 
     Join the community <http://contact.fatiando.org>
-    How to contribute <https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md>
-    Code of Conduct <https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md>
+    How to contribute <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>
+    Code of Conduct <https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md>
     Source code on GitHub <https://github.com/fatiando/harmonica>
     The Fatiando a Terra project <https://www.fatiando.org>

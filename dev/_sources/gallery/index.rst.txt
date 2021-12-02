@@ -90,6 +90,27 @@ Equivalent Sources
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="When trying to grid a very large dataset, the regular harmonica.EquivalentSources might not be ...">
+
+.. only:: html
+
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_gradient_boosted_thumb.png
+     :alt: Gradient-boosted equivalent sources
+
+     :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/equivalent_sources/gradient_boosted
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Most potential field surveys gather data along scattered and uneven flight lines or ground meas...">
 
 .. only:: html
@@ -129,6 +150,27 @@ Equivalent Sources
    :hidden:
 
    /gallery/equivalent_sources/spherical
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="By default, the harmonica.EquivalentSources class locates one point source beneath each data po...">
+
+.. only:: html
+
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_block_averaged_sources_thumb.png
+     :alt: Gridding with block-averaged equivalent sources
+
+     :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/equivalent_sources/block_averaged_sources
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -190,10 +232,10 @@ Forward Modeling
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_point_mass_thumb.png
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_point_gravity_thumb.png
      :alt: Point Masses in Cartesian Coordinates
 
-     :ref:`sphx_glr_gallery_forward_point_mass.py`
+     :ref:`sphx_glr_gallery_forward_point_gravity.py`
 
 .. raw:: html
 
@@ -203,7 +245,7 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/point_mass
+   /gallery/forward/point_gravity
 
 .. raw:: html
 
@@ -225,6 +267,27 @@ Forward Modeling
    :hidden:
 
    /gallery/forward/tesseroid
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The harmonica.tesseroid_gravity is capable of computing the gravitational effects of tesseroids...">
+
+.. only:: html
+
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_tesseroid_variable_density_thumb.png
+     :alt: Tesseroids with variable density
+
+     :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/forward/tesseroid_variable_density
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

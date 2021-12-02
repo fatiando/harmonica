@@ -130,6 +130,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -137,6 +142,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -150,13 +160,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/forward/point_mass.html">
+    <a class="reference internal" href="gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -232,13 +247,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -345,14 +365,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -435,7 +455,7 @@
             href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fchanges.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/master/doc/changes.rst"><button
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/changes.rst"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -461,6 +481,11 @@
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-4-0">
+   Version 0.4.0
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#version-0-3-3">
    Version 0.3.3
@@ -510,6 +535,42 @@
                 
   <div class="section" id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-0-4-0">
+<h2>Version 0.4.0<a class="headerlink" href="#version-0-4-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/12/02</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.5745400"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5745400.svg" /></a>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code> to define block-averaged sources through a new <code class="docutils literal notranslate"><span class="pre">block_size</span></code> argument <a class="reference internal" href="references.html#soler2021" id="id1"><span>[Soler2021]</span></a>. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/260">#260</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">dtype</span></code> argument to <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code>. Allows to select the data type used to allocate the Jacobian matrix. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/278">#278</a>)</p></li>
+<li><p>Add a new <code class="docutils literal notranslate"><span class="pre">EquivalentSourcesGB</span></code> class that implements gradient-boosted equivalent sources. Provides a method to estimate the amount of computer memory needed to allocate the largest Jacobian matrix <a class="reference internal" href="references.html#soler2021" id="id2"><span>[Soler2021]</span></a>. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/275">#275</a>)</p></li>
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code> to compute gravitational fields of variable density tesseroids. Implements the density-based discretization algorithm and takes <code class="docutils literal notranslate"><span class="pre">numba.njit</span></code> decorated density functions as input <a class="reference internal" href="references.html#soler2019" id="id3"><span>[Soler2019]</span></a>. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/269">#269</a>)</p></li>
+</ul>
+<p>Breaking changes:</p>
+<ul class="simple">
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">point_mass_gravity</span></code> to <code class="docutils literal notranslate"><span class="pre">point_gravity</span></code>. Having mass and gravity in the same function name is redundant. The function name has the same structure as other forward modelling functions (<code class="docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code> and <code class="docutils literal notranslate"><span class="pre">prism_gravity</span></code>). The old <code class="docutils literal notranslate"><span class="pre">point_mass_gravity</span></code> will be deprecated on the next release. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/280">#280</a>)</p></li>
+</ul>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Fix bug with the <code class="docutils literal notranslate"><span class="pre">require_numba</span></code> pytest mark and rename it to <code class="docutils literal notranslate"><span class="pre">run_only_with_numba</span></code> for improved readability. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/273">#273</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Fix typo on <code class="docutils literal notranslate"><span class="pre">EquivalentSources</span></code> docstring: replace <code class="docutils literal notranslate"><span class="pre">bloc_size</span></code> with <code class="docutils literal notranslate"><span class="pre">block_size</span></code>. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/276">#276</a>)</p></li>
+<li><p>Minor improvements to the docs: fix bad references and links, replace Equivalent Layer for Equivalent Sources on API Index, fix bad RST syntax. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/274">#274</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Rename the default branch: from <code class="docutils literal notranslate"><span class="pre">master</span></code> to <code class="docutils literal notranslate"><span class="pre">main</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/287">#287</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">pylint</span></code> for <code class="docutils literal notranslate"><span class="pre">flake8</span></code> extensions. Add <code class="docutils literal notranslate"><span class="pre">isort</span></code> for autoformatting imports. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/285">#285</a>)</p></li>
+<li><p>Replace conda for pip on GitHub Actions and split requirements files for each separate task. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/282">#282</a>)</p></li>
+<li><p>Make GitHub Actions to check if license notice is present in source files. (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/277">#277</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+</ul>
+</div>
 <div class="section" id="version-0-3-3">
 <h2>Version 0.3.3<a class="headerlink" href="#version-0-3-3" title="Permalink to this headline">¶</a></h2>
 <p><em>Released on: 2021/10/22</em></p>
@@ -726,8 +787,8 @@ components of acceleration
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

@@ -15,9 +15,10 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
 import boule as bl
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import harmonica as hm
 
 # Load the global gravity grid

@@ -31,7 +31,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-123
+.. GENERATED FROM PYTHON SOURCE LINES 21-122
 
 
 
@@ -46,9 +46,9 @@ account the curvature of the Earth.
 
  .. code-block:: none
 
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/boule/ellipsoid.py:458: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
+    /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/boule/ellipsoid.py:458: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
       warn(
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
+    /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
       warnings.warn(
     R² score: 0.9999999999915354
 
@@ -73,13 +73,12 @@ account the curvature of the Earth.
 
 .. code-block:: default
 
-    import numpy as np
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
     import boule as bl
+    import matplotlib.pyplot as plt
+    import numpy as np
     import verde as vd
-    import harmonica as hm
 
+    import harmonica as hm
 
     # Fetch the sample gravity data from South Africa
     data = hm.datasets.fetch_south_africa_gravity()
@@ -179,7 +178,7 @@ account the curvature of the Earth.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.551 seconds)
+   **Total running time of the script:** ( 0 minutes  3.192 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_spherical.py:

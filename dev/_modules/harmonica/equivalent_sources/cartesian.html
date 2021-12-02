@@ -128,6 +128,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -135,6 +140,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -148,13 +158,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -230,13 +245,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -343,14 +363,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -453,20 +473,22 @@
 <span class="sd">Equivalent sources for generic harmonic functions in Cartesian coordinates</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 <span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 <span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">pop_extra_coords</span><span class="p">,</span>
-    <span class="n">predict_numba_serial</span><span class="p">,</span>
-    <span class="n">predict_numba_parallel</span><span class="p">,</span>
-    <span class="n">jacobian_numba_serial</span><span class="p">,</span>
-    <span class="n">jacobian_numba_parallel</span><span class="p">,</span>
-<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..forward.utils</span> <span class="kn">import</span> <span class="n">distance_cartesian</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">cast_fit_input</span><span class="p">,</span>
+    <span class="n">jacobian_numba_parallel</span><span class="p">,</span>
+    <span class="n">jacobian_numba_serial</span><span class="p">,</span>
+    <span class="n">pop_extra_coords</span><span class="p">,</span>
+    <span class="n">predict_numba_parallel</span><span class="p">,</span>
+    <span class="n">predict_numba_serial</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="EquivalentSources"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources">[docs]</a><span class="k">class</span> <span class="nc">EquivalentSources</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
@@ -491,14 +513,39 @@
 <span class="sd">    * Reduction to the pole of magnetic total field anomaly data</span>
 <span class="sd">    * Analytical derivative calculations</span>
 
-<span class="sd">    Point sources are located beneath the observed potential-field measurement</span>
-<span class="sd">    points by default [Cooper2000]_. Custom source locations can be used by</span>
-<span class="sd">    specifying the *points* argument. Coefficients associated with each point</span>
-<span class="sd">    source are estimated through linear least-squares with damping (Tikhonov</span>
-<span class="sd">    0th order) regularization.</span>
+<span class="sd">    By default, the point sources are located beneath the observed</span>
+<span class="sd">    potential-field measurement points [Cooper2000]_ that are passed as</span>
+<span class="sd">    arguments to the :meth:`EquivalentSources.fit` method, producing the same</span>
+<span class="sd">    number of sources as data points.</span>
+<span class="sd">    Alternatively, we can reduce the number of sources by using block-averaged</span>
+<span class="sd">    sources [Soler2021]_: we divide the data region in blocks of equal size and</span>
+<span class="sd">    compute the median location of the observations points that fall under each</span>
+<span class="sd">    block. Then, we locate one point source beneath each one of these</span>
+<span class="sd">    locations. The size of the blocks, that indirectly controls how many</span>
+<span class="sd">    sources will be created, can be specified through the ``block_size``</span>
+<span class="sd">    argument.</span>
+<span class="sd">    We recommend choosing a ``block_size`` no larger than the resolution of the</span>
+<span class="sd">    grid where interpolations will be carried out.</span>
+
+<span class="sd">    The depth of the sources can be controlled by the ``depth`` argument.</span>
+<span class="sd">    If ``depth_type`` is set to ``&quot;relative&quot;``, then each source is located</span>
+<span class="sd">    beneath each data point or block-averaged location at a depth equal to its</span>
+<span class="sd">    elevation minus the value of the ``depth`` argument.</span>
+<span class="sd">    If ``depth_type`` is set to ``&quot;constant&quot;``, then every source is located at</span>
+<span class="sd">    a constant depth given by the ``depth`` argument.</span>
+<span class="sd">    In both cases a positive value of ``depth`` locates sources _beneath_ the</span>
+<span class="sd">    data points or the block-averaged locations, thus a negative ``depth`` will</span>
+<span class="sd">    put the sources _above_ them.</span>
+
+<span class="sd">    Custom source locations can be chosen by specifying the ``points``</span>
+<span class="sd">    argument, in which case the ``depth_type``, ``block_size`` and ``depth``</span>
+<span class="sd">    arguments will be ignored.</span>
+
+<span class="sd">    The corresponding coefficient for each point source is estimated through</span>
+<span class="sd">    linear least-squares with damping (Tikhonov 0th order) regularization.</span>
 
 <span class="sd">    The Green&#39;s function for point mass effects used is the inverse Euclidean</span>
-<span class="sd">    distance between the grid coordinates and the point source:</span>
+<span class="sd">    distance between the observation points and the point sources:</span>
 
 <span class="sd">    .. math::</span>
 
@@ -523,17 +570,11 @@
 <span class="sd">    depth : float</span>
 <span class="sd">        Parameter used to control the depth at which the point sources will be</span>
 <span class="sd">        located.</span>
-<span class="sd">        If ``depth_type`` is equal to ``&quot;relative&quot;``, the ``depth`` specifies</span>
-<span class="sd">        the relative depth at which the point sources are placed beneath the</span>
-<span class="sd">        observation points. Each source point will be set beneath each data</span>
-<span class="sd">        point at a depth calculated as the elevation of the data point minus</span>
-<span class="sd">        this *depth*. Use positive numbers (negative numbers would mean point</span>
-<span class="sd">        sources are above the data points).</span>
-<span class="sd">        If ``depth_type`` is equal to ``&quot;constant&quot;``, the ``depth`` specifies</span>
-<span class="sd">        the constant depth at which the point sources are placed beneath the</span>
-<span class="sd">        observation points. Every source point will be located at this *depth*.</span>
-<span class="sd">        Use positive numbers (negative numbers would mean point sources are</span>
-<span class="sd">        located above the zeroth level).</span>
+<span class="sd">        If ``depth_type`` is ``&quot;constant&quot;``, each source is located at the same</span>
+<span class="sd">        depth specified through the ``depth`` argument.</span>
+<span class="sd">        If ``depth_type`` is ``&quot;relative&quot;``, each source is located beneath</span>
+<span class="sd">        each data point (or block-averaged location) at a depth equal to its</span>
+<span class="sd">        elevation minus the ``depth`` value.</span>
 <span class="sd">        This parameter is ignored if *points* is specified.</span>
 <span class="sd">        Defaults to 500.</span>
 <span class="sd">    depth_type : str</span>
@@ -541,10 +582,21 @@
 <span class="sd">        The two available strategies are ``&quot;constant&quot;`` and ``&quot;relative&quot;``.</span>
 <span class="sd">        This parameter is ignored if *points* is specified.</span>
 <span class="sd">        Defaults to ``&quot;relative&quot;``.</span>
+<span class="sd">    block_size: float, tuple = (s_north, s_east) or None</span>
+<span class="sd">        Size of the blocks used on block-averaged equivalent sources.</span>
+<span class="sd">        If a single value is passed, the blocks will have a square shape.</span>
+<span class="sd">        Alternatively, the dimensions of the blocks in the South-North and</span>
+<span class="sd">        West-East directions can be specified by passing a tuple.</span>
+<span class="sd">        If None, no block-averaging is applied.</span>
+<span class="sd">        This parameter is ignored if *points* are specified.</span>
+<span class="sd">        Default to None.</span>
 <span class="sd">    parallel : bool</span>
 <span class="sd">        If True any predictions and Jacobian building is carried out in</span>
 <span class="sd">        parallel through Numba&#39;s ``jit.prange``, reducing the computation time.</span>
 <span class="sd">        If False, these tasks will be run on a single CPU. Default to True.</span>
+<span class="sd">    dtype : data-type</span>
+<span class="sd">        The desired data-type for the predictions and the Jacobian matrix.</span>
+<span class="sd">        Default to ``&quot;float64&quot;``.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -555,7 +607,11 @@
 <span class="sd">    region_ : tuple</span>
 <span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
 <span class="sd">        interpolator. Used as the default region for the</span>
-<span class="sd">        :meth:`~harmonica.EQLHarmonic.grid` method.</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSources.grid` method.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Soler2021]_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Set the default dimension names for generated outputs</span>
@@ -575,14 +631,18 @@
         <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">depth</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
         <span class="n">depth_type</span><span class="o">=</span><span class="s2">&quot;relative&quot;</span><span class="p">,</span>
+        <span class="n">block_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">depth_type</span> <span class="o">=</span> <span class="n">depth_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="n">block_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parallel</span> <span class="o">=</span> <span class="n">parallel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
         <span class="c1"># Define Green&#39;s function for Cartesian coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span> <span class="o">=</span> <span class="n">greens_func_cartesian</span>
         <span class="c1"># Check if depth_type is valid</span>
@@ -605,7 +665,7 @@
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
-<span class="sd">        :meth:`~harmonica.EQLHarmonic.grid` method.</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSources.grid` method.</span>
 
 <span class="sd">        All input arrays must have the same shape.</span>
 
@@ -628,13 +688,18 @@
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">cast_fit_input</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
         <span class="c1"># Capture the data region to use as a default when gridding.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
@@ -643,13 +708,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate coordinates of point sources based on the data points</span>
 
-<span class="sd">        Locate the point sources following the chosen ``depth_type`` strategy.</span>
+<span class="sd">        Locate the point sources following the chosen ``depth_type`` strategy</span>
+<span class="sd">        and apply block-averaging if ``block_size`` is not None.</span>
 <span class="sd">        If ``depth_type`` is equal to ``&quot;relative&quot;``, the point sources will be</span>
-<span class="sd">        placed beneath the observation points at a depth calculated as the</span>
-<span class="sd">        elevation of the data point minus the ``depth``.</span>
+<span class="sd">        placed beneath the (averaged) observation points at a depth calculated</span>
+<span class="sd">        as the elevation of the data point minus the ``depth``.</span>
 <span class="sd">        If ``depth_type`` is equal to ``&quot;constant&quot;``, the point sources will be</span>
-<span class="sd">        placed beneath the observation points at the same height equal to minus</span>
-<span class="sd">        ``depth``.</span>
+<span class="sd">        placed beneath the (averaged) observation points at the same height</span>
+<span class="sd">        equal to minus ``depth``.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -665,6 +731,8 @@
 <span class="sd">            Tuple containing the coordinates of the equivalent point sources,</span>
 <span class="sd">            in the following order: (``easting``, ``northing``, ``upward``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block_average_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_type</span> <span class="o">==</span> <span class="s2">&quot;relative&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -679,11 +747,39 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
+    <span class="k">def</span> <span class="nf">_block_average_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run a block-averaging process on observation points</span>
+
+<span class="sd">        Apply a median as the reduction function. The blocks will have the size</span>
+<span class="sd">        specified through the ``block_size`` argument on the constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (``easting``, ``northing``, ``upward``, ...).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        blocked_coords : tuple of arrays</span>
+<span class="sd">            Tuple containing the coordinates of the block-averaged observation</span>
+<span class="sd">            points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reducer</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span><span class="p">(</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">block_size</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">,</span> <span class="n">drop_coords</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="c1"># Must pass a dummy data array to BlockReduce.filter(), we choose an</span>
+        <span class="c1"># array full of zeros. We will ignore the returned reduced dummy array.</span>
+        <span class="n">blocked_coords</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">blocked_coords</span>
+
 <div class="viewcode-block" id="EquivalentSources.predict"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the estimated equivalent sources on the given set of points.</span>
 
-<span class="sd">        Requires a fitted estimator (see :meth:`~harmonica.EQLHarmonic.fit`).</span>
+<span class="sd">        Requires a fitted estimator (see</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSources.fit`).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -702,17 +798,16 @@
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;coefs_&quot;</span><span class="p">])</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_predict_kernel</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">](</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EquivalentSources.jacobian"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span>
-    <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+<div class="viewcode-block" id="EquivalentSources.jacobian"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the Jacobian matrix for the equivalent sources.</span>
 
@@ -723,15 +818,13 @@
 <span class="sd">        ----------</span>
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
-<span class="sd">            following order: (``easting``, ``northing``, ``upward``, ...).</span>
-<span class="sd">            Only ``easting``, ``northing`` and ``upward`` will be used, all</span>
-<span class="sd">            subsequent coordinates will be ignored.</span>
+<span class="sd">            following order: (``easting``, ``northing``, ``upward``).</span>
+<span class="sd">            Each array must be 1D.</span>
 <span class="sd">        points : tuple of arrays</span>
 <span class="sd">            Tuple of arrays containing the coordinates of the equivalent point</span>
 <span class="sd">            sources in the following order:</span>
 <span class="sd">            (``easting``, ``northing``, ``upward``).</span>
-<span class="sd">        dtype : str or numpy dtype</span>
-<span class="sd">            The type of the Jacobian array.</span>
+<span class="sd">            Each array must be 1D.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -741,7 +834,7 @@
         <span class="c1"># Compute Jacobian matrix</span>
         <span class="n">n_data</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
         <span class="n">n_points</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_data</span><span class="p">,</span> <span class="n">n_points</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_data</span><span class="p">,</span> <span class="n">n_points</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_kernel</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">](</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span>
         <span class="p">)</span>
@@ -757,7 +850,7 @@
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
@@ -813,9 +906,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># We override the grid method from BaseGridder so it takes the upward</span>
-        <span class="c1"># coordinate as a positional argument. We disable pylint</span>
-        <span class="c1"># arguments-differ error because we intend to make this method</span>
-        <span class="c1"># different from the inherited one.</span>
+        <span class="c1"># coordinate as a positional argument.</span>
 
         <span class="c1"># Ignore extra_coords if passed</span>
         <span class="n">pop_extra_coords</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -834,13 +925,13 @@
 
 <div class="viewcode-block" id="EquivalentSources.scatter"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.scatter">[docs]</a>    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">size</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-        <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. warning ::</span>
@@ -861,7 +952,7 @@
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate data along a profile between two points.</span>
 
@@ -931,9 +1022,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># We override the profile method from BaseGridder so it takes the</span>
-        <span class="c1"># upward coordinate as a positional argument. We disable pylint</span>
-        <span class="c1"># arguments-differ error because we intend to make this method</span>
-        <span class="c1"># different from the inherited one.</span>
+        <span class="c1"># upward coordinate as a positional argument.</span>
 
         <span class="c1"># Ignore extra_coords if passed</span>
         <span class="n">pop_extra_coords</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1010,8 +1099,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>

@@ -128,6 +128,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">
      Gridding and upward continuation
     </a>
@@ -135,6 +140,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">
      Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
     </a>
    </li>
    <li class="toctree-l2">
@@ -148,13 +158,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../gallery/forward/point_mass.html">
+    <a class="reference internal" href="../../../gallery/forward/point_gravity.html">
      Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../gallery/forward/tesseroid.html">
      Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
     </a>
    </li>
   </ul>
@@ -230,13 +245,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
      harmonica.EquivalentSourcesSph
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../api/generated/harmonica.point_mass_gravity.html">
-     harmonica.point_mass_gravity
+    <a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -343,14 +363,14 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CONTRIBUTING.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
    <i class="fas fa-external-link-alt">
    </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/master/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
    <i class="fas fa-external-link-alt">
    </i>
@@ -453,20 +473,21 @@
 <span class="sd">Equivalent sources for generic harmonic functions in spherical coordinates</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 <span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 <span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">pop_extra_coords</span><span class="p">,</span>
-    <span class="n">predict_numba_serial</span><span class="p">,</span>
-    <span class="n">predict_numba_parallel</span><span class="p">,</span>
-    <span class="n">jacobian_numba_serial</span><span class="p">,</span>
-    <span class="n">jacobian_numba_parallel</span><span class="p">,</span>
-<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..forward.utils</span> <span class="kn">import</span> <span class="n">distance_spherical</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">jacobian_numba_parallel</span><span class="p">,</span>
+    <span class="n">jacobian_numba_serial</span><span class="p">,</span>
+    <span class="n">pop_extra_coords</span><span class="p">,</span>
+    <span class="n">predict_numba_parallel</span><span class="p">,</span>
+    <span class="n">predict_numba_serial</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="EquivalentSourcesSph"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph">[docs]</a><span class="k">class</span> <span class="nc">EquivalentSourcesSph</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
@@ -543,7 +564,7 @@
 <span class="sd">    region_ : tuple</span>
 <span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
 <span class="sd">        interpolator. Used as the default region for the</span>
-<span class="sd">        :meth:`~harmonica.EQLHarmonicSph.grid` method.</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSources.grid` method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Set the default dimension names for generated outputs</span>
@@ -576,7 +597,7 @@
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
-<span class="sd">        :meth:`~harmonica.EQLHarmonicSpherical.grid` method.</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSourcesSph.grid` method.</span>
 
 <span class="sd">        All input arrays must have the same shape.</span>
 
@@ -619,7 +640,7 @@
 <span class="sd">        Evaluate the estimated equivalent sources on the given set of points.</span>
 
 <span class="sd">        Requires a fitted estimator</span>
-<span class="sd">        (see :meth:`~harmonica.EQLHarmonicSpherical.fit`).</span>
+<span class="sd">        (see :meth:`~harmonica.EquivalentSourcesSph.fit`).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -646,9 +667,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EquivalentSourcesSph.jacobian"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span>
-    <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+<div class="viewcode-block" id="EquivalentSourcesSph.jacobian"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the Jacobian matrix for the equivalent sources.</span>
 
@@ -692,7 +711,7 @@
         <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
@@ -740,9 +759,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># We override the grid method from BaseGridder so it takes the upward</span>
-        <span class="c1"># coordinate as a positional argument. We disable pylint</span>
-        <span class="c1"># arguments-differ error because we intend to make this method</span>
-        <span class="c1"># different from the inherited one.</span>
+        <span class="c1"># coordinate as a positional argument.</span>
 
         <span class="c1"># Ignore extra_coords if passed</span>
         <span class="n">pop_extra_coords</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -763,13 +780,13 @@
 
 <div class="viewcode-block" id="EquivalentSourcesSph.scatter"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.scatter">[docs]</a>    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. warning ::</span>
@@ -782,13 +799,13 @@
 
 <div class="viewcode-block" id="EquivalentSourcesSph.profile"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.profile">[docs]</a>    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">point1</span><span class="p">,</span>
-        <span class="n">point2</span><span class="p">,</span>
-        <span class="n">size</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="n">point1</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">point2</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">size</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. warning ::</span>
@@ -857,8 +874,8 @@
     <div class="container">
       <p>
         
-            &copy; Copyright 2018-2021, The Harmonica Developers.<br/>
-          Last updated on Oct 22, 2021.<br/>
+            &copy; Copyright .<br/>
+          Last updated on Dec 02, 2021.<br/>
       </p>
     </div>
   </footer>
