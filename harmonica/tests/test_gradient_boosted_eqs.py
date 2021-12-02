@@ -12,7 +12,7 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from .. import EquivalentSourcesGB, point_mass_gravity
+from .. import EquivalentSourcesGB, point_gravity
 from ..equivalent_sources.gradient_boosted import _get_region_data_sources
 from .utils import run_only_with_numba
 
@@ -56,7 +56,7 @@ def fixture_data(coordinates, points, masses):
     """
     Return some sample data
     """
-    return point_mass_gravity(coordinates, points, masses, field="g_z")
+    return point_gravity(coordinates, points, masses, field="g_z")
 
 
 @pytest.fixture(name="weights")
@@ -81,7 +81,7 @@ def fixture_data_small(points, masses, coordinates_small):
     """
     Return some sample data for the small set of coordinates
     """
-    return point_mass_gravity(coordinates_small, points, masses, field="g_z")
+    return point_gravity(coordinates_small, points, masses, field="g_z")
 
 
 @pytest.mark.parametrize(
@@ -177,7 +177,7 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
 
@@ -197,7 +197,7 @@ def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, d
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     # Error tolerance is 2% of the maximum data.
     npt.assert_allclose(true, eqs.predict(grid), rtol=0, atol=0.02 * vd.maxabs(true))
 
