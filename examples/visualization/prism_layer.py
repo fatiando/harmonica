@@ -63,11 +63,11 @@ pv_grid = prisms.prism_layer.to_pyvista()
 print(pv_grid)
 
 # Plot with pyvista
-plotter = pv.Plotter(lighting="three_lights")
+plotter = pv.Plotter(lighting="three_lights", window_size=(1000, 800))
 plotter.add_mesh(pv_grid, scalars="density")
 plotter.set_scale(zscale=75)  # exaggerate the vertical coordinate
 plotter.camera_position = "xz"
-plotter.camera.elevation = 15
+plotter.camera.elevation = 20
 plotter.camera.azimuth = 35
 plotter.camera.zoom(1.2)
 
