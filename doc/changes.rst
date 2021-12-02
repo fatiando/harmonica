@@ -6,7 +6,7 @@ Changelog
 Version 0.4.0
 -------------
 
-*Released on: 2021/12/01*
+*Released on: 2021/12/02*
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5745400.svg
    :alt: Digital Object Identifier for the Zenodo archive
