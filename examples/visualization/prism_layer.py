@@ -60,7 +60,9 @@ prisms = hm.prism_layer(
 
 # Create a pyvista UnstructuredGrid from the prism layer
 pv_grid = prisms.prism_layer.to_pyvista()
-print(pv_grid)
+pv_grid
+
+###############################################################################
 
 # Plot with pyvista
 plotter = pv.Plotter(lighting="three_lights", window_size=(1000, 800))
