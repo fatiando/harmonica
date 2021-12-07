@@ -26,7 +26,7 @@ def test_prisms_to_pyvista_missing_pyvista():
     Check error raise after calling prisms_to_pyvista when pyvista is missing
     """
     prism = [0, 1, 0, 1, 0, 1]
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ImportError) as exception:
         prisms_to_pyvista(prism)
     assert "'pyvista'" in str(exception.value)
 
