@@ -42,7 +42,7 @@ def prisms_to_pyvista(prisms, properties=None):
     """
     # Check if pyvista are installed
     if pyvista is None:
-        raise ValueError(
+        raise ImportError(
             "Missing optional dependency 'pyvista' required for building pyvista grids."
         )
     # Get prisms and number of prisms
