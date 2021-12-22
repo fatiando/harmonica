@@ -108,7 +108,7 @@ jobs:
           ls -lh dist/
 
       - name: Install the package
-        run: pip install --no-deps dist/*.whl
+        run: python -m pip install --no-deps dist/*.whl
 
       - name: Copy test data to cache
         run: |
