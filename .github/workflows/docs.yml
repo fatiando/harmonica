@@ -115,6 +115,8 @@ jobs:
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
+        # Only if not a pull request
+        if: success() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v2
         with:
           name: docs-${{ github.sha }}
