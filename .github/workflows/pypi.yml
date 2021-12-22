@@ -90,7 +90,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     # Only publish from the origin repository, not forks
-    if: github.repository_owner == 'fatiando'
+    if: github.repository_owner == 'fatiando' && github.event_name != 'pull_request'
 
     steps:
       - name: Checkout
