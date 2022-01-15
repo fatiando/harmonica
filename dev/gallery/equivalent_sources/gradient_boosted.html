@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Gridding and upward continuation" href="cartesian.html" />
     <link rel="prev" title="Topography-free (Bouguer) Gravity Disturbances" href="../gravity_disturbance_topofree.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -510,7 +500,7 @@ to use them on a small example.</p>
 <img alt="Observed gravity disturbance data, Gridded with gradient-boosted equivalent sources" class="sphx-glr-single-img" src="../../_images/sphx_glr_gradient_boosted_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of data points: 6418
-Mean height of observations: 857.2227843564974
+Mean height of observations: 857.2227843564943
 /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/boule/ellipsoid.py:458: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
   warn(
 Required memory for storing the largest Jacobian: 672792 bytes
@@ -1027,7 +1017,7 @@ Required memory for storing the largest Jacobian: 672792 bytes
 /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: &#39;normalize&#39; was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
   warnings.warn(
 Number of sources: 6308
-R² score: 0.9810295096257681
+R² score: 0.9810295096257682
 &lt;xarray.Dataset&gt;
 Dimensions:              (northing: 416, easting: 431)
 Coordinates:
@@ -1106,12 +1096,12 @@ Attributes:
 <span class="c1"># Interpolate data on a regular grid with 2 km spacing. The interpolation</span>
 <span class="c1"># requires the height of the grid points (upward coordinate). By passing in</span>
 <span class="c1"># 1000 m, we&#39;re effectively upward-continuing the data.</span>
-<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.grid" title="harmonica.EquivalentSourcesGB.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs_gb</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.grid" title="harmonica.EquivalentSourcesGB.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs_gb</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
     <span class="n">upward</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="mf">2e3</span><span class="p">,</span>
     <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;gravity_disturbance&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 
 <span class="c1"># Plot the original gravity disturbance and the gridded and upward-continued</span>
 <span class="c1"># version</span>
@@ -1120,7 +1110,7 @@ Attributes:
 <span class="c1"># Get the maximum absolute value between the original and gridded data so we</span>
 <span class="c1"># can use the same color scale for both plots and have 0 centered at the white</span>
 <span class="c1"># color.</span>
-<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="p">,</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Observed gravity disturbance data&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.scatter.html#matplotlib.axes.Axes.scatter" title="matplotlib.axes.Axes.scatter" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span>
@@ -1135,7 +1125,7 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Gridded with gradient-boosted equivalent sources&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
     <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
     <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">add_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1148,7 +1138,7 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.193 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.755 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-equivalent-sources-gradient-boosted-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/7924cd7a6a8bf797c3ed251d538b6136/gradient_boosted.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">gradient_boosted.py</span></code></a></p>
@@ -1178,7 +1168,7 @@ Attributes:
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>

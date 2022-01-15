@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.synthetic.airborne_survey" href="harmonica.synthetic.airborne_survey.html" />
     <link rel="prev" title="harmonica.isostasy_airy" href="harmonica.isostasy_airy.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -493,20 +483,20 @@
 <a class="reference internal" href="../../references.html#barthelmeskohler2016" id="id1"><span>[BarthelmesKohler2016]</span></a> generates gravity field grids from spherical
 harmonic models. They use a custom ASCII grid format with information in
 the header. This function can read the format and parse information from
-the header. It returns the data in a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> for
+the header. It returns the data in a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> for
 convenience and reduced storage requirements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fname</strong> (<em>string</em><em> or </em><em>file-like object</em>) – Name of the ICGEM <code class="docutils literal notranslate"><span class="pre">.gdf</span></code> file or an open file object to read from.</p></li>
 <li><p><strong>kwargs</strong> – Extra keyword arguments to this function will be passed to
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.21)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a>.</p></li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – An <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the data from the file.
+<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – An <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the data from the file.
 The header of the gdf file is available through the <code class="docutils literal notranslate"><span class="pre">attr</span></code> attribute
-of the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+of the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -531,7 +521,7 @@ of the <a class="reference external" href="http://xarray.pydata.org/en/stable/ge
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>

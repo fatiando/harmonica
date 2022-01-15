@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Point Masses in Cartesian Coordinates" href="point_gravity.html" />
     <link rel="prev" title="Gravitational effect of topography" href="prisms_topo_gravity.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -495,7 +485,7 @@ approximates their geometry and its physical properties (density,
 susceptibility, etc.). The <a class="reference internal" href="../../api/generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.prism_layer</span></code></a> offers a simple way
 to create a layer of prisms: a regular grid of prisms of equal size on the
 horizontal directions with variable top and bottom boundaries. It returns
-a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the coordinates of the centers of the prisms and
+a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the coordinates of the centers of the prisms and
 their corresponding physical properties.
 The <code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorPrismsLayer</span></code> Dataset accessor can be used
 to obtain some properties of the layer like its shape and size or the
@@ -515,7 +505,7 @@ gravitational effect of the layer.</p>
 <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="p">)</span> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">surface</span></a> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a> <span class="o">-</span> <span class="mf">50e3</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">density</span></a> <span class="o">=</span> <span class="mf">2670.0</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html#numpy.ones_like" title="numpy.ones_like" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">surface</span></a><span class="p">)</span>
-<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prisms</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-function"><span class="n">hm</span><span class="o">.</span><span class="n">prism_layer</span></a><span class="p">(</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prisms</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-function"><span class="n">hm</span><span class="o">.</span><span class="n">prism_layer</span></a><span class="p">(</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="o">=</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span>
     <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">surface</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">surface</span></a><span class="p">,</span>
     <span class="n">reference</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -538,7 +528,7 @@ gravitational effect of the layer.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.925 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.232 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-forward-prism-layer-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/95bb2de76ec0cf4f811c8a182cc2d596/prism_layer.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">prism_layer.py</span></code></a></p>
@@ -568,7 +558,7 @@ gravitational effect of the layer.</p>
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>

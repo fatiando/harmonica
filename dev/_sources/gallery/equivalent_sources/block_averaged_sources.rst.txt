@@ -72,7 +72,7 @@ The depth of the sources and which strategy to use can be set up through the
     Mean height of observations: 541.8293166997448
     /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
       warnings.warn(
-    R² score: 0.9955764795499585
+    R² score: 0.9955764795499512
 
     Generated grid:
      <xarray.Dataset>
@@ -182,7 +182,7 @@ The depth of the sources and which strategy to use can be set up through the
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.368 seconds)
+   **Total running time of the script:** ( 0 minutes  3.946 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_block_averaged_sources.py:

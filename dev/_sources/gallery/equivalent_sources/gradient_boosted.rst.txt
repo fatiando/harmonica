@@ -56,7 +56,7 @@ to use them on a small example.
  .. code-block:: none
 
     Number of data points: 6418
-    Mean height of observations: 857.2227843564974
+    Mean height of observations: 857.2227843564943
     /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/boule/ellipsoid.py:458: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
       warn(
     Required memory for storing the largest Jacobian: 672792 bytes
@@ -573,7 +573,7 @@ to use them on a small example.
     /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
       warnings.warn(
     Number of sources: 6308
-    R² score: 0.9810295096257681
+    R² score: 0.9810295096257682
     <xarray.Dataset>
     Dimensions:              (northing: 416, easting: 431)
     Coordinates:
@@ -701,7 +701,7 @@ to use them on a small example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.193 seconds)
+   **Total running time of the script:** ( 0 minutes  8.755 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_gradient_boosted.py:

@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Gravitational effect of topography" href="../forward/prisms_topo_gravity.html" />
     <link rel="prev" title="Gridding in spherical coordinates" href="spherical.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -524,7 +514,7 @@ The depth of the sources and which strategy to use can be set up through the
 Mean height of observations: 541.8293166997448
 /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: &#39;normalize&#39; was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
   warnings.warn(
-R² score: 0.9955764795499585
+R² score: 0.9955764795499512
 
 Generated grid:
  &lt;xarray.Dataset&gt;
@@ -584,10 +574,10 @@ Attributes:
 <span class="c1"># requires the height of the grid points (upward coordinate). By passing in</span>
 <span class="c1"># 1500 m, we&#39;re effectively upward-continuing the data (mean flight height is</span>
 <span class="c1"># 500 m).</span>
-<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">upward</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetic_anomaly&quot;</span><span class="p">])</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">upward</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetic_anomaly&quot;</span><span class="p">])</span>
 
 <span class="c1"># The grid is a xarray.Dataset with values, coordinates, and metadata</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 
 <span class="c1"># Plot original magnetic anomaly and the gridded and upward-continued version</span>
 <a href="https://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -595,7 +585,7 @@ Attributes:
 <span class="c1"># Get the maximum absolute value between the original and gridded data so we</span>
 <span class="c1"># can use the same color scale for both plots and have 0 centered at the white</span>
 <span class="c1"># color.</span>
-<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">,</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">values</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">values</span></a><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Observed magnetic anomaly data&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.scatter.html#matplotlib.axes.Axes.scatter" title="matplotlib.axes.Axes.scatter" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span>
@@ -612,7 +602,7 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_ylim.html#matplotlib.axes.Axes.set_ylim" title="matplotlib.axes.Axes.set_ylim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">max</span><span class="p">())</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Gridded and upward-continued&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
     <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
     <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">add_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -627,7 +617,7 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.368 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.946 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-equivalent-sources-block-averaged-sources-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/05e572b5a9a849d0cb7aada5e9a0d498/block_averaged_sources.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">block_averaged_sources.py</span></code></a></p>
@@ -657,7 +647,7 @@ Attributes:
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>

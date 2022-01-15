@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.EquivalentSourcesSph" href="harmonica.EquivalentSourcesSph.html" />
     <link rel="prev" title="harmonica.EquivalentSources" href="harmonica.EquivalentSources.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -738,7 +728,7 @@ located at the same <cite>upward</cite> coordinate. Other arguments for
 <p>If the interpolator collected the input data region, then it will be
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.
 Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+dimensions and the data field(s) in the output <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default names will be provided if none are given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -827,7 +817,7 @@ arguments for this function can be passed as extra keyword arguments
 (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <p>Includes the calculated Cartesian distance from <em>point1</em> for each data
 point in the profile.</p>
 <p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
@@ -961,7 +951,7 @@ possible to update each component of a nested object.</p>
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>

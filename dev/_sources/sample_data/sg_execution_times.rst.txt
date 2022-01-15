@@ -5,18 +5,18 @@
 
 Computation times
 =================
-**00:07.809** total execution time for **sample_data** files:
+**00:09.931** total execution time for **sample_data** files:
 
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_britain_magnetic.py` (``britain_magnetic.py``)               | 00:05.350 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_britain_magnetic.py` (``britain_magnetic.py``)               | 00:06.719 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_south_africa_gravity.py` (``south_africa_gravity.py``)       | 00:00.708 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_south_africa_gravity.py` (``south_africa_gravity.py``)       | 00:00.849 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_earth_gravity.py` (``earth_gravity.py``)                     | 00:00.530 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_earth_geoid.py` (``earth_geoid.py``)                         | 00:00.727 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_earth_geoid.py` (``earth_geoid.py``)                         | 00:00.527 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_earth_topography.py` (``earth_topography.py``)               | 00:00.714 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_earth_topography.py` (``earth_topography.py``)               | 00:00.511 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_earth_gravity.py` (``earth_gravity.py``)                     | 00:00.705 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_sample_data_south_africa_topography.py` (``south_africa_topography.py``) | 00:00.184 | 0.0 MB |
+| :ref:`sphx_glr_sample_data_south_africa_topography.py` (``south_africa_topography.py``) | 00:00.218 | 0.0 MB |
 +-----------------------------------------------------------------------------------------+-----------+--------+

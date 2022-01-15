@@ -50,18 +50,8 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="harmonica.DatasetAccessorPrismLayer" href="harmonica.DatasetAccessorPrismLayer.html" />
     <link rel="prev" title="harmonica.tesseroid_gravity" href="harmonica.tesseroid_gravity.html" />
-    <!-- Google Analytics tracking code -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
-            Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -511,7 +501,7 @@
 <dd><p>Create a layer of prisms of equal size</p>
 <p>Build a regular grid of prisms of equal size on the horizontal directions
 with variable top and bottom boundaries and properties like density,
-magnetization, etc. The function returns a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
+magnetization, etc. The function returns a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
 containing <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code> coordinates,
 and all physical properties as <code class="docutils literal notranslate"><span class="pre">data_var</span></code> s. The <code class="docutils literal notranslate"><span class="pre">easting</span></code> and
 <code class="docutils literal notranslate"><span class="pre">northing</span></code> coordinates correspond to the location of the center of each
@@ -527,7 +517,7 @@ and attributes.</p>
 <li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – List containing the coordinates of the centers of the prisms in the
 following order: <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>. The arrays must be 1d
 arrays containing the coordiantes of the centers per axis, or could be
-2d arrays as the ones returned by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.21)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>. All
+2d arrays as the ones returned by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>. All
 coordinates should be in meters and should define a regular grid.</p></li>
 <li><p><strong>surface</strong> (<em>2d-array</em>) – Array used to create the uppermost boundary of the prisms layer. All
 heights should be in meters. On every point where <code class="docutils literal notranslate"><span class="pre">surface</span></code> is below
@@ -539,14 +529,14 @@ layer. It can be either a plane or an irregular surface passed as 2d
 array. Height(s) must be in meters.</p></li>
 <li><p><strong>properties</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – Dictionary containing the physical properties of the prisms. The keys
 must be strings that will be used to name the corresponding <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
-inside the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must be 2d-arrays.
+inside the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must be 2d-arrays.
 All physical properties must be passed in SI units. If None, no
-<code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default is
+<code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default is
 None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dataset</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Dataset containing the coordinates of the center of each prism, the
+<dd class="field-even"><p><strong>dataset</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Dataset containing the coordinates of the center of each prism, the
 height of its top and bottom boundaries and its corresponding physical
 properties.</p>
 </dd>
@@ -624,7 +614,7 @@ properties.</p>
       <p>
         
             &copy; Copyright .<br/>
-          Last updated on Dec 02, 2021.<br/>
+          Last updated on Jan 15, 2022.<br/>
       </p>
     </div>
   </footer>
