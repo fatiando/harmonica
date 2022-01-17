@@ -13,7 +13,7 @@ import numpy as np
 class FFT_Filter:
     
     """
-    Transform 2D potential field data use FFT based filter
+    Transform 2D potential field data using a FFT based filter
     
     Workflow: Pad Data --> FFT --> Define and Apply Filter --> Inverse FFT --> Unpad Data
     
@@ -21,12 +21,12 @@ class FFT_Filter:
     Parameters
     ----------
     da: 2d-xarray
-        This is the input 2D grid. Note, the input grid should be cartesian grid (northing, easting). 
-        Geography grid (latitude,longitude) is invalid in here. 
+        This is the input 2D grid. Note, the input grid should be a cartesian grid (northing, easting). 
+        Geography grid (latitude,longitude) will not work here. 
         
     pad_width: None or list of arrays
         List containing the pad width [northing_pad_width, easting_pad_width] called by xrft.padding.pad. Default value is None,
-        no padding apply to data.
+        no padding applied to data.
         
     mode: str, default: "constant"
         str for control xrft.padding.pad function, One of the following string values (taken from numpy docs).
@@ -142,12 +142,12 @@ class FFT_Filter:
     def derivative_e(self,order,savefilter=False,**kwargs):
         
         """
-        Calculate n order horizental derivative along easting
+        Calculate n order horizontal derivative along easting
         
         Parameters
         -------
         order : int
-            The order of horizental derivative.
+            The order of the horizontal derivative.
             
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
@@ -173,12 +173,12 @@ class FFT_Filter:
 
     def derivative_n(self,order,savefilter=False,**kwargs):
         """
-        Calculate n order horizental derivative along northing
+        Calculate n order horizontal derivative along northing
         
         Parameters
         -------
         order : int
-            The order of horizental derivative.
+            The order of horizontal derivative.
             
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
@@ -217,7 +217,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in space domain after appling filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -232,15 +232,15 @@ class FFT_Filter:
         else:
             return filter
 
-    def guassian_lp(self,wavelength,savefilter=False,**kwargs):
+    def gaussian_lp(self,wavelength,savefilter=False,**kwargs):
         
         """
-        Filter data by Guassian Low-pass filter 
+        Filter data by Gaussian Low-pass filter 
         
         Parameters
         -------
         wavelength : float
-            The cut off wavelength for low-pass filter. It has same unit with input xarray data.
+            The cut off wavelength for low-pass filter. It has the same units as input xarray data.
             
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
@@ -249,7 +249,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in space domain after appling filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -264,15 +264,15 @@ class FFT_Filter:
         else:
             return filter    
 
-    def guassian_hp(self,wavelength,savefilter=False,**kwargs):
+    def gaussian_hp(self,wavelength,savefilter=False,**kwargs):
 
         """
-        Filter data by Guassian High-pass filter 
+        Filter data by Gaussian High-pass filter 
         
         Parameters
         -------
         wavelength : float
-            The cut off wavelength for high-pass filter. It has same unit with input xarray data.
+            The cut off wavelength for high-pass filter. It has the same units as the input xarray data.
             
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
@@ -281,7 +281,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in space domain after appling filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -304,7 +304,7 @@ class FFT_Filter:
         Parameters
         -------
         height : float
-            Heigh for upward continuation. The value should be negtive. It has same unit with input xarray data.
+            Height for upward continuation. The value should be negative. It has the same units as the input xarray data.
             
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
@@ -329,10 +329,10 @@ class FFT_Filter:
             return filter
         
         
-    def vertical_intergral(self,order=-1,savefilter=False,**kwargs):
+    def vertical_integral(self,order=-1,savefilter=False,**kwargs):
 
         """
-        Vertical intergral of potential field data 
+        Vertical integral of potential field data 
         
         Parameters
         -------
@@ -340,13 +340,13 @@ class FFT_Filter:
             Vertical intergral. eg: transform gravity to gravity potential.
             
         savefilter : False or True
-            If savefilter is False, direct apply filter to data, output in space domain.
+            If savefilter is False, directly apply filter to data, output is in the space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
             
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in space domain after applying filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -367,22 +367,22 @@ class FFT_Filter:
         
         """
         Reduce total field magnetic anomaly data to the pole. For low inclination
-        area, RTP is not stable. Recommod reduce total field magnetic anomaly data
+        area, RTP is not stable. Recommebd reduce total field magnetic anomaly data
         to the equator (rte).
         
         Parameters
         -------
-        I : float in degree
+        I : float in degrees
             The inclination inducing Geomagnetic field.
             
-        D : float in degree
+        D : float in degrees
             The declination inducing Geomagnetic field. 
             
-        Im : float in degree
+        Im : float in degrees
             The inclination of the total magnetization of the anomaly source. Default is I,
             neglecting remanent magnetization and self demagnetization.
             
-        Dm : float in degree
+        Dm : float in degrees
             The declination of the total magnetization of the anomaly source. Default is D,
             neglecting remanent magnetization and self demagnetization.
             
@@ -402,7 +402,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in the space domain after applying filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -451,7 +451,7 @@ class FFT_Filter:
             neglecting remanent magnetization and self demagnetization.
             
         savefilter : False or True
-            If savefilter is False, direct apply filter to data, output in space domain.
+            If savefilter is False, directly apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
 
         North
@@ -466,7 +466,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in the space domain after applying filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
@@ -517,7 +517,7 @@ class FFT_Filter:
             neglecting remanent magnetization and self demagnetization.
             
         F : float or 2d-array
-            Ambient field in the study area. It can use the mean ambinent field value in the study
+            Ambient field in the study area. It can use the mean ambient field value in the study
             area or the real ambient field value in all locations. Default is 50,000 nT.
             
         savefilter : False or True
@@ -536,7 +536,7 @@ class FFT_Filter:
         Returns
         -------
         da_out : 2d-xarray
-            Xarray data in space domain after apply filter. Need savefilter = False.
+            Xarray data in space domain after applying filter. Need savefilter = False.
             
         filter : 2d-array
             filter itself. Need savefilter = True.
