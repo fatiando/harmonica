@@ -10,24 +10,25 @@ FFT Based 2D Filter to potential field data
 import xrft
 import numpy as np
 
+
 class FFT_Filter:
-    
+
     """
     Transform 2D potential field data using a FFT based filter
-    
+
     Workflow: Pad Data --> FFT --> Define and Apply Filter --> Inverse FFT --> Unpad Data
-    
+
 
     Parameters
     ----------
     da: 2d-xarray
-        This is the input 2D grid. Note, the input grid should be a cartesian grid (northing, easting). 
-        Geography grid (latitude,longitude) will not work here. 
-        
+        This is the input 2D grid. Note, the input grid should be a cartesian grid (northing, easting).
+        Geography grid (latitude,longitude) will not work here.
+
     pad_width: None or list of arrays
         List containing the pad width [northing_pad_width, easting_pad_width] called by xrft.padding.pad. Default value is None,
         no padding applied to data.
-        
+
     mode: str, default: "constant"
         str for control xrft.padding.pad function, One of the following string values (taken from numpy docs).
         - constant: Pads with a constant value.
@@ -48,45 +49,52 @@ class FFT_Filter:
           along the edge of the array.
         - wrap: Pads with the wrap of the vector along the axis.
           The first values are used to pad the end and the
-          end values are used to pad the beginning.             
-    
+          end values are used to pad the beginning.
+
     """
 
-    def __init__(self,da,pad_width=None,mode='constant',**kwargs):
-        
-        self.pad_width=pad_width
-        self.da=da
-        
+    def __init__(self, da, pad_width=None, mode="constant", **kwargs):
+
+        self.pad_width = pad_width
+        self.da = da
+
         # Drop bad_coords
         for d in self.da.dims:
             bad_coords = [
-                cname for cname in self.da.coords if cname != d and d in self.da[cname].dims
+                cname
+                for cname in self.da.coords
+                if cname != d and d in self.da[cname].dims
             ]
         for d in bad_coords:
-            da=self.da.drop(bad_coords)
+            da = self.da.drop(bad_coords)
 
         # Pad Data
-        if pad_width is None :
+        if pad_width is None:
             da_padded = da
-        else :
-            da_padded = xrft.pad(da,{da.dims[0]:self.pad_width[0],da.dims[1]:self.pad_width[1]},mode)        
-        
+        else:
+            da_padded = xrft.pad(
+                da, {da.dims[0]: self.pad_width[0], da.dims[1]: self.pad_width[1]}, mode
+            )
+
         # FFT
-        da_fft = xrft.fft(da_padded,true_phase=True, true_amplitude=True)
-        
-        self.da_fft=da_fft
+        da_fft = xrft.fft(da_padded, true_phase=True, true_amplitude=True)
+
+        self.da_fft = da_fft
 
         # Frequency grids
-        f_e, f_n = np.meshgrid(da_fft.coords[da_fft.dims[1]]*2*np.pi, da_fft.coords[da_fft.dims[0]]*2*np.pi)
-        
-        self.f_n=f_n
-        self.f_e=f_e
-    
+        f_e, f_n = np.meshgrid(
+            da_fft.coords[da_fft.dims[1]] * 2 * np.pi,
+            da_fft.coords[da_fft.dims[0]] * 2 * np.pi,
+        )
+
+        self.f_n = f_n
+        self.f_e = f_e
+
     def fft(self):
-        
+
         """
         Return forward fft result
-    
+
         Returns
         -------
         da_fft : 2d-xarray
@@ -94,7 +102,7 @@ class FFT_Filter:
         return self.da_fft
 
     def freq(self):
-        
+
         """
         Return frequency grid [f_n,f_e]
 
@@ -102,269 +110,279 @@ class FFT_Filter:
         -------
         f_n : 2d-array
         f_e : 2d-array
-    
+
         """
-        return self.f_n,self.f_e        
-        
-    def apply_filter(self,filter):
-        
+        return self.f_n, self.f_e
+
+    def apply_filter(self, filter):
+
         """
         Apply filter and calculate Inverse FFT. Un_pad data if
         pad_with is not None.
-        
+
         Parameters
         -------
         filter : 2d-array
-            Apply pre-defined or custom filter 
+            Apply pre-defined or custom filter
 
         Returns
         -------
         da_unpad : 2d-xarray
             Xarray data in space domain after filtering.
-        """       
-         # Apply Filter
-        da_filter = self.da_fft*filter
+        """
+        # Apply Filter
+        da_filter = self.da_fft * filter
         # Inverse FFT
-        da_ifft = xrft.ifft(da_filter,true_phase=True, true_amplitude=True)
+        da_ifft = xrft.ifft(da_filter, true_phase=True, true_amplitude=True)
         # Unpad Data
-        if self.pad_width is None :
+        if self.pad_width is None:
             da_unpad = da_ifft.real
-        else :
-            da_unpad=xrft.unpad(da_ifft.real,{da_ifft.dims[0]:self.pad_width[0],da_ifft.dims[1]:self.pad_width[1]}) 
-            
+        else:
+            da_unpad = xrft.unpad(
+                da_ifft.real,
+                {
+                    da_ifft.dims[0]: self.pad_width[0],
+                    da_ifft.dims[1]: self.pad_width[1],
+                },
+            )
+
         return da_unpad
-    
+
     """
     -------
     Pre-defined filter lists as follows
     
-    """        
-    def derivative_e(self,order,savefilter=False,**kwargs):
-        
+    """
+
+    def derivative_e(self, order, savefilter=False, **kwargs):
+
         """
         Calculate n order horizontal derivative along easting
-        
+
         Parameters
         -------
         order : int
             The order of the horizontal derivative.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after apply filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """     
-            
-        filter=np.power(self.f_e*1j,order)
-        
-        if savefilter is False :
+        """
+
+        filter = np.power(self.f_e * 1j, order)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
             return filter
 
-    def derivative_n(self,order,savefilter=False,**kwargs):
+    def derivative_n(self, order, savefilter=False, **kwargs):
         """
         Calculate n order horizontal derivative along northing
-        
+
         Parameters
         -------
         order : int
             The order of horizontal derivative.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after apply filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """             
-        filter=np.power(self.f_n*1j,order)
-        
-        if savefilter is False :
+        """
+        filter = np.power(self.f_n * 1j, order)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
             return filter
-        
-    def derivative_v(self,order,savefilter=False,**kwargs):
+
+    def derivative_v(self, order, savefilter=False, **kwargs):
         """
         Calculate n order vertical derivative
-        
+
         Parameters
         -------
         order : int
             The order of vertical derivative.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after appling filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
-        
-        filter=np.power(np.sqrt(self.f_e**2+self.f_n**2),order)
-        
-        if savefilter is False :
+        """
+
+        filter = np.power(np.sqrt(self.f_e ** 2 + self.f_n ** 2), order)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
             return filter
 
-    def gaussian_lp(self,wavelength,savefilter=False,**kwargs):
-        
+    def gaussian_lp(self, wavelength, savefilter=False, **kwargs):
+
         """
-        Filter data by Gaussian Low-pass filter 
-        
+        Filter data by Gaussian Low-pass filter
+
         Parameters
         -------
         wavelength : float
             The cut off wavelength for low-pass filter. It has the same units as input xarray data.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after appling filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
-        
-        filter=np.exp(-(self.f_e**2+self.f_n**2)/(2*(2*np.pi/wavelength)**2))
-        
-        if savefilter is False :
+        """
+
+        filter = np.exp(
+            -(self.f_e ** 2 + self.f_n ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        )
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
-            return filter    
+            return filter
 
-    def gaussian_hp(self,wavelength,savefilter=False,**kwargs):
+    def gaussian_hp(self, wavelength, savefilter=False, **kwargs):
 
         """
-        Filter data by Gaussian High-pass filter 
-        
+        Filter data by Gaussian High-pass filter
+
         Parameters
         -------
         wavelength : float
             The cut off wavelength for high-pass filter. It has the same units as the input xarray data.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after appling filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
-        
-        filter=1-np.exp(-(self.f_e**2+self.f_n**2)/(2*(2*np.pi/wavelength)**2))
-        
-        if savefilter is False :
+        """
+
+        filter = 1 - np.exp(
+            -(self.f_e ** 2 + self.f_n ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        )
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
-            return filter 
-        
-    def upward_continuation(self,height,savefilter=False,**kwargs):
+            return filter
+
+    def upward_continuation(self, height, savefilter=False, **kwargs):
 
         """
-        Upward continuation data by height 
-        
+        Upward continuation data by height
+
         Parameters
         -------
         height : float
             Height for upward continuation. The value should be negative. It has the same units as the input xarray data.
-            
+
         savefilter : False or True
             If savefilter is False, direct apply filter to data, output in space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after apply filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
-        
-        filter=np.exp(np.sqrt(self.f_e**2+self.f_n**2)*height)
-        
-        if savefilter is False :
+        """
+
+        filter = np.exp(np.sqrt(self.f_e ** 2 + self.f_n ** 2) * height)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
             return filter
-        
-        
-    def vertical_integral(self,order=-1,savefilter=False,**kwargs):
+
+    def vertical_integral(self, order=-1, savefilter=False, **kwargs):
 
         """
-        Vertical integral of potential field data 
-        
+        Vertical integral of potential field data
+
         Parameters
         -------
         order : -1
             Vertical intergral. eg: transform gravity to gravity potential.
-            
+
         savefilter : False or True
             If savefilter is False, directly apply filter to data, output is in the space domain.
             If savefilter is True, don't apply filter to data, output is the filter itself.
-            
+
         Returns
         -------
         da_out : 2d-xarray
             Xarray data in space domain after applying filter. Need savefilter = False.
-            
+
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
-        
-        filter=np.power(np.sqrt(self.f_e**2+self.f_n**2),order)
+        """
 
-        filter=np.nan_to_num(filter,posinf=1,nan=1)
+        filter = np.power(np.sqrt(self.f_e ** 2 + self.f_n ** 2), order)
 
-        if savefilter is False :
+        filter = np.nan_to_num(filter, posinf=1, nan=1)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
             return filter
-        
-    def rtp(self,I,D,Im=None,Dm=None,savefilter=False,**kwargs):
-        
+
+    def rtp(self, I, D, Im=None, Dm=None, savefilter=False, **kwargs):
+
         """
         Reduce total field magnetic anomaly data to the pole. For low inclination
         area, RTP is not stable. Recommebd reduce total field magnetic anomaly data
@@ -406,31 +424,42 @@ class FFT_Filter:
             
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """  
+        """
         # Transform degree to rad
-        [I,D]=np.deg2rad([I,D])
-        
-        if Dm is None or Im is None:
-            [Im,Dm]=[I,D]
-        else:
-            [Im,Dm]=np.deg2rad([Im,Dm])
-        
-        filter=(self.f_n**2+self.f_e**2)/((1j*(np.cos(I)*np.sin(D)*self.f_e+np.cos(I)*np.cos(D)*self.f_n)+
-                                           np.sin(I)*np.sqrt(self.f_n**2+self.f_e**2))*
-                                          (1j*(np.cos(Im)*np.sin(Dm)*self.f_e+np.cos(Im)*np.cos(Dm)*self.f_n)+
-                                           np.sin(Im)*np.sqrt(self.f_n**2+self.f_e**2)))
-        # Deal with inf and nan value
-        filter=np.nan_to_num(filter,posinf=0,nan=0)
+        [I, D] = np.deg2rad([I, D])
 
-        if savefilter is False :
+        if Dm is None or Im is None:
+            [Im, Dm] = [I, D]
+        else:
+            [Im, Dm] = np.deg2rad([Im, Dm])
+
+        filter = (self.f_n ** 2 + self.f_e ** 2) / (
+            (
+                1j
+                * (np.cos(I) * np.sin(D) * self.f_e + np.cos(I) * np.cos(D) * self.f_n)
+                + np.sin(I) * np.sqrt(self.f_n ** 2 + self.f_e ** 2)
+            )
+            * (
+                1j
+                * (
+                    np.cos(Im) * np.sin(Dm) * self.f_e
+                    + np.cos(Im) * np.cos(Dm) * self.f_n
+                )
+                + np.sin(Im) * np.sqrt(self.f_n ** 2 + self.f_e ** 2)
+            )
+        )
+        # Deal with inf and nan value
+        filter = np.nan_to_num(filter, posinf=0, nan=0)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
-            return filter     
+            return filter
 
-    def rte(self,I,D,Im=None,Dm=None,savefilter=False,**kwargs):
-        
+    def rte(self, I, D, Im=None, Dm=None, savefilter=False, **kwargs):
+
         """
         Reduce total field magnetic anomaly data to the equator
         
@@ -470,32 +499,44 @@ class FFT_Filter:
             
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """   
-        
-        # Transform degree to rad   
-        [I,D]=np.deg2rad([I,D])
-        
+        """
+
+        # Transform degree to rad
+        [I, D] = np.deg2rad([I, D])
+
         if Dm is None or Im is None:
-            [Im,Dm]=[I,D]
+            [Im, Dm] = [I, D]
         else:
-            [Im,Dm]=np.deg2rad([Im,Dm])
-            
+            [Im, Dm] = np.deg2rad([Im, Dm])
 
-        filter=((1j*np.sin(D)*self.f_e+1j*np.cos(D)*self.f_n)**2)/((1j*(np.cos(I)*np.sin(D)*self.f_e+np.cos(I)*np.cos(D)*self.f_n)+
-                                    np.sin(I)*np.sqrt(self.f_n**2+self.f_e**2))*
-                                   (1j*(np.cos(Im)*np.sin(Dm)*self.f_e+np.cos(Im)*np.cos(Dm)*self.f_n)+
-                                    np.sin(Im)*np.sqrt(self.f_n**2+self.f_e**2)))
-        
-        filter=np.nan_to_num(filter,posinf=0,nan=0)
+        filter = ((1j * np.sin(D) * self.f_e + 1j * np.cos(D) * self.f_n) ** 2) / (
+            (
+                1j
+                * (np.cos(I) * np.sin(D) * self.f_e + np.cos(I) * np.cos(D) * self.f_n)
+                + np.sin(I) * np.sqrt(self.f_n ** 2 + self.f_e ** 2)
+            )
+            * (
+                1j
+                * (
+                    np.cos(Im) * np.sin(Dm) * self.f_e
+                    + np.cos(Im) * np.cos(Dm) * self.f_n
+                )
+                + np.sin(Im) * np.sqrt(self.f_n ** 2 + self.f_e ** 2)
+            )
+        )
 
-        if savefilter is False :
+        filter = np.nan_to_num(filter, posinf=0, nan=0)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             return da_out
         else:
-            return filter     
-        
-    def pseudo_gravity(self,I,D,Im=None,Dm=None,F=50000,savefilter=False,**kwargs):
+            return filter
+
+    def pseudo_gravity(
+        self, I, D, Im=None, Dm=None, F=50000, savefilter=False, **kwargs
+    ):
 
         """
         Pseudo gravity of total field magnetic anomaly data
@@ -540,18 +581,19 @@ class FFT_Filter:
             
         filter : 2d-array
             filter itself. Need savefilter = True.
-        """   
+        """
         # Call rtp and vertical_intergral filter
-        filter=self.rtp(I,D,Im,Dm,savefilter=True)*self.vertical_intergral(order=-1,savefilter=True)
+        filter = self.rtp(I, D, Im, Dm, savefilter=True) * self.vertical_intergral(
+            order=-1, savefilter=True
+        )
 
-        filter=np.nan_to_num(filter,posinf=0,nan=0)
-        
-        if savefilter is False :
+        filter = np.nan_to_num(filter, posinf=0, nan=0)
+
+        if savefilter is False:
             # Apply Filter
             da_out = self.apply_filter(filter)
             # Scale data by Ambient Field
-            da_out = da_out/149.8/F
+            da_out = da_out / 149.8 / F
             return da_out
         else:
-            return filter/149.8/F
-        
+            return filter / 149.8 / F
