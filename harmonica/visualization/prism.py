@@ -49,7 +49,7 @@ def prisms_to_pyvista(prisms, properties=None):
     prisms = np.atleast_2d(prisms)
     n_prisms = prisms.shape[0]
     # Get the vertices of the prisms
-    vertices = np.vstack([_get_prism_vertices(prism) for prism in prisms])
+    vertices = _prisms_boundaries_to_vertices(prisms)
     # Generate the cells for the hexahedrons
     cells = np.arange(n_prisms * 8).reshape([n_prisms, 8])
     # Build the UnstructuredGrid
@@ -69,14 +69,42 @@ def prisms_to_pyvista(prisms, properties=None):
     return pv_grid
 
 
-def _get_prism_vertices(prism):
+def _prisms_boundaries_to_vertices(prisms):
     """
-    Return the vertices of the given prism
+    Converts prisms boundaries to set of vertices for each prism
+
+    The vertices for each prism will be in the following order
+
+    .. code-block::
+
+                                7-------6
+                               /|      /|
+                              / |     / |
+                             4-------5  |
+        up   northing        |  |    |  |
+        ^   ~                |  3----|--2
+        |  /                 | /     | /
+        | /                  |/      |/
+         ------> easting     0-------1
+
+    So the vertices of a single prism should be like:
+
+    .. code-block:: python
+
+        [w, s, bottom],
+        [e, s, bottom],
+        [e, n, bottom],
+        [w, n, bottom],
+        [w, s, top],
+        [e, s, top],
+        [e, n, top],
+        [w, n, top],
+
 
     Parameters
     ----------
-    prism : list or 1d-array
-        List or 1d-array with the boundaries of a single prism in the following
+    prism : 2d-array
+        2d-array with the boundaries of a set of prisms in the following
         order: ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``.
 
     Returns
@@ -89,29 +117,66 @@ def _get_prism_vertices(prism):
 
     Examples
     --------
-
-    >>> _get_prism_vertices([-1, 1, -2, 2, -3, 3])
-    array([[-1, -2, -3],
-           [ 1, -2, -3],
-           [ 1,  2, -3],
-           [-1,  2, -3],
-           [-1, -2,  3],
-           [ 1, -2,  3],
-           [ 1,  2,  3],
-           [-1,  2,  3]])
-
+    >>> _prisms_boundaries_to_vertices(np.array([[-1, 1, -2, 2, -3, 3]]))
+    array([[-1., -2., -3.],
+           [ 1., -2., -3.],
+           [ 1.,  2., -3.],
+           [-1.,  2., -3.],
+           [-1., -2.,  3.],
+           [ 1., -2.,  3.],
+           [ 1.,  2.,  3.],
+           [-1.,  2.,  3.]])
+    >>> _prisms_boundaries_to_vertices(
+    ...     np.array([[-1, 1, -2, 2, -3, 3], [-4, 4, -5, 5, -6, 6]])
+    ... )
+    array([[-1., -2., -3.],
+           [ 1., -2., -3.],
+           [ 1.,  2., -3.],
+           [-1.,  2., -3.],
+           [-1., -2.,  3.],
+           [ 1., -2.,  3.],
+           [ 1.,  2.,  3.],
+           [-1.,  2.,  3.],
+           [-4., -5., -6.],
+           [ 4., -5., -6.],
+           [ 4.,  5., -6.],
+           [-4.,  5., -6.],
+           [-4., -5.,  6.],
+           [ 4., -5.,  6.],
+           [ 4.,  5.,  6.],
+           [-4.,  5.,  6.]])
     """
-    w, e, s, n, bottom, top = prism[:]
-    vertices = np.array(
-        [
-            [w, s, bottom],
-            [e, s, bottom],
-            [e, n, bottom],
-            [w, n, bottom],
-            [w, s, top],
-            [e, s, top],
-            [e, n, top],
-            [w, n, top],
-        ]
-    )
-    return vertices
+    # Get number of prisms
+    n_prisms = prisms.shape[0]
+
+    # Allocate vertices array
+    vertices = np.empty((n_prisms, 8, 3))
+
+    # Define a dictionary with the indices of the vertices that contain each
+    # boundary of the prism.
+    # For example, the west boundary is present only in the vertices
+    # number 0, 3, 4 and 7.
+    indices = {
+        "west": (0, 3, 4, 7),
+        "east": (1, 2, 5, 6),
+        "south": (0, 1, 4, 5),
+        "north": (2, 3, 6, 7),
+        "bottom": (0, 1, 2, 3),
+        "top": (4, 5, 6, 7),
+    }
+
+    # Assign the values to each vertex
+    for i, boundary in enumerate(indices):
+        # Determine at which component of the vertices should the current
+        # boundary be assigned to.
+        #   The west and east (i = 0 and i = 1) should go to the component 0.
+        #   The south and north (i = 2 and i = 3) should go to the component 1.
+        #   The bottom and top (i = 4 and i = 5) should go to the component 2.
+        component = i // 2
+        # Assign vertices components
+        for vertex in indices[boundary]:
+            vertices[:, vertex, component] = prisms[:, i]
+
+    # Reshape the vertices array so it has (M, 3) shape, where M is the total
+    # number of vertices.
+    return vertices.reshape((n_prisms * 8, 3))
