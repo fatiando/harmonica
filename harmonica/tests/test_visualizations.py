@@ -107,13 +107,10 @@ def test_prisms_to_pyvista_properties(n_props, prisms, density, susceptibility):
 
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
-def test_prisms_to_pyvista_2d_property(prisms, density):
+def test_prisms_to_pyvista_error_2d_property(prisms, density):
     """
-    Test if prisms_to_pyvista handles a 2d property array
+    Test if prisms_to_pyvista raises error on property as 2D array
     """
     density_2d = np.array(density).reshape((2, 2))
-    pv_grid = prisms_to_pyvista(prisms, properties={"density": density_2d})
-    assert pv_grid.n_arrays == 1
-    assert pv_grid.array_names == ["density"]
-    assert pv_grid.get_array("density").ndim == 1
-    npt.assert_allclose(pv_grid.get_array("density"), density)
+    with pytest.raises(ValueError):
+        prisms_to_pyvista(prisms, properties={"density": density_2d})

@@ -462,6 +462,7 @@ class DatasetAccessorPrismLayer:
         properties = None
         if self._obj.data_vars:
             properties = {
-                data_var: self._obj[data_var] for data_var in self._obj.data_vars
+                data_var: np.asarray(self._obj[data_var]).ravel()
+                for data_var in self._obj.data_vars
             }
         return prisms_to_pyvista(prisms, properties=properties)

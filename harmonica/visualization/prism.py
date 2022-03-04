@@ -29,7 +29,7 @@ def prisms_to_pyvista(prisms, properties=None):
         ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``.
     properties : dict or None (optional)
         Dictionary with the physical properties of the prisms.
-        Each key should be a string and their value an array.
+        Each key should be a string and their value as a 1D array.
         If None, no property will be added to the
         :class:`pyvista.UnstructuredGrid`.
         Default to None.
@@ -57,8 +57,15 @@ def prisms_to_pyvista(prisms, properties=None):
     # Add properties to the grid
     if properties is not None:
         for name, prop in properties.items():
+            # Check if the property is given as 1d array
+            prop = np.atleast_1d(prop)
+            if prop.ndim > 1:
+                raise ValueError(
+                    f"Multidimensional array found in '{name}' property. "
+                    + "Please, pass prism properties as 1d arrays."
+                )
             # Assign the property to the cell_data
-            pv_grid.cell_data[name] = np.atleast_1d(prop).ravel()
+            pv_grid.cell_data[name] = prop
     return pv_grid
 
 
