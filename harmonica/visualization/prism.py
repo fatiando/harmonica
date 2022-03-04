@@ -103,8 +103,9 @@ def _prisms_boundaries_to_vertices(prisms):
 
     Parameters
     ----------
-    prism : 2d-array
-        2d-array with the boundaries of a set of prisms in the following
+    prisms : 2d-array
+        2d-array with the boundaries of a set of prisms. Each row of the array
+        should contain the boundaries of a single prism in the following
         order: ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``.
 
     Returns
@@ -113,6 +114,8 @@ def _prisms_boundaries_to_vertices(prisms):
         2D array with the coordinates of the vertices of the prism. Each row of
         the array corresponds to the coordinate of a single vertex in the
         following order: ``easting``, ``northing``, ``upward``.
+        The shape of this array is ``(M, 3)``, where ``M`` is the total number
+        of vertices in the whole set of prisms (number of prisms times 8).
         The order of the vertices is fixed to be compatible with VTK.
 
     Examples
