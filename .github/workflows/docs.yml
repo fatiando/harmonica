@@ -67,7 +67,7 @@ jobs:
           python-version: ${{ env.PYTHON }}
           miniforge-variant: Mambaforge
           use-mamba: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           # Needed for caching
           use-only-tar-bz2: true
 
