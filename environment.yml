@@ -25,9 +25,9 @@ dependencies:
   - coverage
   - boule
   # Documentation requirements
-  - sphinx==3.5.*
-  - sphinx-book-theme==0.0.41
-  - sphinx-gallery==0.8.*
+  - sphinx==4.3.*
+  - sphinx-book-theme==0.1.*
+  - sphinx-gallery==0.10.*
   - pyproj
   - matplotlib
   - cartopy>=0.18
