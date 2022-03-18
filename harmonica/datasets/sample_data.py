@@ -12,7 +12,7 @@ import pkg_resources
 import pooch
 import xarray as xr
 
-from ..version import __version__ as version
+from .._version import __version__ as version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
