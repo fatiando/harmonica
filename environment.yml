@@ -5,7 +5,12 @@ channels:
 dependencies:
   - python==3.8
   - pip
-  - setuptools_scm
+  # Build
+  - setuptools>=45
+  - setuptools_scm>=6.2
+  - wheel
+  - twine
+  # Run-time
   - numpy
   - pandas
   - numba
@@ -17,17 +22,18 @@ dependencies:
   # Optional requirements
   - pyvista
   - vtk>=9
-  # Development requirements
-  - boule
-  - pyproj
-  - matplotlib
-  - cartopy>=0.18
+  # Testing requirements
   - pytest
   - pytest-cov
   - coverage
+  - boule
+  # Documentation requirements
   - sphinx==3.5.*
   - sphinx-book-theme==0.0.41
   - sphinx-gallery==0.8.*
+  - pyproj
+  - matplotlib
+  - cartopy>=0.18
   # Code style checks and autoformat
   - black==21.12b0
   - isort==5.10.*

@@ -4,7 +4,7 @@
 # token stolen if the Action is compromised. See the comments and links here:
 # https://github.com/pypa/gh-action-pypi-publish/issues/27
 #
-name: docs
+name: documentation
 
 # Only build PRs, the main branch, and releases. Pushes to branches will only
 # be built when a PR is opened. This avoids duplicated buids in PRs comming
@@ -32,7 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS: requirements.txt env/requirements-docs.txt
+      REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
       PYTHON: 3.9
 
     steps:
@@ -61,45 +61,44 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ env.PYTHON }}
+          miniforge-variant: Mambaforge
+          use-mamba: true
+          channels: conda-forge,defaults
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Collect requirements - run-time
+        run: python tools/export_requirements.py > requirements-full.txt
+
+      - name: Collect requirements - other
+        run: |
+          echo "Capturing dependencies from:"
+          for requirement in $REQUIREMENTS
+          do
+            echo "  $requirement"
+            cat $requirement >> requirements-full.txt
+          done
+
+      - name: List requirements
+        run: |
+          echo "Collected dependencies:"
+          cat requirements-full.txt
+
       - name: Setup caching for conda packages
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
-
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2.0.1
-        with:
-          python-version: ${{ env.PYTHON }}
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge
-          show-channel-urls: true
-          activate-environment: testing
-          # Needed for caching
-          use-only-tar-bz2: true
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: |
-          requirements_file=requirements-full.txt
-          if [ ! -z "$REQUIREMENTS" ]; then
-              echo "Capturing dependencies from $REQUIREMENTS"
-              for requirement in $REQUIREMENTS
-              do
-                cat $requirement >> $requirements_file
-              done
-          fi
-          if [ -f $requirements_file ]; then
-              echo "Collected dependencies:"
-              cat $requirements_file
-              echo ""
-              conda install --quiet --file $requirements_file python=$PYTHON
-          else
-              echo "No requirements defined."
-          fi
+        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
-        run: conda list
+        run: mamba list
 
       - name: Build source and wheel distributions
         run: |
@@ -109,17 +108,7 @@ jobs:
           ls -lh dist/
 
       - name: Install the package
-        run: pip install --no-deps dist/*.whl
-
-      - name: Copy test data to cache
-        run: |
-          echo "Copy data to " $HARMONICA_DATA_DIR/main
-          set -x -e
-          mkdir -p $HARMONICA_DATA_DIR/main
-          cp -r data/* $HARMONICA_DATA_DIR/main
-        env:
-          # Define directory where sample data will be copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
+        run: python -m pip install --no-deps dist/*.whl
 
       - name: Build the documentation
         run: |
@@ -136,6 +125,8 @@ jobs:
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
+        # Only if not a pull request
+        if: success() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v2
         with:
           name: docs-${{ github.sha }}
