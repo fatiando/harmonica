@@ -31,7 +31,7 @@ import harmonica as hm
 region = (0, 100e3, -40e3, 40e3)
 spacing = 2e3
 (easting, northing) = vd.grid_coordinates(region=region, spacing=spacing)
-surface = 100 * np.exp(-((easting - 50e3) ** 2 + northing ** 2) / 1e9)
+surface = 100 * np.exp(-((easting - 50e3) ** 2 + northing**2) / 1e9)
 density = 2670.0 * np.ones_like(surface)
 prisms = hm.prism_layer(
     coordinates=(easting[0, :], northing[:, 0]),

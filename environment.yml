@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.8
+  - python==3.9
   - pip
   # Build
   - setuptools>=45
@@ -28,14 +28,14 @@ dependencies:
   - coverage
   - boule
   # Documentation requirements
-  - sphinx==3.5.*
-  - sphinx-book-theme==0.0.41
-  - sphinx-gallery==0.8.*
+  - sphinx==4.5.*
+  - sphinx-book-theme==0.2.*
+  - sphinx-gallery==0.10.*
   - pyproj
   - matplotlib
   - cartopy>=0.18
   # Code style checks and autoformat
-  - black==21.12b0
+  - black==22.3.0
   - isort==5.10.*
   - flake8==4.0.*
   - flake8-bugbear==21.11.*

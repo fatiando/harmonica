@@ -351,8 +351,8 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
     Analytical solutions of a spherical shell with linear density
     """
     constant = np.pi * GRAVITATIONAL_CONST * slope * (
-        top ** 4 - bottom ** 4
-    ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top ** 3 - bottom ** 3)
+        top**4 - bottom**4
+    ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top**3 - bottom**3)
     potential = constant / radius
     data = {
         "potential": potential,
@@ -377,7 +377,7 @@ def analytical_spherical_shell_exponential(
         * np.pi
         * GRAVITATIONAL_CONST
         * a_factor
-        / k ** 3
+        / k**3
         / radius
         * (
             ((bottom * k) ** 2 + 2 * bottom * k + 2)
@@ -388,7 +388,7 @@ def analytical_spherical_shell_exponential(
         * np.pi
         * GRAVITATIONAL_CONST
         * constant_term
-        * (top ** 3 - bottom ** 3)
+        * (top**3 - bottom**3)
         / radius
     )
     data = {

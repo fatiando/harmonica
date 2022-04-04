@@ -362,7 +362,7 @@ def test_split_tesseroid():
         tesseroid, n_lon=2, n_lat=2, n_rad=2, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
-    assert splitted.shape[0] == 2 ** 3
+    assert splitted.shape[0] == 2**3
     assert splitted.shape[0] == stack_top + 1
     # Check if the tesseroid hasn't been split on each direction
     assert not (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
@@ -460,7 +460,7 @@ def test_split_tesseroid_only_horizontal():
         tesseroid, n_lon=2, n_lat=2, n_rad=1, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
-    assert splitted.shape[0] == 2 ** 2
+    assert splitted.shape[0] == 2**2
     assert splitted.shape[0] == stack_top + 1
     # Check if the tesseroid hasn't been split on radial direction
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
@@ -558,7 +558,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
         * np.pi
         * GRAVITATIONAL_CONST
         * density
-        * (top ** 3 - bottom ** 3)
+        * (top**3 - bottom**3)
         / radius
     )
     analytical = {
