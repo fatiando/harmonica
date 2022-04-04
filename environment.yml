@@ -32,7 +32,7 @@ dependencies:
   - matplotlib
   - cartopy>=0.18
   # Code style checks and autoformat
-  - black==21.12b0
+  - black==22.3.0
   - isort==5.10.*
   - flake8==4.0.*
   - flake8-bugbear==21.11.*

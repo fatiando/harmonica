@@ -316,7 +316,7 @@ def kernel_g_z_cartesian(easting, northing, upward, easting_p, northing_p, upwar
     # gravitational acceleration. As a consequence, it is multiplied by -1.
     # Notice that the ``g_z`` does not have the minus signal observed at the
     # compoents ``g_northing`` and ``g_easting``.
-    return (upward - upward_p) / distance ** 3
+    return (upward - upward_p) / distance**3
 
 
 @jit(nopython=True)
@@ -330,7 +330,7 @@ def kernel_g_northing_cartesian(
     distance = distance_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
-    return -(northing - northing_p) / distance ** 3
+    return -(northing - northing_p) / distance**3
 
 
 @jit(nopython=True)
@@ -344,7 +344,7 @@ def kernel_g_easting_cartesian(
     distance = distance_cartesian(
         (easting, northing, upward), (easting_p, northing_p, upward_p)
     )
-    return -(easting - easting_p) / distance ** 3
+    return -(easting - easting_p) / distance**3
 
 
 @jit(nopython=True)
@@ -371,7 +371,7 @@ def kernel_g_z_spherical(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
     )
     delta_z = radius - radius_p * cospsi
-    return delta_z / distance ** 3
+    return delta_z / distance**3
 
 
 def point_mass_cartesian(
