@@ -10,6 +10,7 @@ Test functions from the visualization module.
 import numpy as np
 import numpy.testing as npt
 import pytest
+from unittest.mock import patch
 import xarray as xr
 
 from ..visualization.prism import prisms_to_pyvista
@@ -114,3 +115,13 @@ def test_prisms_to_pyvista_error_2d_property(prisms, density):
     density_2d = np.array(density).reshape((2, 2))
     with pytest.raises(ValueError):
         prisms_to_pyvista(prisms, properties={"density": density_2d})
+
+
+@patch("harmonica.visualization.prism.pyvista", None)
+def test_prisms_pyvista_missing_error(prisms, density):
+    """
+    Check if prisms_to_pyvista raises error if pyvista is missing
+    """
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        prisms_to_pyvista(prisms, properties={"density": density})
