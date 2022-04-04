@@ -7,10 +7,11 @@
 """
 Test functions from the visualization module.
 """
+from unittest.mock import patch
+
 import numpy as np
 import numpy.testing as npt
 import pytest
-from unittest.mock import patch
 import xarray as xr
 
 from ..visualization.prism import prisms_to_pyvista
