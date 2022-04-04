@@ -440,7 +440,7 @@ def test_point_mass_on_origin():
     # eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
-        "g_z": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
+        "g_z": GRAVITATIONAL_CONST * mass / radius**2 * 1e5,
     }
     # Compare results with analytical solutions
     for field, solution in analytical.items():
@@ -472,7 +472,7 @@ def test_point_mass_same_radial_direction():
                 # (accelerations are in mgal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
-                    "g_z": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
+                    "g_z": GRAVITATIONAL_CONST * mass / height**2 * 1e5,
                 }
                 # Compare results with analytical solutions
                 for field, solution in analytical.items():
