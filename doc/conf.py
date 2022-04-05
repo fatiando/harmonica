@@ -6,7 +6,7 @@
 #
 import datetime
 
-from sphinx_gallery.sorting import ExampleTitleSortKey
+from sphinx_gallery.sorting import FileNameSortKey
 
 import harmonica
 
@@ -35,6 +35,13 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinx_panels",
 ]
+
+# Disable including boostrap CSS for sphinx_panels since it's already included
+# with sphinx-book-theme
+panels_add_bootstrap_css = False
+panels_css_variables = {
+    "tabs-color-label-inactive": "hsla(231, 99%, 66%, 0.5)",
+}
 
 # Configuration to include links to other project docs when referencing
 # functions/classes
@@ -80,14 +87,14 @@ add_function_parentheses = False
 # -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples", "../data/examples"],
+    "examples_dirs": ["../examples", "../data/examples", "tutorials_src"],
     # path where to save gallery generated examples
-    "gallery_dirs": ["gallery", "sample_data"],
+    "gallery_dirs": ["gallery", "sample_data", "tutorials"],
     "filename_pattern": r"\.py",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": ExampleTitleSortKey,
+    "within_subsection_order": FileNameSortKey,
     # directory where function granular galleries are stored
     "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.  In
