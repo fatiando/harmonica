@@ -126,5 +126,5 @@ html_theme_options = {
     "use_issues_button": True,
     "use_repository_button": True,
     "use_download_button": True,
-    "home_page_in_toc": True,
+    "home_page_in_toc": False,
 }
