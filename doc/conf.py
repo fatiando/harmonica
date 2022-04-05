@@ -33,6 +33,7 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
+    "sphinx_panels",
 ]
 
 # Configuration to include links to other project docs when referencing

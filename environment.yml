@@ -28,6 +28,7 @@ dependencies:
   - sphinx==4.5.*
   - sphinx-book-theme==0.2.*
   - sphinx-gallery==0.10.*
+  - sphinx-panels==0.6.*
   - pyproj
   - matplotlib
   - cartopy>=0.18
