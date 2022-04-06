@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
     "sphinx_panels",
+    "sphinx_copybutton",
 ]
 
 # Disable including boostrap CSS for sphinx_panels since it's already included
