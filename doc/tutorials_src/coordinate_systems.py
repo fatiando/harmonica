@@ -73,7 +73,7 @@ print("Point 1 is higher than point 2?", point_1[2] > point_2[2])
 # The reference ellipsoid is a mathematical surface that approximates the
 # figure of the Earth and it's used to define point coordinates.
 #
-# .. figure:: ../_static/figures/geodetic-coordinates-system.svg
+# .. figure:: ../_static/figures/geodetic-coordinate-system.svg
 #    :name: geodetic coordinates figure
 #    :width: 90%
 #    :alt: Figure showing a reference ellipsoid along with an observation point "p". It also shows the geodetic coordinates of this observation point: its longitude, latitude and geodetic height.
