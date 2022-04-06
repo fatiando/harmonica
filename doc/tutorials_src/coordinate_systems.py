@@ -164,7 +164,7 @@ print("northing:", northing)
 # *spherical latitude* (:math:`\phi`) and *radius* (:math:`r`) (see
 # :ref:`spherical coordinates figure`).
 #
-# .. note::
+# .. important::
 #
 #    The *longitude* coordinates defined in *spherical coordinates* and in
 #    *geodetic coordinates* are equivalent.
