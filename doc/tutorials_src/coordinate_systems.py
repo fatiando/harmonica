@@ -80,12 +80,17 @@ print("Point 1 is higher than point 2?", point_1[2] > point_2[2])
 #
 #    Figure: Geodetic coordinates
 #
-#    Reference ellipsoid along with a point **p**. The :math:`a` and :math:`b`
-#    represent the semimajor and semiminor axis of the ellipsoid, while the
-#    :math:`\lambda`, :math:`\varphi` and :math:`h` highlight the geodetic
+#    Reference ellipsoid and a point **p** along with a geocentric Cartesian
+#    system (:math:`X`, :math:`Y`, :math:`Z`). Where :math:`a` and :math:`b`
+#    are the semimajor and semiminor axes of the ellipsoid, while the
+#    :math:`\lambda`, :math:`\varphi` and :math:`h` represent the geodetic
 #    coordinates of the point **p** in this geodetic coordinate system, where
 #    :math:`\lambda` is the *longitude*, :math:`\varphi` the *latitude* and
 #    :math:`h` the *height*.
+#    The :math:`\phi` is the *spherical latitude* of point **p** (see
+#    :ref:`spherical_coordinates`).
+#    This figure is a modified version of [Oliveira2021]_.
+#
 #
 # Harmonica assumes that *longitude*, *latitude* are given in decimal degrees
 # and the ellipsoidal height is given in meters. Positive values of *height*
@@ -147,6 +152,9 @@ print("northing:", northing)
 # Cartesian ones, by setting the ``inverse`` argument to ``True``.
 
 # %%
+#
+# .. _spherical_coordinates:
+#
 # Spherical coordinates
 # ---------------------
 #
