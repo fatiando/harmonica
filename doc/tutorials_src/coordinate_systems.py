@@ -127,7 +127,7 @@ print(ellipsoid)
 # %%
 # Some other processes are only designed to work under Cartesian coordinates.
 # We can easily *transform* geodetic coordinates to Cartesian by applying
-# coordinates **projections**. This can be done through :mod:`pyproj`.
+# map **projections**. This can be done through :mod:`pyproj`.
 #
 # As an example, lets project the *longitude* and *latitude* coordinates of the
 # previously generated grid using a Mercator projection:
