@@ -102,11 +102,11 @@ Table of contents
     :maxdepth: 1
     :caption: User Guide
 
-    tutorials/coordinate_systems.rst
-    tutorials/processing_gravity/index.rst
-    tutorials/forward_modelling/index.rst
-    tutorials/equivalent_sources/index.rst
-    tutorials/read_icgem.py
+    user_guide/coordinate_systems.rst
+    user_guide/forward_modelling/index.rst
+    user_guide/gravity_processing/index.rst
+    user_guide/equivalent_sources/index.rst
+    user_guide/read_icgem.py
 
 .. toctree::
     :maxdepth: 1
