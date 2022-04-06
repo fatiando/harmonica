@@ -160,13 +160,35 @@ print("northing:", northing)
 #
 # Spherical coordinates (a.k.a spherical geocentric coordinates) are defined
 # by a coordinate system whose origin is located on the center of the Earth.
-# Each point can be represented by its *longitude*, *spherical latitude* and
-# *radius*.
+# Each point can be represented by its *longitude* (:math:`\lambda`),
+# *spherical latitude* (:math:`\phi`) and *radius* (:math:`r`) (see
+# :ref:`spherical coordinates figure`).
+#
+# .. note::
+#
+#    The *longitude* coordinates defined in *spherical coordinates* and in
+#    *geodetic coordinates* are equivalent.
+#    Nevertheless, the *spherical latitude* and the (geodetic) *latitude* are
+#    not.
+#
 # The *longitude* and *spherical latitude* are angles given in decimal degrees,
 # while the *radius* is the Euclidean distance between the point and the origin
 # of the system (in meters).
 # Although this reference system is rarely used for storing data, it's used for
 # some non-Cartesian forward models, like tesseroids (spherical prisms).
+#
+# .. figure:: ../_static/figures/spherical-coordinate-system.svg
+#    :name: spherical coordinates figure
+#    :width: 50%
+#    :alt: Figure showing an observation point "p" defined in a spherical coordinate system.
+#
+#    Figure: Spherical coordinates
+#
+#    Point **p** defined in a spherical coordinate system, where
+#    :math:`\lambda` is the *longitude*, :math:`\phi` the *latitude* and
+#    :math:`r` the *radius*. The spherical coordinates are defined upon
+#    a geocentric Cartesian system (:math:`X`, :math:`Y`, :math:`Z`) whose
+#    origin is located in the center of the Earth.
 #
 # Let's define a regular grid of points in spherical coordinates, located at
 # the same radius equal to the *mean radius of the Earth*.
@@ -178,7 +200,7 @@ coordinates = vd.grid_coordinates(
 )
 longitude, sph_latitude, radius = coordinates[:]
 print("longitude:", longitude)
-print("sph_latitude:", sph_latitude)
+print("spherical latitude:", sph_latitude)
 print("radius:", radius)
 
 # %%
@@ -194,6 +216,9 @@ print("height:", height)
 # %%
 # While the conversion of spherical coordinates into geodetic ones can be
 # carried out through the :meth:`boule.Ellipsoid.geodetic_to_spherical` one.
-#
-# Remember that spherical and geodetic *longitude* are equivalent, while
-# spherical and geodetic latitude will differ.
+
+coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+longitude, sph_latitude, radius = coordinates[:]
+print("longitude:", longitude)
+print("spherical latitude:", sph_latitude)
+print("radius:", radius)
