@@ -1,0 +1,180 @@
+.. _point:
+
+Point sources
+=============
+
+We can compute the gravity field of point masses through the
+:func:`harmonica.point_gravity` function.
+It offers the possibility to define point sources and computation points either
+in Cartesian or in spherical coordinates.
+
+Each point mass can be defined as a tuple containing its coordinates in the
+following order: *easting*, *northing* and *upward* (in Cartesian coordinates)
+or *longitude*, *latitude* and *radius* (in spherical coordinates).
+
+Cartesian coordinates
+---------------------
+
+.. jupyter-execute::
+   :hide-code:
+
+   import harmonica as hm
+
+For example, lets define a single point mass and compute the gravity potential
+it generates on a computation point located 100 meters above it.
+
+
+.. jupyter-execute::
+
+   # Define a single point source and its mass (in kg)
+   point = (400, 300, 200)
+   mass = 1e6
+
+   # Define a computation point located 100m above the point source
+   coordinates = (point[0], point[1], point[2] + 100)
+
+   # Compute the g_z
+   potential = hm.point_gravity(coordinates, point, mass, field="potential")
+   print(potential, "J/kg")
+
+We can easily compute the gravity field of a set of point sources by grouping
+its coordinates in arrays and with a single call of the
+:func:`harmonica.point_gravity`.
+
+.. jupyter-execute::
+
+   import numpy as np
+   import verde as vd
+
+   # Define a set of four point sources
+   easting = np.array([250, 750, 250, 750])
+   northing = np.array([250, 250, 750, 750])
+   upward = np.array([-100, -100, -100, -100])
+   points = (easting, northing, upward)
+
+   # Define the masses of the point sources
+   masses = np.array([1e6, -1e6, 2e6, -3e6])
+
+   # Define a grid of computation points at zero height
+   coordinates = vd.grid_coordinates(
+       region=(-250, 1250, -250, 1250), shape=(40, 40), extra_coords=0
+   )
+
+   # Calculate the vertical component of the gravity acceleration
+   g_z = hm.point_gravity(coordinates, points, masses, field="g_z")
+
+.. note::
+
+   When passing multiple sources and coordinates to
+   :func:`harmonica.point_gravity` we calculate the field in parallel using
+   multiple CPUs, speeding up the computation.
+
+Lets plot this gravity field:
+
+.. jupyter-execute::
+
+   import matplotlib.pyplot as plt
+
+   maxabs = vd.maxabs(g_z)
+   plt.pcolormesh(
+       *coordinates[:2], g_z, vmin=-maxabs, vmax=maxabs, cmap="seismic"
+   )
+   plt.colorbar(label="mGal")
+   plt.gca().set_aspect("equal")
+   plt.xlabel("easting [m]")
+   plt.ylabel("northing [m]")
+   plt.show()
+
+
+
+Spherical coordinates
+---------------------
+
+Alternative, we can compute the gravity fields of point sources defined in
+a spherical coordinate system. To do so, we need to pass the
+``coordinate_system`` argument as ``"spherical"```. The coordinates of the
+point source must now be passed as *longitude*, *latitude* and *radius*, where
+the two former ones must be in decimal degrees and the latter in meters.
+
+Lets define a single point source in the equator, at a longitude of 45 degrees
+and  in the surface of the WGS84 ellipsoid.
+
+.. jupyter-execute::
+
+   import boule as bl
+
+   # Get the WGS84 reference ellipsoid from Boule
+   ellipsoid = bl.WGS84
+
+   # Define a single point source in the equator
+   longitude, latitude = 45, 0
+   radius = ellipsoid.geocentric_radius(latitude, geodetic=False)
+   point = (longitude, latitude, radius)
+   mass = 1e6
+
+   # Define a computation point located 1km above the point source
+   coordinates = (point[0], point[1], point[2] + 1000)
+
+   # Compute the g_z
+   g_z = hm.point_gravity(
+       coordinates, point, mass, field="g_z", coordinate_system="spherical"
+   )
+   print(g_z, "mGal")
+
+If our point sources and computation points are defined in geodetic
+coordinates, we can use the :meth:`boule.Ellipsoid.geodetic_to_spherical`
+method to convert them to spherical coordinates and use them to compute their
+gravity field.
+
+.. jupyter-execute::
+
+   # Define a set point sources in geodetic coordinates
+   longitude = np.array([-71, -71, -69, -69])
+   latitude = np.array([-45, -43, -45, -43])
+   height = np.array([-10e3, -20e3, -30e3, -20e3])
+   points = (longitude, latitude, height)
+
+   # Define their masses
+   masses = np.array([1e6, 2e6, -3e6, 5e6])
+
+   # Define a grid of computation points in geodetic coordinates at 1km above
+   # the ellipsoid
+   coordinates = vd.grid_coordinates(
+       region=(-72, -68, -46, -42),
+       shape=(101, 101),
+       extra_coords=20e3,
+   )
+
+   # Convert the coordinates of point sources and computation points to
+   # spherical coordinates
+   points_spherical = ellipsoid.geodetic_to_spherical(*points)
+   coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+   # Compute the g_z
+   g_z = hm.point_gravity(
+       coordinates_spherical,
+       points_spherical,
+       masses,
+       field="g_z",
+       coordinate_system="spherical",
+   )
+
+Lets plot these results using :mod:`cartopy`:
+
+.. jupyter-execute::
+
+   import cartopy.crs as ccrs
+
+   plt.figure(figsize=(8, 6))
+   ax = plt.axes(projection=ccrs.Mercator())
+   maxabs = vd.maxabs(g_z)
+   tmp = ax.pcolormesh(
+       *coordinates[:2],
+       g_z,
+       vmin=-maxabs,
+       vmax=maxabs,
+       cmap="seismic",
+       transform=ccrs.PlateCarree(),
+   )
+   ax.set_title("Gravitational acceleration (downward)")
+   plt.colorbar(tmp, ax=ax, pad=0.04, shrink=0.73, label="mGal")
+   plt.show()
