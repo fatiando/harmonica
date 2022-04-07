@@ -156,8 +156,8 @@ computation point:
    print(g_z, "mGal")
 
 
-Converting geodetic to spherical coordinates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Working with sources defined in geodetic coordinates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If our point sources and computation points are defined in geodetic
 coordinates, we can use the :meth:`boule.Ellipsoid.geodetic_to_spherical`
