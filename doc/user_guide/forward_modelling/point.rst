@@ -34,7 +34,6 @@ Define a computation point located 100m above the point source:
 
 .. jupyter-execute::
 
-   point = (400, 300, 200)
    coordinates = (point[0], point[1], point[2] + 100)
 
 And finally, compute the gravity potential field it generates on the
