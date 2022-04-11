@@ -27,5 +27,7 @@ It offers the
 geometric bodies:
 
 .. toctree::
+   :titlesonly:
 
   point
+  prism
