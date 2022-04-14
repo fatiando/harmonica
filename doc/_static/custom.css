@@ -4,3 +4,9 @@ span.project-version {
   font-weight: 600;
   margin-left: 5px;
 }
+
+/* Add margin top to any paragraph that folows a jupyter_container */
+/* Source: https://github.com/jupyter/jupyter-sphinx/issues/91 */
+.jupyter_container + p {
+  margin-top: 1.25rem; /* slightly higher than default for paragraphs */
+}
