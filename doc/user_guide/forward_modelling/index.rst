@@ -31,3 +31,4 @@ geometric bodies:
 
   point
   prism
+  tesseroid
