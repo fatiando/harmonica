@@ -71,6 +71,12 @@ Synthetic models and surveys
 Datasets
 --------
 
+.. warning::
+
+   The datasets module will soon be deprecated.
+   Use `Ensaio <https://www.fatiando.org/ensaio>`_ to download sample datasets
+   instead.
+
 .. autosummary::
    :toctree: generated/
 
