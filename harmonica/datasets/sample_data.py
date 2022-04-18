@@ -7,18 +7,18 @@
 """
 Functions to load sample datasets used in the Harmonica docs.
 """
-import pkg_resources
-import xarray as xr
 import pandas as pd
+import pkg_resources
 import pooch
+import xarray as xr
 
-from ..version import __version__ as version
+from .._version import __version__ as version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
     version=version,
-    version_dev="master",
+    version_dev="main",
     env="HARMONICA_DATA_DIR",
 )
 with pkg_resources.resource_stream(

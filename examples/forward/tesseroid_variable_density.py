@@ -23,13 +23,13 @@ On this example we will show how we can compute the gravitational effect of
 four tesseroids whose densities are given by a custom linear ``density``
 function.
 """
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import verde as vd
 import boule as bl
-import harmonica as hm
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import verde as vd
 from numba import njit
 
+import harmonica as hm
 
 # Use the WGS84 ellipsoid to obtain the mean Earth radius which we'll use to
 # reference the tesseroid

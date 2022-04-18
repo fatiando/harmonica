@@ -7,29 +7,28 @@
 """
 Test forward modelling for tesseroids.
 """
+import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
-import boule
 
-from .utils import run_only_with_numba
 from ..constants import GRAVITATIONAL_CONST
-from ..forward.tesseroid import (
-    tesseroid_gravity,
-    _check_tesseroids,
-    _check_points_outside_tesseroids,
-    _adaptive_discretization,
-    STACK_SIZE,
-    MAX_DISCRETIZATIONS,
-)
 from ..forward._tesseroid_utils import (
     _distance_tesseroid_point,
-    _tesseroid_dimensions,
-    _split_tesseroid,
     _longitude_continuity,
+    _split_tesseroid,
+    _tesseroid_dimensions,
 )
-
+from ..forward.tesseroid import (
+    MAX_DISCRETIZATIONS,
+    STACK_SIZE,
+    _adaptive_discretization,
+    _check_points_outside_tesseroids,
+    _check_tesseroids,
+    tesseroid_gravity,
+)
+from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
@@ -363,7 +362,7 @@ def test_split_tesseroid():
         tesseroid, n_lon=2, n_lat=2, n_rad=2, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
-    assert splitted.shape[0] == 2 ** 3
+    assert splitted.shape[0] == 2**3
     assert splitted.shape[0] == stack_top + 1
     # Check if the tesseroid hasn't been split on each direction
     assert not (splitted[0, lon_indexes] == splitted[:, lon_indexes]).all()
@@ -461,7 +460,7 @@ def test_split_tesseroid_only_horizontal():
         tesseroid, n_lon=2, n_lat=2, n_rad=1, stack=stack, stack_top=stack_top
     )
     splitted = np.array([tess for tess in stack if not np.all(tess == 0)])
-    assert splitted.shape[0] == 2 ** 2
+    assert splitted.shape[0] == 2**2
     assert splitted.shape[0] == stack_top + 1
     # Check if the tesseroid hasn't been split on radial direction
     assert (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
@@ -559,7 +558,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
         * np.pi
         * GRAVITATIONAL_CONST
         * density
-        * (top ** 3 - bottom ** 3)
+        * (top**3 - bottom**3)
         / radius
     )
     analytical = {
@@ -574,7 +573,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_spherical_shell_two_dim_adaptive_discret(
     field,
-):  # pylint: disable=too-many-locals
+):
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization
@@ -619,9 +618,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
 @run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
-def test_spherical_shell_three_dim_adaptive_discret(
-    thickness, field
-):  # pylint: disable=too-many-locals
+def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization

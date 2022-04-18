@@ -25,10 +25,11 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 """
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import xarray as xr
 import boule as bl
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import xarray as xr
+
 import harmonica as hm
 
 # Load the global gravity, topography, and geoid grids

@@ -3,9 +3,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.8
+  - python==3.9
   - pip
-  - setuptools_scm
+  # Build
+  - setuptools>=45
+  - setuptools_scm>=6.2
+  - wheel
+  - twine
+  # Run-time
   - numpy
   - pandas
   - numba
@@ -14,17 +19,30 @@ dependencies:
   - pooch>=0.7.0
   - verde>=1.5.0
   - xarray
-  # Development requirements
-  - boule
-  - pyproj
-  - matplotlib
-  - cartopy>=0.18
+  # Testing requirements
   - pytest
   - pytest-cov
   - coverage
-  - black>=20.8b1
-  - pylint
-  - flake8
-  - sphinx==3.5.*
-  - sphinx-book-theme==0.0.41
-  - sphinx-gallery==0.8.*
+  - boule
+  # Documentation requirements
+  - sphinx==4.5.*
+  - sphinx-book-theme==0.2.*
+  - sphinx-gallery==0.10.*
+  - pyproj
+  - matplotlib
+  - cartopy>=0.18
+  # Code style checks and autoformat
+  - black==22.3.0
+  - isort==5.10.*
+  - flake8==4.0.*
+  - flake8-bugbear==21.11.*
+  - flake8-builtins==1.5.*
+  - flake8-functions==0.0.6
+  - flake8-mutable==1.2.*
+  - flake8-rst-docstrings==0.2.*
+  - flake8-simplify==0.14.*
+  - pep8-naming==0.12.*
+  - pip:
+      # Install flake8-unused-arguments through pip
+      # (not available through conda yet)
+      - flake8-unused-arguments==0.0.9

@@ -7,12 +7,12 @@
 """
 Test the gravity correction functions (normal gravity, Bouguer, etc).
 """
-import xarray as xr
 import numpy as np
 import numpy.testing as npt
+import xarray as xr
 
-from ..gravity_corrections import bouguer_correction
 from ..constants import GRAVITATIONAL_CONST
+from ..gravity_corrections import bouguer_correction
 
 
 def test_bouguer_correction():

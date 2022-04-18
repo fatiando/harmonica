@@ -3,6 +3,47 @@
 Changelog
 =========
 
+Version 0.4.0
+-------------
+
+*Released on: 2021/12/02*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5745400.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.5745400
+
+New features:
+
+- Allow ``EquivalentSources`` to define block-averaged sources through a new ``block_size`` argument [Soler2021]_. (`#260 <https://github.com/fatiando/harmonica/pull/260>`__)
+- Add ``dtype`` argument to ``EquivalentSources``. Allows to select the data type used to allocate the Jacobian matrix. (`#278 <https://github.com/fatiando/harmonica/pull/278>`__)
+- Add a new ``EquivalentSourcesGB`` class that implements gradient-boosted equivalent sources. Provides a method to estimate the amount of computer memory needed to allocate the largest Jacobian matrix [Soler2021]_. (`#275 <https://github.com/fatiando/harmonica/pull/275>`__)
+- Allow ``tesseroid_gravity`` to compute gravitational fields of variable density tesseroids. Implements the density-based discretization algorithm and takes ``numba.njit`` decorated density functions as input [Soler2019]_. (`#269 <https://github.com/fatiando/harmonica/pull/269>`__)
+
+Breaking changes:
+
+- Rename ``point_mass_gravity`` to ``point_gravity``. Having mass and gravity in the same function name is redundant. The function name has the same structure as other forward modelling functions (``tesseroid_gravity`` and ``prism_gravity``). The old ``point_mass_gravity`` will be deprecated on the next release. (`#280 <https://github.com/fatiando/harmonica/pull/280>`__)
+
+Bug fixes:
+
+- Fix bug with the ``require_numba`` pytest mark and rename it to ``run_only_with_numba`` for improved readability. (`#273 <https://github.com/fatiando/harmonica/pull/273>`__)
+
+Documentation:
+
+- Fix typo on ``EquivalentSources`` docstring: replace ``bloc_size`` with ``block_size``. (`#276 <https://github.com/fatiando/harmonica/pull/276>`__)
+- Minor improvements to the docs: fix bad references and links, replace Equivalent Layer for Equivalent Sources on API Index, fix bad RST syntax. (`#274 <https://github.com/fatiando/harmonica/pull/274>`__)
+
+Maintenance:
+
+- Rename the default branch: from ``master`` to ``main`` (`#287 <https://github.com/fatiando/harmonica/pull/287>`__)
+- Replace ``pylint`` for ``flake8`` extensions. Add ``isort`` for autoformatting imports. (`#285 <https://github.com/fatiando/harmonica/pull/285>`__)
+- Replace conda for pip on GitHub Actions and split requirements files for each separate task. (`#282 <https://github.com/fatiando/harmonica/pull/282>`__)
+- Make GitHub Actions to check if license notice is present in source files. (`#277 <https://github.com/fatiando/harmonica/pull/277>`__)
+
+This release contains contributions from:
+
+- Santiago Soler
+
+
 Version 0.3.3
 -------------
 

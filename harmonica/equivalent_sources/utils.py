@@ -8,6 +8,7 @@
 Utility functions for equivalent sources gridders
 """
 from warnings import warn
+
 from numba import jit, prange
 
 
@@ -46,9 +47,7 @@ def pop_extra_coords(kwargs):
         kwargs.pop("extra_coords")
 
 
-def jacobian(
-    coordinates, points, jac, greens_function
-):  # pylint: disable=not-an-iterable
+def jacobian(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix
 
@@ -71,9 +70,7 @@ def jacobian(
             )
 
 
-def predict(
-    coordinates, points, coeffs, result, greens_function
-):  # pylint: disable=not-an-iterable
+def predict(coordinates, points, coeffs, result, greens_function):
     """
     Calculate the predicted data
 
@@ -96,7 +93,6 @@ def predict(
             )
 
 
-# pylint: disable=invalid-name
 predict_numba_serial = jit(nopython=True)(predict)
 predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
 jacobian_numba_serial = jit(nopython=True)(jacobian)

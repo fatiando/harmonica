@@ -7,8 +7,8 @@
 """
 Utils functions for tesseroid forward modelling
 """
-from numba import jit
 import numpy as np
+from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from .utils import distance_spherical
@@ -25,7 +25,7 @@ def gauss_legendre_quadrature(
     glq_nodes,
     glq_weights,
     kernel,
-):  # pylint: disable=too-many-locals
+):
     r"""
     Compute the effect of a tesseroid on a single observation point through GLQ
 
@@ -87,7 +87,7 @@ def gauss_legendre_quadrature(
             # Get the radius of the point mass
             radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
             # Get kappa constant for the point mass
-            kappa = radius_p ** 2 * cosphi_p
+            kappa = radius_p**2 * cosphi_p
             for i, lon_node in enumerate(lon_nodes):
                 # Get the longitude of the point mass
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
@@ -235,9 +235,7 @@ def _adaptive_discretization(
 
 
 @jit(nopython=True)
-def _split_tesseroid(
-    tesseroid, n_lon, n_lat, n_rad, stack, stack_top
-):  # pylint: disable=too-many-locals
+def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     """
     Split tesseroid along each dimension
     """
@@ -249,7 +247,7 @@ def _split_tesseroid(
     for i in range(n_lon):
         for j in range(n_lat):
             for k in range(n_rad):
-                stack_top += 1
+                stack_top += 1  # noqa: SIM113, don't want to use enumerate here
                 stack[stack_top, 0] = w + d_lon * i
                 stack[stack_top, 1] = w + d_lon * (i + 1)
                 stack[stack_top, 2] = s + d_lat * j
@@ -276,9 +274,7 @@ def _tesseroid_dimensions(tesseroid):
 
 
 @jit(nopython=True)
-def _distance_tesseroid_point(
-    coordinates, tesseroid
-):  # pylint: disable=too-many-locals
+def _distance_tesseroid_point(coordinates, tesseroid):
     """
     Distance between a computation point and the center of a tesseroid
     """
@@ -292,7 +288,7 @@ def _distance_tesseroid_point(
     return distance
 
 
-def _check_tesseroids(tesseroids):  # pylint: disable=too-many-branches
+def _check_tesseroids(tesseroids):
     """
     Check if tesseroids boundaries are well defined
 
@@ -406,9 +402,7 @@ def _check_tesseroids(tesseroids):  # pylint: disable=too-many-branches
     return tesseroids
 
 
-def _check_points_outside_tesseroids(
-    coordinates, tesseroids
-):  # pylint: disable=too-many-locals
+def _check_points_outside_tesseroids(coordinates, tesseroids):
     """
     Check if computation points are not inside the tesseroids
 

@@ -8,8 +8,9 @@
 Test forward modelling for point masses.
 """
 import os
-from pathlib import Path
 import warnings
+from pathlib import Path
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -18,7 +19,6 @@ import verde as vd
 from ..constants import GRAVITATIONAL_CONST
 from ..forward.point import point_gravity, point_mass_gravity
 from ..forward.utils import distance_cartesian
-
 from .utils import run_only_with_numba
 
 MODULE_DIR = Path(os.path.dirname(__file__))
@@ -626,7 +626,7 @@ def test_point_mass_on_origin():
     # eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
-        "g_z": GRAVITATIONAL_CONST * mass / radius ** 2 * 1e5,
+        "g_z": GRAVITATIONAL_CONST * mass / radius**2 * 1e5,
     }
     # Compare results with analytical solutions
     for field, solution in analytical.items():
@@ -659,7 +659,7 @@ def test_point_mass_same_radial_direction(field):
                 # (accelerations are in mgal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
-                    "g_z": GRAVITATIONAL_CONST * mass / height ** 2 * 1e5,
+                    "g_z": GRAVITATIONAL_CONST * mass / height**2 * 1e5,
                 }
                 # Compare results with analytical solutions
                 npt.assert_allclose(

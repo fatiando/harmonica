@@ -4,17 +4,17 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=protected-access
 """
 Test the EquivalentSourcesSph gridder
 """
 import warnings
-import pytest
-import numpy.testing as npt
-import xarray.testing as xrt
-import verde as vd
 
-from .. import EquivalentSourcesSph, EQLHarmonicSpherical, point_gravity
+import numpy.testing as npt
+import pytest
+import verde as vd
+import xarray.testing as xrt
+
+from .. import EQLHarmonicSpherical, EquivalentSourcesSph, point_gravity
 from .utils import run_only_with_numba
 
 

@@ -7,23 +7,23 @@
 """
 Test forward modelling for tesseroids with variable density
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
-from verde import grid_coordinates
+import pytest
 from numba import jit
+from verde import grid_coordinates
+
 import harmonica
 
-from .utils import run_only_with_numba
-from ..constants import GRAVITATIONAL_CONST
 from .. import tesseroid_gravity
+from ..constants import GRAVITATIONAL_CONST
 from ..forward._tesseroid_variable_density import (
-    straight_line,
-    maximum_absolute_diff,
-    density_minmax,
     _density_based_discretization,
+    density_minmax,
+    maximum_absolute_diff,
+    straight_line,
 )
-
+from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
@@ -247,7 +247,7 @@ def test_density_based_discret_with_delta(
     bottom,
     top,
     quadratic_density,
-):  # pylint: disable=protected-access
+):
     """
     Test the density-based discretization algorithm against values of DELTA
     """
@@ -295,7 +295,9 @@ def test_density_based_discret_constant_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    def stupid_constant_density(radius):  # pylint: disable=unused-argument
+    def stupid_constant_density(
+        radius,  # noqa: U100 # the radius argument is needed for the density function
+    ):
         """Define a dummy constant density function"""
         return 3
 
@@ -322,7 +324,9 @@ def test_single_tesseroid_against_constant_density(field):
 
     # Define a constant density
     @jit
-    def constant_density(radius):  # pylint: disable=unused-argument
+    def constant_density(
+        radius,  # noqa: U100 # the radius argument is needed for the density function
+    ):
         return density
 
     # Define a set of observation points
@@ -347,8 +351,8 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
     Analytical solutions of a spherical shell with linear density
     """
     constant = np.pi * GRAVITATIONAL_CONST * slope * (
-        top ** 4 - bottom ** 4
-    ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top ** 3 - bottom ** 3)
+        top**4 - bottom**4
+    ) + 4 / 3.0 * np.pi * GRAVITATIONAL_CONST * constant_term * (top**3 - bottom**3)
     potential = constant / radius
     data = {
         "potential": potential,
@@ -359,7 +363,7 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
 
 def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
-):  # pylint: disable=too-many-locals
+):
     r"""
     Analytical solutions of a spherical shell with exponential density
 
@@ -373,7 +377,7 @@ def analytical_spherical_shell_exponential(
         * np.pi
         * GRAVITATIONAL_CONST
         * a_factor
-        / k ** 3
+        / k**3
         / radius
         * (
             ((bottom * k) ** 2 + 2 * bottom * k + 2)
@@ -384,7 +388,7 @@ def analytical_spherical_shell_exponential(
         * np.pi
         * GRAVITATIONAL_CONST
         * constant_term
-        * (top ** 3 - bottom ** 3)
+        * (top**3 - bottom**3)
         / radius
     )
     data = {
@@ -394,9 +398,7 @@ def analytical_spherical_shell_exponential(
     return data
 
 
-def build_spherical_shell(
-    bottom, top, shape=(6, 12)
-):  # pylint: disable=too-many-locals
+def build_spherical_shell(bottom, top, shape=(6, 12)):
     """
     Return a set of tesseroids modelling a spherical shell
 
@@ -407,6 +409,7 @@ def build_spherical_shell(
     top : float
         Outer radius of the spherical shell
     shape : tuple (n_latitude, n_longitude)
+        Number of tesseroids used along each dimension.
     """
     region = (-180, 180, -90, 90)
     n_lat, n_lon = shape[:]

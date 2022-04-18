@@ -8,15 +8,12 @@
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
 import numpy as np
+import verde.base as vdb
 from sklearn import utils
 from verde import get_region, rolling_window
-import verde.base as vdb
 
 from .cartesian import EquivalentSources
-from .utils import (
-    cast_fit_input,
-    predict_numba_parallel,
-)
+from .utils import cast_fit_input, predict_numba_parallel
 
 
 class EquivalentSourcesGB(EquivalentSources):
@@ -227,9 +224,7 @@ class EquivalentSourcesGB(EquivalentSources):
         self._gradient_boosting(coordinates, data, weights)
         return self
 
-    def _gradient_boosting(
-        self, coordinates, data, weights
-    ):  # pylint: disable=too-many-locals
+    def _gradient_boosting(self, coordinates, data, weights):
         """
         Fit source coefficients through gradient boosting
         """
@@ -238,7 +233,7 @@ class EquivalentSourcesGB(EquivalentSources):
         # Get number of windows
         n_windows = len(point_windows)
         # Initialize RMSE array
-        errors = [np.sqrt(np.mean(data ** 2))]
+        errors = [np.sqrt(np.mean(data**2))]
         # Set weights_chunk to None (will be changed unless weights is None)
         weights_chunk = None
         # Initialized the predicted and residue arrays
@@ -275,7 +270,7 @@ class EquivalentSourcesGB(EquivalentSources):
             # Update the residue
             residue -= predicted
             # Add RMS of the residue to the RMSE
-            errors.append(np.sqrt(np.mean(residue ** 2)))
+            errors.append(np.sqrt(np.mean(residue**2)))
             # Update source coefficients
             self.coefs_[point_window] += coeffs_chunk
         self.rmse_per_iteration_ = np.array(errors)
