@@ -88,7 +88,7 @@ def gauss_legendre_quadrature_variable_density(
             radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
             density_p = density(radius_p)
             # Get kappa constant for the point mass
-            kappa = radius_p ** 2 * cosphi_p
+            kappa = radius_p**2 * cosphi_p
             for i, lon_node in enumerate(lon_nodes):
                 # Get the longitude of the point mass
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))

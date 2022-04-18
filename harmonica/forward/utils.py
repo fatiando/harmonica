@@ -265,7 +265,7 @@ def distance_geodetic(point_p, point_q, ellipsoid):
         coslambda,
         prime_vertical_radius,
         prime_vertical_radius_p,
-        ellipsoid.first_eccentricity ** 2,
+        ellipsoid.first_eccentricity**2,
     )
 
 
@@ -311,11 +311,11 @@ def geodetic_distance_core(
     upward_sum = prime_vertical_radius + height
     upward_sum_p = prime_vertical_radius_p + height_p
     dist = np.sqrt(
-        upward_sum_p ** 2 * cosphi_p ** 2
-        + upward_sum ** 2 * cosphi ** 2
+        upward_sum_p**2 * cosphi_p**2
+        + upward_sum**2 * cosphi**2
         - 2 * upward_sum * upward_sum_p * cosphi * cosphi_p * coslambda
-        + (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p ** 2
-        + (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi ** 2
+        + (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p**2
+        + (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi**2
         - (
             2
             * (upward_sum_p - ecc_sq * prime_vertical_radius_p)
