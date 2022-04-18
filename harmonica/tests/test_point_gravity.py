@@ -254,7 +254,7 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
     finite_diff *= 1e5
     # Remember that the ``g_z`` field returns the downward component of the
     # gravitational acceleration. As a consequence, the numerical
-    # derivative dive is multiplied by -1.
+    # derivative is multiplied by -1.
     if field == "g_z":
         finite_diff *= -1
     # Compute the bounding error of the approximation
