@@ -8,10 +8,10 @@
 Test the sample data loading functions.
 """
 import os
-import pytest
 import warnings
 
 import numpy.testing as npt
+import pytest
 
 from ..datasets.sample_data import (
     fetch_britain_magnetic,

@@ -7,8 +7,9 @@
 """
 Functions to load sample datasets used in the Harmonica docs.
 """
-import pandas as pd
 import warnings
+
+import pandas as pd
 import pkg_resources
 import pooch
 import xarray as xr
