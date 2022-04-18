@@ -3,11 +3,12 @@
 Tesseroids
 ==========
 
-When our region of interest covers several longitude and latitude degrees
+When our region of interest covers several longitude and latitude degrees,
 utilizing Cartesian coordinates to model geological structures might
 introduce significant errors: they don't take into account the curvature of the
 Earth. Instead, we would need to work in :ref:`spherical-coordiantes`.
-In order to forward model bodies in geocentric spherical coordinates a common approach is to make use of tesseroids.
+A common approach to forward model bodies in geocentric spherical coordinates
+is to make use of tesseroids.
 
 A tesseroid (a.k.a spherical prism) is a three dimensional body defined by the
 volume contained by two longitudinal boundaries, two latitudinal boundaries and
