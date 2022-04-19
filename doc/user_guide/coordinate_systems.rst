@@ -46,7 +46,7 @@ Or a regular grid of points at 100 meters above the zeroth plane:
 
     # Define a regular grid of observation points (coordinates in meters)
     coordinates = vd.grid_coordinates(
-        region=(-40, 40, -40, 40), shape=(21, 21), extra_coords=100
+        region=(-40, 40, -40, 40), shape=(5, 5), extra_coords=100
     )
     easting, northing, upward = coordinates[:]
 
@@ -108,7 +108,7 @@ angles) at 2km above the ellipsoid using :mod:`verde`.
 .. jupyter-execute::
 
     coordinates = vd.grid_coordinates(
-        region=(-70, -65, -35, -30), shape=(11, 11), extra_coords=2e3
+        region=(-70, -65, -35, -30), shape=(6, 6), extra_coords=2e3
     )
     longitude, latitude, height = coordinates[:]
     print("longitude:", longitude)
@@ -201,7 +201,7 @@ the same radius equal to the *mean radius of the Earth*.
 
     coordinates = vd.grid_coordinates(
         region=(-70, -65, -35, -30),
-        shape=(11, 11),
+        shape=(6, 6),
         extra_coords=ellipsoid.mean_radius,
     )
     longitude, sph_latitude, radius = coordinates[:]
