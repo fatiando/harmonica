@@ -104,9 +104,7 @@ Table of contents
 
     user_guide/coordinate_systems.rst
     user_guide/forward_modelling/index.rst
-    user_guide/gravity_processing/index.rst
-    user_guide/equivalent_sources/index.rst
-    user_guide/read_icgem.py
+    user_guide/gravity_disturbance.rst
 
 .. toctree::
     :maxdepth: 1
