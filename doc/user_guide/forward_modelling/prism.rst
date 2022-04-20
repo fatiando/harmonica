@@ -105,6 +105,8 @@ Lets plot this gravitational field:
    plt.show()
 
 
+.. _prism_layer:
+
 Prism layer
 ^^^^^^^^^^^
 
