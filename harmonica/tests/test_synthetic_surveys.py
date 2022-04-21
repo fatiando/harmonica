@@ -23,7 +23,9 @@ def test_deprecation_warning(synthetic_survey):
         synthetic_survey()
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_ground_survey():
     """
     Test if the sythetic ground survey returns the expected survey
@@ -41,7 +43,9 @@ def test_ground_survey():
     npt.assert_allclose(survey.height.max(), 2052.2)
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_scale_ground_survey():
     """
     Test if synthetic ground survey returns the expected survey after scaled
@@ -58,7 +62,9 @@ def test_scale_ground_survey():
     npt.assert_allclose(survey.height.max(), 2052.2)
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_airborne_survey():
     """
     Test if the synthetic airborne survey returns the expected survey
@@ -76,7 +82,9 @@ def test_airborne_survey():
     npt.assert_allclose(survey.height.max(), 1255.0)
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_scale_airborne_survey():
     """
     Test if synthetic airborne survey returns the expected survey after scaled
@@ -93,7 +101,9 @@ def test_scale_airborne_survey():
     npt.assert_allclose(survey.height.max(), 1255.0)
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_data_region_ground_survey():
     """
     Test if ground survey is changed against a different data_region
@@ -110,7 +120,9 @@ def test_data_region_ground_survey():
     assert survey.height.max() >= 2052.2
 
 
-@pytest.mark.filterwarnings("ignore:The 'synthetic' module will be deprecated")
+@pytest.mark.filterwarnings(
+    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+)
 def test_data_region_airborne_survey():
     """
     Test if a different cut_region produces a different airborne survey
