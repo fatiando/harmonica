@@ -10,6 +10,7 @@ Test the sample data loading functions.
 import os
 
 import numpy.testing as npt
+import pytest
 
 from ..datasets.sample_data import (
     fetch_britain_magnetic,
@@ -22,6 +23,29 @@ from ..datasets.sample_data import (
 )
 
 
+@pytest.mark.parametrize(
+    "fetch_function",
+    (
+        fetch_britain_magnetic,
+        fetch_geoid_earth,
+        fetch_gravity_earth,
+        fetch_south_africa_gravity,
+        fetch_south_africa_topography,
+        fetch_topography_earth,
+    ),
+)
+def test_deprecation_warning(fetch_function):
+    """
+    Checks if deprecation warning is raised
+    """
+    message = "The 'datasets' module will be deprecated in Harmonica v0.6.0."
+    with pytest.warns(FutureWarning, match=message):
+        fetch_function()
+
+
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_datasets_locate():
     "Make sure the data cache location has the right package name"
     # Fetch a dataset first to make sure that the cache folder exists. Since
@@ -34,6 +58,9 @@ def test_datasets_locate():
     assert "harmonica" in path
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_geoid_earth():
     "Sanity checks for the loaded grid"
     grid = fetch_geoid_earth()
@@ -47,6 +74,9 @@ def test_geoid_earth():
     assert grid.attrs.get("modelname") == "EIGEN-6C4"
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_gravity_earth():
     "Sanity checks for the loaded grid"
     grid = fetch_gravity_earth()
@@ -62,6 +92,9 @@ def test_gravity_earth():
     assert grid.attrs.get("modelname") == "EIGEN-6C4"
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_topography_earth():
     "Sanity checks for the loaded grid"
     grid = fetch_topography_earth()
@@ -74,6 +107,9 @@ def test_topography_earth():
     assert grid.attrs.get("modelname") == "etopo1-2250"
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_britain_magnetic():
     "Sanity checks for the loaded dataset"
     data = fetch_britain_magnetic()
@@ -104,6 +140,9 @@ def test_britain_magnetic():
     }
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_south_africa_gravity():
     "Sanity checks for the loaded dataset"
     data = fetch_south_africa_gravity()
@@ -118,6 +157,9 @@ def test_south_africa_gravity():
     npt.assert_allclose(data.gravity.max(), 979766.65)
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'datasets' module will be deprecated:FutureWarning"
+)
 def test_south_africa_topography():
     "Sanity checks for the loaded dataset"
     data = fetch_south_africa_topography()
