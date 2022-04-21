@@ -33,10 +33,12 @@ def _deprecation_warning():
     """
     Raise a FutureWarning about deprecation of synthetic module
     """
-    warnings.warn(
-        "The 'datasets' module will be deprecated in Harmonica v0.6.0.",
-        FutureWarning,
+    msg = (
+        "The 'datasets' module will be deprecated in Harmonica v0.6.0. "
+        + "Harmonica will transition to using "
+        + "Ensaio (https://www.fatiando.org/ensaio/) instead."
     )
+    warnings.warn(msg, FutureWarning)
 
 
 def locate():

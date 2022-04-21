@@ -38,7 +38,7 @@ def test_deprecation_warning(fetch_function):
     """
     Checks if deprecation warning is raised
     """
-    message = "The 'datasets' module will be deprecated in Harmonica v0.6.0."
+    message = "The 'datasets' module will be deprecated in Harmonica v0.6.0.*"
     with pytest.warns(FutureWarning, match=message):
         fetch_function()
 
