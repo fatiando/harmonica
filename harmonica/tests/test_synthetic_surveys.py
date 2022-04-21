@@ -24,7 +24,7 @@ def test_deprecation_warning(synthetic_survey):
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_ground_survey():
     """
@@ -44,7 +44,7 @@ def test_ground_survey():
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_scale_ground_survey():
     """
@@ -63,7 +63,7 @@ def test_scale_ground_survey():
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_airborne_survey():
     """
@@ -83,7 +83,7 @@ def test_airborne_survey():
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_scale_airborne_survey():
     """
@@ -102,7 +102,7 @@ def test_scale_airborne_survey():
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_data_region_ground_survey():
     """
@@ -121,7 +121,7 @@ def test_data_region_ground_survey():
 
 
 @pytest.mark.filterwarnings(
-    "ignore:The 'synthetic' module will be deprecated:FutureWarning"
+    "ignore:The '(synthetic|datasets)' module will be deprecated:FutureWarning"
 )
 def test_data_region_airborne_survey():
     """
