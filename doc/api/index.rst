@@ -55,6 +55,14 @@ Input and Output
 
     load_icgem_gdf
 
+Visualization
+-------------
+
+.. autosummary::
+   :toctree: generated/
+
+    visualization.prisms_to_pyvista
+
 Synthetic models and surveys
 ----------------------------
 .. autosummary::

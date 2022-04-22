@@ -4,3 +4,4 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+from .prism import prisms_to_pyvista
