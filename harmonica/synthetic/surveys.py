@@ -7,10 +7,22 @@
 """
 Create synthetic surveys for gravity and magnetic observations
 """
+import warnings
+
 from verde import get_region, inside
 from verde.coordinates import check_region
 
 from ..datasets import fetch_britain_magnetic, fetch_south_africa_gravity
+
+
+def _deprecation_warning():
+    """
+    Raise a FutureWarning about deprecation of synthetic module
+    """
+    warnings.warn(
+        "The 'synthetic' module will be deprecated in Harmonica v0.6.0.",
+        FutureWarning,
+    )
 
 
 def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
@@ -51,6 +63,7 @@ def airborne_survey(region=None, data_region=(-5.0, -4.0, 56.0, 56.5)):
     --------
     harmonica.datasets.fetch_britain_magnetic
     """
+    _deprecation_warning()
     # Sanity checks for region and data_region
     if region is not None:
         check_region(region[:4])
@@ -103,6 +116,7 @@ def ground_survey(region=None, data_region=(13.60, 20.30, -24.20, -17.5)):
     --------
     harmonica.datasets.fetch_south_africa_gravity
     """
+    _deprecation_warning()
     # Sanity checks for region and data_region
     if region is not None:
         check_region(region[:4])
