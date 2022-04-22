@@ -17,9 +17,9 @@ else:
     import vtk
 
 
-def prisms_to_pyvista(prisms, properties=None):
+def prism_to_pyvista(prisms, properties=None):
     """
-    Create a :class:`pyvista.UnstructuredGrid` from a set of prisms
+    Create a :class:`pyvista.UnstructuredGrid` out of prisms
 
     Builds a :class:`pyvista.UnstructuredGrid` out of a set of prisms that
     could be used to plot a 3D representation through :mod:`pyvista`.

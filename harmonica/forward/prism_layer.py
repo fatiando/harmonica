@@ -13,7 +13,7 @@ import numpy as np
 import verde as vd
 import xarray as xr
 
-from ..visualization.prism import prisms_to_pyvista
+from ..visualization.prism import prism_to_pyvista
 from .prism import prism_gravity
 
 
@@ -465,4 +465,4 @@ class DatasetAccessorPrismLayer:
                 data_var: np.asarray(self._obj[data_var]).ravel()
                 for data_var in self._obj.data_vars
             }
-        return prisms_to_pyvista(prisms, properties=properties)
+        return prism_to_pyvista(prisms, properties=properties)

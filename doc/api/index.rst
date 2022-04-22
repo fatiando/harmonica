@@ -61,7 +61,7 @@ Visualization
 .. autosummary::
    :toctree: generated/
 
-    visualization.prisms_to_pyvista
+    visualization.prism_to_pyvista
 
 Synthetic models and surveys
 ----------------------------
