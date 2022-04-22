@@ -17,6 +17,11 @@ import xarray as xr
 
 from .. import prism_gravity, prism_layer
 
+try:
+    import pyvista
+except ImportError:
+    pyvista = None
+
 
 @pytest.fixture(params=("numpy", "xarray"))
 def dummy_layer(request):
@@ -385,3 +390,35 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
         result,
         prism_gravity(coordinates, prisms, rho, field=field),
     )
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+@pytest.mark.parametrize("properties", (False, True))
+def test_to_pyvista(dummy_layer, properties):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    # Build the layer with or without properties
+    if properties:
+        properties = {"density": density}
+    else:
+        properties = None
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Convert the layer to pyvista UnstructuredGrid
+    pv_grid = layer.prism_layer.to_pyvista()
+    # Check properties of the pyvista grid
+    assert pv_grid.n_cells == 20
+    assert pv_grid.n_points == 20 * 8
+    # Check coordinates of prisms
+    for i, prism in enumerate(layer.prism_layer._to_prisms()):
+        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
+    # Check properties of the prisms
+    if properties is None:
+        assert pv_grid.n_arrays == 0
+        assert pv_grid.array_names == []
+    else:
+        assert pv_grid.n_arrays == 1
+        assert pv_grid.array_names == ["density"]
+        assert pv_grid.get_array("density").ndim == 1
+        npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())

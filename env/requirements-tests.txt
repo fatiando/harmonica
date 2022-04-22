@@ -3,3 +3,5 @@ boule
 pytest
 pytest-cov
 coverage
+pyvista
+vtk>=9
