@@ -55,8 +55,22 @@ Input and Output
 
     load_icgem_gdf
 
+Visualization
+-------------
+
+.. autosummary::
+   :toctree: generated/
+
+    visualization.prism_to_pyvista
+
 Synthetic models and surveys
 ----------------------------
+
+.. warning::
+
+    The :mod:`harmonica.synthetic` module will be deprecated in Harmonica
+    v0.6.0
+
 .. autosummary::
    :toctree: generated/
 
@@ -70,6 +84,18 @@ Synthetic models and surveys
 
 Datasets
 --------
+
+.. warning::
+
+    The :mod:`harmonica.datasets` module and every sample dataset a will be
+    deprecated in Harmonica v0.6.0. The examples and the user guide will
+    transition to using Ensaio (https://www.fatiando.org/ensaio/) instead.
+
+.. warning::
+
+    The :mod:`harmonica.datasets` module will be deprecated in Harmonica
+    v0.6.0
+
 
 .. autosummary::
    :toctree: generated/
