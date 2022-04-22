@@ -19,6 +19,12 @@ doesn't interfere with any other Python installations in your system.
 Dependencies
 ------------
 
+The required dependencies should be installed automatically when you install
+Harmonica using ``conda`` or ``pip``. Optional dependencies have to be
+installed manually.
+
+Required:
+
 * `numpy <http://www.numpy.org/>`__
 * `pandas <http://pandas.pydata.org/>`__
 * `numba <https://numba.pydata.org/>`__
@@ -27,6 +33,12 @@ Dependencies
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+
+Optional:
+
+* `pyvista <https://www.pyvista.org/>`__ and
+  `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
+  See :meth:`harmonica.DatasetAccessorPrismLayer.to_pyvista`.
 
 The examples in the :ref:`gallery` also use:
 
