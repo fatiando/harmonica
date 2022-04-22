@@ -101,7 +101,7 @@ def prism_to_pyvista(prisms, properties=None):
 
 def _prisms_boundaries_to_vertices(prisms):
     """
-    Converts prisms boundaries to set of vertices for each prism
+    Converts prisms boundaries to sets of vertices for each prism
 
     The vertices for each prism will be in the following order
 
