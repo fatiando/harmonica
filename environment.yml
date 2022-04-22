@@ -34,6 +34,8 @@ dependencies:
   - pyproj
   - matplotlib
   - cartopy>=0.18
+  - ensaio
+  - netcdf4
   # Code style checks and autoformat
   - black==22.3.0
   - isort==5.10.*

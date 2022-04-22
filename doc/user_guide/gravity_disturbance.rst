@@ -52,10 +52,12 @@ Lets start by loading a sample gravity dataset for the whole Earth:
 
 .. jupyter-execute::
 
-   import harmonica as hm
+   import ensaio
+   import xarray as xr
 
-   data = hm.datasets.fetch_gravity_earth()
-   print(data)
+   fname = ensaio.fetch_earth_gravity(version=1)
+   gravity = xr.load_dataarray(fname)
+   print(gravity)
 
 These observations are located on a regular grid on geodetic coordinates at the
 same height of 10 km above the reference ellipsoid.
@@ -68,7 +70,7 @@ Lets plot it:
 
    plt.figure(figsize=(10, 10))
    ax = plt.axes(projection=ccrs.Robinson())
-   pc = data.gravity.plot.pcolormesh(
+   pc = gravity.plot.pcolormesh(
        ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="viridis"
    )
    plt.colorbar(
@@ -90,7 +92,7 @@ analytic solution.
    import boule as bl
 
    ellipsoid = bl.WGS84
-   normal_gravity = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+   normal_gravity = ellipsoid.normal_gravity(gravity.latitude, gravity.height)
 
 And plot it:
 
@@ -99,8 +101,8 @@ And plot it:
    plt.figure(figsize=(10, 10))
    ax = plt.axes(projection=ccrs.Robinson())
    pc = ax.pcolormesh(
-       data.longitude,
-       data.latitude,
+       gravity.longitude,
+       gravity.latitude,
        normal_gravity,
        transform=ccrs.PlateCarree(),
        cmap="viridis"
@@ -116,7 +118,7 @@ Now we can compute the gravity disturbance:
 
 .. jupyter-execute::
 
-   gravity_disturbance = data.gravity - normal_gravity
+   gravity_disturbance = gravity - normal_gravity
    print(gravity_disturbance)
 
 And plot it:
