@@ -23,6 +23,7 @@ isostatic Moho depth of Africa.
 """
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+import numpy as np
 
 import harmonica as hm
 
@@ -36,13 +37,16 @@ print(data_africa)
 
 # Calculate the water thickness
 oceans = np.array(data_africa.topography < 0)
-water_thickness = data_africa.topography*oceans*-1
+water_thickness = data_africa.topography * oceans * -1
 water_density = 1030
 
 # Calculate the isostatic Moho depth using the default values for densities and
 # reference Moho with water load
-moho = hm.isostasy_airy(data_africa.topography, layer_thickness=(water_thickness), 
-       layer_density=(water_density))
+moho = hm.isostasy_airy(
+    data_africa.topography,
+    layer_thickness=(water_thickness),
+    layer_density=(water_density),
+)
 print("\nMoho depth grid:")
 print(moho)
 
