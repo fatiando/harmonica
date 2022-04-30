@@ -15,8 +15,7 @@ supported by a thinning of the crust (an anti-root). Function
 (the Moho) according to Airy isostasy. One must assume a value for the
 reference thickness of the continental crust in order to convert the
 root/anti-root thickness into Moho depth. The function contains common default
-values for the reference thickness and crust, mantle, and water densities
-[TurcotteSchubert2014]_.
+values for the reference thickness and crust, mantle [TurcotteSchubert2014]_.
 
 We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
@@ -35,9 +34,15 @@ data_africa = data.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2])
 print("Topography/bathymetry grid:")
 print(data_africa)
 
+# Calculate the water thickness
+oceans = np.array(data_africa.topography < 0)
+water_thickness = data_africa.topography*oceans*-1
+water_density = 1030
+
 # Calculate the isostatic Moho depth using the default values for densities and
-# reference Moho
-moho = hm.isostasy_airy(data_africa.topography)
+# reference Moho with water load
+moho = hm.isostasy_airy(data_africa.topography, layer_thickness=(water_thickness), 
+       layer_density=(water_density))
 print("\nMoho depth grid:")
 print(moho)
 
