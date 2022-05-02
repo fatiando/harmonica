@@ -1,8 +1,0 @@
-numpy
-pandas
-scikit-learn
-numba
-pooch>=0.7.0
-xarray
-xrft
-verde>=1.5.0
