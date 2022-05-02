@@ -357,6 +357,24 @@ def test_laplace_equation_cartesian():
     npt.assert_allclose(g_ee + g_nn, -g_zz)
 
 
+@pytest.mark.use_numba
+@pytest.mark.parametrize(
+    "field, flipped_field", [("g_en", "g_ne"), ("g_ez", "g_ze"), ("g_nz", "g_zn")]
+)
+def test_tensor_non_diagonal_components(field, flipped_field):
+    """
+    Check if function computes g_xy as the same as g_yx
+    """
+    region = (2e3, 10e3, -3e3, 5e3)
+    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    masses = np.arange(points[0].size)
+    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    npt.assert_allclose(
+        point_gravity(coordinates, points, masses, field=field),
+        point_gravity(coordinates, points, masses, field=flipped_field),
+    )
+
+
 class TestTensorSymmetryCartesian:
 
     # Define sample point source and its mass
@@ -375,15 +393,17 @@ class TestTensorSymmetryCartesian:
         The mirrored computation points will be mirror images along one of the
         planes given by the tensor component.
 
-                |
-           *    |    *     m: point source of mass m
-                |          *: each one of the mirrored computation points
-                |
-        --------m--------
-                |
-                |
-                |
-                |
+        .. code::
+
+                    |
+               *    |    *     m: point source of mass m
+                    |          *: each one of the mirrored computation points
+                    |
+            --------m--------
+                    |
+                    |
+                    |
+                    |
 
         Parameters
         ----------
@@ -434,20 +454,23 @@ class TestTensorSymmetryCartesian:
         direction of the tensor component and be equidistant to the point
         source.
         For example:
-          - if ``directions=("e", "n")``, the two computation points will be
-            along the easting-northing diagonal, equidistant to the point mass.
-          - if ``directions=("n", "z")``, the two computation points will be
-            along the northing-upward diagonal, equidistant to the point mass.
 
-                |
-                |    *     m: point source of mass m
-                |          *: each one of the opposite computation points
-                |
-        --------m--------
-                |
-                |
-           *    |
-                |
+        * if ``directions=("e", "n")``, the two computation points will be
+          along the easting-northing diagonal, equidistant to the point mass.
+        * if ``directions=("n", "z")``, the two computation points will be
+          along the northing-upward diagonal, equidistant to the point mass.
+
+        .. code::
+
+                    |
+                    |    *     m: point source of mass m
+                    |          *: each one of the opposite computation points
+                    |
+            --------m--------
+                    |
+                    |
+               *    |
+                    |
 
         Parameters
         ----------

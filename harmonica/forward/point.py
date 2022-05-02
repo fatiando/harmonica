@@ -13,7 +13,11 @@ import numpy as np
 from numba import jit, prange
 
 from ..constants import GRAVITATIONAL_CONST
-from .utils import check_coordinate_system, distance_cartesian, distance_spherical_core
+from .utils import (
+    check_coordinate_system,
+    distance_cartesian,
+    distance_spherical_core,
+)
 
 
 def point_gravity(
@@ -221,7 +225,8 @@ def point_gravity(
     # Convert to more convenient units
     if field in ("g_easting", "g_northing", "g_z"):
         result *= 1e5  # SI to mGal
-    if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+    tensors = ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz", "g_ne", "g_ze", "g_zn")
+    if field in tensors:
         result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
 
@@ -284,12 +289,17 @@ def get_kernel(coordinate_system, field):
             "g_z": kernel_g_z_cartesian,
             "g_northing": kernel_g_northing_cartesian,
             "g_easting": kernel_g_easting_cartesian,
+            # diagonal tensor components
             "g_ee": kernel_g_ee_cartesian,
             "g_nn": kernel_g_nn_cartesian,
             "g_zz": kernel_g_zz_cartesian,
+            # non-diagonal tensor components
             "g_en": kernel_g_en_cartesian,
             "g_ez": kernel_g_ez_cartesian,
             "g_nz": kernel_g_nz_cartesian,
+            "g_ne": kernel_g_en_cartesian,
+            "g_ze": kernel_g_ez_cartesian,
+            "g_zn": kernel_g_nz_cartesian,
         },
         "spherical": {
             "potential": kernel_potential_spherical,
