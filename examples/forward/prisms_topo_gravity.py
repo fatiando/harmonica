@@ -18,13 +18,12 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 """
-import pyproj
-import numpy as np
-import verde as vd
-import harmonica as hm
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import pyproj
+import verde as vd
 
+import harmonica as hm
 
 # Read South Africa topography
 south_africa_topo = hm.datasets.fetch_south_africa_topography()

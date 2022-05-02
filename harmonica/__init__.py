@@ -4,26 +4,21 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring,import-outside-toplevel,import-self
 #
 # Import functions/classes to make the public API
-from . import datasets
-from . import synthetic
+from . import datasets, synthetic
+from ._version import __version__
+from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
+from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
+from .equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
+from .forward.point import point_gravity, point_mass_gravity
+from .forward.prism import prism_gravity
+from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
+from .forward.tesseroid import tesseroid_gravity
+from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
-from .gravity_corrections import bouguer_correction
-from .forward.point_mass import point_mass_gravity
-from .forward.tesseroid import tesseroid_gravity
-from .forward.prism import prism_gravity
-from .forward.prism_layer import prism_layer, DatasetAccessorPrismLayer
-from .equivalent_sources.cartesian import EquivalentSources, EQLHarmonic
-from .equivalent_sources.spherical import (
-    EquivalentSourcesSph,
-    EQLHarmonicSpherical,
-)
 from .derivatives import derivative_upward
-
-from .version import __version__
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

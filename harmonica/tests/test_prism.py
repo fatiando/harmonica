@@ -7,14 +7,13 @@
 """
 Test forward modelling for prisms.
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 import verde as vd
 
+from ..forward.prism import _check_prisms, prism_gravity, safe_atan2, safe_log
 from ..gravity_corrections import bouguer_correction
-from ..forward.prism import prism_gravity, _check_prisms, safe_atan2, safe_log
-
 from .utils import run_only_with_numba
 
 
@@ -194,10 +193,8 @@ def test_g_z_symmetry_outside():
     }
     # Compute g_z on each set of points
     results = {}
-    for group in computation_points:
-        results[group] = prism_gravity(
-            computation_points[group], prism, density, field="g_z"
-        )
+    for group, coords in computation_points.items():
+        results[group] = prism_gravity(coords, prism, density, field="g_z")
     # Check symmetries
     # Values on A must be opposite, and the value of g_z at the point above the
     # prism must have the same sign as the density, while the one below should
@@ -275,10 +272,8 @@ def test_g_z_symmetry_inside():
     }
     # Compute g_z on each set of points
     results = {}
-    for group in computation_points:
-        results[group] = prism_gravity(
-            computation_points[group], prism, density, field="g_z"
-        )
+    for group, coords in computation_points.items():
+        results[group] = prism_gravity(coords, prism, density, field="g_z")
     # Check symmetries
     # Values on A must be opposite, and the value of g_z at the point above the
     # center of the prism must have the same sign as the density, while the one

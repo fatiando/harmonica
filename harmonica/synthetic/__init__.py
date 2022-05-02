@@ -4,5 +4,4 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring
-from .surveys import ground_survey, airborne_survey
+from .surveys import airborne_survey, ground_survey

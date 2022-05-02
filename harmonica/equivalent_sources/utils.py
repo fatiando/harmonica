@@ -8,7 +8,34 @@
 Utility functions for equivalent sources gridders
 """
 from warnings import warn
+
 from numba import jit, prange
+
+
+def cast_fit_input(coordinates, data, weights, dtype):
+    """
+    Cast the inputs of the fit method to the given dtype
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...).
+    data : array
+        The data values of each data point.
+    weights : None or array
+        If not None, then the weights assigned to each data point.
+
+    Returns
+    -------
+    casted_inputs
+        The casted inputs in the same order.
+    """
+    coordinates = tuple(c.astype(dtype) for c in coordinates)
+    data = data.astype(dtype)
+    if weights is not None:
+        weights = weights.astype(dtype)
+    return coordinates, data, weights
 
 
 def pop_extra_coords(kwargs):
@@ -20,9 +47,7 @@ def pop_extra_coords(kwargs):
         kwargs.pop("extra_coords")
 
 
-def jacobian(
-    coordinates, points, jac, greens_function
-):  # pylint: disable=not-an-iterable
+def jacobian(coordinates, points, jac, greens_function):
     """
     Calculate the Jacobian matrix
 
@@ -45,9 +70,7 @@ def jacobian(
             )
 
 
-def predict(
-    coordinates, points, coeffs, result, greens_function
-):  # pylint: disable=not-an-iterable
+def predict(coordinates, points, coeffs, result, greens_function):
     """
     Calculate the predicted data
 
@@ -70,7 +93,6 @@ def predict(
             )
 
 
-# pylint: disable=invalid-name
 predict_numba_serial = jit(nopython=True)(predict)
 predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
 jacobian_numba_serial = jit(nopython=True)(jacobian)

@@ -44,7 +44,7 @@ def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
         Coordinate system of the coordinates of the computation points and the
         point masses.
         Available coordinates systems: ``cartesian``, ``spherical`` and
-       ``geodetic``. Default ``cartesian``.
+        ``geodetic``. Default ``cartesian``.
     ellipsoid : :class:`boule.Ellipsoid`
         Reference ellipsoid for points coordinates. Ignored if
         ``coordinate_system`` is not ``"geodetic"``. Default ``None``.
@@ -198,7 +198,7 @@ def distance_spherical_core(
     return dist, cospsi, coslambda
 
 
-def distance_geodetic(point_p, point_q, ellipsoid):  # pylint: disable=too-many-locals
+def distance_geodetic(point_p, point_q, ellipsoid):
     """
     Calculate the distance between two points in geodetic coordinates
 
@@ -265,7 +265,7 @@ def distance_geodetic(point_p, point_q, ellipsoid):  # pylint: disable=too-many-
         coslambda,
         prime_vertical_radius,
         prime_vertical_radius_p,
-        ellipsoid.first_eccentricity ** 2,
+        ellipsoid.first_eccentricity**2,
     )
 
 
@@ -311,11 +311,11 @@ def geodetic_distance_core(
     upward_sum = prime_vertical_radius + height
     upward_sum_p = prime_vertical_radius_p + height_p
     dist = np.sqrt(
-        upward_sum_p ** 2 * cosphi_p ** 2
-        + upward_sum ** 2 * cosphi ** 2
+        upward_sum_p**2 * cosphi_p**2
+        + upward_sum**2 * cosphi**2
         - 2 * upward_sum * upward_sum_p * cosphi * cosphi_p * coslambda
-        + (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p ** 2
-        + (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi ** 2
+        + (upward_sum_p - ecc_sq * prime_vertical_radius_p) ** 2 * sinphi_p**2
+        + (upward_sum - ecc_sq * prime_vertical_radius) ** 2 * sinphi**2
         - (
             2
             * (upward_sum_p - ecc_sq * prime_vertical_radius_p)

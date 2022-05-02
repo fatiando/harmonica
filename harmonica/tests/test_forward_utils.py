@@ -7,12 +7,12 @@
 """
 Test utils functions for forward modelling
 """
-import pytest
+import boule as bl
 import numpy as np
 import numpy.testing as npt
-import boule as bl
+import pytest
 
-from ..forward.utils import distance, check_coordinate_system
+from ..forward.utils import check_coordinate_system, distance
 
 
 @pytest.mark.use_numba
@@ -87,7 +87,7 @@ def test_geodetic_distance_equator_poles():
     ellipsoid = bl.WGS84
     # Compute the expected distance between the two points
     expected_distance = np.sqrt(
-        ellipsoid.semimajor_axis ** 2 + ellipsoid.semiminor_axis ** 2
+        ellipsoid.semimajor_axis**2 + ellipsoid.semiminor_axis**2
     )
     # Compute distance for different longitudes and alternate between points on
     # both poles

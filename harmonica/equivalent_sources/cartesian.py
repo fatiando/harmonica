@@ -8,20 +8,22 @@
 Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
 import warnings
+
 import numpy as np
-from numba import jit
-from sklearn.utils.validation import check_is_fitted
 import verde as vd
 import verde.base as vdb
+from numba import jit
+from sklearn.utils.validation import check_is_fitted
 
-from .utils import (
-    pop_extra_coords,
-    predict_numba_serial,
-    predict_numba_parallel,
-    jacobian_numba_serial,
-    jacobian_numba_parallel,
-)
 from ..forward.utils import distance_cartesian
+from .utils import (
+    cast_fit_input,
+    jacobian_numba_parallel,
+    jacobian_numba_serial,
+    pop_extra_coords,
+    predict_numba_parallel,
+    predict_numba_serial,
+)
 
 
 class EquivalentSources(vdb.BaseGridder):
@@ -127,6 +129,9 @@ class EquivalentSources(vdb.BaseGridder):
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
+    dtype : data-type
+        The desired data-type for the predictions and the Jacobian matrix.
+        Default to ``"float64"``.
 
     Attributes
     ----------
@@ -163,6 +168,7 @@ class EquivalentSources(vdb.BaseGridder):
         depth_type="relative",
         block_size=None,
         parallel=True,
+        dtype="float64",
         **kwargs,
     ):
         self.damping = damping
@@ -171,6 +177,7 @@ class EquivalentSources(vdb.BaseGridder):
         self.depth_type = depth_type
         self.block_size = block_size
         self.parallel = parallel
+        self.dtype = dtype
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
         # Check if depth_type is valid
@@ -216,13 +223,18 @@ class EquivalentSources(vdb.BaseGridder):
             Returns this estimator instance for chaining operations.
         """
         coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
+        coordinates, data, weights = cast_fit_input(
+            coordinates, data, weights, self.dtype
+        )
         # Capture the data region to use as a default when gridding.
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
             self.points_ = self._build_points(coordinates)
         else:
-            self.points_ = vdb.n_1d_arrays(self.points, 3)
+            self.points_ = tuple(
+                p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
+            )
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
@@ -321,17 +333,16 @@ class EquivalentSources(vdb.BaseGridder):
         check_is_fitted(self, ["coefs_"])
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
-        dtype = coordinates[0].dtype
-        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-        data = np.zeros(size, dtype=dtype)
+        coordinates = tuple(
+            np.atleast_1d(i.astype(self.dtype)).ravel() for i in coordinates[:3]
+        )
+        data = np.zeros(size, dtype=self.dtype)
         self._predict_kernel[self.parallel](
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )
         return data.reshape(shape)
 
-    def jacobian(
-        self, coordinates, points, dtype="float64"
-    ):  # pylint: disable=no-self-use
+    def jacobian(self, coordinates, points):
         """
         Make the Jacobian matrix for the equivalent sources.
 
@@ -342,15 +353,13 @@ class EquivalentSources(vdb.BaseGridder):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (``easting``, ``northing``, ``upward``, ...).
-            Only ``easting``, ``northing`` and ``upward`` will be used, all
-            subsequent coordinates will be ignored.
+            following order: (``easting``, ``northing``, ``upward``).
+            Each array must be 1D.
         points : tuple of arrays
             Tuple of arrays containing the coordinates of the equivalent point
             sources in the following order:
             (``easting``, ``northing``, ``upward``).
-        dtype : str or numpy dtype
-            The type of the Jacobian array.
+            Each array must be 1D.
 
         Returns
         -------
@@ -360,7 +369,7 @@ class EquivalentSources(vdb.BaseGridder):
         # Compute Jacobian matrix
         n_data = coordinates[0].size
         n_points = points[0].size
-        jac = np.zeros((n_data, n_points), dtype=dtype)
+        jac = np.zeros((n_data, n_points), dtype=self.dtype)
         self._jacobian_kernel[self.parallel](
             coordinates, points, jac, self.greens_function
         )
@@ -376,7 +385,7 @@ class EquivalentSources(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -432,9 +441,7 @@ class EquivalentSources(vdb.BaseGridder):
 
         """
         # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)
@@ -453,13 +460,13 @@ class EquivalentSources(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,
-        size=300,
-        random_state=0,
-        dims=None,
-        data_names=None,
-        projection=None,
-        **kwargs,
+        region=None,  # noqa: U100
+        size=300,  # noqa: U100
+        random_state=0,  # noqa: U100
+        dims=None,  # noqa: U100
+        data_names=None,  # noqa: U100
+        projection=None,  # noqa: U100
+        **kwargs,  # noqa: U100
     ):
         """
         .. warning ::
@@ -480,7 +487,7 @@ class EquivalentSources(vdb.BaseGridder):
         data_names=None,
         projection=None,
         **kwargs,
-    ):  # pylint: disable=arguments-differ
+    ):
         """
         Interpolate data along a profile between two points.
 
@@ -550,9 +557,7 @@ class EquivalentSources(vdb.BaseGridder):
 
         """
         # We override the profile method from BaseGridder so it takes the
-        # upward coordinate as a positional argument. We disable pylint
-        # arguments-differ error because we intend to make this method
-        # different from the inherited one.
+        # upward coordinate as a positional argument.
 
         # Ignore extra_coords if passed
         pop_extra_coords(kwargs)

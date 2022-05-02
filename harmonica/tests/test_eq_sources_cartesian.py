@@ -4,61 +4,113 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=protected-access
 """
 Test the EquivalentSources gridder
 """
-from collections.abc import Iterable
 import warnings
-import pytest
+from collections.abc import Iterable
+
 import numpy as np
 import numpy.testing as npt
-import xarray.testing as xrt
+import pytest
 import verde as vd
 import verde.base as vdb
+import xarray.testing as xrt
 
-from .. import EquivalentSources, EQLHarmonic, point_mass_gravity
+from .. import EQLHarmonic, EquivalentSources, point_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
-from ..equivalent_sources.utils import (
-    jacobian_numba_serial,
-    pop_extra_coords,
-)
+from ..equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba
 
 
-def test_pop_extra_coords():
+@pytest.fixture(name="region")
+def fixture_region():
     """
-    Test _pop_extra_coords private function
+    Return a sample region
     """
-    # Check if extra_coords is removed from kwargs
-    kwargs = {"bla": 1, "blabla": 2, "extra_coords": 1400.0}
-    with warnings.catch_warnings(record=True) as warn:
-        pop_extra_coords(kwargs)
-        assert len(warn) == 1
-        assert issubclass(warn[0].category, UserWarning)
-    assert "extra_coords" not in kwargs
+    return (-3e3, -1e3, 5e3, 7e3)
 
-    # Check if kwargs is not touched if no extra_coords are present
-    kwargs = {"bla": 1, "blabla": 2}
-    pop_extra_coords(kwargs)
-    assert kwargs == {"bla": 1, "blabla": 2}
+
+@pytest.fixture(name="coordinates")
+def fixture_coordinates(region):
+    """
+    Return a set of sample coordinates at zero height
+    """
+    shape = (40, 40)
+    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+
+
+@pytest.fixture(name="points")
+def fixture_points(region):
+    """
+    Return the coordinates of some sample point masses
+    """
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    return points
+
+
+@pytest.fixture(name="masses")
+def fixture_masses(region, points):
+    """
+    Return the masses some sample point masses
+    """
+    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+
+
+@pytest.fixture(name="data")
+def fixture_data(coordinates, points, masses):
+    """
+    Return some sample data
+    """
+    return point_gravity(coordinates, points, masses, field="g_z")
+
+
+@pytest.fixture(name="weights")
+def fixture_weights(data):
+    """
+    Return some sample data
+    """
+    return np.ones_like(data)
+
+
+@pytest.fixture(name="coordinates_small")
+def fixture_coordinates_small(region):
+    """
+    Return a small set of 25 coordinates and variable elevation
+    """
+    shape = (5, 5)
+    easting, northing = vd.grid_coordinates(region=region, shape=shape)
+    upward = np.arange(25, dtype=float).reshape(shape)
+    coordinates = (easting, northing, upward)
+    return coordinates
+
+
+@pytest.fixture(name="data_small")
+def fixture_data_small(points, masses, coordinates_small):
+    """
+    Return some sample data for the small set of coordinates
+    """
+    return point_gravity(coordinates_small, points, masses, field="g_z")
+
+
+@pytest.fixture(name="coordinates_9x9")
+def fixture_coordinates_9x9(region):
+    """
+    Return a small set of 81 coordinates and variable elevation
+    """
+    shape = (9, 9)
+    easting, northing = vd.grid_coordinates(region, shape=shape)
+    upward = np.arange(shape[0] * shape[1], dtype=float).reshape(shape)
+    coordinates = (easting, northing, upward)
+    return coordinates
 
 
 @run_only_with_numba
-def test_equivalent_sources_cartesian():
+def test_equivalent_sources_cartesian(region, points, masses, coordinates, data):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
-    # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
-
     # The interpolation should be perfect on the data points
     eqs = EquivalentSources()
     eqs.fit(coordinates, data)
@@ -69,7 +121,7 @@ def test_equivalent_sources_cartesian():
     upward = 0
     shape = (60, 60)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
 
     # Test grid method
@@ -80,25 +132,56 @@ def test_equivalent_sources_cartesian():
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=1e-3)
 
 
-def test_equivalent_sources_small_data_cartesian():
+@run_only_with_numba
+def test_equivalent_sources_cartesian_float32(
+    region, points, masses, coordinates, data
+):
+    """
+    Check that predictions are reasonable when interpolating from one grid to
+    a denser grid, using float32 as dtype.
+    """
+    # The interpolation should be perfect on the data points
+    eqs = EquivalentSources(dtype="float32")
+    eqs.fit(coordinates, data)
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=1e-3 * vd.maxabs(data))
+
+    # Gridding onto a denser grid should be reasonably accurate when compared
+    # to synthetic values
+    upward = 0
+    shape = (60, 60)
+    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    true = point_gravity(grid, points, masses, field="g_z")
+    npt.assert_allclose(true, eqs.predict(grid), atol=1e-3 * vd.maxabs(true))
+
+    # Test grid method
+    grid = eqs.grid(upward, shape=shape, region=region)
+    npt.assert_allclose(true, grid.scalars, atol=1e-3 * vd.maxabs(true))
+
+    # Test profile method
+    point1 = (region[0], region[2])
+    point2 = (region[0], region[3])
+    profile = eqs.profile(point1, point2, upward, shape[0])
+    true = point_gravity(
+        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
+    )
+    npt.assert_allclose(true, profile.scalars, atol=1e-3 * vd.maxabs(true))
+
+
+def test_equivalent_sources_small_data_cartesian(region, points, masses):
     """
     Check predictions against synthetic data using few data points for speed
     Use Cartesian coordinates.
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
+    # Define a small set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=0)
     # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
+    data = point_gravity(coordinates, points, masses, field="g_z")
 
     # The interpolation should be perfect on the data points
     eqs = EquivalentSources(depth=500)
@@ -115,7 +198,7 @@ def test_equivalent_sources_small_data_cartesian():
     upward = 20
     shape = (8, 8)
     grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_mass_gravity(grid, points, masses, field="g_z")
+    true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=0.08)
 
     # Test grid method
@@ -126,24 +209,10 @@ def test_equivalent_sources_small_data_cartesian():
     point1 = (region[0], region[2])
     point2 = (region[0], region[3])
     profile = eqs.profile(point1, point2, upward, 10)
-    true = point_mass_gravity(
+    true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, rtol=0.05)
-
-
-@pytest.fixture(name="coordinates")
-def fixture_coordinates():
-    """
-    Return a set of sample coordinates intended to be used in tests
-    """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    shape = (9, 9)
-    # Define a set of observation points with variable elevation coordinates
-    easting, northing = vd.grid_coordinates(region=region, shape=shape)
-    upward = np.arange(shape[0] * shape[1], dtype=float).reshape(shape)
-    coordinates = (easting, northing, upward)
-    return coordinates
 
 
 @pytest.mark.parametrize("depth_type", ("relative", "constant"))
@@ -191,7 +260,7 @@ def test_equivalent_sources_build_points_bacwkards(coordinates):
 @pytest.mark.parametrize(
     "block_size", (750, (750, 1e3)), ids=["block_size as float", "block_size as tuple"]
 )
-def test_block_averaging_coordinates(coordinates, block_size):
+def test_block_averaging_coordinates(coordinates_9x9, block_size):
     """
     Test the _block_averaging_coordinates method
     """
@@ -209,11 +278,11 @@ def test_block_averaging_coordinates(coordinates, block_size):
             [5250, 5250, 5250, 6000, 6000, 6000, 6750, 6750, 6750],
             [10.0, 13.0, 16.0, 37.0, 40.0, 43.0, 64.0, 67.0, 70.0],
         )
-    npt.assert_allclose(expected, eqs._block_average_coordinates(coordinates))
+    npt.assert_allclose(expected, eqs._block_average_coordinates(coordinates_9x9))
 
 
 @pytest.mark.parametrize("depth_type", ("constant", "relative"))
-def test_build_points_block_average(coordinates, depth_type):
+def test_build_points_block_average(coordinates_9x9, depth_type):
     """
     Test the _build_points method with block-averaging
     """
@@ -229,7 +298,7 @@ def test_build_points_block_average(coordinates, depth_type):
         expected[-1] -= depth
     if depth_type == "constant":
         expected[-1] = np.zeros_like(expected[0]) - depth
-    npt.assert_allclose(expected, eqs._build_points(coordinates))
+    npt.assert_allclose(expected, eqs._build_points(coordinates_9x9))
 
 
 def test_equivalent_sources_invalid_depth_type():
@@ -240,24 +309,14 @@ def test_equivalent_sources_invalid_depth_type():
         EquivalentSources(depth=300, depth_type="blabla")
 
 
-def test_equivalent_sources_points_depth():
+def test_equivalent_sources_points_depth(points, coordinates_small, data_small):
     """
     Check if the points coordinates are properly defined by the fit method
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points with variable elevation coordinates
-    easting, northing = vd.grid_coordinates(region=region, shape=(5, 5))
-    upward = np.arange(25, dtype=float).reshape((5, 5))
-    coordinates = (easting, northing, upward)
-    # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
-
+    easting, northing, upward = coordinates_small[:]
     # Test with constant depth
     eqs = EquivalentSources(depth=1.3e3, depth_type="constant")
-    eqs.fit(coordinates, data)
+    eqs.fit(coordinates_small, data_small)
     expected_points = vdb.n_1d_arrays(
         (easting, northing, -1.3e3 * np.ones_like(easting)), n=3
     )
@@ -265,7 +324,7 @@ def test_equivalent_sources_points_depth():
 
     # Test with relative depth
     eqs = EquivalentSources(depth=1.3e3, depth_type="relative")
-    eqs.fit(coordinates, data)
+    eqs.fit(coordinates_small, data_small)
     expected_points = vdb.n_1d_arrays((easting, northing, upward - 1.3e3), n=3)
     npt.assert_allclose(expected_points, eqs.points_)
 
@@ -280,24 +339,14 @@ def test_equivalent_sources_points_depth():
     assert points is None
 
 
-def test_equivalent_sources_custom_points_cartesian():
+def test_equivalent_sources_custom_points_cartesian(region, coordinates, data):
     """
     Check that passing in custom points works and actually uses the points
     Use Cartesian coordinates.
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(5, 5), extra_coords=0)
-    # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
-
     # Pass a custom set of point sources
     points_custom = tuple(
-        i.ravel()
-        for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
+        i.ravel() for i in vd.grid_coordinates(region, shape=(3, 3), extra_coords=-550)
     )
     eqs = EquivalentSources(points=points_custom)
     eqs.fit(coordinates, data)
@@ -344,19 +393,10 @@ def test_equivalent_sources_jacobian_cartesian():
 
 
 @run_only_with_numba
-def test_equivalent_sources_cartesian_parallel():
+def test_equivalent_sources_cartesian_parallel(region, coordinates, data):
     """
     Check predictions when parallel is enabled and disabled
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(40, 40), extra_coords=0)
-    # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
-
     # The predictions should be equal whether are run in parallel or in serial
     eqs_serial = EquivalentSources(parallel=False)
     eqs_serial.fit(coordinates, data)
@@ -371,26 +411,15 @@ def test_equivalent_sources_cartesian_parallel():
 
 
 @pytest.mark.parametrize("depth_type", ("constant", "relative"))
-def test_backward_eqlharmonic(depth_type):
+def test_backward_eqlharmonic(region, coordinates_small, data_small, depth_type):
     """
     Check backward compatibility with to-be-deprecated EQLHarmonic class
 
     Check if FutureWarning is raised on initialization
     """
-    region = (-3e3, -1e3, 5e3, 7e3)
-    # Build synthetic point masses
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points with variable elevation coordinates
-    easting, northing = vd.grid_coordinates(region=region, shape=(5, 5))
-    upward = np.arange(25, dtype=float).reshape((5, 5))
-    coordinates = (easting, northing, upward)
-    # Get synthetic data
-    data = point_mass_gravity(coordinates, points, masses, field="g_z")
-
     # Fit EquivalentSources instance
     eqs = EquivalentSources(depth=1.3e3, depth_type=depth_type)
-    eqs.fit(coordinates, data)
+    eqs.fit(coordinates_small, data_small)
 
     # Fit deprecated EQLHarmonic instance
     # (check if FutureWarning is raised)
@@ -398,7 +427,7 @@ def test_backward_eqlharmonic(depth_type):
         eql_harmonic = EQLHarmonic(depth=1.3e3, depth_type=depth_type)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, FutureWarning)
-    eql_harmonic.fit(coordinates, data)
+    eql_harmonic.fit(coordinates_small, data_small)
 
     # Check if both gridders are equivalent
     npt.assert_allclose(eqs.points_, eql_harmonic.points_)
@@ -407,3 +436,69 @@ def test_backward_eqlharmonic(depth_type):
         eqs.grid(upward=2e3, shape=shape, region=region),
         eql_harmonic.grid(upward=2e3, shape=shape, region=region),
     )
+
+
+@run_only_with_numba
+@pytest.mark.parametrize("block_size", (None, 500), ids=["no_blocks", "blocks"])
+@pytest.mark.parametrize("custom_points", (False, True), ids=["no_points", "points"])
+@pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
+@pytest.mark.parametrize("damping", (None, 0.1), ids=["damping_none", "damping"])
+@pytest.mark.parametrize("dtype", ("float64", "float32"))
+def test_dtype(
+    region,
+    coordinates,
+    data,
+    weights,
+    block_size,
+    custom_points,
+    weights_none,
+    damping,
+    dtype,
+):
+    """
+    Test dtype argument on EquivalentSources
+    """
+    # Define the points argument for EquivalentSources
+    points = None
+    if custom_points:
+        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+    # Define the points argument for EquivalentSources.fit()
+    if weights_none:
+        weights = None
+    # Initialize and fit the equivalent sources
+    eqs = EquivalentSources(
+        damping=damping, points=points, block_size=block_size, dtype=dtype
+    )
+    eqs.fit(coordinates, data, weights)
+    # Make some predictions
+    prediction = eqs.predict(coordinates)
+    # Check data type of created objects
+    for coord in eqs.points_:
+        assert coord.dtype == np.dtype(dtype)
+    assert prediction.dtype == np.dtype(dtype)
+    # Check the data type of the source coefficients
+    #  assert eqs.coefs_.dtype == np.dtype(dtype)
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("dtype", ("float64", "float32"))
+def test_jacobian_dtype(region, dtype):
+    """
+    Test dtype of Jacobian when changing dtype argument on EquivalentSources
+    """
+    # Build a set of custom coordinates
+    coordinates = tuple(
+        c.ravel() for c in vd.grid_coordinates(region, shape=(10, 10), extra_coords=0)
+    )
+    # Create custom set of point sources
+    points = tuple(
+        p.ravel() for p in vd.grid_coordinates(region, shape=(6, 6), extra_coords=-2e3)
+    )
+    # Ravel the coordinates
+    coordinates = tuple(c.ravel() for c in coordinates)
+    # Initialize and fit the equivalent sources
+    eqs = EquivalentSources(points=points, dtype=dtype)
+    # Build jacobian matrix
+    jacobian = eqs.jacobian(coordinates, points)
+    # Check data type of the Jacobian
+    assert jacobian.dtype == np.dtype(dtype)

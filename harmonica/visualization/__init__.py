@@ -4,11 +4,4 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-"""
-Define the __version__ variable as the version number with leading "v"
-"""
-# This file is generated automatically by setuptools_scm
-from ._version import version
-
-# Add a "v" to the version number
-__version__ = f"v{version}"
+from .prism import prism_to_pyvista

@@ -1,0 +1,5 @@
+# Requirements to build and check distributions
+setuptools>=45
+setuptools_scm>=6.2
+twine
+wheel

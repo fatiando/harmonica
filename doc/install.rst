@@ -19,13 +19,26 @@ doesn't interfere with any other Python installations in your system.
 Dependencies
 ------------
 
+The required dependencies should be installed automatically when you install
+Harmonica using ``conda`` or ``pip``. Optional dependencies have to be
+installed manually.
+
+Required:
+
 * `numpy <http://www.numpy.org/>`__
 * `pandas <http://pandas.pydata.org/>`__
 * `numba <https://numba.pydata.org/>`__
+* `scipy <https://www.scipy.org/>`__
 * `xarray <https://xarray.pydata.org/>`__
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+
+Optional:
+
+* `pyvista <https://www.pyvista.org/>`__ and
+  `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
+  See :meth:`harmonica.DatasetAccessorPrismLayer.to_pyvista`.
 
 The examples in the :ref:`gallery` also use:
 
@@ -58,7 +71,7 @@ Installing the latest development version
 
 You can use ``pip`` to install the latest source from Github::
 
-    pip install https://github.com/fatiando/harmonica/archive/master.zip
+    pip install https://github.com/fatiando/harmonica/archive/main.zip
 
 Alternatively, you can clone the git repository locally and install from
 there::

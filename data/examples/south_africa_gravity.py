@@ -18,9 +18,10 @@ longitude, latitude, elevation (above sea level) and gravity(mGal). See the
 documentation for :func:`harmonica.datasets.fetch_south_africa_gravity` for
 more information.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import verde as vd
+
 import harmonica as hm
 
 # Fetch the data in a pandas.DataFrame

@@ -1,0 +1,10 @@
+# Documentation building requirements
+sphinx==4.5.*
+sphinx-book-theme==0.2.*
+sphinx-gallery==0.10.*
+boule
+pyproj
+matplotlib
+cartopy>=0.18
+pyvista
+vtk>=9
