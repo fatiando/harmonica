@@ -41,11 +41,11 @@ water_thickness = data_africa.topography * oceans * -1
 water_density = 1030
 
 # Calculate the isostatic Moho depth using the default values for densities and
-# reference Moho with water load
+# reference Moho with water load. We neglect the effect of sediment here, so the
+# basement elevation refers to topography.
 moho = hm.isostasy_airy(
-    data_africa.topography,
-    layer_thickness=(water_thickness),
-    layer_density=(water_density),
+    basement_elevation=data_africa.topography,
+    layers={"water", (water_thickness, water_density)},
 )
 print("\nMoho depth grid:")
 print(moho)

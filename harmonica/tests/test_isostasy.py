@@ -31,11 +31,11 @@ def test_isostasy_airy():
     topography = np.array([-2, -1, 0, 1, 2, 3])
     thickness_water = np.array([2, 1, 0, 0, 0, 0])
     density_water = 0.5
+    layer = {"water": (thickness_water, density_water)}
     true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
     root = isostasy_airy(
         topography,
-        layer_thickness=(thickness_water),
-        layer_density=(density_water),
+        layers=layer,
         density_crust=1,
         density_mantle=3,
         reference_depth=0,
@@ -52,11 +52,11 @@ def test_isostasy_airy_dataarray():
         np.array([2, 1, 0, 0, 0, 0]), coords=(np.arange(6),), dims=["something"]
     )
     density_water = 0.5
+    layer = {"water": (thickness_water, density_water)}
     true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
     root = isostasy_airy(
         topography,
-        layer_thickness=(thickness_water),
-        layer_density=(density_water),
+        layers=layer,
         density_crust=1,
         density_mantle=3,
         reference_depth=0,
