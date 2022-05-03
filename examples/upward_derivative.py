@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyproj
 import verde as vd
+import xrft
 
 import harmonica as hm
 
@@ -35,9 +36,21 @@ eql = hm.EquivalentSources(depth=1000, damping=1).fit(
     coordinates, data.total_field_anomaly_nt
 )
 grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
+grid = grid.magnetic_anomaly
+
+# Pad the grid to increase accuracy of the FFT filter
+pad_width = {
+    "easting": grid.easting.size // 3,
+    "northing": grid.northing.size // 3,
+}
+grid = grid.drop_vars("upward")  # drop extra coordinates due to bug in xrft.pad
+grid_padded = xrft.pad(grid, pad_width)
 
 # Compute the upward derivative of the grid
-deriv_upward = hm.derivative_upward(grid.magnetic_anomaly)
+deriv_upward = hm.derivative_upward(grid_padded)
+
+# Unpad the derivative grid
+deriv_upward = xrft.unpad(deriv_upward, pad_width)
 
 # Show the upward derivative
 print("\nUpward derivative:\n", deriv_upward)
@@ -48,7 +61,7 @@ fig, (ax1, ax2) = plt.subplots(
 )
 
 # Plot the magnetic anomaly grid
-grid.magnetic_anomaly.plot(
+grid.plot(
     ax=ax1,
     cbar_kwargs={"label": "nT", "location": "bottom", "shrink": 0.8, "pad": 0.08},
 )
