@@ -31,7 +31,7 @@ def derivative_upward(fourier_transform, order=1):
         Array with the upward derivative of the original grid in the frequency
         domain.
     """
-    # Catch the dims of the Fourier transoformed grid
+    # Catch the dims of the Fourier transformed grid
     dims = fourier_transform.dims
     # Grab the coordinates of the Fourier transformed grid
     freq_easting = fourier_transform.coords[dims[1]]
