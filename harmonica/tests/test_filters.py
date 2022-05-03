@@ -14,6 +14,7 @@ import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
 from ..filters.fft import fft, ifft
+from ..filters.utils import apply_filter
 
 
 @pytest.fixture(name="region")
@@ -114,3 +115,96 @@ def test_fft_no_drop_bad_coords_multi(sample_grid_multiple_coords):
     """
     with pytest.raises(ValueError):
         fft(sample_grid_multiple_coords, drop_bad_coords=False)
+
+
+# -------------------------------
+# Tests for apply_filter function
+# -------------------------------
+
+
+def dummy_filter(fourier_transform):
+    """
+    Implement a dummy filter in frequency domain for testing purposes
+
+    Return an array full of zeroes
+    """
+    return fourier_transform * 0
+
+
+def test_apply_filter(sample_grid):
+    """
+    Test apply_filter function using the dummy_filter
+    """
+    print(sample_grid)
+    # Apply the dummy filter
+    filtered_grid = apply_filter(sample_grid, dummy_filter)
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
+@pytest.fixture(name="invalid_grid_single_dim")
+def fixture_invalid_grid_single_dim():
+    """
+    Return a sample grid with a single dimension.
+
+    This fixture is meant to test if apply_filter raises an error on a grid
+    with a single dimension.
+    """
+    x = np.linspace(0, 10, 11)
+    y = x**2
+    grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+    return grid
+
+
+@pytest.fixture(name="invalid_grid_3_dims")
+def fixture_invalid_grid_3_dims():
+    """
+    Return a sample grid with 3 dimensions.
+
+    This fixture is meant to test if apply_filter raises an error on a grid
+    with 3 dimensions.
+    """
+    x = np.linspace(0, 10, 11)
+    y = np.linspace(-4, 4, 9)
+    z = np.linspace(20, 30, 5)
+    xx, yy, zz = np.meshgrid(x, y, z)
+    data = xx + yy + zz
+    grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+    return grid
+
+
+def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
+    """
+    Check if apply_filter raises error on grid with single dimension
+    """
+    with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+        apply_filter(invalid_grid_single_dim, dummy_filter)
+
+
+def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
+    """
+    Check if apply_filter raises error on grid with single dimension
+    """
+    with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+        apply_filter(invalid_grid_3_dims, dummy_filter)
+
+
+@pytest.fixture(name="invalid_grid_with_nans")
+def fixture_invalid_grid_with_nans(sample_grid):
+    """
+    Return a sample grid with nans.
+
+    This fixture is meant to test if apply_filter raises an error on a grid
+    with a nans.
+    """
+    sample_grid[2, 4] = np.nan
+    return sample_grid
+
+
+def test_apply_filter_grid_with_nans(invalid_grid_with_nans):
+    """
+    Check if apply_filter raises error on grid with single dimension
+    """
+    with pytest.raises(ValueError, match="Found nan"):
+        apply_filter(invalid_grid_with_nans, dummy_filter)
