@@ -10,6 +10,26 @@ Decorators and useful functions for running tests
 import os
 
 import pytest
+import numpy as np
+
+
+def root_mean_square_error(x, y):
+    """
+    Compute root mean square error between two arrays
+
+    Parameters
+    ----------
+    x : array
+    y : array
+
+    Returns
+    -------
+    rms : float
+        Root mean square error between the two arrays
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+    return np.sqrt(np.mean((x - y) ** 2))
 
 
 def combine_decorators(*decorators):
