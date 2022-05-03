@@ -6,4 +6,3 @@ coverage
 pyvista
 vtk>=9
 netcdf4
-tlz
