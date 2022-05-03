@@ -9,8 +9,8 @@ Decorators and useful functions for running tests
 """
 import os
 
-import pytest
 import numpy as np
+import pytest
 
 
 def root_mean_square_error(x, y):

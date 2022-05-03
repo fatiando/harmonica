@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test functions for spatial derivatives based on FFT
 """
@@ -5,12 +11,12 @@ import os
 from pathlib import Path
 
 import numpy as np
-import xarray as xr
 import pytest
+import xarray as xr
 import xrft
 
-from .utils import root_mean_square_error
 from ..derivatives import derivative_upward
+from .utils import root_mean_square_error
 
 MODULE_DIR = Path(os.path.dirname(__file__))
 TEST_DATA_DIR = MODULE_DIR / "data"

@@ -8,7 +8,8 @@
 Wrap xrft functions to compute FFTs and inverse FFTs
 """
 
-from xrft.xrft import fft as _fft, ifft as _ifft
+from xrft.xrft import fft as _fft
+from xrft.xrft import ifft as _ifft
 
 
 def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwargs):

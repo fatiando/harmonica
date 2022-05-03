@@ -7,8 +7,8 @@
 """
 Test functions from the filter module
 """
-import pytest
 import numpy as np
+import pytest
 import xarray as xr
 import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid

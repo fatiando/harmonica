@@ -8,7 +8,6 @@
 Compute spatial derivatives of grids
 """
 from .filters import derivative_upward as fft_derivative_upward
-
 from .filters.utils import apply_filter
 
 

@@ -40,5 +40,5 @@ def derivative_upward(fourier_transform, order=1):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the upward (vertical) derivative in the frequency domain
-    deriv_ft = fourier_transform * np.sqrt(k_easting ** 2 + k_northing ** 2) ** order
+    deriv_ft = fourier_transform * np.sqrt(k_easting**2 + k_northing**2) ** order
     return deriv_ft
