@@ -41,7 +41,7 @@ water_thickness = data_africa.topography * oceans * -1
 water_density = 1030
 
 # Calculate the isostatic Moho depth using the default values for densities and
-# reference Moho with water load. We neglect the effect of sediment here, so the
+# reference Moho with water load. We neglect the effect of sediment here, so
 # basement elevation refers to topography.
 moho = hm.isostasy_airy(
     basement_elevation=data_africa.topography,

@@ -13,7 +13,7 @@ import xarray as xr
 
 def isostasy_airy(
     basement_elevation,
-    layers={"none": (0, 0)},
+    layers=None,
     density_crust=2.8e3,
     density_mantle=3.3e3,
     reference_depth=30e3,
@@ -68,9 +68,9 @@ def isostasy_airy(
         (topography/bathymetry minues sediment thickness). It is usually
         prudent to use floating point values instead of integers to avoid
         integer division errors.
-    layers : dictionary {"names": tuple (thickness , density)}, default value is 0
-        Thickness could be array or :class:`xarray.DataArray`
-        Density could be float, array or :class:`xarray.DataArray`
+    layers : dictionary contains tuples as {"names": (thickness , density)},
+        default as None.
+        Thickness and density type: float, array or :class:`xarray.DataArray`
         Layer thickness in meters. Layer density in :math:`kg/m^3`.It refer to
         all layers above basement, including ice, water, and sediment.
     density_crust : float
@@ -94,11 +94,17 @@ def isostasy_airy(
     name_layers = []
     density_layers = []
 
-    # Calculate total mass above basement
-    for sub_layer_name, sub_layer in layers.items():
-        mass_layers += sub_layer[0] * sub_layer[1]
-        name_layers.append(sub_layer_name)
-        density_layers.append(str(sub_layer[1]))
+    # No mass load above basement
+    if layers is None:
+        name_layers = "None"
+        density_layers = "None"
+    # With mass load above basement
+    else:
+        # Calculate total mass above basement
+        for sub_layer_name, sub_layer in layers.items():
+            mass_layers += sub_layer[0] * sub_layer[1]
+            name_layers.append(sub_layer_name)
+            density_layers.append(str(sub_layer[1]))
 
     # Calculate rock equivalent topography
     rock_equivalent_topography = basement_elevation + mass_layers / density_crust
