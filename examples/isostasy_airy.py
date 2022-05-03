@@ -45,7 +45,7 @@ water_density = 1030
 # basement elevation refers to topography.
 moho = hm.isostasy_airy(
     basement_elevation=data_africa.topography,
-    layers={"water", (water_thickness, water_density)},
+    layers={"water": (water_thickness, water_density)},
 )
 print("\nMoho depth grid:")
 print(moho)
