@@ -5,3 +5,4 @@ pytest-cov
 coverage
 pyvista
 vtk>=9
+netcdf4
