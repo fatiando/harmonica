@@ -9,57 +9,99 @@ Testing isostasy calculation
 """
 import numpy as np
 import numpy.testing as npt
+import pytest
 import xarray as xr
 
 from ..isostasy import isostasy_airy
 
 
-def test_isostasy_airy_zero_topography():
-    "Root should be zero for zero topography"
-    topography = np.zeros(20, dtype=np.float64)
-    npt.assert_equal(isostasy_airy(topography, reference_depth=0), 0)
-    npt.assert_equal(isostasy_airy(topography, reference_depth=30e3), 30e3)
-    # Check that the shape of the topography is preserved
-    topography = np.zeros((20, 31), dtype=np.float64)
-    assert isostasy_airy(topography).shape == topography.shape
-    npt.assert_equal(isostasy_airy(topography, reference_depth=0), 0)
-    npt.assert_equal(isostasy_airy(topography, reference_depth=30e3), 30e3)
+@pytest.mark.parametrize("reference_depth", (0, 30e3))
+def test_airy_without_load(reference_depth):
+    "Root should be zero for zero equivalent topography (zero basement, no layers)"
+    basement = np.zeros(20, dtype=np.float64)
+    npt.assert_equal(
+        isostasy_airy(basement, reference_depth=reference_depth), reference_depth
+    )
 
 
-def test_isostasy_airy():
-    "Use a simple integer topography to check the calculations"
-    topography = np.array([-2, -1, 0, 1, 2, 3])
-    thickness_water = np.array([2, 1, 0, 0, 0, 0])
-    density_water = 0.5
-    layer = {"water": (thickness_water, density_water)}
-    true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
+@pytest.mark.parametrize("shape", (20, (20, 31), (20, 31, 2)))
+def test_airy_array_shape_preserved(shape):
+    """
+    Check that the shape of the topography is preserved
+    """
+    basement = np.zeros(shape, dtype=np.float64)
+    assert isostasy_airy(basement).shape == basement.shape
+
+
+@pytest.fixture(name="basement", params=("numpy", "xarray"))
+def fixture_basement(request):
+    """
+    Return a basement array
+    """
+    basement = np.array([-2, -1, 0, 1, 2, 3], dtype=float)
+    if request.param == "xarray":
+        basement = xr.DataArray(basement)
+    return basement
+
+
+@pytest.fixture(name="water", params=("numpy", "xarray"))
+def fixture_water(request):
+    """
+    Return thickness and density for a water layer
+    """
+    thickness = np.array([2, 1, 0, 0, 0, 0], dtype=float)
+    density = 0.5
+    if request.param == "xarray":
+        thickness = xr.DataArray(thickness)
+    return thickness, density
+
+
+@pytest.fixture(name="sediments", params=("numpy", "xarray"))
+def fixture_sediments(request):
+    """
+    Return thickness and density for a sediments layer
+    """
+    thickness = np.array([1, 2, 1, 0, 1.5, 0], dtype=float)
+    density = 0.75
+    if request.param == "xarray":
+        thickness = xr.DataArray(thickness)
+    return thickness, density
+
+
+def test_airy_single_layer(basement, water):
+    "Use a simple basement + water model to check the calculations"
+    thickness_water, density_water = water
+    layers = {"water": (thickness_water, density_water)}
     root = isostasy_airy(
-        topography,
-        layers=layer,
+        basement,
+        layers=layers,
         density_crust=1,
         density_mantle=3,
         reference_depth=0,
     )
+    true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
     npt.assert_equal(root, true_root)
+    if isinstance(root, xr.DataArray):
+        assert root.attrs["density_water"] == density_water
 
 
-def test_isostasy_airy_dataarray():
-    "Pass in a DataArray and make sure things work"
-    topography = xr.DataArray(
-        np.array([-2, -1, 0, 1, 2, 3]), coords=(np.arange(6),), dims=["something"]
-    )
-    thickness_water = xr.DataArray(
-        np.array([2, 1, 0, 0, 0, 0]), coords=(np.arange(6),), dims=["something"]
-    )
-    density_water = 0.5
-    layer = {"water": (thickness_water, density_water)}
-    true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
+def test_airy_multiple_layers(basement, water, sediments):
+    "Check isostasy function against a model with multiple layers"
+    thickness_water, density_water = water
+    thickness_sediments, density_sediments = sediments
+    layers = {
+        "water": (thickness_water, density_water),
+        "sediments": (thickness_sediments, density_sediments),
+    }
     root = isostasy_airy(
-        topography,
-        layers=layer,
+        basement,
+        layers=layers,
         density_crust=1,
         density_mantle=3,
         reference_depth=0,
     )
-    assert isinstance(root, xr.DataArray)
-    npt.assert_equal(root.values, true_root)
+    true_root = np.array([-0.125, 0.5, 0.375, 0.5, 1.5625, 1.5])
+    npt.assert_equal(root, true_root)
+    if isinstance(root, xr.DataArray):
+        assert root.attrs["density_water"] == density_water
+        assert root.attrs["density_sediments"] == density_sediments

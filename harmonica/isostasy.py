@@ -12,15 +12,14 @@ import xarray as xr
 
 
 def isostasy_airy(
-    basement_elevation,
+    basement,
     layers=None,
     density_crust=2.8e3,
     density_mantle=3.3e3,
     reference_depth=30e3,
 ):
     r"""
-    Calculate the isostatic Moho depth from rock equivalent topography using
-    Airy's hypothesis.
+    Calculate the isostatic Moho depth using Airy's hypothesis.
 
     According to the Airy hypothesis of isostasy, rock equivalent topography
     above sea level is supported by a thickening of the crust (a root) while
@@ -33,25 +32,25 @@ def isostasy_airy(
 
         *Schematic of isostatic compensation following the Airy hypothesis.*
 
-    The relationship between the rock equivalent topography (:math:`ret`)
+    The relationship between the rock equivalent topography (:math:`r_{et}`)
     and the root thickness (:math:`r`) is governed by mass balance relations
     and can be found in classic textbooks like [TurcotteSchubert2014]_ and
     [Hofmann-WellenhofMoritz2006]_.
 
-    Compress all layers's mass above basement (:math:`h`) into rock equivalent
-    topography [Balmino_etal1973]_ :
+    Compress all layers' mass above basement (:math:`h`) into *rock equivalent
+    topography* [Balmino_etal1973]_ :
 
     .. math ::
 
-        ret = h + \frac{\rho_{i}}{\rho_{c}}th_{i} + ..
+        r_{et} = h + \sum\limits_{i=1}^N \frac{\rho_{i}}{\rho_{c}} t_{i}
 
     Based on rock equivalent topography, the root is calculated as:
 
     .. math ::
-        r = \frac{\rho_{c}}{\rho_m - \rho_{c}} ret
+        r = \frac{\rho_{c}}{\rho_m - \rho_{c}} r_{et}
 
-    in which :math:`ret` is the rock equivalent topography , :math:`\rho_m` is
-    the density of the mantle, and :math:`\rho_{c}` is the density of the
+    in which :math:`r_{et}` is the rock equivalent topography , :math:`\rho_m`
+    is the density of the mantle, and :math:`\rho_{c}` is the density of the
     crust.
 
     The computed root thicknesses will be added to the given reference Moho
@@ -61,61 +60,95 @@ def isostasy_airy(
 
     Parameters
     ----------
-    basement_elevation : array or :class:`xarray.DataArray`
-        Basement elevation in meters. It usually refer to topography height
-        and bathymetry depth in area without sediment cover. When considering
-        sedimentary layer, it refers to crystalline basement
-        (topography/bathymetry minues sediment thickness). It is usually
-        prudent to use floating point values instead of integers to avoid
-        integer division errors.
-    layers : dictionary contains tuples as {"names": (thickness , density)},
-        default as None.
-        Thickness and density type: float, array or :class:`xarray.DataArray`
-        Layer thickness in meters. Layer density in :math:`kg/m^3`.It refer to
-        all layers above basement, including ice, water, and sediment.
-    density_crust : float
+    basement : float or array
+        Height of the crystalline basement in meters.
+        It usually refer to topography and bathymetry height without sediment
+        cover.
+        When considering sedimentary basins, it refers to crystalline basement
+        (topography/bathymetry minus sediment thickness).
+    layers : dict (optional)
+        Dictionary that contains information about the thickness and density of
+        the layers located above the ``basement``.
+        For each layer, a single item should be created: its key will be the
+        layer name as a ``str`` and its values must be tuples containing the
+        layer thickness in meters and the layer density (in :math:`kg/m^3`)
+        in that order.
+        Thicknesses can be floats or arrays, while densities must be floats.
+        If ``None``, no layers will be considered.
+        Default as ``None``.
+    density_crust : float (optional)
         Density of the crust in :math:`kg/m^3`.
-    density_mantle : float
+    density_mantle : float (optional)
         Mantle density in :math:`kg/m^3`.
-    reference_depth : float
+    reference_depth : float (optional)
         The reference Moho depth (:math:`H`) in meters.
 
     Returns
     -------
-    moho_depth : array or :class:`xarray.DataArray`
+    moho_depth : float or array
          The isostatic Moho depth in meters.
+
+    Examples
+    --------
+
+    Simple model of continental topography with a sedimentary basin on top
+
+    >>> # Define crystalline basement height (in meters)
+    >>> basement = 1200
+    >>> # Define a layer of sediments with a thickness of 200m
+    >>> sediments_thickness = 200
+    >>> sediments_density = 2300
+    >>> # Get depth of the Moho following Airy's isostatic hypothesis
+    >>> moho_depth = isostasy_airy(
+    ...     basement, layers={"sediments": (sediments_thickness, sediments_density)}
+    ... )
+    >>> moho_depth
+    37640.0
+
+    Simple model of oceanic sedimentary basin
+
+    >>> # Define bathymetry (in meters)
+    >>> bathymetry = -3000
+    >>> # Define a layer of sediments with a thickness of 400m
+    >>> sediments_thickness = 400
+    >>> sediments_density = 2200
+    >>> # Define a layer for the oceanic water
+    >>> water_thickness = abs(bathymetry)
+    >>> water_density = 1040
+    >>> # Get depth of the Moho following Airy's isostatic hypothesis
+    >>> moho_depth = isostasy_airy(
+    ...     bathymetry - sediments_thickness,
+    ...     layers={
+    ...         "sediments": (sediments_thickness, sediments_density),
+    ...         "water": (water_thickness, water_density),
+    ...     }
+    ... )
+    >>> moho_depth
+    18960.0
+
+
     """
-
-    # Define scale factor to calculate Airy root
-    scale = density_crust / (density_mantle - density_crust)
-
-    # Define initial mass
-    mass_layers = 0
-    name_layers = []
-    density_layers = []
-
-    # No mass load above basement
-    if layers is None:
-        name_layers = "None"
-        density_layers = "None"
-    # With mass load above basement
-    else:
-        # Calculate total mass above basement
-        for sub_layer_name, sub_layer in layers.items():
-            mass_layers += sub_layer[0] * sub_layer[1]
-            name_layers.append(sub_layer_name)
-            density_layers.append(str(sub_layer[1]))
+    # Compute equivalent topography for the layers (if any)
+    layers_equivalent_topography = 0
+    if layers is not None:
+        for thickness, density in layers.values():
+            layers_equivalent_topography += thickness * density
+        layers_equivalent_topography /= density_crust
 
     # Calculate rock equivalent topography
-    rock_equivalent_topography = basement_elevation + mass_layers / density_crust
+    rock_equivalent_topography = basement + layers_equivalent_topography
 
     # Calculate Moho depth
+    scale = density_crust / (density_mantle - density_crust)
     moho = rock_equivalent_topography * scale + reference_depth
+
+    # Add attributes to the xr.DataArray
     if isinstance(moho, xr.DataArray):
         moho.name = "moho_depth"
         moho.attrs["isostasy"] = "Airy"
-        moho.attrs["name_layers"] = name_layers
-        moho.attrs["density_layers"] = density_layers
         moho.attrs["density_crust"] = str(density_crust)
         moho.attrs["density_mantle"] = str(density_mantle)
+        if layers is not None:
+            for name, (_, density) in layers.items():
+                moho.attrs[f"density_{name}"] = density
     return moho
