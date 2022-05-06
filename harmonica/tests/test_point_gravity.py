@@ -17,7 +17,7 @@ import pytest
 import verde as vd
 
 from ..constants import GRAVITATIONAL_CONST
-from ..forward.point import point_gravity, point_mass_gravity
+from ..forward.point import point_gravity
 from ..forward.utils import distance_cartesian
 from .utils import run_only_with_numba
 
@@ -130,22 +130,6 @@ def test_potential_cartesian_known_values(point_mass, sample_coordinates_potenti
     precomputed_potential = sample_coordinates_potential[-1]
     # Compute potential gravity field on each computation point
     results = point_gravity(coordinates, point, mass, "potential", "cartesian")
-    npt.assert_allclose(results, precomputed_potential)
-
-
-@pytest.mark.use_numba
-def test_point_mass_gravity_deprecated(point_mass, sample_coordinates_potential):
-    """
-    Test the soon-to-be-deprecated point_mass_gravity function
-    """
-    point, mass = point_mass[:]
-    coordinates = sample_coordinates_potential[:3]
-    precomputed_potential = sample_coordinates_potential[-1]
-    # Check if a FutureWarning is raised
-    with warnings.catch_warnings(record=True) as warn:
-        results = point_mass_gravity(coordinates, point, mass, "potential", "cartesian")
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, FutureWarning)
     npt.assert_allclose(results, precomputed_potential)
 
 
