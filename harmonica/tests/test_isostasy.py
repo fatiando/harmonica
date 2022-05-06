@@ -17,7 +17,9 @@ from ..isostasy import isostasy_airy
 
 @pytest.mark.parametrize("reference_depth", (0, 30e3))
 def test_airy_without_load(reference_depth):
-    "Root should be zero for zero equivalent topography (zero basement, no layers)"
+    """
+    Root should be zero for no equivalent topography (zero basement, no layers)
+    """
     basement = np.zeros(20, dtype=np.float64)
     npt.assert_equal(
         isostasy_airy(basement, reference_depth=reference_depth), reference_depth

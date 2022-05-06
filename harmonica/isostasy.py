@@ -100,7 +100,8 @@ def isostasy_airy(
     >>> sediments_density = 2300
     >>> # Get depth of the Moho following Airy's isostatic hypothesis
     >>> moho_depth = isostasy_airy(
-    ...     basement, layers={"sediments": (sediments_thickness, sediments_density)}
+    ...     basement,
+    ...     layers={"sediments": (sediments_thickness, sediments_density)}
     ... )
     >>> moho_depth
     37640.0
