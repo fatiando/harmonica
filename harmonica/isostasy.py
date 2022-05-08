@@ -26,7 +26,7 @@ def isostasy_airy(
     rock equivalent topography below sea level is supported by a thinning of
     the crust (an anti-root). This assumption is usually
 
-    .. figure:: ../../_static/figures/airy-isostasy.png
+    .. figure:: ../../_static/figures/airy-isostasy.svg
         :align: center
         :width: 400px
 
@@ -73,7 +73,7 @@ def isostasy_airy(
         layer name as a ``str`` and its values must be tuples containing the
         layer thickness in meters and the layer density (in :math:`kg/m^3`)
         in that order.
-        Thicknesses can be floats or arrays, while densities must be floats.
+        Thicknesses and densities can be floats or arrays.
         If ``None``, no layers will be considered.
         Default as ``None``.
     density_crust : float (optional)
