@@ -19,7 +19,6 @@ from ..forward.utils import distance_spherical
 from .utils import (
     jacobian_numba_parallel,
     jacobian_numba_serial,
-    pop_extra_coords,
     predict_numba_parallel,
     predict_numba_serial,
 )
@@ -239,10 +238,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def grid(
         self,
-        upward,
-        region=None,
-        shape=None,
-        spacing=None,
+        coordinates,
         dims=None,
         data_names=None,
         **kwargs,
@@ -250,31 +246,27 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         """
         Interpolate the data onto a regular grid.
 
-        The grid can be specified by either the number of points in each
-        dimension (the *shape*) or by the grid node spacing. See
-        :func:`verde.grid_coordinates` for details. All grid points will be
-        located at the same `upward` coordinate. Other arguments for
-        :func:`verde.grid_coordinates` can be passed as extra keyword arguments
-        (``kwargs``) to this method.
+        The coordinates of the regular grid must be passed through the
+        ``coordinates`` argument as a tuple containing three arrays in the
+        following order: ``(longitude, latitude, radius)``. They can be easily
+        created through the :func:`verde.grid_coordinates` function. If the
+        grid points must be all at the same radius, it can be specified in the
+        ``extra_coords`` argument of :func:`verde.grid_coordinates`.
 
-        If the interpolator collected the input data region, then it will be
-        used if ``region=None``. Otherwise, you must specify the grid region.
         Use the *dims* and *data_names* arguments to set custom names for the
         dimensions and the data field(s) in the output :class:`xarray.Dataset`.
         Default names will be provided if none are given.
 
         Parameters
         ----------
-        upward : float
-            Upward coordinate of the grid points.
-        region : list = [W, E, S, N]
-            The west, east, south, and north boundaries of a given region.
-        shape : tuple = (n_north, n_east) or None
-            The number of points in the South-North and West-East directions,
-            respectively.
-        spacing : tuple = (s_north, s_east) or None
-            The grid spacing in the South-North and West-East directions,
-            respectively.
+        coordinates : tuple of arrays
+            Tuple of arrays containing the coordinates of the grid in the
+            following order: (longitude, latitude, radius).
+            The longitude and latitude arrays could be 1d or 2d arrays, if
+            they are 2d they must be part of a meshgrid.
+            The radius array should be a 2d array with the same shape of
+            longitude and latitude (if they are 2d arrays) or with a shape of
+            ``(latitude.size, longitude.size)`` (if they are 1d arrays).
         dims : list or None
             The names of the northing and easting data dimensions,
             respectively, in the output grid. Default is determined from the
@@ -293,23 +285,42 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             to the ``attrs`` attribute.
 
         """
-        # We override the grid method from BaseGridder so it takes the upward
-        # coordinate as a positional argument.
+        # We override the grid method from BaseGridder to change the docstring
+        # and to make it work only with the `coordinates` argument (no region,
+        # shape or spacing)
 
-        # Ignore extra_coords if passed
-        pop_extra_coords(kwargs)
+        # Raise ValueError if any deprecated argument has been passed
+        deprecated_args = (
+            "upward" in kwargs,
+            "shape" in kwargs,
+            "region" in kwargs,
+            "spacing" in kwargs,
+        )
+        if any(deprecated_args):
+            raise ValueError(
+                "The 'upward', 'region', 'shape' and 'spacing' arguments have been "
+                + "deprecated. "
+                + "Please pass the coordinates of the target grid through the "
+                + "'coordinates' argument."
+            )
+
+        # Raise warning if any kwargs has been passed
+        if kwargs:
+            args = "'" + "', '".join(list(kwargs.keys())) + "'"
+            warnings.warn(
+                f"The {args} arguments are being ignored. The 'grid' method "
+                + "will not take any keyword arguments in the next Harmonica release",
+                FutureWarning,
+            )
+
         # Grid data
         # We always pass projection=None because that argument it's intended to
         # be used only with Cartesian gridders.
         grid = super().grid(
-            region=region,
-            shape=shape,
-            spacing=spacing,
+            coordinates=coordinates,
             dims=dims,
             data_names=data_names,
             projection=None,
-            extra_coords=upward,
-            **kwargs,
         )
         return grid
 

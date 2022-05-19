@@ -120,12 +120,12 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     # to synthetic values
     upward = 0
     shape = (60, 60)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    true = point_gravity(grid_coords, points, masses, field="g_z")
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
     # Test profile method
@@ -155,12 +155,12 @@ def test_equivalent_sources_cartesian_float32(
     # to synthetic values
     upward = 0
     shape = (60, 60)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), atol=1e-3 * vd.maxabs(true))
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    true = point_gravity(grid_coords, points, masses, field="g_z")
+    npt.assert_allclose(true, eqs.predict(grid_coords), atol=1e-3 * vd.maxabs(true))
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, atol=1e-3 * vd.maxabs(true))
 
     # Test profile method
@@ -197,12 +197,12 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     # to synthetic values
     upward = 20
     shape = (8, 8)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), rtol=0.08)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    true = point_gravity(grid_coords, points, masses, field="g_z")
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.08)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=0.08)
 
     # Test profile method
@@ -405,8 +405,8 @@ def test_equivalent_sources_cartesian_parallel(region, coordinates, data):
 
     upward = 0
     shape = (60, 60)
-    grid_serial = eqs_serial.grid(upward, shape=shape, region=region)
-    grid_parallel = eqs_parallel.grid(upward, shape=shape, region=region)
+    grid_serial = eqs_serial.grid(coordinates)
+    grid_parallel = eqs_parallel.grid(coordinates)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
@@ -432,10 +432,8 @@ def test_backward_eqlharmonic(region, coordinates_small, data_small, depth_type)
     # Check if both gridders are equivalent
     npt.assert_allclose(eqs.points_, eql_harmonic.points_)
     shape = (8, 8)
-    xrt.assert_allclose(
-        eqs.grid(upward=2e3, shape=shape, region=region),
-        eql_harmonic.grid(upward=2e3, shape=shape, region=region),
-    )
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=2e3)
+    xrt.assert_allclose(eqs.grid(grid_coords), eql_harmonic.grid(grid_coords))
 
 
 @run_only_with_numba

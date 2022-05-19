@@ -49,14 +49,14 @@ def test_equivalent_sources_spherical():
     # to synthetic values
     upward = radius
     shape = (60, 60)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_gravity(
-        grid, points, masses, field="g_z", coordinate_system="spherical"
+        grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
 
@@ -93,14 +93,14 @@ def test_equivalent_sources_small_data_spherical():
     # to synthetic values
     upward = radius + 2e3
     shape = (8, 8)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_gravity(
-        grid, points, masses, field="g_z", coordinate_system="spherical"
+        grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
-    npt.assert_allclose(true, eqs.predict(grid), rtol=0.05)
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.05)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
 
 
@@ -194,8 +194,9 @@ def test_equivalent_sources_spherical_parallel():
 
     upward = radius
     shape = (60, 60)
-    grid_serial = eqs_serial.grid(upward, shape=shape, region=region)
-    grid_parallel = eqs_parallel.grid(upward, shape=shape, region=region)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_serial = eqs_serial.grid(grid_coords)
+    grid_parallel = eqs_parallel.grid(grid_coords)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
@@ -234,7 +235,8 @@ def test_backward_eqlharmonicspherical():
     # Check if both gridders are equivalent
     npt.assert_allclose(eqs.points_, eql_harmonic.points_)
     shape = (8, 8)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=6405e3)
     xrt.assert_allclose(
-        eqs.grid(upward=6405e3, shape=shape, region=region),
-        eql_harmonic.grid(upward=6405e3, shape=shape, region=region),
+        eqs.grid(grid_coords),
+        eql_harmonic.grid(grid_coords),
     )
