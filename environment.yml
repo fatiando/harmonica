@@ -24,6 +24,7 @@ dependencies:
   - pyvista
   - vtk>=9
   # Testing requirements
+  - netcdf4
   - pytest
   - pytest-cov
   - coverage
