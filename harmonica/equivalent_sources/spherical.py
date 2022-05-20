@@ -268,12 +268,12 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             longitude and latitude (if they are 2d arrays) or with a shape of
             ``(latitude.size, longitude.size)`` (if they are 1d arrays).
         dims : list or None
-            The names of the northing and easting data dimensions,
+            The names of the latitude and longitude data dimensions,
             respectively, in the output grid. Default is determined from the
             ``dims`` attribute of the class. Must be defined in the following
-            order: northing dimension, easting dimension.
-            **NOTE: This is an exception to the "easting" then
-            "northing" pattern but is required for compatibility with xarray.**
+            order: latitude dimension, longitude dimension.
+            **NOTE: This is an exception to the "longitude" then
+            "latitude" pattern but is required for compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']``.
