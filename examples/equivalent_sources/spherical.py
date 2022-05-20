@@ -62,11 +62,10 @@ print("R² score:", eqs.score(coordinates, gravity_disturbance))
 # passing in the maximum radius of the data, we're effectively
 # upward-continuing the data. The grid will be defined in spherical
 # coordinates.
-grid = eqs.grid(
-    upward=coordinates[-1].max(),
-    spacing=0.2,
-    data_names=["gravity_disturbance"],
-)
+region = vd.get_region(coordinates)  # get the region boundaries
+upward = coordinates[-1].max()
+grid_coords = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=upward)
+grid = eqs.grid(coordinates=grid_coords, data_names=["gravity_disturbance"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata
 print("\nGenerated grid:\n", grid)
@@ -78,9 +77,6 @@ grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
 # can use the same color scale for both plots and have 0 centered at the white
 # color.
 maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
-
-# Get the region boundaries
-region = vd.get_region(coordinates)
 
 # Plot observed and gridded gravity disturbance
 fig, (ax1, ax2) = plt.subplots(
