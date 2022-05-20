@@ -63,6 +63,7 @@ fig, (ax1, ax2) = plt.subplots(
 # Plot the magnetic anomaly grid
 grid.plot(
     ax=ax1,
+    cmap="seismic",
     cbar_kwargs={"label": "nT", "location": "bottom", "shrink": 0.8, "pad": 0.08},
 )
 ax1.set_title("Magnetic anomaly")
