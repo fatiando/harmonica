@@ -17,6 +17,14 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
+Transformations
+---------------
+
+.. autosummary::
+    :toctree: generated/
+
+    derivative_upward
+
 Equivalent Sources
 ------------------
 
@@ -46,6 +54,15 @@ Isostasy
     :toctree: generated/
 
     isostasy_airy
+
+Frequency domain filters
+------------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.derivative_upward
+
 
 Input and Output
 ----------------
