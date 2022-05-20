@@ -393,7 +393,7 @@ def test_equivalent_sources_jacobian_cartesian():
 
 
 @run_only_with_numba
-def test_equivalent_sources_cartesian_parallel(region, coordinates, data):
+def test_equivalent_sources_cartesian_parallel(coordinates, data):
     """
     Check predictions when parallel is enabled and disabled
     """
