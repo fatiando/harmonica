@@ -73,7 +73,7 @@ deriv_upward.plot(
     ax=ax2,
     vmin=-scale,
     vmax=scale,
-    cmap="RdBu_r",
+    cmap="seismic",
     cbar_kwargs={"label": "nT/m", "location": "bottom", "shrink": 0.8, "pad": 0.08},
 )
 ax2.set_title("Upward derivative")
