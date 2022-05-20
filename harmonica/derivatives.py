@@ -13,7 +13,7 @@ from .filters.utils import apply_filter
 
 def derivative_upward(grid, order=1):
     """
-    Calculate the derivative of a potential field in the upward direction
+    Calculate the derivative of a potential field grid in the upward direction
 
     Compute the spatial derivative in the upward direction of regular gridded
     data using frequency domain calculations through Fast Fourier Transform.
