@@ -403,8 +403,6 @@ def test_equivalent_sources_cartesian_parallel(region, coordinates, data):
     eqs_parallel = EquivalentSources(parallel=True)
     eqs_parallel.fit(coordinates, data)
 
-    upward = 0
-    shape = (60, 60)
     grid_serial = eqs_serial.grid(coordinates)
     grid_parallel = eqs_parallel.grid(coordinates)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
@@ -500,3 +498,40 @@ def test_jacobian_dtype(region, dtype):
     jacobian = eqs.jacobian(coordinates, points)
     # Check data type of the Jacobian
     assert jacobian.dtype == np.dtype(dtype)
+
+
+@pytest.mark.parametrize(
+    "deprecated_args",
+    (
+        dict(upward=5e3, spacing=1),
+        dict(upward=5e3, shape=(6, 6)),
+        dict(upward=5e3, spacing=1, region=(-4e3, 0, 5e3, 7e3)),
+        dict(upward=5e3, shape=(6, 6), region=(-4e3, 0, 5e3, 7e3)),
+    ),
+)
+def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
+    """
+    Test if EquivalentSources.grid raises error on deprecated arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSources().fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing deprecated arguments
+    msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
+    with pytest.raises(ValueError, match=msg):
+        eqs.grid(coordinates=grid_coords, **deprecated_args)
+
+
+def test_error_ignored_args(coordinates_small, data_small, region):
+    """
+    Test if EquivalentSources.grid raises warning on ignored arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSources().fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing kwarg arguments that will be ignored
+    msg = "The 'bla' arguments are being ignored."
+    with pytest.warns(FutureWarning, match=msg):
+        eqs.grid(coordinates=grid_coords, bla="bla")
