@@ -5,8 +5,22 @@ span.project-version {
   margin-left: 5px;
 }
 
-/* Add margin top to any paragraph that folows a jupyter_container */
-/* Source: https://github.com/jupyter/jupyter-sphinx/issues/91 */
-.jupyter_container + p {
-  margin-top: 1.25rem; /* slightly higher than default for paragraphs */
+/* Try to make the jupyter-sphinx style match sphinx-gallery for consistency */
+div.jupyter_container {
+  border: none;
+  box-shadow: none;
+}
+
+div.jupyter_container .cell_input {
+  margin-bottom: 1.15rem;
+  border-radius: 0.4em;
+  box-shadow: 1px 1px 1px #d8d8d8;
+}
+
+div.jupyter_container .cell_output {
+  margin-bottom: 1.15rem;
+}
+
+.jupyter_container div.code_cell pre {
+  padding: 10px;
 }
