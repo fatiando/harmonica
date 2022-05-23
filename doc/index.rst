@@ -106,6 +106,7 @@ Table of contents
     user_guide/forward_modelling/index.rst
     user_guide/gravity_disturbance.rst
     user_guide/topographic_correction.rst
+    user_guide/equivalent_sources/index.rst
 
 .. toctree::
     :maxdepth: 1

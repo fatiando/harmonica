@@ -29,6 +29,6 @@ geometric bodies:
 .. toctree::
    :titlesonly:
 
-  point
-  prism
-  tesseroid
+   point
+   prism
+   tesseroid
