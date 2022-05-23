@@ -6,6 +6,12 @@ Sample Data
 Harmonica provides some sample data for testing through the
 :mod:`harmonica.datasets` module.
 
+.. warning::
+
+    The :mod:`harmonica.datasets` module and every sample dataset a will be
+    deprecated in Harmonica v0.6.0. The examples and the user guide will
+    transition to using Ensaio (https://www.fatiando.org/ensaio/) instead.
+
 
 Where is my data?
 -----------------
