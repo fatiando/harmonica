@@ -36,10 +36,6 @@ interpolator:
 Its main drawback is the increased computational load it takes to fit the
 sources' coefficients, both in terms of memory and computation time).
 
-
-Regular equivalent sources
---------------------------
-
 Harmonica has a few different classes for applying the equivalent sources
 techniques. Here we will explore how we can use the
 :class:`harmonica.EquivalentSources` to interpolate some gravity disturbance

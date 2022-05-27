@@ -99,8 +99,9 @@ Table of contents
 
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
     :caption: User Guide
+    :includehidden:
 
     user_guide/coordinate_systems.rst
     user_guide/forward_modelling/index.rst
