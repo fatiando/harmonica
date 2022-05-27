@@ -7,7 +7,7 @@
 """
 Compute spatial derivatives of grids
 """
-from .filters import derivative_upward as fft_derivative_upward
+from .filters import derivative_upward_kernel
 from .filters.utils import apply_filter
 
 
@@ -35,4 +35,4 @@ def derivative_upward(grid, order=1):
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
     """
-    return apply_filter(grid, fft_derivative_upward, order=order)
+    return apply_filter(grid, derivative_upward_kernel, order=order)

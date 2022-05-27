@@ -10,7 +10,7 @@ Filters for applying spatial derivatives in the frequency domain
 import numpy as np
 
 
-def derivative_upward(fourier_transform, order=1):
+def derivative_upward_kernel(fourier_transform, order=1):
     """
     Compute the upward derivative in the frequency domain
 
