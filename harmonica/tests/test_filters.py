@@ -15,6 +15,7 @@ from verde import grid_coordinates, make_xarray_grid
 
 from ..filters._fft import fft, ifft
 from ..filters._utils import apply_filter
+from ..filters.derivatives import derivative_upward_kernel
 
 
 @pytest.fixture(name="region")
@@ -208,3 +209,40 @@ def test_apply_filter_grid_with_nans(invalid_grid_with_nans):
     """
     with pytest.raises(ValueError, match="Found nan"):
         apply_filter(invalid_grid_with_nans, dummy_filter)
+
+
+# -----------------------------
+# Test upward derivative filter
+# -----------------------------
+
+
+@pytest.fixture(name="sample_fft_grid")
+def fixture_sample_fft_grid():
+    """
+    Returns a sample fft_grid to be used in test functions
+    """
+    domain = (-9e-4, 9e-4, -8e-4, -8e-4)
+    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=1e-5)
+    dummy_fft = np.ones_like(freq_easting)
+    fft_grid = make_xarray_grid(
+        (freq_easting, freq_northing),
+        dummy_fft,
+        data_names=["sample_fft"],
+        dims=("freq_northing", "freq_easting"),
+    )
+    return fft_grid.sample_fft
+
+
+@pytest.mark.parametrize("order", (1, 2, 3))
+def test_derivative_upward_kernel(sample_fft_grid, order):
+    """
+    Check if derivative_upward_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = np.sqrt(k_easting**2 + k_northing**2) ** order
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, derivative_upward_kernel(sample_fft_grid, order=order)
+    )
