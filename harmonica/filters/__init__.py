@@ -5,6 +5,6 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Functions for applying filters to regular grids defined in frequency domain
+Frequency domain filters meant to be applied on regular grids
 """
-from .derivatives import derivative_upward_kernel
+from ._filters import derivative_upward_kernel

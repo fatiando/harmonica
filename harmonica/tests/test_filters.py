@@ -14,8 +14,8 @@ import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
 from ..filters._fft import fft, ifft
+from ..filters._filters import derivative_upward_kernel
 from ..filters._utils import apply_filter
-from ..filters.derivatives import derivative_upward_kernel
 
 
 @pytest.fixture(name="region")
