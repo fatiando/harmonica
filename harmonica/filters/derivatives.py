@@ -5,18 +5,30 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Filters for applying spatial derivatives in the frequency domain
+Filters in frequency domain to be applied to regular grids
 """
 import numpy as np
 
 
-def derivative_upward_kernel(fourier_transform, order=1):
-    """
-    Compute the upward derivative in the frequency domain
+def derivative_upward_kernel(fft_grid, order=1):
+    r"""
+    Filter for upward derivative in frequency domain
+
+    Return a :class:`xarray.DataArray` with the values of the frequency domain
+    filter for computing the upward derivative. The filter is built upon the
+    frequency coordinates of the passed ``ft_grid`` and is defined as follows:
+
+    .. math::
+
+        g(\mathbf{k}) = |\mathbf{k}| ^ n
+
+    where $\mathbf{k}$ is the wavenumber vector ($2\pi \mathbf{f}$ where
+    $\mathbf{f}$ is the frequency vector) and $n$ is the order of the
+    derivative.
 
     Parameters
     ----------
-    fourier_transform : :class:`xarray.DataArray`
+    fft_grid : :class:`xarray.DataArray`
         Array with the Fourier transform of the original grid.
         Its dimensions should be in the following order:
         *freq_northing*, *freq_easting*.
@@ -27,18 +39,22 @@ def derivative_upward_kernel(fourier_transform, order=1):
 
     Returns
     -------
-    deriv_ft : :class:`xarray.DataArray`
-        Array with the upward derivative of the original grid in the frequency
+    da_filter : :class:`xarray.DataArray`
+        Array with the kernel for the upward derivative filter in frequency
         domain.
+
+    References
+    ----------
+    [Blakely1995]_
     """
     # Catch the dims of the Fourier transformed grid
-    dims = fourier_transform.dims
+    dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
-    freq_easting = fourier_transform.coords[dims[1]]
-    freq_northing = fourier_transform.coords[dims[0]]
+    freq_easting = fft_grid.coords[dims[1]]
+    freq_northing = fft_grid.coords[dims[0]]
     # Convert frequencies to wavenumbers
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
-    # Compute the upward (vertical) derivative in the frequency domain
-    deriv_ft = fourier_transform * np.sqrt(k_easting**2 + k_northing**2) ** order
-    return deriv_ft
+    # Compute the filter for upward derivative in frequency domain
+    da_filter = np.sqrt(k_easting**2 + k_northing**2) ** order
+    return da_filter

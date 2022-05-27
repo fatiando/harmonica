@@ -16,8 +16,8 @@ def apply_filter(grid, fft_filter, **kwargs):
     """
     Apply a filter to a grid and return the transformed grid in spatial domain
 
-    Computes the Fourier transform of the given grid, applies the passed filter
-    and returns the inverse Fourier transform of the filtered grid.
+    Computes the Fourier transform of the given grid, builds the filter kernel,
+    applies it and returns the inverse Fourier transform of the filtered grid.
 
     Parameters
     ----------
@@ -27,14 +27,14 @@ def apply_filter(grid, fft_filter, **kwargs):
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
     fft_filter : func
-        Callable that applies a filter in the frequency domain.
+        Callable that builds the filter in the frequency domain.
     kwargs :
         Any additional keyword argument that should be passed to the
         ``fft_filter``.
 
     Returns
     -------
-    output_grid : :class:`xarray.DataArray`
+    filtered_grid : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` with the filtered version of the passed
         ``grid``. Defined are in the spatial domain.
     """
@@ -54,9 +54,11 @@ def apply_filter(grid, fft_filter, **kwargs):
             + "Fast Fourier Transform."
         )
     # Compute Fourier Transform of the grid
-    fourier_transform = fft(grid)
-    # Apply the filter in the frequency domain
-    filtered_ft = fft_filter(fourier_transform, **kwargs)
+    fft_grid = fft(grid)
+    # Get the kernel of the filter
+    da_filter = fft_filter(fft_grid, **kwargs)
+    # Apply the filter
+    filtered_fft_grid = fft_grid * da_filter
     # Compute inverse FFT
-    output_grid = ifft(filtered_ft).real
-    return output_grid
+    filtered_grid = ifft(filtered_fft_grid).real
+    return filtered_grid

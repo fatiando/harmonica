@@ -34,5 +34,13 @@ def derivative_upward(grid, order=1):
         A :class:`xarray.DataArray` with the upward derivatives of the passed
         ``grid``. Its units are the same units of the ``grid`` per units of its
         coordinates.
+
+    References
+    ----------
+    [Blakely1995]_
+
+    See also
+    --------
+    harmonica.filters.derivative_upward_kernel
     """
     return apply_filter(grid, derivative_upward_kernel, order=order)
