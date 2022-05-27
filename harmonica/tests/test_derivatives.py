@@ -15,7 +15,7 @@ import pytest
 import xarray as xr
 import xrft
 
-from ..derivatives import derivative_upward
+from ..transformations import derivative_upward
 from .utils import root_mean_square_error
 
 MODULE_DIR = Path(os.path.dirname(__file__))

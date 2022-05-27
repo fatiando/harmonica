@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Compute spatial derivatives of grids
+Apply transformations to regular grids of potential fields
 """
 from .filters import derivative_upward_kernel
 from .filters._utils import apply_filter
