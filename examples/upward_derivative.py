@@ -35,7 +35,11 @@ coordinates = (easting, northing, data.altitude_m)
 eql = hm.EquivalentSources(depth=1000, damping=1).fit(
     coordinates, data.total_field_anomaly_nt
 )
-grid = eql.grid(upward=1500, spacing=500, data_names=["magnetic_anomaly"])
+
+grid_coords = vd.grid_coordinates(
+    region=vd.get_region(coordinates), spacing=500, extra_coords=1500
+)
+grid = eql.grid(grid_coords, data_names=["magnetic_anomaly"])
 grid = grid.magnetic_anomaly
 
 # Pad the grid to increase accuracy of the FFT filter
