@@ -16,15 +16,15 @@ def derivative_upward_kernel(fft_grid, order=1):
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for computing the upward derivative. The filter is built upon the
-    frequency coordinates of the passed ``ft_grid`` and is defined as follows:
+    frequency coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
 
         g(\mathbf{k}) = |\mathbf{k}| ^ n
 
-    where $\mathbf{k}$ is the wavenumber vector ($2\pi \mathbf{f}$ where
-    $\mathbf{f}$ is the frequency vector) and $n$ is the order of the
-    derivative.
+    where :math:`\mathbf{k}` is the wavenumber vector
+    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
+    frequency vector) and :math:`n` is the order of the derivative.
 
     Parameters
     ----------
@@ -46,6 +46,10 @@ def derivative_upward_kernel(fft_grid, order=1):
     References
     ----------
     [Blakely1995]_
+
+    See also
+    --------
+    harmonica.derivative_upward
     """
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
