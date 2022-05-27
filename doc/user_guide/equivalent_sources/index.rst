@@ -171,9 +171,7 @@ and use the equivalent sources to generate a gravity disturbance grid.
    grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=2.2e3)
 
    # Grid the gravity disturbances
-   grid = equivalent_sources.grid(
-       coordinates=grid_coords, upward=None, data_names=["gravity_disturbance"]
-   )
+   grid = equivalent_sources.grid(grid_coords, data_names=["gravity_disturbance"])
    grid
 
 And plot it

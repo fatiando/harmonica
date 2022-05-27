@@ -182,8 +182,8 @@ And grid the data using the two equivalent sources:
        extra_coords=2.5e3,
    )
 
-   grid_first_guess = eqs_first_guess.grid(coordinates=grid_coords, upward=None)
-   grid = eqs_best.grid(coordinates=grid_coords, upward=None)
+   grid_first_guess = eqs_first_guess.grid(grid_coords)
+   grid = eqs_best.grid(grid_coords)
 
 Lets plot it:
 
