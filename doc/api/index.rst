@@ -61,7 +61,7 @@ Frequency domain filters
 .. autosummary::
     :toctree: generated/
 
-    filters.derivative_upward
+    filters.derivative_upward_kernel
 
 
 Input and Output
