@@ -8,7 +8,7 @@
 Compute spatial derivatives of grids
 """
 from .filters import derivative_upward_kernel
-from .filters.utils import apply_filter
+from .filters._utils import apply_filter
 
 
 def derivative_upward(grid, order=1):

@@ -13,8 +13,8 @@ import xarray as xr
 import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
-from ..filters.fft import fft, ifft
-from ..filters.utils import apply_filter
+from ..filters._fft import fft, ifft
+from ..filters._utils import apply_filter
 
 
 @pytest.fixture(name="region")

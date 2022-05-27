@@ -9,7 +9,7 @@ Utility functions for FFT filters
 """
 import numpy as np
 
-from .fft import fft, ifft
+from ._fft import fft, ifft
 
 
 def apply_filter(grid, fft_filter, **kwargs):
