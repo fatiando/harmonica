@@ -11,7 +11,7 @@ Airy isostatic hypothesis.
 import xarray as xr
 
 
-def isostasy_airy(
+def isostatic_moho_airy(
     basement,
     layers=None,
     density_crust=2.8e3,
