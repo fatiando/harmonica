@@ -22,7 +22,6 @@ def prism_layer(
     surface,
     reference,
     properties=None,
-    progressbar=False,
 ):
     """
     Create a layer of prisms of equal size
