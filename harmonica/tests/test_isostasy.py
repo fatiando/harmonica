@@ -12,7 +12,7 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..isostasy import isostasy_moho_airy
+from ..isostasy import isostatic_moho_airy
 
 
 @pytest.mark.parametrize("reference_depth", (0, 30e3))
@@ -22,7 +22,7 @@ def test_airy_without_load(reference_depth):
     """
     basement = np.zeros(20, dtype=np.float64)
     npt.assert_equal(
-        isostasy_moho_airy(basement, reference_depth=reference_depth), reference_depth
+        isostatic_moho_airy(basement, reference_depth=reference_depth), reference_depth
     )
 
 
@@ -32,7 +32,7 @@ def test_airy_array_shape_preserved(shape):
     Check that the shape of the topography is preserved
     """
     basement = np.zeros(shape, dtype=np.float64)
-    assert isostasy_moho_airy(basement).shape == basement.shape
+    assert isostatic_moho_airy(basement).shape == basement.shape
 
 
 @pytest.fixture(name="basement", params=("numpy", "xarray"))
@@ -100,7 +100,7 @@ def test_airy_single_layer(basement, water):
     "Use a simple basement + water model to check the calculations"
     thickness_water, density_water = water
     layers = {"water": (thickness_water, density_water)}
-    root = isostasy_moho_airy(
+    root = isostatic_moho_airy(
         basement,
         layers=layers,
         density_crust=1,
@@ -114,10 +114,13 @@ def test_airy_single_layer(basement, water):
 
 
 def test_airy_single_layer_array(basement, water_array):
-    "Use a simple basement + water model with density as array to check the calculations"
+    """
+    Use a simple basement + water model with density as array to check
+    the calculations
+    """
     thickness_water, density_water = water_array
     layers = {"water": (thickness_water, density_water)}
-    root = isostasy_moho_airy(
+    root = isostatic_moho_airy(
         basement,
         layers=layers,
         density_crust=np.array([1, 1, 1, 1, 1, 1], dtype=float),
@@ -138,7 +141,7 @@ def test_airy_multiple_layers(basement, water, sediments):
         "water": (thickness_water, density_water),
         "sediments": (thickness_sediments, density_sediments),
     }
-    root = isostasy_moho_airy(
+    root = isostatic_moho_airy(
         basement,
         layers=layers,
         density_crust=1,
@@ -153,14 +156,17 @@ def test_airy_multiple_layers(basement, water, sediments):
 
 
 def test_airy_multiple_layers_array(basement, water_array, sediments_array):
-    "Check isostasy function against a model with multiple layers with density as array"
+    """
+    Check isostasy function against a model with multiple layers with density
+    as array
+    """
     thickness_water, density_water = water_array
     thickness_sediments, density_sediments = sediments_array
     layers = {
         "water": (thickness_water, density_water),
         "sediments": (thickness_sediments, density_sediments),
     }
-    root = isostasy_moho_airy(
+    root = isostatic_moho_airy(
         basement,
         layers=layers,
         density_crust=np.array([1, 1, 1, 1, 1, 1], dtype=float),

@@ -17,7 +17,7 @@ from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
 from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
-from .isostasy import isostasy_moho_airy
+from .isostasy import isostatic_moho_airy
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
