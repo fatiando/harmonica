@@ -75,8 +75,8 @@ def prism_gravity(
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
     progressbar : bool (optional)
-        If True, a progress bar of the computation will be printed to standard error (stderr).
-        Requires :mod:`numba_progress` to be installed.
+        If True, a progress bar of the computation will be printed to standard
+        error (stderr). Requires :mod:`numba_progress` to be installed.
         Default to ``False``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
@@ -135,16 +135,19 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
+    # Attempt to import numba_progress
+    try:
+        from numba_progress import ProgressBar
+    except ImportError:
+        ProgressBar = None
     # Show progress bar for 'jit_prism_gravity' function
     if progressbar:
-        try:
-            from numba_progress import ProgressBar
-
-            progress_proxy = ProgressBar(total=coordinates[0].size)
-        except ImportError:
+        if ProgressBar is None:
             raise ImportError(
                 "Missing optional dependency 'numba_progress' required if progressbar=True"
             )
+        progress_proxy = ProgressBar(total=coordinates[0].size)
+            
     else:
         progress_proxy = None
     # Compute gravitational field
@@ -208,7 +211,7 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy):
+def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=None):
     """
     Compute gravitational field of prisms on computations points
 
@@ -232,11 +235,10 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy)
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
     for l in prange(coordinates[0].size):
-        # Update progress bar if called
-        if progress_proxy is not None:
-            progress_proxy.update(1)
         for m in range(prisms.shape[0]):
             # Iterate over the prism boundaries to compute the result of the
             # integration (see Nagy et al., 2000)
@@ -258,7 +260,10 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy)
                                 shift_upward - coordinates[2][l],
                             )
                         )
-
+        # Update progress bar if called
+        # if progress_proxy is not None:
+        if update_progressbar:
+            progress_proxy.update(1)
 
 @jit(nopython=True)
 def kernel_potential(easting, northing, upward):
