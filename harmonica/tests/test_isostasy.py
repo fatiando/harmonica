@@ -64,7 +64,7 @@ def fixture_water_array(request):
     Return thickness and density for a water layer as array
     """
     thickness = np.array([2, 1, 0, 0, 0, 0], dtype=float)
-    density = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], dtype=float)
+    density = np.array([0.5, 0.4, 0.5, 0.4, 0.5, 0.5], dtype=float)
     if request.param == "xarray":
         thickness = xr.DataArray(thickness)
         density = xr.DataArray(density)
@@ -89,7 +89,7 @@ def fixture_sediments_array(request):
     Return thickness and density for a sediments layer
     """
     thickness = np.array([1, 2, 1, 0, 1.5, 0], dtype=float)
-    density = np.array([0.75, 0.75, 0.75, 0.75, 0.75, 0.75], dtype=float)
+    density = np.array([0.76, 0.75, 0.76, 0.75, 0.76, 0.75], dtype=float)
     if request.param == "xarray":
         thickness = xr.DataArray(thickness)
         density = xr.DataArray(density)
@@ -123,14 +123,14 @@ def test_airy_single_layer_array(basement, water_array):
     root = isostatic_moho_airy(
         basement,
         layers=layers,
-        density_crust=np.array([1, 1, 1, 1, 1, 1], dtype=float),
+        density_crust=np.array([1, 2, 1, 1, 2, 1], dtype=float),
         density_mantle=np.array([3, 3, 3, 3, 3, 3], dtype=float),
         reference_depth=0,
     )
-    true_root = np.array([-0.5, -0.25, 0, 0.5, 1, 1.5])
+    true_root = np.array([-0.5, -1.6, 0, 0.5, 4, 1.5])
     npt.assert_equal(root, true_root)
     if isinstance(root, xr.DataArray):
-        assert root.attrs["density_water"] == density_water
+        assert (root.attrs["density_water"] == density_water).all()
 
 
 def test_airy_multiple_layers(basement, water, sediments):
@@ -169,12 +169,12 @@ def test_airy_multiple_layers_array(basement, water_array, sediments_array):
     root = isostatic_moho_airy(
         basement,
         layers=layers,
-        density_crust=np.array([1, 1, 1, 1, 1, 1], dtype=float),
+        density_crust=np.array([1, 2, 1, 1, 2, 1], dtype=float),
         density_mantle=np.array([3, 3, 3, 3, 3, 3], dtype=float),
         reference_depth=0,
     )
-    true_root = np.array([-0.125, 0.5, 0.375, 0.5, 1.5625, 1.5])
+    true_root = np.array([-0.12, -0.1, 0.38, 0.5, 5.14, 1.5])
     npt.assert_equal(root, true_root)
     if isinstance(root, xr.DataArray):
-        assert root.attrs["density_water"] == density_water
-        assert root.attrs["density_sediments"] == density_sediments
+        assert (root.attrs["density_water"] == density_water).all()
+        assert (root.attrs["density_sediments"] == density_sediments).all()
