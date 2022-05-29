@@ -57,6 +57,7 @@ def fixture_water(request):
         thickness = xr.DataArray(thickness)
     return thickness, density
 
+
 @pytest.fixture(name="water_array", params=("xarray", "xarray"))
 def fixture_water_array(request):
     """
@@ -69,6 +70,7 @@ def fixture_water_array(request):
         density = xr.DataArray(density)
     return thickness, density
 
+
 @pytest.fixture(name="sediments", params=("numpy", "xarray"))
 def fixture_sediments(request):
     """
@@ -79,6 +81,7 @@ def fixture_sediments(request):
     if request.param == "xarray":
         thickness = xr.DataArray(thickness)
     return thickness, density
+
 
 @pytest.fixture(name="sediments_array", params=("xarray", "xarray"))
 def fixture_sediments_array(request):
@@ -91,6 +94,7 @@ def fixture_sediments_array(request):
         thickness = xr.DataArray(thickness)
         density = xr.DataArray(density)
     return thickness, density
+
 
 def test_airy_single_layer(basement, water):
     "Use a simple basement + water model to check the calculations"
@@ -108,6 +112,7 @@ def test_airy_single_layer(basement, water):
     if isinstance(root, xr.DataArray):
         assert root.attrs["density_water"] == density_water
 
+
 def test_airy_single_layer_array(basement, water_array):
     "Use a simple basement + water model with density as array to check the calculations"
     thickness_water, density_water = water_array
@@ -123,6 +128,7 @@ def test_airy_single_layer_array(basement, water_array):
     npt.assert_equal(root, true_root)
     if isinstance(root, xr.DataArray):
         assert root.attrs["density_water"] == density_water
+
 
 def test_airy_multiple_layers(basement, water, sediments):
     "Check isostasy function against a model with multiple layers"
@@ -144,6 +150,7 @@ def test_airy_multiple_layers(basement, water, sediments):
     if isinstance(root, xr.DataArray):
         assert root.attrs["density_water"] == density_water
         assert root.attrs["density_sediments"] == density_sediments
+
 
 def test_airy_multiple_layers_array(basement, water_array, sediments_array):
     "Check isostasy function against a model with multiple layers with density as array"
