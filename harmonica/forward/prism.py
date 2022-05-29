@@ -261,7 +261,6 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
                             )
                         )
         # Update progress bar if called
-        # if progress_proxy is not None:
         if update_progressbar:
             progress_proxy.update(1)
 
