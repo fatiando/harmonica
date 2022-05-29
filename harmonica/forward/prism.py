@@ -75,9 +75,9 @@ def prism_gravity(
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
     progressbar : bool (optional)
-        If True a progress bar for the number of gravity coordinates to solve
-        in the forward calculation will be displayed using the numba-progress
-        package. Default to ``False``.
+        If True, a progress bar of the computation will be printed to standard error (stderr).
+        Requires :mod:`numba_progress` to be installed.
+        Default to ``False``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
         Should be set to ``True`` only when it is certain that the input model
