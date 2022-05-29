@@ -127,7 +127,7 @@ def test_airy_single_layer_array(basement, water_array):
         density_mantle=np.array([3, 3, 3, 3, 3, 3], dtype=float),
         reference_depth=0,
     )
-    true_root = np.array([-0.5, -1.6, 0, 0.5, 4, 1.5])
+    npt.assert_allclose(root, true_root, rtol=1e-10, atol=0)
     npt.assert_equal(root, true_root)
     if isinstance(root, xr.DataArray):
         assert (root.attrs["density_water"] == density_water).all()
@@ -174,7 +174,7 @@ def test_airy_multiple_layers_array(basement, water_array, sediments_array):
         reference_depth=0,
     )
     true_root = np.array([-0.12, -0.1, 0.38, 0.5, 5.14, 1.5])
-    npt.assert_equal(root, true_root)
+    npt.assert_allclose(root, true_root, rtol=1e-10, atol=0)
     if isinstance(root, xr.DataArray):
         assert (root.attrs["density_water"] == density_water).all()
         assert (root.attrs["density_sediments"] == density_sediments).all()
