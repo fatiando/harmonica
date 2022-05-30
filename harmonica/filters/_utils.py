@@ -16,7 +16,7 @@ def apply_filter(grid, fft_filter, **kwargs):
     """
     Apply a filter to a grid and return the transformed grid in spatial domain
 
-    Computes the Fourier transform of the given grid, builds the filter kernel,
+    Computes the Fourier transform of the given grid, builds the filter,
     applies it and returns the inverse Fourier transform of the filtered grid.
 
     Parameters
@@ -46,7 +46,7 @@ def apply_filter(grid, fft_filter, **kwargs):
             f"Invalid grid with {len(dims)} dimensions. "
             + "The passed grid must be a 2 dimensional array."
         )
-    # Check if grid and coordinates has nans
+    # Check if the grid has nans
     if np.isnan(grid).any():
         raise ValueError(
             "Found nan(s) on the passed grid. "
@@ -55,7 +55,7 @@ def apply_filter(grid, fft_filter, **kwargs):
         )
     # Compute Fourier Transform of the grid
     fft_grid = fft(grid)
-    # Get the kernel of the filter
+    # Build the filter
     da_filter = fft_filter(fft_grid, **kwargs)
     # Apply the filter
     filtered_fft_grid = fft_grid * da_filter
