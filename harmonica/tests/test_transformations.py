@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test functions for spatial derivatives based on FFT
+Test functions for regular grid transformations
 """
 import os
 from pathlib import Path
