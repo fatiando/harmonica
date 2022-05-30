@@ -17,13 +17,27 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
-Transformations
----------------
+Grid Transformations
+--------------------
+
+Apply well known transformations to regular grid of potential fields.
 
 .. autosummary::
     :toctree: generated/
 
     derivative_upward
+
+Frequency domain filters
+------------------------
+
+Define filters in the frequency domain.
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.derivative_upward_kernel
+
+Use :mod:`xrft` to apply Fast-Fourier Transforms on :mod:`xarray.DataArray`s.
 
 Equivalent Sources
 ------------------
@@ -54,15 +68,6 @@ Isostasy
     :toctree: generated/
 
     isostasy_airy
-
-Frequency domain filters
-------------------------
-
-.. autosummary::
-    :toctree: generated/
-
-    filters.derivative_upward_kernel
-
 
 Input and Output
 ----------------
