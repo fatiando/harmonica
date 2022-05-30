@@ -91,11 +91,8 @@ print("R² score:", eqs_gb.score(coordinates, data.gravity_disturbance))
 # Interpolate data on a regular grid with 2 km spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1000 m, we're effectively upward-continuing the data.
-grid = eqs_gb.grid(
-    upward=1000,
-    spacing=2e3,
-    data_names="gravity_disturbance",
-)
+grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=1000)
+grid = eqs_gb.grid(coordinates=grid_coords, data_names="gravity_disturbance")
 print(grid)
 
 # Plot the original gravity disturbance and the gridded and upward-continued
