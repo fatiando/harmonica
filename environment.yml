@@ -19,7 +19,10 @@ dependencies:
   - pooch>=0.7.0
   - verde>=1.5.0
   - xarray
-  # Optional requirements
+  - pandas
+  - netCDF4
+  - ensaio
+    # Optional requirements
   - pyvista
   - vtk>=9
   # Testing requirements
