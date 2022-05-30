@@ -37,7 +37,8 @@ Define filters in the frequency domain.
 
     filters.derivative_upward_kernel
 
-Use :mod:`xrft` to apply Fast-Fourier Transforms on :mod:`xarray.DataArray`s.
+Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
+Transforms and its inverse on :class:`xarray.DataArray`.
 
 Equivalent Sources
 ------------------
