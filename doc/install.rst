@@ -39,7 +39,7 @@ Optional:
 
 * `pyvista <https://www.pyvista.org/>`__ and
   `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
-  See :meth:`harmonica.DatasetAccessorPrismLayer.to_pyvista`.
+  See :func:`harmonica.prism_to_pyvista`.
 
 The examples in the :ref:`gallery` also use:
 

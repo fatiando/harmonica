@@ -4,7 +4,7 @@ Estimating damping and depth parameters
 =======================================
 
 When interpolating gravity and magnetic data through the
-:ref:`_equivalent_sources` technique we need to choose values for some
+:ref:`equivalent_sources` technique we need to choose values for some
 parameters, like the ``depth`` at which the sources will be located or the
 amount of ``damping`` that should be applied.
 

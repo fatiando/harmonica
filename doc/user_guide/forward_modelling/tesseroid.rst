@@ -6,7 +6,7 @@ Tesseroids
 When our region of interest covers several longitude and latitude degrees,
 utilizing Cartesian coordinates to model geological structures might
 introduce significant errors: they don't take into account the curvature of the
-Earth. Instead, we would need to work in :ref:`spherical-coordiantes`.
+Earth. Instead, we would need to work in :ref:`spherical_coordiantes`.
 A common approach to forward model bodies in geocentric spherical coordinates
 is to make use of tesseroids.
 
