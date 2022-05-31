@@ -81,7 +81,7 @@ We can define some gradient-boosted equivalent sources through the
 size of the windows that will be used in the gradient boosting process.
 We will use square windows of 100 km per side.
 Moreover, gradient-boosted equivalent sources can be used together with
-:ref:`block-averaged-sources`. We will do so choosing a *block size* of 2 km
+:ref:`block-averaged-eqs`. We will do so choosing a *block size* of 2 km
 per side.
 
 
