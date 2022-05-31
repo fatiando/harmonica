@@ -20,7 +20,7 @@ For the Normal Earth correction, see package :mod:`boule`.
 Grid Transformations
 --------------------
 
-Apply well known transformations to regular grid of potential fields.
+Apply well known transformations regular gridded potential fields data.
 
 .. autosummary::
     :toctree: generated/
