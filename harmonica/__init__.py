@@ -18,6 +18,7 @@ from .forward.tesseroid import tesseroid_gravity
 from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
+from .transformations import derivative_upward
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
