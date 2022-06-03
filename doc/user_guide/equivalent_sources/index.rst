@@ -99,7 +99,7 @@ disturbance.
    equivalent_sources.fit(coordinates, data.gravity_disturbance_mgal)
 
 Once the fitting process finishes, we can predict the values of the field on
-any set of points using the :meth:`EquivalentSources.predict` method.
+any set of points using the :meth:`harmonica.EquivalentSources.predict` method.
 For example, lets predict on the same observation points to check if the
 sources are able to reproduce the observed field.
 
