@@ -18,16 +18,20 @@ point sources, prisms and tesseroids. The inversion methods are implemented as
 classes with an interface inspired by scikit-learn (like `Verde
 <https://www.fatiando.org/verde>`__).
 
-.. admonition:: This software is in the early stages of design and implementation
-    :class: attention
+.. admonition:: Ready for daily use but still changing
+    :class: seealso
 
-    This means that will occasionally make **backwards incompatible** changes
-    as we try to improve the software, test new ideas, and settle on the
-    project scope.
-    **We welcome any feedback and ideas!** Let us know by submitting
-    `issues on Github <https://github.com/fatiando/harmonica/issues>`__
-    or send us a message on our
-    `Slack chatroom <http://contact.fatiando.org>`__.
+    This means that we are still adding a lot of new features and sometimes we
+    make changes to the ones we already have while we try to improve the
+    software based on users' experience, test new ideas, take better design
+    decisions, etc.
+    Some of these changes could be **backwards incompatible**. Keep that in
+    mind before you update Harmonica to a newer version.
+
+    **We welcome any feedback and ideas!** This is a great time to bring new
+    ideas on how we can improve Harmonica, feel free to `join the
+    conversation <https://www.fatiando.org/contact>`__ or submit a new
+    `issues on Github <https://github.com/fatiando/harmonica/issues>`__.
 
 .. panels::
     :header: text-center text-large
