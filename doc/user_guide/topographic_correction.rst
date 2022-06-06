@@ -215,8 +215,8 @@ rectangular prisms. We can use the :func:`harmonica.prism_layer` function to
 build it.
 We also need to assign density values to each prism in the layer.
 For every prism above the ellipsoid we will set the density of the upper crust
-(2670 kg/m :math:`^3`), while for each prism below it we will assign the
-density contrast equal to the density of the water (1040 kg/m:math:`^3`) minus
+(2670 kg/m\ :sup:`3`), while for each prism below it we will assign the
+density contrast equal to the density of the water (1040 kg/m\ :sup:`3`) minus
 the density of the upper crust.
 
 .. jupyter-execute::
