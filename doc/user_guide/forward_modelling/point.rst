@@ -10,7 +10,7 @@ in Cartesian or in spherical coordinates.
 
 Each point mass can be defined as a tuple containing its coordinates in the
 following order: *easting*, *northing* and *upward* (in Cartesian coordinates)
-or *longitude*, *latitude* and *radius* (in spherical coordinates).
+or *longitude*, *spherical latitude* and *radius* (in spherical coordinates).
 
 Cartesian coordinates
 ---------------------
