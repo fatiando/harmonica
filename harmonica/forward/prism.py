@@ -147,7 +147,7 @@ def prism_gravity(
                 "Missing optional dependency 'numba_progress' required if progressbar=True"
             )
         progress_proxy = ProgressBar(total=coordinates[0].size)
-            
+
     else:
         progress_proxy = None
     # Compute gravitational field
@@ -263,6 +263,7 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
         # Update progress bar if called
         if update_progressbar:
             progress_proxy.update(1)
+
 
 @jit(nopython=True)
 def kernel_potential(easting, northing, upward):

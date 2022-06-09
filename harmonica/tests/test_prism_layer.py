@@ -8,6 +8,7 @@
 Test prisms layer
 """
 import warnings
+from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
@@ -21,6 +22,11 @@ try:
     import pyvista
 except ImportError:
     pyvista = None
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 @pytest.fixture(params=("numpy", "xarray"))
@@ -422,3 +428,37 @@ def test_to_pyvista(dummy_layer, properties):
         assert pv_grid.array_names == ["density"]
         assert pv_grid.get_array("density").ndim == 1
         npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+
+
+@pytest.mark.use_numba
+def test_progress_bar(dummy_layer):
+    """
+    Check if forward gravity results with and without progress bar match
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    result_progress_true = layer.prism_layer.gravity(coordinates, field='g_z', progressbar=True
+    )
+    
+    result_progress_false = layer.prism_layer.gravity(coordinates, field='g_z', progressbar=False
+    )
+    npt.assert_allclose(result_progress_true, result_progress_false)
+
+
+@patch("numba_progress.ProgressBar", None)
+def test_numba_progress_missing_error(dummy_layer):
+    """
+    Check if error is raised when progressbar=True and numba_progress package 
+    is not installed.
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)

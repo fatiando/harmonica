@@ -7,10 +7,17 @@
 """
 Test forward modelling for prisms.
 """
+from unittest.mock import patch
+
 import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 from ..forward.prism import _check_prisms, prism_gravity, safe_atan2, safe_log
 from ..gravity_corrections import bouguer_correction
@@ -381,3 +388,49 @@ def test_prisms_parallel_vs_serial():
             coordinates, prisms, densities, field=field, parallel=False
         )
         npt.assert_allclose(result_parallel, result_serial)
+
+
+@pytest.mark.use_numba
+def test_progress_bar():
+    """
+    Check if forward gravity results with and without progress bar match
+    """
+    prisms = [
+        [-100, 0, -100, 0, -10, 0],
+        [0, 100, -100, 0, -10, 0],
+        [-100, 0, 0, 100, -10, 0],
+        [0, 100, 0, 100, -10, 0],
+    ]
+    densities = [2000, 3000, 4000, 5000]
+    coordinates = vd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    )
+    for field in ("potential", "g_z"):
+        result_progress_true = prism_gravity(
+            coordinates, prisms, densities, field=field, progressbar=True
+        )
+        result_progress_false = prism_gravity(
+            coordinates, prisms, densities, field=field, progressbar=False
+        )
+        npt.assert_allclose(result_progress_true, result_progress_false)
+
+
+@patch("numba_progress.ProgressBar", None)
+def test_numba_progress_missing_error():
+    """
+    Check if error is raised when progresbar=True and numba_progress package 
+    is not installed.
+    """
+    prisms = [
+        [-100, 0, -100, 0, -10, 0],
+        [0, 100, -100, 0, -10, 0],
+        [-100, 0, 0, 100, -10, 0],
+        [0, 100, 0, 100, -10, 0],
+    ]
+    densities = [2000, 3000, 4000, 5000]
+    coordinates = [0, 0, 0]
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        prism_gravity(
+            coordinates, prisms, densities, field="potential", progressbar=True
+        )
