@@ -18,32 +18,37 @@ longitude, latitude, elevation (above sea level) and gravity(mGal). See the
 documentation for :func:`harmonica.datasets.fetch_south_africa_gravity` for
 more information.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import pygmt
 import verde as vd
-
 import harmonica as hm
 
 # Fetch the data in a pandas.DataFrame
 data = hm.datasets.fetch_south_africa_gravity()
 print(data)
 
-# Plot the observations in a Mercator map using Cartopy
-fig = plt.figure(figsize=(6.5, 5))
-ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Observed gravity data from South Africa", pad=25)
-tmp = ax.scatter(
-    data.longitude,
-    data.latitude,
-    c=data.gravity,
-    s=0.8,
-    cmap="viridis",
-    transform=ccrs.PlateCarree(),
-)
-plt.colorbar(
-    tmp, ax=ax, label="observed gravity [mGal]", aspect=50, pad=0.1, shrink=0.92
-)
-ax.set_extent(vd.get_region((data.longitude, data.latitude)))
-ax.gridlines(draw_labels=True)
-ax.coastlines()
-plt.show()
+# Get the region of the grid
+region = vd.get_region((data.longitude.values, data.latitude.values))
+
+# Make a plot of data using PyGMT
+fig = pygmt.Figure()
+
+title = "Observed gravity data from South Africa"   
+
+pygmt.makecpt(cmap='viridis', series=(data.gravity.min(),data.gravity.max()))
+
+fig.plot(
+    region=region,
+    projection='M15c',
+    frame=['ag', f'+t{title}'],
+    x=data.longitude, 
+    y=data.latitude, 
+    color=data.gravity, 
+    style="c0.1c",
+    cmap=True,
+    )
+
+fig.coast(shorelines='1p,black')
+
+fig.colorbar(cmap=True, frame=['a200f50', 'x+lobserved gravity [mGal]'], position="JMR")
+
+fig.show()

@@ -13,24 +13,28 @@ This is the magnitude of the gravity vector of the Earth (gravitational
 spacing at 10km ellipsoidal height. It was generated from the spherical
 harmonic model EIGEN-6C4 [Forste_etal2014]_.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-
+import pygmt
 import harmonica as hm
 
 # Load the gravity grid
 data = hm.datasets.fetch_gravity_earth()
 print(data)
 
-# Make a plot of data using Cartopy
-plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=150))
-pc = data.gravity.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
-)
-plt.colorbar(
-    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.6
-)
-ax.set_title("Gravity of the Earth (EIGEN-6C4)")
-ax.coastlines()
-plt.show()
+# Make a plot of data using Pygmt
+fig = pygmt.Figure()
+
+title = "Gravity of the Earth (EIGEN-6C4)"
+
+fig.grdimage(
+    region='g', 
+    projection='G150/0/15c', 
+    frame=f'+t{title}',
+    grid=data.gravity, 
+    cmap='viridis',
+    )
+
+fig.coast(shorelines='0.5p,black', resolution='crude')
+
+fig.colorbar(cmap=True, frame=['a1000f250', 'x+lmGal'])
+
+fig.show()

@@ -13,24 +13,32 @@ The topography and bathymetry of South Africa according to the ETOPO1 model
 we downsampled to 0.1 degree grid spacing to save space and download times.
 Heights are referenced to sea level.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-
+import pygmt
+import verde as vd
 import harmonica as hm
 
 # Load the topography grid
 data = hm.datasets.fetch_south_africa_topography()
 print(data)
 
-# Make a plot of data using Cartopy
-plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Mercator())
-pc = data.topography.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="terrain"
-)
-plt.colorbar(
-    pc, label="meters", orientation="horizontal", aspect=50, pad=0.01, shrink=0.6
-)
-ax.set_title("Topography of South africa (ETOPO1)")
-ax.coastlines()
-plt.show()
+# Get the region of the grid
+region = vd.get_region((data.longitude.values, data.latitude.values))
+
+# Make a plot of data using PyGMT
+fig = pygmt.Figure()
+
+title = "Topography of South africa (ETOPO1)"   
+
+fig.grdimage(
+    region=region,
+    projection='M15c',
+    grid=data.topography, 
+    frame=['ag', f'+t{title}'], 
+    cmap='earth',
+    )
+
+fig.colorbar(cmap=True, frame=['a2000f500', 'x+lmeters'])
+
+fig.coast(shorelines='1p,black')
+
+fig.show()
