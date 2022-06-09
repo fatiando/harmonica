@@ -7,7 +7,6 @@
 """
 Forward modelling for point masses
 """
-import warnings
 
 import numpy as np
 from numba import jit, prange
@@ -225,37 +224,6 @@ def point_gravity(
     if field in tensors:
         result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
-
-
-def point_mass_gravity(
-    coordinates,
-    points,
-    masses,
-    field,
-    coordinate_system="cartesian",
-    parallel=True,
-    dtype="float64",
-):
-    """
-    DEPRECATED. Use :func:`harmonica.point_gravity` instead.
-
-    This function exists to support backward compatibility until next release.
-    """
-    warnings.warn(
-        "The 'point_mass_gravity' function has been renamed to 'point_gravity' "
-        + "and will be deprecated on the next release, "
-        + "please use 'point_gravity' instead.",
-        FutureWarning,
-    )
-    return point_gravity(
-        coordinates=coordinates,
-        points=points,
-        masses=masses,
-        field=field,
-        coordinate_system=coordinate_system,
-        parallel=parallel,
-        dtype=dtype,
-    )
 
 
 def dispatcher(coordinate_system, parallel):
