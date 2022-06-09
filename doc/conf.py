@@ -7,7 +7,7 @@
 import datetime
 
 import pyvista
-from sphinx_gallery.sorting import ExampleTitleSortKey
+from sphinx_gallery.sorting import FileNameSortKey
 
 import harmonica
 
@@ -33,8 +33,18 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
+    "sphinx_panels",
+    "sphinx_copybutton",
+    "jupyter_sphinx",
     "pyvista.ext.plot_directive",
 ]
+
+# Disable including boostrap CSS for sphinx_panels since it's already included
+# with sphinx-book-theme
+panels_add_bootstrap_css = False
+panels_css_variables = {
+    "tabs-color-label-inactive": "hsla(231, 99%, 66%, 0.5)",
+}
 
 # Configuration to include links to other project docs when referencing
 # functions/classes
@@ -45,11 +55,13 @@ intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
+    "xrft": ("https://xrft.readthedocs.io/en/stable/", None),
     "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
     "boule": ("https://www.fatiando.org/boule/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
+    "pyproj": ("https://pyproj4.github.io/pyproj/stable/", None),
     "pyvista": ("https://docs.pyvista.org", None),
     "numba_progress": ("https://pypi.org/project/numba-progress/", None),
 }
@@ -89,7 +101,7 @@ sphinx_gallery_conf = {
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": ExampleTitleSortKey,
+    "within_subsection_order": FileNameSortKey,
     # directory where function granular galleries are stored
     "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.  In
@@ -141,5 +153,5 @@ html_theme_options = {
     "use_issues_button": True,
     "use_repository_button": True,
     "use_download_button": True,
-    "home_page_in_toc": True,
+    "home_page_in_toc": False,
 }
