@@ -29,7 +29,7 @@ to use them on a small example.
 
 """
 import boule as bl
-import matplotlib.pyplot as plt
+import pygmt
 import pyproj
 import verde as vd
 
@@ -98,36 +98,57 @@ grid = eqs_gb.grid(
 )
 print(grid)
 
+# Project gravity data points to mercator for plotting
+projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+data['x'], data['y'] = projection(data.longitude, data.latitude)
+
+# Set figure properties
+w, e = grid.gravity_disturbance.easting.values.min(), grid.gravity_disturbance.easting.values.max()
+n, s = grid.gravity_disturbance.northing.values.min(), grid.gravity_disturbance.northing.values.max()
+x_y_region = [w, e, s, n]
+fig_height = 10
+fig_width = fig_height*(e-w)/(s-n)
+fig_ratio = (s-n)/(fig_height/100)
+fig_proj = f"x1:{fig_ratio}"
+
 # Plot the original gravity disturbance and the gridded and upward-continued
 # version
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
 
-# Get the maximum absolute value between the original and gridded data so we
-# can use the same color scale for both plots and have 0 centered at the white
-# color.
-maxabs = vd.maxabs(data.gravity_disturbance, grid.gravity_disturbance)
+fig = pygmt.Figure()
 
-ax1.set_title("Observed gravity disturbance data")
-tmp = ax1.scatter(
-    easting,
-    northing,
-    c=data.gravity_disturbance,
-    s=5,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
-)
-plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
+title = "Observed gravity disturbance data"   
 
-ax2.set_title("Gridded with gradient-boosted equivalent sources")
-tmp = grid.gravity_disturbance.plot.pcolormesh(
-    ax=ax2,
-    add_colorbar=False,
-    add_labels=False,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
-)
-plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
+# Make colormap of data
+pygmt.makecpt(
+    cmap='vik', 
+    series=(-data.gravity_disturbance.quantile(1), 
+            data.gravity_disturbance.quantile(1)),
+    )
 
-plt.show()
+with pygmt.config(FONT_TITLE='14p'):
+    fig.plot(
+        projection=fig_proj,
+        region=xy_region,
+        frame=[f"WSne+t{title}", "xa200000+a15", "ya100000"],
+        x=data.x, 
+        y=data.y, 
+        color=data.gravity_disturbance, 
+        style="c0.15c",
+        cmap=True)
+
+fig.colorbar(cmap=True, frame=['a50f25', 'x+lmGal'])
+
+fig.shift_origin(xshift=fig_width+1)
+
+title = "Gridded with gradient-boosted equivalent sources"   
+
+with pygmt.config(FONT_TITLE='14p'):
+    fig.grdimage(
+        frame=[f"ESnw+t{title}", "xa200000+a15", "ya100000"],
+        grid=grid.gravity_disturbance, 
+        cmap=True,
+        )
+
+fig.colorbar(cmap=True, frame=['a50f25', 'x+lmGal'])
+
+fig.show()
