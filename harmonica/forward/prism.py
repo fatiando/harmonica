@@ -9,9 +9,8 @@ Forward modelling for prisms
 """
 import numpy as np
 from numba import jit, prange
-
+   
 from ..constants import GRAVITATIONAL_CONST
-
 
 def prism_gravity(
     coordinates,
@@ -139,7 +138,7 @@ def prism_gravity(
     try:
         from numba_progress import ProgressBar
     except ImportError:
-        ProgressBar = None
+        ProgressBar = None  
     # Show progress bar for 'jit_prism_gravity' function
     if progressbar:
         if ProgressBar is None:
@@ -147,7 +146,6 @@ def prism_gravity(
                 "Missing optional dependency 'numba_progress' required if progressbar=True"
             )
         progress_proxy = ProgressBar(total=coordinates[0].size)
-
     else:
         progress_proxy = None
     # Compute gravitational field

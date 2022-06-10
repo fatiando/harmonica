@@ -390,6 +390,7 @@ def test_prisms_parallel_vs_serial():
         npt.assert_allclose(result_parallel, result_serial)
 
 
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
 @pytest.mark.use_numba
 def test_progress_bar():
     """
@@ -418,7 +419,7 @@ def test_progress_bar():
 @patch("numba_progress.ProgressBar", None)
 def test_numba_progress_missing_error():
     """
-    Check if error is raised when progresbar=True and numba_progress package 
+    Check if error is raised when progresbar=True and numba_progress package
     is not installed.
     """
     prisms = [

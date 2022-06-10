@@ -430,6 +430,7 @@ def test_to_pyvista(dummy_layer, properties):
         npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
 
 
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
 @pytest.mark.use_numba
 def test_progress_bar(dummy_layer):
     """
@@ -440,10 +441,12 @@ def test_progress_bar(dummy_layer):
     layer = prism_layer(
         (easting, northing), surface, reference, properties={"density": density}
     )
-    result_progress_true = layer.prism_layer.gravity(coordinates, field='g_z', progressbar=True
+    result_progress_true = layer.prism_layer.gravity(
+        coordinates, field="g_z", progressbar=True
     )
-    
-    result_progress_false = layer.prism_layer.gravity(coordinates, field='g_z', progressbar=False
+
+    result_progress_false = layer.prism_layer.gravity(
+        coordinates, field="g_z", progressbar=False
     )
     npt.assert_allclose(result_progress_true, result_progress_false)
 
@@ -451,7 +454,7 @@ def test_progress_bar(dummy_layer):
 @patch("numba_progress.ProgressBar", None)
 def test_numba_progress_missing_error(dummy_layer):
     """
-    Check if error is raised when progressbar=True and numba_progress package 
+    Check if error is raised when progressbar=True and numba_progress package
     is not installed.
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
