@@ -13,7 +13,8 @@ def tesseroid_layer(
     properties=None,
 ):
     """
-    Create a layer of tesseroids
+    Create a layer of tesseroids of equal size
+
     Parameters
     ----------
     coordinates : tuple
@@ -119,17 +120,74 @@ class DatasetAccessorTesseroidLayer:
         s_latitude, s_longitude = latitude[1] - latitude[0], longitude[1] - longitude[0]
         return s_latitude, s_longitude
 
+    @property
+    def size(self):
+        """
+        Return the total number of tesseroids on the layer
+
+        Returns
+        -------
+        size :  int
+            Total number of tesseroids in the layer.
+        """
+        return self._obj.latitude.size * self._obj.longitude.size
+
+    @property
+    def shape(self):
+        """
+        Return the number of tesseroids on each directions
+
+        returns
+        -------
+        n_latitude : int
+            Number of tesseroids on the latitude direction.
+        n_longitude : int
+            Number of tesserods on the longitude direction.
+        """
+        return (self._obj.latitude.size, self._obj.longitude.size)
+
     def update_top_bottom(self, surface, reference):
         """
-        Update top and bottom boundaries fo the layer
+        Update top and bottom boundaries of the layer
+
+        Change the values of the ``top`` and ``bottom`` coordinates based on
+        the passed ``surface`` and ``reference``. The ``top`` and ``bottom``
+        boundaries of every tesseroid will be equal to the corresponding ``surface``
+        and ``reference`` values, respectively, if ``surface`` is above the
+        ``reference`` on that point. Otherwise the ``top`` and ``bottom`` boundaries
+        of the tesseroid will be equal to its corresponding ``reference`` and
+        ``surface``, respectively.
 
         Parameters
         ----------
         surface : 2d-array
+            Array used to create the uppermost boundary of the tesseroid layer.
+            All heights should be in meters. On every point where ``surface``
+            is below ``reference``, the ``surface`` value will be used to set
+            the ``bottom`` boundary of that tesseroid, while the ``reference``
+            value will be used to set the ``top`` boundary of the tesseroid.
 
         reference : 2d-array or float
+            Reference surface used to create the lowermost boundary of the
+            tesseroid layer. It can be either a plane or an irregular surface
+            passed as 2d array. Height(s) must be in meters.
         """
         surface, reference = np.asarray(surface), np.asarray(reference)
+        if surface.shape != self.shape:
+            raise ValueError(
+                f"Invalid surface array with shape '{surface.shape}'. "
+                + "Its shape should be compatible with the coordinates "
+                + "of the layer of tesseroids."
+            )
+        if reference.ndim != 0:
+            if reference.shape != self.shape:
+                raise ValueError(
+                    f"Invalid reference array with shape '{reference.shape}'. "
+                    + "Its shape should be compatible with the coordinates "
+                    + "of the layer of tesseroids."
+                )
+        else:
+            reference = reference * np.ones(self.shape)
         top = surface.copy()
         bottom = reference.copy()
         reverse = surface < reference
