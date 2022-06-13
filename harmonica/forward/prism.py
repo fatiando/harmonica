@@ -9,8 +9,15 @@ Forward modelling for prisms
 """
 import numpy as np
 from numba import jit, prange
-   
+
+# Attempt to import numba_progress
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
+
 from ..constants import GRAVITATIONAL_CONST
+
 
 def prism_gravity(
     coordinates,
@@ -134,11 +141,6 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
-    # Attempt to import numba_progress
-    try:
-        from numba_progress import ProgressBar
-    except ImportError:
-        ProgressBar = None  
     # Show progress bar for 'jit_prism_gravity' function
     if progressbar:
         if ProgressBar is None:
