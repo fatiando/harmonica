@@ -173,7 +173,7 @@ Each point can be represented by its *longitude* (:math:`\lambda`),
    The *longitude* coordinates defined in *spherical coordinates* and in
    *geodetic coordinates* are equivalent.
    Nevertheless, the *spherical latitude* and the (geodetic) *latitude* are
-   not.
+   not. They would be the same if the reference ellipsoid were a sphere.
 
 The *longitude* and *spherical latitude* are angles given in decimal degrees,
 while the *radius* is the Euclidean distance between the point and the origin
