@@ -110,11 +110,12 @@ Lets plot this gravitational field:
 Spherical coordinates
 ---------------------
 
-Alternative, we can compute the gravitational fields of point sources defined
+Alternatively, we can compute the gravitational fields of point sources defined
 in a spherical coordinate system. To do so, we need to pass the
 ``coordinate_system`` argument as ``"spherical"```. The coordinates of the
-point source must now be passed as *longitude*, *latitude* and *radius*, where
-the two former ones must be in decimal degrees and the latter in meters.
+point source must now be passed as *longitude*, *spherical latitude* and
+*radius*, where the two former ones must be in decimal degrees and the latter
+in meters.
 
 Lets define a single point source in the equator, at a longitude of 45 degrees
 and located on the surface of the WGS84 ellipsoid.
