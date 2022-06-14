@@ -40,6 +40,9 @@ Optional:
 * `pyvista <https://www.pyvista.org/>`__ and
   `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
   See :func:`harmonica.prism_to_pyvista`.
+* `numba_progress <https://pypi.org/project/numba-progress/>`__ for
+  printing a progress bar on some forward modelling computations.
+  See :func:`harmonica.prism_gravity`.
 
 The examples in the :ref:`gallery` also use:
 
