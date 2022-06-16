@@ -26,7 +26,7 @@ def isostatic_moho_airy(
     rock equivalent topography below sea level is supported by a thinning of
     the crust (an anti-root). This assumption is usually
 
-    .. figure:: ../../_static/figures/airy-isostasy.svg
+    .. figure:: ../../../_static/figures/airy-isostasy-moho.svg
         :align: center
         :width: 400px
 
