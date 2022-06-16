@@ -9,6 +9,7 @@ Test the EquivalentSourcesSph gridder
 """
 import warnings
 
+import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
@@ -16,6 +17,54 @@ import xarray.testing as xrt
 
 from .. import EQLHarmonicSpherical, EquivalentSourcesSph, point_gravity
 from .utils import run_only_with_numba
+
+
+@pytest.fixture(name="region")
+def fixture_region():
+    """
+    Return a sample region
+    """
+    return (-70, -60, -40, -30)
+
+
+@pytest.fixture(name="points")
+def fixture_points(region):
+    """
+    Return the coordinates of some sample point masses
+    """
+    radius = 6400e3
+    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=radius - 1e3)
+    return points
+
+
+@pytest.fixture(name="masses")
+def fixture_masses(region, points):
+    """
+    Return the masses some sample point masses
+    """
+    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+
+
+@pytest.fixture(name="coordinates_small")
+def fixture_coordinates_small(region):
+    """
+    Return a small set of 25 coordinates and variable elevation
+    """
+    shape = (5, 5)
+    longitude, latitude = vd.grid_coordinates(region=region, shape=shape)
+    radius = 6400e3 + np.arange(25, dtype=float).reshape(shape)
+    coordinates = (longitude, latitude, radius)
+    return coordinates
+
+
+@pytest.fixture(name="data_small")
+def fixture_data_small(points, masses, coordinates_small):
+    """
+    Return some sample data for the small set of coordinates
+    """
+    return point_gravity(
+        coordinates_small, points, masses, field="g_z", coordinate_system="spherical"
+    )
 
 
 @run_only_with_numba
@@ -49,14 +98,14 @@ def test_equivalent_sources_spherical():
     # to synthetic values
     upward = radius
     shape = (60, 60)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_gravity(
-        grid, points, masses, field="g_z", coordinate_system="spherical"
+        grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
 
 
@@ -93,14 +142,14 @@ def test_equivalent_sources_small_data_spherical():
     # to synthetic values
     upward = radius + 2e3
     shape = (8, 8)
-    grid = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_gravity(
-        grid, points, masses, field="g_z", coordinate_system="spherical"
+        grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
-    npt.assert_allclose(true, eqs.predict(grid), rtol=0.05)
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.05)
 
     # Test grid method
-    grid = eqs.grid(upward, shape=shape, region=region)
+    grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=0.05)
 
 
@@ -194,8 +243,9 @@ def test_equivalent_sources_spherical_parallel():
 
     upward = radius
     shape = (60, 60)
-    grid_serial = eqs_serial.grid(upward, shape=shape, region=region)
-    grid_parallel = eqs_parallel.grid(upward, shape=shape, region=region)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_serial = eqs_serial.grid(grid_coords)
+    grid_parallel = eqs_parallel.grid(grid_coords)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
@@ -234,7 +284,45 @@ def test_backward_eqlharmonicspherical():
     # Check if both gridders are equivalent
     npt.assert_allclose(eqs.points_, eql_harmonic.points_)
     shape = (8, 8)
+    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=6405e3)
     xrt.assert_allclose(
-        eqs.grid(upward=6405e3, shape=shape, region=region),
-        eql_harmonic.grid(upward=6405e3, shape=shape, region=region),
+        eqs.grid(grid_coords),
+        eql_harmonic.grid(grid_coords),
     )
+
+
+@pytest.mark.parametrize(
+    "deprecated_args",
+    (
+        dict(upward=5e3, spacing=1),
+        dict(upward=5e3, shape=(6, 6)),
+        dict(upward=5e3, spacing=1, region=(-75, -55, -40, -30)),
+        dict(upward=5e3, shape=(6, 6), region=(-75, -55, -40, -30)),
+    ),
+)
+def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
+    """
+    Test if EquivalentSourcesSph.grid raises error on deprecated arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing deprecated arguments
+    msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
+    with pytest.raises(ValueError, match=msg):
+        eqs.grid(coordinates=grid_coords, **deprecated_args)
+
+
+def test_error_ignored_args(coordinates_small, data_small, region):
+    """
+    Test if EquivalentSourcesSph.grid raises warning on ignored arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing kwarg arguments that will be ignored
+    msg = "The 'bla' arguments are being ignored."
+    with pytest.warns(FutureWarning, match=msg):
+        eqs.grid(coordinates=grid_coords, bla="bla")
