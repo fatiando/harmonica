@@ -11,7 +11,7 @@ from ._version import __version__
 from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
 from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from .equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
-from .forward.point import point_gravity, point_mass_gravity
+from .forward.point import point_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
@@ -19,6 +19,7 @@ from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
 from .isostasy.isostasy import isostasy_airy
 from .isostasy.airy import isostatic_moho_airy
+from .transformations import derivative_upward
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
