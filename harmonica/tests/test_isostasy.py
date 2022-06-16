@@ -1,11 +1,17 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Testing isostasy calculation
 """
-import xarray as xr
 import numpy as np
 import numpy.testing as npt
+import xarray as xr
 
-from .isostasy.isostasy import isostasy_airy
+from ..isostasy.isostasy import isostasy_airy
 
 
 def test_isostasy_airy_zero_topography():
