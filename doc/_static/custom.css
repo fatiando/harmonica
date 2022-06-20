@@ -4,3 +4,23 @@ span.project-version {
   font-weight: 600;
   margin-left: 5px;
 }
+
+/* Try to make the jupyter-sphinx style match sphinx-gallery for consistency */
+div.jupyter_container {
+  border: none;
+  box-shadow: none;
+}
+
+div.jupyter_container .cell_input {
+  margin-bottom: 1.15rem;
+  border-radius: 0.4em;
+  box-shadow: 1px 1px 1px #d8d8d8;
+}
+
+div.jupyter_container .cell_output {
+  margin-bottom: 1.15rem;
+}
+
+.jupyter_container div.code_cell pre {
+  padding: 10px;
+}
