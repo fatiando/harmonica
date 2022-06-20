@@ -98,22 +98,16 @@ grid = eqs_gb.grid(
 )
 print(grid)
 
-# Project gravity data points to mercator for plotting
-projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
-data['x'], data['y'] = projection(data.longitude, data.latitude)
-
 # Set figure properties
-w, e = grid.gravity_disturbance.easting.values.min(), grid.gravity_disturbance.easting.values.max()
-n, s = grid.gravity_disturbance.northing.values.min(), grid.gravity_disturbance.northing.values.max()
-x_y_region = [w, e, s, n]
+xy_region = vd.get_region((easting, northing))
+w,e,s,n = xy_region
 fig_height = 10
-fig_width = fig_height*(e-w)/(s-n)
-fig_ratio = (s-n)/(fig_height/100)
+fig_width = fig_height*(e-w)/(n-s)
+fig_ratio = (n-s)/(fig_height/100)
 fig_proj = f"x1:{fig_ratio}"
 
 # Plot the original gravity disturbance and the gridded and upward-continued
 # version
-
 fig = pygmt.Figure()
 
 title = "Observed gravity disturbance data"   
@@ -121,19 +115,20 @@ title = "Observed gravity disturbance data"
 # Make colormap of data
 pygmt.makecpt(
     cmap='vik', 
-    series=(-data.gravity_disturbance.quantile(1), 
-            data.gravity_disturbance.quantile(1)),
-    )
+    series=(-data.gravity_disturbance.quantile(.99), 
+            data.gravity_disturbance.quantile(.99)),
+            background=True,
+            )
 
 with pygmt.config(FONT_TITLE='14p'):
     fig.plot(
         projection=fig_proj,
         region=xy_region,
         frame=[f"WSne+t{title}", "xa200000+a15", "ya100000"],
-        x=data.x, 
-        y=data.y, 
+        x=easting, 
+        y=northing, 
         color=data.gravity_disturbance, 
-        style="c0.15c",
+        style="c0.1c",
         cmap=True)
 
 fig.colorbar(cmap=True, frame=['a50f25', 'x+lmGal'])

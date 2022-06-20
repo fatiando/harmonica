@@ -18,11 +18,10 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import pygmt
 import pyproj
 import verde as vd
-
+import xarray as xr
 import harmonica as hm
 
 # Read South Africa topography
@@ -57,21 +56,31 @@ easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
 prisms_gravity = prisms.prism_layer.gravity(coordinates_projected, field="g_z")
 
+# merge into a dataset
+grid = vd.make_xarray_grid(coordinates_projected, prisms_gravity, data_names='gravity', extra_coords_names='extra')
+
+# Set figure properties
+xy_region = vd.get_region((easting, northing))
+w,e,s,n = xy_region
+fig_height = 10
+fig_width = fig_height*(e-w)/(n-s)
+fig_ratio = (n-s)/(fig_height/100)
+fig_proj = f"x1:{fig_ratio}"
+
 # Make a plot of the computed gravity
-plt.figure(figsize=(8, 8))
-ax = plt.axes(projection=ccrs.Mercator())
-maxabs = vd.maxabs(prisms_gravity)
-tmp = ax.pcolormesh(
-    *coordinates[:2],
-    prisms_gravity,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="RdBu_r",
-    transform=ccrs.PlateCarree()
-)
-ax.set_extent(vd.get_region(coordinates), crs=ccrs.PlateCarree())
-plt.title("Gravitational acceleration of the topography")
-plt.colorbar(
-    tmp, label="mGal", orientation="horizontal", shrink=0.93, pad=0.01, aspect=50
-)
-plt.show()
+fig = pygmt.Figure()
+
+title = "Gravitational acceleration of the topography"   
+
+with pygmt.config(FONT_TITLE='14p'):
+    fig.grdimage(
+        region=xy_region,
+        projection=fig_proj,
+        grid=grid.gravity, 
+        frame=['ag', f'+t{title}'], 
+        cmap='vik',
+        )
+
+fig.colorbar(cmap=True, frame=['a100f50', 'x+lmGal'])
+
+fig.show()

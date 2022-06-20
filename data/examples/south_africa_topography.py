@@ -24,7 +24,7 @@ print(data)
 # Get the region of the grid
 region = vd.get_region((data.longitude.values, data.latitude.values))
 
-# Make a plot of data using PyGMT
+# Make a plot using PyGMT
 fig = pygmt.Figure()
 
 title = "Topography of South africa (ETOPO1)"   

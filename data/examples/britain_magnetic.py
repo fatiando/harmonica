@@ -47,9 +47,9 @@ fig = pygmt.Figure()
 
 title = "Magnetic data from Great Britain"   
 
-# Make colormap of data
-maxabs = np.percentile(data.total_field_anomaly_nt, 99)
-pygmt.makecpt(cmap='polar', series=(-maxabs, maxabs))
+# Make colormap scaled to 97 percentile of data.
+maxabs = np.percentile(data.total_field_anomaly_nt, 97)
+pygmt.makecpt(cmap='polar', series=(-maxabs, maxabs), background=True)
 
 fig.plot(
     region=region,
@@ -58,13 +58,13 @@ fig.plot(
     x=data.longitude, 
     y=data.latitude, 
     color=data.total_field_anomaly_nt, 
-    style="c0.2c",
+    style="c0.02c",
     cmap=True)
 
 fig.colorbar(
     cmap=True, 
     position="JMR",
-    frame=['a200f50', 'x+ltotal field magnetic anomaly [nT]'])
+    frame=['a100f50', 'x+ltotal field magnetic anomaly [nT]'])
 
 fig.coast(shorelines='1p,black')
 

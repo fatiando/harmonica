@@ -20,7 +20,7 @@ import harmonica as hm
 data = hm.datasets.fetch_topography_earth()
 print(data)
 
-# Make a plot of data using PyGMT
+# Make a plot using PyGMT
 fig = pygmt.Figure()
 
 title = "Topography of the Earth (ETOPO1)"

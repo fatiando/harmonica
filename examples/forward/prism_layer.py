@@ -21,7 +21,7 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 """
-import matplotlib.pyplot as plt
+import pygmt
 import numpy as np
 import verde as vd
 
@@ -43,14 +43,22 @@ prisms = hm.prism_layer(
 # Compute gravity field of prisms on a regular grid of observation points
 coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=1e3)
 gravity = prisms.prism_layer.gravity(coordinates, field="g_z")
+grid = vd.make_xarray_grid(coordinates, gravity, data_names='gravity', extra_coords_names='extra')
 
 # Plot gravity field
-plt.pcolormesh(*coordinates[:2], gravity)
-plt.colorbar(label="mGal", shrink=0.8)
-plt.gca().set_aspect("equal")
-plt.ticklabel_format(axis="both", style="sci", scilimits=(0, 0))
-plt.title("Gravity acceleration of a layer of prisms")
-plt.xlabel("easting [m]")
-plt.ylabel("northing [m]")
-plt.tight_layout()
-plt.show()
+fig = pygmt.Figure()
+
+title = "Gravitational acceleration of a layer of prisms"   
+
+with pygmt.config(FONT_TITLE='14p'):
+    fig.grdimage(
+        region=region,
+        projection='X10c/10c',
+        grid=grid.gravity, 
+        frame=['a', f'+t{title}', 'x+l"easting (m)"', 'y+l"northing (m)"'], 
+        cmap='viridis',
+        )
+
+fig.colorbar(cmap=True, position="JMR", frame=['a2f1', 'x+lmGal'])
+
+fig.show()

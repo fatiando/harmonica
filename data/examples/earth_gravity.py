@@ -20,7 +20,7 @@ import harmonica as hm
 data = hm.datasets.fetch_gravity_earth()
 print(data)
 
-# Make a plot of data using Pygmt
+# Make a plot using Pygmt
 fig = pygmt.Figure()
 
 title = "Gravity of the Earth (EIGEN-6C4)"

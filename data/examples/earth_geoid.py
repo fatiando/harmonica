@@ -23,7 +23,7 @@ import harmonica as hm
 data = hm.datasets.fetch_geoid_earth()
 print(data)
 
-# Make a plot of data using PyGMT
+# Make a plot using PyGMT
 fig = pygmt.Figure()
 
 title = "Geoid heights (EIGEN-6C4)"

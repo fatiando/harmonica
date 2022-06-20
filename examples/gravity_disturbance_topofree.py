@@ -54,7 +54,7 @@ topography_ell = data.topography + data.geoid
 bouguer = hm.bouguer_correction(topography_ell)
 disturbance_topofree = disturbance - bouguer
 
-# Make a plot of data using Pygmt
+# Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
 pygmt.grd2cpt(grid=disturbance_topofree, cmap='vik', continuous=True)

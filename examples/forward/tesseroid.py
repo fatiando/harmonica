@@ -17,8 +17,7 @@ function.
 
 """  # noqa: RST399
 import boule as bl
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import pygmt
 import verde as vd
 
 import harmonica as hm
@@ -43,12 +42,24 @@ coordinates = vd.grid_coordinates(
 # Compute the radial component of the acceleration
 gravity = hm.tesseroid_gravity(coordinates, tesseroid, density, field="g_z")
 print(gravity)
+grid = vd.make_xarray_grid(coordinates, gravity, data_names='gravity', extra_coords_names='extra')
 
 # Plot the gravitational field
-fig = plt.figure(figsize=(8, 9))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-img = ax.pcolormesh(*coordinates[:2], gravity, transform=ccrs.PlateCarree())
-plt.colorbar(img, ax=ax, pad=0, aspect=50, orientation="horizontal", label="mGal")
-ax.coastlines()
-ax.set_title("Downward component of gravitational acceleration")
-plt.show()
+fig = pygmt.Figure()
+
+title = "Downward component of gravitational acceleration"   
+
+with pygmt.config(FONT_TITLE='16p'):
+    fig.grdimage(
+        region=[-80, -40, -50, -10],
+        projection='M-60/-30/10c',
+        grid=grid.gravity, 
+        frame=['a', f'+t{title}'], 
+        cmap='viridis',
+        )
+
+fig.colorbar(cmap=True, frame=['a200f50', 'x+lmGal'])
+
+fig.coast(shorelines='1p,black')
+
+fig.show()

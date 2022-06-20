@@ -31,7 +31,7 @@ gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
 # observation point)
 disturbance = data.gravity - gamma
 
-# Make a plot of data using Pygmt
+# Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
 pygmt.grd2cpt(grid=disturbance, cmap='polar', continuous=True)
