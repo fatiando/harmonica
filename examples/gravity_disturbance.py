@@ -34,20 +34,20 @@ disturbance = data.gravity - gamma
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=disturbance, cmap='polar', continuous=True)
+pygmt.grd2cpt(grid=disturbance, cmap="polar", continuous=True)
 
 title = "Gravity disturbance of the Earth"
 
 fig.grdimage(
-    region='g', 
-    projection='G160/0/15c', 
-    frame=f'+t{title}',
-    grid=disturbance, 
+    region="g",
+    projection="G160/0/15c",
+    frame=f"+t{title}",
+    grid=disturbance,
     cmap=True,
-    )
+)
 
-fig.coast(shorelines='0.5p,black', resolution='crude')
+fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=['a100f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
 
 fig.show()

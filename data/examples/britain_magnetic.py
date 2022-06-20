@@ -29,9 +29,9 @@ See the original data for more processing information.
 If the file isn't already in your data directory, it will be downloaded
 automatically.
 """
+import numpy as np
 import pygmt
 import verde as vd
-import numpy as np
 
 import harmonica as hm
 
@@ -45,27 +45,27 @@ region = vd.get_region((data.longitude, data.latitude))
 # Plot the observations in a Mercator map using PyGMT
 fig = pygmt.Figure()
 
-title = "Magnetic data from Great Britain"   
+title = "Magnetic data from Great Britain"
 
 # Make colormap scaled to 97 percentile of data.
 maxabs = np.percentile(data.total_field_anomaly_nt, 97)
-pygmt.makecpt(cmap='polar', series=(-maxabs, maxabs), background=True)
+pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
 
 fig.plot(
     region=region,
-    projection='M10c',
-    frame=['ag', f'+t{title}'],
-    x=data.longitude, 
-    y=data.latitude, 
-    color=data.total_field_anomaly_nt, 
+    projection="M10c",
+    frame=["ag", f"+t{title}"],
+    x=data.longitude,
+    y=data.latitude,
+    color=data.total_field_anomaly_nt,
     style="c0.02c",
-    cmap=True)
+    cmap=True,
+)
 
 fig.colorbar(
-    cmap=True, 
-    position="JMR",
-    frame=['a100f50', 'x+ltotal field magnetic anomaly [nT]'])
+    cmap=True, position="JMR", frame=["a100f50", "x+ltotal field magnetic anomaly [nT]"]
+)
 
-fig.coast(shorelines='1p,black')
+fig.coast(shorelines="1p,black")
 
 fig.show()

@@ -97,50 +97,53 @@ print(grid)
 
 # Set figure properties
 xy_region = vd.get_region((easting, northing))
-w,e,s,n = xy_region
+w, e, s, n = xy_region
 fig_height = 10
-fig_width = fig_height*(e-w)/(n-s)
-fig_ratio = (n-s)/(fig_height/100)
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
 fig_proj = f"x1:{fig_ratio}"
 
 # Plot the original gravity disturbance and the gridded and upward-continued
 # version
 fig = pygmt.Figure()
 
-title = "Observed gravity disturbance data"   
+title = "Observed gravity disturbance data"
 
 # Make colormap of data
 pygmt.makecpt(
-    cmap='vik', 
-    series=(-data.gravity_disturbance.quantile(.99), 
-            data.gravity_disturbance.quantile(.99)),
-            background=True,
-            )
+    cmap="vik",
+    series=(
+        -data.gravity_disturbance.quantile(0.99),
+        data.gravity_disturbance.quantile(0.99),
+    ),
+    background=True,
+)
 
-with pygmt.config(FONT_TITLE='14p'):
+with pygmt.config(FONT_TITLE="14p"):
     fig.plot(
         projection=fig_proj,
         region=xy_region,
         frame=[f"WSne+t{title}", "xa200000+a15", "ya100000"],
-        x=easting, 
-        y=northing, 
-        color=data.gravity_disturbance, 
+        x=easting,
+        y=northing,
+        color=data.gravity_disturbance,
         style="c0.1c",
-        cmap=True)
+        cmap=True,
+    )
 
-fig.colorbar(cmap=True, frame=['a50f25', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-fig.shift_origin(xshift=fig_width+1)
+fig.shift_origin(xshift=fig_width + 1)
 
-title = "Gridded with gradient-boosted equivalent sources"   
+title = "Gridded with gradient-boosted equivalent sources"
 
-with pygmt.config(FONT_TITLE='14p'):
+with pygmt.config(FONT_TITLE="14p"):
     fig.grdimage(
         frame=[f"ESnw+t{title}", "xa200000+a15", "ya100000"],
-        grid=grid.gravity_disturbance, 
+        grid=grid.gravity_disturbance,
         cmap=True,
-        )
+    )
 
-fig.colorbar(cmap=True, frame=['a50f25', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
 fig.show()

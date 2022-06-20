@@ -70,25 +70,26 @@ coordinates = vd.grid_coordinates(
 # Compute the radial component of the acceleration
 gravity = hm.tesseroid_gravity(coordinates, tesseroids, density, field="g_z")
 print(gravity)
-grid = vd.make_xarray_grid(coordinates, gravity, data_names='gravity', extra_coords_names='extra')
+grid = vd.make_xarray_grid(
+    coordinates, gravity, data_names="gravity", extra_coords_names="extra"
+)
 
 # Plot the gravitational field
 fig = pygmt.Figure()
 
-title = "Downward component of gravitational acceleration"   
+title = "Downward component of gravitational acceleration"
 
-with pygmt.config(FONT_TITLE='16p'):
+with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
         region=[-80, -40, -50, -10],
-        projection='M-60/-30/10c',
-        grid=grid.gravity, 
-        frame=['a', f'+t{title}'], 
-        cmap='viridis',
-        )
+        projection="M-60/-30/10c",
+        grid=grid.gravity,
+        frame=["a", f"+t{title}"],
+        cmap="viridis",
+    )
 
-fig.colorbar(cmap=True, frame=['a200f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
 
-fig.coast(shorelines='1p,black')
+fig.coast(shorelines="1p,black")
 
 fig.show()
-

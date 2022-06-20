@@ -23,6 +23,7 @@ We'll use our sample topography data
 isostatic Moho depth of Africa.
 """
 import pygmt
+
 import harmonica as hm
 
 # Load the elevation model and cut out the portion of the data corresponding to
@@ -42,21 +43,20 @@ print(moho)
 # Draw the maps
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=moho, cmap='viridis', reverse=True, continuous=True)
+pygmt.grd2cpt(grid=moho, cmap="viridis", reverse=True, continuous=True)
 
 title = "Airy isostatic Moho depth of Africa"
 
 fig.grdimage(
     region=region,
-    projection='Y20/0/10c',
-    frame=['ag', f'+t{title}'],
-    grid=moho, 
+    projection="Y20/0/10c",
+    frame=["ag", f"+t{title}"],
+    grid=moho,
     cmap=True,
-    )
+)
 
-fig.coast(shorelines='0.5p,black', resolution='crude')
+fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=['a10000f2500', 'x+lmeters'])
+fig.colorbar(cmap=True, frame=["a10000f2500", "x+lmeters"])
 
 fig.show()
-

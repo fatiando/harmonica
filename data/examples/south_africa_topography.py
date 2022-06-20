@@ -15,6 +15,7 @@ Heights are referenced to sea level.
 """
 import pygmt
 import verde as vd
+
 import harmonica as hm
 
 # Load the topography grid
@@ -27,18 +28,18 @@ region = vd.get_region((data.longitude.values, data.latitude.values))
 # Make a plot using PyGMT
 fig = pygmt.Figure()
 
-title = "Topography of South africa (ETOPO1)"   
+title = "Topography of South africa (ETOPO1)"
 
 fig.grdimage(
     region=region,
-    projection='M15c',
-    grid=data.topography, 
-    frame=['ag', f'+t{title}'], 
-    cmap='earth',
-    )
+    projection="M15c",
+    grid=data.topography,
+    frame=["ag", f"+t{title}"],
+    cmap="earth",
+)
 
-fig.colorbar(cmap=True, frame=['a2000f500', 'x+lmeters'])
+fig.colorbar(cmap=True, frame=["a2000f500", "x+lmeters"])
 
-fig.coast(shorelines='1p,black')
+fig.coast(shorelines="1p,black")
 
 fig.show()

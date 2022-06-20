@@ -44,29 +44,31 @@ gravity = hm.point_gravity(
     coordinates, points, masses, field="g_z", coordinate_system="cartesian"
 )
 print(gravity)
-grid = vd.make_xarray_grid(coordinates, gravity, data_names='gravity', extra_coords_names='extra')
+grid = vd.make_xarray_grid(
+    coordinates, gravity, data_names="gravity", extra_coords_names="extra"
+)
 
 # Plot the results on a map
 fig = pygmt.Figure()
 
-title = "Gravitational acceleration (downward)"   
+title = "Gravitational acceleration (downward)"
 
-maxabs = vd.maxabs(gravity)*.80
+maxabs = vd.maxabs(gravity) * 0.80
 
-pygmt.makecpt(cmap='vik', series=(-maxabs, maxabs, .3))
+pygmt.makecpt(cmap="vik", series=(-maxabs, maxabs, 0.3))
 
-with pygmt.config(FONT_TITLE='16p'):
+with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
         region=[0, 20e3, 0, 20e3],
-        projection='X10c',
-        grid=grid.gravity, 
+        projection="X10c",
+        grid=grid.gravity,
         dpi=1000,
-        frame=['a', f'+t{title}', 'x+lm', 'y+lm'], 
+        frame=["a", f"+t{title}", "x+lm", "y+lm"],
         cmap=True,
-        )
+    )
 
-fig.plot(x=easting, y=northing, style="c0.2c", color='grey')
+fig.plot(x=easting, y=northing, style="c0.2c", color="grey")
 
-fig.colorbar(cmap=True, position="JMR", frame=['a.6f.2', 'x+lmGal'])
+fig.colorbar(cmap=True, position="JMR", frame=["a.6f.2", "x+lmGal"])
 
 fig.show()

@@ -57,22 +57,21 @@ disturbance_topofree = disturbance - bouguer
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=disturbance_topofree, cmap='vik', continuous=True)
+pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik", continuous=True)
 
 title = "Topography-free (Bouguer) gravity disturbance of the Earth"
 
-with pygmt.config(FONT_TITLE='14p'):
+with pygmt.config(FONT_TITLE="14p"):
     fig.grdimage(
-        region='g', 
-        projection='G-60/0/15c', 
-        frame=f'+t{title}',
-        grid=disturbance_topofree, 
+        region="g",
+        projection="G-60/0/15c",
+        frame=f"+t{title}",
+        grid=disturbance_topofree,
         cmap=True,
-        )
+    )
 
-fig.coast(shorelines='0.5p,black', resolution='crude')
+fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=['a200f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
 
 fig.show()
-

@@ -19,8 +19,8 @@ equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
 import boule as bl
-import pygmt
 import numpy as np
+import pygmt
 import verde as vd
 
 import harmonica as hm
@@ -74,39 +74,40 @@ print("\nGenerated grid:\n", grid)
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
 
 # Plot observed and gridded gravity disturbance
-fig = pygmt.Figure() 
+fig = pygmt.Figure()
 
 # Make colormap of data
-# Get the 90% of the maximum absolute value between the original and gridded data so we
-# can use the same color scale for both plots and have 0 centered at the white
-# color.
-maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)*.90
+# Get the 90% of the maximum absolute value between the original and gridded
+# data so we can use the same color scale for both plots and have 0 centered
+# at the white color.
+maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values) * 0.90
 pygmt.makecpt(
-    cmap='vik', 
-    series=(-maxabs, 
-            maxabs),
-            background=True,
-            )
+    cmap="vik",
+    series=(-maxabs, maxabs),
+    background=True,
+)
 
 fig.plot(
-    projection='M10c',
+    projection="M10c",
     region=region,
-    frame=[f"WSne", "xa5", "ya4"],
+    frame=["WSne", "xa5", "ya4"],
     x=longitude,
-    y=latitude, 
-    color=gravity_disturbance, 
+    y=latitude,
+    color=gravity_disturbance,
     style="c0.1c",
-    cmap=True)
+    cmap=True,
+)
 
-fig.colorbar(cmap=True, frame=['a100f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
 
-fig.shift_origin(xshift='w+3c')
-  
+fig.shift_origin(xshift="w+3c")
+
 fig.grdimage(
-    frame=[f"ESnw", "xa5", "ya4"],
-    grid=grid.gravity_disturbance, 
-    cmap=True,)
+    frame=["ESnw", "xa5", "ya4"],
+    grid=grid.gravity_disturbance,
+    cmap=True,
+)
 
-fig.colorbar(cmap=True, frame=['a100f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
 
 fig.show()

@@ -14,6 +14,7 @@ spacing at 10km ellipsoidal height. It was generated from the spherical
 harmonic model EIGEN-6C4 [Forste_etal2014]_.
 """
 import pygmt
+
 import harmonica as hm
 
 # Load the gravity grid
@@ -26,15 +27,15 @@ fig = pygmt.Figure()
 title = "Gravity of the Earth (EIGEN-6C4)"
 
 fig.grdimage(
-    region='g', 
-    projection='G150/0/15c', 
-    frame=f'+t{title}',
-    grid=data.gravity, 
-    cmap='viridis',
-    )
+    region="g",
+    projection="G150/0/15c",
+    frame=f"+t{title}",
+    grid=data.gravity,
+    cmap="viridis",
+)
 
-fig.coast(shorelines='0.5p,black', resolution='crude')
+fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=['a1000f250', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a1000f250", "x+lmGal"])
 
 fig.show()

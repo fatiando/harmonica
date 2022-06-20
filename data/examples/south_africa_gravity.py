@@ -20,6 +20,7 @@ more information.
 """
 import pygmt
 import verde as vd
+
 import harmonica as hm
 
 # Fetch the data in a pandas.DataFrame
@@ -32,23 +33,23 @@ region = vd.get_region((data.longitude.values, data.latitude.values))
 # Make a plot using PyGMT
 fig = pygmt.Figure()
 
-title = "Observed gravity data from South Africa"   
+title = "Observed gravity data from South Africa"
 
-pygmt.makecpt(cmap='viridis', series=(data.gravity.min(),data.gravity.max()))
+pygmt.makecpt(cmap="viridis", series=(data.gravity.min(), data.gravity.max()))
 
 fig.plot(
     region=region,
-    projection='M15c',
-    frame=['ag', f'+t{title}'],
-    x=data.longitude, 
-    y=data.latitude, 
-    color=data.gravity, 
+    projection="M15c",
+    frame=["ag", f"+t{title}"],
+    x=data.longitude,
+    y=data.latitude,
+    color=data.gravity,
     style="c0.1c",
     cmap=True,
-    )
+)
 
-fig.coast(shorelines='1p,black')
+fig.coast(shorelines="1p,black")
 
-fig.colorbar(cmap=True, frame=['a200f50', 'x+lobserved gravity [mGal]'], position="JMR")
+fig.colorbar(cmap=True, frame=["a200f50", "x+lobserved gravity [mGal]"], position="JMR")
 
 fig.show()

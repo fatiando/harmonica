@@ -21,7 +21,7 @@ points.
 import pygmt
 import pyproj
 import verde as vd
-import xarray as xr
+
 import harmonica as hm
 
 # Read South Africa topography
@@ -57,30 +57,35 @@ coordinates_projected = (easting, northing, coordinates[-1])
 prisms_gravity = prisms.prism_layer.gravity(coordinates_projected, field="g_z")
 
 # merge into a dataset
-grid = vd.make_xarray_grid(coordinates_projected, prisms_gravity, data_names='gravity', extra_coords_names='extra')
+grid = vd.make_xarray_grid(
+    coordinates_projected,
+    prisms_gravity,
+    data_names="gravity",
+    extra_coords_names="extra",
+)
 
 # Set figure properties
 xy_region = vd.get_region((easting, northing))
-w,e,s,n = xy_region
+w, e, s, n = xy_region
 fig_height = 10
-fig_width = fig_height*(e-w)/(n-s)
-fig_ratio = (n-s)/(fig_height/100)
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
 fig_proj = f"x1:{fig_ratio}"
 
 # Make a plot of the computed gravity
 fig = pygmt.Figure()
 
-title = "Gravitational acceleration of the topography"   
+title = "Gravitational acceleration of the topography"
 
-with pygmt.config(FONT_TITLE='14p'):
+with pygmt.config(FONT_TITLE="14p"):
     fig.grdimage(
         region=xy_region,
         projection=fig_proj,
-        grid=grid.gravity, 
-        frame=['ag', f'+t{title}'], 
-        cmap='vik',
-        )
+        grid=grid.gravity,
+        frame=["ag", f"+t{title}"],
+        cmap="vik",
+    )
 
-fig.colorbar(cmap=True, frame=['a100f50', 'x+lmGal'])
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
 
 fig.show()
