@@ -52,6 +52,7 @@ print("Mean height of observations:", data.altitude_m.mean())
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
+xy_region = vd.get_region((easting, northing))
 
 # Create the equivalent sources.
 # We'll use the default point source configuration at a relative depth beneath
@@ -71,14 +72,13 @@ print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
 # requires the height of the grid points (upward coordinate). By passing in
 # 1500 m, we're effectively upward-continuing the data (mean flight height is
 # 500 m).
-grid_coords = vd.grid_coordinates(region=region, spacing=500, extra_coords=1500)
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=500, extra_coords=1500)
 grid = eqs.grid(coordinates=grid_coords, data_names=["magnetic_anomaly"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata
 print("\nGenerated grid:\n", grid)
 
 # Set figure properties
-xy_region = vd.get_region((easting, northing))
 w, e, s, n = xy_region
 fig_height = 10
 fig_width = fig_height * (e - w) / (n - s)

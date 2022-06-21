@@ -51,6 +51,7 @@ print("Mean height of observations:", data.elevation.mean())
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.elevation)
+xy_region = vd.get_region((easting, northing))
 
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
@@ -91,12 +92,11 @@ print("R² score:", eqs_gb.score(coordinates, data.gravity_disturbance))
 # Interpolate data on a regular grid with 2 km spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1000 m, we're effectively upward-continuing the data.
-grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=1000)
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=2e3, extra_coords=1000)
 grid = eqs_gb.grid(coordinates=grid_coords, data_names="gravity_disturbance")
 print(grid)
 
 # Set figure properties
-xy_region = vd.get_region((easting, northing))
 w, e, s, n = xy_region
 fig_height = 10
 fig_width = fig_height * (e - w) / (n - s)
