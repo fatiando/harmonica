@@ -153,7 +153,7 @@ def fixture_invalid_grid_single_dim():
     with a single dimension.
     """
     x = np.linspace(0, 10, 11)
-    y = x**2
+    y = x ** 2
     grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
     return grid
 
@@ -241,7 +241,7 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.sqrt(k_easting**2 + k_northing**2) ** order
+    expected = np.sqrt(k_easting ** 2 + k_northing ** 2) ** order
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected, derivative_upward_kernel(sample_fft_grid, order=order)

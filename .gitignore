@@ -18,3 +18,11 @@ MANIFEST
 dask-worker-space
 .coverage.*
 harmonica/_version_generated.py
+harmonica/tests/test_forward_utils.py
+harmonica/tests/test_point_gravity.py
+harmonica/tests/test_tesseroid.py
+harmonica/tests/test_tesseroid_variable_density.py
+harmonica/tests/test_forward_utils.py
+harmonica/tests/test_point_gravity.py
+harmonica/tests/test_tesseroid.py
+harmonica/tests/test_tesseroid_variable_density.py

@@ -8,4 +8,3 @@
 Frequency domain filters meant to be applied on regular grids
 """
 from ._filters import *
-

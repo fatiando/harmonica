@@ -526,4 +526,3 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
 
     # Deal with inf and nan value
     da_filter = np.nan_to_num(da_filter, posinf=0, nan=0)
-
