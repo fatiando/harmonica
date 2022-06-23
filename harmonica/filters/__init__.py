@@ -5,5 +5,6 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Filter gravity and magnetic fields 
+Frequency domain filters meant to be applied on regular grids
 """
+from ._filters import *

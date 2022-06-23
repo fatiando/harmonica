@@ -7,18 +7,18 @@
 #
 # Import functions/classes to make the public API
 from . import datasets, synthetic
+from ._version import __version__
 from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
 from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from .equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
-from .filters.fft_filter import FFT_Filter
-from .forward.point import point_gravity, point_mass_gravity
+from .forward.point import point_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
 from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
-from .version import __version__
+from .transformations import *
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
