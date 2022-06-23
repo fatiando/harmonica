@@ -3,9 +3,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.8
+  - python==3.9
   - pip
-  - setuptools_scm
+  # Build
+  - setuptools>=45
+  - setuptools_scm>=6.2
+  - wheel
+  - twine
+  # Run-time
   - numpy
   - pandas
   - numba
@@ -15,19 +20,29 @@ dependencies:
   - verde>=1.5.0
   - xarray
   - xrft
-  # Development requirements
-  - boule
-  - pyproj
-  - matplotlib
-  - cartopy>=0.18
+  # Optional requirements
+  - pyvista
+  - vtk>=9
+  # Testing requirements
+  - netcdf4
   - pytest
   - pytest-cov
   - coverage
-  - sphinx==3.5.*
-  - sphinx-book-theme==0.0.41
-  - sphinx-gallery==0.8.*
+  - boule
+  # Documentation requirements
+  - sphinx==4.5.*
+  - sphinx-book-theme==0.2.*
+  - sphinx-gallery==0.10.*
+  - sphinx-panels==0.6.*
+  - sphinx-copybutton==0.5.*
+  - jupyter-sphinx==0.3.*
+  - pyproj
+  - matplotlib
+  - cartopy>=0.18
+  - ensaio
+  - netcdf4
   # Code style checks and autoformat
-  - black==21.12b0
+  - black==22.3.0
   - isort==5.10.*
   - flake8==4.0.*
   - flake8-bugbear==21.11.*
@@ -41,3 +56,6 @@ dependencies:
       # Install flake8-unused-arguments through pip
       # (not available through conda yet)
       - flake8-unused-arguments==0.0.9
+      # Install numba_progress through pip
+      # (not available through conda yet)
+      - numba_progress

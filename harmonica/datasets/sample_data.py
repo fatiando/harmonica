@@ -7,12 +7,14 @@
 """
 Functions to load sample datasets used in the Harmonica docs.
 """
+import warnings
+
 import pandas as pd
 import pkg_resources
 import pooch
 import xarray as xr
 
-from ..version import __version__ as version
+from .._version import __version__ as version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
@@ -25,6 +27,18 @@ with pkg_resources.resource_stream(
     "harmonica.datasets", "registry.txt"
 ) as registry_file:
     REGISTRY.load_registry(registry_file)
+
+
+def _deprecation_warning():
+    """
+    Raise a FutureWarning about deprecation of synthetic module
+    """
+    msg = (
+        "The 'datasets' module will be deprecated in Harmonica v0.6.0. "
+        + "Harmonica will transition to using "
+        + "Ensaio (https://www.fatiando.org/ensaio/) instead."
+    )
+    warnings.warn(msg, FutureWarning)
 
 
 def locate():
@@ -69,6 +83,7 @@ def fetch_geoid_earth():
         longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
     data = xr.open_dataset(fname, engine="scipy")
     # Capture attributes dict because it's removed after converting the data to
@@ -104,6 +119,7 @@ def fetch_gravity_earth():
         longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
     data = xr.open_dataset(fname, engine="scipy")
     # Capture attributes dict because it's removed after converting the data to
@@ -140,6 +156,7 @@ def fetch_topography_earth():
         geodetic latitude and longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
     data = xr.open_dataset(fname, engine="scipy")
     # Capture attributes dict because it's removed after converting the data to
@@ -182,6 +199,7 @@ def fetch_britain_magnetic():
     data : :class:`pandas.DataFrame`
         The magnetic anomaly data.
     """
+    _deprecation_warning()
     return pd.read_csv(REGISTRY.fetch("britain-magnetic.csv.xz"), compression="xz")
 
 
@@ -212,6 +230,7 @@ def fetch_south_africa_gravity():
         The gravity data.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("south-africa-gravity.ast.xz")
     columns = ["latitude", "longitude", "elevation", "gravity"]
     return pd.read_csv(fname, sep=r"\s+", names=columns, compression="xz")
@@ -238,6 +257,7 @@ def fetch_south_africa_topography():
         geodetic latitude and longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch(
         "south-africa-topography.nc.xz", processor=pooch.Decompress()
     )

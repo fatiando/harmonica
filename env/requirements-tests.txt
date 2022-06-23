@@ -3,3 +3,7 @@ boule
 pytest
 pytest-cov
 coverage
+pyvista
+vtk>=9
+netcdf4
+numba_progress

@@ -336,3 +336,40 @@ def test_gradient_boosted_eqs_float32(coordinates, data):
     npt.assert_allclose(
         data, eqs.predict(coordinates), rtol=0, atol=0.05 * vd.maxabs(data)
     )
+
+
+@pytest.mark.parametrize(
+    "deprecated_args",
+    (
+        dict(upward=5e3, spacing=1),
+        dict(upward=5e3, shape=(6, 6)),
+        dict(upward=5e3, spacing=1, region=(-4e3, 0, 5e3, 7e3)),
+        dict(upward=5e3, shape=(6, 6), region=(-4e3, 0, 5e3, 7e3)),
+    ),
+)
+def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
+    """
+    Test if EquivalentSourcesGB.grid raises error on deprecated arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing deprecated arguments
+    msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
+    with pytest.raises(ValueError, match=msg):
+        eqs.grid(coordinates=grid_coords, **deprecated_args)
+
+
+def test_error_ignored_args(coordinates_small, data_small, region):
+    """
+    Test if EquivalentSourcesGB.grid raises warning on ignored arguments
+    """
+    # Define sample equivalent sources and fit against synthetic data
+    eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
+    # Build a target grid
+    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    # Try to grid passing kwarg arguments that will be ignored
+    msg = "The 'bla' arguments are being ignored."
+    with pytest.warns(FutureWarning, match=msg):
+        eqs.grid(coordinates=grid_coords, bla="bla")

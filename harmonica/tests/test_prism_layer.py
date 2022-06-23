@@ -8,6 +8,7 @@
 Test prisms layer
 """
 import warnings
+from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
@@ -16,6 +17,16 @@ import verde as vd
 import xarray as xr
 
 from .. import prism_gravity, prism_layer
+
+try:
+    import pyvista
+except ImportError:
+    pyvista = None
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 @pytest.fixture(params=("numpy", "xarray"))
@@ -385,3 +396,72 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
         result,
         prism_gravity(coordinates, prisms, rho, field=field),
     )
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+@pytest.mark.parametrize("properties", (False, True))
+def test_to_pyvista(dummy_layer, properties):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    # Build the layer with or without properties
+    if properties:
+        properties = {"density": density}
+    else:
+        properties = None
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Convert the layer to pyvista UnstructuredGrid
+    pv_grid = layer.prism_layer.to_pyvista()
+    # Check properties of the pyvista grid
+    assert pv_grid.n_cells == 20
+    assert pv_grid.n_points == 20 * 8
+    # Check coordinates of prisms
+    for i, prism in enumerate(layer.prism_layer._to_prisms()):
+        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
+    # Check properties of the prisms
+    if properties is None:
+        assert pv_grid.n_arrays == 0
+        assert pv_grid.array_names == []
+    else:
+        assert pv_grid.n_arrays == 1
+        assert pv_grid.array_names == ["density"]
+        assert pv_grid.get_array("density").ndim == 1
+        npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+
+
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+@pytest.mark.use_numba
+def test_progress_bar(dummy_layer):
+    """
+    Check if forward gravity results with and without progress bar match
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    result_progress_true = layer.prism_layer.gravity(
+        coordinates, field="g_z", progressbar=True
+    )
+
+    result_progress_false = layer.prism_layer.gravity(
+        coordinates, field="g_z", progressbar=False
+    )
+    npt.assert_allclose(result_progress_true, result_progress_false)
+
+
+@patch("harmonica.forward.prism.ProgressBar", None)
+def test_numba_progress_missing_error(dummy_layer):
+    """
+    Check if error is raised when progressbar=True and numba_progress package
+    is not installed.
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)

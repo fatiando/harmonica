@@ -17,6 +17,29 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
+Grid Transformations
+--------------------
+
+Apply well known transformations regular gridded potential fields data.
+
+.. autosummary::
+    :toctree: generated/
+
+    derivative_upward
+
+Frequency domain filters
+------------------------
+
+Define filters in the frequency domain.
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.derivative_upward_kernel
+
+Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
+Transforms and its inverse on :class:`xarray.DataArray`.
+
 Equivalent Sources
 ------------------
 
@@ -55,8 +78,22 @@ Input and Output
 
     load_icgem_gdf
 
+Visualization
+-------------
+
+.. autosummary::
+   :toctree: generated/
+
+    visualization.prism_to_pyvista
+
 Synthetic models and surveys
 ----------------------------
+
+.. warning::
+
+    The :mod:`harmonica.synthetic` module will be deprecated in Harmonica
+    v0.6.0
+
 .. autosummary::
    :toctree: generated/
 
@@ -70,6 +107,18 @@ Synthetic models and surveys
 
 Datasets
 --------
+
+.. warning::
+
+    The :mod:`harmonica.datasets` module and every sample dataset a will be
+    deprecated in Harmonica v0.6.0. The examples and the user guide will
+    transition to using Ensaio (https://www.fatiando.org/ensaio/) instead.
+
+.. warning::
+
+    The :mod:`harmonica.datasets` module will be deprecated in Harmonica
+    v0.6.0
+
 
 .. autosummary::
    :toctree: generated/
