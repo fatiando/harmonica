@@ -6,7 +6,7 @@
 #
 """
 Airy Isostatic Moho
-==============-====
+===================
 
 According to the Airy hypothesis of isostasy, topography above sea level is
 supported by a thickening of the crust (a root) while oceanic basins are
