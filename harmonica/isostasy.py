@@ -24,6 +24,43 @@ def isostatic_moho_airy(
     r"""
     Calculate the isostatic Moho depth using Airy's hypothesis.
 
+    Take the height of the crystalline basement and optional additional layers
+    located on top of it. Each layer must be specified through its vertical
+    thickness and its corresponding density. Return the depth to the
+    Mohorovicic discontinuity (crust-mantle interface).
+
+    Parameters
+    ----------
+    basement : float or array
+        Height of the crystalline basement in meters.
+        It usually refer to topography and bathymetry height without sediment
+        cover.
+        When considering sedimentary basins, it refers to crystalline basement
+        (topography/bathymetry minus sediment thickness).
+    layers : dict (optional)
+        Dictionary that contains information about the thickness and density of
+        the layers located above the ``basement``.
+        For each layer, a single item should be created: its key will be the
+        layer name as a ``str`` and its values must be tuples containing the
+        layer thickness in meters and the layer density (in :math:`kg/m^3`)
+        in that order.
+        Thicknesses and densities can be floats or arrays.
+        If ``None``, no layers will be considered.
+        Default as ``None``.
+    density_crust : float (optional)
+        Density of the crust in :math:`kg/m^3`.
+    density_mantle : float (optional)
+        Mantle density in :math:`kg/m^3`.
+    reference_depth : float (optional)
+        The reference Moho depth (:math:`H`) in meters.
+
+    Returns
+    -------
+    moho_depth : float or array
+         The isostatic Moho depth in meters.
+
+    Notes
+    -----
     According to the Airy hypothesis of isostasy, rock equivalent topography
     above sea level is supported by a thickening of the crust (a root) while
     rock equivalent topography below sea level is supported by a thinning of
@@ -61,39 +98,8 @@ def isostatic_moho_airy(
     ``reference_depth=0`` if you want the values of the root thicknesses
     instead.
 
-    Parameters
-    ----------
-    basement : float or array
-        Height of the crystalline basement in meters.
-        It usually refer to topography and bathymetry height without sediment
-        cover.
-        When considering sedimentary basins, it refers to crystalline basement
-        (topography/bathymetry minus sediment thickness).
-    layers : dict (optional)
-        Dictionary that contains information about the thickness and density of
-        the layers located above the ``basement``.
-        For each layer, a single item should be created: its key will be the
-        layer name as a ``str`` and its values must be tuples containing the
-        layer thickness in meters and the layer density (in :math:`kg/m^3`)
-        in that order.
-        Thicknesses and densities can be floats or arrays.
-        If ``None``, no layers will be considered.
-        Default as ``None``.
-    density_crust : float (optional)
-        Density of the crust in :math:`kg/m^3`.
-    density_mantle : float (optional)
-        Mantle density in :math:`kg/m^3`.
-    reference_depth : float (optional)
-        The reference Moho depth (:math:`H`) in meters.
-
-    Returns
-    -------
-    moho_depth : float or array
-         The isostatic Moho depth in meters.
-
     Examples
     --------
-
     Simple model of continental topography with a sedimentary basin on top
 
     >>> # Define crystalline basement height (in meters)
