@@ -96,6 +96,20 @@ def fixture_sediments_array(request):
     return thickness, density
 
 
+def test_airy_no_layer(basement):
+    "Use no layer to check the calculations"
+    layers = None
+    root = isostatic_moho_airy(
+        basement,
+        layers=layers,
+        density_crust=1,
+        density_mantle=3,
+        reference_depth=10,
+    )
+    true_root = np.array([9, 9.5, 10, 10.5, 11, 11.5])
+    npt.assert_equal(root, true_root)
+
+
 def test_airy_single_layer(basement, water):
     "Use a simple basement + water model to check the calculations"
     thickness_water, density_water = water
