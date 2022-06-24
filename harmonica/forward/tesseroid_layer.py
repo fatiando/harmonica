@@ -157,6 +157,24 @@ class DatasetAccessorTesseroidLayer:
         """
         return (self._obj.latitude.size, self._obj.longitude.size)
 
+    @property
+    def boundaries(self):
+        """
+        Boundaries of the layer
+
+        Returns
+        -------
+        boundaries : tuple
+        Boundaries of the layer of tesseroids in the following order:
+        ``longitude_min``, ``longitude_max``, ``latitude_min``, ``latitude_max``
+        """
+        s_latitude, s_longitude = self.spacing
+        longitude_min = self._obj.longitude.values.min() - s_longitude / 2
+        longitude_max = self._obj.longitude.values.max() + s_longitude / 2
+        latitude_min = self._obj.latitude.values.min() - s_latitude / 2
+        latitude_max = self._obj.latitude.values.max() + s_latitude / 2
+        return longitude_min, longitude_max, latitude_min, latitude_max
+
     def update_top_bottom(self, surface, reference):
         """
         Update top and bottom boundaries of the layer
