@@ -1,6 +1,8 @@
 """
 Define a layer of tesseroids
 """
+import warnings
+
 import numpy as np
 import verde as vd
 import xarray as xr
