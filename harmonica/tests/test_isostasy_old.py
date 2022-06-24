@@ -7,9 +7,9 @@
 """
 Testing isostasy_airy function calculation (soon to be deprecated)
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 import xarray as xr
 
 from ..isostasy import isostasy_airy

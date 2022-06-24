@@ -9,6 +9,7 @@ Function to calculate the thickness of the roots and antiroots assuming the
 Airy isostatic hypothesis.
 """
 import warnings
+
 import numpy as np
 import xarray as xr
 
