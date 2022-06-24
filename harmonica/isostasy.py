@@ -40,7 +40,7 @@ def isostatic_moho_airy(
     [Hofmann-WellenhofMoritz2006]_.
 
     Compress all layers' mass above basement (:math:`h`) into *rock equivalent
-    topography* [Balmino_etal1973]_ :
+    topography* [Balmino1973]_ :
 
     .. math ::
 
