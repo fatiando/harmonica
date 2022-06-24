@@ -8,8 +8,8 @@
 Upward derivative of a regular grid
 ===================================
 """
-import pygmt 
 import numpy as np
+import pygmt
 import pyproj
 import verde as vd
 import xrft
@@ -36,9 +36,7 @@ eql = hm.EquivalentSources(depth=1000, damping=1).fit(
     coordinates, data.total_field_anomaly_nt
 )
 
-grid_coords = vd.grid_coordinates(
-    region=xy_region, spacing=500, extra_coords=1500
-)
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=500, extra_coords=1500)
 grid = eql.grid(grid_coords, data_names=["magnetic_anomaly"])
 grid = grid.magnetic_anomaly
 
@@ -76,7 +74,8 @@ title = "Magnetic anomaly"
 pygmt.makecpt(
     cmap="vik",
     series=(-(np.quantile(grid, q=1)), np.quantile(grid, q=1)),
-    background=True,)
+    background=True,
+)
 
 with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
@@ -84,7 +83,8 @@ with pygmt.config(FONT_TITLE="16p"):
         projection=fig_proj,
         grid=grid,
         frame=[f"WSne+t{title}", "xa10000+a15+leasting", "y+lnorthing"],
-        cmap=True,)
+        cmap=True,
+    )
 
 fig.colorbar(cmap=True, frame=["a200f50", "x+lnT"])
 
@@ -97,7 +97,8 @@ title = "Upward derivative"
 pygmt.makecpt(
     cmap="vik",
     series=(-(np.quantile(deriv_upward, q=0.99)), np.quantile(deriv_upward, q=0.99)),
-    background=True,)
+    background=True,
+)
 
 with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
@@ -105,7 +106,8 @@ with pygmt.config(FONT_TITLE="16p"):
         projection=fig_proj,
         grid=deriv_upward,
         frame=[f"ESnw+t{title}", "xa10000+a15+leasting", "y+lnorthing"],
-        cmap=True,)
+        cmap=True,
+    )
 
 fig.colorbar(cmap=True, frame=["a.05f.025", "x+lnT/m"])
 
