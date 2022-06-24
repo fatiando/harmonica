@@ -45,6 +45,10 @@ def tesseroid_layer(
         Dataset containing the coordinates of the center of each tesseroid, the
         height of its top and bottom boundaries ans its corresponding physical properties.
 
+    See also
+    --------
+    harmonica.DatasetAccessorsTesseroidLayer
+
     """
     dims = ("latitude", "longitude")
     # Initialize data and data_names as None
@@ -70,6 +74,11 @@ def tesseroid_layer(
 def __check_regular_grid(latitude, longitude):
     """
     Check if the latitude and longitude coordinates define a regular grid
+
+    .. note:
+
+        This function should live inside Verde in the future
+
     """
     if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
         raise ValueError("Passed latitude coordinates are note evenly spaced.")
@@ -139,7 +148,7 @@ class DatasetAccessorTesseroidLayer:
         """
         Return the number of tesseroids on each directions
 
-        returns
+        Returns
         -------
         n_latitude : int
             Number of tesseroids on the latitude direction.
