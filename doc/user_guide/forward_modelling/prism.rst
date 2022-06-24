@@ -95,14 +95,18 @@ Lets plot this gravitational field:
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
-
-   plt.pcolormesh(coordinates[0], coordinates[1], g_z)
-   plt.colorbar(label="mGal")
-   plt.gca().set_aspect("equal")
-   plt.xlabel("easting [m]")
-   plt.ylabel("northing [m]")
-   plt.show()
+   import pygmt
+   grid = vd.make_xarray_grid(
+      coordinates, g_z, data_names="g_z", extra_coords_names="extra")
+   fig = pygmt.Figure()
+   fig.grdimage(
+      region=(0, 10e3, 0, 10e3),
+      projection="X10c",
+      grid=grid.g_z,
+      frame=["WSne", "x+leasting (m)", "y+lnorthing (m)"],
+      cmap='viridis',)
+   fig.colorbar(cmap=True, position="JMR", frame=["a2", "x+lmGal"])
+   fig.show()
 
 
 .. _prism_layer:
@@ -189,12 +193,16 @@ Finally, lets plot the gravitational field:
 
 .. jupyter-execute::
 
-   plt.pcolormesh(*coordinates[:2], gravity)
-   plt.colorbar(label="mGal", shrink=0.8)
-   plt.gca().set_aspect("equal")
-   plt.ticklabel_format(axis="both", style="sci", scilimits=(0, 0))
-   plt.title("Gravity acceleration of a layer of prisms")
-   plt.xlabel("easting [m]")
-   plt.ylabel("northing [m]")
-   plt.tight_layout()
-   plt.show()
+   grid = vd.make_xarray_grid(
+      coordinates, gravity, data_names="gravity", extra_coords_names="extra")
+
+   fig = pygmt.Figure()
+   title = "Gravitational acceleration of a layer of prisms"
+   fig.grdimage(
+      region=region_pad,
+      projection="X10c",
+      grid=grid.gravity,
+      frame=[f"WSne+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
+      cmap='viridis',)
+   fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
+   fig.show()
