@@ -5,13 +5,25 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Testing isostasy calculation
+Testing isostasy_airy function calculation (soon to be deprecated)
 """
+import pytest
 import numpy as np
 import numpy.testing as npt
 import xarray as xr
 
 from ..isostasy import isostasy_airy
+
+
+def test_deprecation_warning():
+    """
+    Test if isostasy_airy raises a FutureWarning
+    """
+    topography = np.zeros(20, dtype=np.float64)
+    with pytest.warns(
+        FutureWarning, match="The harmonica.isostasy_airy function will be deprecated"
+    ):
+        isostasy_airy(topography)
 
 
 def test_isostasy_airy_zero_topography():

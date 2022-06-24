@@ -8,6 +8,7 @@
 Function to calculate the thickness of the roots and antiroots assuming the
 Airy isostatic hypothesis.
 """
+import warnings
 import numpy as np
 import xarray as xr
 
@@ -166,6 +167,12 @@ def isostasy_airy(
     r"""
     Calculate the isostatic Moho depth from topography using Airy's hypothesis.
 
+    .. warning::
+
+        The :func:`harmonica.isostasy_airy` function will be deprecated in
+        Harmonica v0.6. Please use :func:`harmonica.isostatic_moho_airy`
+        instead.
+
     According to the Airy hypothesis of isostasy, topography above sea level is
     supported by a thickening of the crust (a root) while oceanic basins are
     supported by a thinning of the crust (an anti-root). This assumption is
@@ -223,6 +230,12 @@ def isostasy_airy(
          The isostatic Moho depth in meters.
 
     """
+    warnings.warn(
+        "The harmonica.isostasy_airy function will be deprecated in "
+        + "Harmonica v0.6. Please use harmonica.isostatic_moho_airy "
+        + "instead.",
+        FutureWarning,
+    )
     # Need to cast to array to make sure numpy indexing works as expected for
     # 1D DataArray topography
     oceans = np.array(topography < 0)
