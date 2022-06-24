@@ -47,11 +47,11 @@ def isostatic_moho_airy(
         Thicknesses and densities can be floats or arrays.
         If ``None``, no layers will be considered.
         Default as ``None``.
-    density_crust : float (optional)
+    density_crust : float or array (optional)
         Density of the crust in :math:`kg/m^3`.
-    density_mantle : float (optional)
+    density_mantle : float or array (optional)
         Mantle density in :math:`kg/m^3`.
-    reference_depth : float (optional)
+    reference_depth : float or array (optional)
         The reference Moho depth (:math:`H`) in meters.
 
     Returns
