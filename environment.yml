@@ -56,3 +56,6 @@ dependencies:
       # Install flake8-unused-arguments through pip
       # (not available through conda yet)
       - flake8-unused-arguments==0.0.9
+      # Install numba_progress through pip
+      # (not available through conda yet)
+      - numba_progress
