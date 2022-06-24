@@ -5,17 +5,20 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Airy Isostasy Moho
-==================
+Airy Isostatic Moho
+==============-====
 
 According to the Airy hypothesis of isostasy, topography above sea level is
 supported by a thickening of the crust (a root) while oceanic basins are
 supported by a thinning of the crust (an anti-root). Function
-:func:`harmonica.isostasy_airy` computes the depth to crust-mantle interface
-(the Moho) according to Airy isostasy. One must assume a value for the
-reference thickness of the continental crust in order to convert the
-root/anti-root thickness into Moho depth. The function contains common default
-values for the reference thickness and crust, mantle [TurcotteSchubert2014]_.
+:func:`harmonica.isostatic_moho_airy` computes the depth to crust-mantle
+interface (the Moho) according to Airy isostasy. The function takes the depth
+to the crystalline basement and optionally any layers on top of it. Each layer
+is defined by its thickness and its density. In addition, one must assume
+a value for the reference thickness of the continental crust in order to
+convert the root/anti-root thickness into Moho depth. The function contains
+common default values for the reference thickness and crust, mantle
+[TurcotteSchubert2014]_.
 
 We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
