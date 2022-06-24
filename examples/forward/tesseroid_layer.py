@@ -20,7 +20,8 @@ topo_arg = topo.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 
 ellipsoid = bl.WGS84
 
-_, latitude_2d = np.meshgrid(topo_arg.longitude, topo_arg.latitude)
+longitude_2d, latitude_2d = vd.grid_coordinates(region, topo_arg.shape)
+# np.meshgrid(topo_arg.longitude, topo_arg.latitude)
 reference = ellipsoid.geocentric_radius(latitude_2d)
 surface = topo_arg + reference
 density = xr.where(topo_arg > 0, 2670, 2670 - 1040)
@@ -33,3 +34,8 @@ tesseroids = hm.tesseroid_layer(
     reference=reference,
     properties={"density": density},
 )
+
+# Compute gravity field of tesseroids on a regular grid of observation points
+height = topo_arg.max().values + reference + 1e3
+coordinates = [longitude_2d, latitude_2d, height]
+gravity = tesseroids.tesseroid_layer.gravity(coordinates, field="g_z")
