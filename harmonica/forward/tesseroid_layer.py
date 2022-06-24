@@ -62,7 +62,7 @@ def tesseroid_layer(
     tesseroids = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
     )
-    __check_regular_grid(tesseroids.latitude.values, tesseroids.longitude.values)
+    _check_regular_grid(tesseroids.latitude.values, tesseroids.longitude.values)
     # Append some attributes to the xr.Dataset
     attrs = {}
     tesseroids.attrs = attrs
@@ -71,7 +71,7 @@ def tesseroid_layer(
     return tesseroids
 
 
-def __check_regular_grid(latitude, longitude):
+def _check_regular_grid(latitude, longitude):
     """
     Check if the latitude and longitude coordinates define a regular grid
 
@@ -127,7 +127,7 @@ class DatasetAccessorTesseroidLayer:
             Spacing between center of the tesseroids on the longitude direction.
         """
         latitude, longitude = self._obj.latitude.values, self._obj.longitude.values
-        __check_regular_grid(latitude, longitude)
+        _check_regular_grid(latitude, longitude)
         s_latitude, s_longitude = latitude[1] - latitude[0], longitude[1] - longitude[0]
         return s_latitude, s_longitude
 
