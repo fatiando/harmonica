@@ -23,11 +23,41 @@ For example, we might choose the *potential* gravity field or the vertical
 component of the gravity acceleration (``"g_z"``).
 
 Harmonica currently provides forward modelling functions for the following
-It offers the
-geometric bodies:
+geometric bodies.
+
+Gravity
+-------
+
+.. grid:: 1 1 3 3
+
+   .. grid-item-card:: Point sources
+       :img-top: ../../_static/figures/simple_points.svg
+       :text-align: center
+       :link: point
+       :link-type: ref
+
+       Cartesian and spherical coordinates
+
+   .. grid-item-card:: Rectangular prisms
+       :img-top: ../../_static/figures/simple_prism.svg
+       :text-align: center
+       :link: prism
+       :link-type: ref
+
+       Cartesian coordinates
+
+   .. grid-item-card:: Tesseroids
+       :img-top: ../../_static/figures/simple_tesseroid.svg
+       :text-align: center
+       :link: tesseroid
+       :link-type: ref
+
+       Spherical coordinates
+
 
 .. toctree::
    :titlesonly:
+   :hidden:
 
    point
    prism
