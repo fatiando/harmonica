@@ -2,6 +2,7 @@ References
 ==========
 
 .. [AmanteEakins2009] Amante, C. and B.W. Eakins, 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. National Geophysical Data Center, NOAA. doi:`10.7289/V5C8276M <https://doi.org/10.7289/V5C8276M>`__
+.. [Balmino1973] Balmino, G., Lambeck, K., & Kaula, W. M. (1973). A spherical harmonic analysis of the Earth's topography. Journal of Geophysical Research, 78(2), 478-481.
 .. [BarthelmesKohler2016] Barthelmes, F. and Kohler, W. (2016), International Centre for Global Earth Models (ICGEM), in: Drewes, H., Kuglitsch, F., Adam, J. et al., The Geodesists Handbook 2016, Journal of Geodesy (2016), 90(10), pp 907-1205, doi:`10.1007/s00190-016-0948-z <https://doi.org/10.1007/s00190-016-0948-z>`__
 .. [Blakely1995] Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:`10.1017/CBO9780511549816 <https://doi.org/10.1017/CBO9780511549816>`__
 .. [Cooper2000] Cooper, G.R.J. (2000), Gridding gravity data using an equivalent layer, Computers & Geosciences, Computers & Geosciences, doi:`10.1016/S0098-3004(99)00089-8 <https://doi.org/10.1016/S0098-3004(99)00089-8>`__

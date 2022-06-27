@@ -62,13 +62,20 @@ Forward modelling
     prism_layer
     DatasetAccessorPrismLayer
 
-Isostasy
---------
+Isostatic Moho
+--------------
 
 .. autosummary::
     :toctree: generated/
 
-    isostasy_airy
+    isostatic_moho_airy
+    isostasy_airy (**DEPRECATED**)
+
+.. warning::
+
+    The :func:`harmonica.isostasy_airy` function will be deprecated in
+    Harmonica v0.6. Please use :func:`harmonica.isostatic_moho_airy`
+    instead.
 
 Input and Output
 ----------------
