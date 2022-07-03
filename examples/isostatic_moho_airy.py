@@ -24,6 +24,7 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 """
+import numpy as np
 import pygmt
 
 import harmonica as hm
