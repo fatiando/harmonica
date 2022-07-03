@@ -64,7 +64,10 @@ intersphinx_mapping = {
     "matplotlib": ("https://matplotlib.org/", None),
     "pyproj": ("https://pyproj4.github.io/pyproj/stable/", None),
     "pyvista": ("https://docs.pyvista.org", None),
-    "numba_progress": ("https://pypi.org/project/numba-progress/", None,),
+    "numba_progress": (
+        "https://pypi.org/project/numba-progress/",
+        None,
+    ),
     "pygmt": ("https://www.pygmt.org/latest/", None),
 }
 
@@ -112,7 +115,11 @@ sphinx_gallery_conf = {
     # Insert links to documentation of objects in the examples
     "reference_url": {"harmonica": None},
     # Add pyvista to the image scrapers
-    "image_scrapers": ("pyvista", "matplotlib", pygmt.sphinx_gallery.PyGMTScraper(),),
+    "image_scrapers": (
+        "pyvista",
+        "matplotlib",
+        pygmt.sphinx_gallery.PyGMTScraper(),
+    ),
 }
 
 
