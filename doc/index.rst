@@ -1,12 +1,27 @@
 .. title:: Home
 
-========
-|banner|
-========
+.. grid::
+    :gutter: 2 3 3 3
+    :margin: 5 5 0 0
+    :padding: 0 0 0 0
 
-.. |banner| image:: _static/readme-banner.png
-    :alt: Harmonica Documentation
-    :align: middle
+    .. grid-item::
+        :columns: 12 8 8 8
+
+        .. raw:: html
+
+            <h1 class="display-1">Harmonica</h1>
+
+        .. div:: sd-fs-3
+
+            Processing and modelling gravity and magnetic data
+
+    .. grid-item::
+        :columns: 12 4 4 4
+
+        .. image:: ./_static/harmonica-logo.svg
+            :width: 200px
+            :class: sd-m-auto
 
 **Harmonica** is a Python library for processing and modeling gravity and
 magnetic data.
@@ -18,6 +33,72 @@ point sources, prisms and tesseroids. The inversion methods are implemented as
 classes with an interface inspired by scikit-learn (like `Verde
 <https://www.fatiando.org/verde>`__).
 
+.. grid:: 1 2 1 2
+    :margin: 5 5 0 0
+    :padding: 0 0 0 0
+    :gutter: 4
+
+    .. grid-item-card:: :octicon:`rocket` Getting started
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        New to Harmonica? Start here!
+
+        .. button-ref:: overview
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
+
+    .. grid-item-card:: :octicon:`comment-discussion` Need help?
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        Ask on our community channels
+
+        .. button-link:: https://www.fatiando.org/contact
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
+
+             Join the conversation
+
+    .. grid-item-card:: :octicon:`file-badge` Reference documentation
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        A list of modules and functions
+
+        .. button-ref:: api
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
+
+
+    .. grid-item-card:: :octicon:`bookmark` Using Harmonica for research?
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        Citations help support our work
+
+        .. button-ref:: citing
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
+
+
+.. seealso::
+
+    Harmonica is a part of the
+    `Fatiando a Terra <https://www.fatiando.org/>`_ project.
+
 .. admonition:: Ready for daily use but still changing
     :class: seealso
 
@@ -28,72 +109,15 @@ classes with an interface inspired by scikit-learn (like `Verde
     Some of these changes could be **backwards incompatible**. Keep that in
     mind before you update Harmonica to a newer version.
 
-    **We welcome any feedback and ideas!** This is a great time to bring new
-    ideas on how we can improve Harmonica, feel free to `join the
-    conversation <https://www.fatiando.org/contact>`__ or submit a new
-    `issues on Github <https://github.com/fatiando/harmonica/issues>`__.
+    :octicon:`comment-discussion` **We welcome any feedback and ideas!** This
+    is a great time to bring new ideas on how we can improve Harmonica, feel
+    free to `join the conversation <https://www.fatiando.org/contact>`__ or
+    submit a new `issues on Github
+    <https://github.com/fatiando/harmonica/issues>`__.
 
-.. panels::
-    :header: text-center text-large
-    :card: border-1 m-1 text-center
-
-    **Getting started**
-    ^^^^^^^^^^^^^^^^^^^
-
-    New to Harmonica? Start here!
-
-    .. link-button:: overview
-        :type: ref
-        :text: Overview
-        :classes: btn-outline-primary btn-block stretched-link
-
-    ---
-
-    **Need help?**
-    ^^^^^^^^^^^^^^
-
-    Ask on our community channels
-
-    .. link-button:: https://www.fatiando.org/contact
-        :type: url
-        :text: Join the conversation
-        :classes: btn-outline-primary btn-block stretched-link
-
-    ---
-
-    **Reference documentation**
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    A list of modules and functions
-
-    .. link-button:: api
-        :type: ref
-        :text: API reference
-        :classes: btn-outline-primary btn-block stretched-link
-
-    ---
-
-    **Using Harmonica for research?**
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    Citations help support our work
-
-    .. link-button:: citing
-        :type: ref
-        :text: Cite Harmonica
-        :classes: btn-outline-primary btn-block stretched-link
-
-.. seealso::
-
-    Harmonica is a part of the
-    `Fatiando a Terra <https://www.fatiando.org/>`_ project.
-
-----
-
-Table of contents
------------------
 
 .. toctree::
+    :hidden:
     :maxdepth: 1
     :caption: Getting Started
 
@@ -103,6 +127,7 @@ Table of contents
 
 
 .. toctree::
+    :hidden:
     :maxdepth: 2
     :caption: User Guide
     :includehidden:
@@ -114,6 +139,7 @@ Table of contents
     user_guide/equivalent_sources/index.rst
 
 .. toctree::
+    :hidden:
     :maxdepth: 1
     :caption: Reference documentation
 
@@ -124,6 +150,7 @@ Table of contents
     versions.rst
 
 .. toctree::
+    :hidden:
     :maxdepth: 1
     :caption: Community
 
