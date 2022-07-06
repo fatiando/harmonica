@@ -17,6 +17,29 @@ Gravity Corrections
 
 For the Normal Earth correction, see package :mod:`boule`.
 
+Grid Transformations
+--------------------
+
+Apply well known transformations regular gridded potential fields data.
+
+.. autosummary::
+    :toctree: generated/
+
+    derivative_upward
+
+Frequency domain filters
+------------------------
+
+Define filters in the frequency domain.
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.derivative_upward_kernel
+
+Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
+Transforms and its inverse on :class:`xarray.DataArray`.
+
 Equivalent Sources
 ------------------
 
@@ -39,13 +62,20 @@ Forward modelling
     prism_layer
     DatasetAccessorPrismLayer
 
-Isostasy
---------
+Isostatic Moho
+--------------
 
 .. autosummary::
     :toctree: generated/
 
-    isostasy_airy
+    isostatic_moho_airy
+    isostasy_airy (**DEPRECATED**)
+
+.. warning::
+
+    The :func:`harmonica.isostasy_airy` function will be deprecated in
+    Harmonica v0.6. Please use :func:`harmonica.isostatic_moho_airy`
+    instead.
 
 Input and Output
 ----------------

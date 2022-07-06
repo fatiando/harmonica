@@ -19,6 +19,7 @@ dependencies:
   - pooch>=0.7.0
   - verde>=1.5.0
   - xarray
+  - xrft
   # Optional requirements
   - pyvista
   - vtk>=9
@@ -31,9 +32,14 @@ dependencies:
   - sphinx==4.5.*
   - sphinx-book-theme==0.2.*
   - sphinx-gallery==0.10.*
+  - sphinx-design==0.2.*
+  - sphinx-copybutton==0.5.*
+  - jupyter-sphinx==0.3.*
   - pyproj
   - matplotlib
   - cartopy>=0.18
+  - ensaio
+  - netcdf4
   # Code style checks and autoformat
   - black==22.3.0
   - isort==5.10.*
@@ -49,3 +55,6 @@ dependencies:
       # Install flake8-unused-arguments through pip
       # (not available through conda yet)
       - flake8-unused-arguments==0.0.9
+      # Install numba_progress through pip
+      # (not available through conda yet)
+      - numba_progress

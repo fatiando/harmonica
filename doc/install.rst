@@ -33,12 +33,16 @@ Required:
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+* `xrft <https://xrft.readthedocs.io/>`__
 
 Optional:
 
 * `pyvista <https://www.pyvista.org/>`__ and
   `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
-  See :meth:`harmonica.DatasetAccessorPrismLayer.to_pyvista`.
+  See :func:`harmonica.prism_to_pyvista`.
+* `numba_progress <https://pypi.org/project/numba-progress/>`__ for
+  printing a progress bar on some forward modelling computations.
+  See :func:`harmonica.prism_gravity`.
 
 The examples in the :ref:`gallery` also use:
 
