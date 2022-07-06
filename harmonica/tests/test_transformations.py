@@ -25,10 +25,10 @@ def fixture_sample_sources():
     points = [
         [-50e3, 50e3],
         [-50e3, 50e3],
-        [-20e3, -20e3],
+        [-80e3, -20e3],
     ]
 
-    masses = [3.3e8, 2.9e8]
+    masses = [8e8, -3e8]
     return points, masses
 
 
@@ -109,7 +109,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
     derivative = derivative_upward(potential_padded)
     derivative = xrft.unpad(derivative, pad_width)
     # Compare against g_z (trim the borders to ignore boundary effects)
-    trim = 5
+    trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
     g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
     rms = root_mean_square_error(derivative, g_z)
@@ -134,7 +134,7 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     second_deriv = derivative_upward(potential_padded, order=2)
     second_deriv = xrft.unpad(second_deriv, pad_width)
     # Compare against g_zz (trim the borders to ignore boundary effects)
-    trim = 10
+    trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
     g_zz = sample_g_zz[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
     rms = root_mean_square_error(second_deriv, g_zz)
