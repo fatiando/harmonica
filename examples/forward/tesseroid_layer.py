@@ -12,30 +12,28 @@ import harmonica as hm
 
 fname = ensaio.fetch_earth_topography(version=1)
 topo = xr.load_dataarray(fname)
-# print(topo)
 
 region = (-75, -50, -55, -20)
-topo_arg = topo.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
-# print(topo_arg)
+topo = topo.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 
 ellipsoid = bl.WGS84
 
-longitude_2d, latitude_2d = vd.grid_coordinates(region, topo_arg.shape)
-# np.meshgrid(topo_arg.longitude, topo_arg.latitude)
-reference = ellipsoid.geocentric_radius(latitude_2d)
-surface = topo_arg + reference
-density = xr.where(topo_arg > 0, 2670, 2670 - 1040)
-
-# print(surface)
+longitude, latitude = np.meshgrid(topo.longitude, topo.latitude)
+reference = ellipsoid.geocentric_radius(latitude)
+surface = topo + reference
+density = xr.where(topo > 0, 2670.0, 2670.0 - 1040.0)
 
 tesseroids = hm.tesseroid_layer(
-    coordinates=(topo_arg.longitude, topo_arg.latitude),
+    coordinates=(topo.longitude, topo.latitude),
     surface=surface,
     reference=reference,
     properties={"density": density},
 )
 
+# Create a regular grid of computation points located at 10km above reference
+grid_longitude, grid_latitude = vd.grid_coordinates(region=region, spacing=5)
+grid_radius = ellipsoid.geocentric_radius(grid_latitude) + 10e3
+grid_coords = (grid_longitude, grid_latitude, grid_radius)
+
 # Compute gravity field of tesseroids on a regular grid of observation points
-height = topo_arg.max().values + reference + 1e3
-coordinates = [longitude_2d, latitude_2d, height]
-gravity = tesseroids.tesseroid_layer.gravity(coordinates, field="g_z")
+gravity = tesseroids.tesseroid_layer.gravity(grid_coords, field="g_z")
