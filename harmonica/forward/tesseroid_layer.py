@@ -23,7 +23,7 @@ def tesseroid_layer(
     ----------
     coordinates : tuple
         List containing the coordinates of the centers of the tesseroids in
-        spherical coordinates in the following order ``latitude`` and ``longitude``.
+        spherical coordinates in the following order ``longitude`` and ``latitude``.
     surface : 2d-array
         Array used to create the uppermost boundary of the tesserois layer. All
         heights should be in meters. On every point where ``surface`` is below
@@ -64,7 +64,7 @@ def tesseroid_layer(
     tesseroids = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
     )
-    _check_regular_grid(tesseroids.latitude.values, tesseroids.longitude.values)
+    _check_regular_grid(tesseroids.longitude.values, tesseroids.latitude.values)
     # Append some attributes to the xr.Dataset
     attrs = {}
     tesseroids.attrs = attrs
@@ -73,19 +73,19 @@ def tesseroid_layer(
     return tesseroids
 
 
-def _check_regular_grid(latitude, longitude):
+def _check_regular_grid(longitude, latitude):
     """
-    Check if the latitude and longitude coordinates define a regular grid
+    Check if the longitude and latitude coordinates define a regular grid
 
     .. note:
 
         This function should live inside Verde in the future
 
     """
-    if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
-        raise ValueError("Passed latitude coordinates are note evenly spaced.")
     if not np.allclose(longitude[1] - longitude[0], longitude[1:] - longitude[:-1]):
         raise ValueError("Passed longitude coordinates are note evenly spaced.")
+    if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
+        raise ValueError("Passed latitude coordinates are note evenly spaced.")
 
 
 @xr.register_dataset_accessor("tesseroid_layer")
@@ -129,7 +129,7 @@ class DatasetAccessorTesseroidLayer:
             Spacing between center of the tesseroids on the longitude direction.
         """
         latitude, longitude = self._obj.latitude.values, self._obj.longitude.values
-        _check_regular_grid(latitude, longitude)
+        _check_regular_grid(longitude, latitude)
         s_latitude, s_longitude = latitude[1] - latitude[0], longitude[1] - longitude[0]
         return s_latitude, s_longitude
 
@@ -168,14 +168,14 @@ class DatasetAccessorTesseroidLayer:
         -------
         boundaries : tuple
         Boundaries of the layer of tesseroids in the following order:
-        ``longitude_min``, ``longitude_max``, ``latitude_min``, ``latitude_max``
+        ``longitude_w``, ``longitude_e``, ``latitude_s``, ``latitude_n``
         """
         s_latitude, s_longitude = self.spacing
-        longitude_min = self._obj.longitude.values.min() - s_longitude / 2
-        longitude_max = self._obj.longitude.values.max() + s_longitude / 2
-        latitude_min = self._obj.latitude.values.min() - s_latitude / 2
-        latitude_max = self._obj.latitude.values.max() + s_latitude / 2
-        return longitude_min, longitude_max, latitude_min, latitude_max
+        longitude_w = self._obj.longitude.values.min() - s_longitude / 2
+        longitude_e = self._obj.longitude.values.max() + s_longitude / 2
+        latitude_s = self._obj.latitude.values.min() - s_latitude / 2
+        latitude_n = self._obj.latitude.values.max() + s_latitude / 2
+        return longitude_w, longitude_e, latitude_s, latitude_n
 
     def update_top_bottom(self, surface, reference):
         """
@@ -313,28 +313,28 @@ class DatasetAccessorTesseroidLayer:
         tesseroids : 2d-array
             Array containing the boundaries of each tesseroid of the layer.
             Each row contains the boundaries of each tesseroid in the following
-            order: ``longitude_min``, ``longitude_max``, ``latitude_min``,
-            ``latitude_max``, ``bottom``, ``top``.
+            order: ``longitude_w``, ``longitude_e``, ``latitude_s``,
+            ``latitude_n``, ``bottom``, ``top``.
         """
         longitude, latitude = np.meshgrid(
             self._obj.longitude.values, self._obj.latitude.values
         )
         (
-            longitude_min,
-            longitude_max,
-            latitude_min,
-            latitude_max,
+            longitude_w,
+            longitude_e,
+            latitude_s,
+            latitude_n,
         ) = self._get_tesseroid_horizontal_boundaries(
             longitude.ravel(), latitude.ravel()
         )
         bottom = self._obj.bottom.values.ravel()
         top = self._obj.top.values.ravel()
         tesseroids = np.vstack(
-            (longitude_min, longitude_max, latitude_min, latitude_max, bottom, top)
+            (longitude_w, longitude_e, latitude_s, latitude_n, bottom, top)
         ).T
         return tesseroids
 
-    def _get_tesseroid_horizontal_boundaries(self, latitude, longitude):
+    def _get_tesseroid_horizontal_boundaries(self, longitude, latitude):
         """
         Compute the horizontal boundaries of the tesseroid
 
@@ -346,8 +346,8 @@ class DatasetAccessorTesseroidLayer:
             Longitude coordinates of the center of the tesseroid
         """
         spacing = self.spacing
-        longitude_min = longitude - spacing[1] / 2
-        longitude_max = longitude + spacing[1] / 2
-        latitude_min = latitude - spacing[0] / 2
-        latitude_max = latitude + spacing[0] / 2
-        return longitude_min, longitude_max, latitude_min, latitude_max
+        longitude_w = longitude - spacing[1] / 2
+        longitude_e = longitude + spacing[1] / 2
+        latitude_s = latitude - spacing[0] / 2
+        latitude_n = latitude + spacing[0] / 2
+        return longitude_w, longitude_e, latitude_s, latitude_n
