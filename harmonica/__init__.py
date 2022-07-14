@@ -30,7 +30,6 @@ from .transformations import (
 )
 
 
-
 def test(doctest=True, verbose=True, coverage=False, figures=False):
     """
     Run the test suite.

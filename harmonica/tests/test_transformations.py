@@ -23,7 +23,6 @@ from ..transformations import (
     reduction_to_pole,
     upward_continuation,
 )
-
 from .utils import root_mean_square_error
 
 
@@ -102,7 +101,7 @@ def fixture_sample_g_n(sample_grid_coords, sample_sources):
     Return g_n field of sample points on sample grid coords
     """
     points, masses = sample_sources
-    g_n = point_gravity(sample_grid_coords, points, masses, field="g_n")
+    g_n = point_gravity(sample_grid_coords, points, masses, field="g_northing")
     g_n = vd.make_xarray_grid(
         sample_grid_coords,
         g_n,
@@ -118,7 +117,7 @@ def fixture_sample_g_e(sample_grid_coords, sample_sources):
     Return g_e field of sample points on sample grid coords
     """
     points, masses = sample_sources
-    g_e = point_gravity(sample_grid_coords, points, masses, field="g_e")
+    g_e = point_gravity(sample_grid_coords, points, masses, field="g_easting")
     g_e = vd.make_xarray_grid(
         sample_grid_coords,
         g_e,
