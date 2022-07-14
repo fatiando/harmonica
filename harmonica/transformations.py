@@ -7,7 +7,16 @@
 """
 Apply transformations to regular grids of potential fields
 """
-from .filters._filters import *
+from .filters._filters import (
+    derivative_easting_kernel,
+    derivative_northing_kernel,
+    derivative_upward_kernel,
+    gaussian_highpass_kernel,
+    gaussian_lowpass_kernel,
+    pseudo_gravity_kernel,
+    reduction_to_pole_kernel,
+    upward_continuation_kernel,
+)
 from .filters._utils import apply_filter
 
 
