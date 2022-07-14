@@ -24,7 +24,6 @@ dependencies:
   - pyvista
   - vtk>=9
   # Testing requirements
-  - netcdf4
   - pytest
   - pytest-cov
   - coverage
@@ -33,7 +32,7 @@ dependencies:
   - sphinx==4.5.*
   - sphinx-book-theme==0.2.*
   - sphinx-gallery==0.10.*
-  - sphinx-panels==0.6.*
+  - sphinx-design==0.2.*
   - sphinx-copybutton==0.5.*
   - jupyter-sphinx==0.3.*
   - pyproj

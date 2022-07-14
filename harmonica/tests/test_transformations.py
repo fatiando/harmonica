@@ -23,6 +23,7 @@ from ..transformations import (
     reduction_to_pole,
     upward_continuation,
 )
+
 from .utils import root_mean_square_error
 
 
@@ -88,22 +89,6 @@ def fixture_sample_g_z(sample_grid_coords, sample_sources):
     g_z = point_gravity(sample_grid_coords, points, masses, field="g_z")
     g_z = vd.make_xarray_grid(
         sample_grid_coords,
-        g_z,
-        data_names="g_z",
-        extra_coords_names="upward",
-    )
-    return g_z.g_z
-
-
-@pytest.fixture(name="sample_g_z_upward")
-def fixture_sample_g_z_upward(upward_grid_coords, sample_sources):
-    """
-    Return g_z field of sample points on 10k surface
-    """
-    points, masses = sample_sources
-    g_z = point_gravity(upward_grid_coords, points, masses, field="g_z")
-    g_z = vd.make_xarray_grid(
-        upward_grid_coords,
         g_z,
         data_names="g_z",
         extra_coords_names="upward",
