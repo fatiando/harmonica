@@ -17,34 +17,34 @@ Part of the <a href="https://www.fatiando.org"><strong>Fatiando a Terra</strong>
 
 <p align="center">
 <a href="https://pypi.python.org/pypi/harmonica">
-    <img
-        src="http://img.shields.io/pypi/v/harmonica.svg?style=flat-square"
-        alt="Latest version on PyPI"
-    />
+<img
+src="http://img.shields.io/pypi/v/harmonica.svg?style=flat-square"
+alt="Latest version on PyPI"
+/>
 </a>
 <a href="https://github.com/fatiando/harmonica/actions">
-    <img
-        src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmain&amp;style=flat-square&amp;logo=none"
-        alt="GitHub Actions status"
-    />
+<img
+src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffatiando%2Fharmonica%2Fbadge%3Fref%3Dmain&amp;style=flat-square&amp;logo=none"
+alt="GitHub Actions status"
+/>
 </a>
 <a href="https://codecov.io/gh/fatiando/harmonica">
-    <img
-        src="https://img.shields.io/codecov/c/github/fatiando/harmonica/main.svg?style=flat-square"
-        alt="Test coverage status"
-    />
+<img
+src="https://img.shields.io/codecov/c/github/fatiando/harmonica/main.svg?style=flat-square"
+alt="Test coverage status"
+/>
 </a>
 <a href="https://pypi.python.org/pypi/harmonica">
-    <img
-        src="https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square"
-        alt="Compatible Python versions."
-    />
+<img
+src="https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square"
+alt="Compatible Python versions."
+/>
 </a>
 <a href="https://doi.org/10.5281/zenodo.3628741">
-    <img
-    src="https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628741-blue.svg?style=flat-square"
-    alt="Digital Object Identifier for the Zenodo archive"
-    />
+<img
+src="https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628741-blue.svg?style=flat-square"
+alt="Digital Object Identifier for the Zenodo archive"
+/>
 </a>
 </p>
 
