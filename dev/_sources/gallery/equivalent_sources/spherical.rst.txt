@@ -31,13 +31,14 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-122
+.. GENERATED FROM PYTHON SOURCE LINES 21-118
 
 
 
-.. image:: /gallery/equivalent_sources/images/sphx_glr_spherical_001.png
-    :alt: spherical
-    :class: sphx-glr-single-img
+.. image-sg:: /gallery/equivalent_sources/images/sphx_glr_spherical_001.png
+   :alt: spherical
+   :srcset: /gallery/equivalent_sources/images/sphx_glr_spherical_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -46,10 +47,8 @@ account the curvature of the Earth.
 
  .. code-block:: none
 
-    /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/boule/ellipsoid.py:458: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/boule/_ellipsoid.py:599: UserWarning: Formulas used are valid for points outside the ellipsoid.Height must be greater than or equal to zero.
       warn(
-    /usr/share/miniconda3/envs/testing/lib/python3.9/site-packages/sklearn/linear_model/_base.py:148: FutureWarning: 'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.
-      warnings.warn(
     R² score: 0.9999999999915354
 
     Generated grid:
@@ -117,11 +116,10 @@ account the curvature of the Earth.
     # passing in the maximum radius of the data, we're effectively
     # upward-continuing the data. The grid will be defined in spherical
     # coordinates.
-    grid = eqs.grid(
-        upward=coordinates[-1].max(),
-        spacing=0.2,
-        data_names=["gravity_disturbance"],
-    )
+    region = vd.get_region(coordinates)  # get the region boundaries
+    upward = coordinates[-1].max()
+    grid_coords = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=upward)
+    grid = eqs.grid(coordinates=grid_coords, data_names=["gravity_disturbance"])
 
     # The grid is a xarray.Dataset with values, coordinates, and metadata
     print("\nGenerated grid:\n", grid)
@@ -133,9 +131,6 @@ account the curvature of the Earth.
     # can use the same color scale for both plots and have 0 centered at the white
     # color.
     maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
-
-    # Get the region boundaries
-    region = vd.get_region(coordinates)
 
     # Plot observed and gridded gravity disturbance
     fig, (ax1, ax2) = plt.subplots(
@@ -178,7 +173,7 @@ account the curvature of the Earth.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.473 seconds)
+   **Total running time of the script:** ( 0 minutes  3.042 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_spherical.py:

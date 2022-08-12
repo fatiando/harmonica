@@ -5,16 +5,16 @@
 
 Computation times
 =================
-**01:24.221** total execution time for **gallery_forward** files:
+**01:14.604** total execution time for **gallery_forward** files:
 
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``)               | 01:13.952 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``)               | 01:04.895 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                                   | 00:05.179 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                                   | 00:04.573 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``) | 00:03.136 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``) | 00:02.642 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)                               | 00:01.232 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)                               | 00:01.909 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_point_gravity.py` (``point_gravity.py``)                           | 00:00.723 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_point_gravity.py` (``point_gravity.py``)                           | 00:00.586 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+

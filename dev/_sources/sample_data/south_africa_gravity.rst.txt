@@ -35,9 +35,10 @@ more information.
 
 
 
-.. image:: /sample_data/images/sphx_glr_south_africa_gravity_001.png
-    :alt: Observed gravity data from South Africa
-    :class: sphx-glr-single-img
+.. image-sg:: /sample_data/images/sphx_glr_south_africa_gravity_001.png
+   :alt: Observed gravity data from South Africa
+   :srcset: /sample_data/images/sphx_glr_south_africa_gravity_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -103,7 +104,7 @@ more information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.849 seconds)
+   **Total running time of the script:** ( 0 minutes  0.399 seconds)
 
 
 .. _sphx_glr_download_sample_data_south_africa_gravity.py:

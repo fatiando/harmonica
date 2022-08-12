@@ -46,9 +46,10 @@ automatically.
 
 
 
-.. image:: /sample_data/images/sphx_glr_britain_magnetic_001.png
-    :alt: Magnetic data from Great Britain
-    :class: sphx-glr-single-img
+.. image-sg:: /sample_data/images/sphx_glr_britain_magnetic_001.png
+   :alt: Magnetic data from Great Britain
+   :srcset: /sample_data/images/sphx_glr_britain_magnetic_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -124,7 +125,7 @@ automatically.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.719 seconds)
+   **Total running time of the script:** ( 0 minutes  6.216 seconds)
 
 
 .. _sphx_glr_download_sample_data_britain_magnetic.py:

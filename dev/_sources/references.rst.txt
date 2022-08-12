@@ -2,6 +2,7 @@ References
 ==========
 
 .. [AmanteEakins2009] Amante, C. and B.W. Eakins, 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. National Geophysical Data Center, NOAA. doi:`10.7289/V5C8276M <https://doi.org/10.7289/V5C8276M>`__
+.. [Balmino1973] Balmino, G., Lambeck, K., & Kaula, W. M. (1973). A spherical harmonic analysis of the Earth's topography. Journal of Geophysical Research, 78(2), 478-481.
 .. [BarthelmesKohler2016] Barthelmes, F. and Kohler, W. (2016), International Centre for Global Earth Models (ICGEM), in: Drewes, H., Kuglitsch, F., Adam, J. et al., The Geodesists Handbook 2016, Journal of Geodesy (2016), 90(10), pp 907-1205, doi:`10.1007/s00190-016-0948-z <https://doi.org/10.1007/s00190-016-0948-z>`__
 .. [Blakely1995] Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:`10.1017/CBO9780511549816 <https://doi.org/10.1017/CBO9780511549816>`__
 .. [Cooper2000] Cooper, G.R.J. (2000), Gridding gravity data using an equivalent layer, Computers & Geosciences, Computers & Geosciences, doi:`10.1016/S0098-3004(99)00089-8 <https://doi.org/10.1016/S0098-3004(99)00089-8>`__
@@ -10,9 +11,12 @@ References
 .. [Fukushima2020] Fukushima, T. (2020). Speed and accuracy improvements in standard algorithm for prismatic gravitational field. Geophysical Journal International. doi:`10.1093/gji/ggaa240 <https://doi.org/10.1093/gji/ggaa240>`__
 .. [Grombein2013] Grombein, T., Seitz, K., Heck, B. (2013), Optimized formulas for the gravitational field of a tesseroid, Journal of Geodesy. doi:`10.1007/s00190-013-0636-1 <https://doi.org/10.1007/s00190-013-0636-1>`__
 .. [Hofmann-WellenhofMoritz2006] Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien ; New York: Springer.
+.. [LiGotze2001] Li, X. and H. J. Gotze, 2001, Tutorial: Ellipsoid, geoid, gravity, geodesy, and geophysics, Geophysics, 66(6), p. 1660-1668, doi:`10.1190/1.1487109 <https://doi.org/10.1190/1.1487109>`__
 .. [Nagy2000] Nagy, D., Papp, G. & Benedek, J.(2000). The gravitational potential and its derivatives for the prism. Journal of Geodesy 74: 552. doi:`10.1007/s001900000116 <https://doi.org/10.1007/s001900000116>`__
 .. [Nagy2002] Nagy, D., Papp, G. & Benedek, J.(2002). Corrections to "The gravitational potential and its derivatives for the prism". Journal of Geodesy. doi:`10.1007/s00190-002-0264-7 <https://doi.org/10.1007/s00190-002-0264-7>`__
+.. [Oliveira2021] Oliveira Jr, Vanderlei C. and Uieda, Leonardo and Barbosa, Valeria C. F.. Sketch of three coordinate systems: Geocentric Cartesian, Geocentric Geodetic, and Topocentric Cartesian. figshare. doi: `10.6084/m9.figshare.15044241.v1 <https://doi.org/10.6084/m9.figshare.15044241.v1>`__
 .. [Soler2019] Soler, S. R., Pesce, A., Gimenez, M. E., & Uieda, L. (2019). Gravitational field calculation in spherical coordinates using variable densities in depth, Geophysical Journal International. doi: `10.1093/gji/ggz277 <https://doi.org/10.1093/gji/ggz277>`__
 .. [Soler2021] Soler, S. R. and Uieda, L. (2021). Gradient-boosted equivalent sources, Geophysical Journal International. doi:`10.1093/gji/ggab297 <https://doi.org/10.1093/gji/ggab297>`__
+.. [Uieda2015] Uieda, Leonardo (2015). A tesserioid (spherical prism) in a geocentric coordinate system with a local-North-oriented coordinate system. figshare. Figure. doi: `10.6084/m9.figshare.1495525.v1 <https://doi.org/10.6084/m9.figshare.1495525.v1>`_
 .. [Vajda2004] Vajda, P., Vaníček, P., Novák, P. and Meurers, B. (2004). On evaluation of Newton integrals in geodetic coordinates: Exact formulation and spherical approximation. Contributions to Geophysics and Geodesy, 34(4), 289-314.
 .. [TurcotteSchubert2014] Turcotte, D. L., & Schubert, G. (2014). Geodynamics (3 edition). Cambridge, United Kingdom: Cambridge University Press.

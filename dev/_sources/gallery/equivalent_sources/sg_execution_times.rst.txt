@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:32.127** total execution time for **gallery_equivalent_sources** files:
+**00:14.749** total execution time for **gallery_equivalent_sources** files:
 
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``cartesian.py``)                           | 00:14.954 | 0.0 MB |
+| :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``cartesian.py``)                           | 00:07.263 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py` (``gradient_boosted.py``)             | 00:08.755 | 0.0 MB |
+| :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``spherical.py``)                           | 00:03.042 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``spherical.py``)                           | 00:04.473 | 0.0 MB |
+| :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py` (``block_averaged_sources.py``) | 00:02.404 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py` (``block_averaged_sources.py``) | 00:03.946 | 0.0 MB |
+| :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py` (``gradient_boosted.py``)             | 00:02.041 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+

@@ -15,27 +15,6 @@ This gallery contains a selection examples of what Harmonica can do.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic...">
-
-.. only:: html
-
- .. figure:: /gallery/images/thumb/sphx_glr_isostasy_airy_thumb.png
-     :alt: Airy Isostasy
-
-     :ref:`sphx_glr_gallery_isostasy_airy.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /gallery/isostasy_airy
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Gravity disturbances are the differences between the measured gravity and a reference (normal) ...">
 
 .. only:: html
@@ -75,6 +54,48 @@ This gallery contains a selection examples of what Harmonica can do.
    :hidden:
 
    /gallery/gravity_disturbance_topofree
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="According to the Airy hypothesis of isostasy, topography above sea level is supported by a thic...">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_isostatic_moho_airy_thumb.png
+     :alt: Airy Isostatic Moho
+
+     :ref:`sphx_glr_gallery_isostatic_moho_airy.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/isostatic_moho_airy
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Upward derivative of a regular grid">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_upward_derivative_thumb.png
+     :alt: Upward derivative of a regular grid
+
+     :ref:`sphx_glr_gallery_upward_derivative.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/upward_derivative
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -90,14 +111,14 @@ Equivalent Sources
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="When trying to grid a very large dataset, the regular harmonica.EquivalentSources might not be ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="By default, the harmonica.EquivalentSources class locates one point source beneath each data po...">
 
 .. only:: html
 
- .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_gradient_boosted_thumb.png
-     :alt: Gradient-boosted equivalent sources
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_block_averaged_sources_thumb.png
+     :alt: Gridding with block-averaged equivalent sources
 
-     :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py`
+     :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py`
 
 .. raw:: html
 
@@ -107,7 +128,7 @@ Equivalent Sources
 .. toctree::
    :hidden:
 
-   /gallery/equivalent_sources/gradient_boosted
+   /gallery/equivalent_sources/block_averaged_sources
 
 .. raw:: html
 
@@ -132,6 +153,27 @@ Equivalent Sources
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="When trying to grid a very large dataset, the regular harmonica.EquivalentSources might not be ...">
+
+.. only:: html
+
+ .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_gradient_boosted_thumb.png
+     :alt: Gradient-boosted equivalent sources
+
+     :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/equivalent_sources/gradient_boosted
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The curvature of the Earth must be taken into account when gridding and processing magnetic or ...">
 
 .. only:: html
@@ -150,27 +192,6 @@ Equivalent Sources
    :hidden:
 
    /gallery/equivalent_sources/spherical
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="By default, the harmonica.EquivalentSources class locates one point source beneath each data po...">
-
-.. only:: html
-
- .. figure:: /gallery/equivalent_sources/images/thumb/sphx_glr_block_averaged_sources_thumb.png
-     :alt: Gridding with block-averaged equivalent sources
-
-     :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /gallery/equivalent_sources/block_averaged_sources
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -186,14 +207,14 @@ Forward Modeling
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling...">
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_prisms_topo_gravity_thumb.png
-     :alt: Gravitational effect of topography
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_point_gravity_thumb.png
+     :alt: Point Masses in Cartesian Coordinates
 
-     :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py`
+     :ref:`sphx_glr_gallery_forward_point_gravity.py`
 
 .. raw:: html
 
@@ -203,7 +224,7 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/prisms_topo_gravity
+   /gallery/forward/point_gravity
 
 .. raw:: html
 
@@ -228,14 +249,14 @@ Forward Modeling
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The simplest geometry used to compute gravitational fields are point masses. Although modelling...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr...">
 
 .. only:: html
 
- .. figure:: /gallery/forward/images/thumb/sphx_glr_point_gravity_thumb.png
-     :alt: Point Masses in Cartesian Coordinates
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_prisms_topo_gravity_thumb.png
+     :alt: Gravitational effect of topography
 
-     :ref:`sphx_glr_gallery_forward_point_gravity.py`
+     :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py`
 
 .. raw:: html
 
@@ -245,7 +266,7 @@ Forward Modeling
 .. toctree::
    :hidden:
 
-   /gallery/forward/point_gravity
+   /gallery/forward/prisms_topo_gravity
 
 .. raw:: html
 
@@ -288,6 +309,39 @@ Forward Modeling
    :hidden:
 
    /gallery/forward/tesseroid_variable_density
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_visualization:
+
+3D visualizations
+-----------------
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The harmonica.prism_layer allows to easily create a layer of prisms whose top and bottom bounda...">
+
+.. only:: html
+
+ .. figure:: /gallery/visualization/images/thumb/sphx_glr_prism_layer_pyvista_thumb.png
+     :alt: Plot a prism layer in 3D
+
+     :ref:`sphx_glr_gallery_visualization_prism_layer_pyvista.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/visualization/prism_layer_pyvista
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

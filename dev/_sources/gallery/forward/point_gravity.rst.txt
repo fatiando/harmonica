@@ -35,9 +35,10 @@ grid given in Cartesian coordinates using the
 
 
 
-.. image:: /gallery/forward/images/sphx_glr_point_gravity_001.png
-    :alt: Gravitational acceleration (downward)
-    :class: sphx-glr-single-img
+.. image-sg:: /gallery/forward/images/sphx_glr_point_gravity_001.png
+   :alt: Gravitational acceleration (downward)
+   :srcset: /gallery/forward/images/sphx_glr_point_gravity_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -122,7 +123,7 @@ grid given in Cartesian coordinates using the
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.723 seconds)
+   **Total running time of the script:** ( 0 minutes  0.586 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_point_gravity.py:

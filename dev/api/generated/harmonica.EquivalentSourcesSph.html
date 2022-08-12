@@ -11,7 +11,8 @@
     
 
     
-  <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -23,29 +24,34 @@
 
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.c441f2ba0852f4cabcb80105e3a46ae6.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -57,59 +63,64 @@
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
+    <div class="container-fluid" id="banner"></div>
+
+    
 
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
     
         <div class="navbar-brand-box">
-<a class="navbar-brand text-wrap" href="../../index.html">
-  
-  <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
-  
-  
-  <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
-  
-</a>
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
+      
+    </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../index.html">
-   Harmonica Documentation
-  </a>
- </li>
-</ul>
-<p class="caption collapsible-parent">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Getting Started
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../overview.html">
+   Overview
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../install.html">
    Installing
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../citing.html">
-   Citing Harmonica
-  </a>
- </li>
- <li class="toctree-l1 collapsible-parent">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../gallery/index.html">
    Gallery
   </a>
-  <ul class="collapse-ul">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/isostasy_airy.html">
-     Airy Isostasy
-    </a>
-   </li>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/gravity_disturbance.html">
      Gravity Disturbances
@@ -121,18 +132,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
-     Gradient-boosted equivalent sources
+    <a class="reference internal" href="../../gallery/isostatic_moho_airy.html">
+     Airy Isostatic Moho
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
-     Gridding and upward continuation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
-     Gridding in spherical coordinates
+    <a class="reference internal" href="../../gallery/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -141,8 +147,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">
-     Gravitational effect of topography
+    <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -151,8 +172,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
-     Point Masses in Cartesian Coordinates
+    <a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
     </a>
    </li>
    <li class="toctree-l2">
@@ -165,71 +186,124 @@
      Tesseroids with variable density
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
   </ul>
-  <i class="fas fa-chevron-down">
-  </i>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   User Guide
  </span>
 </p>
-<ul class="nav sidenav_l1">
- <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="../../sample_data/index.html">
-   Sample Data
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/coordinate_systems.html">
+   Coordinate systems
   </a>
-  <ul class="collapse-ul">
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/earth_geoid.html">
-     Earth Geoid
+    <a class="reference internal" href="../../user_guide/forward_modelling/point.html">
+     Point sources
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/earth_gravity.html">
-     Earth Gravity
+    <a class="reference internal" href="../../user_guide/forward_modelling/prism.html">
+     Rectangular prisms
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/earth_topography.html">
-     Earth Topography
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/south_africa_gravity.html">
-     Land Gravity Data from South Africa
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/south_africa_topography.html">
-     South Africa Topography
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/britain_magnetic.html">
-     Total Field Magnetic Anomaly from Great Britain
+    <a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">
+     Tesseroids
     </a>
    </li>
   </ul>
-  <i class="fas fa-chevron-down">
-  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/topographic_correction.html">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Reference documentation
  </span>
 </p>
-<ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active collapsible-parent">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../index.html">
    API Reference
   </a>
-  <ul class="current collapse-ul">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="harmonica.bouguer_correction.html">
      harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,6 +347,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.isostasy_airy.html">
      harmonica.isostasy_airy
     </a>
@@ -280,6 +359,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
     </a>
    </li>
    <li class="toctree-l2">
@@ -328,8 +412,11 @@
     </a>
    </li>
   </ul>
-  <i class="fas fa-chevron-down">
-  </i>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../citing.html">
+   Citing Harmonica
+  </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
@@ -341,50 +428,46 @@
    References
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
 </ul>
-<p class="caption collapsible-parent">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Getting help and contributing
+  Community
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference external" href="http://contact.fatiando.org">
    Join the community
-   <i class="fas fa-external-link-alt">
-   </i>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
    How to contribute
-   <i class="fas fa-external-link-alt">
-   </i>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
    Code of Conduct
-   <i class="fas fa-external-link-alt">
-   </i>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference external" href="https://github.com/fatiando/harmonica">
    Source code on GitHub
-   <i class="fas fa-external-link-alt">
-   </i>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference external" href="https://www.fatiando.org">
    The Fatiando a Terra project
-   <i class="fas fa-external-link-alt">
-   </i>
   </a>
  </li>
 </ul>
 
+    </div>
 </nav> <!-- To handle the deprecated key -->
 
 <div class="navbar_extra_footer">
@@ -398,22 +481,22 @@
 
 
           
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
 <main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
     <div class="topbar container-xl fixed-top">
     <div class="topbar-contents row">
         <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
         <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
             
 <div class="dropdown-buttons-trigger">
     <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
@@ -428,7 +511,7 @@
                 data-placement="left">.rst</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -452,26 +535,25 @@
     </div>
 </div>
 
-
             <!-- Full screen (wrap in <a> to have style consistency -->
-            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-                    title="Fullscreen mode"><i
-                        class="fas fa-expand"></i></button></a>
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
 
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i>
-            Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examples-using-harmonica-equivalentsourcessph">
    Examples using
@@ -484,21 +566,48 @@
  </li>
 </ul>
 
-        </nav>
-        
+            </nav>
         </div>
     </div>
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>harmonica.EquivalentSourcesSph</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-harmonica-equivalentsourcessph">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     harmonica.EquivalentSourcesSph
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="section" id="harmonica-equivalentsourcessph">
 <h1>harmonica.EquivalentSourcesSph<a class="headerlink" href="#harmonica-equivalentsourcessph" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="harmonica.EquivalentSourcesSph">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">harmonica.</span></code><code class="sig-name descname"><span class="pre">EquivalentSourcesSph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">EquivalentSourcesSph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent sources for generic harmonic functions in spherical coordinates</p>
 <p>These equivalent sources can be used for:</p>
 <ul class="simple">
@@ -533,10 +642,10 @@ the observation point and the source, respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>damping</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
+<li><p><strong>damping</strong> (<em>None</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
 smoothness is imposed on the estimated coefficients.
 If None, no regularization is used.</p></li>
-<li><p><strong>points</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>list of arrays</em><em> (</em><em>optional</em><em>)</em>) – List containing the coordinates of the equivalent point sources.
+<li><p><strong>points</strong> (<em>None</em><em> or </em><em>list of arrays</em><em> (</em><em>optional</em><em>)</em>) – List containing the coordinates of the equivalent point sources.
 Coordinates are assumed to be in the following order:
 (<code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">radius</span></code>). Both <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and
 <code class="docutils literal notranslate"><span class="pre">latitude</span></code> must be in degrees and <code class="docutils literal notranslate"><span class="pre">radius</span></code> in meters.
@@ -556,9 +665,9 @@ If False, these tasks will be run on a single CPU. Default to True.</p></li>
 </dd>
 <dt class="field-even">Variables</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>points_</strong> (<em>2d-array</em>) – Coordinates of the equivalent point sources.</p></li>
-<li><p><strong>coefs_</strong> (<em>array</em>) – Estimated coefficients of every point source.</p></li>
-<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
+<li><p><strong>points</strong> (<em>2d-array</em>) – Coordinates of the equivalent point sources.</p></li>
+<li><p><strong>coefs</strong> (<em>array</em>) – Estimated coefficients of every point source.</p></li>
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
 interpolator. Used as the default region for the
 <a class="reference internal" href="harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method.</p></li>
 </ul>
@@ -567,7 +676,7 @@ interpolator. Used as the default region for the
 </dd></dl>
 
 <p class="rubric">Methods Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -582,19 +691,19 @@ interpolator. Used as the default region for the
 <tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.get_params" title="harmonica.EquivalentSourcesSph.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.grid" title="harmonica.EquivalentSourcesSph.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.grid</span></code></a>(upward[, region, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.grid" title="harmonica.EquivalentSourcesSph.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.grid</span></code></a>(coordinates[, ...])</p></td>
 <td><p>Interpolate the data onto a regular grid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.jacobian" title="harmonica.EquivalentSourcesSph.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.jacobian</span></code></a>(coordinates, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.jacobian" title="harmonica.EquivalentSourcesSph.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.jacobian</span></code></a>(coordinates, ...)</p></td>
 <td><p>Make the Jacobian matrix for the equivalent sources.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.predict" title="harmonica.EquivalentSourcesSph.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.predict</span></code></a>(coordinates)</p></td>
 <td><p>Evaluate the estimated equivalent sources on the given set of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.profile" title="harmonica.EquivalentSourcesSph.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.profile</span></code></a>(point1, point2, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.profile" title="harmonica.EquivalentSourcesSph.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.profile</span></code></a>(point1, point2, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.scatter" title="harmonica.EquivalentSourcesSph.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.scatter</span></code></a>([region, size, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.scatter" title="harmonica.EquivalentSourcesSph.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.scatter</span></code></a>([region, size, ...])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.EquivalentSourcesSph.score" title="harmonica.EquivalentSourcesSph.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSourcesSph.score</span></code></a>(coordinates, data)</p></td>
@@ -607,13 +716,13 @@ interpolator. Used as the default region for the
 </table>
 <hr class="docutils" />
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.filter">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">filter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.filter">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the data through the gridder and produce residuals.</p>
 <p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
 data), and returns the coordinates, residuals, and weights.</p>
 <p>No very useful by itself but this interface makes gridders compatible
-with other processing operations and is used by <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.Chain.html#verde.Chain" title="(in Verde vv1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
+with other processing operations and is used by <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.Chain.html#verde.Chain" title="(in Verde vv1.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
 join them together (for example, so you can fit a spline on the
 residuals of a trend).</p>
 <dl class="field-list simple">
@@ -626,7 +735,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -639,8 +748,8 @@ the input data minus the predicted data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.fit">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.fit">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the coefficients of the equivalent sources.</p>
 <p>The data region is captured and used as default for the
 <a class="reference internal" href="#harmonica.EquivalentSourcesSph.grid" title="harmonica.EquivalentSourcesSph.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method.</p>
@@ -653,7 +762,7 @@ following order: (<code class="docutils literal notranslate"><span class="pre">l
 Only <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, and <code class="docutils literal notranslate"><span class="pre">radius</span></code> will be used, all
 subsequent coordinates will be ignored.</p></li>
 <li><p><strong>data</strong> (<em>array</em>) – The data values of each data point.</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em>) – If not None, then the weights assigned to each data point.
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em>) – If not None, then the weights assigned to each data point.
 Typically, this should be 1 over the data uncertainty squared.</p></li>
 </ul>
 </dd>
@@ -664,8 +773,8 @@ Typically, this should be 1 over the data uncertainty squared.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.get_params">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">get_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.get_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.get_params">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -679,35 +788,34 @@ contained subobjects that are estimators.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.grid">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.grid" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.grid">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
-<p>The grid can be specified by either the number of points in each
-dimension (the <em>shape</em>) or by the grid node spacing. See
-<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.6.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for details. All grid points will be
-located at the same <cite>upward</cite> coordinate. Other arguments for
-<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.6.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as extra keyword arguments
-(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
-<p>If the interpolator collected the input data region, then it will be
-used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.
-Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+<p>The coordinates of the regular grid must be passed through the
+<code class="docutils literal notranslate"><span class="pre">coordinates</span></code> argument as a tuple containing three arrays in the
+following order: <code class="docutils literal notranslate"><span class="pre">(longitude,</span> <span class="pre">latitude,</span> <span class="pre">radius)</span></code>. They can be easily
+created through the <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> function. If the
+grid points must be all at the same radius, it can be specified in the
+<code class="docutils literal notranslate"><span class="pre">extra_coords</span></code> argument of <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="(in Verde vv1.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a>.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default names will be provided if none are given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>upward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Upward coordinate of the grid points.</p></li>
-<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
-<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
-respectively.</p></li>
-<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
-respectively.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Tuple of arrays containing the coordinates of the grid in the
+following order: (longitude, latitude, radius).
+The longitude and latitude arrays could be 1d or 2d arrays, if
+they are 2d they must be part of a meshgrid.
+The radius array should be a 2d array with the same shape of
+longitude and latitude (if they are 2d arrays) or with a shape of
+<code class="docutils literal notranslate"><span class="pre">(latitude.size,</span> <span class="pre">longitude.size)</span></code> (if they are 1d arrays).</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><em>None</em>) – The names of the latitude and longitude data dimensions,
 respectively, in the output grid. Default is determined from the
 <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the following
-order: northing dimension, easting dimension.
-<strong>NOTE: This is an exception to the “easting” then
-“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+order: latitude dimension, longitude dimension.
+<strong>NOTE: This is an exception to the “longitude” then
+“latitude” pattern but is required for compatibility with xarray.</strong></p></li>
 <li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output grid. Defaults to
 <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code>.</p></li>
 </ul>
@@ -720,8 +828,8 @@ to the <code class="docutils literal notranslate"><span class="pre">attrs</span>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.jacobian">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">jacobian</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.jacobian" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.jacobian">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make the Jacobian matrix for the equivalent sources.</p>
 <p>Each column of the Jacobian is the Green’s function for a single point
 source evaluated on all observation points.</p>
@@ -745,8 +853,8 @@ sources in the following order:
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.predict">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.predict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.predict">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the estimated equivalent sources on the given set of points.</p>
 <p>Requires a fitted estimator
 (see <a class="reference internal" href="#harmonica.EquivalentSourcesSph.fit" title="harmonica.EquivalentSourcesSph.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
@@ -764,8 +872,8 @@ subsequent coordinates will be ignored.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.profile">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">profile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.profile" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.profile">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.profile" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Not implemented method. The profile on spherical coordinates should
@@ -774,8 +882,8 @@ be done using great-circle distances through the Haversine formula.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.scatter">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">scatter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.scatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.scatter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.scatter">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/equivalent_sources/spherical.html#EquivalentSourcesSph.scatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.EquivalentSourcesSph.scatter" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Not implemented method. The scatter method will be deprecated on
@@ -784,12 +892,20 @@ Verde v2.0.0.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.score">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">score</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.score">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score the gridder predictions against the given data.</p>
 <p>Calculates the R^2 coefficient of determination of between the
 predicted values and the given data values. A maximum score of 1 means
 a perfect fit. The score can be negative.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The default scoring will change from R² to negative root mean
+squared error (RMSE) in Verde 2.0.0. This may change model
+selection results slightly. The negative version will be used to
+maintain the behaviour of larger scores being better, which is more
+compatible with current model selection code.</p>
+</div>
 <p>If the data has more than 1 component, the scores of each component
 will be averaged.</p>
 <dl class="field-list simple">
@@ -802,7 +918,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -814,8 +930,8 @@ array for each data component (if not None).</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="harmonica.EquivalentSourcesSph.set_params">
-<code class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></code><code class="sig-name descname"><span class="pre">set_params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.set_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="harmonica.EquivalentSourcesSph.set_params">
+<span class="sig-prename descclassname"><span class="pre">EquivalentSourcesSph.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#harmonica.EquivalentSourcesSph.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>). The latter have
@@ -843,35 +959,41 @@ possible to update each component of a nested object.</p>
 
               </div>
               
-        
-        <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="harmonica.EquivalentSourcesGB.html" title="previous page">harmonica.EquivalentSourcesGB</a>
-    <a class='right-next' id="next-link" href="harmonica.point_gravity.html" title="next page">harmonica.point_gravity</a>
-
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="harmonica.EquivalentSourcesGB.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">harmonica.EquivalentSourcesGB</p>
         </div>
-        
+    </a>
+    <a class='right-next' id="next-link" href="harmonica.point_gravity.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">harmonica.point_gravity</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
         </div>
     </div>
-    <footer class="footer mt-5 mt-md-0">
-    <div class="container">
-      <p>
-        
-            &copy; Copyright .<br/>
-          Last updated on Jan 15, 2022.<br/>
-      </p>
-    </div>
-  </footer>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 12, 2022.<br/>
+  </p>
+</footer>
 </main>
 
 
       </div>
     </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-    
-  <script src="../../_static/js/index.d3f166471bb80abb5163.js"></script>
-
-
-    
   </body>
 </html>

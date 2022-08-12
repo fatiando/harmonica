@@ -12,6 +12,12 @@ Sample Data
 Harmonica provides some sample data for testing through the
 :mod:`harmonica.datasets` module.
 
+.. warning::
+
+    The :mod:`harmonica.datasets` module and every sample dataset a will be
+    deprecated in Harmonica v0.6.0. The examples and the user guide will
+    transition to using Ensaio (https://www.fatiando.org/ensaio/) instead.
+
 
 Where is my data?
 -----------------
@@ -32,6 +38,27 @@ Available datasets
 These are the datasets currently available:
 
 
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an...">
+
+.. only:: html
+
+ .. figure:: /sample_data/images/thumb/sphx_glr_britain_magnetic_thumb.png
+     :alt: Total Field Magnetic Anomaly from Great Britain
+
+     :ref:`sphx_glr_sample_data_britain_magnetic.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /sample_data/britain_magnetic
 
 .. raw:: html
 
@@ -137,27 +164,6 @@ These are the datasets currently available:
    :hidden:
 
    /sample_data/south_africa_topography
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="These data are a complete airborne survey of the entire Great Britain conducted between 1955 an...">
-
-.. only:: html
-
- .. figure:: /sample_data/images/thumb/sphx_glr_britain_magnetic_thumb.png
-     :alt: Total Field Magnetic Anomaly from Great Britain
-
-     :ref:`sphx_glr_sample_data_britain_magnetic.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /sample_data/britain_magnetic
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

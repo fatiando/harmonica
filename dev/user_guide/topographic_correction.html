@@ -1,0 +1,2670 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Topographic Correction | Harmonica dev</title>
+    
+
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Equivalent Sources" href="equivalent_sources/index.html" />
+    <link rel="prev" title="Gravity Disturbance" href="gravity_disturbance.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/isostatic_moho_airy.html">
+     Airy Isostatic Moho
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/upward_derivative.html">
+     Upward derivative of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="coordinate_systems.html">
+   Coordinate systems
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/point.html">
+     Point sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/prism.html">
+     Rectangular prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/tesseroid.html">
+     Tesseroids
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../api/index.html">
+   API Reference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/user_guide/topographic_correction.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fuser_guide/topographic_correction.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/user_guide/topographic_correction.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bouguer-correction">
+   Bouguer correction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#forward-modelling-the-topography">
+   Forward modelling the topography
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Topographic Correction</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bouguer-correction">
+   Bouguer correction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#forward-modelling-the-topography">
+   Forward modelling the topography
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="topographic-correction">
+<span id="id1"></span><h1>Topographic Correction<a class="headerlink" href="#topographic-correction" title="Permalink to this headline">¶</a></h1>
+<p>Computing the <a class="reference internal" href="gravity_disturbance.html#gravity-disturbance"><span class="std std-ref">gravity disturbance</span></a> is usually the
+first step towards generating a dataset that could provide insight of the
+structures and bodies that lie beneath Earth surface.</p>
+<p>One of the strongest signals present in the gravity disturbances are the
+gravitational effect of the topography, i.e. every body located above the
+surface of the reference ellipsoid.
+Mainly because their proximity to the observation points but also because their
+density contrast could be considered the same as their own absolute density.</p>
+<p>For this reason, geophysicists usually remove the gravitational effect of the
+topography from the gravity disturbance in a processes called <strong>topographic
+correction</strong>.
+The resulting field is often called <em>Bouguer gravity disturbance</em> or
+<em>topography-free gravity disturbance</em>.</p>
+<p>The simpler way to apply the topographic correction is through the <strong>Bouguer
+correction</strong>. It consists in approximating the topographic masses that lay
+underneath each computation point as an infinite slab of constant density.
+It has been widely used on ground surveys because it’s easy to compute and
+because we don’t need any other data than the observation height (the height at
+which the gravity has been measured).
+It’s main drawback is it’s accuracy: the approximation might be too simple to
+accurately reproduce the gravitational effect of the topography present in our
+region of interest.</p>
+<p>On the other hand, we can compute the topographic correction by <strong>forward
+modelling the topographic masses</strong>. To do so we will need a 2D grid of the
+topography, a.k.a. a DEM (digital elevation model). This method produces
+accurate corrections if the DEM has good resolutions, but its computation is
+much more expensive.</p>
+<p>In the following sections we will explore how we can apply both methods using
+Harmonica.</p>
+<p>Lets start by downloading some gravity data over the Bushveld Igneous Complex
+in Southern Africa.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">fname</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_bushveld_gravity</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>height_sea_level_m</th>
+      <th>height_geometric_m</th>
+      <th>gravity_mgal</th>
+      <th>gravity_disturbance_mgal</th>
+      <th>gravity_bouguer_mgal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>25.01500</td>
+      <td>-26.26334</td>
+      <td>1230.2</td>
+      <td>1257.474535</td>
+      <td>978681.38</td>
+      <td>25.081592</td>
+      <td>-113.259165</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>25.01932</td>
+      <td>-26.38713</td>
+      <td>1297.0</td>
+      <td>1324.574150</td>
+      <td>978669.02</td>
+      <td>24.538158</td>
+      <td>-122.662101</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>25.02499</td>
+      <td>-26.39667</td>
+      <td>1304.8</td>
+      <td>1332.401322</td>
+      <td>978669.28</td>
+      <td>26.526960</td>
+      <td>-121.339321</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>25.04500</td>
+      <td>-26.07668</td>
+      <td>1165.2</td>
+      <td>1192.107148</td>
+      <td>978681.08</td>
+      <td>17.954814</td>
+      <td>-113.817543</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>25.07668</td>
+      <td>-26.35001</td>
+      <td>1262.5</td>
+      <td>1289.971792</td>
+      <td>978665.19</td>
+      <td>12.700307</td>
+      <td>-130.460126</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3872</th>
+      <td>31.51500</td>
+      <td>-23.86333</td>
+      <td>300.5</td>
+      <td>312.710241</td>
+      <td>978776.85</td>
+      <td>-4.783965</td>
+      <td>-39.543608</td>
+    </tr>
+    <tr>
+      <th>3873</th>
+      <td>31.52499</td>
+      <td>-23.30000</td>
+      <td>280.7</td>
+      <td>292.686630</td>
+      <td>978798.55</td>
+      <td>48.012766</td>
+      <td>16.602026</td>
+    </tr>
+    <tr>
+      <th>3874</th>
+      <td>31.54832</td>
+      <td>-23.19333</td>
+      <td>245.7</td>
+      <td>257.592670</td>
+      <td>978803.55</td>
+      <td>49.161771</td>
+      <td>22.456674</td>
+    </tr>
+    <tr>
+      <th>3875</th>
+      <td>31.57333</td>
+      <td>-23.84833</td>
+      <td>226.8</td>
+      <td>239.199065</td>
+      <td>978808.44</td>
+      <td>5.116904</td>
+      <td>-20.419870</td>
+    </tr>
+    <tr>
+      <th>3876</th>
+      <td>31.37500</td>
+      <td>-23.00000</td>
+      <td>285.6</td>
+      <td>297.165672</td>
+      <td>978734.77</td>
+      <td>5.186926</td>
+      <td>-25.922627</td>
+    </tr>
+  </tbody>
+</table>
+<p>3877 rows × 7 columns</p>
+</div></div></div>
+</div>
+<p>And plot it:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+
+<span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance_mgal</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gravity disturbance&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance_mgal</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">tmp</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/topographic_correction_1_1.png" src="../_images/topographic_correction_1_1.png" />
+</div>
+</div>
+<div class="section" id="bouguer-correction">
+<h2>Bouguer correction<a class="headerlink" href="#bouguer-correction" title="Permalink to this headline">¶</a></h2>
+<p>We can compute the Bouguer correction through the
+<a class="reference internal" href="../api/generated/harmonica.bouguer_correction.html#harmonica.bouguer_correction" title="harmonica.bouguer_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.bouguer_correction</span></code></a> function.
+Because our gravity data has been obtained on the Earth surface, the
+<code class="docutils literal notranslate"><span class="pre">height_geometric_m</span></code> coordinate coincides with the topographic height at each
+observation point (referenced above the ellipsoid), so we can pass it as the
+<code class="docutils literal notranslate"><span class="pre">topography</span></code> argument.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+
+<span class="n">bouguer_correction</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">bouguer_correction</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">height_geometric_m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The <a class="reference internal" href="../api/generated/harmonica.bouguer_correction.html#harmonica.bouguer_correction" title="harmonica.bouguer_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.bouguer_correction</span></code></a> assigns default values for the
+density of the upper crust and the water.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In case the observations heights were referenced over the geoid (usually
+marked as above the mean sea level), it’s advisable to convert them to
+geometric heights by removing the geoid height.</p>
+</div>
+<p>We can now compute the Bouguer disturbance and plot it:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bouguer_disturbance</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance_mgal</span> <span class="o">-</span> <span class="n">bouguer_correction</span>
+<span class="n">bouguer_disturbance</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>0      -115.688843
+1      -123.743874
+2      -122.631301
+3      -115.497942
+4      -131.708097
+           ...    
+3872    -39.790922
+3873     15.247392
+3874     20.325058
+3875    -21.660701
+3876    -28.079864
+Length: 3877, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">bouguer_disturbance</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bouguer disturbance (with simple Bouguer correction)&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">bouguer_disturbance</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">tmp</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/topographic_correction_4_0.png" src="../_images/topographic_correction_4_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="forward-modelling-the-topography">
+<h2>Forward modelling the topography<a class="headerlink" href="#forward-modelling-the-topography" title="Permalink to this headline">¶</a></h2>
+<p>In order to forward model the topographic masses, we need to build a 3D model
+made out of simpler geometric bodies. In this case, we are going to use
+rectangular prisms.
+Then we will compute the gravitational effect of every prism on each
+computation point.</p>
+<p>To do so, we need a regular grid of the topographic heights (or DEM as in
+Digital Elevation Model) around the Bushveld Igneous Complex.
+We can download a global topography grid:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">fname</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_southern_africa_topography</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">topography</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataarray</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">topography</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;topography&#x27; (latitude: 1182, longitude: 1371)&gt;
+array([[-5039., -5027., -5014., ..., -3846., -3867., -3873.],
+       [-5036., -5021., -5007., ..., -3839., -3863., -3872.],
+       [-5031., -5016., -5001., ..., -3835., -3860., -3870.],
+       ...,
+       [-2906., -2901., -2884., ...,   173.,   134.,   118.],
+       [-2908., -2906., -2888., ...,   132.,   119.,   118.],
+       [-2912., -2910., -2894., ...,   122.,   120.,   128.]],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float64 10.92 10.93 10.95 10.97 ... 33.72 33.73 33.75
+  * latitude   (latitude) float64 -36.0 -35.98 -35.97 ... -16.35 -16.33 -16.32
+Attributes:
+    Conventions:    CF-1.8
+    title:          Topographic and bathymetric height for Southern Africa ob...
+    crs:            WGS84
+    source:         Downloaded from NOAA website (https://ngdc.noaa.gov/mgg/g...
+    license:        public domain
+    references:     https://doi.org/10.7289/V5C8276M
+    long_name:      topographic height above mean sea level
+    standard_name:  height_above_mean_sea_level
+    description:    height topography/bathymetry referenced to mean sea level
+    units:          m
+    actual_range:   [-5685.  3376.]
+    noaa_metadata:  Conventions: COARDS/CF-1.0\ntitle: ETOPO1_Ice_g_gmt4.grd\...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'topography'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 1182</li><li><span class='xr-has-index'>longitude</span>: 1371</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-e08262c0-0710-4309-84c4-d130f2d3bcce' class='xr-array-in' type='checkbox' checked><label for='section-e08262c0-0710-4309-84c4-d130f2d3bcce' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>-5.039e+03 -5.027e+03 -5.014e+03 -5.006e+03 ... 122.0 120.0 128.0</span></div><div class='xr-array-data'><pre>array([[-5039., -5027., -5014., ..., -3846., -3867., -3873.],
+       [-5036., -5021., -5007., ..., -3839., -3863., -3872.],
+       [-5031., -5016., -5001., ..., -3835., -3860., -3870.],
+       ...,
+       [-2906., -2901., -2884., ...,   173.,   134.,   118.],
+       [-2908., -2906., -2888., ...,   132.,   119.,   118.],
+       [-2912., -2910., -2894., ...,   122.,   120.,   128.]],
+      dtype=float32)</pre></div></div></li><li class='xr-section-item'><input id='section-82f64077-7177-4861-917e-789ef2a0610f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-82f64077-7177-4861-917e-789ef2a0610f' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>10.92 10.93 10.95 ... 33.73 33.75</div><input id='attrs-2d632938-bd14-4587-9c48-23b92bcec85b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-2d632938-bd14-4587-9c48-23b92bcec85b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6175b65c-13e1-4753-b1ec-619519e2f438' class='xr-var-data-in' type='checkbox'><label for='data-6175b65c-13e1-4753-b1ec-619519e2f438' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>longitude</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>actual_range :</span></dt><dd>[10.91666667 33.75      ]</dd></dl></div><div class='xr-var-data'><pre>array([10.916667, 10.933333, 10.95    , ..., 33.716667, 33.733333, 33.75    ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-36.0 -35.98 ... -16.33 -16.32</div><input id='attrs-cd2477e5-ed3a-46a1-9011-7fc2894f326a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-cd2477e5-ed3a-46a1-9011-7fc2894f326a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6e9d4ae4-4f82-43ad-89db-a145ea674b02' class='xr-var-data-in' type='checkbox'><label for='data-6e9d4ae4-4f82-43ad-89db-a145ea674b02' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>latitude</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>actual_range :</span></dt><dd>[-36.         -16.31666667]</dd></dl></div><div class='xr-var-data'><pre>array([-36.      , -35.983333, -35.966667, ..., -16.35    , -16.333333,
+       -16.316667])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-ec201f5e-74e7-4e1c-87cb-efa6ae0fbea1' class='xr-section-summary-in' type='checkbox'  ><label for='section-ec201f5e-74e7-4e1c-87cb-efa6ae0fbea1' class='xr-section-summary' >Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.8</dd><dt><span>title :</span></dt><dd>Topographic and bathymetric height for Southern Africa obtained from ETOPO1 (ice surface)</dd><dt><span>crs :</span></dt><dd>WGS84</dd><dt><span>source :</span></dt><dd>Downloaded from NOAA website (https://ngdc.noaa.gov/mgg/global/global.html)</dd><dt><span>license :</span></dt><dd>public domain</dd><dt><span>references :</span></dt><dd>https://doi.org/10.7289/V5C8276M</dd><dt><span>long_name :</span></dt><dd>topographic height above mean sea level</dd><dt><span>standard_name :</span></dt><dd>height_above_mean_sea_level</dd><dt><span>description :</span></dt><dd>height topography/bathymetry referenced to mean sea level</dd><dt><span>units :</span></dt><dd>m</dd><dt><span>actual_range :</span></dt><dd>[-5685.  3376.]</dd><dt><span>noaa_metadata :</span></dt><dd>Conventions: COARDS/CF-1.0
+title: ETOPO1_Ice_g_gmt4.grd
+GMT_version: 4.4.0
+node_offset: 0</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>And then crop it to a slightly larger region than the gravity observations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+<span class="n">region_pad</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">pad_region</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">topography</span> <span class="o">=</span> <span class="n">topography</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">longitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">region_pad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">region_pad</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">latitude</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">region_pad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">region_pad</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">topography</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;topography&#x27; (latitude: 360, longitude: 539)&gt;
+array([[ 1408.,  1403.,  1398., ..., -1300., -1316., -1336.],
+       [ 1413.,  1406.,  1400., ..., -1292., -1305., -1319.],
+       [ 1415.,  1409.,  1402., ..., -1284., -1295., -1306.],
+       ...,
+       [  970.,   972.,   973., ...,   121.,   120.,   122.],
+       [  970.,   973.,   974., ...,   121.,   120.,   123.],
+       [  967.,   970.,   974., ...,   122.,   122.,   123.]],
+      dtype=float32)
+Coordinates:
+  * longitude  (longitude) float64 24.02 24.03 24.05 24.07 ... 32.95 32.97 32.98
+  * latitude   (latitude) float64 -28.0 -27.98 -27.97 ... -22.05 -22.03 -22.02
+Attributes:
+    Conventions:    CF-1.8
+    title:          Topographic and bathymetric height for Southern Africa ob...
+    crs:            WGS84
+    source:         Downloaded from NOAA website (https://ngdc.noaa.gov/mgg/g...
+    license:        public domain
+    references:     https://doi.org/10.7289/V5C8276M
+    long_name:      topographic height above mean sea level
+    standard_name:  height_above_mean_sea_level
+    description:    height topography/bathymetry referenced to mean sea level
+    units:          m
+    actual_range:   [-5685.  3376.]
+    noaa_metadata:  Conventions: COARDS/CF-1.0\ntitle: ETOPO1_Ice_g_gmt4.grd\...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'topography'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 360</li><li><span class='xr-has-index'>longitude</span>: 539</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-e0740bfc-5a2d-48b3-8430-d881db2afa2f' class='xr-array-in' type='checkbox' checked><label for='section-e0740bfc-5a2d-48b3-8430-d881db2afa2f' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.408e+03 1.403e+03 1.398e+03 1.395e+03 ... 123.0 122.0 122.0 123.0</span></div><div class='xr-array-data'><pre>array([[ 1408.,  1403.,  1398., ..., -1300., -1316., -1336.],
+       [ 1413.,  1406.,  1400., ..., -1292., -1305., -1319.],
+       [ 1415.,  1409.,  1402., ..., -1284., -1295., -1306.],
+       ...,
+       [  970.,   972.,   973., ...,   121.,   120.,   122.],
+       [  970.,   973.,   974., ...,   121.,   120.,   123.],
+       [  967.,   970.,   974., ...,   122.,   122.,   123.]],
+      dtype=float32)</pre></div></div></li><li class='xr-section-item'><input id='section-0e6c015b-bec0-4893-b315-ee1d4564f2be' class='xr-section-summary-in' type='checkbox'  checked><label for='section-0e6c015b-bec0-4893-b315-ee1d4564f2be' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>24.02 24.03 24.05 ... 32.97 32.98</div><input id='attrs-29a2bbd0-2625-4176-8520-f092dd8ba90d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-29a2bbd0-2625-4176-8520-f092dd8ba90d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8c230287-843b-40fa-ad31-71e5f2bdc933' class='xr-var-data-in' type='checkbox'><label for='data-8c230287-843b-40fa-ad31-71e5f2bdc933' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>longitude</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>actual_range :</span></dt><dd>[10.91666667 33.75      ]</dd></dl></div><div class='xr-var-data'><pre>array([24.016667, 24.033333, 24.05    , ..., 32.95    , 32.966667, 32.983333])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-28.0 -27.98 ... -22.03 -22.02</div><input id='attrs-526a7839-662f-4e2f-b80b-a8fdb1672e0e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-526a7839-662f-4e2f-b80b-a8fdb1672e0e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3b7b2b1c-2ac2-4f41-82d6-1d1692084f1b' class='xr-var-data-in' type='checkbox'><label for='data-3b7b2b1c-2ac2-4f41-82d6-1d1692084f1b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>latitude</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>actual_range :</span></dt><dd>[-36.         -16.31666667]</dd></dl></div><div class='xr-var-data'><pre>array([-28.      , -27.983333, -27.966667, ..., -22.05    , -22.033333,
+       -22.016667])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0f040b41-8240-4463-899b-ce9fe63c3218' class='xr-section-summary-in' type='checkbox'  ><label for='section-0f040b41-8240-4463-899b-ce9fe63c3218' class='xr-section-summary' >Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.8</dd><dt><span>title :</span></dt><dd>Topographic and bathymetric height for Southern Africa obtained from ETOPO1 (ice surface)</dd><dt><span>crs :</span></dt><dd>WGS84</dd><dt><span>source :</span></dt><dd>Downloaded from NOAA website (https://ngdc.noaa.gov/mgg/global/global.html)</dd><dt><span>license :</span></dt><dd>public domain</dd><dt><span>references :</span></dt><dd>https://doi.org/10.7289/V5C8276M</dd><dt><span>long_name :</span></dt><dd>topographic height above mean sea level</dd><dt><span>standard_name :</span></dt><dd>height_above_mean_sea_level</dd><dt><span>description :</span></dt><dd>height topography/bathymetry referenced to mean sea level</dd><dt><span>units :</span></dt><dd>m</dd><dt><span>actual_range :</span></dt><dd>[-5685.  3376.]</dd><dt><span>noaa_metadata :</span></dt><dd>Conventions: COARDS/CF-1.0
+title: ETOPO1_Ice_g_gmt4.grd
+GMT_version: 4.4.0
+node_offset: 0</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>And project it to plain coordinates using <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyproj</span></code> and <a class="reference external" href="https://www.fatiando.org/verde/latest/api/index.html#module-verde" title="(in Verde vv1.7.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a>.
+We start by defining a Mercator projection:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
+
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">topography</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And project the grid using <a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.project_grid.html#verde.project_grid" title="(in Verde vv1.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.project_grid</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">topography_proj</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">project_grid</span><span class="p">(</span><span class="n">topography</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+<span class="n">topography_proj</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;topography&#x27; (northing: 360, easting: 539)&gt;
+array([[ 1408. ,  1403. ,  1396.5, ..., -1300. , -1316. , -1336. ],
+       [ 1409.5,  1409.5,  1399. , ..., -1292. , -1305. , -1319. ],
+       [ 1412. ,  1412. ,  1399.5, ..., -1276. , -1295. , -1306. ],
+       ...,
+       [  971. ,   971. ,   973. , ...,   122.5,   120. ,   122. ],
+       [  970. ,   970. ,   974.5, ...,   122.5,   121. ,   123. ],
+       [  970. ,   970. ,   974.5, ...,   122.5,   121. ,   123. ]],
+      dtype=float32)
+Coordinates:
+  * easting   (easting) float64 2.424e+06 2.426e+06 ... 3.328e+06 3.329e+06
+  * northing  (northing) float64 -2.928e+06 -2.926e+06 ... -2.267e+06 -2.265e+06
+Attributes:
+    metadata:  Generated by Chain(steps=[(&#x27;mean&#x27;,\n              BlockReduce(...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'topography'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 360</li><li><span class='xr-has-index'>easting</span>: 539</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-f3cbce17-ee05-4db2-adc5-e8fafafac14d' class='xr-array-in' type='checkbox' checked><label for='section-f3cbce17-ee05-4db2-adc5-e8fafafac14d' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.408e+03 1.403e+03 1.396e+03 1.396e+03 ... 122.5 122.5 121.0 123.0</span></div><div class='xr-array-data'><pre>array([[ 1408. ,  1403. ,  1396.5, ..., -1300. , -1316. , -1336. ],
+       [ 1409.5,  1409.5,  1399. , ..., -1292. , -1305. , -1319. ],
+       [ 1412. ,  1412. ,  1399.5, ..., -1276. , -1295. , -1306. ],
+       ...,
+       [  971. ,   971. ,   973. , ...,   122.5,   120. ,   122. ],
+       [  970. ,   970. ,   974.5, ...,   122.5,   121. ,   123. ],
+       [  970. ,   970. ,   974.5, ...,   122.5,   121. ,   123. ]],
+      dtype=float32)</pre></div></div></li><li class='xr-section-item'><input id='section-db06d088-36af-497f-adfe-02c1291ad7a4' class='xr-section-summary-in' type='checkbox'  checked><label for='section-db06d088-36af-497f-adfe-02c1291ad7a4' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.424e+06 2.426e+06 ... 3.329e+06</div><input id='attrs-4e2d8309-2182-41c0-8213-bbe4a7cc14f1' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4e2d8309-2182-41c0-8213-bbe4a7cc14f1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f48032cc-01ec-4265-aa24-96d497421477' class='xr-var-data-in' type='checkbox'><label for='data-f48032cc-01ec-4265-aa24-96d497421477' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([2424321.115303, 2426003.503308, 2427685.891313, ..., 3326081.086019,
+       3327763.474024, 3329445.86203 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-2.928e+06 ... -2.265e+06</div><input id='attrs-c0331435-e38f-41cb-bbb7-661e9d54e244' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c0331435-e38f-41cb-bbb7-661e9d54e244' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f8618f91-db9e-4d77-b63f-1c0cf8330955' class='xr-var-data-in' type='checkbox'><label for='data-f8618f91-db9e-4d77-b63f-1c0cf8330955' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-2927947.575766, -2926100.142223, -2924252.708679, ..., -2268413.800733,
+       -2266566.367189, -2264718.933646])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-cf75aec5-b154-468b-a818-455d2f54a028' class='xr-section-summary-in' type='checkbox'  checked><label for='section-cf75aec5-b154-468b-a818-455d2f54a028' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;mean&#x27;,
+              BlockReduce(reduction=&lt;function mean at 0x7fab405e09d0&gt;,
+                          region=(2424321.115302939, 3329445.862029505,
+                                  -2927947.5757662333, -2264718.933645666),
+                          spacing=(1847.4335435113292, 1682.3880050679666))),
+             (&#x27;spline&#x27;, ScipyGridder(method=&#x27;nearest&#x27;))])</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">&quot;nearest&quot;</span></code> method makes the projection process faster than
+using the <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> one.</p>
+</div>
+<p>Now we can create a 3D model of the topographic masses using a layer of
+rectangular prisms. We can use the <a class="reference internal" href="../api/generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.prism_layer</span></code></a> function to
+build it.
+We also need to assign density values to each prism in the layer.
+For every prism above the ellipsoid we will set the density of the upper crust
+(2670 kg/m<sup>3</sup>), while for each prism below it we will assign the
+density contrast equal to the density of the water (1040 kg/m<sup>3</sup>) minus
+the density of the upper crust.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">topography_proj</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2670</span><span class="p">,</span> <span class="mi">1040</span> <span class="o">-</span> <span class="mi">2670</span><span class="p">)</span>
+
+<span class="n">prisms</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">prism_layer</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">topography_proj</span><span class="o">.</span><span class="n">easting</span><span class="p">,</span> <span class="n">topography_proj</span><span class="o">.</span><span class="n">northing</span><span class="p">),</span>
+    <span class="n">surface</span><span class="o">=</span><span class="n">topography_proj</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">density</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">prisms</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:   (northing: 360, easting: 539)
+Coordinates:
+  * easting   (easting) float64 2.424e+06 2.426e+06 ... 3.328e+06 3.329e+06
+  * northing  (northing) float64 -2.928e+06 -2.926e+06 ... -2.267e+06 -2.265e+06
+    top       (northing, easting) float32 1.408e+03 1.403e+03 ... 121.0 123.0
+    bottom    (northing, easting) float64 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0
+Data variables:
+    density   (northing, easting) int64 2670 2670 2670 2670 ... 2670 2670 2670
+Attributes:
+    coords_units:      meters
+    properties_units:  SI</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-c44a3e61-ce94-4c4d-a279-b8169a169469' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-c44a3e61-ce94-4c4d-a279-b8169a169469' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 360</li><li><span class='xr-has-index'>easting</span>: 539</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-1687a2f9-5e02-4e51-949f-9137d03cc551' class='xr-section-summary-in' type='checkbox'  checked><label for='section-1687a2f9-5e02-4e51-949f-9137d03cc551' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.424e+06 2.426e+06 ... 3.329e+06</div><input id='attrs-3b468f13-d7c8-4eb9-ab7b-814e1e9da389' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-3b468f13-d7c8-4eb9-ab7b-814e1e9da389' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-378000de-2cac-4056-8569-8776d3cb9186' class='xr-var-data-in' type='checkbox'><label for='data-378000de-2cac-4056-8569-8776d3cb9186' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([2424321.115303, 2426003.503308, 2427685.891313, ..., 3326081.086019,
+       3327763.474024, 3329445.86203 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-2.928e+06 ... -2.265e+06</div><input id='attrs-3708110c-8f40-4c77-8d71-60d0e38f009b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-3708110c-8f40-4c77-8d71-60d0e38f009b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1bee08f3-9b68-4b45-b249-83a95f4b5c31' class='xr-var-data-in' type='checkbox'><label for='data-1bee08f3-9b68-4b45-b249-83a95f4b5c31' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-2927947.575766, -2926100.142223, -2924252.708679, ..., -2268413.800733,
+       -2266566.367189, -2264718.933646])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>top</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>1.408e+03 1.403e+03 ... 121.0 123.0</div><input id='attrs-af46b279-cf09-4bef-9101-bf0f988c3b87' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-af46b279-cf09-4bef-9101-bf0f988c3b87' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b28ed8e3-30bb-4ca8-ba93-cff64df44412' class='xr-var-data-in' type='checkbox'><label for='data-b28ed8e3-30bb-4ca8-ba93-cff64df44412' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[1408. , 1403. , 1396.5, ...,    0. ,    0. ,    0. ],
+       [1409.5, 1409.5, 1399. , ...,    0. ,    0. ,    0. ],
+       [1412. , 1412. , 1399.5, ...,    0. ,    0. ,    0. ],
+       ...,
+       [ 971. ,  971. ,  973. , ...,  122.5,  120. ,  122. ],
+       [ 970. ,  970. ,  974.5, ...,  122.5,  121. ,  123. ],
+       [ 970. ,  970. ,  974.5, ...,  122.5,  121. ,  123. ]],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>bottom</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0</div><input id='attrs-1e804a09-6a5d-45ef-9898-de188c6a6a3e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1e804a09-6a5d-45ef-9898-de188c6a6a3e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ba8b07b6-d200-4eb6-a4c7-5d6c060157c9' class='xr-var-data-in' type='checkbox'><label for='data-ba8b07b6-d200-4eb6-a4c7-5d6c060157c9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[    0.,     0.,     0., ..., -1300., -1316., -1336.],
+       [    0.,     0.,     0., ..., -1292., -1305., -1319.],
+       [    0.,     0.,     0., ..., -1276., -1295., -1306.],
+       ...,
+       [    0.,     0.,     0., ...,     0.,     0.,     0.],
+       [    0.,     0.,     0., ...,     0.,     0.,     0.],
+       [    0.,     0.,     0., ...,     0.,     0.,     0.]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-7f22f520-89ec-4ad6-a718-d67cd03d7f0b' class='xr-section-summary-in' type='checkbox'  checked><label for='section-7f22f520-89ec-4ad6-a718-d67cd03d7f0b' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>density</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>2670 2670 2670 ... 2670 2670 2670</div><input id='attrs-91fb2f62-cb0b-4767-9c5b-1042d6bdcde8' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-91fb2f62-cb0b-4767-9c5b-1042d6bdcde8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b3d872ad-e970-4c57-936a-3ebcba429dc0' class='xr-var-data-in' type='checkbox'><label for='data-b3d872ad-e970-4c57-936a-3ebcba429dc0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[ 2670,  2670,  2670, ..., -1630, -1630, -1630],
+       [ 2670,  2670,  2670, ..., -1630, -1630, -1630],
+       [ 2670,  2670,  2670, ..., -1630, -1630, -1630],
+       ...,
+       [ 2670,  2670,  2670, ...,  2670,  2670,  2670],
+       [ 2670,  2670,  2670, ...,  2670,  2670,  2670],
+       [ 2670,  2670,  2670, ...,  2670,  2670,  2670]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-26481db6-7470-4174-98b6-53eee7d6d5b7' class='xr-section-summary-in' type='checkbox'  checked><label for='section-26481db6-7470-4174-98b6-53eee7d6d5b7' class='xr-section-summary' >Attributes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>coords_units :</span></dt><dd>meters</dd><dt><span>properties_units :</span></dt><dd>SI</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>Now we need to compute the gravitational effect of these prisms on every
+observation point. We can do it through the
+<a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.gravity" title="harmonica.DatasetAccessorPrismLayer.gravity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorPrismLayer.gravity</span></code></a> method. But the coordinates
+of the observation points must be also projected.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Project the coordinates of the observation points</span>
+<span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">height_geometric_m</span><span class="p">)</span>
+
+<span class="c1"># Compute the terrain effect</span>
+<span class="n">terrain_effect</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">prism_layer</span><span class="o">.</span><span class="n">gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Finally, we can compute the topography-free gravity disturbance:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">topo_free_disturbance</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">gravity_disturbance_mgal</span> <span class="o">-</span> <span class="n">terrain_effect</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And plot it:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">topo_free_disturbance</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Topography-free gravity disturbance&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">topo_free_disturbance</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">tmp</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/topographic_correction_12_0.png" src="../_images/topographic_correction_12_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="gravity_disturbance.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Gravity Disturbance</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="equivalent_sources/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Equivalent Sources</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 12, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

@@ -33,9 +33,10 @@ EIGEN-6C4 [Forste_etal2014]_.
 
 
 
-.. image:: /sample_data/images/sphx_glr_earth_geoid_001.png
-    :alt: Geoid heights (EIGEN-6C4)
-    :class: sphx-glr-single-img
+.. image-sg:: /sample_data/images/sphx_glr_earth_geoid_001.png
+   :alt: Geoid heights (EIGEN-6C4)
+   :srcset: /sample_data/images/sphx_glr_earth_geoid_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -98,7 +99,7 @@ EIGEN-6C4 [Forste_etal2014]_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.727 seconds)
+   **Total running time of the script:** ( 0 minutes  0.634 seconds)
 
 
 .. _sphx_glr_download_sample_data_earth_geoid.py:
