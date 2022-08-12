@@ -21,10 +21,10 @@ except ImportError:
 
 from ..forward.prism import (
     _check_prisms,
+    _discard_null_prisms,
     prism_gravity,
     safe_atan2,
     safe_log,
-    _discard_null_prisms,
 )
 from ..gravity_corrections import bouguer_correction
 from .utils import run_only_with_numba
