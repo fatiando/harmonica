@@ -1,0 +1,12 @@
+harmonica.datasets.locate
+=========================
+
+.. currentmodule:: harmonica.datasets
+
+.. autofunction:: locate
+
+.. include:: backreferences/harmonica.datasets.locate.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

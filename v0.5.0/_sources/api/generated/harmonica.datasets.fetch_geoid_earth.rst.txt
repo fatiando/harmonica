@@ -1,0 +1,12 @@
+harmonica.datasets.fetch\_geoid\_earth
+======================================
+
+.. currentmodule:: harmonica.datasets
+
+.. autofunction:: fetch_geoid_earth
+
+.. include:: backreferences/harmonica.datasets.fetch_geoid_earth.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

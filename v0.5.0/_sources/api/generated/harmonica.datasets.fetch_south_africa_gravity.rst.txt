@@ -1,0 +1,12 @@
+harmonica.datasets.fetch\_south\_africa\_gravity
+================================================
+
+.. currentmodule:: harmonica.datasets
+
+.. autofunction:: fetch_south_africa_gravity
+
+.. include:: backreferences/harmonica.datasets.fetch_south_africa_gravity.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

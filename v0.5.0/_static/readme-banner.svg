@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="529.16669mm"
+   height="158.75mm"
+   viewBox="0 0 529.16671 158.75001"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="readme-banner.svg"
+   inkscape:export-filename="readme-banner.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.08838835"
+     inkscape:cx="3221.7162"
+     inkscape:cy="551.93095"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="627"
+     inkscape:window-height="1066"
+     inkscape:window-x="1285"
+     inkscape:window-y="6"
+     inkscape:window-maximized="0"
+     inkscape:document-rotation="0"
+     inkscape:pagecheckerboard="true" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(2020.141,-1339.8083)">
+    <rect
+       style="fill:#ffffff;stroke:none;stroke-width:0.210728"
+       id="rect23"
+       width="529.16669"
+       height="158.75"
+       x="-2020.141"
+       y="1339.8083" />
+    <g
+       id="g51"
+       transform="translate(0,1.3229423)">
+      <g
+         id="g141"
+         transform="translate(8.3337421,7.7775364)">
+        <g
+           id="g1147"
+           transform="matrix(0.37792344,0,0,0.37792344,-1044.3175,1160.2919)">
+          <g
+             transform="translate(-417.82943,-603.24269)"
+             id="g1083">
+            <path
+               style="fill:#ebeff7;fill-opacity:1;fill-rule:nonzero;stroke-width:0.944502"
+               d="m -1947.1099,1302.5176 h -188.5212 l 94.2606,-188.5211 z"
+               id="path815-3-6-9-6"
+               inkscape:connector-curvature="0"
+               sodipodi:nodetypes="cccc" />
+            <path
+               style="fill:#2270e8;fill-opacity:1;stroke-width:1.00201"
+               d="m -1935.6313,1302.5177 -99.9996,-200.0002 -15.0781,30.1563 84.9219,169.8439 z"
+               id="path815-0"
+               inkscape:connector-curvature="0" />
+            <path
+               style="fill:#f45353;fill-opacity:1;fill-rule:nonzero;stroke-width:0.800582"
+               d="m -1975.8361,1302.5176 h -159.795 l 79.8975,-159.7949 z"
+               id="path815-3-6-9"
+               inkscape:connector-curvature="0"
+               sodipodi:nodetypes="cccc" />
+          </g>
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.76982px;line-height:1.25;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond';letter-spacing:0px;word-spacing:0px;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.36267"
+           x="-1913.4226"
+           y="1423.1136"
+           id="text1040"><tspan
+             sodipodi:role="line"
+             id="tspan1038"
+             x="-1913.4226"
+             y="1423.1136"
+             style="font-size:96.7117px;fill:#333333;stroke-width:0.36267">harmonica</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:19.604px;line-height:0;font-family:Arial;-inkscape-font-specification:Arial;font-variant-ligatures:discretionary-ligatures;letter-spacing:0.48662px;word-spacing:0px;fill:#333333;fill-opacity:1;stroke-width:0.147029"
+         x="-2001.8785"
+         y="1473.2786"
+         id="text78"><tspan
+           sodipodi:role="line"
+           id="tspan76"
+           x="-2001.8785"
+           y="1473.2786"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.604px;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond';fill:#333333;fill-opacity:1;stroke-width:0.147029">Gravity and magnetic data modeling and processing in Python</tspan></text>
+    </g>
+  </g>
+</svg>

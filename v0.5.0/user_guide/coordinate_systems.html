@@ -1,0 +1,1056 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Coordinate systems | Harmonica v0.5.0</title>
+    
+
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Forward modelling" href="forward_modelling/index.html" />
+    <link rel="prev" title="Plot a prism layer in 3D" href="../gallery/visualization/prism_layer_pyvista.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.5.0</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/isostatic_moho_airy.html">
+     Airy Isostatic Moho
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/upward_derivative.html">
+     Upward derivative of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Coordinate systems
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/point.html">
+     Point sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/prism.html">
+     Rectangular prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="forward_modelling/tesseroid.html">
+     Tesseroids
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topographic_correction.html">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../api/index.html">
+   API Reference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/user_guide/coordinate_systems.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fuser_guide/coordinate_systems.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/user_guide/coordinate_systems.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cartesian-coordinates">
+   Cartesian coordinates
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#geodetic-coordinates">
+   Geodetic coordinates
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spherical-coordinates">
+   Spherical coordinates
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Coordinate systems</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cartesian-coordinates">
+   Cartesian coordinates
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#geodetic-coordinates">
+   Geodetic coordinates
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spherical-coordinates">
+   Spherical coordinates
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="coordinate-systems">
+<span id="id1"></span><h1>Coordinate systems<a class="headerlink" href="#coordinate-systems" title="Permalink to this headline">¶</a></h1>
+<p>Gravity and magnetic data are usually observed at points above the Earth
+surface, which can be referenced through different coordinate systems.
+When processing these data, applying corrections, performing forward models and
+inversions, we should take into account which type of coordinate system are we
+using and if our choice introduces errors into these computations.</p>
+<p>Harmonica can handle three different 3D coordinate systems:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#cartesian-coordinates"><span class="std std-ref">Cartesian coordinates</span></a></p></li>
+<li><p><a class="reference internal" href="#geodetic-coordinates"><span class="std std-ref">Geodetic coordinates</span></a></p></li>
+<li><p><a class="reference internal" href="#spherical-coordinates"><span class="std std-ref">Spherical coordinates</span></a></p></li>
+</ul>
+<div class="section" id="cartesian-coordinates">
+<span id="id2"></span><h2>Cartesian coordinates<a class="headerlink" href="#cartesian-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>Cartesian (or plain) coordinates are referenced by a system defined by three
+orthogonal axis: two for the horizontal directions and one for the vertical
+one. Harmonica name the two horizontal axis as <em>easting</em> and <em>northing</em>,
+while the vertical one is referenced as <em>upward</em>, emphasizing its pointing
+direction. This means that positive values implies points above the zeroth
+plane, while negative values refer to points below. Harmonica assumes that
+the <em>easting</em>, <em>northing</em> and <em>upward</em> coordinates are given in meters.</p>
+<p>For example, we can define a prism below the horizontal plane at zeroth
+height:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+
+<span class="c1"># Define boundaries of the rectangular prism (in meters)</span>
+<span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span>
+<span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">prism</span> <span class="o">=</span> <span class="p">[</span><span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Or a regular grid of points at 100 meters above the zeroth plane:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a regular grid of observation points (coordinates in meters)</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;easting:&quot;</span><span class="p">,</span> <span class="n">easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;northing:&quot;</span><span class="p">,</span> <span class="n">northing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;upward:&quot;</span><span class="p">,</span> <span class="n">upward</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>easting: [[-40. -20.   0.  20.  40.]
+ [-40. -20.   0.  20.  40.]
+ [-40. -20.   0.  20.  40.]
+ [-40. -20.   0.  20.  40.]
+ [-40. -20.   0.  20.  40.]]
+northing: [[-40. -40. -40. -40. -40.]
+ [-20. -20. -20. -20. -20.]
+ [  0.   0.   0.   0.   0.]
+ [ 20.  20.  20.  20.  20.]
+ [ 40.  40.  40.  40.  40.]]
+upward: [[100. 100. 100. 100. 100.]
+ [100. 100. 100. 100. 100.]
+ [100. 100. 100. 100. 100.]
+ [100. 100. 100. 100. 100.]
+ [100. 100. 100. 100. 100.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the <em>upward</em> axis points in the upward direction, it’s easy to check
+if a given point is lower or higher than another one:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define two points</span>
+<span class="n">point_1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">67</span><span class="p">)</span>
+<span class="n">point_2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">58</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Point 1 is higher than point 2?&quot;</span><span class="p">,</span> <span class="n">point_1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">point_2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Point 1 is higher than point 2? False
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="geodetic-coordinates">
+<span id="id3"></span><h2>Geodetic coordinates<a class="headerlink" href="#geodetic-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>Geodetic (or geographic) coordinates use a reference ellipsoid for defining
+the <em>longitude</em> (<span class="math notranslate nohighlight">\(\lambda\)</span>), <em>latitude</em> (<span class="math notranslate nohighlight">\(\varphi\)</span>) and <em>height</em>
+(<span class="math notranslate nohighlight">\(h\)</span>) coordinates of points (see <a class="reference internal" href="#geodetic-coordinates-figure"><span class="std std-ref">Figure: Geodetic coordinates</span></a>).
+The reference ellipsoid is a mathematical surface that approximates the
+figure of the Earth and it’s used to define point coordinates.</p>
+<div class="figure align-default" id="geodetic-coordinates-figure">
+<a class="reference internal image-reference" href="../_images/geodetic-coordinate-system.svg"><img alt="Figure showing a reference ellipsoid along with an observation point &quot;p&quot;. It also shows the geodetic coordinates of this observation point: its longitude, latitude and geodetic height." src="../_images/geodetic-coordinate-system.svg" width="90%" /></a>
+<p class="caption"><span class="caption-text">Figure: Geodetic coordinates</span><a class="headerlink" href="#geodetic-coordinates-figure" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<p>Reference ellipsoid and a point <strong>p</strong> along with a geocentric Cartesian
+system (<span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Z\)</span>). Where <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>
+are the semimajor and semiminor axes of the ellipsoid, while the
+<span class="math notranslate nohighlight">\(\lambda\)</span>, <span class="math notranslate nohighlight">\(\varphi\)</span> and <span class="math notranslate nohighlight">\(h\)</span> represent the geodetic
+coordinates of the point <strong>p</strong> in this geodetic coordinate system, where
+<span class="math notranslate nohighlight">\(\lambda\)</span> is the <em>longitude</em>, <span class="math notranslate nohighlight">\(\varphi\)</span> the <em>latitude</em> and
+<span class="math notranslate nohighlight">\(h\)</span> the <em>height</em>.
+The <span class="math notranslate nohighlight">\(\phi\)</span> is the <em>spherical latitude</em> of point <strong>p</strong> (see
+<a class="reference internal" href="#spherical-coordinates"><span class="std std-ref">Spherical coordinates</span></a>).
+This figure is a modified version of <a class="reference internal" href="../references.html#oliveira2021" id="id4"><span>[Oliveira2021]</span></a>.</p>
+</div>
+</div>
+<p>Harmonica assumes that <em>longitude</em>, <em>latitude</em> are given in decimal degrees
+and the ellipsoidal height is given in meters. Positive values of <em>height</em>
+refer to points outside the ellipsoid, while negative values refer to points
+that live inside it.
+Spatial data are usually given in geodetic coordinates, along with the
+reference ellipsoid on which they are defined.</p>
+<p>For example, let’s define a regular grid of points (separated by equal
+angles) at 2km above the ellipsoid using <a class="reference external" href="https://www.fatiando.org/verde/latest/api/index.html#module-verde" title="(in Verde vv1.7.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">65</span><span class="p">,</span> <span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mf">2e3</span>
+<span class="p">)</span>
+<span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;longitude:&quot;</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;latitude:&quot;</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;height:&quot;</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>longitude: [[-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]]
+latitude: [[-35. -35. -35. -35. -35. -35.]
+ [-34. -34. -34. -34. -34. -34.]
+ [-33. -33. -33. -33. -33. -33.]
+ [-32. -32. -32. -32. -32. -32.]
+ [-31. -31. -31. -31. -31. -31.]
+ [-30. -30. -30. -30. -30. -30.]]
+height: [[2000. 2000. 2000. 2000. 2000. 2000.]
+ [2000. 2000. 2000. 2000. 2000. 2000.]
+ [2000. 2000. 2000. 2000. 2000. 2000.]
+ [2000. 2000. 2000. 2000. 2000. 2000.]
+ [2000. 2000. 2000. 2000. 2000. 2000.]
+ [2000. 2000. 2000. 2000. 2000. 2000.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some processes need to know the reference ellipsoid used to define the
+geodetic coordinates of points. <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> offers several ellipsoids that
+are commonly used on geophysical applications. Harmonica will ask for
+a <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="(in Boule vv0.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boule.Ellipsoid</span></code></a> instance as argument if it needs the reference
+ellipsoid.</p>
+<p>Lets define the WGS84 ellipsoide using <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
+
+<span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ellipsoid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Ellipsoid(name=&#39;WGS84&#39;, semimajor_axis=6378137, flattening=0.0033528106647474805, geocentric_grav_const=398600441800000.0, angular_velocity=7.292115e-05, long_name=&#39;World Geodetic System 1984&#39;, reference=&#39;Hofmann-Wellenhof, B., &amp; Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien\u202f; New York: Springer.&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some other processes are only designed to work under Cartesian coordinates.
+We can easily <em>transform</em> geodetic coordinates to Cartesian by applying
+map <strong>projections</strong>. This can be done through <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyproj</span></code>.</p>
+<p>As an example, lets project the <em>longitude</em> and <em>latitude</em> coordinates of the
+previously generated grid using a Mercator projection:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
+
+<span class="c1"># Define a Mercator projection through pyproj</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">ellps</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">)</span>
+
+<span class="c1"># Project the longitude and latitude coordinates of the grid points</span>
+<span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;easting:&quot;</span><span class="p">,</span> <span class="n">easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;northing:&quot;</span><span class="p">,</span> <span class="n">northing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>easting: [[-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]
+ [-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]
+ [-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]
+ [-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]
+ [-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]
+ [-7792364.35552915 -7681044.86473588 -7569725.3739426  -7458405.88314933
+  -7347086.39235606 -7235766.90156278]]
+northing: [[-4139372.7622473  -4139372.7622473  -4139372.7622473  -4139372.7622473
+  -4139372.7622473  -4139372.7622473 ]
+ [-4004909.10948031 -4004909.10948031 -4004909.10948031 -4004909.10948031
+  -4004909.10948031 -4004909.10948031]
+ [-3872033.73289718 -3872033.73289718 -3872033.73289718 -3872033.73289718
+  -3872033.73289718 -3872033.73289718]
+ [-3740670.1135821  -3740670.1135821  -3740670.1135821  -3740670.1135821
+  -3740670.1135821  -3740670.1135821 ]
+ [-3610745.18533098 -3610745.18533098 -3610745.18533098 -3610745.18533098
+  -3610745.18533098 -3610745.18533098]
+ [-3482189.08540862 -3482189.08540862 -3482189.08540862 -3482189.08540862
+  -3482189.08540862 -3482189.08540862]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember that this process implies projecting the geodetic coordinates onto
+a flat surface, what carries projection errors. For small regions, these
+errors are small, but for regional and global regions, these can heavily
+increase. Projections can also be used to recover geodetic coordinates from
+Cartesian ones, by setting the <code class="docutils literal notranslate"><span class="pre">inverse</span></code> argument to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<div class="section" id="spherical-coordinates">
+<span id="id5"></span><h2>Spherical coordinates<a class="headerlink" href="#spherical-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>Spherical coordinates (a.k.a spherical geocentric coordinates) are defined
+by a coordinate system whose origin is located on the center of the Earth.
+Each point can be represented by its <em>longitude</em> (<span class="math notranslate nohighlight">\(\lambda\)</span>),
+<em>spherical latitude</em> (<span class="math notranslate nohighlight">\(\phi\)</span>) and <em>radius</em> (<span class="math notranslate nohighlight">\(r\)</span>) (see
+<a class="reference internal" href="#spherical-coordinates-figure"><span class="std std-ref">Figure: Spherical coordinates</span></a>).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <em>longitude</em> coordinates defined in <em>spherical coordinates</em> and in
+<em>geodetic coordinates</em> are equivalent.
+Nevertheless, the <em>spherical latitude</em> and the (geodetic) <em>latitude</em> are
+not. They would be the same if the reference ellipsoid were a sphere.</p>
+</div>
+<p>The <em>longitude</em> and <em>spherical latitude</em> are angles given in decimal degrees,
+while the <em>radius</em> is the Euclidean distance between the point and the origin
+of the system (in meters).
+Although this reference system is rarely used for storing data, it’s used for
+some non-Cartesian forward models, like tesseroids (spherical prisms).</p>
+<div class="figure align-default" id="spherical-coordinates-figure">
+<a class="reference internal image-reference" href="../_images/spherical-coordinate-system.svg"><img alt="Figure showing an observation point &quot;p&quot; defined in a spherical coordinate system." src="../_images/spherical-coordinate-system.svg" width="50%" /></a>
+<p class="caption"><span class="caption-text">Figure: Spherical coordinates</span><a class="headerlink" href="#spherical-coordinates-figure" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<p>Point <strong>p</strong> defined in a spherical coordinate system, where
+<span class="math notranslate nohighlight">\(\lambda\)</span> is the <em>longitude</em>, <span class="math notranslate nohighlight">\(\phi\)</span> the <em>latitude</em> and
+<span class="math notranslate nohighlight">\(r\)</span> the <em>radius</em>. The spherical coordinates are defined upon
+a geocentric Cartesian system (<span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Z\)</span>) whose
+origin is located in the center of the Earth.</p>
+</div>
+</div>
+<p>Let’s define a regular grid of points in spherical coordinates, located at
+the same radius equal to the <em>mean radius of the Earth</em>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">65</span><span class="p">,</span> <span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+    <span class="n">extra_coords</span><span class="o">=</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">mean_radius</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">longitude</span><span class="p">,</span> <span class="n">sph_latitude</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;longitude:&quot;</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spherical latitude:&quot;</span><span class="p">,</span> <span class="n">sph_latitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;radius:&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>longitude: [[-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]]
+spherical latitude: [[-35. -35. -35. -35. -35. -35.]
+ [-34. -34. -34. -34. -34. -34.]
+ [-33. -33. -33. -33. -33. -33.]
+ [-32. -32. -32. -32. -32. -32.]
+ [-31. -31. -31. -31. -31. -31.]
+ [-30. -30. -30. -30. -30. -30.]]
+radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can convert spherical coordinates to geodetic ones through
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.spherical_to_geodetic" title="(in Boule vv0.4.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.spherical_to_geodetic</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates_geodetic</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">spherical_to_geodetic</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">coordinates_geodetic</span><span class="p">[:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;longitude:&quot;</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;latitude:&quot;</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;height:&quot;</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>longitude: [[-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]]
+latitude: [[-35.18102866 -35.18102866 -35.18102866 -35.18102866 -35.18102866
+  -35.18102866]
+ [-34.17864829 -34.17864829 -34.17864829 -34.17864829 -34.17864829
+  -34.17864829]
+ [-33.17604904 -33.17604904 -33.17604904 -33.17604904 -33.17604904
+  -33.17604904]
+ [-32.17323399 -32.17323399 -32.17323399 -32.17323399 -32.17323399
+  -32.17323399]
+ [-31.17020649 -31.17020649 -31.17020649 -31.17020649 -31.17020649
+  -31.17020649]
+ [-30.16697016 -30.16697016 -30.16697016 -30.16697016 -30.16697016
+  -30.16697016]]
+height: [[  -69.07752705   -69.07752705   -69.07752705   -69.07752705
+    -69.07752705   -69.07752705]
+ [ -418.12875198  -418.12875198  -418.12875198  -418.12875198
+   -418.12875198  -418.12875198]
+ [ -762.34749847  -762.34749847  -762.34749847  -762.34749847
+   -762.34749847  -762.34749847]
+ [-1101.31193327 -1101.31193327 -1101.31193327 -1101.31193327
+  -1101.31193327 -1101.31193327]
+ [-1434.60646097 -1434.60646097 -1434.60646097 -1434.60646097
+  -1434.60646097 -1434.60646097]
+ [-1761.8222431  -1761.8222431  -1761.8222431  -1761.8222431
+  -1761.8222431  -1761.8222431 ]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>While the conversion of spherical coordinates into geodetic ones can be
+carried out through <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geodetic_to_spherical" title="(in Boule vv0.4.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geodetic_to_spherical</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates_spherical</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geodetic_to_spherical</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates_geodetic</span><span class="p">)</span>
+<span class="n">longitude</span><span class="p">,</span> <span class="n">sph_latitude</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinates_spherical</span><span class="p">[:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;longitude:&quot;</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spherical latitude:&quot;</span><span class="p">,</span> <span class="n">sph_latitude</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;radius:&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>longitude: [[-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]
+ [-70. -69. -68. -67. -66. -65.]]
+spherical latitude: [[-35. -35. -35. -35. -35. -35.]
+ [-34. -34. -34. -34. -34. -34.]
+ [-33. -33. -33. -33. -33. -33.]
+ [-32. -32. -32. -32. -32. -32.]
+ [-31. -31. -31. -31. -31. -31.]
+ [-30. -30. -30. -30. -30. -30.]]
+radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]
+ [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
+  6371008.77141506 6371008.77141506]]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../gallery/visualization/prism_layer_pyvista.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Plot a prism layer in 3D</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="forward_modelling/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Forward modelling</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 12, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
