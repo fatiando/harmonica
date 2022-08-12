@@ -150,6 +150,7 @@ of the **BSD 3-clause License**. A copy of this license is provided in
 - [Development](http://www.fatiando.org/harmonica/dev) (reflects the *main*
   branch on Github)
 - [Latest release](http://www.fatiando.org/harmonica/latest)
+- [v0.5.0](http://www.fatiando.org/harmonica/v0.5.0)
 - [v0.4.0](http://www.fatiando.org/harmonica/v0.4.0)
 - [v0.3.3](http://www.fatiando.org/harmonica/v0.3.3)
 - [v0.3.2](http://www.fatiando.org/harmonica/v0.3.2)
