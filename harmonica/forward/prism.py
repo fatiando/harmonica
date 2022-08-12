@@ -186,8 +186,6 @@ def _check_prisms(prisms):
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
