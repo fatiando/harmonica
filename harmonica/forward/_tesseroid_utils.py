@@ -521,9 +521,7 @@ def _discard_null_tesseroids(tesseroids, density):
     null_tesseroids = (lon_w == lon_e) | (lat_s == lat_n) | (bottom == top)
     # Mark prisms with zero density as null prisms
     null_tesseroids[density == 0] = True
-    print(null_tesseroids)
     # Keep only non null prisms
     tesseroids = tesseroids[np.logical_not(null_tesseroids), :]
-    print(tesseroids)
     density = density[np.logical_not(null_tesseroids)]
     return tesseroids, density
