@@ -500,7 +500,8 @@ def _discard_null_tesseroids(tesseroids, density):
     Parameters
     ----------
     tesseroids : 2d-array
-        Array containing the boundaries of the tesserois in the following order:
+        Array containing the boundaries of the tesserois in the following
+        order:
         ``longitude_w``. ``longitude_e``, ``latitude_s``, ``latitude_n``,
         ``bottom``, ``top`` under geocentric spherical coordinate system.
     density : 1d-array
@@ -510,8 +511,8 @@ def _discard_null_tesseroids(tesseroids, density):
     Returns
     -------
     tesseroids : 2d-array
-        A copy of the ``tesseroids`` array that doesn't include the null tesseroids
-    (tesseroid with zero density or zero volume).
+        A copy of the ``tesseroids`` array that doesn't include the null
+        tesseroids (tesseroid with zero density or zero volume).
     density : 1d-array
         A copy of the ``density`` array that doesn't include the density values
         for the null tesseroids (tesseroid with zero density or zero volume).
