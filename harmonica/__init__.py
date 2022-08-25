@@ -14,8 +14,8 @@ from .equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSource
 from .forward.point import point_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
-from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .forward.tesseroid import tesseroid_gravity
+from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
 from .isostasy import isostasy_airy
