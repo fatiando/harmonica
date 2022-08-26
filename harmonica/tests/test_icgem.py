@@ -11,7 +11,8 @@ import os
 
 import numpy as np
 import numpy.testing as npt
-from pytest import raises
+import pytest
+from pytest import raises, warns
 
 from .. import load_icgem_gdf
 
@@ -280,14 +281,20 @@ def test_corrupt_area(tmpdir):
             load_icgem_gdf(corrupt)
 
 
-def test_empty_file(tmpdir, recwarn):
-    "Empty ICGEM file"
+@pytest.fixture(name="empty_fname")
+def fixture_empty_fname(tmpdir):
+    """
+    Return the path to a temporary empty file
+    """
     empty_fname = str(tmpdir.join("empty.gdf"))
     with open(empty_fname, "w") as gdf_file:
         gdf_file.write("")
-    with raises(IOError):
+    return empty_fname
+
+
+def test_empty_file(empty_fname):
+    "Empty ICGEM file"
+    error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
+    warn = warns(UserWarning, match=r"loadtxt: input contained no data")
+    with error, warn:
         load_icgem_gdf(empty_fname)
-    assert len(recwarn) == 1
-    warning = recwarn.pop()
-    assert warning.category == UserWarning
-    assert "Empty input file" in str(warning.message)
