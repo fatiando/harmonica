@@ -15,6 +15,7 @@ from ._tesseroid_utils import (
     _adaptive_discretization,
     _check_points_outside_tesseroids,
     _check_tesseroids,
+    _discard_null_tesseroids,
     gauss_legendre_quadrature,
     glq_nodes_weights,
 )
@@ -167,6 +168,8 @@ def tesseroid_gravity(
                 "Number of elements in density ({}) ".format(density.size)
                 + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
             )
+        # Discard null tesseroids (zero density or zero volume)
+        tesseroids, density = _discard_null_tesseroids(tesseroids, density)
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
