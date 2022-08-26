@@ -276,12 +276,11 @@ def test_discard_null_tesseroids():
             [-10, -5, 5, 5, bottom, top],  # no volume due to noting boundaries
             [-5, 0, -10, -5, top, top],  # no volume due to radial boundaries
             [-5, 0, -5, 0, bottom, top],  # ok tesseroid
-            [-5, -5, 5, 5, top, top],  # no vlolume due to multiple boundaries
+            [-5, -5, 5, 5, top, top],  # no volume due to multiple boundaries
             [-5, 0, 5, 10, bottom, top],  # ok tesseroid
         ]
     )
-    densities = np.array(1000 * np.ones(len(tesseroids)))
-    densities[1] = 0.0
+    densities = np.array([2400, 0, 2500, 2600, 2700, 2800, 2900, 3000])
     tesseroids, densities = _discard_null_tesseroids(tesseroids, densities)
     npt.assert_allclose(
         tesseroids,
@@ -293,7 +292,7 @@ def test_discard_null_tesseroids():
             ]
         ),
     )
-    npt.assert_allclose(densities, np.array([1000, 1000, 1000]))
+    npt.assert_allclose(densities, np.array([2400, 2800, 3000]))
 
 
 # --------------------------------------
