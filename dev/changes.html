@@ -49,7 +49,7 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="_static/design-tabs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -680,42 +680,42 @@
 <a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.6987201"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6987201" /></a>
 <p>Deprecations:</p>
 <ul class="simple">
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> to <code class="docutils literal notranslate"><span class="pre">isostasy_airy</span></code> function warning of deprecation after next release (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/307">#307</a>)</p></li>
-<li><p>Ditch soon-to-be deprecated args of equivalent sources grid method (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/311">#311</a>)</p></li>
-<li><p>Remove deprecated <code class="docutils literal notranslate"><span class="pre">point_mass_gravity</span></code> function (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/310">#310</a>)</p></li>
-<li><p>Drop support for Python 3.6 (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/309">#309</a>)</p></li>
-<li><p>Add deprecations to datasets and synthetic modules (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/304">#304</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> to <code class="docutils literal notranslate"><span class="pre">isostasy_airy</span></code> function warning of deprecation after next release (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/307">#307</a>)</p></li>
+<li><p>Ditch soon-to-be deprecated args of equivalent sources grid method (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/311">#311</a>)</p></li>
+<li><p>Remove deprecated <code class="docutils literal notranslate"><span class="pre">point_mass_gravity</span></code> function (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/310">#310</a>)</p></li>
+<li><p>Drop support for Python 3.6 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/309">#309</a>)</p></li>
+<li><p>Add deprecations to datasets and synthetic modules (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/304">#304</a>)</p></li>
 </ul>
 <p>New features:</p>
 <ul class="simple">
-<li><p>Discard prisms with no volume or zero density before running the forward model (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/334">#334</a>)</p></li>
-<li><p>Add a new <code class="docutils literal notranslate"><span class="pre">isostatic_moho_airy</span></code> function to compute Moho depth based on Airy isostasy hypothesis using the <em>rock equivalent topography</em> concept (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/307">#307</a>)</p></li>
-<li><p>Add progressbar to prism forward gravity calculations (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/315">#315</a>)</p></li>
-<li><p>Add computation of gravitational tensor components for point sources (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/288">#288</a>)</p></li>
-<li><p>Add function to compute upward derivative of a grid in the frequency domain (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/238">#238</a>)</p></li>
+<li><p>Discard prisms with no volume or zero density before running the forward model (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/334">#334</a>)</p></li>
+<li><p>Add a new <code class="docutils literal notranslate"><span class="pre">isostatic_moho_airy</span></code> function to compute Moho depth based on Airy isostasy hypothesis using the <em>rock equivalent topography</em> concept (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/307">#307</a>)</p></li>
+<li><p>Add progressbar to prism forward gravity calculations (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/315">#315</a>)</p></li>
+<li><p>Add computation of gravitational tensor components for point sources (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/288">#288</a>)</p></li>
+<li><p>Add function to compute upward derivative of a grid in the frequency domain (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/238">#238</a>)</p></li>
 <li><p>Add conversion of prisms or a prism layer to PyVista objects (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/291">#291</a>)</p></li>
 </ul>
 <p>Maintenance:</p>
 <ul class="simple">
-<li><p>Simplify tests for upward derivative (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/328">#328</a>)</p></li>
-<li><p>Avoid checking floats in tesseroid doctests (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/326">#326</a>)</p></li>
-<li><p>Update Black to its stable version (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/301">#301</a>)</p></li>
-<li><p>Move configuration from setup.py to setup.cfg (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/296">#296</a>)</p></li>
-<li><p>Pin style checkers and formatters (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/295">#295</a>)</p></li>
+<li><p>Simplify tests for upward derivative (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/328">#328</a>)</p></li>
+<li><p>Avoid checking floats in tesseroid doctests (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/326">#326</a>)</p></li>
+<li><p>Update Black to its stable version (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/301">#301</a>)</p></li>
+<li><p>Move configuration from setup.py to setup.cfg (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/296">#296</a>)</p></li>
+<li><p>Pin style checkers and formatters (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/295">#295</a>)</p></li>
 </ul>
 <p>Documentation:</p>
 <ul class="simple">
-<li><p>Add impostor syndrome disclaimer to docs (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/333">#333</a>)</p></li>
-<li><p>Convert README to Markdown, since it’s no longer used to build the docs (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/331">#331</a>)</p></li>
-<li><p>Replace sphinx-panels for sphinx-design and refactor the home page of the docs(<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/329">#329</a>)</p></li>
-<li><p>Specify spherical latitude in point sources guide (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/325">#325</a>)</p></li>
-<li><p>Note that spherical and geodetic latitudes are equal in spherical ellipsoids (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/324">#324</a>)</p></li>
-<li><p>Specify “spherical latitude” when describing coordinates of point masses (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/321">#321</a>)</p></li>
-<li><p>Fix small format errors in the user guide (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/319">#319</a>)</p></li>
-<li><p>Update docs and create a proper user guide (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/305">#305</a>)</p></li>
-<li><p>Update Sphinx version to 4.5.0 (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/302">#302</a>)</p></li>
-<li><p>Link Code of Conduct and Authorship, Contributing, and Maintainers Guides back to the Fatiando-wide pages (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/294">#294</a>)</p></li>
-<li><p>Replace Google Analytics for Plausible (<a class="reference external" href="https://github.com/fatiando/PROJECT/pull/297">#297</a>)</p></li>
+<li><p>Add impostor syndrome disclaimer to docs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/333">#333</a>)</p></li>
+<li><p>Convert README to Markdown, since it’s no longer used to build the docs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/331">#331</a>)</p></li>
+<li><p>Replace sphinx-panels for sphinx-design and refactor the home page of the docs(<a class="reference external" href="https://github.com/fatiando/harmonica/pull/329">#329</a>)</p></li>
+<li><p>Specify spherical latitude in point sources guide (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/325">#325</a>)</p></li>
+<li><p>Note that spherical and geodetic latitudes are equal in spherical ellipsoids (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/324">#324</a>)</p></li>
+<li><p>Specify “spherical latitude” when describing coordinates of point masses (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/321">#321</a>)</p></li>
+<li><p>Fix small format errors in the user guide (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/319">#319</a>)</p></li>
+<li><p>Update docs and create a proper user guide (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/305">#305</a>)</p></li>
+<li><p>Update Sphinx version to 4.5.0 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/302">#302</a>)</p></li>
+<li><p>Link Code of Conduct and Authorship, Contributing, and Maintainers Guides back to the Fatiando-wide pages (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/294">#294</a>)</p></li>
+<li><p>Replace Google Analytics for Plausible (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/297">#297</a>)</p></li>
 </ul>
 <p>This release contains contributions from:</p>
 <ul class="simple">
@@ -990,7 +990,7 @@ components of acceleration
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 12, 2022.<br/>
+      Last updated on Aug 26, 2022.<br/>
   </p>
 </footer>
 </main>

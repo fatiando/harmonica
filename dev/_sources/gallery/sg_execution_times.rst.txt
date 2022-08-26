@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:14.294** total execution time for **gallery** files:
+**00:14.156** total execution time for **gallery** files:
 
 +-----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_upward_derivative.py` (``upward_derivative.py``)                       | 00:10.585 | 0.0 MB |
+| :ref:`sphx_glr_gallery_upward_derivative.py` (``upward_derivative.py``)                       | 00:10.534 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_gravity_disturbance.py` (``gravity_disturbance.py``)                   | 00:01.772 | 0.0 MB |
+| :ref:`sphx_glr_gallery_gravity_disturbance.py` (``gravity_disturbance.py``)                   | 00:01.865 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_gravity_disturbance_topofree.py` (``gravity_disturbance_topofree.py``) | 00:01.722 | 0.0 MB |
+| :ref:`sphx_glr_gallery_gravity_disturbance_topofree.py` (``gravity_disturbance_topofree.py``) | 00:01.544 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_isostatic_moho_airy.py` (``isostatic_moho_airy.py``)                   | 00:00.216 | 0.0 MB |
+| :ref:`sphx_glr_gallery_isostatic_moho_airy.py` (``isostatic_moho_airy.py``)                   | 00:00.214 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------+-----------+--------+
