@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica.datasets.fetch_gravity_earth | Harmonica v0.5.1</title>
+    
+
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="harmonica.datasets.fetch_geoid_earth" href="harmonica.datasets.fetch_geoid_earth.html" />
+    <link rel="prev" title="harmonica.datasets.locate" href="harmonica.datasets.locate.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.5.1</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/isostatic_moho_airy.html">
+     Airy Isostatic Moho
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/upward_derivative.html">
+     Upward derivative of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/coordinate_systems.html">
+   Coordinate systems
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/point.html">
+     Point sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/prism.html">
+     Rectangular prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">
+     Tesseroids
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/topographic_correction.html">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   API Reference
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/api/generated/harmonica.datasets.fetch_gravity_earth.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/generated/harmonica.datasets.fetch_gravity_earth.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/api/generated/harmonica.datasets.fetch_gravity_earth.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-harmonica-datasets-fetch-gravity-earth">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     harmonica.datasets.fetch_gravity_earth
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>harmonica.datasets.fetch_gravity_earth</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-harmonica-datasets-fetch-gravity-earth">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     harmonica.datasets.fetch_gravity_earth
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="harmonica-datasets-fetch-gravity-earth">
+<h1>harmonica.datasets.fetch_gravity_earth<a class="headerlink" href="#harmonica-datasets-fetch-gravity-earth" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="harmonica.datasets.fetch_gravity_earth">
+<span class="sig-prename descclassname"><span class="pre">harmonica.datasets.</span></span><span class="sig-name descname"><span class="pre">fetch_gravity_earth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/datasets/sample_data.html#fetch_gravity_earth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.datasets.fetch_gravity_earth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a global grid of Earth gravity.</p>
+<p>Gravity is the magnitude of the gravity vector of the Earth (gravitational
++ centrifugal). The gravity observations are at 10 km (geometric) height
+and on a regular grid with 0.5 degree spacing. The grid was generated from
+the spherical harmonic model EIGEN-6C4 <a class="reference internal" href="../../references.html#forste-etal2014" id="id1"><span>[Forste_etal2014]</span></a> using the <a class="reference external" href="http://icgem.gfz-potsdam.de/">ICGEM
+Calculation Service</a>. See the <code class="docutils literal notranslate"><span class="pre">attrs</span></code>
+attribute of the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> for information regarding the grid
+generation.</p>
+<p>If the file isn’t already in your data directory, it will be downloaded
+automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>grid</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – The gravity grid (in mGal). Includes a computation (geometric) height
+grid (<code class="docutils literal notranslate"><span class="pre">height_over_ell</span></code>). Coordinates are geodetic latitude and
+longitude.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="examples-using-harmonica-datasets-fetch-gravity-earth">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.datasets.fetch_gravity_earth</span></code><a class="headerlink" href="#examples-using-harmonica-datasets-fetch-gravity-earth" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Gravity disturbances are the differences between the measured gravity and a reference (normal) ..."><div class="figure align-default" id="id2">
+<img alt="Gravity Disturbances" src="../../_images/sphx_glr_gravity_disturbance_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance.html#sphx-glr-gallery-gravity-disturbance-py"><span class="std std-ref">Gravity Disturbances</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The gravity disturbance is the observed gravity minus the normal gravity (:meth:`boule.Ellipsoi..."><div class="figure align-default" id="id3">
+<img alt="Topography-free (Bouguer) Gravity Disturbances" src="../../_images/sphx_glr_gravity_disturbance_topofree_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html#sphx-glr-gallery-gravity-disturbance-topofree-py"><span class="std std-ref">Topography-free (Bouguer) Gravity Disturbances</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This is the magnitude of the gravity vector of the Earth (gravitational + centrifugal) at 10 km..."><div class="figure align-default" id="id4">
+<img alt="Earth Gravity" src="../../_images/sphx_glr_earth_gravity_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/earth_gravity.html#sphx-glr-sample-data-earth-gravity-py"><span class="std std-ref">Earth Gravity</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="harmonica.datasets.locate.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">harmonica.datasets.locate</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="harmonica.datasets.fetch_geoid_earth.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">harmonica.datasets.fetch_geoid_earth</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 26, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

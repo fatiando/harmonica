@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica.equivalent_sources.gradient_boosted | Harmonica v0.5.1</title>
+    
+
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.5.1</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">
+     Airy Isostatic Moho
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/upward_derivative.html">
+     Upward derivative of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../user_guide/coordinate_systems.html">
+   Coordinate systems
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../user_guide/forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/forward_modelling/point.html">
+     Point sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">
+     Rectangular prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">
+     Tesseroids
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../user_guide/gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../user_guide/topographic_correction.html">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../api/index.html">
+   API Reference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/equivalent_sources/gradient_boosted.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for harmonica.equivalent_sources.gradient_boosted</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Gradient-boosted equivalent sources in Cartesian coordinates</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">rolling_window</span>
+
+<span class="kn">from</span> <span class="nn">.cartesian</span> <span class="kn">import</span> <span class="n">EquivalentSources</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cast_fit_input</span><span class="p">,</span> <span class="n">predict_numba_parallel</span>
+
+
+<div class="viewcode-block" id="EquivalentSourcesGB"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB">[docs]</a><span class="k">class</span> <span class="nc">EquivalentSourcesGB</span><span class="p">(</span><span class="n">EquivalentSources</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gradient-boosted equivalent sources for generic harmonic functions.</span>
+
+<span class="sd">    Gradient-boosted version of the :class:`harmonica.EquivalentSources`,</span>
+<span class="sd">    introduced in [Soler2021]_. These equivalent sources are intended to be</span>
+<span class="sd">    used to fit very large datasets, where the Jacobian matrices generated by</span>
+<span class="sd">    regular equivalent sources (like :class:`harmonica.EquivalentSources`) are</span>
+<span class="sd">    larger than the available memory. They fit the sources coefficients</span>
+<span class="sd">    iteratively using overlapping windows of equal size, greatly reducing the</span>
+<span class="sd">    memory requirements.</span>
+
+<span class="sd">    Smaller windows lower the memory requirements. Using very small windows may</span>
+<span class="sd">    impact the accuracy of the interpolations. We recommend using the larger</span>
+<span class="sd">    windows that generate Jacobian matrices that fit in the available memory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    damping : None or float</span>
+<span class="sd">        The positive damping regularization parameter. Controls how much</span>
+<span class="sd">        smoothness is imposed on the estimated coefficients.</span>
+<span class="sd">        If None, no regularization is used.</span>
+<span class="sd">    points : None or list of arrays (optional)</span>
+<span class="sd">        List containing the coordinates of the equivalent point sources.</span>
+<span class="sd">        Coordinates are assumed to be in the following order:</span>
+<span class="sd">        (``easting``, ``northing``, ``upward``).</span>
+<span class="sd">        If None, will place one point source below each observation point at</span>
+<span class="sd">        a fixed relative depth below the observation point [Cooper2000]_.</span>
+<span class="sd">        Defaults to None.</span>
+<span class="sd">    depth : float</span>
+<span class="sd">        Parameter used to control the depth at which the point sources will be</span>
+<span class="sd">        located.</span>
+<span class="sd">        If ``depth_type`` is ``&quot;constant&quot;``, each source is located at the same</span>
+<span class="sd">        depth specified through the ``depth`` argument.</span>
+<span class="sd">        If ``depth_type`` is ``&quot;relative&quot;``, each source is located beneath</span>
+<span class="sd">        each data point (or block-averaged location) at a depth equal to its</span>
+<span class="sd">        elevation minus the ``depth`` value.</span>
+<span class="sd">        This parameter is ignored if *points* is specified.</span>
+<span class="sd">        Defaults to 500.</span>
+<span class="sd">    depth_type : str</span>
+<span class="sd">        Strategy used for setting the depth of the point sources.</span>
+<span class="sd">        The two available strategies are ``&quot;constant&quot;`` and ``&quot;relative&quot;``.</span>
+<span class="sd">        This parameter is ignored if *points* is specified.</span>
+<span class="sd">        Defaults to ``&quot;relative&quot;``.</span>
+<span class="sd">    block_size: float, tuple = (s_north, s_east) or None</span>
+<span class="sd">        Size of the blocks used on block-averaged equivalent sources.</span>
+<span class="sd">        If a single value is passed, the blocks will have a square shape.</span>
+<span class="sd">        Alternatively, the dimensions of the blocks in the South-North and</span>
+<span class="sd">        West-East directions can be specified by passing a tuple.</span>
+<span class="sd">        If None, no block-averaging is applied.</span>
+<span class="sd">        This parameter is ignored if *points* are specified.</span>
+<span class="sd">        Default to None.</span>
+<span class="sd">    window_size : float</span>
+<span class="sd">        Size of overlapping windows used during the gradient-boosting</span>
+<span class="sd">        algorithm. Smaller windows reduce the memory requirements of the source</span>
+<span class="sd">        coefficients fitting process. Very small windows may impact on the</span>
+<span class="sd">        accuracy of the interpolations.</span>
+<span class="sd">        Defaults to 5000.</span>
+<span class="sd">    parallel : bool</span>
+<span class="sd">        If True any predictions and Jacobian building is carried out in</span>
+<span class="sd">        parallel through Numba&#39;s ``jit.prange``, reducing the computation time.</span>
+<span class="sd">        If False, these tasks will be run on a single CPU. Default to True.</span>
+<span class="sd">    dtype : data-type</span>
+<span class="sd">        The desired data-type for the predictions and the Jacobian matrix.</span>
+<span class="sd">        Default to ``&quot;float64&quot;``.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points_ : 2d-array</span>
+<span class="sd">        Coordinates of the equivalent point sources.</span>
+<span class="sd">    coefs_ : array</span>
+<span class="sd">        Estimated coefficients of every point source.</span>
+<span class="sd">    region_ : tuple</span>
+<span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
+<span class="sd">        interpolator. Used as the default region for the</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSources.grid` method.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Soler2021]_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Define amount of overlapping between adjacent windows to 50%.</span>
+    <span class="n">overlapping</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">depth_type</span><span class="o">=</span><span class="s2">&quot;relative&quot;</span><span class="p">,</span>
+        <span class="n">block_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">window_size</span><span class="o">=</span><span class="mf">5e3</span><span class="p">,</span>
+        <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span>
+            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
+            <span class="n">depth_type</span><span class="o">=</span><span class="n">depth_type</span><span class="p">,</span>
+            <span class="n">block_size</span><span class="o">=</span><span class="n">block_size</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="n">window_size</span>
+
+<div class="viewcode-block" id="EquivalentSourcesGB.estimate_required_memory"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Estimate the memory required for storing the largest Jacobian matrix</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (``easting``, ``northing``, ``upward``, ...).</span>
+<span class="sd">            Only ``easting``, ``northing``, and ``upward`` will be used, all</span>
+<span class="sd">            subsequent coordinates will be ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        memory_required : float</span>
+<span class="sd">            Amount of memory required to store the largest Jacobian matrix in</span>
+<span class="sd">            bytes.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import verde as vd</span>
+<span class="sd">        &gt;&gt;&gt; coordinates = vd.scatter_points(</span>
+<span class="sd">        ...     region=(-1e3, 3e3, 2e3, 5e3),</span>
+<span class="sd">        ...     size=100,</span>
+<span class="sd">        ...     extra_coords=100,</span>
+<span class="sd">        ...     random_state=42,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; eqs = EquivalentSourcesGB(window_size=2e3)</span>
+<span class="sd">        &gt;&gt;&gt; eqs.estimate_required_memory(coordinates)</span>
+<span class="sd">        9800</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Build the sources and assign the points_ attribute</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="n">points</span>
+        <span class="c1"># Build the windows and get the indices</span>
+        <span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_windows</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="c1"># Get the number of sources and data for each window</span>
+        <span class="n">source_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">source_windows</span><span class="p">])</span>
+        <span class="n">data_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">data_windows</span><span class="p">])</span>
+        <span class="c1"># Compute the size of the Jacobian matrix for each window</span>
+        <span class="n">jacobian_sizes</span> <span class="o">=</span> <span class="n">source_sizes</span> <span class="o">*</span> <span class="n">data_sizes</span>
+        <span class="c1"># Estimate size of a single element of the Jacobian matrix in bytes</span>
+        <span class="k">return</span> <span class="n">jacobian_sizes</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">itemsize</span></div>
+
+<div class="viewcode-block" id="EquivalentSourcesGB.fit"><a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the coefficients of the equivalent sources.</span>
+
+<span class="sd">        The fitting process is carried out through the gradient-boosting</span>
+<span class="sd">        algorithm.</span>
+<span class="sd">        The data region is captured and used as default for the</span>
+<span class="sd">        :meth:`~harmonica.EquivalentSourcesGB.grid` method.</span>
+
+<span class="sd">        All input arrays must have the same shape.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (``easting``, ``northing``, ``upward``, ...).</span>
+<span class="sd">            Only ``easting``, ``northing``, and ``upward`` will be used, all</span>
+<span class="sd">            subsequent coordinates will be ignored.</span>
+<span class="sd">        data : array</span>
+<span class="sd">            The data values of each data point.</span>
+<span class="sd">        weights : None or array</span>
+<span class="sd">            If not None, then the weights assigned to each data point.</span>
+<span class="sd">            Typically, this should be 1 over the data uncertainty squared.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            Returns this estimator instance for chaining operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">cast_fit_input</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
+        <span class="c1"># Capture the data region to use as a default when gridding.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1"># Ravel coordinates, data and weights to 1d-arrays</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="c1"># Build point sources</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># Initialize coefficients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Fit coefficients through gradient boosting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_boosting</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_gradient_boosting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit source coefficients through gradient boosting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create rolling windows</span>
+        <span class="n">point_windows</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_windows</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="c1"># Get number of windows</span>
+        <span class="n">n_windows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">point_windows</span><span class="p">)</span>
+        <span class="c1"># Initialize RMSE array</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="o">**</span><span class="mi">2</span><span class="p">))]</span>
+        <span class="c1"># Set weights_chunk to None (will be changed unless weights is None)</span>
+        <span class="n">weights_chunk</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Initialized the predicted and residue arrays</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">residue</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Iterate over the windows</span>
+        <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_windows</span><span class="p">):</span>
+            <span class="c1"># Get source and data points indices for current window</span>
+            <span class="n">point_window</span><span class="p">,</span> <span class="n">data_window</span> <span class="o">=</span> <span class="n">point_windows</span><span class="p">[</span><span class="n">window</span><span class="p">],</span> <span class="n">data_windows</span><span class="p">[</span><span class="n">window</span><span class="p">]</span>
+            <span class="c1"># Choose source and data points that fall inside the window</span>
+            <span class="n">points_chunk</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">point_window</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">)</span>
+            <span class="n">coords_chunk</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">data_window</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">)</span>
+            <span class="c1"># Choose weights for data points inside the window (if not None)</span>
+            <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">weights_chunk</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">data_window</span><span class="p">]</span>
+            <span class="c1"># Compute Jacobian (for sources and data points in current window)</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coords_chunk</span><span class="p">,</span> <span class="n">points_chunk</span><span class="p">)</span>
+            <span class="c1"># Fit coefficients of sources with residue points inside window</span>
+            <span class="n">coeffs_chunk</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">least_squares</span><span class="p">(</span>
+                <span class="n">jacobian</span><span class="p">,</span>
+                <span class="n">residue</span><span class="p">[</span><span class="n">data_window</span><span class="p">],</span>
+                <span class="n">weights_chunk</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Predict field of the sources in the window on every data point</span>
+            <span class="n">predicted</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">predict_numba_parallel</span><span class="p">(</span>
+                <span class="n">coordinates</span><span class="p">,</span>
+                <span class="n">points_chunk</span><span class="p">,</span>
+                <span class="n">coeffs_chunk</span><span class="p">,</span>
+                <span class="n">predicted</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">greens_function</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Update the residue</span>
+            <span class="n">residue</span> <span class="o">-=</span> <span class="n">predicted</span>
+            <span class="c1"># Add RMS of the residue to the RMSE</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residue</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="c1"># Update source coefficients</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span><span class="p">[</span><span class="n">point_window</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coeffs_chunk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmse_per_iteration_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create indices of sources and data points for each overlapping window</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (``easting``, ``northing``, ``upward``).</span>
+<span class="sd">        shuffle_windows : bool</span>
+<span class="sd">            Enable or disable the random shuffling of windows order. It&#39;s is</span>
+<span class="sd">            highly recommended to enable shuffling for better fitting results.</span>
+<span class="sd">            This argument is mainly included for testing purposes. Default to</span>
+<span class="sd">            True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        source_windows_nonempty : list</span>
+<span class="sd">            List containing arrays with the indices of the sources that fall</span>
+<span class="sd">            under each window. The order of the windows is randomly shuffled if</span>
+<span class="sd">            ``shuffle_windows`` is True, although the order of the windows is</span>
+<span class="sd">            the same as the one in ``data_windows_nonempty``.</span>
+<span class="sd">        data_windows_nonempty : list</span>
+<span class="sd">            List containing arrays with the indices of the data points that</span>
+<span class="sd">            under each window. The order of the windows is randomly shuffled if</span>
+<span class="sd">            ``shuffle_windows`` is True, although the order of the windows is</span>
+<span class="sd">            the same as the one in ``source_windows_nonempty``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Compute window spacing based on overlapping</span>
+        <span class="n">window_spacing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlapping</span><span class="p">)</span>
+        <span class="c1"># Get the region that contains every data point and every source</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">)</span>
+        <span class="c1"># The windows for sources and data points are the same, but the</span>
+        <span class="c1"># verde.rolling_window function creates indices for the given</span>
+        <span class="c1"># coordinates. That&#39;s why we need to create two set of window indices:</span>
+        <span class="c1"># one for the sources and one for the data points.</span>
+        <span class="c1"># We pass the same region, size and spacing to be sure that both set of</span>
+        <span class="c1"># windows are the same.</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">window_spacing</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">source_windows</span> <span class="o">=</span> <span class="n">rolling_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="n">rolling_window</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Ravel the indices</span>
+        <span class="n">source_windows</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">source_windows</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+        <span class="n">data_windows</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data_windows</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+        <span class="c1"># Shuffle windows</span>
+        <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+            <span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span>
+                <span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span>
+            <span class="p">)</span>
+        <span class="c1"># Remove empty windows</span>
+        <span class="n">source_windows_nonempty</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data_windows_nonempty</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">source_windows_nonempty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="n">data_windows_nonempty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">source_windows_nonempty</span><span class="p">,</span> <span class="n">data_windows_nonempty</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the region that contains every observation and every source</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple</span>
+<span class="sd">    points : tuple</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    region : tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">sources_region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">data_region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sources_region</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="nb">max</span><span class="p">(</span><span class="n">data_region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sources_region</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">data_region</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sources_region</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="nb">max</span><span class="p">(</span><span class="n">data_region</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">sources_region</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">region</span>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 26, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

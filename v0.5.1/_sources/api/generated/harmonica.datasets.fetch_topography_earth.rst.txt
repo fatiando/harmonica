@@ -1,0 +1,12 @@
+harmonica.datasets.fetch\_topography\_earth
+===========================================
+
+.. currentmodule:: harmonica.datasets
+
+.. autofunction:: fetch_topography_earth
+
+.. include:: backreferences/harmonica.datasets.fetch_topography_earth.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

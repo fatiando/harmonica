@@ -1,0 +1,764 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Gridding with block-averaged equivalent sources | Harmonica v0.5.1</title>
+    
+
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gridding and upward continuation" href="cartesian.html" />
+    <link rel="prev" title="Upward derivative of a regular grid" href="../upward_derivative.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">v0.5.1</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   Gallery
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gravity_disturbance.html">
+     Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gravity_disturbance_topofree.html">
+     Topography-free (Bouguer) Gravity Disturbances
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../isostatic_moho_airy.html">
+     Airy Isostatic Moho
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../upward_derivative.html">
+     Upward derivative of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Gridding with block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cartesian.html">
+     Gridding and upward continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gradient_boosted.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="spherical.html">
+     Gridding in spherical coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../forward/point_gravity.html">
+     Point Masses in Cartesian Coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../forward/prism_layer.html">
+     Layer of prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../forward/prisms_topo_gravity.html">
+     Gravitational effect of topography
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../forward/tesseroid.html">
+     Tesseroids (spherical prisms)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../forward/tesseroid_variable_density.html">
+     Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../visualization/prism_layer_pyvista.html">
+     Plot a prism layer in 3D
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/coordinate_systems.html">
+   Coordinate systems
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/forward_modelling/index.html">
+   Forward modelling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/point.html">
+     Point sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/prism.html">
+     Rectangular prisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">
+     Tesseroids
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/gravity_disturbance.html">
+   Gravity Disturbance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/topographic_correction.html">
+   Topographic Correction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../user_guide/equivalent_sources/index.html">
+   Equivalent Sources
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">
+     Estimating damping and depth parameters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">
+     Block-averaged equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">
+     Gradient-boosted equivalent sources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">
+     Equivalent sources in spherical coordinates
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../api/index.html">
+   API Reference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.bouguer_correction.html">
+     harmonica.bouguer_correction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.derivative_upward.html">
+     harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.filters.derivative_upward_kernel.html">
+     harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">
+     harmonica.EquivalentSources
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">
+     harmonica.EquivalentSourcesGB
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">
+     harmonica.EquivalentSourcesSph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">
+     harmonica.point_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">
+     harmonica.prism_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">
+     harmonica.tesseroid_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">
+     harmonica.prism_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">
+     harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">
+     harmonica.isostatic_moho_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.isostasy_airy.html">
+     harmonica.isostasy_airy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">
+     harmonica.load_icgem_gdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">
+     harmonica.visualization.prism_to_pyvista
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.synthetic.airborne_survey.html">
+     harmonica.synthetic.airborne_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.synthetic.ground_survey.html">
+     harmonica.synthetic.ground_survey
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.locate.html">
+     harmonica.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.fetch_gravity_earth.html">
+     harmonica.datasets.fetch_gravity_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.fetch_geoid_earth.html">
+     harmonica.datasets.fetch_geoid_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.fetch_topography_earth.html">
+     harmonica.datasets.fetch_topography_earth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.fetch_britain_magnetic.html">
+     harmonica.datasets.fetch_britain_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
+     harmonica.datasets.fetch_south_africa_gravity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/harmonica.test.html">
+     harmonica.test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../citing.html">
+   Citing Harmonica
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="http://contact.fatiando.org">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/harmonica">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/gallery/equivalent_sources/block_averaged_sources.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fgallery/equivalent_sources/block_averaged_sources.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/gallery/equivalent_sources/block_averaged_sources.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Gridding with block-averaged equivalent sources</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-equivalent-sources-block-averaged-sources-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="gridding-with-block-averaged-equivalent-sources">
+<span id="sphx-glr-gallery-equivalent-sources-block-averaged-sources-py"></span><h1>Gridding with block-averaged equivalent sources<a class="headerlink" href="#gridding-with-block-averaged-equivalent-sources" title="Permalink to this headline">¶</a></h1>
+<p>By default, the <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code></a> class locates one point
+source beneath each data point during the fitting process. Alternatively, we
+can use another strategy: the <em>block-averaged sources</em>, introduced in
+<a class="reference internal" href="../../references.html#soler2021" id="id1"><span>[Soler2021]</span></a>.</p>
+<p>This method divides the survey region (defined by the data) into square blocks
+of equal size, computes the median coordinates of the data points that fall
+inside each block and locates one source beneath every averaged position. This
+way, we define one equivalent source per block, with the exception of empty
+blocks that won’t get any source.</p>
+<p>This method has two main benefits:</p>
+<ul class="simple">
+<li><p>It lowers the amount of sources involved in the interpolation, therefore it
+reduces the computer memory requirements and the computation time of the
+fitting and prediction processes.</p></li>
+<li><p>It might avoid to produce aliasing on the output grids, specially for
+surveys with oversampling along a particular direction, like airborne ones.</p></li>
+</ul>
+<p>We can make use of the block-averaged sources within the
+<a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code></a> class by passing a value to the
+<code class="docutils literal notranslate"><span class="pre">block_size</span></code> parameter, which controls the size of the blocks. We recommend
+using a <code class="docutils literal notranslate"><span class="pre">block_size</span></code> not larger than the desired resolution of the
+interpolation grid.</p>
+<p>The depth of the sources can be set analogously to the regular equivalent
+sources: we can use a <code class="docutils literal notranslate"><span class="pre">constant</span></code> depth (every source is located at the same
+depth) or a <code class="docutils literal notranslate"><span class="pre">relative</span></code> depth (where each source is located at a constant
+shift beneath the median location obtained during the block-averaging process).
+The depth of the sources and which strategy to use can be set up through the
+<code class="docutils literal notranslate"><span class="pre">depth</span></code> and the <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> parameters, respectively.</p>
+<img src="../../_images/sphx_glr_block_averaged_sources_001.png" srcset="../../_images/sphx_glr_block_averaged_sources_001.png" alt="Observed magnetic anomaly data, Gridded and upward-continued" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of data points: 7054
+Mean height of observations: 541.8293166997448
+R² score: 0.9955764795499517
+
+Generated grid:
+ &lt;xarray.Dataset&gt;
+Dimensions:           (northing: 157, easting: 95)
+Coordinates:
+  * easting           (easting) float64 -3.24e+05 -3.235e+05 ... -2.769e+05
+  * northing          (northing) float64 4.175e+06 4.176e+06 ... 4.253e+06
+    upward            (northing, easting) float64 1.5e+03 1.5e+03 ... 1.5e+03
+Data variables:
+    magnetic_anomaly  (northing, easting) float64 28.63 28.56 ... 168.6 158.7
+Attributes:
+    metadata:  Generated by EquivalentSources(block_size=500, damping=1, dept...
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pyproj</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+
+<span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+
+<span class="c1"># Fetch the sample total-field magnetic anomaly data from Great Britain</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.datasets.fetch_britain_magnetic.html#harmonica.datasets.fetch_britain_magnetic" title="harmonica.datasets.fetch_britain_magnetic" class="sphx-glr-backref-module-harmonica-datasets sphx-glr-backref-type-py-function"><span class="n">hm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_britain_magnetic</span></a><span class="p">()</span>
+
+<span class="c1"># Slice a smaller portion of the survey data to speed-up calculations for this</span>
+<span class="c1"># example</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.7</span><span class="p">,</span> <span class="mf">57.8</span><span class="p">,</span> <span class="mf">58.5</span><span class="p">]</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inside</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.inside.html#verde.inside" title="verde.inside" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">inside</span></a><span class="p">((</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">longitude</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span></a><span class="p">),</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="p">)</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inside</span></a><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of data points:&quot;</span><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.shape.html#pandas.DataFrame.shape" title="pandas.DataFrame.shape" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-property"><span class="n">data</span><span class="o">.</span><span class="n">shape</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean height of observations:&quot;</span><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.mean.html#pandas.Series.mean" title="pandas.Series.mean" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">data</span><span class="o">.</span><span class="n">altitude_m</span><span class="o">.</span><span class="n">mean</span></a><span class="p">())</span>
+
+<span class="c1"># Since this is a small area, we&#39;ll project our data and use Cartesian</span>
+<span class="c1"># coordinates</span>
+<a href="https://pyproj4.github.io/pyproj/stable/api/proj.html#pyproj.Proj" title="pyproj.Proj" class="sphx-glr-backref-module-pyproj sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">projection</span></a> <span class="o">=</span> <a href="https://pyproj4.github.io/pyproj/stable/api/proj.html#pyproj.Proj" title="pyproj.Proj" class="sphx-glr-backref-module-pyproj sphx-glr-backref-type-py-class"><span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span></a><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.mean.html#pandas.Series.mean" title="pandas.Series.mean" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span></a><span class="p">())</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a> <span class="o">=</span> <a href="https://pyproj4.github.io/pyproj/stable/api/proj.html#pyproj.Proj" title="pyproj.Proj" class="sphx-glr-backref-module-pyproj sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">projection</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.values.html#pandas.Series.values" title="pandas.Series.values" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-property"><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.values.html#pandas.Series.values" title="pandas.Series.values" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-property"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">altitude_m</span></a><span class="p">)</span>
+
+<span class="c1"># Create the equivalent sources.</span>
+<span class="c1"># We&#39;ll use block-averaged sources at a constant depth beneath the observation</span>
+<span class="c1"># points. We will interpolate on a grid with a resolution of 500m, so we will</span>
+<span class="c1"># use blocks of the same size. The damping parameter helps smooth the predicted</span>
+<span class="c1"># data and ensure stability.</span>
+<a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">eqs</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-class"><span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSources</span></a><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">depth_type</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+<span class="c1"># Fit the sources coefficients to the observed magnetic anomaly.</span>
+<a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.fit" title="harmonica.EquivalentSources.fit" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">)</span>
+
+<span class="c1"># Evaluate the data fit by calculating an R² score against the observed data.</span>
+<span class="c1"># This is a measure of how well the sources fit the data, NOT how good the</span>
+<span class="c1"># interpolation will be.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.score" title="harmonica.EquivalentSources.score" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">))</span>
+
+<span class="c1"># Interpolate data on a regular grid with 500 m spacing. The interpolation</span>
+<span class="c1"># requires the height of the grid points (upward coordinate). By passing in</span>
+<span class="c1"># 1500 m, we&#39;re effectively upward-continuing the data (mean flight height is</span>
+<span class="c1"># 500 m).</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.get_region.html#verde.get_region" title="verde.get_region" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="p">)</span>  <span class="c1"># get the region boundaries</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid_coords</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mi">1500</span><span class="p">)</span>
+<a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid" title="harmonica.EquivalentSources.grid" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-method"><span class="n">eqs</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coordinates</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid_coords</span></a><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetic_anomaly&quot;</span><span class="p">])</span>
+
+<span class="c1"># The grid is a xarray.Dataset with values, coordinates, and metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
+
+<span class="c1"># Plot original magnetic anomaly and the gridded and upward-continued version</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Get the maximum absolute value between the original and gridded data so we</span>
+<span class="c1"># can use the same color scale for both plots and have 0 centered at the white</span>
+<span class="c1"># color.</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/verde/latest/api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">,</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">grid</span><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">values</span></a><span class="p">)</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Observed magnetic anomaly data&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.scatter.html#matplotlib.axes.Axes.scatter" title="matplotlib.axes.Axes.scatter" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;nT&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xlim.html#matplotlib.axes.Axes.set_xlim" title="matplotlib.axes.Axes.set_xlim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_ylim.html#matplotlib.axes.Axes.set_ylim" title="matplotlib.axes.Axes.set_ylim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Gridded and upward-continued&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">.</span><span class="n">magnetic_anomaly</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;nT&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xlim.html#matplotlib.axes.Axes.set_xlim" title="matplotlib.axes.Axes.set_xlim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">easting</span></a><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_ylim.html#matplotlib.axes.Axes.set_ylim" title="matplotlib.axes.Axes.set_ylim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">northing</span></a><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.500 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-equivalent-sources-block-averaged-sources-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/05e572b5a9a849d0cb7aada5e9a0d498/block_averaged_sources.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">block_averaged_sources.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/f15b7208cc8d8afd57c37b9fcf08493b/block_averaged_sources.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">block_averaged_sources.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../upward_derivative.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Upward derivative of a regular grid</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="cartesian.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Gridding and upward continuation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright .<br/>
+      Last updated on Aug 26, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

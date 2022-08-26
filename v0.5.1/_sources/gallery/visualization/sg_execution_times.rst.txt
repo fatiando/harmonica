@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_visualization_sg_execution_times:
+
+Computation times
+=================
+**00:06.958** total execution time for **gallery_visualization** files:
+
++-------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_visualization_prism_layer_pyvista.py` (``prism_layer_pyvista.py``) | 00:06.958 | 0.0 MB |
++-------------------------------------------------------------------------------------------+-----------+--------+
