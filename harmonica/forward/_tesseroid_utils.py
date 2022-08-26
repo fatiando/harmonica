@@ -501,9 +501,8 @@ def _discard_null_tesseroids(tesseroids, density):
     ----------
     tesseroids : 2d-array
         Array containing the boundaries of the tesserois in the following
-        order:
-        ``longitude_w``. ``longitude_e``, ``latitude_s``, ``latitude_n``,
-        ``bottom``, ``top`` under geocentric spherical coordinate system.
+        order: ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``
+        defined in a geocentric spherical coordinate system.
     density : 1d-array
         Array containing the density of each tesseroid in kg/m^3. Must have the
         same size as the number of tesseroids.
@@ -512,14 +511,14 @@ def _discard_null_tesseroids(tesseroids, density):
     -------
     tesseroids : 2d-array
         A copy of the ``tesseroids`` array that doesn't include the null
-        tesseroids (tesseroid with zero density or zero volume).
+        tesseroids (tesseroids with zero density or zero volume).
     density : 1d-array
         A copy of the ``density`` array that doesn't include the density values
         for the null tesseroids (tesseroid with zero density or zero volume).
     """
-    lon_w, lon_e, lat_s, lat_n, bottom, top = tuple(tesseroids[:, i] for i in range(6))
+    west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
     # Mark prisms with zero volume as null prisms
-    null_tesseroids = (lon_w == lon_e) | (lat_s == lat_n) | (bottom == top)
+    null_tesseroids = (west == east) | (south == north) | (bottom == top)
     # Mark prisms with zero density as null prisms
     null_tesseroids[density == 0] = True
     # Keep only non null prisms
