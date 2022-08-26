@@ -12,7 +12,7 @@ import os
 import numpy as np
 import numpy.testing as npt
 import pytest
-from pytest import raises
+from pytest import raises, warns
 
 from .. import load_icgem_gdf
 
@@ -294,9 +294,7 @@ def fixture_empty_fname(tmpdir):
 
 def test_empty_file(empty_fname):
     "Empty ICGEM file"
-    error_msg = r"Couldn't read \w+ field from gdf file header"
-    error = pytest.raises(IOError, match=error_msg)
-    warn_msg = r"loadtxt: input contained no data"
-    warn = pytest.warns(UserWarning, match=warn_msg)
+    error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
+    warn = warns(UserWarning, match=r"loadtxt: input contained no data")
     with error, warn:
         load_icgem_gdf(empty_fname)
