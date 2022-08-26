@@ -3,12 +3,36 @@
 Changelog
 =========
 
+Version 0.5.1
+-------------
+
+*Released on: 2022/08/26*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7026294.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.7026294
+
+Bug fixes:
+
+- Fix test function for empty ICGEM gdf file (`#345 <https://github.com/fatiando/harmonica/pull/345>`__)
+- Add a function to ignore the tesseroid with zero density or volume (`#339 <https://github.com/fatiando/harmonica/pull/339>`__)
+- Fix equivalent sources figures in gallery examples (`#342 <https://github.com/fatiando/harmonica/pull/342>`__)
+- Replace PROJECT placeholder in changes.rst for "harmonica" (`#341 <https://github.com/fatiando/harmonica/pull/341>`__)
+
+
+This release contains contributions from:
+
+- Agustina Pesce
+- BenjMy
+- Santiago Soler
+
+
 Version 0.5.0
 -------------
 
 *Released on: 2022/08/12*
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6987201
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6987201.svg
    :alt: Digital Object Identifier for the Zenodo archive
    :target: https://doi.org/10.5281/zenodo.6987201
 
