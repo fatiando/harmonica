@@ -8,6 +8,7 @@
 # Import functions/classes to make the public API
 from . import datasets, synthetic
 from ._io.icgem_gdf import load_icgem_gdf
+from ._io.oasis_montaj_grd import load_oasis_montaj_grid
 from ._version import __version__
 from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
 from .equivalent_sources.gradient_boosted import EquivalentSourcesGB

@@ -84,6 +84,7 @@ Input and Output
    :toctree: generated/
 
     load_icgem_gdf
+    load_oasis_montaj_grid
 
 Visualization
 -------------
