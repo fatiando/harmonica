@@ -59,10 +59,11 @@ def load_oasis_montaj_grid(fname):
     with open(fname, "rb") as grd_file:
         # Read the header (first 512 bytes)
         header = _read_header(grd_file.read(512))
-        # Check for valid ordering
+        # Check for valid flags
         _check_ordering(header["ordering"])
-        # Check for valid rotation
         _check_rotation(header["rotation"])
+        _check_sign_flag(header["sign_flag"])
+        _check_n_bytes_per_element(header["n_bytes_per_element"])
         # Get data type for the grid elements
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
         # Read grid
@@ -192,7 +193,7 @@ def _read_header(header_bytes):
 
 def _check_ordering(ordering):
     """
-    Check if the ordering value is the one we are supporting
+    Check if the ordering value is within the ones we are supporting
     """
     if ordering not in (-1, 1):
         raise NotImplementedError(
@@ -212,6 +213,28 @@ def _check_rotation(rotation):
         )
 
 
+def _check_sign_flag(sign_flag):
+    """
+    Check if sign_flag value is within the ones we are supporting
+    """
+    if sign_flag == 3:
+        raise NotImplementedError(
+            "Reading .grd files with colour grids is not currenty supported."
+        )
+
+
+def _check_n_bytes_per_element(n_bytes_per_element):
+    """
+    Check if n_bytes_per_element value is within the ones we are supporting
+    """
+    if n_bytes_per_element not in (1, 2, 4, 8):
+        raise NotImplementedError(
+            "Found a 'Grid data element size' (a.k.a. 'ES') value "
+            + f"of '{n_bytes_per_element}'. "
+            "Compressed .grd files are not currently supported."
+        )
+
+
 def _get_data_type(n_bytes_per_element, sign_flag):
     """
     Return the data type for the grid values
@@ -220,17 +243,6 @@ def _get_data_type(n_bytes_per_element, sign_flag):
     ----------
     https://docs.python.org/3/library/array.html
     """
-    # Run some checks
-    if n_bytes_per_element not in (1, 2, 4, 8):
-        raise NotImplementedError(
-            "Found a 'Grid data element size' (a.k.a. 'ES') value "
-            + f"of '{n_bytes_per_element}'. "
-            "Compressed .grd files are not currently supported."
-        )
-    if sign_flag == 3:
-        raise NotImplementedError(
-            "Reading .grd files with colour grids is not currenty supported."
-        )
     # Determine the data type of the grid elements
     if n_bytes_per_element == 1:
         if sign_flag == 0:
