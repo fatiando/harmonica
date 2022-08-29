@@ -63,7 +63,7 @@ def load_oasis_montaj_grid(fname):
         _check_ordering(header["ordering"])
         _check_rotation(header["rotation"])
         _check_sign_flag(header["sign_flag"])
-        _check_n_bytes_per_element(header["n_bytes_per_element"])
+        _check_uncompressed_grid(header["n_bytes_per_element"])
         # Get data type for the grid elements
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
         # Read grid
@@ -223,11 +223,14 @@ def _check_sign_flag(sign_flag):
         )
 
 
-def _check_n_bytes_per_element(n_bytes_per_element):
+def _check_uncompressed_grid(n_bytes_per_element):
     """
-    Check if n_bytes_per_element value is within the ones we are supporting
+    Check if the grid is uncompressed
+
+    If the grid is compressed, then the n_bytes_per_element gets an additional
+    1024.
     """
-    if n_bytes_per_element not in (1, 2, 4, 8):
+    if n_bytes_per_element >= 1024:
         raise NotImplementedError(
             "Found a 'Grid data element size' (a.k.a. 'ES') value "
             + f"of '{n_bytes_per_element}'. "
@@ -243,6 +246,13 @@ def _get_data_type(n_bytes_per_element, sign_flag):
     ----------
     https://docs.python.org/3/library/array.html
     """
+    # Check if number of bytes per element is valid
+    if n_bytes_per_element not in (1, 2, 4, 8):
+        raise NotImplementedError(
+            "Found a 'Grid data element size' (a.k.a. 'ES') value "
+            + f"of '{n_bytes_per_element}'. "
+            "Only values equal to 1, 2, 4 or 8 are valid."
+        )
     # Determine the data type of the grid elements
     if n_bytes_per_element == 1:
         if sign_flag == 0:
