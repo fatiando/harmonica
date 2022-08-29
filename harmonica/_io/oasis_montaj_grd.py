@@ -19,7 +19,9 @@ def load_oasis_montaj_grid(fname):
     Reads gridded data from an Oasis Montaj© .grd file.
 
     The version 2 of the Geosoft© Grid File Format (GRD) stores gridded
-    products in binary data.
+    products in binary data. This function can read those files and parse the
+    information in the header. It returns the data in
+    a :class:`xarray.DataArray` for convenience.
 
     .. warning::
 
