@@ -115,6 +115,44 @@ classes with an interface inspired by scikit-learn (like `Verde
     submit a new `issues on Github
     <https://github.com/fatiando/harmonica/issues>`__.
 
+------------
+
+Imposter syndrome disclaimer
+++++++++++++++++++++++++++++
+
+**We want your help.** No, really.
+
+There may be a little voice inside your head that is telling you that you're
+not ready to be an open source contributor; that your skills aren't nearly good
+enough to contribute.
+What could you possibly offer?
+
+We assure you that the little voice in your head is wrong.
+
+**Being a contributor doesn't just mean writing code**.
+Equally important contributions include:
+writing or proof-reading documentation, suggesting or implementing tests, or
+even giving feedback about the project (including giving feedback about the
+contribution process).
+If you're coming to the project with fresh eyes, you might see the errors and
+assumptions that seasoned contributors have glossed over.
+If you can write any code at all, you can contribute code to open source.
+We are constantly trying out new skills, making mistakes, and learning from
+those mistakes.
+That's how we all improve and we are happy to help others learn.
+
+.. admonition:: How to contribute
+    :class: seealso
+
+    Please, read our `Contributor Guide
+    <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>`_ to learn
+    how you can contribute to the project.
+
+.. note::
+    *This disclaimer was adapted from the*
+    `MetPy project <https://github.com/Unidata/MetPy>`__.
+
+
 
 .. toctree::
     :hidden:
@@ -137,6 +175,7 @@ classes with an interface inspired by scikit-learn (like `Verde
     user_guide/gravity_disturbance.rst
     user_guide/topographic_correction.rst
     user_guide/equivalent_sources/index.rst
+
 
 .. toctree::
     :hidden:

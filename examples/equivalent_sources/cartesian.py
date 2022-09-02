@@ -72,7 +72,9 @@ print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
 # requires the height of the grid points (upward coordinate). By passing in
 # 1500 m, we're effectively upward-continuing the data (mean flight height is
 # 500 m).
+
 grid_coords = vd.grid_coordinates(region=xy_region, spacing=500, extra_coords=1500)
+
 grid = eqs.grid(coordinates=grid_coords, data_names=["magnetic_anomaly"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata

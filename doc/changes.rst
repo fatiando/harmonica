@@ -3,6 +3,88 @@
 Changelog
 =========
 
+Version 0.5.1
+-------------
+
+*Released on: 2022/08/26*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7026294.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.7026294
+
+Bug fixes:
+
+- Fix test function for empty ICGEM gdf file (`#345 <https://github.com/fatiando/harmonica/pull/345>`__)
+- Add a function to ignore the tesseroid with zero density or volume (`#339 <https://github.com/fatiando/harmonica/pull/339>`__)
+- Fix equivalent sources figures in gallery examples (`#342 <https://github.com/fatiando/harmonica/pull/342>`__)
+- Replace PROJECT placeholder in changes.rst for "harmonica" (`#341 <https://github.com/fatiando/harmonica/pull/341>`__)
+
+
+This release contains contributions from:
+
+- Agustina Pesce
+- BenjMy
+- Santiago Soler
+
+
+Version 0.5.0
+-------------
+
+*Released on: 2022/08/12*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6987201.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.6987201
+
+Deprecations:
+
+- Add ``FutureWarning`` to ``isostasy_airy`` function warning of deprecation after next release (`#307 <https://github.com/fatiando/harmonica/pull/307>`__)
+- Ditch soon-to-be deprecated args of equivalent sources grid method (`#311 <https://github.com/fatiando/harmonica/pull/311>`__)
+- Remove deprecated ``point_mass_gravity`` function (`#310 <https://github.com/fatiando/harmonica/pull/310>`__)
+- Drop support for Python 3.6 (`#309 <https://github.com/fatiando/harmonica/pull/309>`__)
+- Add deprecations to datasets and synthetic modules (`#304 <https://github.com/fatiando/harmonica/pull/304>`__)
+
+New features:
+
+- Discard prisms with no volume or zero density before running the forward model (`#334 <https://github.com/fatiando/harmonica/pull/334>`__)
+- Add a new ``isostatic_moho_airy`` function to compute Moho depth based on Airy isostasy hypothesis using the *rock equivalent topography* concept (`#307 <https://github.com/fatiando/harmonica/pull/307>`__)
+- Add progressbar to prism forward gravity calculations (`#315 <https://github.com/fatiando/harmonica/pull/315>`__)
+- Add computation of gravitational tensor components for point sources (`#288 <https://github.com/fatiando/harmonica/pull/288>`__)
+- Add function to compute upward derivative of a grid in the frequency domain (`#238 <https://github.com/fatiando/harmonica/pull/238>`__)
+- Add conversion of prisms or a prism layer to PyVista objects (`#291 <https://github.com/fatiando/PROJECT/pull/291>`__)
+
+Maintenance:
+
+- Simplify tests for upward derivative (`#328 <https://github.com/fatiando/harmonica/pull/328>`__)
+- Avoid checking floats in tesseroid doctests (`#326 <https://github.com/fatiando/harmonica/pull/326>`__)
+- Update Black to its stable version (`#301 <https://github.com/fatiando/harmonica/pull/301>`__)
+- Move configuration from setup.py to setup.cfg (`#296 <https://github.com/fatiando/harmonica/pull/296>`__)
+- Pin style checkers and formatters (`#295 <https://github.com/fatiando/harmonica/pull/295>`__)
+
+Documentation:
+
+- Add impostor syndrome disclaimer to docs (`#333 <https://github.com/fatiando/harmonica/pull/333>`__)
+- Convert README to Markdown, since it's no longer used to build the docs (`#331 <https://github.com/fatiando/harmonica/pull/331>`__)
+- Replace sphinx-panels for sphinx-design and refactor the home page of the docs(`#329 <https://github.com/fatiando/harmonica/pull/329>`__)
+- Specify spherical latitude in point sources guide (`#325 <https://github.com/fatiando/harmonica/pull/325>`__)
+- Note that spherical and geodetic latitudes are equal in spherical ellipsoids (`#324 <https://github.com/fatiando/harmonica/pull/324>`__)
+- Specify "spherical latitude" when describing coordinates of point masses (`#321 <https://github.com/fatiando/harmonica/pull/321>`__)
+- Fix small format errors in the user guide (`#319 <https://github.com/fatiando/harmonica/pull/319>`__)
+- Update docs and create a proper user guide (`#305 <https://github.com/fatiando/harmonica/pull/305>`__)
+- Update Sphinx version to 4.5.0 (`#302 <https://github.com/fatiando/harmonica/pull/302>`__)
+- Link Code of Conduct and Authorship, Contributing, and Maintainers Guides back to the Fatiando-wide pages (`#294 <https://github.com/fatiando/harmonica/pull/294>`__)
+- Replace Google Analytics for Plausible (`#297 <https://github.com/fatiando/harmonica/pull/297>`__)
+
+This release contains contributions from:
+
+- Federico Esteban
+- Lu Li
+- Agustina Pesce
+- Santiago Soler
+- Matt Tankersley
+- Leonardo Uieda
+
+
 Version 0.4.0
 -------------
 

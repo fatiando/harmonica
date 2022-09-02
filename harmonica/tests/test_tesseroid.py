@@ -15,6 +15,7 @@ from verde import grid_coordinates
 
 from ..constants import GRAVITATIONAL_CONST
 from ..forward._tesseroid_utils import (
+    _discard_null_tesseroids,
     _distance_tesseroid_point,
     _longitude_continuity,
     _split_tesseroid,
@@ -257,6 +258,41 @@ def test_stack_overflow_on_adaptive_discretization():
         _adaptive_discretization(
             coordinates, tesseroid, distance_size_ratio, stack, small_tesseroids
         )
+
+
+def test_discard_null_tesseroids():
+    """
+    Test if discarding invalid tesseroid works as expected
+    """
+    # Define a set of sample tesseroids including invalid ones
+    ellipsoid = boule.WGS84
+    top = ellipsoid.mean_radius
+    bottom = top - 1e3
+    tesseroids = np.array(
+        [
+            [-10, -5, -10, -5, bottom, top],  # ok tesseroid
+            [-10, -5, -5, 0, bottom, top],  # ok tesseroid (will set zero density)
+            [-10, -10, 0, 5, bottom, top],  # no volume due to easting boundaries
+            [-10, -5, 5, 5, bottom, top],  # no volume due to noting boundaries
+            [-5, 0, -10, -5, top, top],  # no volume due to radial boundaries
+            [-5, 0, -5, 0, bottom, top],  # ok tesseroid
+            [-5, -5, 5, 5, top, top],  # no volume due to multiple boundaries
+            [-5, 0, 5, 10, bottom, top],  # ok tesseroid
+        ]
+    )
+    densities = np.array([2400, 0, 2500, 2600, 2700, 2800, 2900, 3000])
+    tesseroids, densities = _discard_null_tesseroids(tesseroids, densities)
+    npt.assert_allclose(
+        tesseroids,
+        np.array(
+            [
+                [-10, -5, -10, -5, bottom, top],
+                [-5, 0, -5, 0, bottom, top],
+                [-5, 0, 5, 10, bottom, top],
+            ]
+        ),
+    )
+    npt.assert_allclose(densities, np.array([2400, 2800, 3000]))
 
 
 # --------------------------------------
