@@ -65,20 +65,22 @@ Lets plot it:
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
-   import cartopy.crs as ccrs
+   import pygmt
 
-   plt.figure(figsize=(10, 10))
-   ax = plt.axes(projection=ccrs.Robinson())
-   pc = gravity.plot.pcolormesh(
-       ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="viridis"
+   fig = pygmt.Figure()
+   fig.grdimage(
+       gravity,
+       projection="W20c",
+       cmap="viridis",
+       shading="+a45+nt0.2",
    )
-   plt.colorbar(
-       pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
+   fig.basemap(frame=["af", "WEsn"])
+   fig.colorbar(
+       position="JCB+w10c",
+       frame=["af", 'y+l"mGal"', 'x+l"observed gravity"'],
    )
-   ax.set_title("Gravity of the Earth")
-   ax.coastlines()
-   plt.show()
+   fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
+   fig.show()
 
 We can then get the WGS84 ellipsoid defined in :mod:`boule` and use the
 :meth:`boule.Ellipsoid.normal_gravity` to compute the normal gravity (the
@@ -98,21 +100,20 @@ And plot it:
 
 .. jupyter-execute::
 
-   plt.figure(figsize=(10, 10))
-   ax = plt.axes(projection=ccrs.Robinson())
-   pc = ax.pcolormesh(
-       gravity.longitude,
-       gravity.latitude,
+   fig = pygmt.Figure()
+   fig.grdimage(
        normal_gravity,
-       transform=ccrs.PlateCarree(),
-       cmap="viridis"
+       projection="W20c",
+       cmap="viridis",
+       shading="+a45+nt0.2",
    )
-   plt.colorbar(
-       pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
+   fig.basemap(frame=["af", "WEsn"])
+   fig.colorbar(
+       position="JCB+w10c",
+       frame=["af", 'y+l"mGal"', 'x+l"normal gravity"'],
    )
-   ax.set_title("Normal gravity of the Earth")
-   ax.coastlines()
-   plt.show()
+   fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
+   fig.show()
 
 Now we can compute the gravity disturbance:
 
@@ -125,26 +126,20 @@ And plot it:
 
 .. jupyter-execute::
 
-   import verde as vd
-
-   maxabs = vd.maxabs(gravity_disturbance)
-
-   plt.figure(figsize=(10, 10))
-   ax = plt.axes(projection=ccrs.Robinson())
-   pc = gravity_disturbance.plot.pcolormesh(
-       ax=ax,
-       transform=ccrs.PlateCarree(),
-       add_colorbar=False,
-       cmap="seismic",
-       vmin=-maxabs,
-       vmax=maxabs,
+   fig = pygmt.Figure()
+   fig.grdimage(
+       gravity_disturbance,
+       projection="W20c",
+       cmap="polar+h",
+       shading="+a45+nt0.2",
    )
-   plt.colorbar(
-       pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
+   fig.basemap(frame=["af", "WEsn"])
+   fig.colorbar(
+       position="JCB+w10c",
+       frame=["af", 'y+l"mGal"', 'x+l"gravity disturbance"'],
    )
-   ax.set_title("Gravity disturbance of the Earth")
-   ax.coastlines()
-   plt.show()
+   fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
+   fig.show()
 
 The gravity disturbances can be interpreted as the gravitational effect of
 every *anomalous mass*, i.e. that is not contained in the *normal Earth*.
