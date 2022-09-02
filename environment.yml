@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.9
+  - python==3.9.*
   - pip
   # Build
   - setuptools>=45
@@ -19,7 +19,6 @@ dependencies:
   - pooch>=0.7.0
   - verde>=1.5.0
   - xarray
-  - pygmt
   - xrft
   # Optional requirements
   - pyvista
@@ -40,6 +39,9 @@ dependencies:
   - matplotlib
   - ensaio
   - netcdf4
+  - pygmt==0.7.*
+  - gmt==6.4.*
+  - gdal==3.5.*
   # Code style checks and autoformat
   - black==22.3.0
   - isort==5.10.*
