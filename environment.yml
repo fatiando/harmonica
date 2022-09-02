@@ -38,7 +38,6 @@ dependencies:
   - jupyter-sphinx==0.3.*
   - pyproj
   - matplotlib
-  - cartopy>=0.18
   - ensaio
   - netcdf4
   # Code style checks and autoformat

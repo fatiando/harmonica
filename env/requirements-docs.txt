@@ -10,7 +10,6 @@ pyproj
 ensaio
 netcdf4
 matplotlib
-cartopy>=0.18
 pyvista
 vtk>=9
 pygmt

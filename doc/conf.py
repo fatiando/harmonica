@@ -50,7 +50,6 @@ intersphinx_mapping = {
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
     "xrft": ("https://xrft.readthedocs.io/en/stable/", None),
-    "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
     "boule": ("https://www.fatiando.org/boule/latest/", None),
