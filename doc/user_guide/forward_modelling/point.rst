@@ -216,7 +216,7 @@ field the source generate on every computation point:
        coordinate_system="spherical",
    )
 
-Lets plot these results using :mod:`cartopy`:
+Lets plot these results using :mod:`pygmt`:
 
 .. jupyter-execute::
 
