@@ -24,7 +24,7 @@ def dummy_layer(request):
     """
     Generate dummy array for defining tesseroid layers
     """
-    latitude = np.linspace(-10, 10, 5)
+    latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(-10, 10, 5)
     shape = (latitude.size, longitude.size)
     ellipsoid = boule.WGS84
@@ -36,14 +36,14 @@ def dummy_layer(request):
         longitude = xr.DataArray(longitude, dims=("longitude",))
         reference, surface = xr.DataArray(reference), xr.DataArray(surface)
         density = xr.DataArray(density)
-    return (latitude, longitude), surface, reference, density
+    return (longitude, latitude), surface, reference, density
 
 
 def test_tesseroid_layer(dummy_layer):
     """
     Check if the layer of tesseroids is property constructed
     """
-    (latitude, longitude), surface, reference, _ = dummy_layer
+    (longitude, latitude), surface, reference, _ = dummy_layer
     layer = tesseroid_layer((longitude, latitude), surface, reference)
     assert "latitude" in layer.coords
     assert "longitude" in layer.coords
@@ -67,3 +67,37 @@ def test_tesseroid_layer(dummy_layer):
     npt.assert_allclose(layer.longitude, longitude)
     npt.assert_allclose(layer.top, expected_top)
     npt.assert_allclose(layer.bottom, expected_bottom)
+
+
+def test_tesseroid_layer_invalid_surface_reference(
+    dummy_layer,
+):
+    """
+    Check if invalid surface and/or reference are caught
+    """
+    coordinates, surface, reference, _ = dummy_layer
+    # Surface with wrong shape
+    surface_invalid = np.arange(20, dtype=float)
+    with pytest.raises(ValueError):
+        tesseroid_layer(coordinates, surface_invalid, reference)
+    # Reference with wrong shape
+    reference_invalid = np.zeros(20)
+    surface = np.arange(20, dtype=float).reshape(4, 5)
+    with pytest.raises(ValueError):
+        tesseroid_layer(coordinates, surface, reference_invalid)
+
+
+def test_tesseroid_leyer_properties(dummy_layer):
+    """
+    Check passing physical properties to the tesseroid layer
+    """
+    coordinates, surface, reference, density = dummy_layer
+    suceptibility = 0 * density + 1e-3
+    layer = tesseroid_layer(
+        coordinates,
+        surface,
+        reference,
+        properties={"density": density, "suceptibility": suceptibility},
+    )
+    npt.assert_allclose(layer.density, density)
+    npt.assert_allclose(layer.suceptibility, suceptibility)
