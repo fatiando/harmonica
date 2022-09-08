@@ -101,3 +101,31 @@ def test_tesseroid_leyer_properties(dummy_layer):
     )
     npt.assert_allclose(layer.density, density)
     npt.assert_allclose(layer.suceptibility, suceptibility)
+
+
+def test_tesseroid_layer_no_regular_grid(
+    dummy_layer,
+):
+    """
+    Check if erro is raised if the latitude or longitude are not regular
+    """
+
+    (longitude, latitude), surface, reference, _ = dummy_layer
+    # Longitude as not evenly spaced set of coordinates
+    longitude_invalid = longitude.copy()
+    longitude_invalid[3] = -22
+    with pytest.raises(ValueError):
+        tesseroid_layer(
+            (longitude_invalid, latitude),
+            surface,
+            reference,
+        )
+    # Latitude as not evenly spaced set of coordinates
+    latitude_invalid = latitude.copy()
+    latitude_invalid[3] = -22
+    with pytest.raises(ValueError):
+        tesseroid_layer(
+            (longitude, latitude_invalid),
+            surface,
+            reference,
+        )
