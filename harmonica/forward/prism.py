@@ -10,6 +10,12 @@ Forward modelling for prisms
 import numpy as np
 from numba import jit, prange
 
+# Attempt to import numba_progress
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
+
 from ..constants import GRAVITATIONAL_CONST
 
 
@@ -20,6 +26,7 @@ def prism_gravity(
     field,
     parallel=True,
     dtype="float64",
+    progressbar=False,
     disable_checks=False,
 ):
     """
@@ -73,6 +80,10 @@ def prism_gravity(
     dtype : data-type (optional)
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
+    progressbar : bool (optional)
+        If True, a progress bar of the computation will be printed to standard
+        error (stderr). Requires :mod:`numba_progress` to be installed.
+        Default to ``False``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
         Should be set to ``True`` only when it is certain that the input model
@@ -130,9 +141,25 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
+    # Discard null prisms (zero volume or zero density)
+    prisms, density = _discard_null_prisms(prisms, density)
+    # Show progress bar for 'jit_prism_gravity' function
+    if progressbar:
+        if ProgressBar is None:
+            raise ImportError(
+                "Missing optional dependency 'numba_progress' required if progressbar=True"
+            )
+        progress_proxy = ProgressBar(total=coordinates[0].size)
+    else:
+        progress_proxy = None
     # Compute gravitational field
-    dispatcher(parallel)(coordinates, prisms, density, kernels[field], result)
+    dispatcher(parallel)(
+        coordinates, prisms, density, kernels[field], result, progress_proxy
+    )
     result *= GRAVITATIONAL_CONST
+    # Close previously created progress bars
+    if progressbar:
+        progress_proxy.close()
     # Convert to more convenient units
     if field == "g_z":
         result *= 1e5  # SI to mGal
@@ -161,8 +188,6 @@ def _check_prisms(prisms):
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
@@ -186,7 +211,44 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-def jit_prism_gravity(coordinates, prisms, density, kernel, out):
+def _discard_null_prisms(prisms, density):
+    """
+    Discard prisms with zero volume or zero density
+
+    Parameters
+    ----------
+    prisms : 2d-array
+        Array containing the boundaries of the prisms in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The array must have the following shape: (``n_prisms``, 6), where
+        ``n_prisms`` is the total number of prisms.
+        This array of prisms must have valid boundaries.
+        Run ``_check_prisms`` before.
+    density : 1d-array
+        Array containing the density of each prism in kg/m^3. Must have the
+        same size as the number of prisms.
+
+    Returns
+    -------
+    prisms : 2d-array
+        A copy of the ``prisms`` array that doesn't include the null prisms
+        (prisms with zero volume or zero density).
+    density : 1d-array
+        A copy of the ``density`` array that doesn't include the density values
+        for null prisms (prisms with zero volume or zero density).
+    """
+    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
+    # Mark prisms with zero volume as null prisms
+    null_prisms = (west == east) | (south == north) | (bottom == top)
+    # Mark prisms with zero density as null prisms
+    null_prisms[density == 0] = True
+    # Keep only non null prisms
+    prisms = prisms[np.logical_not(null_prisms), :]
+    density = density[np.logical_not(null_prisms)]
+    return prisms, density
+
+
+def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=None):
     """
     Compute gravitational field of prisms on computations points
 
@@ -210,6 +272,8 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out):
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
     for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
@@ -233,6 +297,9 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out):
                                 shift_upward - coordinates[2][l],
                             )
                         )
+        # Update progress bar if called
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
 @jit(nopython=True)

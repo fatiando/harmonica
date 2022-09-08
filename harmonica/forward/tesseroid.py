@@ -15,6 +15,7 @@ from ._tesseroid_utils import (
     _adaptive_discretization,
     _check_points_outside_tesseroids,
     _check_tesseroids,
+    _discard_null_tesseroids,
     gauss_legendre_quadrature,
     glq_nodes_weights,
 )
@@ -126,8 +127,7 @@ def tesseroid_gravity(
     >>> # Define computation point located on the top surface of the tesseroid
     >>> coordinates = [0, 0, ellipsoid.mean_radius]
     >>> # Compute radial component of the gravitational gradient in mGal
-    >>> tesseroid_gravity(coordinates, tesseroid, density, field="g_z")
-    array(112.54539933)
+    >>> g_z = tesseroid_gravity(coordinates, tesseroid, density, field="g_z")
 
     >>> # Define a linear density function for the same tesseroid.
     >>> # It should be decorated with numba.njit
@@ -139,8 +139,9 @@ def tesseroid_gravity(
     ...     slope = (density_top - density_bottom) / (top - bottom)
     ...     return slope * (radius - bottom) + density_bottom
     >>> # Compute the downward acceleration it generates
-    >>> tesseroid_gravity(coordinates, tesseroid, linear_density, field="g_z")
-    array(125.80498632)
+    >>> g_z = tesseroid_gravity(
+    ...     coordinates, tesseroid, linear_density, field="g_z"
+    ... )
 
     """
     kernels = {"potential": kernel_potential_spherical, "g_z": kernel_g_z_spherical}
@@ -167,6 +168,8 @@ def tesseroid_gravity(
                 "Number of elements in density ({}) ".format(density.size)
                 + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
             )
+        # Discard null tesseroids (zero density or zero volume)
+        tesseroids, density = _discard_null_tesseroids(tesseroids, density)
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)

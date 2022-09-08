@@ -491,3 +491,37 @@ def _longitude_continuity(tesseroids):
     east[tess_to_be_changed] = ((east[tess_to_be_changed] + 180) % 360) - 180
     west[tess_to_be_changed] = ((west[tess_to_be_changed] + 180) % 360) - 180
     return tesseroids
+
+
+def _discard_null_tesseroids(tesseroids, density):
+    """
+    Discard tesseroid with zero volume or zero density
+
+    Parameters
+    ----------
+    tesseroids : 2d-array
+        Array containing the boundaries of the tesserois in the following
+        order: ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``
+        defined in a geocentric spherical coordinate system.
+    density : 1d-array
+        Array containing the density of each tesseroid in kg/m^3. Must have the
+        same size as the number of tesseroids.
+
+    Returns
+    -------
+    tesseroids : 2d-array
+        A copy of the ``tesseroids`` array that doesn't include the null
+        tesseroids (tesseroids with zero density or zero volume).
+    density : 1d-array
+        A copy of the ``density`` array that doesn't include the density values
+        for the null tesseroids (tesseroid with zero density or zero volume).
+    """
+    west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
+    # Mark prisms with zero volume as null prisms
+    null_tesseroids = (west == east) | (south == north) | (bottom == top)
+    # Mark prisms with zero density as null prisms
+    null_tesseroids[density == 0] = True
+    # Keep only non null prisms
+    tesseroids = tesseroids[np.logical_not(null_tesseroids), :]
+    density = density[np.logical_not(null_tesseroids)]
+    return tesseroids, density

@@ -7,12 +7,25 @@
 """
 Test forward modelling for prisms.
 """
+from unittest.mock import patch
+
 import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
 
-from ..forward.prism import _check_prisms, prism_gravity, safe_atan2, safe_log
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
+
+from ..forward.prism import (
+    _check_prisms,
+    _discard_null_prisms,
+    prism_gravity,
+    safe_atan2,
+    safe_log,
+)
 from ..gravity_corrections import bouguer_correction
 from .utils import run_only_with_numba
 
@@ -58,6 +71,51 @@ def test_invalid_prisms():
         _check_prisms(np.atleast_2d([w, e, n, s, bottom, top]))
     with pytest.raises(ValueError):
         _check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
+
+
+def test_discard_null_prisms():
+    """
+    Test if discarding invalid prisms works as expected
+    """
+    # Define a set of sample prisms, including invalid ones
+    prisms = np.array(
+        [
+            [0, 10, -50, 33, -2e3, 150],  # ok prism
+            [-10, 0, 33, 66, -1e3, -100],  # ok prism (will set zero density)
+            [7, 7, -50, 50, -3e3, -1e3],  # no volume due to easting bounds
+            [-50, 50, 7, 7, -3e3, -1e3],  # no volume due to northing bounds
+            [-50, 50, -50, 50, -3e3, -3e3],  # no volume due to upward bounds
+            [7, 7, 7, 7, -200, -200],  # no volume due to multiple bounds
+        ]
+    )
+    density = np.array([2670, 0, 3300, 3000, 2800, 2700])
+    prisms, density = _discard_null_prisms(prisms, density)
+    npt.assert_allclose(prisms, np.array([[0, 10, -50, 33, -2e3, 150]]))
+    npt.assert_allclose(density, np.array([2670]))
+
+
+@pytest.mark.use_numba
+def test_forward_with_null_prisms():
+    """
+    Test if the forward model with null prisms gives sensible results
+    """
+    # Create a set of observation points
+    coordinates = vd.grid_coordinates(
+        region=(-50, 50, -50, 50), shape=(3, 3), extra_coords=0
+    )
+    # Build a set of prisms that includes null ones (no volume or zero density)
+    prisms = [
+        [-100, 100, -200, 200, -10e3, -5e3],  # ok prism
+        [100, 200, 200, 300, -10e3, -4e3],  # no density prism
+        [30, 30, -200, 200, -10e3, -5e3],  # no volume (easting)
+        [100, 200, 30, 30, -10e3, -5e3],  # no volume (northing)
+        [-100, 100, -200, 200, -10e3, -10e3],  # no volume (upward)
+    ]
+    density = [2600, 0, 3000, 3100, 3200]
+    npt.assert_allclose(
+        prism_gravity(coordinates, prisms, density, field="g_z"),
+        prism_gravity(coordinates, [prisms[0]], [density[0]], field="g_z"),
+    )
 
 
 @pytest.mark.use_numba
@@ -381,3 +439,50 @@ def test_prisms_parallel_vs_serial():
             coordinates, prisms, densities, field=field, parallel=False
         )
         npt.assert_allclose(result_parallel, result_serial)
+
+
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+@pytest.mark.use_numba
+def test_progress_bar():
+    """
+    Check if forward gravity results with and without progress bar match
+    """
+    prisms = [
+        [-100, 0, -100, 0, -10, 0],
+        [0, 100, -100, 0, -10, 0],
+        [-100, 0, 0, 100, -10, 0],
+        [0, 100, 0, 100, -10, 0],
+    ]
+    densities = [2000, 3000, 4000, 5000]
+    coordinates = vd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    )
+    for field in ("potential", "g_z"):
+        result_progress_true = prism_gravity(
+            coordinates, prisms, densities, field=field, progressbar=True
+        )
+        result_progress_false = prism_gravity(
+            coordinates, prisms, densities, field=field, progressbar=False
+        )
+        npt.assert_allclose(result_progress_true, result_progress_false)
+
+
+@patch("harmonica.forward.prism.ProgressBar", None)
+def test_numba_progress_missing_error():
+    """
+    Check if error is raised when progresbar=True and numba_progress package
+    is not installed.
+    """
+    prisms = [
+        [-100, 0, -100, 0, -10, 0],
+        [0, 100, -100, 0, -10, 0],
+        [-100, 0, 0, 100, -10, 0],
+        [0, 100, 0, 100, -10, 0],
+    ]
+    densities = [2000, 3000, 4000, 5000]
+    coordinates = [0, 0, 0]
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        prism_gravity(
+            coordinates, prisms, densities, field="potential", progressbar=True
+        )
