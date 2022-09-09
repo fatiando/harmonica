@@ -126,11 +126,16 @@ And plot it:
 
 .. jupyter-execute::
 
+   import verde as vd
+
+   maxabs = vd.maxabs(gravity_disturbance)
+
    fig = pygmt.Figure()
+   pygmt.makecpt(series=[-maxabs, maxabs], cmap="polar+h")
    fig.grdimage(
        gravity_disturbance,
        projection="W20c",
-       cmap="polar+h",
+       cmap=True,
        shading="+a45+nt0.2",
    )
    fig.basemap(frame=["af", "WEsn"])
