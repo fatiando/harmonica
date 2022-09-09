@@ -6,7 +6,7 @@ Equivalent sources in spherical coordinates
 When interpolating gravity or magnetic data over a very large region that
 covers full continents we need to take into account the curvature of the Earth.
 In these cases projecting the data to plain Cartesian coordinates may introduce
-errors due to the distorsions caused by it.
+errors due to the distortions caused by it.
 Therefore using the :class:`harmonica.EquivalentSources` class is not well
 suited for it.
 
@@ -76,13 +76,14 @@ some first guess values for the ``damping`` and ``depth`` parameters.
 
 Before we can fit the sources' coefficients we need to convert the data given
 in geographical coordinates to spherical ones. We can do it through the
-:meth:`boule.Ellipsoid.geodetic_to_spherical` method of the WGS84 ellipsoid
-defined in :mod:`boule`.
+:func:`pymap3d.geodetic2spherical` function.
 
 .. jupyter-execute::
 
-    coordinates = ellipsoid.geodetic_to_spherical(
-        data.longitude, data.latitude, data.height_sea_level_m
+    import pymap3d
+
+    coordinates = pymap3d.geodetic2spherical(
+        data.longitude, data.latitude, data.height_sea_level_m, ell=ellipsoid
     )
 
 And then use them to fit the sources:
@@ -114,7 +115,7 @@ field we need to convert the grid coordinates to spherical.
 
 .. jupyter-execute::
 
-    grid_coords_sph = ellipsoid.geodetic_to_spherical(*grid_coords)
+    grid_coords_sph = pymap3d.geodetic2spherical(*grid_coords, ell=ellipsoid)
 
 And then predict the gravity disturbance on the grid points:
 

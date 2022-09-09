@@ -28,6 +28,7 @@ dependencies:
   - pytest-cov
   - coverage
   - boule
+  - pymap3d
   # Documentation requirements
   - sphinx==4.5.*
   - sphinx-book-theme==0.2.*

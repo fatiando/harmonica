@@ -18,6 +18,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
+import pymap3d
 import boule as bl
 import numpy as np
 import pygmt
@@ -44,7 +45,7 @@ gravity_disturbance = gravity_data - gamma
 
 # Convert data coordinates from geodetic (longitude, latitude, height) to
 # spherical (longitude, spherical_latitude, radius).
-coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
+coordinates = pymap3d.geodetic2spherical(longitude, latitude, elevation, ell=ellipsoid)
 
 # Create the equivalent sources
 eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)

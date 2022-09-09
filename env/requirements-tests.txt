@@ -1,5 +1,6 @@
 # Requirements for running the tests
 boule
+pymap3d
 pytest
 pytest-cov
 coverage

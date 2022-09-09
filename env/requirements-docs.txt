@@ -6,6 +6,7 @@ sphinx-design==0.2.*
 sphinx-copybutton==0.5.*
 jupyter-sphinx==0.3.*
 boule
+pymap3d
 pyproj
 ensaio
 netcdf4

@@ -167,8 +167,8 @@ Working with sources defined in geodetic coordinates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If our point sources and computation points are defined in geodetic
-coordinates, we can use the :meth:`boule.Ellipsoid.geodetic_to_spherical`
-method to convert them to spherical coordinates and use them to compute their
+coordinates, we can use the :func:`pymap3d.geodetic2spherical` function to
+convert them to spherical coordinates and use them to compute their
 gravitational field.
 
 Lets define a set point sources in geodetic coordinates and their masses:
@@ -196,12 +196,14 @@ coordinates and located at 1km above the ellipsoid:
 
 Before we can start forward modelling these sources, we need to convert them to
 spherical coordinates. To do so, we can use the
-:meth:`boule.Ellipsoid.geodetic_to_spherical` method:
+:func:`pymap3d.geodetic2spherical` function:
 
 .. jupyter-execute::
 
-   points_spherical = ellipsoid.geodetic_to_spherical(*points)
-   coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+   import pymap3d
+
+   points_spherical = pymap3d.geodetic2spherical(*points, ell=ellipsoid)
+   coordinates_spherical = pymap3d.geodetic2spherical(*coordinates, ell=ellipsoid)
 
 We can finally use these converted coordinates to compute the gravitational
 field the source generate on every computation point:

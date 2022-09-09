@@ -10,6 +10,7 @@ Test utils functions for forward modelling
 import boule as bl
 import numpy as np
 import numpy.testing as npt
+from pymap3d import geodetic2spherical
 import pytest
 
 from ..forward.utils import check_coordinate_system, distance
@@ -67,8 +68,8 @@ def test_geodetic_distance_vs_spherical():
     # Compute distance using closed-form formula
     dist = distance(point_a, point_b, coordinate_system="geodetic", ellipsoid=ellipsoid)
     # Convert points to spherical coordinates
-    point_a_sph = ellipsoid.geodetic_to_spherical(*point_a)
-    point_b_sph = ellipsoid.geodetic_to_spherical(*point_b)
+    point_a_sph = geodetic2spherical(*point_a, ell=ellipsoid)
+    point_b_sph = geodetic2spherical(*point_b, ell=ellipsoid)
     # Compute distance using these converted points
     dist_sph = distance(point_a_sph, point_b_sph, coordinate_system="spherical")
     npt.assert_allclose(dist, dist_sph)

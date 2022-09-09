@@ -210,22 +210,28 @@ the same radius equal to the *mean radius of the Earth*.
     print("radius:", radius)
 
 We can convert spherical coordinates to geodetic ones through
-:meth:`boule.Ellipsoid.spherical_to_geodetic`:
+:func:`pymap3d.spherical2geodetic`:
 
 .. jupyter-execute::
 
-    coordinates_geodetic = ellipsoid.spherical_to_geodetic(*coordinates)
+    import pymap3d
+
+    coordinates_geodetic = pymap3d.spherical2geodetic(
+        *coordinates, ell=ellipsoid
+    )
     longitude, latitude, height = coordinates_geodetic[:]
     print("longitude:", longitude)
     print("latitude:", latitude)
     print("height:", height)
 
 While the conversion of spherical coordinates into geodetic ones can be
-carried out through :meth:`boule.Ellipsoid.geodetic_to_spherical`:
+carried out through :func:`pymap3d.geodetic2spherical`:
 
 .. jupyter-execute::
 
-    coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates_geodetic)
+    coordinates_spherical = pymap3d.geodetic2spherical(
+        *coordinates_geodetic, ell=ellipsoid
+    )
     longitude, sph_latitude, radius = coordinates_spherical[:]
     print("longitude:", longitude)
     print("spherical latitude:", sph_latitude)
