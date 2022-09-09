@@ -126,9 +126,9 @@ And then predict the field on a regular grid of computation points:
 .. jupyter-execute::
 
     import verde as vd
-
+    region = vd.get_region(coordinates)
     grid_coords = vd.grid_coordinates(
-        region=vd.get_region(coordinates),
+        region=region,
         spacing=5e3,
         extra_coords=2.5e3,
     )
@@ -147,46 +147,49 @@ And plot it:
 
 .. jupyter-execute::
 
-    import matplotlib.pyplot as plt
+    import pygmt
 
-    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
+    # Set figure properties
+    w, e, s, n = region
+    fig_height = 10
+    fig_width = fig_height * (e - w) / (n - s)
+    fig_ratio = (n - s) / (fig_height / 100)
+    fig_proj = f"x1:{fig_ratio}"
 
-    region = vd.get_region(coordinates)
     maxabs = vd.maxabs(disturbance, grid_masked.gravity_disturbance)
 
-    ax1.set_title("Observed gravity disturbance data")
-    tmp = ax1.scatter(
-        easting,
-        northing,
-        c=disturbance,
-        s=5,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-    )
-    plt.colorbar(
-        tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal"
-    )
+    fig = pygmt.Figure()
 
-    ax2.set_title("Gridded with gradient-boosted equivalent sources")
-    tmp = grid_masked.gravity_disturbance.plot.pcolormesh(
-        ax=ax2,
-        add_colorbar=False,
-        add_labels=False,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-    )
-    plt.colorbar(
-        tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal"
-    )
+    # Make colormap of data
+    pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
 
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.set_xlim(*region[:2])
-        ax.set_ylim(*region[2:])
+    title = "Observed gravity disturbance data"
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.plot(
+            projection=fig_proj,
+            region=region,
+            frame=[f"WSne+t{title}", "xa500000+a15", "ya400000"],
+            x=easting,
+            y=northing,
+            color=disturbance,
+            style="c0.1c",
+            cmap=True,
+        )
+    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-    plt.show()
+    fig.shift_origin(xshift=fig_width + 1)
+
+    title = "Gridded with gradient-boosted equivalent sources"
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.grdimage(
+            frame=[f"ESnw+t{title}", "xa500000+a15", "ya400000"],
+            grid=grid.gravity_disturbance,
+            cmap=True,
+        )
+
+    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+    fig.show()
 
 
 

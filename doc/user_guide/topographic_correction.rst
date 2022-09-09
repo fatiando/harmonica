@@ -54,38 +54,24 @@ And plot it:
 
 .. jupyter-execute::
 
-   import cartopy.crs as ccrs
-   import matplotlib.pyplot as plt
+   import pygmt
    import verde as vd
 
    maxabs = vd.maxabs(data.gravity_disturbance_mgal)
 
-   fig = plt.figure(figsize=(10, 8), dpi=300)
-   ax = plt.axes(projection=ccrs.Mercator())
-   ax.set_title("Gravity disturbance", pad=25)
-   tmp = ax.scatter(
-       data.longitude,
-       data.latitude,
-       c=data.gravity_disturbance_mgal,
-       s=2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       transform=ccrs.PlateCarree(),
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      color=data.gravity_disturbance_mgal,
+      cmap=True,
+      style="c3p",
+      projection="M15c", 
+      frame=['ag', 'WSen'],
    )
-   plt.colorbar(
-       tmp,
-	   ax=ax,
-	   orientation="horizontal",
-	   label="mGal",
-	   aspect=50,
-	   pad=0.05,
-	   shrink=0.7,
-   )
-   ax.set_extent(vd.get_region((data.longitude, data.latitude)))
-   ax.gridlines(draw_labels=True)
-   ax.coastlines()
-   plt.show()
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+   fig.show()
 
 
 Bouguer correction
@@ -126,32 +112,19 @@ We can now compute the Bouguer disturbance and plot it:
 
    maxabs = vd.maxabs(bouguer_disturbance)
 
-   fig = plt.figure(figsize=(10, 8), dpi=300)
-   ax = plt.axes(projection=ccrs.Mercator())
-   ax.set_title("Bouguer disturbance (with simple Bouguer correction)", pad=25)
-   tmp = ax.scatter(
-       data.longitude,
-       data.latitude,
-       c=bouguer_disturbance,
-       s=2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       transform=ccrs.PlateCarree(),
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      color=bouguer_disturbance,
+      cmap=True,
+      style="c3p",
+      projection="M15c", 
+      frame=['ag', 'WSen'],
    )
-   plt.colorbar(
-       tmp,
-	   ax=ax,
-	   orientation="horizontal",
-	   label="mGal",
-	   aspect=50,
-	   pad=0.05,
-	   shrink=0.7,
-   )
-   ax.set_extent(vd.get_region((data.longitude, data.latitude)))
-   ax.gridlines(draw_labels=True)
-   ax.coastlines()
-   plt.show()
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"])
+   fig.show()
 
 
 
@@ -259,29 +232,16 @@ And plot it:
 
    maxabs = vd.maxabs(topo_free_disturbance)
 
-   fig = plt.figure(figsize=(10, 8), dpi=300)
-   ax = plt.axes(projection=ccrs.Mercator())
-   ax.set_title("Topography-free gravity disturbance", pad=25)
-   tmp = ax.scatter(
-       data.longitude,
-       data.latitude,
-       c=topo_free_disturbance,
-       s=2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       transform=ccrs.PlateCarree(),
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      color=topo_free_disturbance,
+      cmap=True,
+      style="c3p",
+      projection="M15c", 
+      frame=['ag', 'WSen'],
    )
-   plt.colorbar(
-       tmp,
-	   ax=ax,
-	   orientation="horizontal",
-	   label="mGal",
-	   aspect=50,
-	   pad=0.05,
-	   shrink=0.7,
-   )
-   ax.set_extent(vd.get_region((data.longitude, data.latitude)))
-   ax.gridlines(draw_labels=True)
-   ax.coastlines()
-   plt.show()
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
+   fig.show()

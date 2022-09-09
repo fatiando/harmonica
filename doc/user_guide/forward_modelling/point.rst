@@ -93,17 +93,24 @@ Lets plot this gravitational field:
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
+   import pygmt 
+
+   grid = vd.make_xarray_grid(
+      coordinates, g_z, data_names="g_z", extra_coords_names="extra")
+
+   fig = pygmt.Figure()
 
    maxabs = vd.maxabs(g_z)
-   plt.pcolormesh(
-       *coordinates[:2], g_z, vmin=-maxabs, vmax=maxabs, cmap="seismic"
-   )
-   plt.colorbar(label="mGal")
-   plt.gca().set_aspect("equal")
-   plt.xlabel("easting [m]")
-   plt.ylabel("northing [m]")
-   plt.show()
+   pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
+
+   fig.grdimage(
+      region=(-250, 1250, -250, 1250),
+      projection="X10c",
+      grid=grid.g_z,
+      frame=["a", "x+leasting (m)", "y+lnorthing (m)"],
+      cmap=True,)
+   fig.colorbar(cmap=True, position="JMR", frame=["a.0005", "x+lmGal"])
+   fig.show()
 
 
 
@@ -209,23 +216,26 @@ field the source generate on every computation point:
        coordinate_system="spherical",
    )
 
-Lets plot these results using :mod:`cartopy`:
+Lets plot these results using :mod:`pygmt`:
 
 .. jupyter-execute::
 
-   import cartopy.crs as ccrs
+   import pygmt 
 
-   plt.figure(figsize=(8, 6))
-   ax = plt.axes(projection=ccrs.Mercator())
-   maxabs = vd.maxabs(g_z)
-   tmp = ax.pcolormesh(
-       *coordinates[:2],
-       g_z,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       transform=ccrs.PlateCarree(),
-   )
-   ax.set_title("Gravitational acceleration (downward)")
-   plt.colorbar(tmp, ax=ax, pad=0.04, shrink=0.73, label="mGal")
-   plt.show()
+   grid = vd.make_xarray_grid(
+      coordinates_spherical, g_z, data_names="g_z", extra_coords_names="extra")
+
+   fig = pygmt.Figure()
+   title = "Gravitational acceleration (downward)"
+   maxabs = vd.maxabs(g_z)*.95
+   pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
+
+   fig.grdimage(
+      region=(-72, -68, -46, -42),
+      projection="M10c",
+      grid=grid.g_z,
+      frame=[f"WSne+t{title}", "x", "y"],
+      cmap=True,)
+      
+   fig.colorbar(cmap=True, position="JMR", frame=["a0.000000005", "x+lmGal"])
+   fig.show()

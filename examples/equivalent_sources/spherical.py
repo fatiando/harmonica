@@ -19,8 +19,8 @@ equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
 import boule as bl
-import matplotlib.pyplot as plt
 import numpy as np
+import pygmt
 import verde as vd
 
 import harmonica as hm
@@ -73,45 +73,41 @@ print("\nGenerated grid:\n", grid)
 # Mask grid points too far from data points
 grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
 
-# Get the maximum absolute value between the original and gridded data so we
-# can use the same color scale for both plots and have 0 centered at the white
-# color.
-maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
-
 # Plot observed and gridded gravity disturbance
-fig, (ax1, ax2) = plt.subplots(
-    nrows=1,
-    ncols=2,
-    figsize=(10, 5),
-    sharey=True,
+fig = pygmt.Figure()
+
+# Make colormap of data
+# Get the 90% of the maximum absolute value between the original and gridded
+# data so we can use the same color scale for both plots and have 0 centered
+# at the white color.
+maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values) * 0.90
+pygmt.makecpt(
+    cmap="vik",
+    series=(-maxabs, maxabs),
+    background=True,
 )
 
-tmp = ax1.scatter(
-    longitude,
-    latitude,
-    c=gravity_disturbance,
-    s=3,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
+fig.plot(
+    projection="M10c",
+    region=region,
+    frame=["WSne", "xa5", "ya4"],
+    x=longitude,
+    y=latitude,
+    color=gravity_disturbance,
+    style="c0.1c",
+    cmap=True,
 )
-plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
-ax1.set_aspect("equal")
-ax1.set_xlim(*region[:2])
-ax1.set_ylim(*region[2:])
 
-tmp = grid.gravity_disturbance.plot.pcolormesh(
-    ax=ax2,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
-    add_colorbar=False,
-    add_labels=False,
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+
+fig.shift_origin(xshift="w+3c")
+
+fig.grdimage(
+    frame=["ESnw", "xa5", "ya4"],
+    grid=grid.gravity_disturbance,
+    cmap=True,
 )
-plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
-ax2.set_aspect("equal")
-ax2.set_xlim(*region[:2])
-ax2.set_ylim(*region[2:])
 
-plt.subplots_adjust(wspace=0.05, top=1, bottom=0, left=0.05, right=0.95)
-plt.show()
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+
+fig.show()

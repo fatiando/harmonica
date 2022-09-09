@@ -176,8 +176,9 @@ And grid the data using the two equivalent sources:
 .. jupyter-execute::
 
    # Define grid coordinates
+   region = vd.get_region(coordinates)
    grid_coords = vd.grid_coordinates(
-       region=vd.get_region(coordinates),
+       region=region,
        spacing=2e3,
        extra_coords=2.5e3,
    )
@@ -189,34 +190,45 @@ Lets plot it:
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
+   import pygmt
 
+   # Set figure properties
+   w, e, s, n = region
+   fig_height = 10
+   fig_width = fig_height * (e - w) / (n - s)
+   fig_ratio = (n - s) / (fig_height / 100)
+   fig_proj = f"x1:{fig_ratio}"
 
    maxabs = vd.maxabs(grid_first_guess.scalars, grid.scalars)
 
-   fig, (ax1, ax2) = plt.subplots(figsize=(12, 12), ncols=2, nrows=1, sharey=True)
+   fig = pygmt.Figure()
 
-   cbar_kwargs = dict(orientation="horizontal", aspect=50, pad=0.05, label="mGal")
-   grid_first_guess.scalars.plot.pcolormesh(
-       ax=ax1,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       cbar_kwargs=cbar_kwargs,
-   )
-   grid.scalars.plot.pcolormesh(
-       ax=ax2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-       cbar_kwargs=cbar_kwargs,
-   )
+   # Make colormap of data
+   pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
 
-   ax1.set_title("Gravity disturbance with first guess")
-   ax2.set_title("Gravity disturbance with best params")
-   for ax in (ax1, ax2):
-       ax.set_aspect("equal")
-   plt.show()
+   title = "Gravity disturbance with first guess"
+
+   fig.grdimage(
+      projection=fig_proj,
+      region=region,
+      frame=[f"WSne+t{title}", "xa100000+a15", "ya100000"],
+      grid=grid_first_guess.scalars,
+      cmap=True,
+   )
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+   fig.shift_origin(xshift=fig_width + 1)
+
+   title = "Gravity disturbance with best params"
+
+   fig.grdimage(
+      frame=[f"ESnw+t{title}", "xa100000+a15", "ya100000"],
+      grid=grid.scalars,
+      cmap=True,
+   )
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+   fig.show()
 
 The best parameters not only produce a better score, but they also generate
 a visible more accurate predictions. In the first plot the equivalent sources
