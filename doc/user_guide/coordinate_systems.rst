@@ -216,10 +216,9 @@ We can convert spherical coordinates to geodetic ones through
 
     import pymap3d
 
-    coordinates_geodetic = pymap3d.spherical2geodetic(
-        *coordinates, ell=ellipsoid
+    latitude, longitude, height = pymap3d.spherical2geodetic(
+        sph_latitude, longitude, radius, ell=ellipsoid
     )
-    longitude, latitude, height = coordinates_geodetic[:]
     print("longitude:", longitude)
     print("latitude:", latitude)
     print("height:", height)
@@ -229,10 +228,12 @@ carried out through :func:`pymap3d.geodetic2spherical`:
 
 .. jupyter-execute::
 
-    coordinates_spherical = pymap3d.geodetic2spherical(
-        *coordinates_geodetic, ell=ellipsoid
+    sph_latitude, longitude, radius = pymap3d.geodetic2spherical(
+        latitude,
+        longitude,
+        height,
+        ell=ellipsoid,
     )
-    longitude, sph_latitude, radius = coordinates_spherical[:]
     print("longitude:", longitude)
     print("spherical latitude:", sph_latitude)
     print("radius:", radius)

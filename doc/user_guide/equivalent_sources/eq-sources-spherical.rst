@@ -82,9 +82,10 @@ in geographical coordinates to spherical ones. We can do it through the
 
     import pymap3d
 
-    coordinates = pymap3d.geodetic2spherical(
-        data.longitude, data.latitude, data.height_sea_level_m, ell=ellipsoid
+    latitude, longitude, height = pymap3d.geodetic2spherical(
+        data.latitude, data.longitude, data.height_sea_level_m, ell=ellipsoid
     )
+    coordinates = (longitude, latitude, height)
 
 And then use them to fit the sources:
 
@@ -115,7 +116,10 @@ field we need to convert the grid coordinates to spherical.
 
 .. jupyter-execute::
 
-    grid_coords_sph = pymap3d.geodetic2spherical(*grid_coords, ell=ellipsoid)
+    grid_lat_sph, grid_lon_sph, grid_upward_sph = pymap3d.geodetic2spherical(
+        grid_coords[1], grid_coords[0], grid_coords[2], ell=ellipsoid
+    )
+    grid_coords_sph = (grid_lon_sph, grid_lat_sph, grid_upward_sph)
 
 And then predict the gravity disturbance on the grid points:
 

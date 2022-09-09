@@ -93,7 +93,7 @@ Lets plot this gravitational field:
 
 .. jupyter-execute::
 
-   import pygmt 
+   import pygmt
 
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
@@ -202,8 +202,15 @@ spherical coordinates. To do so, we can use the
 
    import pymap3d
 
-   points_spherical = pymap3d.geodetic2spherical(*points, ell=ellipsoid)
-   coordinates_spherical = pymap3d.geodetic2spherical(*coordinates, ell=ellipsoid)
+   lat_sph, lon, radius = pymap3d.geodetic2spherical(
+       points[1], points[0], points[2], ell=ellipsoid
+   )
+   points_spherical = (lon, lat_sph, radius)
+
+   lat_sph, lon, radius = pymap3d.geodetic2spherical(
+       coordinates[1], coordinates[0], coordinates[2], ell=ellipsoid
+   )
+   coordinates_spherical = (lon, lat_sph, radius)
 
 We can finally use these converted coordinates to compute the gravitational
 field the source generate on every computation point:
@@ -222,7 +229,7 @@ Lets plot these results using :mod:`pygmt`:
 
 .. jupyter-execute::
 
-   import pygmt 
+   import pygmt
 
    grid = vd.make_xarray_grid(
       coordinates_spherical, g_z, data_names="g_z", extra_coords_names="extra")
@@ -238,6 +245,6 @@ Lets plot these results using :mod:`pygmt`:
       grid=grid.g_z,
       frame=[f"WSne+t{title}", "x", "y"],
       cmap=True,)
-      
+
    fig.colorbar(cmap=True, position="JMR", frame=["a0.000000005", "x+lmGal"])
    fig.show()

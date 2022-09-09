@@ -45,7 +45,10 @@ gravity_disturbance = gravity_data - gamma
 
 # Convert data coordinates from geodetic (longitude, latitude, height) to
 # spherical (longitude, spherical_latitude, radius).
-coordinates = pymap3d.geodetic2spherical(longitude, latitude, elevation, ell=ellipsoid)
+lat_sph, lon, radius = pymap3d.geodetic2spherical(
+    latitude, longitude, elevation, ell=ellipsoid
+)
+coordinates = (lon, lat_sph, radius)
 
 # Create the equivalent sources
 eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
