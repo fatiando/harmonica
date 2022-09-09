@@ -277,25 +277,25 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
     # Iterate over computation points and prisms
     for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
-            # Iterate over the prism boundaries to compute the result of the
+            # Iterate over the prism vertices to compute the result of the
             # integration (see Nagy et al., 2000)
             for i in range(2):
+                # Compute shifted easting coordinate
+                shift_east = prisms[m, 1 - i] - coordinates[0][l]
                 for j in range(2):
+                    # Compute shifted northing coordinate
+                    shift_north = prisms[m, 3 - j] - coordinates[1][l]
                     for k in range(2):
-                        shift_east = prisms[m, 1 - i]
-                        shift_north = prisms[m, 3 - j]
-                        shift_upward = prisms[m, 5 - k]
-                        # If i, j or k is 1, the shift_* will refer to the
-                        # lower boundary, meaning the corresponding term should
-                        # have a minus sign
+                        # Compute shifted upward coordinate
+                        shift_upward = prisms[m, 5 - k] - coordinates[2][l]
+                        # If i, j or k is 1, the corresponding shifted
+                        # coordinate will refer to the lower boundary,
+                        # meaning the corresponding term should have a minus
+                        # sign.
                         out[l] += (
                             density[m]
                             * (-1) ** (i + j + k)
-                            * kernel(
-                                shift_east - coordinates[0][l],
-                                shift_north - coordinates[1][l],
-                                shift_upward - coordinates[2][l],
-                            )
+                            * kernel(shift_east, shift_north, shift_upward)
                         )
         # Update progress bar if called
         if update_progressbar:
