@@ -10,8 +10,8 @@ Test utils functions for forward modelling
 import boule as bl
 import numpy as np
 import numpy.testing as npt
-from pymap3d import geodetic2spherical
 import pytest
+from pymap3d import geodetic2spherical
 
 from ..forward.utils import check_coordinate_system, distance
 

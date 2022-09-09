@@ -18,10 +18,10 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
-import pymap3d
 import boule as bl
 import numpy as np
 import pygmt
+import pymap3d
 import verde as vd
 
 import harmonica as hm
