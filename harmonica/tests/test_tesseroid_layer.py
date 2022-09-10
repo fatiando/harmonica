@@ -129,3 +129,46 @@ def test_tesseroid_layer_no_regular_grid(
             surface,
             reference,
         )
+
+
+def test_tesseroi_layer_attibutes():
+    """
+    Check attributes of the DatasetAccessorTesseroidLayer class
+    """
+    latitude = np.linspace(-10, 10, 6)
+    longitude = np.linspace(-10, 10, 5)
+    shape = (latitude.size, longitude.size)
+    ellipsoid = boule.WGS84
+    surface = ellipsoid.mean_radius * np.ones(shape)
+    reference = (surface - 1e3) * np.ones(shape)
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    assert layer.tesseroid_layer.dims == ("latitude", "longitude")
+    assert layer.tesseroid_layer.spacing == (4, 5)
+    assert layer.tesseroid_layer.boundaries == (
+        longitude[0] - 2.5,
+        longitude[-1] + 2.5,
+        latitude[0] - 2,
+        latitude[-1] + 2,
+    )
+    assert layer.tesseroid_layer.size == 30
+    assert layer.tesseroid_layer.shape == (6, 5)
+
+
+def test_tesseroid_layer_to_tesseroid():
+    """
+    Check the _to_tesseroid() method
+    """
+    latitude = np.linspace(-1, 1, 2)
+    longitude = np.linspace(-2, 2, 2)
+    shape = (latitude.size, longitude.size)
+    ellipsoid = boule.WGS84
+    surface = ellipsoid.mean_radius * np.ones(shape)
+    reference = (surface - 1e3) * np.ones(shape)
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_tesseroids = [
+        [-4.0, 0.0, -2.0, 0.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+        [0.0, 4.0, -2.0, 0.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+        [-4.0, 0.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+        [0.0, 4.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+    ]
+    npt.assert_allclose(expected_tesseroids, layer.tesseroid_layer._to_tesseroids())
