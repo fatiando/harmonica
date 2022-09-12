@@ -357,3 +357,37 @@ class DatasetAccessorTesseroidLayer:
         latitude_s = latitude - spacing[0] / 2
         latitude_n = latitude + spacing[0] / 2
         return longitude_w, longitude_e, latitude_s, latitude_n
+
+    def get_tesseroid(self, indices):
+        """
+        Return the boundaries of the chosen tesseroid
+
+        Parameters
+        ----------
+        indices : tuple
+            Indices of the desired tesseroid of the layer in the following
+            order: ``(index_northing, index_easting)``.
+
+        Returns
+        -------
+        tesseroid : tuple
+           Boundaries of the prisms in the following order:
+           ``longitude_w``, ``longitude_e``, ``latitude_s``, ``latitude_n``,
+           ``bottom``, ``top``.
+        """
+        # Get the center of the tesseroid
+        center_longitude = self._obj.longitude.values[indices[1]]
+        center_latitude = self._obj.latitude.values[indices[0]]
+        # Calculate the boundaries of the tesseroid
+        # (
+        #     longitude_w,
+        #     Longitude_e,
+        #     latitude_s,
+        #     latitude_n,
+        boundaries = self._get_tesseroid_horizontal_boundaries(
+            center_longitude, center_latitude
+        )
+        bottom = self._obj.bottom.values[indices]
+        top = self._obj.top.values[indices]
+        # return longitude_w, longitude_e, latitude_s, latitude_n, bottom, top
+        return boundaries[0], boundaries[1], boundaries[2], boundaries[3], bottom, top
