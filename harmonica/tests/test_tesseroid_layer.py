@@ -172,3 +172,36 @@ def test_tesseroid_layer_to_tesseroid():
         [0.0, 4.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
     ]
     npt.assert_allclose(expected_tesseroids, layer.tesseroid_layer._to_tesseroids())
+
+
+def test_tesseroid_layer_get_tesseroid_by_index():
+    """
+    Check if the right tesseroid is returned after index
+    """
+    latitude = np.linspace(-1, 1, 2)
+    longitude = np.linspace(-2, 2, 2)
+    shape = (latitude.size, longitude.size)
+    ellipsoid = boule.WGS84
+    surface = ellipsoid.mean_radius * np.ones(shape)
+    reference = (surface - 1e3) * np.ones(shape)
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_tesseroids = [
+        [
+            [-4.0, 0.0, -2.0, 0.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+            [0.0, 4.0, -2.0, 0.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+        ],
+        [
+            [-4.0, 0.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+            [0.0, 4.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
+        ],
+    ]
+    print(layer)
+    for i in range(2):
+        for j in range(2):
+            print(i, j)
+            print(
+                layer.tesseroid_layer.get_tesseroid((i, j)), expected_tesseroids[i][j]
+            )
+            npt.assert_allclose(
+                layer.tesseroid_layer.get_tesseroid((i, j)), expected_tesseroids[i][j]
+            )
