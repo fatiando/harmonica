@@ -29,7 +29,8 @@ def tesseroid_layer(
     ----------
     coordinates : tuple
         List containing the coordinates of the centers of the tesseroids in
-        spherical coordinates in the following order ``longitude`` and ``latitude``.
+        spherical coordinates in the following order ``longitude`` and
+        ``latitude``.
     surface : 2d-array
         Array used to create the uppermost boundary of the tesserois layer. All
         heights should be in meters. On every point where ``surface`` is below
@@ -37,21 +38,23 @@ def tesseroid_layer(
         boundary of that tesseroid, while the ``reference`` value will be used
         to set the ``top`` boundary of the tesseroid.
     reference : 2d-array or float
-        Reference surface used to create the lowermost boundary of the tesseroids
-        layer. It can be either a plane or an irregular surface passed as 2d array.
-        Height(s) must be in meters.
+        Reference surface used to create the lowermost boundary of the
+        tesseroids layer. It can be either a plane or an irregular surface
+        passed as 2d array. Height(s) must be in meters.
     properties : dict or None
-        Dictionary containing the physical properties of the tesseroids. The keys must
-        be strings that will be used to name the corresponding ``data_var`` inside the
-        :class:`xarray.Dataset`, while the values must be 2d-arrays. All physical
-        properties must be passed in SI units. If None, no ``data_var`` will be
-        added to the :class:`xarray.Dataset`. Default is None.
+        Dictionary containing the physical properties of the tesseroids. The
+        keys must be strings that will be used to name the corresponding
+        ``data_var`` inside the :class:`xarray.Dataset`, while the values must
+        be 2d-arrays. All physical properties must be passed in SI units. If
+        None, no ``data_var`` will be added to the :class:`xarray.Dataset`.
+        Default is None.
 
     Returns
     -------
     dataset : :class:`xarray.Dataset`
         Dataset containing the coordinates of the center of each tesseroid, the
-        height of its top and bottom boundaries ans its corresponding physical properties.
+        height of its top and bottom boundaries ans its corresponding physical
+        properties.
 
     See also
     --------
@@ -102,8 +105,8 @@ class DatasetAccessorTesseroidLayer:
     .. warning::
 
         This class in not intended to be initialized.
-        Use the `tesseroid_layer` accessor for accessing the methods and attributes
-        of this class.
+        Use the `tesseroid_layer` accessor for accessing the methods and
+        attributes of this class.
 
     See also
     --------
@@ -132,7 +135,8 @@ class DatasetAccessorTesseroidLayer:
         s_latitude : float
             Spacing between center of the tesseroids on the latitude direction.
         s_longitude : float
-            Spacing between center of the tesseroids on the longitude direction.
+            Spacing between center of the tesseroids on the longitude
+            direction.
         """
         latitude, longitude = self._obj.latitude.values, self._obj.longitude.values
         _check_regular_grid(longitude, latitude)
@@ -189,11 +193,11 @@ class DatasetAccessorTesseroidLayer:
 
         Change the values of the ``top`` and ``bottom`` coordinates based on
         the passed ``surface`` and ``reference``. The ``top`` and ``bottom``
-        boundaries of every tesseroid will be equal to the corresponding ``surface``
-        and ``reference`` values, respectively, if ``surface`` is above the
-        ``reference`` on that point. Otherwise the ``top`` and ``bottom`` boundaries
-        of the tesseroid will be equal to its corresponding ``reference`` and
-        ``surface``, respectively.
+        boundaries of every tesseroid will be equal to the corresponding
+        ``surface`` and ``reference`` values, respectively, if ``surface`` is
+        above the ``reference`` on that point. Otherwise the ``top`` and
+        ``bottom`` boundaries of the tesseroid will be equal to its
+        corresponding ``reference`` and ``surface``, respectively.
 
         Parameters
         ----------
@@ -240,23 +244,24 @@ class DatasetAccessorTesseroidLayer:
         Parameters
         ----------
         coordinates : list or 1d-array
-            List of array containing ``latitude``, ``longitude`` and ``upward`` of
-            the computation points defined on a spherical coordinates system.
-            ``upward`` coordinate should be in meters.
+            List of array containing ``latitude``, ``longitude`` and ``upward``
+            of the computation points defined on a spherical coordinates
+            system. ``upward`` coordinate should be in meters.
         field : str
             Gravitational field that wants to be computed.
             The variable fields are:
             - Gravitational potential: ``potential``
             - Downward acceleration: ``g_z``
         density_name : str (optional)
-            Name of the property layer (or ``data_var`` of the :class:`xarray.Dataset`)
-            that will be used for the density of each tesseroid in the layer.
-            Default to ``"density"``
+            Name of the property layer (or ``data_var`` of the
+            :class:`xarray.Dataset`) that will be used for the density of each
+            tesseroid in the layer. Default to ``"density"``
 
         Returns
         -------
         result : array
-            Gravitational field generated by the tesseroid on the computation point in mGal
+            Gravitational field generated by the tesseroid on the computation
+            point in mGal
 
         See also
         --------

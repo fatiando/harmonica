@@ -47,8 +47,9 @@ def tesseroid_layer_with_holes(dummy_layer):
 
     The tesseroids are returned as a tuple of boundaries, ready to be passed to
     ``hm.tesseroid_gravity``.
-    They would represent the same tesseroids that the ``dummy_layer`` generated,
-    but with two missing tesseroids: the ``(3, 3)`` and the ``(2, 1)``.
+    They would represent the same tesseroids that the ``dummy_layer``
+    generated, but with two missing tesseroids: the ``(3, 3)`` and the
+    ``(2, 1)``.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
     layer = tesseroid_layer(
