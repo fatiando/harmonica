@@ -40,6 +40,33 @@ def dummy_layer(request):
     return (longitude, latitude), surface, reference, density
 
 
+@pytest.fixture
+def tesseroid_layer_with_holes(dummy_layer):
+    """
+    Return a set of tesseroids with some missing elements
+
+    The tesseroids are returned as a tuple of boundaries, ready to be passed to
+    ``hm.tesseroid_gravity``.
+    They would represent the same prisms that the ``dummy_layer`` generated,
+    but with two missing tesseroids: the ``(3, 3)`` and the ``(2, 1)``.
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    layer = tesseroid_layer(
+        (longitude, latitude), surface, reference, properties={"density": density}
+    )
+    indices = [(3, 3), (2, 1)]
+    tesseroids = list(
+        layer.tesseroid_layer.get_tesseroid((i, j))
+        for i in range(6)
+        for j in range(5)
+        if (i, j) not in indices
+    )
+    density = list(
+        density[i, j] for i in range(6) for j in range(5) if (i, j) not in indices
+    )
+    return tesseroids, density
+
+
 def test_tesseroid_layer(dummy_layer):
     """
     Check if the layer of tesseroids is property constructed
@@ -319,4 +346,35 @@ def test_tesseroid_layer_gravity(field, dummy_layer):
     )
     npt.assert_allclose(
         expected_result, layer.tesseroid_layer.gravity(grid_coords, field=field)
+    )
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_tesseroid_layer_gravity_surface_nans(
+    field, dummy_layer, tesseroid_layer_with_holes
+):
+    """
+    Check if gravity method works as expected when surface has nans
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    grid_coords = vd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    )
+    # Create one layer that has nans on the surface array
+    surface_w_nans = surface.copy()
+    indices = [(3, 3), (2, 1)]
+    for index in indices:
+        surface_w_nans[index] = np.nan
+    layer = tesseroid_layer(
+        (longitude, latitude),
+        surface_w_nans,
+        reference,
+        properties={"density": density},
+    )
+    # Check if it generates the expected gravity field
+    tesseroids, rho = tesseroid_layer_with_holes
+    npt.assert_allclose(
+        layer.tesseroid_layer.gravity(grid_coords, field=field),
+        tesseroid_gravity(grid_coords, tesseroids, rho, field=field),
     )
