@@ -47,8 +47,7 @@ Optional:
 The examples in the :ref:`gallery` also use:
 
 * `boule <http://www.fatiando.org/boule/>`__
-* `matplotlib <https://matplotlib.org/>`__
-* `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
+* `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
 
 

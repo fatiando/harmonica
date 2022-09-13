@@ -40,7 +40,7 @@ shift beneath the median location obtained during the block-averaging process).
 The depth of the sources and which strategy to use can be set up through the
 ``depth`` and the ``depth_type`` parameters, respectively.
 """
-import matplotlib.pyplot as plt
+import pygmt
 import pyproj
 import verde as vd
 
@@ -62,6 +62,7 @@ print("Mean height of observations:", data.altitude_m.mean())
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
+xy_region = vd.get_region((easting, northing))
 
 # Create the equivalent sources.
 # We'll use block-averaged sources at a constant depth beneath the observation
@@ -82,46 +83,62 @@ print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
 # requires the height of the grid points (upward coordinate). By passing in
 # 1500 m, we're effectively upward-continuing the data (mean flight height is
 # 500 m).
-region = vd.get_region(coordinates)  # get the region boundaries
-grid_coords = vd.grid_coordinates(region=region, spacing=500, extra_coords=1500)
+
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=500, extra_coords=1500)
+
 grid = eqs.grid(coordinates=grid_coords, data_names=["magnetic_anomaly"])
 
 # The grid is a xarray.Dataset with values, coordinates, and metadata
 print("\nGenerated grid:\n", grid)
 
+# Set figure properties
+w, e, s, n = xy_region
+fig_height = 10
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
+fig_proj = f"x1:{fig_ratio}"
+
 # Plot original magnetic anomaly and the gridded and upward-continued version
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
+fig = pygmt.Figure()
 
-# Get the maximum absolute value between the original and gridded data so we
-# can use the same color scale for both plots and have 0 centered at the white
-# color.
-maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values)
+title = "Observed magnetic anomaly data"
 
-ax1.set_title("Observed magnetic anomaly data")
-tmp = ax1.scatter(
-    easting,
-    northing,
-    c=data.total_field_anomaly_nt,
-    s=20,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
+# Make colormap of data
+# Get the 95 percentile of the maximum absolute value between the original and
+# gridded data so we can use the same color scale for both plots and have 0
+# centered at the white color.
+maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values) * 0.95
+pygmt.makecpt(
+    cmap="vik",
+    series=(-maxabs, maxabs),
+    background=True,
 )
-plt.colorbar(tmp, ax=ax1, label="nT", pad=0.05, aspect=40, orientation="horizontal")
-ax1.set_xlim(easting.min(), easting.max())
-ax1.set_ylim(northing.min(), northing.max())
 
-ax2.set_title("Gridded and upward-continued")
-tmp = grid.magnetic_anomaly.plot.pcolormesh(
-    ax=ax2,
-    add_colorbar=False,
-    add_labels=False,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
-)
-plt.colorbar(tmp, ax=ax2, label="nT", pad=0.05, aspect=40, orientation="horizontal")
-ax2.set_xlim(easting.min(), easting.max())
-ax2.set_ylim(northing.min(), northing.max())
+with pygmt.config(FONT_TITLE="12p"):
+    fig.plot(
+        projection=fig_proj,
+        region=xy_region,
+        frame=[f"WSne+t{title}", "xa10000", "ya10000"],
+        x=easting,
+        y=northing,
+        color=data.total_field_anomaly_nt,
+        style="c0.1c",
+        cmap=True,
+    )
 
-plt.show()
+fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
+
+fig.shift_origin(xshift=fig_width + 1)
+
+title = "Gridded and upward-continued"
+
+with pygmt.config(FONT_TITLE="12p"):
+    fig.grdimage(
+        frame=[f"ESnw+t{title}", "xa10000", "ya10000"],
+        grid=grid.magnetic_anomaly,
+        cmap=True,
+    )
+
+fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
+
+fig.show()

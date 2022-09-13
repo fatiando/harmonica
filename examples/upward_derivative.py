@@ -8,8 +8,8 @@
 Upward derivative of a regular grid
 ===================================
 """
-import matplotlib.pyplot as plt
 import numpy as np
+import pygmt
 import pyproj
 import verde as vd
 import xrft
@@ -30,15 +30,13 @@ data = data[inside]
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.altitude_m)
-
+xy_region = vd.get_region(coordinates)
 # Grid the scatter data using an equivalent layer
 eql = hm.EquivalentSources(depth=1000, damping=1).fit(
     coordinates, data.total_field_anomaly_nt
 )
 
-grid_coords = vd.grid_coordinates(
-    region=vd.get_region(coordinates), spacing=500, extra_coords=1500
-)
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=500, extra_coords=1500)
 grid = eql.grid(grid_coords, data_names=["magnetic_anomaly"])
 grid = grid.magnetic_anomaly
 
@@ -60,36 +58,57 @@ deriv_upward = xrft.unpad(deriv_upward, pad_width)
 print("\nUpward derivative:\n", deriv_upward)
 
 # Plot original magnetic anomaly and the upward derivative
-fig, (ax1, ax2) = plt.subplots(
-    nrows=1, ncols=2, figsize=(9, 8), sharex=True, sharey=True
-)
+fig = pygmt.Figure()
+
+# Set figure properties
+w, e, s, n = xy_region
+fig_height = 10
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
+fig_proj = f"x1:{fig_ratio}"
 
 # Plot the magnetic anomaly grid
-grid.plot(
-    ax=ax1,
-    cmap="seismic",
-    cbar_kwargs={"label": "nT", "location": "bottom", "shrink": 0.8, "pad": 0.08},
+title = "Magnetic anomaly"
+
+# Make colormap of data
+pygmt.makecpt(
+    cmap="vik",
+    series=(-(np.quantile(grid, q=1)), np.quantile(grid, q=1)),
+    background=True,
 )
-ax1.set_title("Magnetic anomaly")
+
+with pygmt.config(FONT_TITLE="16p"):
+    fig.grdimage(
+        region=xy_region,
+        projection=fig_proj,
+        grid=grid,
+        frame=[f"WSne+t{title}", "xa10000+a15+leasting", "y+lnorthing"],
+        cmap=True,
+    )
+
+fig.colorbar(cmap=True, frame=["a200f50", "x+lnT"])
+
+fig.shift_origin(xshift=fig_width + 1)
 
 # Plot the upward derivative
-scale = np.quantile(np.abs(deriv_upward), q=0.98)  # scale the colorbar
-deriv_upward.plot(
-    ax=ax2,
-    vmin=-scale,
-    vmax=scale,
-    cmap="seismic",
-    cbar_kwargs={"label": "nT/m", "location": "bottom", "shrink": 0.8, "pad": 0.08},
+title = "Upward derivative"
+
+# Make colormap of data
+pygmt.makecpt(
+    cmap="vik",
+    series=(-(np.quantile(deriv_upward, q=0.99)), np.quantile(deriv_upward, q=0.99)),
+    background=True,
 )
-ax2.set_title("Upward derivative")
 
-# Scale the axes
-for ax in (ax1, ax2):
-    ax.set_aspect("equal")
+with pygmt.config(FONT_TITLE="16p"):
+    fig.grdimage(
+        region=xy_region,
+        projection=fig_proj,
+        grid=deriv_upward,
+        frame=[f"ESnw+t{title}", "xa10000+a15+leasting", "y+lnorthing"],
+        cmap=True,
+    )
 
-# Set ticklabels with scientific notation
-ax1.ticklabel_format(axis="x", style="sci", scilimits=(-2, 2))
-ax1.ticklabel_format(axis="y", style="sci", scilimits=(-2, 2))
+fig.colorbar(cmap=True, frame=["a.05f.025", "x+lnT/m"])
 
-plt.tight_layout()
-plt.show()
+fig.show()

@@ -148,50 +148,39 @@ Lets plot it:
 
 .. jupyter-execute::
 
-    import matplotlib.pyplot as plt
-    import cartopy.crs as ccrs
+    import pygmt
 
     maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
 
-    fig, (ax1, ax2) = plt.subplots(
-        nrows=1,
-        ncols=2,
-        figsize=(12, 9),
-        sharey=True,
-        subplot_kw=dict(
-            projection=ccrs.Mercator(central_longitude=100)
-        )
-    )
-    tmp = ax1.scatter(
-        data.longitude,
-        data.latitude,
-        c=gravity_disturbance,
-        s=3,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-        transform=ccrs.PlateCarree(),
-    )
-    tmp = grid.gravity_disturbance.plot.pcolormesh(
-        ax=ax2,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-        add_colorbar=False,
-        add_labels=False,
-        transform=ccrs.PlateCarree(),
-    )
+    fig = pygmt.Figure()
 
-    ax1.gridlines(draw_labels=["bottom", "left"], linewidth=0)
-    ax1.set_title("Block-median reduced gravity disturbance")
-    ax2.gridlines(draw_labels=["bottom"], linewidth=0)
-    ax2.set_title("Gridded gravity disturbance")
+    # Make colormap of data
+    pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
 
-    for ax in (ax1, ax2):
-        ax.set_extent(region, crs=ccrs.PlateCarree())
-        ax.coastlines()
-        plt.colorbar(
-            tmp, ax=ax, label="mGal", pad=0.05, aspect=40, orientation="horizontal"
-        )
+    title = "Block-median reduced gravity disturbance"
+    fig.plot(
+        projection="M100/15c",
+        region=region,
+        frame=[f"WSne+t{title}", "xa5", "ya4"],
+        x=longitude,
+        y=latitude,
+        color=gravity_disturbance,
+        style="c0.1c",
+        cmap=True,
+    )
+    fig.coast(shorelines="0.5p,black", area_thresh=1e4)
+    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-    plt.show()
+    fig.shift_origin(xshift='w+3c')
+
+    title = "Gridded gravity disturbance"
+    fig.grdimage(
+        grid=grid.gravity_disturbance,
+        cmap=True,
+        frame=[f"ESnw+t{title}","xa5", "ya4"],
+        nan_transparent=True,
+    )
+    fig.coast(shorelines="0.5p,black", area_thresh=1e4)
+    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+    fig.show()
