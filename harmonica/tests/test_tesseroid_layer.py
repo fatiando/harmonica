@@ -205,3 +205,43 @@ def test_tesseroid_layer_get_tesseroid_by_index():
             npt.assert_allclose(
                 layer.tesseroid_layer.get_tesseroid((i, j)), expected_tesseroids[i][j]
             )
+
+
+def test_nonans_tesseroid_mask(dummy_layer):
+    """
+    Check if the mask for nonans tesseroid is correctly created
+    """
+    (longitude, latitude), surface, reference, _ = dummy_layer
+    shape = (latitude.size, longitude.size)
+    # No nan in top or bottom
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_mask = np.ones(shape, dtype=bool)
+    mask = layer.tesseroid_layer._get_nonans_mask()
+    npt.assert_allclose(mask, expected_mask)
+    # Nans in the top only
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_mask = np.ones(shape, dtype=bool)
+    for index in ((2, 1), (3, 2)):
+        layer.top[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.tesseroid_layer._get_nonans_mask()
+    npt.assert_allclose(mask, expected_mask)
+    # Nans in the bottom only
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_mask = np.ones(shape, dtype=bool)
+    for index in ((2, 1), (3, 2)):
+        layer.bottom[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.tesseroid_layer._get_nonans_mask()
+    npt.assert_allclose(mask, expected_mask)
+    # Nans in the top and bottom
+    layer = tesseroid_layer((longitude, latitude), surface, reference)
+    expected_mask = np.ones(shape, dtype=bool)
+    for index in ((1, 2), (2, 3)):
+        layer.top[index] = np.nan
+        expected_mask[index] = False
+    for index in ((1, 2), (2, 1), (3, 2)):
+        layer.bottom[index] = np.nan
+        expected_mask[index] = False
+    mask = layer.tesseroid_layer._get_nonans_mask()
+    npt.assert_allclose(mask, expected_mask)
