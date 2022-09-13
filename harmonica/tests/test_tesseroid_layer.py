@@ -245,3 +245,52 @@ def test_nonans_tesseroid_mask(dummy_layer):
         expected_mask[index] = False
     mask = layer.tesseroid_layer._get_nonans_mask()
     npt.assert_allclose(mask, expected_mask)
+
+
+def test_nonans_tesseroid_mask_property(
+    dummy_layer,
+):
+    """
+    Check if the method masks the property and raises a warning
+    """
+    coordinates, surface, reference, density = dummy_layer
+    shape = (coordinates[1].size, coordinates[0].size)
+    # Nans in top and property (on the same tesseroid)
+    expected_mask = np.ones_like(surface, dtype=bool)
+    indices = ((1, 2), (2, 3))
+    # Set some elements of surface and density as nans
+    for index in indices:
+        surface[index] = np.nan
+        density[index] = np.nan
+        expected_mask[index] = False
+    layer = tesseroid_layer(
+        coordinates, surface, reference, properties={"density": density}
+    )
+    # Check if no warning is raised
+    with warnings.catch_warnings(record=True) as warn:
+        mask = layer.tesseroid_layer._get_nonans_mask(property_name="density")
+        assert len(warn) == 0
+    npt.assert_allclose(mask, expected_mask)
+    # Nans in top and property (not precisely on the same tesseroid)
+    surface = np.arange(30, dtype=float).reshape(shape)
+    density = 2670 * np.ones_like(surface)
+    expected_mask = np.ones_like(surface, dtype=bool)
+    # Set some elements of surface as nans
+    indices = ((1, 2), (2, 3))
+    for index in indices:
+        surface[index] = np.nan
+        expected_mask[index] = False
+    # Set a different set of elements of density as nans
+    indices = ((2, 2), (0, 1))
+    for index in indices:
+        density[index] = np.nan
+        expected_mask[index] = False
+    layer = tesseroid_layer(
+        coordinates, surface, reference, properties={"density": density}
+    )
+    # Check if warning is raised
+    with warnings.catch_warnings(record=True) as warn:
+        mask = layer.tesseroid_layer._get_nonans_mask(property_name="density")
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, UserWarning)
+    npt.assert_allclose(mask, expected_mask)
