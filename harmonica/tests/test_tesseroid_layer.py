@@ -15,6 +15,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import xarray as xr
+import verde as vd
 
 from .. import tesseroid_gravity, tesseroid_layer
 
@@ -294,3 +295,28 @@ def test_nonans_tesseroid_mask_property(
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
     npt.assert_allclose(mask, expected_mask)
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_tesseroid_layer_gravity(field, dummy_layer):
+    """
+    Check if gravity method works as expected
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    # Create a regular grid of computation points located at 10km above surface
+    grid_coords = vd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    )
+    layer = tesseroid_layer(
+        (longitude, latitude), surface, reference, properties={"density": density}
+    )
+    expected_result = tesseroid_gravity(
+        grid_coords,
+        tesseroids=layer.tesseroid_layer._to_tesseroids(),
+        density=density,
+        field=field,
+    )
+    npt.assert_allclose(
+        expected_result, layer.tesseroid_layer.gravity(grid_coords, field=field)
+    )
