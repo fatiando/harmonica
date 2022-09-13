@@ -14,8 +14,8 @@ import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
-import xarray as xr
 import verde as vd
+import xarray as xr
 
 from .. import tesseroid_gravity, tesseroid_layer
 
@@ -47,7 +47,7 @@ def tesseroid_layer_with_holes(dummy_layer):
 
     The tesseroids are returned as a tuple of boundaries, ready to be passed to
     ``hm.tesseroid_gravity``.
-    They would represent the same prisms that the ``dummy_layer`` generated,
+    They would represent the same tesseroids that the ``dummy_layer`` generated,
     but with two missing tesseroids: the ``(3, 3)`` and the ``(2, 1)``.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
@@ -376,5 +376,36 @@ def test_tesseroid_layer_gravity_surface_nans(
     tesseroids, rho = tesseroid_layer_with_holes
     npt.assert_allclose(
         layer.tesseroid_layer.gravity(grid_coords, field=field),
+        tesseroid_gravity(grid_coords, tesseroids, rho, field=field),
+    )
+
+
+@pytest.mark.use_numba
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+def test_tesseroid_layer_gravity_density_nans(
+    field, dummy_layer, tesseroid_layer_with_holes
+):
+    """
+    Check if tesseroid is ignored after a nan is found in density array
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    grid_coords = vd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    )
+    # Create one layer that has nans on the density array
+    indices = [(3, 3), (2, 1)]
+    for index in indices:
+        density[index] = np.nan
+    layer = tesseroid_layer(
+        (longitude, latitude), surface, reference, properties={"density": density}
+    )
+    # Check if warning is raised after passing density with nans
+    with warnings.catch_warnings(record=True) as warn:
+        result = layer.tesseroid_layer.gravity(grid_coords, field=field)
+        assert len(warn) == 1
+    # Check if it generates the expected gravity field
+    tesseroids, rho = tesseroid_layer_with_holes
+    npt.assert_allclose(
+        result,
         tesseroid_gravity(grid_coords, tesseroids, rho, field=field),
     )
