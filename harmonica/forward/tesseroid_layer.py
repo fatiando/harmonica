@@ -308,7 +308,7 @@ class DatasetAccessorTesseroidLayer:
                     + '"{}" will be ignored.'.format(property_name)
                 )
             mask = np.logical_and(mask, mask_property)
-            return mask
+        return mask
 
     def _to_tesseroids(self):
         """
