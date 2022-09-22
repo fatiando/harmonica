@@ -98,21 +98,18 @@ def test_tesseroid_layer(dummy_layer):
     npt.assert_allclose(layer.bottom, expected_bottom)
 
 
-def test_tesseroid_layer_invalid_surface_reference(
-    dummy_layer,
-):
+def test_tesseroid_layer_invalid_surface_reference(dummy_layer):
     """
     Check if invalid surface and/or reference are caught
     """
     coordinates, surface, reference, _ = dummy_layer
     # Surface with wrong shape
     surface_invalid = np.arange(20, dtype=float)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Invalid surface array with shape"):
         tesseroid_layer(coordinates, surface_invalid, reference)
     # Reference with wrong shape
     reference_invalid = np.zeros(20)
-    surface = np.arange(20, dtype=float).reshape(4, 5)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Invalid reference array with shape"):
         tesseroid_layer(coordinates, surface, reference_invalid)
 
 
