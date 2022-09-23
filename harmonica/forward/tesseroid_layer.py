@@ -69,6 +69,8 @@ def tesseroid_layer(
     if properties:
         data_names = tuple(p for p in properties.keys())
         data = tuple(np.asarray(p) for p in properties.values())
+    # Check if tesseroid boundaries are overlapped
+    _check_overlap(coordinates[0])
     # Create xr.Dataset for tesseroids
     tesseroids = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
@@ -95,6 +97,15 @@ def _check_regular_grid(longitude, latitude):
         raise ValueError("Passed longitude coordinates are note evenly spaced.")
     if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
         raise ValueError("Passed latitude coordinates are note evenly spaced.")
+
+
+def _check_overlap(longitude):
+    """
+    Check if the prisms boundaries are overlapped
+    """
+    spasing = longitude[1] - longitude[0]
+    if longitude.max() - longitude.min() >= 360 - spasing:
+        raise ValueError("Tesseroid boundaries are overlapped.")
 
 
 @xr.register_dataset_accessor("tesseroid_layer")
