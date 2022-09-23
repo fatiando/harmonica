@@ -95,7 +95,10 @@ def test_tesseroid_overlap_wrong_coords(longitude_w, longitude_e, mean_earth_rad
     shape = (latitude.size, longitude.size)
     surface = mean_earth_radius * np.ones(shape) + 1e3
     reference = mean_earth_radius * np.ones(shape)
-    with pytest.raises(ValueError, match="Tesseroid boundaries are overlapped"):
+    with pytest.raises(
+        ValueError,
+        match="Found invalid longitude coordinates that would create overlapping tesseroids around the globe.",
+    ):
         tesseroid_layer((longitude, latitude), surface, reference)
 
 
