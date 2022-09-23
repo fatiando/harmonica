@@ -69,13 +69,13 @@ def tesseroid_layer(
     if properties:
         data_names = tuple(p for p in properties.keys())
         data = tuple(np.asarray(p) for p in properties.values())
-    # Check if tesseroid boundaries are overlapped
-    _check_overlap(coordinates[0])
     # Create xr.Dataset for tesseroids
     tesseroids = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
     )
     _check_regular_grid(tesseroids.longitude.values, tesseroids.latitude.values)
+    # Check if tesseroid boundaries are overlapped
+    _check_overlap(tesseroids.longitude.values)
     # Append some attributes to the xr.Dataset
     attrs = {}
     tesseroids.attrs = attrs
