@@ -77,6 +77,47 @@ def tesseroid_layer_with_holes(dummy_layer):
     return tesseroids, density
 
 
+@pytest.mark.parametrize(
+    "longitude_w, longitude_e",
+    [
+        (0, 480),
+        (0, 360),
+        (-180, 180),
+        (0, 360 - 18.94736842 / 2),
+    ],
+)
+def test_tesseroid_overlap_wrong_coords(longitude_w, longitude_e, mean_earth_radius):
+    """
+    Check if the tesseroid are overlapped
+    """
+    latitude = np.linspace(-10, 10, 6)
+    longitude = np.linspace(longitude_w, longitude_e, 20)
+    shape = (latitude.size, longitude.size)
+    surface = mean_earth_radius * np.ones(shape) + 1e3
+    reference = mean_earth_radius * np.ones(shape)
+    with pytest.raises(ValueError, match="Tesseroid boundaries are overlapped"):
+        tesseroid_layer((longitude, latitude), surface, reference)
+
+
+@pytest.mark.parametrize(
+    "longitude_w, longitude_e",
+    [
+        (0, 360 - 18.94736842),
+        (-180, 180 - 18.94736842),
+    ],
+)
+def test_tesseroid_overlap_right_coords(longitude_w, longitude_e, mean_earth_radius):
+    """
+    Check if the tesseroid are not overlapped
+    """
+    latitude = np.linspace(-10, 10, 6)
+    longitude = np.linspace(longitude_w, longitude_e, 20)
+    shape = (latitude.size, longitude.size)
+    surface = mean_earth_radius * np.ones(shape) + 1e3
+    reference = mean_earth_radius * np.ones(shape)
+    tesseroid_layer((longitude, latitude), surface, reference)
+
+
 def test_tesseroid_layer(dummy_layer, mean_earth_radius):
     """
     Check if the layer of tesseroids is property constructed
@@ -142,7 +183,7 @@ def test_tesseroid_layer_no_regular_grid(
     dummy_layer,
 ):
     """
-    Check if erro is raised if the latitude or longitude are not regular
+    Check if error is raised if the latitude or longitude are not regular
     """
 
     (longitude, latitude), surface, reference, _ = dummy_layer
