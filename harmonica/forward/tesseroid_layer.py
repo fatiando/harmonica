@@ -103,8 +103,8 @@ def _check_overlap(longitude):
     """
     Check if the prisms boundaries are overlapped
     """
-    spasing = longitude[1] - longitude[0]
-    if longitude.max() - longitude.min() >= 360 - spasing:
+    spacing = longitude[1] - longitude[0]
+    if longitude.max() - longitude.min() >= 360 - spacing:
         raise ValueError("Tesseroid boundaries are overlapped.")
 
 
