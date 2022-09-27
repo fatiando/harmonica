@@ -14,7 +14,7 @@ data points and sources are too big.
 
 .. note::
 
-   Inteprolating 200000 data points using 200000 sources would require more
+   Interpolating 200000 data points using 200000 sources would require more
    than 300 GB only to store the Jacobian matrix (using 64 bits floats for each
    matrix element).
 
