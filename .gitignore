@@ -26,3 +26,14 @@ harmonica/tests/test_forward_utils.py
 harmonica/tests/test_point_gravity.py
 harmonica/tests/test_tesseroid.py
 harmonica/tests/test_tesseroid_variable_density.py
+examples/forward/prism_layer.py
+harmonica/equivalent_sources/gradient_boosted.py
+harmonica/forward/_tesseroid_utils.py
+harmonica/forward/_tesseroid_variable_density.py
+harmonica/forward/point.py
+harmonica/forward/prism.py
+harmonica/forward/utils.py
+harmonica/tests/test_forward_utils.py
+harmonica/tests/test_point_gravity.py
+harmonica/tests/test_tesseroid.py
+harmonica/tests/test_tesseroid_variable_density.py

@@ -412,7 +412,7 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     # Convert frequencies to wavenumbers
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
-    # Compute the filter for upward derivative in frequency domain
+    # Compute the filter for reduction to pole in frequency domain
     da_filter = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
@@ -434,7 +434,7 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     return da_filter
 
 
-def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
+def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     r"""
     Filter for pseudo gravity in frequency domain
 
@@ -477,6 +477,10 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
+    f : float or 2d-array
+        Ambient field in the study area. It can use the mean ambinent field
+        value in the study area or the real ambient field value in all
+        locations. Default is 50,000 nT.
 
     Returns
     -------
@@ -493,6 +497,7 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
     harmonica.pseudo_gravity
     """
     # Transform degree to rad
+
     [i, d] = np.deg2rad([i, d])
 
     if dm is None or im is None:
@@ -507,7 +512,7 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
     # Convert frequencies to wavenumbers
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
-    # Compute the filter for upward derivative in frequency domain
+    # Compute the filter for reduction to pole in frequency domain
     da_filter = np.sqrt(k_northing ** 2 + k_easting ** 2) / (
         (
             1j
@@ -524,6 +529,9 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None):
         )
     )
 
+    # Combine with vertical intergral
+    da_filter = da_filter * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
     # Deal with inf and nan value
     da_filter = np.nan_to_num(da_filter, posinf=0, nan=0)
-    return da_filter
+
+    return da_filter / 149.8 / f
