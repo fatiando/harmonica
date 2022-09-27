@@ -11,9 +11,9 @@ Layer of tesseroids
 import boule as bl
 import ensaio
 import numpy as np
+import pygmt
 import verde as vd
 import xarray as xr
-import pygmt
 
 import harmonica as hm
 
