@@ -13,13 +13,14 @@ import ensaio
 import numpy as np
 import verde as vd
 import xarray as xr
+import pygmt
 
 import harmonica as hm
 
 fname = ensaio.fetch_earth_topography(version=1)
 topo = xr.load_dataarray(fname)
 
-region = (-75, -50, -55, -20)
+region = (-78, -53, -57, -20)
 topo = topo.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 
 ellipsoid = bl.WGS84
@@ -37,9 +38,30 @@ tesseroids = hm.tesseroid_layer(
 )
 
 # Create a regular grid of computation points located at 10km above reference
-grid_longitude, grid_latitude = vd.grid_coordinates(region=region, spacing=5)
+grid_longitude, grid_latitude = vd.grid_coordinates(region=region, spacing=0.5)
 grid_radius = ellipsoid.geocentric_radius(grid_latitude) + 10e3
 grid_coords = (grid_longitude, grid_latitude, grid_radius)
 
 # Compute gravity field of tesseroids on a regular grid of observation points
 gravity = tesseroids.tesseroid_layer.gravity(grid_coords, field="g_z")
+
+grid = pygmt.xyz2grd(
+    x=grid_longitude.flatten(),
+    y=grid_latitude.flatten(),
+    z=gravity.flatten(),
+    region=region,
+    spacing=(0.5, 0.5),
+)
+
+# Plot gravity field
+fig = pygmt.Figure()
+fig.grdimage(
+    grid,
+    projection="M15c",
+    cmap="viridis",
+    nan_transparent=True,
+)
+fig.basemap(frame=True)
+fig.colorbar(frame='af+l"Gravity [mGal]"', position="JCR")
+fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
+fig.show()
