@@ -28,7 +28,7 @@ ellipsoid = bl.WGS84
 longitude, latitude = np.meshgrid(topo.longitude, topo.latitude)
 reference = ellipsoid.geocentric_radius(latitude)
 surface = topo + reference
-density = xr.where(topo > 0, 2670.0, 2670.0 - 1040.0)
+density = xr.where(topo > 0, 2670.0, 1040.0 - 2670.0)
 
 tesseroids = hm.tesseroid_layer(
     coordinates=(topo.longitude, topo.latitude),
