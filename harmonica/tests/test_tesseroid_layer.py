@@ -86,18 +86,23 @@ def tesseroid_layer_with_holes(dummy_layer):
         (0, 360 - 18 / 2),
     ],
 )
-def test_tesseroid_overlap_invalid_coords(longitude_w, longitude_e, mean_earth_radius):
+def test_tesseroid_overlap_invalid_coords(west, east, mean_earth_radius):
     """
-    Check if error is raised when longitude coordinates create overlapped tesseroid
+    Check if error is raised when longitude coordinates create overlapped
+    tesseroid
     """
     latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(west, east, 21)
     shape = (latitude.size, longitude.size)
     surface = mean_earth_radius * np.ones(shape) + 1e3
     reference = mean_earth_radius * np.ones(shape)
+    message = (
+        "Found invalid longitude coordinates that would create "
+        + "overlapping tesseroids around the globe."
+    )
     with pytest.raises(
         ValueError,
-        match="Found invalid longitude coordinates that would create overlapping tesseroids around the globe.",
+        match=message,
     ):
         tesseroid_layer((longitude, latitude), surface, reference)
 
@@ -109,7 +114,7 @@ def test_tesseroid_overlap_invalid_coords(longitude_w, longitude_e, mean_earth_r
         (-180, 180 - 18),
     ],
 )
-def test_tesseroid_overlap_valid_coords(longitude_w, longitude_e, mean_earth_radius):
+def test_tesseroid_overlap_valid_coords(west, east, mean_earth_radius):
     """
     Check if tesseroid_layer works properly when tesseroids are not overlapped
     """
