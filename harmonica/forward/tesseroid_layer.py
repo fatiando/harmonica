@@ -16,12 +16,7 @@ import xarray as xr
 from .tesseroid import tesseroid_gravity
 
 
-def tesseroid_layer(
-    coordinates,
-    surface,
-    reference,
-    properties=None,
-):
+def tesseroid_layer(coordinates, surface, reference, properties=None):
     """
     Create a layer of tesseroids of equal size
 
@@ -77,7 +72,12 @@ def tesseroid_layer(
     # Check if tesseroid boundaries are overlapped
     _check_overlap(tesseroids.longitude.values)
     # Append some attributes to the xr.Dataset
-    attrs = {}
+    attrs = {
+        "longitude_units": "degrees",
+        "latitude_units": "degrees",
+        "radius_units": "meters",
+        "properties_units": "SI",
+    }
     tesseroids.attrs = attrs
     # Create the top and bottom coordinates of the prisms
     tesseroids.tesseroid_layer.update_top_bottom(surface, reference)
