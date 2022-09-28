@@ -33,14 +33,14 @@ def tesseroid_layer(
         ``latitude``.
     surface : 2d-array
         Array used to create the uppermost boundary of the tesserois layer. All
-        heights should be in meters. On every point where ``surface`` is below
+        radii should be in meters. On every point where ``surface`` is below
         ``reference``, the ``surface`` value will be used to set the ``bottom``
         boundary of that tesseroid, while the ``reference`` value will be used
         to set the ``top`` boundary of the tesseroid.
     reference : 2d-array or float
         Reference surface used to create the lowermost boundary of the
         tesseroids layer. It can be either a plane or an irregular surface
-        passed as 2d array. Height(s) must be in meters.
+        passed as 2d array. Radii must be in meters.
     properties : dict or None
         Dictionary containing the physical properties of the tesseroids. The
         keys must be strings that will be used to name the corresponding
