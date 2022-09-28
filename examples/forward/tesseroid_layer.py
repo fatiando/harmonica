@@ -44,21 +44,21 @@ grid_coords = (grid_longitude, grid_latitude, grid_radius)
 
 # Compute gravity field of tesseroids on a regular grid of observation points
 gravity = tesseroids.tesseroid_layer.gravity(grid_coords, field="g_z")
-
-grid = pygmt.xyz2grd(
-    x=grid_longitude.flatten(),
-    y=grid_latitude.flatten(),
-    z=gravity.flatten(),
-    region=region,
-    spacing=(0.5, 0.5),
+gravity = vd.make_xarray_grid(
+    grid_coords,
+    gravity,
+    data_names="g_z",
+    dims=("latitude", "longitude"),
+    extra_coords_names="radius",
 )
 
 # Plot gravity field
 fig = pygmt.Figure()
+maxabs = vd.maxabs(gravity.g_z)
+pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs))
 fig.grdimage(
-    grid,
+    gravity.g_z,
     projection="M15c",
-    cmap="viridis",
     nan_transparent=True,
 )
 fig.basemap(frame=True)
