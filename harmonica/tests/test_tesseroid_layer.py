@@ -78,7 +78,7 @@ def tesseroid_layer_with_holes(dummy_layer):
 
 
 @pytest.mark.parametrize(
-    "longitude_w, longitude_e",
+    "west, east",
     [
         (0, 480),
         (0, 360),
@@ -86,12 +86,12 @@ def tesseroid_layer_with_holes(dummy_layer):
         (0, 360 - 18 / 2),
     ],
 )
-def test_tesseroid_overlap_wrong_coords(longitude_w, longitude_e, mean_earth_radius):
+def test_tesseroid_overlap_invalid_coords(longitude_w, longitude_e, mean_earth_radius):
     """
-    Check if the tesseroid are overlapped
+    Check if error is raised when longitude coordinates create overlapped tesseroid
     """
     latitude = np.linspace(-10, 10, 6)
-    longitude = np.linspace(longitude_w, longitude_e, 21)
+    longitude = np.linspace(west, east, 21)
     shape = (latitude.size, longitude.size)
     surface = mean_earth_radius * np.ones(shape) + 1e3
     reference = mean_earth_radius * np.ones(shape)
@@ -103,18 +103,18 @@ def test_tesseroid_overlap_wrong_coords(longitude_w, longitude_e, mean_earth_rad
 
 
 @pytest.mark.parametrize(
-    "longitude_w, longitude_e",
+    "west, east",
     [
         (0, 360 - 18),
         (-180, 180 - 18),
     ],
 )
-def test_tesseroid_overlap_right_coords(longitude_w, longitude_e, mean_earth_radius):
+def test_tesseroid_overlap_valid_coords(longitude_w, longitude_e, mean_earth_radius):
     """
-    Check if the tesseroid are not overlapped
+    Check if tesseroid_layer works properly when tesseroids are not overlapped
     """
     latitude = np.linspace(-10, 10, 6)
-    longitude = np.linspace(longitude_w, longitude_e, 21)
+    longitude = np.linspace(west, east, 21)
     shape = (latitude.size, longitude.size)
     surface = mean_earth_radius * np.ones(shape) + 1e3
     reference = mean_earth_radius * np.ones(shape)
