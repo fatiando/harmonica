@@ -291,6 +291,8 @@ def _remove_dummies(grid, data_type):
         "f": -1e32,
         "d": -1e32,
     }
+    # Convert grid to float
+    grid=grid.astype(float)
     if data_type in ("f", "d"):
         grid[grid <= dummies[data_type]] = np.nan
         return grid
