@@ -141,6 +141,8 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
+    # Discard null prisms (zero volume or zero density)
+    prisms, density = _discard_null_prisms(prisms, density)
     # Show progress bar for 'jit_prism_gravity' function
     if progressbar:
         if ProgressBar is None:
@@ -186,8 +188,6 @@ def _check_prisms(prisms):
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
@@ -209,6 +209,43 @@ def _check_prisms(prisms):
         for prism in prisms[bad_bt]:
             err_msg += "\tInvalid tesseroid: {}\n".format(prism)
         raise ValueError(err_msg)
+
+
+def _discard_null_prisms(prisms, density):
+    """
+    Discard prisms with zero volume or zero density
+
+    Parameters
+    ----------
+    prisms : 2d-array
+        Array containing the boundaries of the prisms in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The array must have the following shape: (``n_prisms``, 6), where
+        ``n_prisms`` is the total number of prisms.
+        This array of prisms must have valid boundaries.
+        Run ``_check_prisms`` before.
+    density : 1d-array
+        Array containing the density of each prism in kg/m^3. Must have the
+        same size as the number of prisms.
+
+    Returns
+    -------
+    prisms : 2d-array
+        A copy of the ``prisms`` array that doesn't include the null prisms
+        (prisms with zero volume or zero density).
+    density : 1d-array
+        A copy of the ``density`` array that doesn't include the density values
+        for null prisms (prisms with zero volume or zero density).
+    """
+    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
+    # Mark prisms with zero volume as null prisms
+    null_prisms = (west == east) | (south == north) | (bottom == top)
+    # Mark prisms with zero density as null prisms
+    null_prisms[density == 0] = True
+    # Keep only non null prisms
+    prisms = prisms[np.logical_not(null_prisms), :]
+    density = density[np.logical_not(null_prisms)]
+    return prisms, density
 
 
 def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=None):
@@ -240,25 +277,25 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
     # Iterate over computation points and prisms
     for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
-            # Iterate over the prism boundaries to compute the result of the
+            # Iterate over the prism vertices to compute the result of the
             # integration (see Nagy et al., 2000)
             for i in range(2):
+                # Compute shifted easting coordinate
+                shift_east = prisms[m, 1 - i] - coordinates[0][l]
                 for j in range(2):
+                    # Compute shifted northing coordinate
+                    shift_north = prisms[m, 3 - j] - coordinates[1][l]
                     for k in range(2):
-                        shift_east = prisms[m, 1 - i]
-                        shift_north = prisms[m, 3 - j]
-                        shift_upward = prisms[m, 5 - k]
-                        # If i, j or k is 1, the shift_* will refer to the
-                        # lower boundary, meaning the corresponding term should
-                        # have a minus sign
+                        # Compute shifted upward coordinate
+                        shift_upward = prisms[m, 5 - k] - coordinates[2][l]
+                        # If i, j or k is 1, the corresponding shifted
+                        # coordinate will refer to the lower boundary,
+                        # meaning the corresponding term should have a minus
+                        # sign.
                         out[l] += (
                             density[m]
                             * (-1) ** (i + j + k)
-                            * kernel(
-                                shift_east - coordinates[0][l],
-                                shift_north - coordinates[1][l],
-                                shift_upward - coordinates[2][l],
-                            )
+                            * kernel(shift_east, shift_north, shift_upward)
                         )
         # Update progress bar if called
         if update_progressbar:

@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.10
+  - python==3.10.*
   - pip
   # Build
   - setuptools>=45
@@ -37,9 +37,11 @@ dependencies:
   - jupyter-sphinx==0.3.*
   - pyproj
   - matplotlib
-  - cartopy>=0.18
   - ensaio
   - netcdf4
+  - pygmt==0.7.*
+  - gmt==6.4.*
+  - gdal==3.5.*
   # Code style checks and autoformat
   - black==22.3.0
   - isort==5.10.*

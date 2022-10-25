@@ -98,18 +98,25 @@ And finally plot the computed gravitational field
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
-   import cartopy.crs as ccrs
+   import pygmt 
+   grid = vd.make_xarray_grid(
+      coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
-   fig = plt.figure(figsize=(8, 9))
-   ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-   img = ax.pcolormesh(
-       coordinates[0], coordinates[1], gravity, transform=ccrs.PlateCarree()
-   )
-   plt.colorbar(img, ax=ax, pad=0, aspect=50, orientation="horizontal", label="mGal")
-   ax.coastlines()
-   ax.set_title("Downward component of gravitational acceleration")
-   plt.show()
+   fig = pygmt.Figure()
+   title = "Downward component of gravitational acceleration"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=[-80, -40, -50, -10],
+         projection="M-60/-30/10c",
+         grid=grid.gravity,
+         frame=["a", f"+t{title}"],
+         cmap="viridis",
+      )
+
+   fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+   fig.coast(shorelines="1p,black")
+
+   fig.show()
 
 
 Multiple tesseroids
@@ -146,15 +153,24 @@ And plot the results:
 
 .. jupyter-execute::
 
-   fig = plt.figure(figsize=(8, 9))
-   ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-   img = ax.pcolormesh(
-       coordinates[0], coordinates[1], gravity, transform=ccrs.PlateCarree()
-   )
-   plt.colorbar(img, ax=ax, pad=0, aspect=50, orientation="horizontal", label="mGal")
-   ax.coastlines()
-   ax.set_title("Downward component of gravitational acceleration")
-   plt.show()
+   grid = vd.make_xarray_grid(
+      coordinates, gravity, data_names="gravity", extra_coords_names="extra")
+
+   fig = pygmt.Figure()
+   title = "Downward component of gravitational acceleration"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=[-80, -40, -50, -10],
+         projection="M-60/-30/10c",
+         grid=grid.gravity,
+         frame=["a", f"+t{title}"],
+         cmap="viridis",
+      )
+
+   fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
+   fig.coast(shorelines="1p,black")
+
+   fig.show()
 
 
 Tesseroids with variable density
@@ -223,10 +239,21 @@ Finally, lets plot it:
 
 .. jupyter-execute::
 
-   fig = plt.figure(figsize=(8, 9))
-   ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-   img = ax.pcolormesh(*coordinates[:2], gravity, transform=ccrs.PlateCarree())
-   plt.colorbar(img, ax=ax, pad=0, aspect=50, orientation="horizontal", label="mGal")
-   ax.coastlines()
-   ax.set_title("Downward component of gravitational acceleration")
-   plt.show()
+   grid = vd.make_xarray_grid(
+      coordinates, gravity, data_names="gravity", extra_coords_names="extra")
+
+   fig = pygmt.Figure()
+   title = "Downward component of gravitational acceleration"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=[-80, -40, -50, -10],
+         projection="M-60/-30/10c",
+         grid=grid.gravity,
+         frame=["a", f"+t{title}"],
+         cmap="viridis",
+      )
+
+   fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
+   fig.coast(shorelines="1p,black")
+
+   fig.show()
