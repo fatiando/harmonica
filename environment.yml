@@ -17,7 +17,7 @@ dependencies:
   - scipy
   - scikit-learn
   - pooch>=0.7.0
-  - verde>=1.5.0
+  - verde>=1.6.0
   - xarray
   - xrft
   # Optional requirements
