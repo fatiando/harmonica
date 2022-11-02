@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Function to read Oasis Montaj© .gdf file
+Function to read Oasis Montaj© .grd file
 """
 
 import array
