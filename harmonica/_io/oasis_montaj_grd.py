@@ -161,8 +161,7 @@ def _read_header(header_bytes):
         }
     )
     # Read optional parameters
-    LABEL = array.array("u", header_bytes[76 : 76 + 48])  # noqa: E203, N806
-    MAPNO = array.array("u", header_bytes[124 : 124 + 16])  # noqa: E203, N806
+    # (ignore map LABEL and MAPNO)
     PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array(  # noqa: N806
         "i", header_bytes[140 : 156 + 4]  # noqa: E203
     )
@@ -173,8 +172,6 @@ def _read_header(header_bytes):
     (PRCS,) = array.array("i", header_bytes[184 : 184 + 4])  # noqa: E203, N806
     header.update(
         {
-            "grid_label": LABEL,
-            "map_number": MAPNO,
             "map_projection": PROJ,
             "units_x": UNITX,
             "units_y": UNITY,
