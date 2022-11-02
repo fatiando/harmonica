@@ -42,7 +42,7 @@ def load_oasis_montaj_grid(fname):
 
     Parameters
     ----------
-    fname : (string or file-like object)
+    fname : string or file-like object
         Path to the .grd file.
 
     Returns
