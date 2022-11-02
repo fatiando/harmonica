@@ -16,6 +16,7 @@ import xarray.testing as xrt
 from .. import load_oasis_montaj_grid
 from .._io.oasis_montaj_grd import (
     _check_ordering,
+    _check_rotation,
     _check_sign_flag,
     _check_uncompressed_grid,
 )
@@ -39,6 +40,22 @@ def test_check_ordering_invalid(ordering):
     """
     with pytest.raises(NotImplementedError, match="Found an ordering"):
         _check_ordering(ordering)
+
+
+def test_check_rotation_valid():
+    """
+    Test _check_rotation with valid value
+    """
+    _check_rotation(0)
+
+
+@pytest.mark.parametrize("rotation", (-60, 30, 90))
+def test_check_rotation_invalid(rotation):
+    """
+    Test _check_rotation with invalid values
+    """
+    with pytest.raises(NotImplementedError, match="The grid is rotated"):
+        _check_rotation(rotation)
 
 
 @pytest.mark.parametrize("sign_flag", (0, 1, 2))
