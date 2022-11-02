@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.9.*
+  - python==3.10.*
   - pip
   # Build
   - setuptools>=45
@@ -11,17 +11,17 @@ dependencies:
   - wheel
   - twine
   # Run-time
-  - numpy
-  - pandas
-  - numba
-  - scipy
-  - scikit-learn
-  - pooch>=0.7.0
-  - verde>=1.5.0
-  - xarray
-  - xrft
+  - numpy>=1.19
+  - pandas>=1.1
+  - numba>=0.52
+  - scipy>=1.5
+  - scikit-learn>=0.24
+  - pooch>=1.2
+  - verde>=1.7.0
+  - xarray>=0.16
+  - xrft>=1.0
   # Optional requirements
-  - pyvista
+  - pyvista>=0.27
   - vtk>=9
   # Testing requirements
   - pytest

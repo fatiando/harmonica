@@ -184,8 +184,9 @@ That's how we all improve and we are happy to help others learn.
 
     api/index.rst
     citing.rst
-    changes.rst
     references.rst
+    changes.rst
+    compatibility.rst
     versions.rst
 
 .. toctree::
