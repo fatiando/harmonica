@@ -38,13 +38,19 @@ jobs:
           - ubuntu
           - macos
           - windows
-        python:
-          - "3.7"
-          - "3.10"
         dependencies:
+          - oldest
           - latest
+          - optional
+        include:
+          - dependencies: oldest
+            python: "3.7"
+          - dependencies: latest
+            python: "3.10"
+          - dependencies: optional
+            python: "3.10"
     env:
-      REQUIREMENTS: env/requirements-tests.txt
+      REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -81,39 +87,42 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Collect requirements - run-time
-        run: python tools/export_requirements.py > requirements-full.txt
-
-      - name: Collect requirements - other
+      - name: Collect requirements
         run: |
+          echo "Install Dependente to capture dependencies:"
+          python -m pip install dependente==0.1.0
+          echo ""
+          echo "Capturing run-time dependencies:"
+          if [[ "${{ matrix.dependencies }}" == "oldest" ]]; then
+            dependente --source install --oldest > requirements-full.txt
+          elif [[ "${{ matrix.dependencies }}" == "optional" ]]; then
+            dependente --source install,extras > requirements-full.txt
+          else
+            dependente --source install > requirements-full.txt
+          fi
           echo "Capturing dependencies from:"
           for requirement in $REQUIREMENTS
           do
             echo "  $requirement"
             cat $requirement >> requirements-full.txt
           done
-
-      - name: List requirements
-        run: |
+          echo ""
           echo "Collected dependencies:"
           cat requirements-full.txt
 
       - name: Get the pip cache folder
         id: pip-cache
         run: |
-          echo "::set-output name=dir::$(pip cache dir)"
+          echo "dir="$(pip cache dir) >> $GITHUB_OUTPUT
 
       - name: Setup caching for pip packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
         run: |
-          # Install the build requirements before anything else so pip can use
-          # wheels for other packages.
-          python -m pip install --requirement env/requirements-build.txt
           python -m pip install --requirement requirements-full.txt
 
       - name: Build source and wheel distributions
