@@ -76,9 +76,10 @@ Things that will *not* be covered in Harmonica:
 - Multi-physics partial differential equation solvers. Use
   [SimPEG](http://www.simpeg.xyz/) or [PyGIMLi](https://www.pygimli.org/)
   instead.
-- Generic grid processing methods (like horizontal derivatives and FFT). These
-  should be implemented in [Verde](https://www.fatiando.org/verde) and
-  [xarray](https://xarray.dev).
+- Generic grid processing methods (like horizontal derivatives and FFT). We'll
+  rely on [Verde](https://www.fatiando.org/verde),
+  [xrft](https://xrft.readthedocs.io/en/latest/) and
+  [xarray](https://xarray.dev) for those.
 - Data visualization.
 - GUI applications.
 
