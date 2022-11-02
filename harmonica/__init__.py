@@ -17,6 +17,7 @@ from .forward.point import point_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
+from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
 from .isostasy import isostasy_airy, isostatic_moho_airy
 from .transformations import derivative_upward
