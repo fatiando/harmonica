@@ -46,9 +46,9 @@ jobs:
           - dependencies: oldest
             python: "3.7"
           - dependencies: latest
-            python: "3.9"
+            python: "3.10"
           - dependencies: optional
-            python: "3.9"
+            python: "3.10"
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
       # Used to tag codecov submissions
