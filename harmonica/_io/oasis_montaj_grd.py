@@ -68,8 +68,8 @@ def load_oasis_montaj_grid(fname):
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
         # Read grid
         grid = array.array(data_type, grd_file.read())
-    # Convert to numpy array
-    grid = np.array(grid)
+    # Convert to numpy array as float64
+    grid = np.array(grid, dtype=np.float64)
     # Remove dummy values
     grid = _remove_dummies(grid, data_type)
     # Scale the grid
@@ -288,8 +288,6 @@ def _remove_dummies(grid, data_type):
         "f": -1e32,
         "d": -1e32,
     }
-    # Convert grid to float
-    grid=grid.astype(float)
     if data_type in ("f", "d"):
         grid[grid <= dummies[data_type]] = np.nan
         return grid
