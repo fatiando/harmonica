@@ -108,6 +108,7 @@ class TestOasisMontajGrid:
             "om_short.grd",
             "om_long.grd",
             "om_double.grd",
+            "om_order.grd",
         ),
     )
     def test_simple_grid(self, grd_fname):
