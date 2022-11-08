@@ -61,4 +61,4 @@ following releases to ensure compatibility:
     * - **Python version**
       - **Last compatible release**
     * - 3.6
-      - 0.5.0
+      - 0.4.0
