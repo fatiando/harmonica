@@ -254,7 +254,7 @@ def _get_data_type(n_bytes_per_element, sign_flag):
     https://docs.python.org/3/library/array.html
     """
     # Check if number of bytes per element is valid
-    if n_bytes_per_element not in (1, 2, 4, 8):
+    if n_bytes_per_element not in (1, 2, 4, 8, 1024 + 1, 1024 + 2, 1024 + 4, 1024 + 8):
         raise NotImplementedError(
             "Found a 'Grid data element size' (a.k.a. 'ES') value "
             + f"of '{n_bytes_per_element}'. "
