@@ -14,12 +14,7 @@ import xarray as xr
 import xarray.testing as xrt
 
 from .. import load_oasis_montaj_grid
-from .._io.oasis_montaj_grd import (
-    _check_ordering,
-    _check_rotation,
-    _check_sign_flag,
-    _check_uncompressed_grid,
-)
+from .._io.oasis_montaj_grd import _check_ordering, _check_rotation, _check_sign_flag
 
 MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
@@ -74,26 +69,6 @@ def test_check_sign_flag_invalid():
         _check_sign_flag(3)
 
 
-@pytest.mark.parametrize("n_bytes_per_element", (1, 2, 4, 8))
-def test_check_uncompressed_grid_valid(n_bytes_per_element):
-    """
-    Test _check_uncompressed_grid with valid values
-    """
-    _check_uncompressed_grid(n_bytes_per_element)
-
-
-@pytest.mark.parametrize(
-    "n_bytes_per_element", (1024 + 1, 1024 + 2, 1024 + 4, 1024 + 8)
-)
-def test_check_uncompressed_grid_invalid(n_bytes_per_element):
-    """
-    Test _check_uncompressed_grid with invalid values
-    """
-    msg = "Compressed .grd files are not currently supported"
-    with pytest.raises(NotImplementedError, match=msg):
-        _check_uncompressed_grid(n_bytes_per_element)
-
-
 class TestOasisMontajGrid:
     """
     Test if load_oasis_montaj_grid reads grid properly
@@ -109,6 +84,7 @@ class TestOasisMontajGrid:
             "om_long.grd",
             "om_double.grd",
             "om_order.grd",
+            "om_compress.grd",
         ),
     )
     def test_simple_grid(self, grd_fname):

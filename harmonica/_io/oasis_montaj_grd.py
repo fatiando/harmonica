@@ -9,6 +9,7 @@ Function to read Oasis Montaj© .grd file
 """
 
 import array
+import zlib
 
 import numpy as np
 import xarray as xr
@@ -37,8 +38,8 @@ def load_oasis_montaj_grid(fname):
 
     .. important::
 
-        This function is not supporting compressed GRD files, rotated grids,
-        orderings different than ±1, or colour grids.
+        This function is not supporting orderings different than ±1,
+        or colour grids.
 
     Parameters
     ----------
@@ -63,11 +64,35 @@ def load_oasis_montaj_grid(fname):
         _check_ordering(header["ordering"])
         _check_rotation(header["rotation"])
         _check_sign_flag(header["sign_flag"])
-        _check_uncompressed_grid(header["n_bytes_per_element"])
         # Get data type for the grid elements
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
         # Read grid
-        grid = array.array(data_type, grd_file.read())
+        grid = grd_file.read()
+    # Check compressed data
+    if header["n_bytes_per_element"] > 1024:
+        # Number of blocks
+        nb = array.array("i", grid[8 : 8 + 4])
+        nb = np.array(nb)
+        # Number of vectors per block
+        vpm = array.array("i", grid[12 : 12 + 4])
+        vpm = np.array(vpm)
+        # File offset from start of every block
+        ob = array.array("q", grid[16 : 16 + nb[0] * 8])
+        ob = np.array(ob)
+        # Compressed size of every block
+        cbs = array.array("i", grid[16 + nb[0] * 8 : 16 + nb[0] * 8 + nb[0] * 4])
+        cbs = np.array(cbs)
+        # Combine grid
+        grid_com = b""
+        # Read each block
+        for i in range(0, nb[0]):
+            # Unexplained 16 byte header
+            grid_sub = zlib.decompress(
+                grid[ob[i] - 512 + 16 : cbs[i] + ob[i] - 512], bufsize=zlib.DEF_BUF_SIZE
+            )
+            grid_com = grid_com + grid_sub
+        grid = grid_com
+    grid = array.array(data_type, grid)
     # Convert to numpy array as float64
     grid = np.array(grid, dtype=np.float64)
     # Remove dummy values
@@ -220,21 +245,6 @@ def _check_sign_flag(sign_flag):
         )
 
 
-def _check_uncompressed_grid(n_bytes_per_element):
-    """
-    Check if the grid is uncompressed
-
-    If the grid is compressed, then the n_bytes_per_element gets an additional
-    1024.
-    """
-    if n_bytes_per_element >= 1024:
-        raise NotImplementedError(
-            "Found a 'Grid data element size' (a.k.a. 'ES') value "
-            + f"of '{n_bytes_per_element}'. "
-            "Compressed .grd files are not currently supported."
-        )
-
-
 def _get_data_type(n_bytes_per_element, sign_flag):
     """
     Return the data type for the grid values
@@ -251,24 +261,24 @@ def _get_data_type(n_bytes_per_element, sign_flag):
             "Only values equal to 1, 2, 4 or 8 are valid."
         )
     # Determine the data type of the grid elements
-    if n_bytes_per_element == 1:
+    if n_bytes_per_element in {1, 1 + 1024}:
         if sign_flag == 0:
             data_type = "B"  # unsigned char
         elif sign_flag == 1:
             data_type = "b"  # signed char
-    elif n_bytes_per_element == 2:
+    elif n_bytes_per_element in {2, 2 + 1024}:
         if sign_flag == 0:
             data_type = "H"  # unsigned short
         elif sign_flag == 1:
             data_type = "h"  # signed short
-    elif n_bytes_per_element == 4:
+    elif n_bytes_per_element in {4, 4 + 1024}:
         if sign_flag == 0:
             data_type = "I"  # unsigned int
         elif sign_flag == 1:
             data_type = "i"  # signed int
         elif sign_flag == 2:
             data_type = "f"  # float
-    elif n_bytes_per_element == 8:
+    elif n_bytes_per_element in {8, 8 + 1024}:
         data_type = "d"
     return data_type
 
