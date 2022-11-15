@@ -72,30 +72,10 @@ def load_oasis_montaj_grid(fname):
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
         # Read grid
         grid = grd_file.read()
-    # Check compressed data
+    # Decompress grid if needed
     if header["n_bytes_per_element"] > 1024:
-        # Number of blocks
-        nb = array.array("i", grid[8 : 8 + 4])
-        nb = np.array(nb)
-        # Number of vectors per block
-        vpm = array.array("i", grid[12 : 12 + 4])
-        vpm = np.array(vpm)
-        # File offset from start of every block
-        ob = array.array("q", grid[16 : 16 + nb[0] * 8])
-        ob = np.array(ob)
-        # Compressed size of every block
-        cbs = array.array("i", grid[16 + nb[0] * 8 : 16 + nb[0] * 8 + nb[0] * 4])
-        cbs = np.array(cbs)
-        # Combine grid
-        grid_com = b""
-        # Read each block
-        for i in range(0, nb[0]):
-            # Unexplained 16 byte header
-            grid_sub = zlib.decompress(
-                grid[ob[i] - 512 + 16 : cbs[i] + ob[i] - 512], bufsize=zlib.DEF_BUF_SIZE
-            )
-            grid_com = grid_com + grid_sub
-        grid = grid_com
+        grid = _decompress_grid(grid)
+    # Load the grid values as an array with the proper data_type
     grid = array.array(data_type, grid)
     # Convert to numpy array as float64
     grid = np.array(grid, dtype=np.float64)
@@ -310,6 +290,53 @@ def _remove_dummies(grid, data_type):
         grid[grid <= dummies[data_type]] = np.nan
         return grid
     grid[grid == dummies[data_type]] = np.nan
+    return grid
+
+
+def _decompress_grid(grid_compressed):
+    """
+    Decompress the grid using gzip
+
+    Even if the header specifies that the grid is compressed using a LZRW1
+    algorithm, it's using gzip instead. The first two 4 bytes sequences
+    correspond to the compression signature and
+    to the compression type. We are going to ignore those and start reading
+    from the number of blocks (offset 8).
+
+    Parameters
+    ----------
+    grid_compressed : bytes
+        Sequence of bytes corresponding to the compressed grid. They should be
+        every byte starting from offset 512 of the GRD file until its end.
+
+    Returns
+    -------
+    grid : bytes
+        Uncompressed version of the ``grid_compressed`` parameter.
+    """
+    # Number of blocks
+    (n_blocks,) = array.array("i", grid_compressed[8 : 8 + 4])
+    # Number of vectors per block
+    (vectors_per_block,) = array.array("i", grid_compressed[12 : 12 + 4])
+    # File offset from start of every block
+    (block_offset,) = array.array("q", grid_compressed[16 : 16 + n_blocks * 8])
+    # Compressed size of every block
+    (block_size,) = array.array(
+        "i",
+        grid_compressed[16 + n_blocks * 8 : 16 + n_blocks * 8 + n_blocks * 4],
+    )
+    # Combine grid
+    grid = b""
+    # Read each block
+    for i in range(n_blocks):
+        # Unexplained 16 byte header
+        start_offset = block_offset - 512 + 16
+        end_offset = block_size + block_offset - 512
+        grid_sub = zlib.decompress(
+            grid_compressed[start_offset:end_offset],
+            bufsize=zlib.DEF_BUF_SIZE,
+        )
+        grid += grid_sub
     return grid
 
 
