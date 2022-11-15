@@ -320,9 +320,9 @@ def _decompress_grid(grid_compressed):
     # Number of vectors per block
     (vectors_per_block,) = array.array("i", grid_compressed[12 : 12 + 4])
     # File offset from start of every block
-    (block_offset,) = array.array("q", grid_compressed[16 : 16 + n_blocks * 8])
+    block_offsets = array.array("q", grid_compressed[16 : 16 + n_blocks * 8])
     # Compressed size of every block
-    (block_size,) = array.array(
+    compressed_block_sizes = array.array(
         "i",
         grid_compressed[16 + n_blocks * 8 : 16 + n_blocks * 8 + n_blocks * 4],
     )
@@ -330,13 +330,17 @@ def _decompress_grid(grid_compressed):
     grid = b""
     # Read each block
     for i in range(n_blocks):
-        # Unexplained 16 byte header
-        start_offset = block_offset - 512 + 16
-        end_offset = block_size + block_offset - 512
+        # Define the start and end offsets for each compressed blocks
+        # We need to remove the 512 to account for the missing header.
+        # There is an unexplained 16 byte header that we also need to remove.
+        start_offset = block_offsets[i] - 512 + 16
+        end_offset = compressed_block_sizes[i] + block_offsets[i] - 512
+        # Decompress the block
         grid_sub = zlib.decompress(
             grid_compressed[start_offset:end_offset],
             bufsize=zlib.DEF_BUF_SIZE,
         )
+        # Add it to the running grid
         grid += grid_sub
     return grid
 
