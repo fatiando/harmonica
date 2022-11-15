@@ -14,6 +14,10 @@ import zlib
 import numpy as np
 import xarray as xr
 
+# Define the valid element sizes (ES variable) for GRD files
+# (values > 1024 correspond to compressed versions of the grid)
+VALID_ELEMENT_SIZES = (1, 2, 4, 8, 1024 + 1, 1024 + 2, 1024 + 4, 1024 + 8)
+
 
 def load_oasis_montaj_grid(fname):
     """
@@ -254,31 +258,35 @@ def _get_data_type(n_bytes_per_element, sign_flag):
     https://docs.python.org/3/library/array.html
     """
     # Check if number of bytes per element is valid
-    if n_bytes_per_element not in (1, 2, 4, 8, 1024 + 1, 1024 + 2, 1024 + 4, 1024 + 8):
+    if n_bytes_per_element not in VALID_ELEMENT_SIZES:
         raise NotImplementedError(
             "Found a 'Grid data element size' (a.k.a. 'ES') value "
             + f"of '{n_bytes_per_element}'. "
-            "Only values equal to 1, 2, 4 or 8 are valid."
+            "Only values equal to 1, 2, 4 and 8 are valid, "
+            + "along with their compressed counterparts (1025, 1026, 1028, 1032)."
         )
+    # Shift the n_bytes_per_element in case of compressed grids
+    if n_bytes_per_element > 1024:
+        n_bytes_per_element -= 1024
     # Determine the data type of the grid elements
-    if n_bytes_per_element in {1, 1 + 1024}:
+    if n_bytes_per_element == 1:
         if sign_flag == 0:
             data_type = "B"  # unsigned char
         elif sign_flag == 1:
             data_type = "b"  # signed char
-    elif n_bytes_per_element in {2, 2 + 1024}:
+    elif n_bytes_per_element == 2:
         if sign_flag == 0:
             data_type = "H"  # unsigned short
         elif sign_flag == 1:
             data_type = "h"  # signed short
-    elif n_bytes_per_element in {4, 4 + 1024}:
+    elif n_bytes_per_element == 4:
         if sign_flag == 0:
             data_type = "I"  # unsigned int
         elif sign_flag == 1:
             data_type = "i"  # signed int
         elif sign_flag == 2:
             data_type = "f"  # float
-    elif n_bytes_per_element in {8, 8 + 1024}:
+    elif n_bytes_per_element == 8:
         data_type = "d"
     return data_type
 
