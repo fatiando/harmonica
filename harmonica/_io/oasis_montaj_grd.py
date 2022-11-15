@@ -4,6 +4,9 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+# The support for compressed grids was inspired by the code in
+# https://github.com/Loop3D/geosoft_grid copyrighted by Loop3D and released
+# under the MIT License.
 """
 Function to read Oasis Montaj© .grd file
 """
@@ -70,6 +73,8 @@ def load_oasis_montaj_grid(fname):
     References
     ----------
     https://help.seequent.com/Oasis-montaj/9.9/en/Content/ss/glossary/grid_file_format__grd.htm
+
+    https://github.com/Loop3D/geosoft_grid
     """
     # Read the header and the grid array
     with open(fname, "rb") as grd_file:
