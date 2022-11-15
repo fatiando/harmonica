@@ -17,6 +17,17 @@ import xarray as xr
 # Define the valid element sizes (ES variable) for GRD files
 # (values > 1024 correspond to compressed versions of the grid)
 VALID_ELEMENT_SIZES = (1, 2, 4, 8, 1024 + 1, 1024 + 2, 1024 + 4, 1024 + 8)
+# Define dummy values for each data type
+DUMMIES = {
+    "b": -127,
+    "B": 255,
+    "h": -32767,
+    "H": 65535,
+    "i": -2147483647,
+    "I": 4294967295,
+    "f": -1e32,
+    "d": -1e32,
+}
 
 
 def load_oasis_montaj_grid(fname):
@@ -276,20 +287,10 @@ def _remove_dummies(grid, data_type):
     Replace dummy values for NaNs
     """
     # Create dictionary with dummy value for each data type
-    dummies = {
-        "b": -127,
-        "B": 255,
-        "h": -32767,
-        "H": 65535,
-        "i": -2147483647,
-        "I": 4294967295,
-        "f": -1e32,
-        "d": -1e32,
-    }
     if data_type in ("f", "d"):
-        grid[grid <= dummies[data_type]] = np.nan
+        grid[grid <= DUMMIES[data_type]] = np.nan
         return grid
-    grid[grid == dummies[data_type]] = np.nan
+    grid[grid == DUMMIES[data_type]] = np.nan
     return grid
 
 
