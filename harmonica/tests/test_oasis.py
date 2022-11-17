@@ -70,6 +70,7 @@ class TestOasisMontajGrid:
             "om_short.grd",
             "om_long.grd",
             "om_double.grd",
+            "om_byte.grd",
             "om_order.grd",
             "om_compress.grd",
         ),
@@ -83,6 +84,8 @@ class TestOasisMontajGrid:
         atol = self.atol
         if "short" in grd_fname:
             atol = 1e-3
+        if "byte" in grd_fname:
+            atol = 0.15
         xrt.assert_allclose(grid, self.expected_grid, atol=atol)
 
     def test_rotated_grid(self):
