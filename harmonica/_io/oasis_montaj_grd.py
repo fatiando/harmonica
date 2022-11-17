@@ -160,7 +160,7 @@ def _read_header(header_bytes):
     """
     header = {}
     # Read data storage
-    ES, SF, NE, NV, KX = array.array("i", header_bytes[0 : 16 + 4])  # noqa: N806
+    ES, SF, NE, NV, KX = array.array("i", header_bytes[0 : 5 * 4])  # noqa: N806
     header.update(
         {
             "n_bytes_per_element": ES,
@@ -171,7 +171,7 @@ def _read_header(header_bytes):
         }
     )
     # Read geographic info
-    DE, DV, X0, Y0, ROT = array.array("d", header_bytes[20 : 52 + 8])  # noqa: N806
+    DE, DV, X0, Y0, ROT = array.array("d", header_bytes[20 : 20 + 5 * 8])  # noqa: N806
     header.update(
         {
             "spacing_e": DE,
@@ -182,7 +182,7 @@ def _read_header(header_bytes):
         }
     )
     # Read data scaling
-    ZBASE, ZMULT = array.array("d", header_bytes[60 : 68 + 8])  # noqa: N806
+    ZBASE, ZMULT = array.array("d", header_bytes[60 : 60 + 2 * 8])  # noqa: N806
     header.update(
         {
             "base_value": ZBASE,
@@ -192,10 +192,10 @@ def _read_header(header_bytes):
     # Read optional parameters
     # (ignore map LABEL and MAPNO)
     PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array(  # noqa: N806
-        "i", header_bytes[140 : 156 + 4]
+        "i", header_bytes[140 : 140 + 5 * 4]
     )
     IZMIN, IZMAX, IZMED, IZMEA = array.array(  # noqa: N806
-        "f", header_bytes[160 : 172 + 4]
+        "f", header_bytes[160 : 160 + 4 * 4]
     )
     (ZVAR,) = array.array("d", header_bytes[176 : 176 + 8])  # noqa: N806
     (PRCS,) = array.array("i", header_bytes[184 : 184 + 4])  # noqa: N806
