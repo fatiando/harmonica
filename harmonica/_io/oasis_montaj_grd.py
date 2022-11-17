@@ -82,7 +82,6 @@ def load_oasis_montaj_grid(fname):
         header = _read_header(grd_file.read(512))
         # Check for valid flags
         _check_ordering(header["ordering"])
-        _check_rotation(header["rotation"])
         _check_sign_flag(header["sign_flag"])
         # Get data type for the grid elements
         data_type = _get_data_type(header["n_bytes_per_element"], header["sign_flag"])
@@ -110,12 +109,19 @@ def load_oasis_montaj_grid(fname):
         spacing = (header["spacing_e"], header["spacing_v"])
     grid = grid.reshape(shape, order=order)
     # Build coords
-    easting, northing = _build_coordinates(
-        header["x_origin"], header["y_origin"], shape, spacing
-    )
+    if header["rotation"] == 0:
+        easting, northing = _build_coordinates(
+            header["x_origin"], header["y_origin"], shape, spacing
+        )
+        dims = ("northing", "easting")
+        coords = {"easting": easting, "northing": northing}
+    else:
+        easting, northing = _build_rotated_coordinates(
+            header["x_origin"], header["y_origin"], shape, spacing, header["rotation"]
+        )
+        dims = ("y", "x")
+        coords = {"easting": (dims, easting), "northing": (dims, northing)}
     # Build an xarray.DataArray for the grid
-    dims = ("northing", "easting")
-    coords = {"easting": easting, "northing": northing}
     grid = xr.DataArray(
         grid,
         coords=coords,
@@ -219,17 +225,6 @@ def _check_ordering(ordering):
         raise NotImplementedError(
             f"Found an ordering (a.k.a as KX) equal to '{ordering}'. "
             + "Only orderings equal to 1 and -1 are supported."
-        )
-
-
-def _check_rotation(rotation):
-    """
-    Check if the rotation value is the one we are supporting
-    """
-    if rotation != 0:
-        raise NotImplementedError(
-            f"The grid is rotated '{rotation}' degrees. "
-            + "Only unrotated grids are supported."
         )
 
 
@@ -378,4 +373,50 @@ def _build_coordinates(west, south, shape, spacing):
     """
     easting = np.linspace(west, west + spacing[1] * (shape[1] - 1), shape[1])
     northing = np.linspace(south, south + spacing[0] * (shape[0] - 1), shape[0])
+    return easting, northing
+
+
+def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
+    """
+    Create the coordinates for a rotated grid
+
+    Generates 2d arrays for the easting and northing coordinates of the grid.
+    Assumes rotated grids.
+
+    Parameters
+    ----------
+    west : float
+        Westernmost coordinate of the grid.
+    south : float
+        Southernmost coordinate of the grid.
+    shape : tuple
+        Tuple of ints containing the number of elements along each unrotated
+        direction in the following order: ``n_y``, ``n_x``
+    spacing : tuple
+        Tuple of floats containing the distance between adjacent grid elements
+        along each unrotated direction in the following order: ``spacing_y``,
+        ``spacing_x``.
+
+    Returns
+    -------
+    easting : 2d-array
+        Array containing the values of the easting coordinates of the grid.
+    northing : 2d-array
+        Array containing the values of the northing coordinates of the grid.
+
+    Notes
+    -----
+    The ``x`` and ``y`` coordinates are the abscissa and the ordinate of the
+    unrotated grid before the translation, respectively.
+    """
+    # Define the grid coordinates before the rotation
+    x = np.linspace(0, spacing[1] * (shape[1] - 1), shape[1])
+    y = np.linspace(0, spacing[0] * (shape[0] - 1), shape[0])
+    # Compute a meshgrid
+    x, y = np.meshgrid(x, y)
+    # Rotate and shift to get easting and northing
+    cos = np.cos(np.radians(rotation_deg))
+    sin = np.sqrt(1 - cos**2)
+    easting = west + x * cos + y * sin
+    northing = south - x * sin + y * cos
     return easting, northing

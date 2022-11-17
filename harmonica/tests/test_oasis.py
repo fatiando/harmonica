@@ -9,12 +9,14 @@ Test function to read Oasis Montaj© .grd file
 """
 from pathlib import Path
 
+import numpy as np
+import numpy.testing as npt
 import pytest
 import xarray as xr
 import xarray.testing as xrt
 
 from .. import load_oasis_montaj_grid
-from .._io.oasis_montaj_grd import _check_ordering, _check_rotation, _check_sign_flag
+from .._io.oasis_montaj_grd import _check_ordering, _check_sign_flag
 
 MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
@@ -35,22 +37,6 @@ def test_check_ordering_invalid(ordering):
     """
     with pytest.raises(NotImplementedError, match="Found an ordering"):
         _check_ordering(ordering)
-
-
-def test_check_rotation_valid():
-    """
-    Test _check_rotation with valid value
-    """
-    _check_rotation(0)
-
-
-@pytest.mark.parametrize("rotation", (-60, 30, 90))
-def test_check_rotation_invalid(rotation):
-    """
-    Test _check_rotation with invalid values
-    """
-    with pytest.raises(NotImplementedError, match="The grid is rotated"):
-        _check_rotation(rotation)
 
 
 @pytest.mark.parametrize("sign_flag", (0, 1, 2))
@@ -75,6 +61,7 @@ class TestOasisMontajGrid:
     """
 
     expected_grid = xr.load_dataarray(TEST_DATA_DIR / "om_expected.nc")
+    atol = 1e-8
 
     @pytest.mark.parametrize(
         "grd_fname",
@@ -93,7 +80,27 @@ class TestOasisMontajGrid:
         """
         fname = TEST_DATA_DIR / grd_fname
         grid = load_oasis_montaj_grid(fname)
-        atol = 1e-8
+        atol = self.atol
         if "short" in grd_fname:
             atol = 1e-3
         xrt.assert_allclose(grid, self.expected_grid, atol=atol)
+
+    def test_rotated_grid(self):
+        """
+        Test loading a rotated grid
+        """
+        fname = TEST_DATA_DIR / "om_rotate.grd"
+        grid = load_oasis_montaj_grid(fname)
+        # Check if the rotation angle was correctly read
+        assert grid.attrs["rotation"] == -30
+        # Check if the values in the grid are the same as the expected grid
+        npt.assert_allclose(grid.values, self.expected_grid, atol=self.atol)
+        # Check origin of the rotated coordinates
+        npt.assert_allclose(grid.easting[0, 0], grid.attrs["x_origin"])
+        npt.assert_allclose(grid.northing[0, 0], grid.attrs["y_origin"])
+        # Check if we can recover the rotation angle from the coordinates
+        west, east = grid.easting[:, 0], grid.easting[:, -1]
+        south, north = grid.northing[:, 0], grid.northing[:, -1]
+        npt.assert_allclose(
+            grid.rotation, np.degrees(np.arctan((north - south) / (east - west)))
+        )
