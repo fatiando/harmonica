@@ -194,7 +194,7 @@ That's how we all improve and we are happy to help others learn.
     :maxdepth: 1
     :caption: Community
 
-    Join the community <http://contact.fatiando.org>
+    Join the community <https://www.fatiando.org/contact>
     How to contribute <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>
     Code of Conduct <https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md>
     Source code on GitHub <https://github.com/fatiando/harmonica>
