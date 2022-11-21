@@ -7,6 +7,7 @@ Which Python?
 -------------
 
 You'll need **Python 3.7 or greater**.
+See :ref:`python-versions` if you require support for older versions.
 
 We recommend using the
 `Anaconda Python distribution <https://www.anaconda.com/download>`__
@@ -22,6 +23,11 @@ Dependencies
 The required dependencies should be installed automatically when you install
 Harmonica using ``conda`` or ``pip``. Optional dependencies have to be
 installed manually.
+
+.. note::
+
+    See :ref:`dependency-versions` for the our policy of oldest supported
+    versions of each dependency.
 
 Required:
 
