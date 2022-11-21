@@ -181,7 +181,7 @@ def gaussian_lowpass(grid, wavelength):
 
     Returns
     -------
-    upward continuation : :class:`xarray.DataArray`
+    gaussian lowpass : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` after gaussian low-pass of the passed
         ``grid``.
 
@@ -216,7 +216,7 @@ def gaussian_highpass(grid, wavelength):
 
     Returns
     -------
-    upward continuation : :class:`xarray.DataArray`
+    gaussian highpass : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` after gaussian high-pass of the passed
         ``grid``.
 
@@ -325,4 +325,4 @@ def pseudo_gravity(grid, i=90, d=0, im=None, dm=None, f=50000):
     --------
     harmonica.filters.pseudo_gravity_kernel
     """
-    return apply_filter(grid, pseudo_gravity_kernel, i=i, d=d, im=im, dm=dm) / 149.8 / f
+    return apply_filter(grid, pseudo_gravity_kernel, i=i, d=d, im=im, dm=dm, f=f)

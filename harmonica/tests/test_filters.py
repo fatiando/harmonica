@@ -14,7 +14,16 @@ import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
 from ..filters._fft import fft, ifft
-from ..filters._filters import derivative_upward_kernel
+from ..filters._filters import (
+    derivative_easting_kernel,
+    derivative_northing_kernel,
+    derivative_upward_kernel,
+    gaussian_highpass_kernel,
+    gaussian_lowpass_kernel,
+    pseudo_gravity_kernel,
+    reduction_to_pole_kernel,
+    upward_continuation_kernel,
+)
 from ..filters._utils import apply_filter
 
 
@@ -245,4 +254,157 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected, derivative_upward_kernel(sample_fft_grid, order=order)
+    )
+
+
+@pytest.mark.parametrize("order", (1, 2, 3))
+def test_derivative_easting_kernel(sample_fft_grid, order):
+    """
+    Check if derivative_easting_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    expected = (k_easting * 1j) ** order
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, derivative_easting_kernel(sample_fft_grid, order=order)
+    )
+
+
+@pytest.mark.parametrize("order", (1, 2, 3))
+def test_derivative_northing_kernel(sample_fft_grid, order):
+    """
+    Check if derivative_northing_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = (k_northing * 1j) ** order
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, derivative_northing_kernel(sample_fft_grid, order=order)
+    )
+
+
+@pytest.mark.parametrize("height", (-10, -100, -1000))
+def test_upward_continuation_kernel(sample_fft_grid, height):
+    """
+    Check if upward_continuation_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = np.exp(np.sqrt(k_easting ** 2 + k_northing ** 2) * height)
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, upward_continuation_kernel(sample_fft_grid, height=height)
+    )
+
+
+@pytest.mark.parametrize("wavelength", (10, 100, 1000))
+def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength):
+    """
+    Check if gaussian_lowpass_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = np.exp(
+        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+    )
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, gaussian_lowpass_kernel(sample_fft_grid, wavelength=wavelength)
+    )
+
+
+@pytest.mark.parametrize("wavelength", (10, 100, 1000))
+def test_gaussian_highpass_kernel(sample_fft_grid, wavelength):
+    """
+    Check if gaussian_highpass_kernel works as expected
+    """
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = np.exp(
+        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+    )
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, gaussian_highpass_kernel(sample_fft_grid, wavelength=wavelength)
+    )
+
+
+@pytest.mark.parametrize(i=60, d=45, im=45, dm=50)
+def test_reduction_to_pole_kernel(sample_fft_grid, i, d, im, dm):
+    """
+    Check if reduction_to_pole_kernel works as expected
+    """
+    # Transform degree to rad
+    [i, d] = np.deg2rad([i, d])
+
+    if dm is None or im is None:
+        [im, dm] = [i, d]
+    else:
+        [im, dm] = np.deg2rad([im, dm])
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = (k_northing ** 2 + k_easting ** 2) / (
+        (
+            1j
+            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
+            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+        )
+        * (
+            1j
+            * (
+                np.cos(im) * np.sin(dm) * k_easting
+                + np.cos(im) * np.cos(dm) * k_northing
+            )
+            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+        )
+    )
+    expected = np.nan_to_num(expected, posinf=0, nan=0)
+
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(expected, reduction_to_pole_kernel(sample_fft_grid, i=60, d=45))
+
+
+@pytest.mark.parametrize(i=60, d=45, im=45, dm=50, f=50)
+def test_pseudo_gravity_kernel(sample_fft_grid, i, d, im, dm, f):
+    """
+    Check if pseudo_gravity_kernel works as expected
+    """
+    # Transform degree to rad
+    [i, d] = np.deg2rad([i, d])
+
+    if dm is None or im is None:
+        [im, dm] = [i, d]
+    else:
+        [im, dm] = np.deg2rad([im, dm])
+    # Calculate expected outcome
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = (k_northing ** 2 + k_easting ** 2) / (
+        (
+            1j
+            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
+            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+        )
+        * (
+            1j
+            * (
+                np.cos(im) * np.sin(dm) * k_easting
+                + np.cos(im) * np.cos(dm) * k_northing
+            )
+            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+        )
+    )
+    expected = expected * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
+
+    expected = np.nan_to_num(expected, posinf=0, nan=0) / 149.8 / f
+
+    # Check if the filter returns the expected output
+    xrt.assert_allclose(
+        expected, pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, f=50)
     )

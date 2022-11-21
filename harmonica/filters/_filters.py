@@ -513,7 +513,7 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for reduction to pole in frequency domain
-    da_filter = np.sqrt(k_northing ** 2 + k_easting ** 2) / (
+    da_filter = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
             * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
