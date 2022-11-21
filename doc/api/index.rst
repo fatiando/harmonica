@@ -60,7 +60,9 @@ Forward modelling
     prism_gravity
     tesseroid_gravity
     prism_layer
+    tesseroid_layer
     DatasetAccessorPrismLayer
+    DatasetAccessorTesseroidLayer
 
 Isostatic Moho
 --------------
