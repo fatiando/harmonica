@@ -430,7 +430,7 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     )
 
     # Deal with inf and nan value
-    da_filter = np.nan_to_num(da_filter, posinf=0, nan=0)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
     return da_filter
 
 
@@ -532,6 +532,6 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     # Combine with vertical intergral
     da_filter = da_filter * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
     # Deal with inf and nan value
-    da_filter = np.nan_to_num(da_filter, posinf=0, nan=0)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
 
     return da_filter / 149.8 / f
