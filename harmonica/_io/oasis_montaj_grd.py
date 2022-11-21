@@ -415,8 +415,8 @@ def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
     # Compute a meshgrid
     x, y = np.meshgrid(x, y)
     # Rotate and shift to get easting and northing
-    cos = np.cos(np.radians(rotation_deg))
-    sin = np.sqrt(1 - cos**2)
-    easting = west + x * cos + y * sin
-    northing = south - x * sin + y * cos
+    rotation_rad = np.radians(rotation_deg)
+    cos, sin = np.cos(rotation_rad), np.sin(rotation_rad)
+    easting = west + x * cos - y * sin
+    northing = south + x * sin + y * cos
     return easting, northing
