@@ -363,7 +363,7 @@ def test_reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50):
             + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
     )
-    expected = np.nan_to_num(expected, posinf=0, nan=0)
+    expected.data = np.nan_to_num(expected.data, posinf=0, nan=0)
 
     # Check if the filter returns the expected output
     xrt.assert_allclose(
@@ -402,7 +402,7 @@ def test_pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50):
     )
     expected = expected * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
 
-    expected = np.nan_to_num(expected, posinf=0, nan=0) / 149.8 / f
+    expected.data = np.nan_to_num(expected.data, posinf=0, nan=0) / 149.8 / f
 
     # Check if the filter returns the expected output
     xrt.assert_allclose(
