@@ -325,7 +325,7 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength):
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.exp(
+    expected = 1 - np.exp(
         -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
     )
     # Check if the filter returns the expected output
@@ -366,7 +366,9 @@ def test_reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50):
     expected = np.nan_to_num(expected, posinf=0, nan=0)
 
     # Check if the filter returns the expected output
-    xrt.assert_allclose(expected, reduction_to_pole_kernel(sample_fft_grid, i=60, d=45))
+    xrt.assert_allclose(
+        expected, reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50)
+    )
 
 
 def test_pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50):
@@ -404,5 +406,5 @@ def test_pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50):
 
     # Check if the filter returns the expected output
     xrt.assert_allclose(
-        expected, pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, f=50)
+        expected, pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50)
     )
