@@ -334,8 +334,7 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength):
     )
 
 
-@pytest.mark.parametrize(i=60, d=45, im=45, dm=50)
-def test_reduction_to_pole_kernel(sample_fft_grid, i, d, im, dm):
+def test_reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50):
     """
     Check if reduction_to_pole_kernel works as expected
     """
@@ -370,8 +369,7 @@ def test_reduction_to_pole_kernel(sample_fft_grid, i, d, im, dm):
     xrt.assert_allclose(expected, reduction_to_pole_kernel(sample_fft_grid, i=60, d=45))
 
 
-@pytest.mark.parametrize(i=60, d=45, im=45, dm=50, f=50)
-def test_pseudo_gravity_kernel(sample_fft_grid, i, d, im, dm, f):
+def test_pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50):
     """
     Check if pseudo_gravity_kernel works as expected
     """
