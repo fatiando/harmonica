@@ -13,7 +13,7 @@ import numpy as np
 import pytest
 from verde import scatter_points
 
-from ..equivalent_sources.utils import cast_fit_input, pop_extra_coords
+from .._equivalent_sources.utils import cast_fit_input, pop_extra_coords
 
 
 def test_pop_extra_coords():

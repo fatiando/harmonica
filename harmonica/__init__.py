@@ -8,9 +8,9 @@
 # Import functions/classes to make the public API
 from . import datasets, synthetic
 from ._version import __version__
-from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
-from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
-from .equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
+from ._equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
+from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
+from ._equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
 from .forward.point import point_gravity
 from .forward.prism import prism_gravity
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
