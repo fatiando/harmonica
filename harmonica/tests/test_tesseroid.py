@@ -14,14 +14,14 @@ import pytest
 from verde import grid_coordinates
 
 from ..constants import GRAVITATIONAL_CONST
-from ..forward._tesseroid_utils import (
+from .._forward._tesseroid_utils import (
     _discard_null_tesseroids,
     _distance_tesseroid_point,
     _longitude_continuity,
     _split_tesseroid,
     _tesseroid_dimensions,
 )
-from ..forward.tesseroid import (
+from .._forward.tesseroid import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,

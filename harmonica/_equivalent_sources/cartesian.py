@@ -15,7 +15,7 @@ import verde.base as vdb
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
 
-from ..forward.utils import distance_cartesian
+from .._forward.utils import distance_cartesian
 from .utils import (
     cast_fit_input,
     jacobian_numba_parallel,

@@ -15,7 +15,7 @@ import verde.base as vdb
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
 
-from ..forward.utils import distance_spherical
+from .._forward.utils import distance_spherical
 from .utils import (
     jacobian_numba_parallel,
     jacobian_numba_serial,
