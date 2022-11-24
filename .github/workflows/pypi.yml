@@ -67,7 +67,7 @@ jobs:
 
       - name: Build source and wheel distributions
         run: |
-          build
+          make build
           echo ""
           echo "Generated files:"
           ls -lh dist/
