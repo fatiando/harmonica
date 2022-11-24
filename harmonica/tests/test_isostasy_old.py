@@ -12,7 +12,7 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..isostasy import isostasy_airy
+from .. import isostasy_airy
 
 
 def test_deprecation_warning():

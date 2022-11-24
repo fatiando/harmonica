@@ -19,6 +19,7 @@ try:
 except ImportError:
     ProgressBar = None
 
+from .. import bouguer_correction
 from .._forward.prism import (
     _check_prisms,
     _discard_null_prisms,
@@ -26,7 +27,6 @@ from .._forward.prism import (
     safe_atan2,
     safe_log,
 )
-from ..gravity_corrections import bouguer_correction
 from .utils import run_only_with_numba
 
 

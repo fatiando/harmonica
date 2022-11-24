@@ -16,10 +16,10 @@ from ._forward.prism import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
-from .gravity_corrections import bouguer_correction
+from ._gravity_corrections import bouguer_correction
 from .io import load_icgem_gdf
-from .isostasy import isostasy_airy, isostatic_moho_airy
-from .transformations import derivative_upward
+from ._isostasy import isostasy_airy, isostatic_moho_airy
+from ._transformations import derivative_upward
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
