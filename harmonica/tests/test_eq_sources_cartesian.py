@@ -17,7 +17,7 @@ import verde as vd
 import verde.base as vdb
 import xarray.testing as xrt
 
-from .. import EQLHarmonic, EquivalentSources, point_gravity
+from .. import EquivalentSources, point_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
 from ..equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba
@@ -406,32 +406,6 @@ def test_equivalent_sources_cartesian_parallel(coordinates, data):
     grid_serial = eqs_serial.grid(coordinates)
     grid_parallel = eqs_parallel.grid(coordinates)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
-
-
-@pytest.mark.parametrize("depth_type", ("constant", "relative"))
-def test_backward_eqlharmonic(region, coordinates_small, data_small, depth_type):
-    """
-    Check backward compatibility with to-be-deprecated EQLHarmonic class
-
-    Check if FutureWarning is raised on initialization
-    """
-    # Fit EquivalentSources instance
-    eqs = EquivalentSources(depth=1.3e3, depth_type=depth_type)
-    eqs.fit(coordinates_small, data_small)
-
-    # Fit deprecated EQLHarmonic instance
-    # (check if FutureWarning is raised)
-    with warnings.catch_warnings(record=True) as warn:
-        eql_harmonic = EQLHarmonic(depth=1.3e3, depth_type=depth_type)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, FutureWarning)
-    eql_harmonic.fit(coordinates_small, data_small)
-
-    # Check if both gridders are equivalent
-    npt.assert_allclose(eqs.points_, eql_harmonic.points_)
-    shape = (8, 8)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=2e3)
-    xrt.assert_allclose(eqs.grid(grid_coords), eql_harmonic.grid(grid_coords))
 
 
 @run_only_with_numba
