@@ -7,13 +7,11 @@
 """
 Test the EquivalentSourcesSph gridder
 """
-import warnings
 
 import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
-import xarray.testing as xrt
 
 from .. import EquivalentSourcesSph, point_gravity
 from .utils import run_only_with_numba

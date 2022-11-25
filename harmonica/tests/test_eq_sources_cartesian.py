@@ -15,7 +15,6 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 import verde.base as vdb
-import xarray.testing as xrt
 
 from .. import EquivalentSources, point_gravity
 from ..equivalent_sources.cartesian import greens_func_cartesian
