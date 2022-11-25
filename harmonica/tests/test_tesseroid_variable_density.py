@@ -16,13 +16,13 @@ from verde import grid_coordinates
 import harmonica
 
 from .. import tesseroid_gravity
-from ..constants import GRAVITATIONAL_CONST
 from .._forward._tesseroid_variable_density import (
     _density_based_discretization,
     density_minmax,
     maximum_absolute_diff,
     straight_line,
 )
+from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a

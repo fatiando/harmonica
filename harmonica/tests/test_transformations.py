@@ -12,7 +12,7 @@ import pytest
 import verde as vd
 import xrft
 
-from .. import point_gravity, derivative_upward
+from .. import derivative_upward, point_gravity
 from .utils import root_mean_square_error
 
 

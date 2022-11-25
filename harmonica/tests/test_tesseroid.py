@@ -13,7 +13,6 @@ import numpy.testing as npt
 import pytest
 from verde import grid_coordinates
 
-from ..constants import GRAVITATIONAL_CONST
 from .._forward._tesseroid_utils import (
     _discard_null_tesseroids,
     _distance_tesseroid_point,
@@ -29,6 +28,7 @@ from .._forward.tesseroid import (
     _check_tesseroids,
     tesseroid_gravity,
 )
+from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
 
 # Define the accuracy threshold for tesseroids (0.1%) as a

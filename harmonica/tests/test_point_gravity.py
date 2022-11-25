@@ -15,9 +15,9 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from ..constants import GRAVITATIONAL_CONST
 from .._forward.point import point_gravity
 from .._forward.utils import distance_cartesian
+from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
 
 MODULE_DIR = Path(os.path.dirname(__file__))

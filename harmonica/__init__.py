@@ -7,7 +7,6 @@
 #
 # Import functions/classes to make the public API
 from . import datasets, synthetic
-from ._version import __version__
 from ._equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EQLHarmonicSpherical, EquivalentSourcesSph
@@ -17,9 +16,10 @@ from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
-from .io import load_icgem_gdf
 from ._isostasy import isostasy_airy, isostatic_moho_airy
 from ._transformations import derivative_upward
+from ._version import __version__
+from .io import load_icgem_gdf
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
