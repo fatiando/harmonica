@@ -381,7 +381,6 @@ def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
     Create the coordinates for a rotated grid
 
     Generates 2d arrays for the easting and northing coordinates of the grid.
-    Assumes rotated grids.
 
     Parameters
     ----------
@@ -396,6 +395,9 @@ def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
         Tuple of floats containing the distance between adjacent grid elements
         along each unrotated direction in the following order: ``spacing_y``,
         ``spacing_x``.
+    rotation_deg : float
+        Grid rotation angle in degrees. Defined relative to the co-ordinate
+        system axis and counter clockwise.
 
     Returns
     -------
