@@ -9,5 +9,5 @@ flake8-functions==0.0.6
 flake8-mutable==1.2.*
 flake8-rst-docstrings==0.2.*
 flake8-simplify==0.14.*
-flake8-unused-arguments==0.0.9
+flake8-unused-arguments==0.0.12
 pep8-naming==0.12.*
