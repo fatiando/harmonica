@@ -346,7 +346,7 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     Filter for reduction to the pole in frequency domain
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for computing the upward derivative. The filter is built upon the
+    filter for applying a reduction to the pole on magnetic data. The filter is built upon the
     frequency coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
