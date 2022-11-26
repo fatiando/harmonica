@@ -227,8 +227,8 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
     r"""
     Filter for gaussian low-pass in frequency domain
 
-    Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for computing the northing derivative. The filter is built upon the
+    Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass filter the frequency domain.
+    The filter is built upon the
     frequency coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
