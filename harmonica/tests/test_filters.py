@@ -286,17 +286,20 @@ def test_derivative_northing_kernel(sample_fft_grid, order):
 
 
 @pytest.mark.parametrize("height", (-10, -100, -1000))
-def test_upward_continuation_kernel(sample_fft_grid, height):
+def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     """
     Check if upward_continuation_kernel works as expected
     """
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.exp(np.sqrt(k_easting ** 2 + k_northing ** 2) * height)
+    expected = np.exp(-np.sqrt(k_easting ** 2 + k_northing ** 2) * height_displacement)
     # Check if the filter returns the expected output
     xrt.assert_allclose(
-        expected, upward_continuation_kernel(sample_fft_grid, height=height)
+        expected,
+        upward_continuation_kernel(
+            sample_fft_grid, height_displacement=height_displacement
+        ),
     )
 
 
@@ -334,77 +337,117 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength):
     )
 
 
-def test_reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50):
+def test_reduction_to_pole_kernel(
+    sample_fft_grid,
+    inclination=60,
+    declination=45,
+    magnetization_inclination=45,
+    magnetization_declination=50,
+):
     """
     Check if reduction_to_pole_kernel works as expected
     """
     # Transform degree to rad
-    [i, d] = np.deg2rad([i, d])
-
-    if dm is None or im is None:
-        [im, dm] = [i, d]
-    else:
-        [im, dm] = np.deg2rad([im, dm])
+    [inclination, declination] = np.deg2rad([inclination, declination])
+    [magnetization_inclination, magnetization_declination] = np.deg2rad(
+        [magnetization_inclination, magnetization_declination]
+    )
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
-            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
-            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * (
+                np.cos(inclination) * np.sin(declination) * k_easting
+                + np.cos(inclination) * np.cos(declination) * k_northing
+            )
+            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
         * (
             1j
             * (
-                np.cos(im) * np.sin(dm) * k_easting
-                + np.cos(im) * np.cos(dm) * k_northing
+                np.cos(magnetization_inclination)
+                * np.sin(magnetization_declination)
+                * k_easting
+                + np.cos(magnetization_inclination)
+                * np.cos(magnetization_declination)
+                * k_northing
             )
-            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(magnetization_inclination)
+            * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
     )
-    expected.data = np.nan_to_num(expected.data, posinf=0, nan=0)
+    expected.data = np.nan_to_num(expected.data, posinf=1, nan=1)
 
     # Check if the filter returns the expected output
     xrt.assert_allclose(
-        expected, reduction_to_pole_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50)
+        expected,
+        reduction_to_pole_kernel(
+            sample_fft_grid,
+            inclination=60,
+            declination=45,
+            magnetization_inclination=45,
+            magnetization_declination=50,
+        ),
     )
 
 
-def test_pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50):
+def test_pseudo_gravity_kernel(
+    sample_fft_grid,
+    inclination=60,
+    declination=45,
+    magnetization_inclination=45,
+    magnetization_declination=50,
+    f=50,
+):
     """
     Check if pseudo_gravity_kernel works as expected
     """
     # Transform degree to rad
-    [i, d] = np.deg2rad([i, d])
-
-    if dm is None or im is None:
-        [im, dm] = [i, d]
-    else:
-        [im, dm] = np.deg2rad([im, dm])
+    [inclination, declination] = np.deg2rad([inclination, declination])
+    [magnetization_inclination, magnetization_declination] = np.deg2rad(
+        [magnetization_inclination, magnetization_declination]
+    )
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
-            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
-            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * (
+                np.cos(inclination) * np.sin(declination) * k_easting
+                + np.cos(inclination) * np.cos(declination) * k_northing
+            )
+            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
         * (
             1j
             * (
-                np.cos(im) * np.sin(dm) * k_easting
-                + np.cos(im) * np.cos(dm) * k_northing
+                np.cos(magnetization_inclination)
+                * np.sin(magnetization_declination)
+                * k_easting
+                + np.cos(magnetization_inclination)
+                * np.cos(magnetization_declination)
+                * k_northing
             )
-            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(magnetization_inclination)
+            * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
     )
     expected = expected * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
 
-    expected.data = np.nan_to_num(expected.data, posinf=0, nan=0) / 149.8 / f
+    expected.data = np.nan_to_num(expected.data, posinf=1, nan=1) / 149.8 / f
 
     # Check if the filter returns the expected output
     xrt.assert_allclose(
-        expected, pseudo_gravity_kernel(sample_fft_grid, i=60, d=45, im=45, dm=50, f=50)
+        expected,
+        pseudo_gravity_kernel(
+            sample_fft_grid,
+            inclination=60,
+            declination=45,
+            magnetization_inclination=45,
+            magnetization_declination=50,
+            f=50,
+        ),
     )

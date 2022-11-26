@@ -126,7 +126,7 @@ def derivative_northing(grid, order=1):
     return apply_filter(grid, derivative_northing_kernel, order=order)
 
 
-def upward_continuation(grid, height):
+def upward_continuation(grid, height_displacement):
     """
     Calculate the upward continuation of a potential field grid
 
@@ -140,9 +140,10 @@ def upward_continuation(grid, height):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
-    height : float
-        The height of upward continuation. Value should be negative. Its units
-        are the same units of the ``grid``.
+    height_displacement : float
+        The height displacement of upward continuation. For upward
+        continuation, the height displacement should be positive. Its units
+        are the same units of the ``grid`` coordinates.
 
     Returns
     -------
@@ -158,7 +159,9 @@ def upward_continuation(grid, height):
     --------
     harmonica.filters.upward_continuation_kernel
     """
-    return apply_filter(grid, upward_continuation_kernel, height=height)
+    return apply_filter(
+        grid, upward_continuation_kernel, height_displacement=height_displacement
+    )
 
 
 def gaussian_lowpass(grid, wavelength):
@@ -177,7 +180,7 @@ def gaussian_lowpass(grid, wavelength):
         same units.
     wavelength : float
         The cutoff wavelength in low-pass filter. Its units are the same units
-        of the ``grid``.
+        of the ``grid`` coordinates.
 
     Returns
     -------
@@ -212,7 +215,7 @@ def gaussian_highpass(grid, wavelength):
         same units.
     wavelength : float
         The cutoff wavelength in high-pass filter. Its units are the same
-        units of the ``grid``.
+        units of the ``grid`` coordinates.
 
     Returns
     -------
@@ -231,7 +234,13 @@ def gaussian_highpass(grid, wavelength):
     return apply_filter(grid, gaussian_highpass_kernel, wavelength=wavelength)
 
 
-def reduction_to_pole(grid, i, d, im=None, dm=None):
+def reduction_to_pole(
+    grid,
+    inclination,
+    declination,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+):
     """
     Calculate the reduction to the pole of a magnetic field grid
 
@@ -245,15 +254,15 @@ def reduction_to_pole(grid, i, d, im=None, dm=None):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
-    i : float in degrees
+    inclination : float in degrees
         The inclination inducing Geomagnetic field.
-    d : float in degrees
+    declination : float in degrees
         The declination inducing Geomagnetic field.
-    im : float in degrees
+    magnetization_inclination : float in degrees
         The inclination of the total magnetization of the anomaly source.
         Default is i, neglecting remanent magnetization and
         self demagnetization.
-    dm : float in degrees
+    magnetization_declination : float in degrees
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
@@ -272,10 +281,24 @@ def reduction_to_pole(grid, i, d, im=None, dm=None):
     --------
     harmonica.filters.reduction_to_pole_kernel
     """
-    return apply_filter(grid, reduction_to_pole_kernel, i=i, d=d, im=im, dm=dm)
+    return apply_filter(
+        grid,
+        reduction_to_pole_kernel,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=magnetization_inclination,
+        magnetization_declination=magnetization_declination,
+    )
 
 
-def pseudo_gravity(grid, i=90, d=0, im=None, dm=None, f=50000):
+def pseudo_gravity(
+    grid,
+    inclination=90,
+    declination=0,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+    f=50000,
+):
     """
     Calculate the pseudo gravity of a magnetic field grid
 
@@ -289,17 +312,15 @@ def pseudo_gravity(grid, i=90, d=0, im=None, dm=None, f=50000):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
-    i : float in degrees
-        The inclination inducing Geomagnetic field. Default is 90 degree for
-        RTP field.
-    d : float in degrees
-        The declination inducing Geomagnetic field. Default is 0 degree for
-        RTP field.
-    im : float in degrees
+    inclination : float in degrees
+        The inclination inducing Geomagnetic field.
+    declination : float in degrees
+        The declination inducing Geomagnetic field.
+    magnetization_inclination : float in degrees
         The inclination of the total magnetization of the anomaly source.
         Default is i, neglecting remanent magnetization and
         self demagnetization.
-    dm : float in degrees
+    magnetization_declination : float in degrees
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
@@ -325,4 +346,12 @@ def pseudo_gravity(grid, i=90, d=0, im=None, dm=None, f=50000):
     --------
     harmonica.filters.pseudo_gravity_kernel
     """
-    return apply_filter(grid, pseudo_gravity_kernel, i=i, d=d, im=im, dm=dm, f=f)
+    return apply_filter(
+        grid,
+        pseudo_gravity_kernel,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=magnetization_inclination,
+        magnetization_declination=magnetization_declination,
+        f=f,
+    )

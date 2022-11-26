@@ -168,7 +168,7 @@ def derivative_northing_kernel(fft_grid, order=1):
     return da_filter
 
 
-def upward_continuation_kernel(fft_grid, height):
+def upward_continuation_kernel(fft_grid, height_displacement):
     r"""
     Filter for upward continuation in frequency domain
 
@@ -178,11 +178,12 @@ def upward_continuation_kernel(fft_grid, height):
 
     .. math::
 
-        g(\mathbf{k}) = e^{|\mathbf{k}| ^ h}
+        g(\mathbf{k}) = e^{-|\mathbf{k}| \Delta h}
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector) and :math:`h` is the height of the upward continuation.
+    frequency vector) and :math:`\Delta h` is the height displacement of the
+    upward continuation.
 
     Parameters
     ----------
@@ -192,9 +193,10 @@ def upward_continuation_kernel(fft_grid, height):
         *freq_northing*, *freq_easting*.
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
-    height : float
-        The height of upward continuation. Value should be negative. It has the
-        same units as the input xarray data.
+    height_displacement : float
+        The height displacement of upward continuation. For upward
+        continuation, the height displacement should be positive.
+        It has the same units as the input xarray data coordinates.
 
     Returns
     -------
@@ -219,7 +221,7 @@ def upward_continuation_kernel(fft_grid, height):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for upward continuation in frequency domain
-    da_filter = np.exp(np.sqrt(k_easting ** 2 + k_northing ** 2) * height)
+    da_filter = np.exp(-np.sqrt(k_easting ** 2 + k_northing ** 2) * height_displacement)
     return da_filter
 
 
@@ -227,18 +229,19 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
     r"""
     Filter for gaussian low-pass in frequency domain
 
-    Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass filter the frequency domain.
+    Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass
+    filter the frequency domain.
     The filter is built upon the
     frequency coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
 
-        g(\mathbf{k}) = e^\frac{-|\mathbf{k}| ^ 2}{k_\text{cutoff}^2}
+        g(\mathbf{k}) = e^\frac{-|\mathbf{k}| ^ 2}{2k_\text{cutoff}^2}
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
     frequency vector) and :math:`k_\text{cutoff}` is the cutoff wavenumber:
-    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`, 
+    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`,
     where :math:`\lambda_\text{cutoff}` is the cutoff wavelength.
 
     Parameters
@@ -251,7 +254,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
         compute the Fourier Transform and its inverse, respectively.
     wavelength : float
         The cutoff wavelength in low-pass filter. It has the same units as the
-        input xarray data.
+        input xarray data coordinates.
 
     Returns
     -------
@@ -292,13 +295,13 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
 
     .. math::
 
-        g(\mathbf{k}) = 1-e^\frac{-|\mathbf{k}| ^ 2}{(2\mathbf{kw})^2}
+        g(\mathbf{k}) = 1-e^\frac{-|\mathbf{k}| ^ 2}{2k_\text{cutoff}^2}
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector) and `\mathbf{kw}` is the wavenumber of the cutoff
-    wavelength
-    :math:`\mathbf{w}` (:math:`\mathbf{kw} = \frac{2\pi} {\mathbf{w}}`).
+    frequency vector) and :math:`k_\text{cutoff}` is the cutoff wavenumber:
+    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`,
+    where :math:`\lambda_\text{cutoff}` is the cutoff wavelength.
 
     Parameters
     ----------
@@ -310,7 +313,7 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
         compute the Fourier Transform and its inverse, respectively.
     wavelength : float
         The cutoff wavelength in high-pass filter. It has the same units as the
-        input xarray data.
+        input xarray data coordinates.
 
     Returns
     -------
@@ -341,20 +344,30 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
     return da_filter
 
 
-def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
+def reduction_to_pole_kernel(
+    fft_grid,
+    inclination,
+    declination,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+):
     r"""
     Filter for reduction to the pole in frequency domain
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for applying a reduction to the pole on magnetic data. The filter is built upon the
-    frequency coordinates of the passed ``fft_grid`` and is defined as follows:
+    filter for applying a reduction to the pole on magnetic data. The filter
+    is built upon the frequency coordinates of the passed ``fft_grid`` and is
+    defined as follows:
 
     .. math::
 
-        g(\mathbf{k}) = \frac{\mathbf{k}}{i(\mathbf{ke}\cos{i}\sin{d}+
-        \mathbf{kn}\cos{i}\cos{d})+\mathbf{k}\sin{i}}\times\frac{\mathbf{k}}
-        {i(\mathbf{ke}\cos{im}\sin{im}+\mathbf{kn}\cos{im}\cos{dm})+\mathbf{k}
-        \sin{im}}
+        g(\mathbf{k}) = \frac{|\mathbf{k}|}{i(\mathbf{ke}\cos{(inclination)}
+        \sin{(declination)}+\mathbf{kn}\cos{(inclination)}\cos{(declination)})+
+        |\mathbf{k}|\sin{(inclination)}}\times\frac{|\mathbf{k}|}
+        {i(\mathbf{ke}\cos{(magnetization\_inclination)}
+        \sin{(magnetization\_declination)}+\mathbf{kn}\
+        cos{(magnetization\_inclination)}\cos{(magnetization\_declination)})
+        +|\mathbf{k}|\sin{(magnetization\_inclination)}}
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}`
@@ -370,15 +383,15 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
         *freq_northing*, *freq_easting*.
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
-    i : float in degrees
+    inclination : float in degrees
         The inclination inducing Geomagnetic field.
-    d : float in degrees
+    declination : float in degrees
         The declination inducing Geomagnetic field.
-    im : float in degrees
+    magnetization_inclination : float in degrees
         The inclination of the total magnetization of the anomaly source.
         Default is i, neglecting remanent magnetization and
         self demagnetization.
-    dm : float in degrees
+    magnetization_declination : float in degrees
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
@@ -398,12 +411,17 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     harmonica.reduction_to_pole
     """
     # Transform degree to rad
-    [i, d] = np.deg2rad([i, d])
+    [inclination, declination] = np.deg2rad([inclination, declination])
 
-    if dm is None or im is None:
-        [im, dm] = [i, d]
+    if magnetization_declination is None or magnetization_inclination is None:
+        [magnetization_inclination, magnetization_declination] = [
+            inclination,
+            declination,
+        ]
     else:
-        [im, dm] = np.deg2rad([im, dm])
+        [magnetization_inclination, magnetization_declination] = np.deg2rad(
+            [magnetization_inclination, magnetization_declination]
+        )
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -416,25 +434,40 @@ def reduction_to_pole_kernel(fft_grid, i, d, im=None, dm=None):
     da_filter = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
-            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
-            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * (
+                np.cos(inclination) * np.sin(declination) * k_easting
+                + np.cos(inclination) * np.cos(declination) * k_northing
+            )
+            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
         * (
             1j
             * (
-                np.cos(im) * np.sin(dm) * k_easting
-                + np.cos(im) * np.cos(dm) * k_northing
+                np.cos(magnetization_inclination)
+                * np.sin(magnetization_declination)
+                * k_easting
+                + np.cos(magnetization_inclination)
+                * np.cos(magnetization_declination)
+                * k_northing
             )
-            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(magnetization_inclination)
+            * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
     )
 
     # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=1, nan=1)
     return da_filter
 
 
-def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
+def pseudo_gravity_kernel(
+    fft_grid,
+    inclination=90,
+    declination=0,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+    f=50000,
+):
     r"""
     Filter for pseudo gravity in frequency domain
 
@@ -444,10 +477,14 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
 
     .. math::
 
-        g(\mathbf{k}) = |\mathbf{k}| ^ {-1}\times\frac{|\mathbf{k}|}
-        {i(\mathbf{ke}\cos{i}\sin{d}+\mathbf{kn}\cos{i}\cos{d})+\mathbf{k}\sin{i}}
-        \times\frac{|\mathbf{k}|}{i(\mathbf{ke}\cos{im}\sin{dm}+
-        \mathbf{kn}\cos{im}\cos{dm})+\mathbf{k}\sin{im}}
+        g(\mathbf{k}) = \frac{149.8}{f|\mathbf{k}|}\times\frac{|\mathbf{k}|}
+        {i(\mathbf{ke}\cos{(inclination)}\sin{(declination)}+
+        \mathbf{kn}\cos{(inclination)}\cos{(declination)})+|\mathbf{k}|
+        \sin{(inclination)}}\times\frac{|\mathbf{k}|}{i(\mathbf{ke}\
+        cos{(magnetization\_inclination)}\sin{(magnetization\_declination)}+
+        \mathbf{kn}\cos{(magnetization\_inclination)}
+        \cos{(magnetization\_declination)})+|\mathbf{k}|\sin{(magnetization\_inclination)}}
+
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
@@ -463,17 +500,17 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
         *freq_northing*, *freq_easting*.
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
-    i : float in degrees
+    inclination : float in degrees
         The inclination inducing Geomagnetic field. Default is 90 degree for
         RTP field.
-    d : float in degrees
+    declination : float in degrees
         The declination inducing Geomagnetic field. Default is 0 degree for
         RTP field.
-    im : float in degrees
+    magnetization_inclination : float in degrees
         The inclination of the total magnetization of the anomaly source.
         Default is i, neglecting remanent magnetization and
         self demagnetization.
-    dm : float in degrees
+    magnetization_declination : float in degrees
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
@@ -490,7 +527,7 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
 
     References
     ----------
-    [Blakely1995]_
+    [Salem2014]_
 
     See also
     --------
@@ -498,12 +535,17 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     """
     # Transform degree to rad
 
-    [i, d] = np.deg2rad([i, d])
+    [inclination, declination] = np.deg2rad([inclination, declination])
 
-    if dm is None or im is None:
-        [im, dm] = [i, d]
+    if magnetization_declination is None or magnetization_inclination is None:
+        [magnetization_inclination, magnetization_declination] = [
+            inclination,
+            declination,
+        ]
     else:
-        [im, dm] = np.deg2rad([im, dm])
+        [magnetization_inclination, magnetization_declination] = np.deg2rad(
+            [magnetization_inclination, magnetization_declination]
+        )
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -516,22 +558,30 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     da_filter = (k_northing ** 2 + k_easting ** 2) / (
         (
             1j
-            * (np.cos(i) * np.sin(d) * k_easting + np.cos(i) * np.cos(d) * k_northing)
-            + np.sin(i) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * (
+                np.cos(inclination) * np.sin(declination) * k_easting
+                + np.cos(inclination) * np.cos(declination) * k_northing
+            )
+            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
         * (
             1j
             * (
-                np.cos(im) * np.sin(dm) * k_easting
-                + np.cos(im) * np.cos(dm) * k_northing
+                np.cos(magnetization_inclination)
+                * np.sin(magnetization_declination)
+                * k_easting
+                + np.cos(magnetization_inclination)
+                * np.cos(magnetization_declination)
+                * k_northing
             )
-            + np.sin(im) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(magnetization_inclination)
+            * np.sqrt(k_northing ** 2 + k_easting ** 2)
         )
     )
 
     # Combine with vertical intergral
     da_filter = da_filter * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
     # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=1, nan=1)
 
     return da_filter / 149.8 / f
