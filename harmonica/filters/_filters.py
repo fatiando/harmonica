@@ -439,7 +439,7 @@ def pseudo_gravity_kernel(fft_grid, i=90, d=0, im=None, dm=None, f=50000):
     Filter for pseudo gravity in frequency domain
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for computing the upward derivative. The filter is built upon the
+    filter for computing the pseudo gravity. The filter is built upon the
     frequency coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
