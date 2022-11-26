@@ -233,13 +233,13 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
 
     .. math::
 
-        g(\mathbf{k}) = e^\frac{-|\mathbf{k}| ^ 2}{\mathbf{kw}^2}
+        g(\mathbf{k}) = e^\frac{-|\mathbf{k}| ^ 2}{k_\text{cutoff}^2}
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector) and `\mathbf{kw}` is the wavenumber of the cutoff
-    wavelength
-    :math:`\mathbf{w}` (:math:`\mathbf{kw} = \frac{2\pi} {\mathbf{w}}`).
+    frequency vector) and :math:`k_\text{cutoff}` is the cutoff wavenumber:
+    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`, 
+    where :math:`\lambda_\text{cutoff}` is the cutoff wavelength.
 
     Parameters
     ----------
