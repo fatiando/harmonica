@@ -7,6 +7,8 @@
 #
 # Import functions/classes to make the public API
 from . import datasets, synthetic
+from ._io.icgem_gdf import load_icgem_gdf
+from ._io.oasis_montaj_grd import load_oasis_montaj_grid
 from ._version import __version__
 from .equivalent_sources.cartesian import EQLHarmonic, EquivalentSources
 from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
@@ -17,7 +19,6 @@ from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
 from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
-from .io import load_icgem_gdf
 from .isostasy import isostasy_airy, isostatic_moho_airy
 from .transformations import (
     derivative_easting,
