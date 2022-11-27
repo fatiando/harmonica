@@ -379,7 +379,6 @@ def test_reduction_to_pole_kernel(
         )
     )
     expected.data = np.nan_to_num(expected.data, posinf=1, nan=1)
-
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected,
@@ -438,7 +437,6 @@ def test_pseudo_gravity_kernel(
     expected = expected * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
 
     expected.data = np.nan_to_num(expected.data, posinf=1, nan=1) / 149.8 / f
-
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected,

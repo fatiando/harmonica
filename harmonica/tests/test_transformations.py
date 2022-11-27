@@ -400,7 +400,9 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     trim = 6
     continuation = continuation[trim:-trim, trim:-trim]
     g_z_upward = sample_g_z_upward[trim:-trim, trim:-trim]
-    xrt.assert_allclose(continuation, g_z_upward, atol=1e-5)
+    # Drop upward for comparison
+    g_z_upward = g_z_upward.drop("upward")
+    xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
 class Testfilter:
@@ -415,14 +417,14 @@ class Testfilter:
         Test gaussian_lowpass function against the output from oasis montaj
         """
         low_pass = gaussian_lowpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-10)
+        xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-6)
 
     def test_gaussian_highpass_grid(self):
         """
         Test gaussian_highpass function against the output from oasis montaj
         """
         high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-10)
+        xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-6)
 
     def test_reduction_to_pole_grid(self):
         """

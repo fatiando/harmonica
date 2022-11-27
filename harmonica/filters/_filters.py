@@ -534,7 +534,6 @@ def pseudo_gravity_kernel(
     harmonica.pseudo_gravity
     """
     # Transform degree to rad
-
     [inclination, declination] = np.deg2rad([inclination, declination])
 
     if magnetization_declination is None or magnetization_inclination is None:
