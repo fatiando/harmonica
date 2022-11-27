@@ -375,8 +375,7 @@ def test_laplace(sample_potential):
     second_deriv_sum = second_deriv_ee + second_deriv_nn
     second_deriv_sum = second_deriv_sum[trim:-trim, trim:-trim]
     second_deriv_zz = second_deriv_zz[trim:-trim, trim:-trim]
-    rms = root_mean_square_error(second_deriv_sum, -second_deriv_zz)
-    assert rms < 1e-20
+    xrt.assert_allclose(second_deriv_sum, -second_deriv_zz, atol=1e-20)
 
 
 def test_upward_continuation(sample_g_z, sample_g_z_upward):
