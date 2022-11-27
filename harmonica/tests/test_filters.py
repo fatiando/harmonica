@@ -285,7 +285,7 @@ def test_derivative_northing_kernel(sample_fft_grid, order):
     )
 
 
-@pytest.mark.parametrize("height", (-10, -100, -1000))
+@pytest.mark.parametrize("height_displacement", (-10, -100, -1000))
 def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     """
     Check if upward_continuation_kernel works as expected

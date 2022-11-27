@@ -403,36 +403,37 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-5)
 
 
-expected_grid = xr.open_dataset(TEST_DATA_DIR / "filter.nc")
-
-
-def test_gaussian_lowpass_grid(expected_grid):
+class Testfilter:
     """
-    Test gaussian_lowpass function against the output from oasis montaj
+    Test filter result against the output from oasis montaj
     """
-    low_pass = gaussian_lowpass(expected_grid.filter_data, 10)
-    xrt.assert_allclose(expected_grid.filter_lp10, low_pass, atol=1e-10)
 
+    expected_grid = xr.open_dataset(TEST_DATA_DIR / "filter.nc")
 
-def test_gaussian_highpass_grid(expected_grid):
-    """
-    Test gaussian_highpass function against the output from oasis montaj
-    """
-    high_pass = gaussian_highpass(expected_grid.filter_data, 10)
-    xrt.assert_allclose(expected_grid.filter_hp10, high_pass, atol=1e-10)
+    def test_gaussian_lowpass_grid(self):
+        """
+        Test gaussian_lowpass function against the output from oasis montaj
+        """
+        low_pass = gaussian_lowpass(self.expected_grid.filter_data, 10)
+        xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-10)
 
+    def test_gaussian_highpass_grid(self):
+        """
+        Test gaussian_highpass function against the output from oasis montaj
+        """
+        high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
+        xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-10)
 
-def test_reduction_to_pole_grid(expected_grid):
-    """
-    Test greduction_to_pole function against the output from oasis montaj
-    """
-    rtp = reduction_to_pole(expected_grid.filter_data, 60, 45)
-    xrt.assert_allclose(expected_grid.filter_rtp, rtp, atol=1)
+    def test_reduction_to_pole_grid(self):
+        """
+        Test greduction_to_pole function against the output from oasis montaj
+        """
+        rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
+        xrt.assert_allclose(self.expected_grid.filter_rtp, rtp, atol=1)
 
-
-def test_pseudo_gravity_grid(expected_grid):
-    """
-    Test greduction_to_pole function against the output from oasis montaj
-    """
-    pg = pseudo_gravity(expected_grid.filter_data, 60, 45, 60, 45, 1) * 149.8
-    xrt.assert_allclose(expected_grid.filter_pg, pg, atol=1)
+    def test_pseudo_gravity_grid(self):
+        """
+        Test greduction_to_pole function against the output from oasis montaj
+        """
+        pg = pseudo_gravity(self.expected_grid.filter_data, 60, 45, 60, 45, 1) * 149.8
+        xrt.assert_allclose(self.expected_grid.filter_pg, pg, atol=1)
