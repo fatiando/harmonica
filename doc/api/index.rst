@@ -25,7 +25,14 @@ Apply well known transformations regular gridded potential fields data.
 .. autosummary::
     :toctree: generated/
 
+    derivative_easting
+    derivative_northing
     derivative_upward
+    upward_continuation
+    gaussian_lowpass
+    gaussian_highpass
+    reduction_to_pole
+    pseudo_gravity
 
 Frequency domain filters
 ------------------------
@@ -35,7 +42,14 @@ Define filters in the frequency domain.
 .. autosummary::
     :toctree: generated/
 
+    filters.derivative_easting_kernel
+    filters.derivative_northing_kernel
     filters.derivative_upward_kernel
+    filters.upward_continuation_kernel
+    filters.gaussian_lowpass_kernel
+    filters.gaussian_highpass_kernel
+    filters.reduction_to_pole_kernel
+    filters.pseudo_gravity_kernel
 
 Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
 Transforms and its inverse on :class:`xarray.DataArray`.
