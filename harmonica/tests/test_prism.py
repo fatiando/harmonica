@@ -261,10 +261,10 @@ def test_g_z_symmetry_outside():
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
     npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
     # Values on C, D, E, F, H, I, J, K must be all equal within each set
-    for group in "C D E F H I J K".split():
+    for group in ["C", "D", "E", "F", "H", "I", "J", "K"]:
         npt.assert_allclose(results[group][0], results[group])
     # Values on B and G must be zero
-    for group in "B G".split():
+    for group in ["B", "G"]:
         npt.assert_allclose(0, results[group])
     # Values on C and D, E and F, H and I, J and K must be opposite
     # Moreover, the set of points that are above the prism must have the same
@@ -340,10 +340,10 @@ def test_g_z_symmetry_inside():
     npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
     npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
     # Values on C, D, F, G must be all equal within each set
-    for group in "C D F G".split():
+    for group in ["C", "D", "F", "G"]:
         npt.assert_allclose(results[group][0], results[group])
     # Values on B and E must be zero
-    for group in "B E".split():
+    for group in ["B", "E"]:
         npt.assert_allclose(0, results[group])
     # Values on C and D, F and G must be opposite
     # Moreover, the set of points that are above the center of the prism must
