@@ -74,11 +74,13 @@ def derivative_easting_kernel(fft_grid, order=1):
 
     .. math::
 
-        g(\mathbf{k}) = (\mathbf{ke}*i) ^ n
+        g(\mathbf{k}) = (i k_e)^n
 
-    where :math:`\mathbf{ke}` is the wavenumber vector
-    (:math:`\mathbf{ke} = 2\pi \mathbf{fe}` where :math:`\mathbf{fe}` is the
-    easting frequency vector) and :math:`n` is the order of the derivative.
+    where :math:`\mathbf{k}` is the wavenumber vector
+    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
+    frequency vector), :math:`k_e` is the easting wavenumber component of
+    :math:`\mathbf{k}`, :math:`i` is the imaginary unit and :math:`n` is the
+    order of the derivative.
 
     Parameters
     ----------
@@ -126,11 +128,13 @@ def derivative_northing_kernel(fft_grid, order=1):
 
     .. math::
 
-        g(\mathbf{k}) = (\mathbf{kn}*i) ^ n
+        g(\mathbf{k}) = (i k_n)^n
 
-    where :math:`\mathbf{kn}` is the wavenumber vector
-    (:math:`\mathbf{kn} = 2\pi \mathbf{fn}` where :math:`\mathbf{fn}` is the
-    northing frequency vector) and :math:`n` is the order of the derivative.
+    where :math:`\mathbf{k}` is the wavenumber vector
+    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
+    frequency vector), :math:`k_n` is the northing wavenumber component of
+    :math:`\mathbf{k}`, :math:`i` is the imaginary unit and :math:`n` is the
+    order of the derivative.
 
     Parameters
     ----------
@@ -236,13 +240,16 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
 
     .. math::
 
-        g(\mathbf{k}) = e^\frac{-|\mathbf{k}| ^ 2}{2k_\text{cutoff}^2}
+        g(\mathbf{k}) =
+            e^{
+                - \frac{1}{2} \left( \frac{|\mathbf{k}|}{k_c} \right)^2
+            }
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector) and :math:`k_\text{cutoff}` is the cutoff wavenumber:
-    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`,
-    where :math:`\lambda_\text{cutoff}` is the cutoff wavelength.
+    frequency vector) and :math:`k_c` is the cutoff wavenumber:
+    :math:`k_c = \frac{2\pi}{\lambda_c}`,
+    where :math:`\lambda_c` is the cutoff wavelength.
 
     Parameters
     ----------
@@ -295,13 +302,16 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
 
     .. math::
 
-        g(\mathbf{k}) = 1-e^\frac{-|\mathbf{k}| ^ 2}{2k_\text{cutoff}^2}
+        g(\mathbf{k}) =
+            1 - e^{
+                - \frac{1}{2} \left( \frac{|\mathbf{k}|}{k_c} \right)^2
+            }
 
     where :math:`\mathbf{k}` is the wavenumber vector
     (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector) and :math:`k_\text{cutoff}` is the cutoff wavenumber:
-    :math:`k_\text{cutoff} = \frac{2\pi}{\lambda_\text{cutoff}}`,
-    where :math:`\lambda_\text{cutoff}` is the cutoff wavelength.
+    frequency vector) and :math:`k_c` is the cutoff wavenumber:
+    :math:`k_c = \frac{2\pi}{\lambda_c}`,
+    where :math:`\lambda_c` is the cutoff wavelength.
 
     Parameters
     ----------
