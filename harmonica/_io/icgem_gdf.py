@@ -5,8 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Functions for interacting with standarized data files that contain gravity or
-magnetic geophysical data.
+Function to read ICGEM .gdf file
 """
 import contextlib
 
