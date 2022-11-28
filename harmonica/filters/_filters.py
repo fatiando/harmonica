@@ -60,7 +60,7 @@ def derivative_upward_kernel(fft_grid, order=1):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for upward derivative in frequency domain
-    da_filter = np.sqrt(k_easting ** 2 + k_northing ** 2) ** order
+    da_filter = np.sqrt(k_easting**2 + k_northing**2) ** order
     return da_filter
 
 
@@ -225,7 +225,7 @@ def upward_continuation_kernel(fft_grid, height_displacement):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for upward continuation in frequency domain
-    da_filter = np.exp(-np.sqrt(k_easting ** 2 + k_northing ** 2) * height_displacement)
+    da_filter = np.exp(-np.sqrt(k_easting**2 + k_northing**2) * height_displacement)
     return da_filter
 
 
@@ -287,7 +287,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for northing derivative in frequency domain
     da_filter = np.exp(
-        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        -(k_easting**2 + k_northing**2) / (2 * (2 * np.pi / wavelength) ** 2)
     )
     return da_filter
 
@@ -349,7 +349,7 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for northing derivative in frequency domain
     da_filter = 1 - np.exp(
-        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        -(k_easting**2 + k_northing**2) / (2 * (2 * np.pi / wavelength) ** 2)
     )
     return da_filter
 
@@ -441,14 +441,14 @@ def reduction_to_pole_kernel(
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for reduction to pole in frequency domain
-    da_filter = (k_northing ** 2 + k_easting ** 2) / (
+    da_filter = (k_northing**2 + k_easting**2) / (
         (
             1j
             * (
                 np.cos(inclination) * np.sin(declination) * k_easting
                 + np.cos(inclination) * np.cos(declination) * k_northing
             )
-            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
         )
         * (
             1j
@@ -461,7 +461,7 @@ def reduction_to_pole_kernel(
                 * k_northing
             )
             + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * np.sqrt(k_northing**2 + k_easting**2)
         )
     )
 
@@ -564,14 +564,14 @@ def pseudo_gravity_kernel(
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for reduction to pole in frequency domain
-    da_filter = (k_northing ** 2 + k_easting ** 2) / (
+    da_filter = (k_northing**2 + k_easting**2) / (
         (
             1j
             * (
                 np.cos(inclination) * np.sin(declination) * k_easting
                 + np.cos(inclination) * np.cos(declination) * k_northing
             )
-            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
         )
         * (
             1j
@@ -584,12 +584,12 @@ def pseudo_gravity_kernel(
                 * k_northing
             )
             + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * np.sqrt(k_northing**2 + k_easting**2)
         )
     )
 
     # Combine with vertical intergral
-    da_filter = da_filter * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
+    da_filter = da_filter * np.sqrt(k_easting**2 + k_northing**2) ** -1
     # Deal with inf and nan value
     da_filter.data = np.nan_to_num(da_filter.data, posinf=1, nan=1)
 

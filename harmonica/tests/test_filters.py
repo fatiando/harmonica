@@ -162,7 +162,7 @@ def fixture_invalid_grid_single_dim():
     with a single dimension.
     """
     x = np.linspace(0, 10, 11)
-    y = x ** 2
+    y = x**2
     grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
     return grid
 
@@ -250,7 +250,7 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.sqrt(k_easting ** 2 + k_northing ** 2) ** order
+    expected = np.sqrt(k_easting**2 + k_northing**2) ** order
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected, derivative_upward_kernel(sample_fft_grid, order=order)
@@ -293,7 +293,7 @@ def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.exp(-np.sqrt(k_easting ** 2 + k_northing ** 2) * height_displacement)
+    expected = np.exp(-np.sqrt(k_easting**2 + k_northing**2) * height_displacement)
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected,
@@ -312,7 +312,7 @@ def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength):
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = np.exp(
-        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        -(k_easting**2 + k_northing**2) / (2 * (2 * np.pi / wavelength) ** 2)
     )
     # Check if the filter returns the expected output
     xrt.assert_allclose(
@@ -329,7 +329,7 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength):
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = 1 - np.exp(
-        -(k_easting ** 2 + k_northing ** 2) / (2 * (2 * np.pi / wavelength) ** 2)
+        -(k_easting**2 + k_northing**2) / (2 * (2 * np.pi / wavelength) ** 2)
     )
     # Check if the filter returns the expected output
     xrt.assert_allclose(
@@ -355,14 +355,14 @@ def test_reduction_to_pole_kernel(
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = (k_northing ** 2 + k_easting ** 2) / (
+    expected = (k_northing**2 + k_easting**2) / (
         (
             1j
             * (
                 np.cos(inclination) * np.sin(declination) * k_easting
                 + np.cos(inclination) * np.cos(declination) * k_northing
             )
-            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
         )
         * (
             1j
@@ -375,7 +375,7 @@ def test_reduction_to_pole_kernel(
                 * k_northing
             )
             + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * np.sqrt(k_northing**2 + k_easting**2)
         )
     )
     expected.data = np.nan_to_num(expected.data, posinf=1, nan=1)
@@ -411,14 +411,14 @@ def test_pseudo_gravity_kernel(
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = (k_northing ** 2 + k_easting ** 2) / (
+    expected = (k_northing**2 + k_easting**2) / (
         (
             1j
             * (
                 np.cos(inclination) * np.sin(declination) * k_easting
                 + np.cos(inclination) * np.cos(declination) * k_northing
             )
-            + np.sin(inclination) * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
         )
         * (
             1j
@@ -431,10 +431,10 @@ def test_pseudo_gravity_kernel(
                 * k_northing
             )
             + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing ** 2 + k_easting ** 2)
+            * np.sqrt(k_northing**2 + k_easting**2)
         )
     )
-    expected = expected * np.sqrt(k_easting ** 2 + k_northing ** 2) ** -1
+    expected = expected * np.sqrt(k_easting**2 + k_northing**2) ** -1
 
     expected.data = np.nan_to_num(expected.data, posinf=1, nan=1) / 149.8 / f
     # Check if the filter returns the expected output
