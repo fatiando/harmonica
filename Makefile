@@ -3,7 +3,7 @@ PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
 NUMBATEST_ARGS=--doctest-modules -v --pyargs -m use_numba
-STYLE_CHECK_FILES=setup.py $(PROJECT) examples data/examples doc/conf.py tools
+STYLE_CHECK_FILES=$(PROJECT) examples data/examples doc/conf.py tools
 
 help:
 	@echo "Commands:"
@@ -12,11 +12,17 @@ help:
 	@echo "  test      run the test suite (including doctests) and report coverage"
 	@echo "  format    run isort and black to automatically format the code"
 	@echo "  check     run code style and quality checks (black, isort and flake8)"
+	@echo "  build     build source and wheel distributions"
 	@echo "  clean     clean up build and generated files"
 	@echo ""
 
+.PHONY: build, install, test, test_coverage, test_numba, format, check, black, black-check, isort, isort-check, license, license-check, flake8, clean
+
+build:
+	python -m build .
+
 install:
-	pip install --no-deps -e .
+	python -m pip install --no-deps -e .
 
 test: test_coverage test_numba
 
