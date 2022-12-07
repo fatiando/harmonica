@@ -6,9 +6,7 @@ dependencies:
   - python==3.10.*
   - pip
   # Build
-  - setuptools>=45
-  - setuptools_scm>=6.2
-  - wheel
+  - build
   - twine
   # Run-time
   - numpy>=1.19
