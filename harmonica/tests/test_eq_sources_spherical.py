@@ -7,15 +7,13 @@
 """
 Test the EquivalentSourcesSph gridder
 """
-import warnings
 
 import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
-import xarray.testing as xrt
 
-from .. import EQLHarmonicSpherical, EquivalentSourcesSph, point_gravity
+from .. import EquivalentSourcesSph, point_gravity
 from .utils import run_only_with_numba
 
 
@@ -247,48 +245,6 @@ def test_equivalent_sources_spherical_parallel():
     grid_serial = eqs_serial.grid(grid_coords)
     grid_parallel = eqs_parallel.grid(grid_coords)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
-
-
-def test_backward_eqlharmonicspherical():
-    """
-    Check backward compatibility with to-be-deprecated EQLHarmonicSph
-
-    Check if FutureWarning is raised on initialization
-    """
-    region = (-70, -60, -40, -30)
-    radius = 6400e3
-    # Build synthetic point masses
-    points = vd.grid_coordinates(
-        region=region, shape=(6, 6), extra_coords=radius - 500e3
-    )
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
-    # Get synthetic data
-    data = point_gravity(
-        coordinates, points, masses, field="g_z", coordinate_system="spherical"
-    )
-
-    # Fit EquivalentSourcesSph instance
-    eqs = EquivalentSourcesSph(relative_depth=1.3e3)
-    eqs.fit(coordinates, data)
-
-    # Fit deprecated EQLHarmonicSpherical instance
-    # (check if FutureWarning is raised)
-    with warnings.catch_warnings(record=True) as warn:
-        eql_harmonic = EQLHarmonicSpherical(relative_depth=1.3e3)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, FutureWarning)
-    eql_harmonic.fit(coordinates, data)
-
-    # Check if both gridders are equivalent
-    npt.assert_allclose(eqs.points_, eql_harmonic.points_)
-    shape = (8, 8)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=6405e3)
-    xrt.assert_allclose(
-        eqs.grid(grid_coords),
-        eql_harmonic.grid(grid_coords),
-    )
 
 
 @pytest.mark.parametrize(
