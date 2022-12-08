@@ -11,10 +11,10 @@ dist/
 doc/_build
 doc/api/generated
 doc/gallery
-doc/tutorials
 doc/sample_data
 .ipynb_checkpoints
 *.egg-info
 MANIFEST
 dask-worker-space
 .coverage.*
+harmonica/_version_generated.py

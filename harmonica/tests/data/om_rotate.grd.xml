@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmd:MD_Metadata xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../schemas/iso19139fra/gmd/gmd.xsd" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:map="urn:brgm:mapping" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gfc="http://www.isotc211.org/2005/gfc" xmlns:gco="http://www.isotc211.org/2005/gco">
+	<geosoft xmlns="http://www.geosoft.com/schema/geo">
+		<dataset version="1">
+			<title>om_rotate</title>
+			<file_format>Geosoft Grid</file_format>
+			<project_name>c:\users\22528618\desktop\hm\om\hm_t.gpf</project_name>
+			<data_created_by>Lu Li</data_created_by>
+			<data_creation_date>2022-11-03</data_creation_date>
+			<metadata_created_by>Lu Li</metadata_created_by>
+			<metadata_creation_date>2022-11-03</metadata_creation_date>
+			<lineage>
+				<process name="gridcopy.gx" displaystring="Copy/convert grids" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="13:17:00">
+					<parameter name="GRIDCOPY::IN" value=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)" type="string"/>
+					<parameter name="GRIDCOPY::OUT" value="..\..\GIT\OM\harmonica\harmonica\tests\data\om_rotate.grd(GRD;Type=Double)" type="string"/>
+					<source name="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd" type="GRID">
+						<lineage>
+							<process name="gridcopy.gx" displaystring="Copy/convert grids" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="10:08:20">
+								<parameter name="GRIDCOPY::IN" value=".\text\om_long.grd(GRD)" type="string"/>
+								<parameter name="GRIDCOPY::OUT" value=".\text\om_long_rotate.grd(GRD;Type=Double)" type="string"/>
+								<source name="c:\Users\22528618\Desktop\HM\om\text\om_long.grd" type="GRID"/>
+							</process>
+							<process name="geogxnet.dll(Geosoft.GX.GridUtils.GridStat;Run)" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="10:09:00">
+								<parameter name="GRIDSTAT::DX" value="1" type="double"/>
+								<parameter name="GRIDSTAT::DY" value="1" type="double"/>
+								<parameter name="GRIDSTAT::GRID" value=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)" type="string"/>
+								<parameter name="GRIDSTAT::MODIFY_ONLY" value="" type="integer"/>
+								<parameter name="GRIDSTAT::ROT" value="-60" type="double"/>
+								<parameter name="GRIDSTAT::ROT1" value="0" type="double"/>
+								<parameter name="GRIDSTAT::SKIP_GRID_DIALOG" value="1" type="integer"/>
+								<parameter name="GRIDSTAT::X0" value="1" type="double"/>
+								<parameter name="GRIDSTAT::Y0" value="-24" type="double"/>
+								<source name="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd" type="GRID"/>
+							</process>
+							<process name="geogxnet.dll(Geosoft.GX.GridUtils.GridStat;Run)" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="10:09:00">
+								<parameter name="GRIDSTAT::DX" value="1" type="double"/>
+								<parameter name="GRIDSTAT::DY" value="1" type="double"/>
+								<parameter name="GRIDSTAT::GRID" value=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)" type="string"/>
+								<parameter name="GRIDSTAT::MODIFY_ONLY" value="" type="integer"/>
+								<parameter name="GRIDSTAT::ROT" value="-60" type="double"/>
+								<parameter name="GRIDSTAT::ROT1" value="0" type="double"/>
+								<parameter name="GRIDSTAT::SKIP_GRID_DIALOG" value="1" type="integer"/>
+								<parameter name="GRIDSTAT::X0" value="1" type="double"/>
+								<parameter name="GRIDSTAT::Y0" value="-24" type="double"/>
+								<source name="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd" type="GRID"/>
+							</process>
+							<process name="geogxnet.dll(Geosoft.GX.GridUtils.GridStat;Run)" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="10:09:30">
+								<parameter name="GRIDSTAT::DX" value="1" type="double"/>
+								<parameter name="GRIDSTAT::DY" value="1" type="double"/>
+								<parameter name="GRIDSTAT::GRID" value=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)" type="string"/>
+								<parameter name="GRIDSTAT::MODIFY_ONLY" value="" type="integer"/>
+								<parameter name="GRIDSTAT::ROT" value="-30" type="double"/>
+								<parameter name="GRIDSTAT::ROT1" value="-60" type="double"/>
+								<parameter name="GRIDSTAT::SKIP_GRID_DIALOG" value="1" type="integer"/>
+								<parameter name="GRIDSTAT::X0" value="1" type="double"/>
+								<parameter name="GRIDSTAT::Y0" value="-24" type="double"/>
+								<parameter name="IPJSET::PROJECTION" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xA;&lt;projection type=&quot;UNKNOWN&quot; xmlns=&quot;http://www.geosoft.com/schema/geo&quot;&gt;&#xA;	&lt;units name=&quot;m&quot; unit_scale=&quot;1&quot;/&gt;&#xA;	&lt;warp type=&quot;TRANS2&quot;&gt;&#xA;		&lt;warp_point ix=&quot;1&quot; iy=&quot;-24&quot; ox=&quot;1&quot; oy=&quot;-24&quot;/&gt;&#xA;		&lt;warp_point ix=&quot;501&quot; iy=&quot;-24&quot; ox=&quot;251&quot; oy=&quot;-457.0127018922193&quot;/&gt;&#xA;	&lt;/warp&gt;&#xA;&lt;/projection&gt;&#xA;" type="string"/>
+								<source name="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd" type="GRID"/>
+							</process>
+							<process name="geogxnet.dll(Geosoft.GX.GridUtils.GridStat;Run)" user="Lu Li" version="Version 9.6 (20190508.98)" date="2022-11-03" time="10:09:30">
+								<parameter name="GRIDSTAT::DX" value="1" type="double"/>
+								<parameter name="GRIDSTAT::DY" value="1" type="double"/>
+								<parameter name="GRIDSTAT::GRID" value=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)" type="string"/>
+								<parameter name="GRIDSTAT::MODIFY_ONLY" value="" type="integer"/>
+								<parameter name="GRIDSTAT::ROT" value="-30" type="double"/>
+								<parameter name="GRIDSTAT::ROT1" value="-60" type="double"/>
+								<parameter name="GRIDSTAT::SKIP_GRID_DIALOG" value="1" type="integer"/>
+								<parameter name="GRIDSTAT::X0" value="1" type="double"/>
+								<parameter name="GRIDSTAT::Y0" value="-24" type="double"/>
+								<parameter name="IPJSET::PROJECTION" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xA;&lt;projection type=&quot;UNKNOWN&quot; xmlns=&quot;http://www.geosoft.com/schema/geo&quot;&gt;&#xA;	&lt;units name=&quot;m&quot; unit_scale=&quot;1&quot;/&gt;&#xA;	&lt;warp type=&quot;TRANS2&quot;&gt;&#xA;		&lt;warp_point ix=&quot;1&quot; iy=&quot;-24&quot; ox=&quot;1&quot; oy=&quot;-24&quot;/&gt;&#xA;		&lt;warp_point ix=&quot;501&quot; iy=&quot;-24&quot; ox=&quot;251&quot; oy=&quot;-457.0127018922193&quot;/&gt;&#xA;	&lt;/warp&gt;&#xA;&lt;/projection&gt;&#xA;" type="string"/>
+								<source name="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd" type="GRID"/>
+							</process>
+						</lineage>
+					</source>
+				</process>
+			</lineage>
+			<georeference>
+				<dataextents>
+					<extent2d minx="1" miny="-48.5" maxx="67.43524478543749" maxy="17.569219381653056"/>
+				</dataextents>
+				<projection type="UNKNOWN">
+					<units name="m" unit_scale="1"/>
+					<warp type="TRANS2">
+						<warp_point ix="1" iy="-24" ox="1" oy="-24"/>
+						<warp_point ix="501" iy="-24" ox="434.01270189221935" oy="-274"/>
+					</warp>
+				</projection>
+			</georeference>
+		</dataset>
+	</geosoft>
+	<gmd:dataQualityInfo>
+		<gmd:DQ_DataQuality>
+			<gmd:lineage>
+				<gmd:LI_Lineage>
+					<gmd:processStep xlink:type="Geosoft Process" xlink:title="gridcopy.gx">
+						<gmd:LI_ProcessStep>
+							<gmd:dateTime>
+								<gco:DateTime>2022-11-03T13:17:00</gco:DateTime>
+							</gmd:dateTime>
+							<gmd:processor>
+								<gmd:CI_ResponsibleParty>
+									<gmd:individualName>
+										<gco:CharacterString>Lu Li</gco:CharacterString>
+									</gmd:individualName>
+								</gmd:CI_ResponsibleParty>
+							</gmd:processor>
+							<gmd:source xlink:type="Data Parameter" xlink:role="GRIDCOPY::IN" xlink:title=".\text\om_long_rotate.grd(GRD;TYPE=DOUBLE)">
+								<gmd:LI_Source/>
+							</gmd:source>
+							<gmd:source xlink:type="Data Parameter" xlink:role="GRIDCOPY::OUT" xlink:title="..\..\GIT\OM\harmonica\harmonica\tests\data\om_rotate.grd(GRD;Type=Double)">
+								<gmd:LI_Source/>
+							</gmd:source>
+							<gmd:source xlink:type="Data Source" xlink:role="GRID" xlink:title="c:\Users\22528618\Desktop\HM\om\text\om_long_rotate.grd">
+								<gmd:LI_Source/>
+							</gmd:source>
+						</gmd:LI_ProcessStep>
+					</gmd:processStep>
+				</gmd:LI_Lineage>
+			</gmd:lineage>
+		</gmd:DQ_DataQuality>
+	</gmd:dataQualityInfo>
+	<gmd:identificationInfo>
+		<gmd:MD_DataIdentification>
+			<gmd:citation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>om_rotate</gco:CharacterString>
+					</gmd:title>
+					<gmd:collectiveTitle>
+						<gco:CharacterString>c:\users\22528618\desktop\hm\om\hm_t.gpf</gco:CharacterString>
+					</gmd:collectiveTitle>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:Date>2022-11-3</gco:Date>
+							</gmd:date>
+						</gmd:CI_Date>
+					</gmd:date>
+				</gmd:CI_Citation>
+			</gmd:citation>
+			<gmd:resourceFormat>
+				<gmd:MD_Format>
+					<gmd:name>
+						<gco:CharacterString>Geosoft Grid</gco:CharacterString>
+					</gmd:name>
+				</gmd:MD_Format>
+			</gmd:resourceFormat>
+			<gmd:pointOfContact>
+				<gmd:CI_ResponsibleParty>
+					<gmd:individualName>
+						<gco:CharacterString>Lu Li</gco:CharacterString>
+					</gmd:individualName>
+				</gmd:CI_ResponsibleParty>
+			</gmd:pointOfContact>
+		</gmd:MD_DataIdentification>
+	</gmd:identificationInfo>
+	<gmd:contact>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>Lu Li</gco:CharacterString>
+			</gmd:individualName>
+		</gmd:CI_ResponsibleParty>
+	</gmd:contact>
+	<gmd:dateStamp>
+		<gco:Date>2022-11-3</gco:Date>
+	</gmd:dateStamp>
+	<gmd:referenceSystemInfo>
+		<gmd:MD_ReferenceSystem>
+			<gmd:referenceSystemIdentifier>
+				<gmd:RS_Identifier>
+					<gmd:codeSpace>
+						<gco:CharacterString>Geosoft</gco:CharacterString>
+					</gmd:codeSpace>
+					<gmd:code>
+						<gco:CharacterString>&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;projection type=&amp;quot;UNKNOWN&amp;quot; xmlns=&amp;quot;http://www.geosoft.com/schema/geo&amp;quot;&amp;gt;
+	&amp;lt;units name=&amp;quot;m&amp;quot; unit_scale=&amp;quot;1&amp;quot;/&amp;gt;
+	&amp;lt;warp type=&amp;quot;TRANS2&amp;quot;&amp;gt;
+		&amp;lt;warp_point ix=&amp;quot;1&amp;quot; iy=&amp;quot;-24&amp;quot; ox=&amp;quot;1&amp;quot; oy=&amp;quot;-24&amp;quot;/&amp;gt;
+		&amp;lt;warp_point ix=&amp;quot;501&amp;quot; iy=&amp;quot;-24&amp;quot; ox=&amp;quot;434.01270189221935&amp;quot; oy=&amp;quot;-274&amp;quot;/&amp;gt;
+	&amp;lt;/warp&amp;gt;
+&amp;lt;/projection&amp;gt;
+</gco:CharacterString>
+					</gmd:code>
+					<gmd:version>
+						<gco:CharacterString>1</gco:CharacterString>
+					</gmd:version>
+				</gmd:RS_Identifier>
+			</gmd:referenceSystemIdentifier>
+		</gmd:MD_ReferenceSystem>
+	</gmd:referenceSystemInfo>
+</gmd:MD_Metadata>

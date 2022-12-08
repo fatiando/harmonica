@@ -7,24 +7,38 @@
 """
 Functions to load sample datasets used in the Harmonica docs.
 """
-import pkg_resources
-import xarray as xr
-import pandas as pd
-import pooch
+import warnings
 
-from ..version import full_version
+import pandas as pd
+import pkg_resources
+import pooch
+import xarray as xr
+
+from .._version import __version__ as version
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("harmonica"),
     base_url="https://github.com/fatiando/harmonica/raw/{version}/data/",
-    version=full_version,
-    version_dev="master",
+    version=version,
+    version_dev="main",
     env="HARMONICA_DATA_DIR",
 )
 with pkg_resources.resource_stream(
     "harmonica.datasets", "registry.txt"
 ) as registry_file:
     REGISTRY.load_registry(registry_file)
+
+
+def _deprecation_warning():
+    """
+    Raise a FutureWarning about deprecation of synthetic module
+    """
+    msg = (
+        "The 'datasets' module will be deprecated in Harmonica v0.6.0. "
+        + "Harmonica will transition to using "
+        + "Ensaio (https://www.fatiando.org/ensaio/) instead."
+    )
+    warnings.warn(msg, FutureWarning)
 
 
 def locate():
@@ -69,8 +83,16 @@ def fetch_geoid_earth():
         longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("geoid-earth-0.5deg.nc.xz", processor=pooch.Decompress())
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
+    # The data are stored as ints and data as float32 to save space on the
+    # data file. Cast them to float64 to avoid integer division errors.
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
@@ -97,10 +119,16 @@ def fetch_gravity_earth():
         longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("gravity-earth-0.5deg.nc.xz", processor=pooch.Decompress())
-    # The heights are stored as ints and data as float32 to save space on the
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
+    # The data are stored as ints and data as float32 to save space on the
     # data file. Cast them to float64 to avoid integer division errors.
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
@@ -128,10 +156,16 @@ def fetch_topography_earth():
         geodetic latitude and longitude.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("etopo1-0.5deg.nc.xz", processor=pooch.Decompress())
+    data = xr.open_dataset(fname, engine="scipy")
+    # Capture attributes dict because it's removed after converting the data to
+    # float64
+    attrs = data.attrs.copy()
     # The data are stored as int16 to save disk space. Cast them to floats to
     # avoid integer division problems when processing.
-    data = xr.open_dataset(fname, engine="scipy").astype("float64")
+    data = data.astype("float64")
+    data.attrs = attrs
     return data
 
 
@@ -165,6 +199,7 @@ def fetch_britain_magnetic():
     data : :class:`pandas.DataFrame`
         The magnetic anomaly data.
     """
+    _deprecation_warning()
     return pd.read_csv(REGISTRY.fetch("britain-magnetic.csv.xz"), compression="xz")
 
 
@@ -195,6 +230,36 @@ def fetch_south_africa_gravity():
         The gravity data.
 
     """
+    _deprecation_warning()
     fname = REGISTRY.fetch("south-africa-gravity.ast.xz")
     columns = ["latitude", "longitude", "elevation", "gravity"]
     return pd.read_csv(fname, sep=r"\s+", names=columns, compression="xz")
+
+
+def fetch_south_africa_topography():
+    """
+    Fetch downsampled ETOPO1 topography grid for South Africa
+
+    The grid is based on the ETOPO1 model [AmanteEakins2009]_. The original
+    model has 1 arc-minute grid spacing but here we downsampled to 0.1 degree
+    grid spacing to save space and download times and cut it to the South
+    Africa region.
+
+    ETOPO1 heights are referenced to "sea level".
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    grid : :class:`xarray.Dataset`
+        The topography grid (in meters) relative to sea level. Coordinates are
+        geodetic latitude and longitude.
+
+    """
+    _deprecation_warning()
+    fname = REGISTRY.fetch(
+        "south-africa-topography.nc.xz", processor=pooch.Decompress()
+    )
+    data = xr.open_dataset(fname, engine="scipy")
+    return data

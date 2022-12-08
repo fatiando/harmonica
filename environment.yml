@@ -3,28 +3,56 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.7
+  - python==3.10.*
   - pip
-  - setuptools_scm
-  - numpy
-  - scipy
-  - pandas
-  - numba
-  - pooch>=0.7.0
-  - verde>=1.5.0
-  - xarray
-  # Development requirements
-  - boule
-  - pyproj
-  - matplotlib
-  - cartopy>=0.18
+  # Build
+  - build
+  - twine
+  # Run-time
+  - numpy>=1.19
+  - pandas>=1.1
+  - numba>=0.52
+  - scipy>=1.5
+  - scikit-learn>=0.24
+  - pooch>=1.2
+  - verde>=1.7.0
+  - xarray>=0.16
+  - xrft>=1.0
+  # Optional requirements
+  - pyvista>=0.27
+  - vtk>=9
+  # Testing requirements
   - pytest
   - pytest-cov
   - coverage
-  - black>=20.8b1
-  - pylint
-  - flake8
-  - sphinx=2.2.1
-  - sphinx_rtd_theme=0.4.3
-  - sphinx-gallery
-  - numpydoc
+  - boule
+  # Documentation requirements
+  - sphinx==4.5.*
+  - sphinx-book-theme==0.2.*
+  - sphinx-gallery==0.10.*
+  - sphinx-design==0.2.*
+  - sphinx-copybutton==0.5.*
+  - jupyter-sphinx==0.3.*
+  - pyproj
+  - matplotlib
+  - ensaio
+  - netcdf4
+  - pygmt==0.7.*
+  - gmt==6.4.*
+  - gdal==3.5.*
+  # Code style checks and autoformat
+  - black==22.10.*
+  - isort==5.10.*
+  - flake8==6.0.*
+  - flake8-bugbear==22.10.*
+  - flake8-builtins==2.0.*
+  - flake8-functions==0.0.7
+  - flake8-mutable==1.2.*
+  - flake8-rst-docstrings==0.3.*
+  - flake8-simplify==0.19.*
+  - flake8-unused-arguments==0.0.12
+  - pep8-naming==0.13.*
+  - pip:
+      # Install numba_progress through pip
+      # (not available through conda yet)
+      - numba_progress

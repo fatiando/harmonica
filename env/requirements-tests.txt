@@ -1,0 +1,8 @@
+# Requirements for running the tests
+boule
+pytest
+pytest-cov
+coverage
+pyvista
+vtk>=9
+numba_progress

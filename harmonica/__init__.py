@@ -4,22 +4,23 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring,import-outside-toplevel
+#
 # Import functions/classes to make the public API
-from . import version
-from . import datasets
-from . import synthetic
-from .io import load_icgem_gdf
-from .isostasy import isostasy_airy
-from .gravity_corrections import bouguer_correction
-from .forward.point_mass import point_mass_gravity
-from .forward.tesseroid import tesseroid_gravity
+from . import datasets, synthetic
+from ._io.icgem_gdf import load_icgem_gdf
+from ._io.oasis_montaj_grd import load_oasis_montaj_grid
+from ._version import __version__
+from .equivalent_sources.cartesian import EquivalentSources
+from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
+from .equivalent_sources.spherical import EquivalentSourcesSph
+from .forward.point import point_gravity
 from .forward.prism import prism_gravity
-from .equivalent_layer.harmonic import EQLHarmonic
-from .equivalent_layer.harmonic_spherical import EQLHarmonicSpherical
-
-# Get the version number through setuptools-scm
-__version__ = version.version
+from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
+from .forward.tesseroid import tesseroid_gravity
+from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
+from .gravity_corrections import bouguer_correction
+from .isostasy import isostasy_airy, isostatic_moho_airy
+from .transformations import derivative_upward
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

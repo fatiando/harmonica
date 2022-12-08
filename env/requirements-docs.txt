@@ -1,0 +1,17 @@
+# Documentation building requirements
+sphinx==4.5.*
+sphinx-book-theme==0.2.*
+sphinx-gallery==0.10.*
+sphinx-design==0.2.*
+sphinx-copybutton==0.5.*
+jupyter-sphinx==0.3.*
+boule
+pyproj
+ensaio
+netcdf4
+matplotlib
+pyvista
+vtk>=9
+pygmt==0.7.*
+gmt==6.4.*
+gdal==3.5.*

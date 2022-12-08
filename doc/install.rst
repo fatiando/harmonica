@@ -6,7 +6,8 @@ Installing
 Which Python?
 -------------
 
-You'll need **Python 3.6 or greater**.
+You'll need **Python 3.7 or greater**.
+See :ref:`python-versions` if you require support for older versions.
 
 We recommend using the
 `Anaconda Python distribution <https://www.anaconda.com/download>`__
@@ -19,19 +20,40 @@ doesn't interfere with any other Python installations in your system.
 Dependencies
 ------------
 
+The required dependencies should be installed automatically when you install
+Harmonica using ``conda`` or ``pip``. Optional dependencies have to be
+installed manually.
+
+.. note::
+
+    See :ref:`dependency-versions` for the our policy of oldest supported
+    versions of each dependency.
+
+Required:
+
 * `numpy <http://www.numpy.org/>`__
-* `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
 * `pandas <http://pandas.pydata.org/>`__
 * `numba <https://numba.pydata.org/>`__
+* `scipy <https://www.scipy.org/>`__
 * `xarray <https://xarray.pydata.org/>`__
+* `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+* `xrft <https://xrft.readthedocs.io/>`__
+
+Optional:
+
+* `pyvista <https://www.pyvista.org/>`__ and
+  `vtk <https://vtk.org/>`__ (>= 9): for 3D visualizations.
+  See :func:`harmonica.prism_to_pyvista`.
+* `numba_progress <https://pypi.org/project/numba-progress/>`__ for
+  printing a progress bar on some forward modelling computations.
+  See :func:`harmonica.prism_gravity`.
 
 The examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
 * `boule <http://www.fatiando.org/boule/>`__
-* `matplotlib <https://matplotlib.org/>`__
-* `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
+* `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
 
 
@@ -58,7 +80,7 @@ Installing the latest development version
 
 You can use ``pip`` to install the latest source from Github::
 
-    pip install https://github.com/fatiando/harmonica/archive/master.zip
+    pip install https://github.com/fatiando/harmonica/archive/main.zip
 
 Alternatively, you can clone the git repository locally and install from
 there::

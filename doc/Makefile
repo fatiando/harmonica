@@ -20,8 +20,10 @@ help:
 	@echo "  linkcheck  check all external links for integrity"
 	@echo "  doctest    run all doctests embedded in the documentation (if enabled)"
 
-clean:
+clean-html:
 	rm -rf $(BUILDDIR)/html/*
+
+clean: clean-html
 	rm -rf $(BUILDDIR)/doctrees
 	rm -rf $(BUILDDIR)/linkcheck
 	rm -rf api/generated
@@ -40,7 +42,8 @@ html: api
 	@echo
 	@echo "Building HTML files."
 	@echo
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	# Set PYGMT_USE_EXTERNAL_DISPLAY to "false" to disable external display
+	PYGMT_USE_EXTERNAL_DISPLAY="false" $(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 

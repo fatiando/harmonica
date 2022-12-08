@@ -8,13 +8,26 @@
 Forward modelling for prisms
 """
 import numpy as np
-from numba import jit
+from numba import jit, prange
+
+# Attempt to import numba_progress
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 from ..constants import GRAVITATIONAL_CONST
 
 
 def prism_gravity(
-    coordinates, prisms, density, field, dtype="float64", disable_checks=False
+    coordinates,
+    prisms,
+    density,
+    field,
+    parallel=True,
+    dtype="float64",
+    progressbar=False,
+    disable_checks=False,
 ):
     """
     Gravitational fields of right-rectangular prisms in Cartesian coordinates
@@ -25,7 +38,7 @@ def prism_gravity(
     inside the prism.
 
     This implementation makes use of the modified arctangent function proposed
-    by [Fukushima2019]_ (eq. 12) so that the potential field to satisfies
+    by [Fukushima2020]_ (eq. 12) so that the potential field to satisfies
     Poisson's equation in the entire domain. Moreover, the logarithm function
     was also modified in order to solve the singularities that the analytical
     solution has on some points (see [Nagy2000]_).
@@ -59,9 +72,18 @@ def prism_gravity(
         - Gravitational potential: ``potential``
         - Downward acceleration: ``g_z``
 
+    parallel : bool (optional)
+        If True the computations will run in parallel using Numba built-in
+        parallelization. If False, the forward model will run on a single core.
+        Might be useful to disable parallelization if the forward model is run
+        by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
+    progressbar : bool (optional)
+        If True, a progress bar of the computation will be printed to standard
+        error (stderr). Requires :mod:`numba_progress` to be installed.
+        Default to ``False``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
         Should be set to ``True`` only when it is certain that the input model
@@ -82,9 +104,6 @@ def prism_gravity(
     >>> prism = [-34, 5, -18, 14, -345, -146]
     >>> # Set prism density to 2670 kg/m³
     >>> density = 2670
-    >>> # Define a computation point above its center, at 30 meters above the
-    >>> # surface
-    >>> coordinates = (130, 75, 30)
     >>> # Define three computation points along the easting axe at 30m above
     >>> # the surface
     >>> coordinates = ([-40, 0, 40], [0, 0, 0], [30, 30, 30])
@@ -122,13 +141,40 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
+    # Discard null prisms (zero volume or zero density)
+    prisms, density = _discard_null_prisms(prisms, density)
+    # Show progress bar for 'jit_prism_gravity' function
+    if progressbar:
+        if ProgressBar is None:
+            raise ImportError(
+                "Missing optional dependency 'numba_progress' required if progressbar=True"
+            )
+        progress_proxy = ProgressBar(total=coordinates[0].size)
+    else:
+        progress_proxy = None
     # Compute gravitational field
-    jit_prism_gravity(coordinates, prisms, density, kernels[field], result)
+    dispatcher(parallel)(
+        coordinates, prisms, density, kernels[field], result, progress_proxy
+    )
     result *= GRAVITATIONAL_CONST
+    # Close previously created progress bars
+    if progressbar:
+        progress_proxy.close()
     # Convert to more convenient units
     if field == "g_z":
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
+
+
+def dispatcher(parallel):
+    """
+    Return the parallelized or serialized forward modelling function
+    """
+    dispatchers = {
+        True: jit_prism_gravity_parallel,
+        False: jit_prism_gravity_serial,
+    }
+    return dispatchers[parallel]
 
 
 def _check_prisms(prisms):
@@ -142,8 +188,6 @@ def _check_prisms(prisms):
         ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
-        This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     err_msg = "Invalid prism or prisms. "
@@ -167,10 +211,44 @@ def _check_prisms(prisms):
         raise ValueError(err_msg)
 
 
-@jit(nopython=True)
-def jit_prism_gravity(
-    coordinates, prisms, density, kernel, out
-):  # pylint: disable=invalid-name
+def _discard_null_prisms(prisms, density):
+    """
+    Discard prisms with zero volume or zero density
+
+    Parameters
+    ----------
+    prisms : 2d-array
+        Array containing the boundaries of the prisms in the following order:
+        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
+        The array must have the following shape: (``n_prisms``, 6), where
+        ``n_prisms`` is the total number of prisms.
+        This array of prisms must have valid boundaries.
+        Run ``_check_prisms`` before.
+    density : 1d-array
+        Array containing the density of each prism in kg/m^3. Must have the
+        same size as the number of prisms.
+
+    Returns
+    -------
+    prisms : 2d-array
+        A copy of the ``prisms`` array that doesn't include the null prisms
+        (prisms with zero volume or zero density).
+    density : 1d-array
+        A copy of the ``density`` array that doesn't include the density values
+        for null prisms (prisms with zero volume or zero density).
+    """
+    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
+    # Mark prisms with zero volume as null prisms
+    null_prisms = (west == east) | (south == north) | (bottom == top)
+    # Mark prisms with zero density as null prisms
+    null_prisms[density == 0] = True
+    # Keep only non null prisms
+    prisms = prisms[np.logical_not(null_prisms), :]
+    density = density[np.logical_not(null_prisms)]
+    return prisms, density
+
+
+def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=None):
     """
     Compute gravitational field of prisms on computations points
 
@@ -194,29 +272,34 @@ def jit_prism_gravity(
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
-    for l in range(coordinates[0].size):
+    for l in prange(coordinates[0].size):
         for m in range(prisms.shape[0]):
-            # Iterate over the prism boundaries to compute the result of the
+            # Iterate over the prism vertices to compute the result of the
             # integration (see Nagy et al., 2000)
             for i in range(2):
+                # Compute shifted easting coordinate
+                shift_east = prisms[m, 1 - i] - coordinates[0][l]
                 for j in range(2):
+                    # Compute shifted northing coordinate
+                    shift_north = prisms[m, 3 - j] - coordinates[1][l]
                     for k in range(2):
-                        shift_east = prisms[m, 1 - i]
-                        shift_north = prisms[m, 3 - j]
-                        shift_upward = prisms[m, 5 - k]
-                        # If i, j or k is 1, the shift_* will refer to the
-                        # lower boundary, meaning the corresponding term should
-                        # have a minus sign
+                        # Compute shifted upward coordinate
+                        shift_upward = prisms[m, 5 - k] - coordinates[2][l]
+                        # If i, j or k is 1, the corresponding shifted
+                        # coordinate will refer to the lower boundary,
+                        # meaning the corresponding term should have a minus
+                        # sign.
                         out[l] += (
                             density[m]
                             * (-1) ** (i + j + k)
-                            * kernel(
-                                shift_east - coordinates[0][l],
-                                shift_north - coordinates[1][l],
-                                shift_upward - coordinates[2][l],
-                            )
+                            * kernel(shift_east, shift_north, shift_upward)
                         )
+        # Update progress bar if called
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
 @jit(nopython=True)
@@ -224,14 +307,14 @@ def kernel_potential(easting, northing, upward):
     """
     Kernel function for potential gravitational field generated by a prism
     """
-    radius = np.sqrt(easting ** 2 + northing ** 2 + upward ** 2)
+    radius = np.sqrt(easting**2 + northing**2 + upward**2)
     kernel = (
         easting * northing * safe_log(upward + radius)
         + northing * upward * safe_log(easting + radius)
         + easting * upward * safe_log(northing + radius)
-        - 0.5 * easting ** 2 * safe_atan2(upward * northing, easting * radius)
-        - 0.5 * northing ** 2 * safe_atan2(upward * easting, northing * radius)
-        - 0.5 * upward ** 2 * safe_atan2(easting * northing, upward * radius)
+        - 0.5 * easting**2 * safe_atan2(upward * northing, easting * radius)
+        - 0.5 * northing**2 * safe_atan2(upward * easting, northing * radius)
+        - 0.5 * upward**2 * safe_atan2(easting * northing, upward * radius)
     )
     return kernel
 
@@ -241,7 +324,7 @@ def kernel_g_z(easting, northing, upward):
     """
     Kernel for downward component of gravitational acceleration of a prism
     """
-    radius = np.sqrt(easting ** 2 + northing ** 2 + upward ** 2)
+    radius = np.sqrt(easting**2 + northing**2 + upward**2)
     kernel = (
         easting * safe_log(northing + radius)
         + northing * safe_log(easting + radius)
@@ -259,7 +342,7 @@ def safe_atan2(y, x):
     gravitational field of the prism satisfies the Poisson's equation.
     Therefore, it guarantees that the fields satisfies the symmetry properties
     of the prism. This modified function has been defined according to
-    [Fukushima2019]_.
+    [Fukushima2020]_.
     """
     if x != 0:
         result = np.arctan(y / x)
@@ -284,3 +367,8 @@ def safe_log(x):
     else:
         result = np.log(x)
     return result
+
+
+# Define jitted versions of the forward modelling function
+jit_prism_gravity_serial = jit(nopython=True)(jit_prism_gravity)
+jit_prism_gravity_parallel = jit(nopython=True, parallel=True)(jit_prism_gravity)

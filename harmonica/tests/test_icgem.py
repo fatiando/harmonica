@@ -8,9 +8,11 @@
 Testing ICGEM gdf files loading.
 """
 import os
+
 import numpy as np
 import numpy.testing as npt
-from pytest import raises
+import pytest
+from pytest import raises, warns
 
 from .. import load_icgem_gdf
 
@@ -108,12 +110,11 @@ def test_missing_shape(tmpdir):
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
         corrupt = str(tmpdir.join("missing_shape_" + attribute + ".gdf"))
-        with open(fname) as gdf_file:
-            with open(corrupt, "w") as corrupt_gdf:
-                for line in gdf_file:
-                    if attribute in line:
-                        continue
-                    corrupt_gdf.write(line)
+        with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+            for line in gdf_file:
+                if attribute in line:
+                    continue
+                corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
@@ -123,12 +124,11 @@ def test_missing_size(tmpdir):
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_size.gdf"))
     attribute = "number_of_gridpoints"
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if attribute in line:
-                    continue
-                corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if attribute in line:
+                continue
+            corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -139,15 +139,14 @@ def test_corrupt_shape(tmpdir):
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
         corrupt = str(tmpdir.join("missing_shape_" + attribute + ".gdf"))
-        with open(fname) as gdf_file:
-            with open(corrupt, "w") as corrupt_gdf:
-                for line in gdf_file:
-                    if attribute in line:
-                        new_value = int(line.split()[1]) + 1
-                        new_line = attribute + "\t" + str(new_value) + "\n"
-                        corrupt_gdf.write(new_line)
-                    else:
-                        corrupt_gdf.write(line)
+        with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+            for line in gdf_file:
+                if attribute in line:
+                    new_value = int(line.split()[1]) + 1
+                    new_line = attribute + "\t" + str(new_value) + "\n"
+                    corrupt_gdf.write(new_line)
+                else:
+                    corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
@@ -156,12 +155,11 @@ def test_missing_cols_names(tmpdir):
     "ICGEM file with missing cols names"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_cols_names.gdf"))
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if "latitude" in line and "longitude" in line:
-                    continue
-                corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if "latitude" in line and "longitude" in line:
+                continue
+            corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -170,12 +168,11 @@ def test_missing_units(tmpdir):
     "ICGEM file with missing units"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_units.gdf"))
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if "[mgal]" in line:
-                    continue
-                corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if "[mgal]" in line:
+                continue
+            corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -184,12 +181,11 @@ def test_missing_empty_line(tmpdir):
     "ICGEM file with missing empty line"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_empty_line.gdf"))
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if not line.strip():
-                    continue
-                corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if not line.strip():
+                continue
+            corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -198,14 +194,13 @@ def test_missing_attribute(tmpdir):
     "ICGEM file with one missing attribute (not missing unit)"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_attribute.gdf"))
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if "longitude" in line and "latitude" in line:
-                    parts = line.strip().split()
-                    corrupt_gdf.write("\t".join(parts[:2]) + "\n")
-                else:
-                    corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if "longitude" in line and "latitude" in line:
+                parts = line.strip().split()
+                corrupt_gdf.write("\t".join(parts[:2]) + "\n")
+            else:
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -216,14 +211,13 @@ def test_missing_lat_lon_attributes(tmpdir):
     attributes = ["longitude", "latitude"]
     for attribute in attributes:
         corrupt = str(tmpdir.join("missing_" + attribute + "_attribute.gdf"))
-        with open(fname) as gdf_file:
-            with open(corrupt, "w") as corrupt_gdf:
-                for line in gdf_file:
-                    if "longitude" in line and "latitude" in line:
-                        new_line = line.replace(attribute, "corrupt")
-                        corrupt_gdf.write(new_line)
-                    else:
-                        corrupt_gdf.write(line)
+        with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+            for line in gdf_file:
+                if "longitude" in line and "latitude" in line:
+                    new_line = line.replace(attribute, "corrupt")
+                    corrupt_gdf.write(new_line)
+                else:
+                    corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
@@ -232,17 +226,13 @@ def test_diff_attrs_vs_cols(tmpdir):
     "ICGEM file with different number of cols vs number of attributes"
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("diff_attributes_vs_cols.gdf"))
-    with open(fname) as gdf_file:
-        with open(corrupt, "w") as corrupt_gdf:
-            for line in gdf_file:
-                if "longitude" in line and "latitude" in line:
-                    parts = line.strip().split()
-                    corrupt_gdf.write("\t".join(parts[:2]) + "\n")
-                elif "[mgal]" in line:
-                    parts = line.strip().split()
-                    corrupt_gdf.write("\t".join(parts[:2]) + "\n")
-                else:
-                    corrupt_gdf.write(line)
+    with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+        for line in gdf_file:
+            if ("longitude" in line and "latitude" in line) or "[mgal]" in line:
+                parts = line.strip().split()
+                corrupt_gdf.write("\t".join(parts[:2]) + "\n")
+            else:
+                corrupt_gdf.write(line)
     with raises(IOError):
         load_icgem_gdf(corrupt)
 
@@ -258,12 +248,11 @@ def test_missing_area(tmpdir):
     ]
     for attribute in attributes:
         corrupt = str(tmpdir.join("missing_" + attribute + ".gdf"))
-        with open(fname) as gdf_file:
-            with open(corrupt, "w") as corrupt_gdf:
-                for line in gdf_file:
-                    if attribute in line:
-                        continue
-                    corrupt_gdf.write(line)
+        with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+            for line in gdf_file:
+                if attribute in line:
+                    continue
+                corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
@@ -279,28 +268,33 @@ def test_corrupt_area(tmpdir):
     ]
     for attribute in attributes:
         corrupt = str(tmpdir.join("corrupt_" + attribute + ".gdf"))
-        with open(fname) as gdf_file:
-            with open(corrupt, "w") as corrupt_gdf:
-                for line in gdf_file:
-                    if attribute in line:
-                        parts = line.split()
-                        new_bound = float(parts[1]) + 1.0
-                        newline = parts[0] + "\t" + str(new_bound)
-                        corrupt_gdf.write(newline)
-                    else:
-                        corrupt_gdf.write(line)
+        with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
+            for line in gdf_file:
+                if attribute in line:
+                    parts = line.split()
+                    new_bound = float(parts[1]) + 1.0
+                    newline = parts[0] + "\t" + str(new_bound)
+                    corrupt_gdf.write(newline)
+                else:
+                    corrupt_gdf.write(line)
         with raises(IOError):
             load_icgem_gdf(corrupt)
 
 
-def test_empty_file(tmpdir, recwarn):
-    "Empty ICGEM file"
+@pytest.fixture(name="empty_fname")
+def fixture_empty_fname(tmpdir):
+    """
+    Return the path to a temporary empty file
+    """
     empty_fname = str(tmpdir.join("empty.gdf"))
     with open(empty_fname, "w") as gdf_file:
         gdf_file.write("")
-    with raises(IOError):
+    return empty_fname
+
+
+def test_empty_file(empty_fname):
+    "Empty ICGEM file"
+    error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
+    warn = warns(UserWarning, match=r"loadtxt: input contained no data")
+    with error, warn:
         load_icgem_gdf(empty_fname)
-    assert len(recwarn) == 1
-    warning = recwarn.pop()
-    assert warning.category == UserWarning
-    assert "Empty input file" in str(warning.message)

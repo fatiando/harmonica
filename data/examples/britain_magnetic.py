@@ -29,41 +29,43 @@ See the original data for more processing information.
 If the file isn't already in your data directory, it will be downloaded
 automatically.
 """
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import verde as vd
-import harmonica as hm
 import numpy as np
+import pygmt
+import verde as vd
+
+import harmonica as hm
 
 # Fetch the data in a pandas.DataFrame
 data = hm.datasets.fetch_britain_magnetic()
 print(data)
 
-# Plot the observations in a Mercator map using Cartopy
-fig = plt.figure(figsize=(7.5, 10))
-ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Magnetic data from Great Britain", pad=25)
-maxabs = np.percentile(data.total_field_anomaly_nt, 99)
-tmp = ax.scatter(
-    data.longitude,
-    data.latitude,
-    c=data.total_field_anomaly_nt,
-    s=0.001,
-    cmap="seismic",
-    vmin=-maxabs,
-    vmax=maxabs,
-    transform=ccrs.PlateCarree(),
+# Get the region of the data
+region = vd.get_region((data.longitude, data.latitude))
+
+# Plot the observations in a Mercator map using PyGMT
+fig = pygmt.Figure()
+
+title = "Magnetic data from Great Britain"
+
+# Make colormap scaled to 97 percentile of data.
+maxabs = np.percentile(data.total_field_anomaly_nt, 97)
+pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
+
+fig.plot(
+    region=region,
+    projection="M10c",
+    frame=["ag", f"+t{title}"],
+    x=data.longitude,
+    y=data.latitude,
+    color=data.total_field_anomaly_nt,
+    style="c0.02c",
+    cmap=True,
 )
-plt.colorbar(
-    tmp,
-    ax=ax,
-    label="total field magnetic anomaly [nT]",
-    orientation="vertical",
-    aspect=50,
-    shrink=0.7,
-    pad=0.1,
+
+fig.colorbar(
+    cmap=True, position="JMR", frame=["a100f50", "x+ltotal field magnetic anomaly [nT]"]
 )
-ax.set_extent(vd.get_region((data.longitude, data.latitude)))
-ax.gridlines(draw_labels=True)
-ax.coastlines(resolution="50m")
-plt.show()
+
+fig.coast(shorelines="1p,black")
+
+fig.show()

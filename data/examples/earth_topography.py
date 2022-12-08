@@ -13,23 +13,29 @@ The topography and bathymetry of the Earth according to the ETOPO1 model
 we downsampled to 0.5 degree grid spacing to save space and download times.
 Heights are referenced to sea level.
 """
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
+import pygmt
+
 import harmonica as hm
 
 # Load the topography grid
 data = hm.datasets.fetch_topography_earth()
 print(data)
 
-# Make a plot of data using Cartopy
-plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-30))
-pc = data.topography.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="terrain"
+# Make a plot using PyGMT
+fig = pygmt.Figure()
+
+title = "Topography of the Earth (ETOPO1)"
+
+fig.grdimage(
+    region="g",
+    projection="G-30/0/15c",
+    frame=f"+t{title}",
+    grid=data.topography,
+    cmap="globe",
 )
-plt.colorbar(
-    pc, label="meters", orientation="horizontal", aspect=50, pad=0.01, shrink=0.6
-)
-ax.set_title("Topography of the Earth (ETOPO1)")
-ax.coastlines()
-plt.show()
+
+fig.coast(shorelines="0.5p,black", resolution="crude")
+
+fig.colorbar(cmap=True, frame=["a2000f500", "x+lmeters"])
+
+fig.show()

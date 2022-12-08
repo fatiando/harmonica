@@ -7,12 +7,12 @@
 """
 Test utils functions for forward modelling
 """
-import pytest
+import boule as bl
 import numpy as np
 import numpy.testing as npt
-import boule as bl
+import pytest
 
-from ..forward.utils import distance, check_coordinate_system
+from ..forward.utils import check_coordinate_system, distance
 
 
 @pytest.mark.use_numba
@@ -66,7 +66,7 @@ def test_geodetic_distance_vs_spherical():
     point_b = (-71.2, -33.3, 1025)
     # Compute distance using closed-form formula
     dist = distance(point_a, point_b, coordinate_system="geodetic", ellipsoid=ellipsoid)
-    # Convert points to spherical coordiantes
+    # Convert points to spherical coordinates
     point_a_sph = ellipsoid.geodetic_to_spherical(*point_a)
     point_b_sph = ellipsoid.geodetic_to_spherical(*point_b)
     # Compute distance using these converted points
@@ -87,7 +87,7 @@ def test_geodetic_distance_equator_poles():
     ellipsoid = bl.WGS84
     # Compute the expected distance between the two points
     expected_distance = np.sqrt(
-        ellipsoid.semimajor_axis ** 2 + ellipsoid.semiminor_axis ** 2
+        ellipsoid.semimajor_axis**2 + ellipsoid.semiminor_axis**2
     )
     # Compute distance for different longitudes and alternate between points on
     # both poles

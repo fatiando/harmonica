@@ -1,3 +1,3 @@
-.. _citing:
+.. _citing_harmonica:
 
 .. include:: ../CITATION.rst
