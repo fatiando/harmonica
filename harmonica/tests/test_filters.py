@@ -261,7 +261,7 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     )
     # Check if the filter returns the expected output
     npt.assert_allclose(
-        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=1e-6
+        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
     )
 
 
@@ -273,8 +273,8 @@ def test_derivative_easting_kernel(sample_fft_grid, order):
     # Load pre-computed outcome
     expected = np.array([-0.0 - 0.00565487j, 0.0 + 0.0j, 0.0 + 0.00565487j]) ** order
     # Check if the filter returns the expected output
-    npt.assert_equal(
-        expected, derivative_easting_kernel(sample_fft_grid, order=order), rtol=1e-6
+    npt.assert_allclose(
+        expected, derivative_easting_kernel(sample_fft_grid, order=order), rtol=2e-6
     )
 
 
@@ -287,7 +287,7 @@ def test_derivative_northing_kernel(sample_fft_grid, order):
     expected = np.array([-0.0 - 0.00502655j, 0.0 + 0.0j, 0.0 + 0.00502655j]) ** order
     # Check if the filter returns the expected output
     npt.assert_allclose(
-        expected, derivative_northing_kernel(sample_fft_grid, order=order), rtol=1e-6
+        expected, derivative_northing_kernel(sample_fft_grid, order=order), rtol=2e-6
     )
 
 
@@ -311,7 +311,7 @@ def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
         upward_continuation_kernel(
             sample_fft_grid, height_displacement=height_displacement
         ),
-        rtol=1e-6,
+        rtol=2e-6,
     )
 
 
@@ -331,7 +331,7 @@ def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
     npt.assert_allclose(
         expected,
         gaussian_lowpass_kernel(sample_fft_grid, wavelength=wavelength),
-        rtol=1e-6,
+        rtol=2e-6,
     )
 
 
@@ -351,7 +351,7 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
     npt.assert_allclose(
         expected,
         gaussian_highpass_kernel(sample_fft_grid, wavelength=wavelength),
-        rtol=1e-6,
+        rtol=2e-6,
     )
 
 
@@ -450,5 +450,5 @@ def test_pseudo_gravity_kernel(
             magnetization_declination=magnetization_declination,
             f=f,
         ),
-        rtol=1e-6,
+        rtol=2e-6,
     )
