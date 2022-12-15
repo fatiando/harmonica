@@ -465,3 +465,38 @@ def test_numba_progress_missing_error(dummy_layer):
     # Check if error is raised
     with pytest.raises(ImportError):
         layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)
+
+
+def test_discard_thin_prisms(dummy_layer):
+    """
+    Check if thin prisms are properly discarded.
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    prism_coords, surface, reference, density = dummy_layer
+
+    layer = prism_layer(
+        prism_coords, surface, reference, properties={"density": density}
+    )
+    # Check that result with no threshold is the same as with a threshold of 0
+    gravity_prisms_nothres = layer.prism_layer.gravity(coordinates, field="g_z")
+    gravity_prisms_0thres = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=0
+    )
+    np.allclose(gravity_prisms_nothres, gravity_prisms_0thres)
+
+    # Check that gravity from manually removed prisms is the same as using a
+    # threshold
+    manually_removed_prisms = []
+    for _, j in enumerate(layer.prism_layer._to_prisms()):
+        if abs(j[5] - j[4]) > 5.0:
+            manually_removed_prisms.append(j)
+    gravity_manually_removed = prism_gravity(
+        coordinates,
+        prisms=manually_removed_prisms,
+        density=[2670] * len(manually_removed_prisms),
+        field="g_z",
+    )
+    gravity_threshold_removed = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=5
+    )
+    npt.assert_allclose(gravity_manually_removed, gravity_threshold_removed)
