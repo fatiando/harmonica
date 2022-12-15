@@ -430,11 +430,21 @@ class Testfilter:
         Test greduction_to_pole function against the output from oasis montaj
         """
         rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
-        xrt.assert_allclose(self.expected_grid.filter_rtp, rtp, atol=1)
+        # Remove mean value to match OM result
+        xrt.assert_allclose(
+            self.expected_grid.filter_rtp - self.expected_grid.filter_data.mean(),
+            rtp,
+            atol=1,
+        )
 
     def test_pseudo_gravity_grid(self):
         """
         Test greduction_to_pole function against the output from oasis montaj
         """
         pg = pseudo_gravity(self.expected_grid.filter_data, 60, 45, 60, 45, 1) * 149.8
-        xrt.assert_allclose(self.expected_grid.filter_pg, pg, atol=1)
+        # Remove mean value to match OM result
+        xrt.assert_allclose(
+            self.expected_grid.filter_pg - self.expected_grid.filter_data.mean(),
+            pg,
+            atol=1,
+        )

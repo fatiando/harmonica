@@ -466,7 +466,7 @@ def reduction_to_pole_kernel(
     )
 
     # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=1, nan=1)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
     return da_filter
 
 
@@ -487,24 +487,18 @@ def pseudo_gravity_kernel(
 
     .. math::
 
-        g(\mathbf{k}) = \frac{149.8}{f|\mathbf{k}|}\times\frac{|\mathbf{k}|}
-        {i(\mathbf{ke}\cos{(inclination)}\sin{(declination)}+
-        \mathbf{kn}\cos{(inclination)}\cos{(declination)})+|\mathbf{k}|
-        \sin{(inclination)}}\times\frac{|\mathbf{k}|}{i(\mathbf{ke}\
-        cos{(magnetization\_inclination)}\sin{(magnetization\_declination)}+
-        \mathbf{kn}\cos{(magnetization\_inclination)}
-        \cos{(magnetization\_declination)})+|\mathbf{k}|\sin{(magnetization\_inclination)}}
+            g(\mathbf{k}) = \frac{149.8}{f|\mathbf{k}|}\times
+            {reduction\_to\_pole\_kernel}
 
 
     where :math:`\mathbf{k}` is the wavenumber vector
-    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the
-    frequency vector,:math:`\mathbf{fe}` is the easting frequency vector,
-    :math:`\mathbf{fn}` is the northing frequency vector).
+    (:math:`\mathbf{k} = 2\pi \mathbf{f}`
 
     Parameters
     ----------
     fft_grid : :class:`xarray.DataArray`
-        Total Magnetic Intensity or Reduction To Pole magnetic field
+        Total Magnetic Intensity or Reduction To Pole magnetic field.
+        Please set inclination = 90 for Reduction To Pole magnetic field.
         Array with the Fourier transform of the original grid.
         Its dimensions should be in the following order:
         *freq_northing*, *freq_easting*.
@@ -543,18 +537,7 @@ def pseudo_gravity_kernel(
     --------
     harmonica.pseudo_gravity
     """
-    # Transform degree to rad
-    [inclination, declination] = np.deg2rad([inclination, declination])
 
-    if magnetization_declination is None or magnetization_inclination is None:
-        [magnetization_inclination, magnetization_declination] = [
-            inclination,
-            declination,
-        ]
-    else:
-        [magnetization_inclination, magnetization_declination] = np.deg2rad(
-            [magnetization_inclination, magnetization_declination]
-        )
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -563,34 +546,22 @@ def pseudo_gravity_kernel(
     # Convert frequencies to wavenumbers
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
-    # Compute the filter for reduction to pole in frequency domain
-    da_filter = (k_northing**2 + k_easting**2) / (
-        (
-            1j
-            * (
-                np.cos(inclination) * np.sin(declination) * k_easting
-                + np.cos(inclination) * np.cos(declination) * k_northing
-            )
-            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
+    # Check if input is RTP field
+    if inclination == 90:
+        # Calculate vertical intergral
+        da_filter = np.sqrt(k_easting**2 + k_northing**2) ** -1
+    else:
+        # Calculate RTP kernel, then calculate vertical intergral
+        da_filter = reduction_to_pole_kernel(
+            fft_grid,
+            inclination,
+            declination,
+            magnetization_inclination,
+            magnetization_declination,
         )
-        * (
-            1j
-            * (
-                np.cos(magnetization_inclination)
-                * np.sin(magnetization_declination)
-                * k_easting
-                + np.cos(magnetization_inclination)
-                * np.cos(magnetization_declination)
-                * k_northing
-            )
-            + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing**2 + k_easting**2)
-        )
-    )
+        * np.sqrt(k_easting**2 + k_northing**2) ** -1
 
-    # Combine with vertical intergral
-    da_filter = da_filter * np.sqrt(k_easting**2 + k_northing**2) ** -1
     # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=1, nan=1)
+    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
 
     return da_filter / 149.8 / f
