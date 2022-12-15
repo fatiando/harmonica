@@ -8,6 +8,7 @@
 Test functions from the filter module
 """
 import numpy as np
+import numpy.testing as npt
 import pytest
 import xarray as xr
 import xarray.testing as xrt
@@ -259,8 +260,8 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
         ** order
     )
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
-        expected, derivative_upward_kernel(sample_fft_grid, order=order)
+    npt.assert_allclose(
+        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=1e-6
     )
 
 
@@ -272,8 +273,8 @@ def test_derivative_easting_kernel(sample_fft_grid, order):
     # Load pre-computed outcome
     expected = np.array([-0.0 - 0.00565487j, 0.0 + 0.0j, 0.0 + 0.00565487j]) ** order
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
-        expected, derivative_easting_kernel(sample_fft_grid, order=order)
+    npt.assert_equal(
+        expected, derivative_easting_kernel(sample_fft_grid, order=order), rtol=1e-6
     )
 
 
@@ -285,8 +286,8 @@ def test_derivative_northing_kernel(sample_fft_grid, order):
     # Load pre-computed outcome
     expected = np.array([-0.0 - 0.00502655j, 0.0 + 0.0j, 0.0 + 0.00502655j]) ** order
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
-        expected, derivative_northing_kernel(sample_fft_grid, order=order)
+    npt.assert_allclose(
+        expected, derivative_northing_kernel(sample_fft_grid, order=order), rtol=1e-6
     )
 
 
@@ -305,11 +306,12 @@ def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     )
     expected = np.exp(-k * height_displacement)
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
+    npt.assert_allclose(
         expected,
         upward_continuation_kernel(
             sample_fft_grid, height_displacement=height_displacement
         ),
+        rtol=1e-6,
     )
 
 
@@ -326,8 +328,10 @@ def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
         ]
     )
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
-        expected, gaussian_lowpass_kernel(sample_fft_grid, wavelength=wavelength)
+    npt.assert_allclose(
+        expected,
+        gaussian_lowpass_kernel(sample_fft_grid, wavelength=wavelength),
+        rtol=1e-6,
     )
 
 
@@ -344,8 +348,10 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
         ]
     )
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
-        expected, gaussian_highpass_kernel(sample_fft_grid, wavelength=wavelength)
+    npt.assert_allclose(
+        expected,
+        gaussian_highpass_kernel(sample_fft_grid, wavelength=wavelength),
+        rtol=1e-6,
     )
 
 
@@ -434,7 +440,7 @@ def test_pseudo_gravity_kernel(
         ]
     )
     # Check if the filter returns the expected output
-    xrt.assert_allclose(
+    npt.assert_allclose(
         expected,
         pseudo_gravity_kernel(
             sample_fft_grid,
@@ -444,4 +450,5 @@ def test_pseudo_gravity_kernel(
             magnetization_declination=magnetization_declination,
             f=f,
         ),
+        rtol=1e-6,
     )
