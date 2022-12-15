@@ -552,14 +552,16 @@ def pseudo_gravity_kernel(
         da_filter = np.sqrt(k_easting**2 + k_northing**2) ** -1
     else:
         # Calculate RTP kernel, then calculate vertical intergral
-        da_filter = reduction_to_pole_kernel(
-            fft_grid,
-            inclination,
-            declination,
-            magnetization_inclination,
-            magnetization_declination,
+        da_filter = (
+            reduction_to_pole_kernel(
+                fft_grid,
+                inclination,
+                declination,
+                magnetization_inclination,
+                magnetization_declination,
+            )
+            * np.sqrt(k_easting**2 + k_northing**2) ** -1
         )
-        * np.sqrt(k_easting**2 + k_northing**2) ** -1
 
     # Deal with inf and nan value
     da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
