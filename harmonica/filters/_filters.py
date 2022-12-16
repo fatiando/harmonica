@@ -420,18 +420,12 @@ def reduction_to_pole_kernel(
     --------
     harmonica.reduction_to_pole
     """
-    # Transform degree to rad
-    [inclination, declination] = np.deg2rad([inclination, declination])
-
-    if magnetization_declination is None or magnetization_inclination is None:
-        [magnetization_inclination, magnetization_declination] = [
-            inclination,
-            declination,
-        ]
-    else:
-        [magnetization_inclination, magnetization_declination] = np.deg2rad(
-            [magnetization_inclination, magnetization_declination]
-        )
+    # Check if magnetization angles are valid
+    _check_magnetization_angles(magnetization_inclination, magnetization_declination)
+    # Define magnetization angles if they are None
+    if magnetization_declination is None and magnetization_inclination is None:
+        magnetization_inclination = inclination
+        magnetization_declination = declination
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -441,30 +435,14 @@ def reduction_to_pole_kernel(
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for reduction to pole in frequency domain
-    da_filter = (k_northing**2 + k_easting**2) / (
-        (
-            1j
-            * (
-                np.cos(inclination) * np.sin(declination) * k_easting
-                + np.cos(inclination) * np.cos(declination) * k_northing
-            )
-            + np.sin(inclination) * np.sqrt(k_northing**2 + k_easting**2)
-        )
-        * (
-            1j
-            * (
-                np.cos(magnetization_inclination)
-                * np.sin(magnetization_declination)
-                * k_easting
-                + np.cos(magnetization_inclination)
-                * np.cos(magnetization_declination)
-                * k_northing
-            )
-            + np.sin(magnetization_inclination)
-            * np.sqrt(k_northing**2 + k_easting**2)
-        )
+    da_filter = _get_rtp_filter(
+        k_easting,
+        k_northing,
+        inclination,
+        declination,
+        magnetization_inclination,
+        magnetization_declination,
     )
-
     # Deal with inf and nan value
     da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
     return da_filter
@@ -537,7 +515,12 @@ def pseudo_gravity_kernel(
     --------
     harmonica.pseudo_gravity
     """
-
+    # Check if magnetization angles are valid
+    _check_magnetization_angles(magnetization_inclination, magnetization_declination)
+    # Define magnetization angles if they are None
+    if magnetization_declination is None and magnetization_inclination is None:
+        magnetization_inclination = inclination
+        magnetization_declination = declination
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -548,22 +531,104 @@ def pseudo_gravity_kernel(
     k_northing = 2 * np.pi * freq_northing
     # Check if input is RTP field
     if inclination == 90:
-        # Calculate vertical intergral
+        # Calculate vertical integral
         da_filter = np.sqrt(k_easting**2 + k_northing**2) ** -1
     else:
-        # Calculate RTP kernel, then calculate vertical intergral
+        # Calculate RTP kernel, then calculate vertical integral
         da_filter = (
-            reduction_to_pole_kernel(
-                fft_grid,
+            _get_rtp_filter(
+                k_easting,
+                k_northing,
                 inclination,
                 declination,
                 magnetization_inclination,
-                magnetization_declination,
+                magnetization_inclination,
             )
             * np.sqrt(k_easting**2 + k_northing**2) ** -1
         )
-
     # Deal with inf and nan value
     da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
-
     return da_filter / 149.8 / f
+
+
+def _check_magnetization_angles(magnetization_inclination, magnetization_declination):
+    """
+    Check if magnetization angles are both None or both numbers
+
+    They could either be two Nones or two angles, but not one None and one
+    angle.
+    """
+    if magnetization_inclination is None and magnetization_declination is not None:
+        raise ValueError(
+            "Invalid magnetization degrees. Found `magnetization_inclination` as "
+            + "None and `magnetization_declination` as"
+            + f"'{magnetization_declination}'. "
+            "Please, provide two valid angles in degrees or both angles as None."
+        )
+    if magnetization_declination is None and magnetization_inclination is not None:
+        raise ValueError(
+            "Invalid magnetization degrees. Found `magnetization_declination` as "
+            + "None and `magnetization_inclination` as"
+            + f"'{magnetization_inclination}'. "
+            "Please, provide two valid angles in degrees or both angles as None."
+        )
+
+
+def _get_rtp_filter(
+    k_easting,
+    k_northing,
+    inclination,
+    declination,
+    magnetization_inclination,
+    magnetization_declination,
+):
+    """
+    Build the reduction to the pole filter
+
+    Parameters
+    ----------
+    k_easting : array
+        Wavenumber array for the easting direction.
+    k_northing : array
+        Wavenumber array for the northing direction.
+    inclination : float in degrees
+        The inclination inducing Geomagnetic field.
+    declination : float in degrees
+        The declination inducing Geomagnetic field.
+    magnetization_inclination : float in degrees
+        The inclination of the total magnetization of the anomaly source.
+    magnetization_declination : float in degrees
+        The declination of the total magnetization of the anomaly source.
+
+    Returns
+    -------
+    rtp_filter: array
+        Array with the kernel for the reduction to the pole filter in frequency
+        domain.
+    """
+    # Convert angles to radians
+    inc_rad, dec_rad = np.deg2rad(inclination), np.deg2rad(declination)
+    mag_inc_rad, mag_dec_rad = np.deg2rad(magnetization_inclination), np.deg2rad(
+        magnetization_declination
+    )
+    # Compute unit vector components for geomagnetic field and magnetization
+    cos_inc, sin_inc = np.cos(inc_rad), np.sin(inc_rad)
+    cos_dec, sin_dec = np.cos(dec_rad), np.sin(dec_rad)
+    cos_mag_inc, sin_mag_inc = np.cos(mag_inc_rad), np.sin(mag_inc_rad)
+    cos_mag_dec, sin_mag_dec = np.cos(mag_dec_rad), np.sin(mag_dec_rad)
+    f_e = sin_dec * cos_inc
+    f_n = cos_dec * cos_inc
+    f_z = sin_inc
+    m_e = sin_mag_dec * cos_mag_inc
+    m_n = cos_mag_dec * cos_mag_inc
+    m_z = sin_mag_inc
+    # Precompute |k|^2 and |k|
+    k_squared = k_northing**2 + k_easting**2
+    k = np.sqrt(k_squared)
+    # Compute the rtp filter
+    rtp_filter = (
+        k_squared
+        * (f_z * k + 1j * (f_e * k_easting + f_n * k_northing)) ** (-1)
+        * (m_z * k + 1j * (m_e * k_easting + m_n * k_northing)) ** (-1)
+    )
+    return rtp_filter
