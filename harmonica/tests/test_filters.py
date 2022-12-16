@@ -452,3 +452,32 @@ def test_pseudo_gravity_kernel(
         ),
         rtol=2e-6,
     )
+
+
+@pytest.mark.parametrize(
+    "filter_kernel", (pseudo_gravity_kernel, reduction_to_pole_kernel)
+)
+@pytest.mark.parametrize(
+    "magnetization_inclination, magnetization_declination", [(None, 1), (1, None)]
+)
+def test_invalid_magnetization_angles(
+    sample_fft_grid, filter_kernel, magnetization_inclination, magnetization_declination
+):
+    """
+    Test if reduction to the pole and pseudogravity filters raise errors when
+    invalid magnetization angles are passed.
+    """
+    if magnetization_inclination is None:
+        offender = "magnetization_inclination"
+    if magnetization_declination is None:
+        offender = "magnetization_declination"
+    msg = f"Invalid magnetization degrees. Found `{offender}` as "
+    inclination, declination = 1, 30
+    with pytest.raises(ValueError, match=msg):
+        filter_kernel(
+            sample_fft_grid,
+            inclination,
+            declination,
+            magnetization_inclination,
+            magnetization_declination,
+        )
