@@ -567,7 +567,7 @@ def pseudo_gravity_kernel(
                 inclination,
                 declination,
                 magnetization_inclination,
-                magnetization_inclination,
+                magnetization_declination,
             )
             * np.sqrt(k_easting**2 + k_northing**2) ** -1
         )
