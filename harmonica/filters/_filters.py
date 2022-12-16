@@ -371,19 +371,44 @@ def reduction_to_pole_kernel(
 
     .. math::
 
-        g(\mathbf{k}) = \frac{|\mathbf{k}|}{i(\mathbf{ke}\cos{(inclination)}
-        \sin{(declination)}+\mathbf{kn}\cos{(inclination)}\cos{(declination)})+
-        |\mathbf{k}|\sin{(inclination)}}\times\frac{|\mathbf{k}|}
-        {i(\mathbf{ke}\cos{(magnetization\_inclination)}
-        \sin{(magnetization\_declination)}+\mathbf{kn}\
-        cos{(magnetization\_inclination)}\cos{(magnetization\_declination)})
-        +|\mathbf{k}|\sin{(magnetization\_inclination)}}
+        g(\mathbf{k}) = \frac{1}{\Theta_m \Theta_f}
 
-    where :math:`\mathbf{k}` is the wavenumber vector
-    (:math:`\mathbf{k} = 2\pi \mathbf{f}`
-    where :math:`\mathbf{f}` is the frequency vector,
-    :math:`\mathbf{fe}` is the easting frequency vector,
-    :math:`\mathbf{fn}` is the northing frequency vector).
+    with
+
+    .. math::
+
+        \Theta_m = m_z + i \frac{m_e k_e + m_n k_n}{|\mathbf{k}|}
+
+    .. math::
+
+        \Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}
+
+    where :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel
+    to the geomagnetic field and :math:`\hat{\mathbf{m}} = (m_e, m_n, m_z)`
+    is a unit vector parallel to the magnetization vector of the source. The
+    :math:`f_e`, :math:`f_n`, :math:`m_e`, :math:`m_n` are the easting and
+    northing components while the :math:`f_z` and :math:`m_z` are the
+    **downward** coordinates.
+    Each of these components can be obtained from the inclination and
+    declination angles of the geomagnetic field (:math:`I` and :math:`D`,
+    respectively) and for the magnetization vector (:math:`I_m` and
+    :math:`D_m`, respectively):
+
+    .. math::
+
+        \begin{cases}
+            f_e = \sin D \cos I \\
+            f_n = \cos D \cos I \\
+            f_u = \sin I
+        \end{cases}
+
+    .. math::
+
+        \begin{cases}
+            m_e = \sin D_m \cos I_m \\
+            m_n = \cos D_m \cos I_m \\
+            m_u = \sin I_m
+        \end{cases}
 
     Parameters
     ----------
