@@ -45,7 +45,7 @@ def prism_layer(
     coordinates : tuple
         List containing the coordinates of the centers of the prisms in the
         following order: ``easting``, ``northing``. The arrays must be 1d
-        arrays containing the coordiantes of the centers per axis, or could be
+        arrays containing the coordinates of the centers per axis, or could be
         2d arrays as the ones returned by :func:`numpy.meshgrid`. All
         coordinates should be in meters and should define a regular grid.
     surface : 2d-array
@@ -143,9 +143,9 @@ def _check_regular_grid(easting, northing):
         This function should live inside Verde in the future
     """
     if not np.allclose(easting[1] - easting[0], easting[1:] - easting[:-1]):
-        raise ValueError("Passed easting coordiantes are not evenly spaced.")
+        raise ValueError("Passed easting coordinates are not evenly spaced.")
     if not np.allclose(northing[1] - northing[0], northing[1:] - northing[:-1]):
-        raise ValueError("Passed northing coordiantes are not evenly spaced.")
+        raise ValueError("Passed northing coordinates are not evenly spaced.")
 
 
 @xr.register_dataset_accessor("prism_layer")
@@ -259,7 +259,7 @@ class DatasetAccessorPrismLayer:
         """
         Update top and bottom boundaries of the layer
 
-        Change the values of the ``top`` and ``bottom`` coordiantes based on
+        Change the values of the ``top`` and ``bottom`` coordinates based on
         the passed ``surface`` and ``reference``. The ``top`` and ``bottom``
         boundaries of every
         prism will be equal to the corresponding ``surface`` and ``reference``

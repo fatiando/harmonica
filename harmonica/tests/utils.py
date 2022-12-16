@@ -47,7 +47,7 @@ def combine_decorators(*decorators):
 
 # Check if Numba is disabled
 # (if NUMBA_DISABLE_JIT is not defined, we assume Numba jit is enabled)
-NUMBA_IS_DISABLED = bool(os.environ.get("NUMBA_DISABLE_JIT", default="0") != "0")
+NUMBA_IS_DISABLED = os.environ.get("NUMBA_DISABLE_JIT", default="0") != "0"
 
 # Decorator for pytest: run if Numba jit is enabled
 #
