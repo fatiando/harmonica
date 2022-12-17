@@ -508,8 +508,9 @@ def _discard_thin_prisms(
         Array containing the density of each prism in kg/m^3. Must have the
         same size as the number of prisms.
     thickness_threshold : int or float
-        Minumum prism thickness needed to be to including in the forward
-        gravity calculation. Default to 0.
+        Minimum prism thickness needed to be included in the forward
+        gravity calculation. Prisms thinner that this threshold will be ignored.
+        Default to 0.
 
     Returns
     -------
