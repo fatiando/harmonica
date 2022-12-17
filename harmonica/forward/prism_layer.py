@@ -522,7 +522,7 @@ def _discard_thin_prisms(
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
     # Mark prisms with thickness <= threshold  as null prisms
-    thickness = abs(top - bottom)
+    thickness = top - bottom
     null_prisms = thickness <= float(thickness_threshold)
     # Keep only thick prisms and their densities
     prisms = prisms[np.logical_not(null_prisms), :]
