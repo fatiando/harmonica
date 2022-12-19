@@ -6,9 +6,7 @@ dependencies:
   - python==3.10.*
   - pip
   # Build
-  - setuptools>=45
-  - setuptools_scm>=6.2
-  - wheel
+  - build
   - twine
   # Run-time
   - numpy>=1.19
@@ -44,20 +42,18 @@ dependencies:
   - gmt==6.4.*
   - gdal==3.5.*
   # Code style checks and autoformat
-  - black==22.3.0
+  - black==22.10.*
   - isort==5.10.*
-  - flake8==4.0.*
-  - flake8-bugbear==21.11.*
-  - flake8-builtins==1.5.*
-  - flake8-functions==0.0.6
+  - flake8==6.0.*
+  - flake8-bugbear==22.10.*
+  - flake8-builtins==2.0.*
+  - flake8-functions==0.0.7
   - flake8-mutable==1.2.*
-  - flake8-rst-docstrings==0.2.*
-  - flake8-simplify==0.14.*
-  - pep8-naming==0.12.*
+  - flake8-rst-docstrings==0.3.*
+  - flake8-simplify==0.19.*
+  - flake8-unused-arguments==0.0.12
+  - pep8-naming==0.13.*
   - pip:
-      # Install flake8-unused-arguments through pip
-      # (not available through conda yet)
-      - flake8-unused-arguments==0.0.9
       # Install numba_progress through pip
       # (not available through conda yet)
       - numba_progress
