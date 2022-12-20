@@ -255,17 +255,19 @@ def reduction_to_pole(
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
     inclination : float in degrees
-        The inclination inducing Geomagnetic field.
+        The inclination of the inducing Geomagnetic field.
     declination : float in degrees
-        The declination inducing Geomagnetic field.
-    magnetization_inclination : float in degrees
-        The inclination of the total magnetization of the anomaly source.
-        Default is i, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the inducing Geomagnetic field.
+    magnetization_inclination : float in degrees or None
+        The inclination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_inclination`` will be set equal to the
+        ``inclination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source.
-        Default is d, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_declination`` will be set equal to the
+        ``declination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
 
     Returns
     -------
@@ -313,19 +315,21 @@ def pseudo_gravity(
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
     inclination : float in degrees
-        The inclination inducing Geomagnetic field.
+        The inclination of the inducing Geomagnetic field.
     declination : float in degrees
-        The declination inducing Geomagnetic field.
-    magnetization_inclination : float in degrees
-        The inclination of the total magnetization of the anomaly source.
-        Default is i, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the inducing Geomagnetic field.
+    magnetization_inclination : float in degrees or None
+        The inclination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_inclination`` will be set equal to the
+        ``inclination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source.
-        Default is d, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_declination`` will be set equal to the
+        ``declination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     ambient_field : float or :class:`xarray.DataArray` in nT
-        Ambient field in the study area. It can use the mean ambinent field
+        Ambient field in the study area. It can use the mean ambient field
         value in the study area or the real ambient field value in all
         locations. Default is 50,000 nT.
 
@@ -335,7 +339,7 @@ def pseudo_gravity(
         A pseudo gravity :class:`xarray.DataArray` of the passed``grid``.
         Its units are the same units of the ``grid`` multiply units of its
         coordinates. The vertical integral of the reduction to pole magnetic
-        field is nomalised by the ambient field. It reflects pseudo gravity of
+        field is normalised by the ambient field. It reflects pseudo gravity of
         a geological body based on cgs susceptibility units.
 
     References

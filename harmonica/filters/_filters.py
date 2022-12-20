@@ -421,17 +421,19 @@ def reduction_to_pole_kernel(
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
     inclination : float in degrees
-        The inclination inducing Geomagnetic field.
+        The inclination of the inducing Geomagnetic field.
     declination : float in degrees
-        The declination inducing Geomagnetic field.
-    magnetization_inclination : float in degrees
-        The inclination of the total magnetization of the anomaly source.
-        Default is i, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the inducing Geomagnetic field.
+    magnetization_inclination : float in degrees or None
+        The inclination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_inclination`` will be set equal to the
+        ``inclination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source.
-        Default is d, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_declination`` will be set equal to the
+        ``declination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
 
     Returns
     -------
@@ -511,19 +513,21 @@ def pseudo_gravity_kernel(
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
     inclination : float in degrees
-        The inclination inducing Geomagnetic field. Default is 90 degree for
-        RTP field.
+        The inclination of the inducing Geomagnetic field. Default is 90 degree
+         for RTP field.
     declination : float in degrees
-        The declination inducing Geomagnetic field. Default is 0 degree for
-        RTP field.
-    magnetization_inclination : float in degrees
-        The inclination of the total magnetization of the anomaly source.
-        Default is i, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the inducing Geomagnetic field. Default is 0 degree
+         for RTP field.
+    magnetization_inclination : float in degrees or None
+        The inclination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_inclination`` will be set equal to the
+        ``inclination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source.
-        Default is d, neglecting remanent magnetization and
-        self demagnetization.
+        The declination of the total magnetization of the anomaly source. If
+        None, the ``magnetization_declination`` will be set equal to the
+        ``declination``, neglecting remanent magnetization and self
+        demagnetization. Default None.
     ambient_field : float or 2d-array
         Ambient field in the study area. It can use the mean ambinent field
         value in the study area or the real ambient field value in all
@@ -620,9 +624,9 @@ def _get_rtp_filter(
     k_northing : array
         Wavenumber array for the northing direction.
     inclination : float in degrees
-        The inclination inducing Geomagnetic field.
+        The inclination of the inducing Geomagnetic field.
     declination : float in degrees
-        The declination inducing Geomagnetic field.
+        The declination of the inducing Geomagnetic field.
     magnetization_inclination : float in degrees
         The inclination of the total magnetization of the anomaly source.
     magnetization_declination : float in degrees
