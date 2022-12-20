@@ -14,6 +14,7 @@ import xarray as xr
 import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
+from ..constants import GRAVITATIONAL_CONST
 from ..filters._fft import fft, ifft
 from ..filters._filters import (
     derivative_easting_kernel,
@@ -427,15 +428,15 @@ def test_pseudo_gravity_kernel(
     expected = np.array(
         [
             [
-                0.00458632 + 0.01705151j,
-                0.01940442 + 0.02765077j,
-                0.02804745 - 0.00505686j,
+                0.00458455 + 0.01704495j,
+                0.01939695 + 0.02764014j,
+                0.02803667 - 0.00505491j,
             ],
-            [0.01431291 + 0.02445575j, 0.0 + 0.0j, 0.01431291 - 0.02445575j],
+            [0.01430741 + 0.02444634j, 0.0 + 0.0j, 0.01430741 - 0.02444634j],
             [
-                0.02804745 + 0.00505686j,
-                0.01940442 - 0.02765077j,
-                0.00458632 - 0.01705151j,
+                0.02803667 + 0.00505491j,
+                0.01939695 - 0.02764014j,
+                0.00458455 - 0.01704495j,
             ],
         ]
     )
@@ -450,7 +451,7 @@ def test_pseudo_gravity_kernel(
             magnetization_declination=magnetization_declination,
             ambient_field=ambient_field,
         ),
-        rtol=2e-6,
+        rtol=3e-7,
     )
 
 
@@ -505,6 +506,7 @@ def test_inclination_as_90(
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = np.sqrt(k_easting**2 + k_northing**2) ** -1
     expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    expected = expected * GRAVITATIONAL_CONST * 1e8 / ambient_field
     # Check if the filter returns the expected output
     npt.assert_allclose(
         expected,
