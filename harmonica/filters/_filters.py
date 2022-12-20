@@ -562,17 +562,20 @@ def pseudo_gravity_kernel(
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Calculate vertical integral
-    da_filter = np.sqrt(k_easting**2 + k_northing**2) ** -1
+    da_filter = 1 / np.sqrt(k_easting**2 + k_northing**2)
     # Check if input is RTP field
     if inclination != 90:
         # Add RTP kernel to the calculate vertical integral
-        da_filter *= _get_rtp_filter(
-            k_easting,
-            k_northing,
-            inclination,
-            declination,
-            magnetization_inclination,
-            magnetization_declination,
+        da_filter = (
+            _get_rtp_filter(
+                k_easting,
+                k_northing,
+                inclination,
+                declination,
+                magnetization_inclination,
+                magnetization_declination,
+            )
+            * da_filter
         )
     # Set 0 wavenumber to 0
     da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
