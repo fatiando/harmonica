@@ -9,6 +9,8 @@ Frequency domain filters meant to be applied on regular grids
 """
 import numpy as np
 
+from ..constants import GRAVITATIONAL_CONST
+
 
 def derivative_upward_kernel(fft_grid, order=1):
     r"""
@@ -468,8 +470,8 @@ def reduction_to_pole_kernel(
         magnetization_inclination,
         magnetization_declination,
     )
-    # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
+    # Set 0 wavenumber to 0
+    da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
     return da_filter
 
 
@@ -479,7 +481,7 @@ def pseudo_gravity_kernel(
     declination=0,
     magnetization_inclination=None,
     magnetization_declination=None,
-    f=50000,
+    ambient_field=50000,
 ):
     r"""
     Filter for pseudo gravity in frequency domain
@@ -490,8 +492,9 @@ def pseudo_gravity_kernel(
 
     .. math::
 
-            g(\mathbf{k}) = \frac{149.8}{f|\mathbf{k}|}\times
-            {reduction\_to\_pole\_kernel}
+            g(\mathbf{k}) = \frac{gravitational\_constant\times1e^8}
+            {ambient\_field}
+            \times\frac{reduction\_to\_pole\_kernel}{|\mathbf{k}|}
 
 
     where :math:`\mathbf{k}` is the wavenumber vector
@@ -521,7 +524,7 @@ def pseudo_gravity_kernel(
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
-    f : float or 2d-array
+    ambient_field : float or 2d-array
         Ambient field in the study area. It can use the mean ambinent field
         value in the study area or the real ambient field value in all
         locations. Default is 50,000 nT.
@@ -571,9 +574,9 @@ def pseudo_gravity_kernel(
             )
             * np.sqrt(k_easting**2 + k_northing**2) ** -1
         )
-    # Deal with inf and nan value
-    da_filter.data = np.nan_to_num(da_filter.data, posinf=0, nan=0)
-    return da_filter / 149.8 / f
+    # Set 0 wavenumber to 0
+    da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    return da_filter * GRAVITATIONAL_CONST * 1e8 / ambient_field
 
 
 def _check_magnetization_angles(magnetization_inclination, magnetization_declination):

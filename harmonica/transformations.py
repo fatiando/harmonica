@@ -297,7 +297,7 @@ def pseudo_gravity(
     declination=0,
     magnetization_inclination=None,
     magnetization_declination=None,
-    f=50000,
+    ambient_field=50000,
 ):
     """
     Calculate the pseudo gravity of a magnetic field grid
@@ -324,7 +324,7 @@ def pseudo_gravity(
         The declination of the total magnetization of the anomaly source.
         Default is d, neglecting remanent magnetization and
         self demagnetization.
-    f : float or :class:`xarray.DataArray` in nT
+    ambient_field : float or :class:`xarray.DataArray` in nT
         Ambient field in the study area. It can use the mean ambinent field
         value in the study area or the real ambient field value in all
         locations. Default is 50,000 nT.
@@ -353,5 +353,5 @@ def pseudo_gravity(
         declination=declination,
         magnetization_inclination=magnetization_inclination,
         magnetization_declination=magnetization_declination,
-        f=f,
+        ambient_field=ambient_field,
     )

@@ -398,7 +398,7 @@ def test_reduction_to_pole_kernel(
         * np.sqrt(k_northing**2 + k_easting**2)
         * (b1 * k_easting + b2 * k_northing)
     )
-    expected.data = np.nan_to_num(expected.data, posinf=0, nan=0)
+    expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected,
@@ -418,7 +418,7 @@ def test_pseudo_gravity_kernel(
     declination=45,
     magnetization_inclination=45,
     magnetization_declination=50,
-    f=50,
+    ambient_field=50,
 ):
     """
     Check if pseudo_gravity_kernel works as expected
@@ -448,9 +448,74 @@ def test_pseudo_gravity_kernel(
             declination=declination,
             magnetization_inclination=magnetization_inclination,
             magnetization_declination=magnetization_declination,
-            f=f,
+            ambient_field=ambient_field,
         ),
         rtol=2e-6,
+    )
+
+
+def test_magnetization_as_none(
+    sample_fft_grid,
+    inclination=60,
+    declination=45,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+    ambient_field=50,
+):
+    """
+    Check if magnetization as none return same value with set
+    magnetization direction to geomagnetic field
+    """
+    # Calculate kernel with magnetization similar as geomagnetic field
+    expected = pseudo_gravity_kernel(
+        sample_fft_grid,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=inclination,
+        magnetization_declination=declination,
+        ambient_field=ambient_field,
+    )
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected,
+        pseudo_gravity_kernel(
+            sample_fft_grid,
+            inclination=inclination,
+            declination=declination,
+            magnetization_inclination=magnetization_inclination,
+            magnetization_declination=magnetization_declination,
+            ambient_field=ambient_field,
+        ),
+    )
+
+
+def test_inclination_as_90(
+    sample_fft_grid,
+    inclination=90,
+    declination=0,
+    magnetization_inclination=None,
+    magnetization_declination=None,
+    ambient_field=50,
+):
+    """
+    Check if inclination is 90, result return vertical integration
+    """
+    # Calculate kernel with geomagnetic field
+    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
+    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
+    expected = np.sqrt(k_easting**2 + k_northing**2) ** -1
+    expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected,
+        pseudo_gravity_kernel(
+            sample_fft_grid,
+            inclination=inclination,
+            declination=declination,
+            magnetization_inclination=magnetization_inclination,
+            magnetization_declination=magnetization_declination,
+            ambient_field=ambient_field,
+        ),
     )
 
 

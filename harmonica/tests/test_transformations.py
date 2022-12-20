@@ -17,6 +17,7 @@ import xarray.testing as xrt
 import xrft
 
 from .. import point_gravity
+from ..constants import GRAVITATIONAL_CONST
 from ..transformations import (
     derivative_easting,
     derivative_northing,
@@ -441,7 +442,11 @@ class Testfilter:
         """
         Test greduction_to_pole function against the output from oasis montaj
         """
-        pg = pseudo_gravity(self.expected_grid.filter_data, 60, 45, 60, 45, 1) * 149.8
+        pg = (
+            pseudo_gravity(self.expected_grid.filter_data, 60, 45, 60, 45, 1)
+            / GRAVITATIONAL_CONST
+            * 1e-8
+        )
         # Remove mean value to match OM result
         xrt.assert_allclose(
             self.expected_grid.filter_pg - self.expected_grid.filter_data.mean(),
