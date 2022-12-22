@@ -343,8 +343,8 @@ class DatasetAccessorPrismLayer:
             prism in the layer. Default to ``"density"``
         thickness_threshold : int or float
             Minimum prism thickness needed to be included in the forward
-            gravity calculation. Prisms thinner that this threshold will be ignored.
-            Default to 0.
+            gravity calculation. Prisms thinner that this threshold will be
+            ignored. Default to 0.
 
         Returns
         -------
@@ -509,8 +509,8 @@ def _discard_thin_prisms(
         same size as the number of prisms.
     thickness_threshold : int or float
         Minimum prism thickness needed to be included in the forward
-        gravity calculation. Prisms thinner that this threshold will be ignored.
-        Default to 0.
+        gravity calculation. Prisms thinner that this threshold will be
+        ignored. Default to 0.
 
     Returns
     -------
