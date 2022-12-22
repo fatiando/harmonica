@@ -340,7 +340,7 @@ def pseudo_gravity(
         Its units are the same units of the ``grid`` multiply units of its
         coordinates. The vertical integral of the reduction to pole magnetic
         field is normalised by the ambient field. It reflects pseudo gravity of
-        a geological body based on cgs susceptibility units.
+        a geological body based on SI susceptibility units.
 
     References
     ----------

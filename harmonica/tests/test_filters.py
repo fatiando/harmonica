@@ -428,15 +428,15 @@ def test_pseudo_gravity_kernel(
     expected = np.array(
         [
             [
-                0.00458455 + 0.01704495j,
-                0.01939695 + 0.02764014j,
-                0.02803667 - 0.00505491j,
+                0.00036483 + 0.00135639j,
+                0.00154356 + 0.00219953j,
+                0.00223109 - 0.00040226j,
             ],
-            [0.01430741 + 0.02444634j, 0.0 + 0.0j, 0.01430741 - 0.02444634j],
+            [0.00113855 + 0.00194538j, 0.0 + 0.0j, 0.00113855 - 0.00194538j],
             [
-                0.02803667 + 0.00505491j,
-                0.01939695 - 0.02764014j,
-                0.00458455 - 0.01704495j,
+                0.00223109 + 0.00040226j,
+                0.00154356 - 0.00219953j,
+                0.00036483 - 0.00135639j,
             ],
         ]
     )
@@ -451,7 +451,7 @@ def test_pseudo_gravity_kernel(
             magnetization_declination=magnetization_declination,
             ambient_field=ambient_field,
         ),
-        rtol=3e-7,
+        rtol=3.5e-6,
     )
 
 
@@ -506,7 +506,7 @@ def test_inclination_as_90(
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
     expected = np.sqrt(k_easting**2 + k_northing**2) ** -1
     expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
-    expected = expected * GRAVITATIONAL_CONST * 1e8 / ambient_field
+    expected = expected * GRAVITATIONAL_CONST * 1e8 / ambient_field / 4 / np.pi
     # Check if the filter returns the expected output
     npt.assert_allclose(
         expected,

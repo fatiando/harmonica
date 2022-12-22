@@ -495,7 +495,7 @@ def pseudo_gravity_kernel(
     .. math::
 
             g(\mathbf{k}) = \frac{gravitational\_constant\times1e^8}
-            {ambient\_field}
+            {ambient\_field\times4\pi}
             \times\frac{reduction\_to\_pole\_kernel}{|\mathbf{k}|}
 
 
@@ -579,7 +579,7 @@ def pseudo_gravity_kernel(
         )
     # Set 0 wavenumber to 0
     da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
-    return da_filter * GRAVITATIONAL_CONST * 1e8 / ambient_field
+    return da_filter * GRAVITATIONAL_CONST * 1e8 / ambient_field / 4 / np.pi
 
 
 def _check_magnetization_angles(magnetization_inclination, magnetization_declination):
