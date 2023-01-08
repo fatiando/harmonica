@@ -342,7 +342,7 @@ class DatasetAccessorPrismLayer:
             :class:`xarray.Dataset`) that will be used for the density of each
             prism in the layer. Default to ``"density"``
         thickness_threshold : float or None
-            Prisms thinner that this threshold will be ignored in the
+            Prisms thinner than this threshold will be ignored in the
             forward gravity calculation. If None, every prism with non-zero
             volume will be considered. Default to None.
 
