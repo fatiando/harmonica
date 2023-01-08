@@ -323,7 +323,8 @@ class DatasetAccessorPrismLayer:
         through the ``density_name`` argument.
         Ignores the prisms which ``top`` or ``bottom`` boundaries are
         ``np.nan``s.
-        Prisms thinner than a given threshold can be optionally ignored through the ``thickness_threshold`` argument.
+        Prisms thinner than a given threshold can be optionally ignored through
+        the ``thickness_threshold`` argument.
         All ``kwargs`` will be passed to :func:`harmonica.prism_gravity`.
 
         Parameters
