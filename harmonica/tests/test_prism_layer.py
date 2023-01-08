@@ -483,13 +483,13 @@ def test_gravity_discarded_thin_prisms(dummy_layer):
     gravity_prisms_0thres = layer.prism_layer.gravity(
         coordinates, field="g_z", thickness_threshold=0
     )
-    np.allclose(gravity_prisms_nothres, gravity_prisms_0thres)
+    npt.assert_allclose(gravity_prisms_nothres, gravity_prisms_0thres)
 
     # Check that gravity from manually removed prisms is the same as using a
     # threshold
     manually_removed_prisms = []
     for _, j in enumerate(layer.prism_layer._to_prisms()):
-        if abs(j[5] - j[4]) > 5.0:
+        if abs(j[5] - j[4]) >= 5.0:
             manually_removed_prisms.append(j)
     gravity_manually_removed = prism_gravity(
         coordinates,
