@@ -322,8 +322,8 @@ class DatasetAccessorPrismLayer:
         The density of the prisms will be assigned from the ``data_var`` chosen
         through the ``density_name`` argument.
         Ignores the prisms which ``top`` or ``bottom`` boundaries are
-        ``np.nan``s, or prisms thinner than specified threshold, which defaults
-        to 0.
+        ``np.nan``s.
+        Prisms thinner than a given threshold can be optionally ignored through the ``thickness_threshold`` argument.
         All ``kwargs`` will be passed to :func:`harmonica.prism_gravity`.
 
         Parameters
@@ -341,10 +341,10 @@ class DatasetAccessorPrismLayer:
             Name of the property layer (or ``data_var`` of the
             :class:`xarray.Dataset`) that will be used for the density of each
             prism in the layer. Default to ``"density"``
-        thickness_threshold : int or float
-            Minimum prism thickness needed to be included in the forward
-            gravity calculation. Prisms thinner that this threshold will be
-            ignored. Default to 0.
+        thickness_threshold : float or None
+            Prisms thinner that this threshold will be ignored in the
+            forward gravity calculation. If None, every prism with non-zero
+            volume will be considered. Default to None.
 
         Returns
         -------
@@ -507,10 +507,8 @@ def _discard_thin_prisms(
     density : 1d-array
         Array containing the density of each prism in kg/m^3. Must have the
         same size as the number of prisms.
-    thickness_threshold : int or float
-        Minimum prism thickness needed to be included in the forward
-        gravity calculation. Prisms thinner that this threshold will be
-        ignored. Default to 0.
+    thickness_threshold : float
+        Prisms thinner than this threshold will be discarded.
 
     Returns
     -------
@@ -518,12 +516,12 @@ def _discard_thin_prisms(
         A copy of the ``prisms`` array that doesn't include the thin prisms.
     density : 1d-array
         A copy of the ``density`` array that doesn't include the density values
-        for thin prisms).
+        for thin prisms.
     """
     west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
-    # Mark prisms with thickness <= threshold  as null prisms
+    # Mark prisms with thickness < threshold  as null prisms
     thickness = top - bottom
-    null_prisms = thickness <= float(thickness_threshold)
+    null_prisms = thickness < thickness_threshold
     # Keep only thick prisms and their densities
     prisms = prisms[np.logical_not(null_prisms), :]
     density = density[np.logical_not(null_prisms)]
