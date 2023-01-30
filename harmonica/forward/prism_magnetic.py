@@ -11,9 +11,9 @@ import numpy as np
 from numba import jit, prange
 from choclo.prism import (
     magnetic_field,
-    magnetic_easting,
-    magnetic_northing,
-    magnetic_upward,
+    magnetic_e,
+    magnetic_n,
+    magnetic_u,
 )
 
 from .prism import _check_prisms
@@ -178,7 +178,7 @@ def prism_magnetic_easting(
         coordinates,
         prisms,
         magnetization,
-        magnetic_easting,
+        magnetic_e,
         parallel=parallel,
         dtype=dtype,
         progressbar=progressbar,
@@ -244,7 +244,7 @@ def prism_magnetic_northing(
         coordinates,
         prisms,
         magnetization,
-        magnetic_northing,
+        magnetic_n,
         parallel=parallel,
         dtype=dtype,
         progressbar=progressbar,
@@ -310,7 +310,7 @@ def prism_magnetic_upward(
         coordinates,
         prisms,
         magnetization,
-        magnetic_upward,
+        magnetic_u,
         parallel=parallel,
         dtype=dtype,
         progressbar=progressbar,
