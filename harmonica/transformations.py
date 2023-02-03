@@ -13,7 +13,6 @@ from .filters._filters import (
     derivative_upward_kernel,
     gaussian_highpass_kernel,
     gaussian_lowpass_kernel,
-    pseudo_gravity_kernel,
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
@@ -290,76 +289,4 @@ def reduction_to_pole(
         declination=declination,
         magnetization_inclination=magnetization_inclination,
         magnetization_declination=magnetization_declination,
-    )
-
-
-def pseudo_gravity(
-    grid,
-    inclination=90,
-    declination=0,
-    magnetization_inclination=None,
-    magnetization_declination=None,
-    ambient_field=50000,
-):
-    """
-    Calculate the pseudo gravity of a magnetic field grid
-
-    Compute the pseudo gravity of regular gridded magnetic data using frequency
-    domain calculations through Fast Fourier Transform.
-
-    Parameters
-    ----------
-    grid : :class:`xarray.DataArray`
-        A two dimensional :class:`xarray.DataArray` whose coordinates are
-        evenly spaced (regular grid). Its dimensions should be in the following
-        order: *northing*, *easting*. Its coordinates should be defined in the
-        same units.
-    inclination : float in degrees
-        The inclination of the inducing Geomagnetic field.
-    declination : float in degrees
-        The declination of the inducing Geomagnetic field.
-    magnetization_inclination : float in degrees or None
-        The inclination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_inclination`` will be set equal to the
-        ``inclination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
-    magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_declination`` will be set equal to the
-        ``declination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
-    ambient_field : float or :class:`xarray.DataArray` in nT
-        Ambient field in the study area. It can use the mean ambient field
-        value in the study area or the real ambient field value in all
-        locations. Default is 50,000 nT.
-
-    Returns
-    -------
-    pseudo gravity : :class:`xarray.DataArray`
-        A pseudo gravity :class:`xarray.DataArray` of the passed``grid``.
-        Its units are the same units of the ``grid`` multiply units of its
-        coordinates. The vertical integral of the reduction to pole magnetic
-        field is normalised by the ambient field. It reflects pseudo gravity of
-        a geological body based on g/cm^3 per apprent susceptibility (SI). For
-        the case without remanent magnetization, the apprent susceptibility
-        euqals to real susceptibility. For the case with remanent
-        magnetization, apprent susceptibility equals to real susceptibility
-        multiply (1+ Koenigsberger Ratio).
-
-    References
-    ----------
-    [Salem2014]_
-
-    See also
-    --------
-    harmonica.filters.pseudo_gravity_kernel
-    """
-    return apply_filter(
-        grid,
-        pseudo_gravity_kernel,
-        inclination=inclination,
-        declination=declination,
-        magnetization_inclination=magnetization_inclination,
-        magnetization_declination=magnetization_declination,
-        ambient_field=ambient_field,
     )

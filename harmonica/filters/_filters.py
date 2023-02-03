@@ -9,8 +9,6 @@ Frequency domain filters meant to be applied on regular grids
 """
 import numpy as np
 
-from ..constants import GRAVITATIONAL_CONST
-
 
 def derivative_upward_kernel(fft_grid, order=1):
     r"""
@@ -475,111 +473,6 @@ def reduction_to_pole_kernel(
     # Set 0 wavenumber to 0
     da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
     return da_filter
-
-
-def pseudo_gravity_kernel(
-    fft_grid,
-    inclination=90,
-    declination=0,
-    magnetization_inclination=None,
-    magnetization_declination=None,
-    ambient_field=50000,
-):
-    r"""
-    Filter for pseudo gravity in frequency domain
-
-    Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for computing the pseudo gravity. The filter is built upon the
-    frequency coordinates of the passed ``fft_grid`` and is defined as follows:
-
-    .. math::
-
-            g(\mathbf{k}) = \frac{gravitational\_constant\times1e^8}
-            {ambient\_field\times4\pi}
-            \times\frac{reduction\_to\_pole\_kernel}{|\mathbf{k}|}
-
-
-    where :math:`\mathbf{k}` is the wavenumber vector
-    (:math:`\mathbf{k} = 2\pi \mathbf{f}`
-
-    Parameters
-    ----------
-    fft_grid : :class:`xarray.DataArray`
-        Total Magnetic Intensity or Reduction To Pole magnetic field.
-        Please set inclination = 90 for Reduction To Pole magnetic field.
-        Array with the Fourier transform of the original grid.
-        Its dimensions should be in the following order:
-        *freq_northing*, *freq_easting*.
-        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
-        compute the Fourier Transform and its inverse, respectively.
-    inclination : float in degrees
-        The inclination of the inducing Geomagnetic field. Default is 90 degree
-         for RTP field.
-    declination : float in degrees
-        The declination of the inducing Geomagnetic field. Default is 0 degree
-         for RTP field.
-    magnetization_inclination : float in degrees or None
-        The inclination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_inclination`` will be set equal to the
-        ``inclination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
-    magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_declination`` will be set equal to the
-        ``declination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
-    ambient_field : float or 2d-array
-        Ambient field in the study area. It can use the mean ambinent field
-        value in the study area or the real ambient field value in all
-        locations. Default is 50,000 nT.
-
-    Returns
-    -------
-    da_filter : :class:`xarray.DataArray`
-        Array with the kernel for the pseudo gravity filter in frequency
-        domain.
-
-    References
-    ----------
-    [Salem2014]_
-
-    See also
-    --------
-    harmonica.pseudo_gravity
-    """
-    # Check if magnetization angles are valid
-    _check_magnetization_angles(magnetization_inclination, magnetization_declination)
-    # Define magnetization angles if they are None
-    if magnetization_declination is None and magnetization_inclination is None:
-        magnetization_inclination = inclination
-        magnetization_declination = declination
-    # Catch the dims of the Fourier transformed grid
-    dims = fft_grid.dims
-    # Grab the coordinates of the Fourier transformed grid
-    freq_easting = fft_grid.coords[dims[1]]
-    freq_northing = fft_grid.coords[dims[0]]
-    # Convert frequencies to wavenumbers
-    k_easting = 2 * np.pi * freq_easting
-    k_northing = 2 * np.pi * freq_northing
-    # Calculate vertical integral
-    da_filter = 1 / np.sqrt(k_easting**2 + k_northing**2)
-    # Check if input is RTP field
-    if inclination != 90:
-        # Add RTP kernel to the calculate vertical integral
-        da_filter = (
-            _get_rtp_filter(
-                k_easting,
-                k_northing,
-                inclination,
-                declination,
-                magnetization_inclination,
-                magnetization_declination,
-            )
-            * da_filter
-        )
-    # Set 0 wavenumber to 0
-    da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
-    return da_filter * GRAVITATIONAL_CONST * 1e8 / ambient_field / 4 / np.pi
 
 
 def _check_magnetization_angles(magnetization_inclination, magnetization_declination):

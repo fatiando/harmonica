@@ -13,7 +13,6 @@ from ._filters import (
     derivative_upward_kernel,
     gaussian_highpass_kernel,
     gaussian_lowpass_kernel,
-    pseudo_gravity_kernel,
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )

@@ -14,7 +14,6 @@ import xarray as xr
 import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
-from ..constants import GRAVITATIONAL_CONST
 from ..filters._fft import fft, ifft
 from ..filters._filters import (
     derivative_easting_kernel,
@@ -22,7 +21,6 @@ from ..filters._filters import (
     derivative_upward_kernel,
     gaussian_highpass_kernel,
     gaussian_lowpass_kernel,
-    pseudo_gravity_kernel,
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
@@ -413,117 +411,7 @@ def test_reduction_to_pole_kernel(
     )
 
 
-def test_pseudo_gravity_kernel(
-    sample_fft_grid,
-    inclination=60,
-    declination=45,
-    magnetization_inclination=45,
-    magnetization_declination=50,
-    ambient_field=50,
-):
-    """
-    Check if pseudo_gravity_kernel works as expected
-    """
-    # Load pre-computed outcome
-    expected = np.array(
-        [
-            [
-                0.00036483 + 0.00135639j,
-                0.00154356 + 0.00219953j,
-                0.00223109 - 0.00040226j,
-            ],
-            [0.00113855 + 0.00194538j, 0.0 + 0.0j, 0.00113855 - 0.00194538j],
-            [
-                0.00223109 + 0.00040226j,
-                0.00154356 - 0.00219953j,
-                0.00036483 - 0.00135639j,
-            ],
-        ]
-    )
-    # Check if the filter returns the expected output
-    npt.assert_allclose(
-        expected,
-        pseudo_gravity_kernel(
-            sample_fft_grid,
-            inclination=inclination,
-            declination=declination,
-            magnetization_inclination=magnetization_inclination,
-            magnetization_declination=magnetization_declination,
-            ambient_field=ambient_field,
-        ),
-        rtol=3.5e-6,
-    )
-
-
-def test_magnetization_as_none(
-    sample_fft_grid,
-    inclination=60,
-    declination=45,
-    magnetization_inclination=None,
-    magnetization_declination=None,
-    ambient_field=50,
-):
-    """
-    Check if magnetization as none return same value with set
-    magnetization direction to geomagnetic field
-    """
-    # Calculate kernel with magnetization similar as geomagnetic field
-    expected = pseudo_gravity_kernel(
-        sample_fft_grid,
-        inclination=inclination,
-        declination=declination,
-        magnetization_inclination=inclination,
-        magnetization_declination=declination,
-        ambient_field=ambient_field,
-    )
-    # Check if the filter returns the expected output
-    npt.assert_allclose(
-        expected,
-        pseudo_gravity_kernel(
-            sample_fft_grid,
-            inclination=inclination,
-            declination=declination,
-            magnetization_inclination=magnetization_inclination,
-            magnetization_declination=magnetization_declination,
-            ambient_field=ambient_field,
-        ),
-    )
-
-
-def test_inclination_as_90(
-    sample_fft_grid,
-    inclination=90,
-    declination=0,
-    magnetization_inclination=None,
-    magnetization_declination=None,
-    ambient_field=50,
-):
-    """
-    Check if inclination is 90, result return vertical integration
-    """
-    # Calculate kernel with geomagnetic field
-    k_easting = 2 * np.pi * sample_fft_grid.freq_easting
-    k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.sqrt(k_easting**2 + k_northing**2) ** -1
-    expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
-    expected = expected * GRAVITATIONAL_CONST * 1e8 / ambient_field / 4 / np.pi
-    # Check if the filter returns the expected output
-    npt.assert_allclose(
-        expected,
-        pseudo_gravity_kernel(
-            sample_fft_grid,
-            inclination=inclination,
-            declination=declination,
-            magnetization_inclination=magnetization_inclination,
-            magnetization_declination=magnetization_declination,
-            ambient_field=ambient_field,
-        ),
-    )
-
-
-@pytest.mark.parametrize(
-    "filter_kernel", (pseudo_gravity_kernel, reduction_to_pole_kernel)
-)
+@pytest.mark.parametrize("filter_kernel", (reduction_to_pole_kernel))
 @pytest.mark.parametrize(
     "magnetization_inclination, magnetization_declination", [(None, 1), (1, None)]
 )
@@ -531,7 +419,7 @@ def test_invalid_magnetization_angles(
     sample_fft_grid, filter_kernel, magnetization_inclination, magnetization_declination
 ):
     """
-    Test if reduction to the pole and pseudogravity filters raise errors when
+    Test if reduction to the pole raise errors when
     invalid magnetization angles are passed.
     """
     if magnetization_inclination is None:
