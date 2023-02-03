@@ -23,5 +23,20 @@ case you made use of them.
 * :class:`harmonica.EquivalentSources` with ``block_size`` set (block-averaged
   sources):
 
-    Soler, S. R. and Uieda, L. (2021). Gradient-boosted equivalent sources, Geophysical Journal International.
+    Soler, S. R. and Uieda, L. (2021). Gradient-boosted equivalent sources,
+    Geophysical Journal International.
     doi:`10.1093/gji/ggab297 <https://doi.org/10.1093/gji/ggab297>`__
+
+* :class:`harmonica.EquivalentSourcesGB` (Gradient-boosted equivalent sources):
+
+    Soler, S. R. and Uieda, L. (2021). Gradient-boosted equivalent sources,
+    Geophysical Journal International. doi:`10.1093/gji/ggab297
+    <https://doi.org/10.1093/gji/ggab297>`__
+
+* :class:`harmonica.tesseroid_gravity` (forward modelling of tesseroids with
+  constant and variable density):
+
+    Soler, S. R., Pesce, A., Gimenez, M. E., & Uieda, L. (2019). Gravitational
+    field calculation in spherical coordinates using variable densities in
+    depth, Geophysical Journal International. doi: `10.1093/gji/ggz277
+    <https://doi.org/10.1093/gji/ggz277>`__

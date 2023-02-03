@@ -17,6 +17,7 @@ import verde as vd
 import xarray as xr
 
 from .. import prism_gravity, prism_layer
+from ..forward.prism_layer import _discard_thin_prisms
 
 try:
     import pyvista
@@ -465,3 +466,77 @@ def test_numba_progress_missing_error(dummy_layer):
     # Check if error is raised
     with pytest.raises(ImportError):
         layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)
+
+
+def test_gravity_discarded_thin_prisms(dummy_layer):
+    """
+    Check if gravity of prism layer after discarding thin prisms is correct.
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    prism_coords, surface, reference, density = dummy_layer
+
+    layer = prism_layer(
+        prism_coords, surface, reference, properties={"density": density}
+    )
+    # Check that result with no threshold is the same as with a threshold of 0
+    gravity_prisms_nothres = layer.prism_layer.gravity(coordinates, field="g_z")
+    gravity_prisms_0thres = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=0
+    )
+    npt.assert_allclose(gravity_prisms_nothres, gravity_prisms_0thres)
+
+    # Check that gravity from manually removed prisms is the same as using a
+    # threshold
+    manually_removed_prisms = []
+    for _, j in enumerate(layer.prism_layer._to_prisms()):
+        if abs(j[5] - j[4]) >= 5.0:
+            manually_removed_prisms.append(j)
+    gravity_manually_removed = prism_gravity(
+        coordinates,
+        prisms=manually_removed_prisms,
+        density=[2670] * len(manually_removed_prisms),
+        field="g_z",
+    )
+    gravity_threshold_removed = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=5
+    )
+    npt.assert_allclose(gravity_manually_removed, gravity_threshold_removed)
+
+
+def test_discard_thin_prisms():
+    """
+    Check if thin prisms are properly discarded.
+    """
+    # create set of 4 prisms (west, east, south, north, bottom, top)
+    prism_boundaries = np.array(
+        [
+            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
+            [5000.0, 15000.0, -5000.0, 5000.0, 0.0, 55.01],
+            [-5000.0, 5000.0, 5000.0, 15000.0, 0.0, 35.0],
+            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+        ]
+    )
+
+    # assign densities to each prism
+    densities = np.array([2306, 2122, 2190, 2069])
+
+    # drop prisms and respective densities thinner than 55.05
+    # (2nd and 3rd prisms)
+    thick_prisms, thick_densities = _discard_thin_prisms(
+        prism_boundaries,
+        densities,
+        thickness_threshold=55.05,
+    )
+
+    # manually remove prisms and densities of thin prisms
+    expected_prisms = np.array(
+        [
+            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
+            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+        ]
+    )
+    expected_densities = np.array([2306, 2069])
+
+    # check the correct prisms and densities were discarded
+    npt.assert_allclose(expected_prisms, thick_prisms)
+    npt.assert_allclose(expected_densities, thick_densities)
