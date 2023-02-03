@@ -26,7 +26,6 @@ from .transformations import (
     derivative_upward,
     gaussian_highpass,
     gaussian_lowpass,
-    pseudo_gravity,
     reduction_to_pole,
     upward_continuation,
 )
