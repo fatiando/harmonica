@@ -259,8 +259,9 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
     wavelength : float
-        The cutoff wavelength for the low-pass filter. It should have the same
-        units as the coordinates in ``fft_grid``.
+        The cutoff wavelength for the low-pass filter.
+        Its units should be the inverse units of the coordinates in
+        ``fft_grid``.
 
     Returns
     -------
@@ -321,8 +322,9 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
         Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to
         compute the Fourier Transform and its inverse, respectively.
     wavelength : float
-        The cutoff wavelength for the high-pass filter. It should have the same
-        units as the coordinates in ``fft_grid``.
+        The cutoff wavelength for the high-pass filter.
+        Its units should be the inverse units of the coordinates in
+        ``fft_grid``.
 
     Returns
     -------
