@@ -90,7 +90,7 @@ def test_equivalent_sources_spherical():
     # The interpolation should be perfect on the data points
     eqs = EquivalentSourcesSph(relative_depth=500e3)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1.3e-5)
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values

@@ -20,7 +20,15 @@ from .forward.tesseroid import tesseroid_gravity
 from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
 from .isostasy import isostasy_airy, isostatic_moho_airy
-from .transformations import derivative_upward
+from .transformations import (
+    derivative_easting,
+    derivative_northing,
+    derivative_upward,
+    gaussian_highpass,
+    gaussian_lowpass,
+    reduction_to_pole,
+    upward_continuation,
+)
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

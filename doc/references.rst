@@ -9,6 +9,7 @@ References
 .. [Dampney1969] Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:`10.1190/1.1439996 <https://doi.org/10.1190/1.1439996>`__
 .. [Forste_etal2014] Förste, Christoph; Bruinsma, Sean.L.; Abrikosov, Oleg; Lemoine, Jean-Michel; Marty, Jean Charles; Flechtner, Frank; Balmino, G.; Barthelmes, F.; Biancale, R. (2014): EIGEN-6C4 The latest combined global gravity field model including GOCE data up to degree and order 2190 of GFZ Potsdam and GRGS Toulouse. GFZ Data Services. doi:`10.5880/icgem.2015.1 <http://doi.org/10.5880/icgem.2015.1>`__
 .. [Fukushima2020] Fukushima, T. (2020). Speed and accuracy improvements in standard algorithm for prismatic gravitational field. Geophysical Journal International. doi:`10.1093/gji/ggaa240 <https://doi.org/10.1093/gji/ggaa240>`__
+.. [Geosoft1999] Geosoft Incorporated. (1999). Montaj MAGMAP filtering; 2–D frequency domain of potential field data extension for Oasis Montaj v. 6.1.
 .. [Grombein2013] Grombein, T., Seitz, K., Heck, B. (2013), Optimized formulas for the gravitational field of a tesseroid, Journal of Geodesy. doi:`10.1007/s00190-013-0636-1 <https://doi.org/10.1007/s00190-013-0636-1>`__
 .. [Hofmann-WellenhofMoritz2006] Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien ; New York: Springer.
 .. [LiGotze2001] Li, X. and H. J. Gotze, 2001, Tutorial: Ellipsoid, geoid, gravity, geodesy, and geophysics, Geophysics, 66(6), p. 1660-1668, doi:`10.1190/1.1487109 <https://doi.org/10.1190/1.1487109>`__
