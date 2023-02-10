@@ -270,7 +270,7 @@ def reduction_to_pole(
 
     Returns
     -------
-    RTP : :class:`xarray.DataArray`
+    reduced_to_pole_grid : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` after reduction to the pole of the passed
         ``grid``.
 
