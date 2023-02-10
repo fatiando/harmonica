@@ -296,9 +296,9 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
     r"""
     Filter for gaussian high-pass in frequency domain
 
-    Return a :class:`xarray.DataArray` with the values of the frequency domain
-    filter for computing the northing derivative. The filter is built upon the
-    frequency coordinates of the passed ``fft_grid`` and is defined as follows:
+    Return a :class:`xarray.DataArray` with the values of a Gaussian high-pass
+    filter the frequency domain. The filter is built upon the frequency
+    coordinates of the passed ``fft_grid`` and is defined as follows:
 
     .. math::
 
