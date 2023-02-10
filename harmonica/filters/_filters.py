@@ -231,7 +231,7 @@ def upward_continuation_kernel(fft_grid, height_displacement):
 
 def gaussian_lowpass_kernel(fft_grid, wavelength):
     r"""
-    Filter for gaussian low-pass in frequency domain
+    Filter for Gaussian low-pass in frequency domain
 
     Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass
     filter the frequency domain. The filter is built upon the frequency
@@ -266,7 +266,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
     Returns
     -------
     da_filter : :class:`xarray.DataArray`
-        Array with the kernel for the gaussian low-pass filter in frequency
+        Array with the kernel for the Gaussian low-pass filter in frequency
         domain.
 
     References
@@ -294,7 +294,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
 
 def gaussian_highpass_kernel(fft_grid, wavelength):
     r"""
-    Filter for gaussian high-pass in frequency domain
+    Filter for Gaussian high-pass in frequency domain
 
     Return a :class:`xarray.DataArray` with the values of a Gaussian high-pass
     filter the frequency domain. The filter is built upon the frequency

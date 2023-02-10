@@ -165,9 +165,9 @@ def upward_continuation(grid, height_displacement):
 
 def gaussian_lowpass(grid, wavelength):
     """
-    Calculate the gaussian low-pass of a potential field grid
+    Calculate the Gaussian low-pass of a potential field grid
 
-    Compute the gaussian low-pass of regular gridded data using frequency
+    Compute the Gaussian low-pass of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
 
     Parameters
@@ -184,7 +184,7 @@ def gaussian_lowpass(grid, wavelength):
     Returns
     -------
     gaussian lowpass : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` after gaussian low-pass of the passed
+        A :class:`xarray.DataArray` after Gaussian low-pass of the passed
         ``grid``.
 
     References
@@ -200,9 +200,9 @@ def gaussian_lowpass(grid, wavelength):
 
 def gaussian_highpass(grid, wavelength):
     """
-    Calculate the gaussian high-pass of a potential field grid
+    Calculate the Gaussian high-pass of a potential field grid
 
-    Compute the gaussian high-pass of regular gridded data using frequency
+    Compute the Gaussian high-pass of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
 
     Parameters
@@ -219,7 +219,7 @@ def gaussian_highpass(grid, wavelength):
     Returns
     -------
     gaussian highpass : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` after gaussian high-pass of the passed
+        A :class:`xarray.DataArray` after Gaussian high-pass of the passed
         ``grid``.
 
     References
