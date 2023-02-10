@@ -32,7 +32,6 @@ Apply well known transformations regular gridded potential fields data.
     gaussian_lowpass
     gaussian_highpass
     reduction_to_pole
-    pseudo_gravity
 
 Frequency domain filters
 ------------------------
