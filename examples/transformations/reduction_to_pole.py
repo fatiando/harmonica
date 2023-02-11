@@ -8,11 +8,11 @@
 Reduction to the pole of a magnetic anomaly grid
 ================================================
 """
-import pygmt
 import ensaio
+import pygmt
 import verde as vd
-import xrft
 import xarray as xr
+import xrft
 
 import harmonica as hm
 
