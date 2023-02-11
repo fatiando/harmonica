@@ -205,3 +205,83 @@ magnetization vector of the sources, we can specify the
     plt.title("Reduced to the pole with remanence")
     plt.colorbar(tmp, label="nT")
     plt.show()
+
+
+Gaussians filters
+-----------------
+
+We can also apply Gaussians low-pass and high-pass filters to any regular grid.
+These two need us to select a cutoff wavelenght.
+The low-pass filter will remove any signal with a high spatial frequency,
+keeping only the signal components that have a wavelenght higher than the
+selected cutoff wavelength.
+The high-pass filter, on the other hand, removes any signal with a low spatial
+frequency, keeping only the components with a wavelength lower than the cutoff
+wavelenght.
+These two filters can be applied to our regular grid with the
+:func:`harmonica.gaussian_lowpass` and :func:`harmonica.gaussian_highpass`.
+
+Let's define a cutoff wavelength of 5 kilometers:
+
+.. jupyter-execute::
+
+    cutoff_wavelength = 5e3
+
+Then apply the two filters to our padded magnetic grid:
+
+.. jupyter-execute::
+
+    magnetic_low_freqs = hm.gaussian_lowpass(
+        magnetic_grid_padded, wavelength=cutoff_wavelength
+    )
+    magnetic_high_freqs = hm.gaussian_highpass(
+        magnetic_grid_padded, wavelength=cutoff_wavelength
+    )
+
+And unpad them:
+
+.. jupyter-execute::
+
+    magnetic_low_freqs = xrft.unpad(magnetic_low_freqs, pad_width)
+    magnetic_high_freqs = xrft.unpad(magnetic_high_freqs, pad_width)
+
+.. jupyter-execute::
+
+    magnetic_low_freqs
+
+.. jupyter-execute::
+
+    magnetic_high_freqs
+
+Let's plot the results side by side:
+
+.. jupyter-execute::
+
+    import verde as vd
+
+    fig, (ax1, ax2) = plt.subplots(
+        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    )
+
+    maxabs = vd.maxabs(magnetic_low_freqs, magnetic_high_freqs)
+    kwargs = dict(cmap="seismic", vmin=-maxabs, vmax=maxabs, add_colorbar=False)
+
+    tmp = magnetic_low_freqs.plot(ax=ax1, **kwargs)
+    tmp = magnetic_high_freqs.plot(ax=ax2, **kwargs)
+
+    ax1.set_title("Magnetic anomaly after low-pass filter")
+    ax2.set_title("Magnetic anomaly after high-pass filter")
+    for ax in (ax1, ax2):
+        ax.set_aspect("equal")
+        ax.ticklabel_format(style="sci", scilimits=(0, 0))
+
+    plt.colorbar(
+        tmp,
+        ax=[ax1, ax2],
+        label="nT",
+        orientation="horizontal",
+        aspect=42,
+        shrink=0.8,
+        pad=0.08,
+    )
+    plt.show()
