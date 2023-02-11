@@ -10,7 +10,6 @@ Upward continuation of a regular grid
 """
 import ensaio
 import pygmt
-import verde as vd
 import xarray as xr
 import xrft
 
