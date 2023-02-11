@@ -7,7 +7,8 @@ Harmonica offers some functions to apply FFT-based (Fast Fourier Transform)
 transformations to regular grids of gravity and magnetic fields located at
 a constant height.
 
-In order to apply these grid transformations, we first need a regular grid.
+In order to apply these grid transformations, we first need a **regular grid in
+Cartesians coordinates**.
 Let's download a magnetic anomaly grid over the Lightning Creek Sill Complex,
 Australia, readily available in :mod:`ensaio`.
 We can load the data file using :mod:`xarray`:
@@ -32,6 +33,13 @@ And plot it:
     plt.title("Magnetic anomaly")
     plt.colorbar(tmp, label="nT")
     plt.show()
+
+.. seealso::
+
+   In case we have a regular grid defined in geographic coordinates (longitude,
+   latitude) we can project them to Cartesian coordinates using the
+   :func:`verde.project_grid` function and a map projection like the ones
+   available in :mod:`pyproj`.
 
 Since all the grid transformations we are going to apply are based on FFT
 methods, we usually want to pad them in order their increase the accuracy.
