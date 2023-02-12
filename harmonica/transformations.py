@@ -102,7 +102,8 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     _check_horizontal_derivative_method(method)
     if method == "finite-diff":
         # Get the easting coordinate
-        coordinate = grid.coords[1]
+        coordinate = _get_dataarray_coordinate(grid, dim=1)
+        print(coordinate)
         # Apply multiple central differences
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
@@ -158,25 +159,14 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     """
     _check_horizontal_derivative_method(method)
     if method == "finite-diff":
-        # Get the easting coordinate
-        coordinate = grid.coords[0]
+        # Get the northing coordinate
+        coordinate = _get_dataarray_coordinate(grid, dim=1)
         # Apply multiple central finite-differences
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
         grid = apply_filter(grid, derivative_northing_kernel, order=order)
     return grid
-
-
-def _check_horizontal_derivative_method(method):
-    """
-    Check if the passed method for the horizontal derivative is valid
-    """
-    if method not in ("finite-diff", "fft"):
-        raise ValueError(
-            f"Invalid method '{method}'. "
-            "Please select one from 'finite-diff' or 'fft'."
-        )
 
 
 def upward_continuation(grid, height_displacement):
@@ -344,3 +334,40 @@ def reduction_to_pole(
         magnetization_inclination=magnetization_inclination,
         magnetization_declination=magnetization_declination,
     )
+
+
+def _check_horizontal_derivative_method(method):
+    """
+    Check if the passed method for the horizontal derivative is valid
+    """
+    if method not in ("finite-diff", "fft"):
+        raise ValueError(
+            f"Invalid method '{method}'. "
+            "Please select one from 'finite-diff' or 'fft'."
+        )
+
+
+def _get_dataarray_coordinate(grid, dim):
+    """
+    Return the name of the easting or northing coordinate in the grid
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        Regular grid
+    dim : int
+        It can be 0 (for northing) or 1 (for easting)
+    """
+    dim_name = grid.dims[dim]
+    coords = [c for c in grid.coords if grid[c].dims == (dim_name,)]
+    if len(coords) > 1:
+        if dim == 0:
+            direction = "northing"
+        else:
+            direction = "easting"
+        coords = "', '".join(coords)
+        raise ValueError(
+            f"Grid contains more than one coordinate along the '{direction}' "
+            f"direction: '{coords}'."
+        )
+    return coords[0]
