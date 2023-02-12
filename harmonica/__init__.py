@@ -15,13 +15,8 @@ from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from .equivalent_sources.spherical import EquivalentSourcesSph
 from .forward.point import point_gravity
 from .forward.prism import prism_gravity
-from .forward.prism_magnetic import (
-    prism_magnetic_field,
-    prism_magnetic_easting,
-    prism_magnetic_northing,
-    prism_magnetic_upward,
-)
 from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
+from .forward.prism_magnetic import prism_magnetic, prism_magnetic_component
 from .forward.tesseroid import tesseroid_gravity
 from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
