@@ -54,12 +54,19 @@ def derivative_upward(grid, order=1):
     return apply_filter(grid, derivative_upward_kernel, order=order)
 
 
-def derivative_easting(grid, order=1):
+def derivative_easting(grid, order=1, method="finite-diff"):
     """
-    Calculate the derivative of a potential field grid in the easting direction
+    Calculate the derivative of a regular grid in the easting direction
 
     Compute the spatial derivative in the easting direction of regular gridded
-    data using frequency domain calculations through Fast Fourier Transform.
+    data. It can compute using accurate central differences using
+    :func:`xarray.differentiate` or through frequency domain calculations
+    through Fast Fourier Transform.
+
+    .. important::
+
+        Choosing the finite differences option produces more accurate results
+        without border effects.
 
     Parameters
     ----------
@@ -70,13 +77,19 @@ def derivative_easting(grid, order=1):
         same units.
     order : int
         The order of the derivative. Default to 1.
+    method : str (optional)
+        Method that will be used for computing the easting derivative. It can
+        be either ``"finite-diff"``, for computing using
+        :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
+        filters.
+        Default ``"finite-diff"``.
 
     Returns
     -------
     derivative : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` with the easting derivatives of the passed
         ``grid``. Its units are the same units of the ``grid`` per units of its
-        coordinates.
+        coordinates to the power of the passed ``order``.
 
     References
     ----------
@@ -86,16 +99,31 @@ def derivative_easting(grid, order=1):
     --------
     harmonica.filters.derivative_easting_kernel
     """
-    return apply_filter(grid, derivative_easting_kernel, order=order)
+    _check_horizontal_derivative_method(method)
+    if method == "finite-diff":
+        # Get the easting coordinate
+        coordinate = grid.coords[1]
+        # Apply multiple central differences
+        for _ in range(order):
+            grid = grid.differentiate(coord=coordinate)
+    elif method == "fft":
+        grid = apply_filter(grid, derivative_easting_kernel, order=order)
+    return grid
 
 
-def derivative_northing(grid, order=1):
+def derivative_northing(grid, order=1, method="finite-diff"):
     """
-    Calculate the derivative of a potential field grid in the northing
-    direction
+    Calculate the derivative of a regular grid in the northing direction
 
     Compute the spatial derivative in the northing direction of regular gridded
-    data using frequency domain calculations through Fast Fourier Transform.
+    data. It can compute using accurate central differences using
+    :func:`xarray.differentiate` or through frequency domain calculations
+    through Fast Fourier Transform.
+
+    .. important::
+
+        Choosing the finite differences option produces more accurate results
+        without border effects.
 
     Parameters
     ----------
@@ -106,13 +134,19 @@ def derivative_northing(grid, order=1):
         same units.
     order : int
         The order of the derivative. Default to 1.
+    method : str (optional)
+        Method that will be used for computing the easting derivative. It can
+        be either ``"finite-diff"``, for computing using
+        :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
+        filters.
+        Default ``"finite-diff"``.
 
     Returns
     -------
     derivative : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` with the northing derivatives of the passed
         ``grid``. Its units are the same units of the ``grid`` per units of its
-        coordinates.
+        coordinates to the power of the passed ``order``.
 
     References
     ----------
@@ -122,7 +156,27 @@ def derivative_northing(grid, order=1):
     --------
     harmonica.filters.derivative_northing_kernel
     """
-    return apply_filter(grid, derivative_northing_kernel, order=order)
+    _check_horizontal_derivative_method(method)
+    if method == "finite-diff":
+        # Get the easting coordinate
+        coordinate = grid.coords[0]
+        # Apply multiple central finite-differences
+        for _ in range(order):
+            grid = grid.differentiate(coord=coordinate)
+    elif method == "fft":
+        grid = apply_filter(grid, derivative_northing_kernel, order=order)
+    return grid
+
+
+def _check_horizontal_derivative_method(method):
+    """
+    Check if the passed method for the horizontal derivative is valid
+    """
+    if method not in ("finite-diff", "fft"):
+        raise ValueError(
+            f"Invalid method '{method}'. "
+            "Please select one from 'finite-diff' or 'fft'."
+        )
 
 
 def upward_continuation(grid, height_displacement):
