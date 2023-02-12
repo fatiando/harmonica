@@ -35,7 +35,7 @@ dependencies:
   - jupyter-sphinx==0.3.*
   - pyproj
   - matplotlib
-  - ensaio
+  - ensaio>=0.5.*
   - netcdf4
   - pygmt==0.7.*
   - gmt==6.4.*
