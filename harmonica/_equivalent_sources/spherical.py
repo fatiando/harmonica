@@ -363,34 +363,6 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         raise NotImplementedError
 
 
-class EQLHarmonicSpherical(EquivalentSourcesSph):
-    """
-    DEPRECATED, use ``harmonica.EquivalentSourcesSph`` instead.
-
-    This class exists to support backward compatibility until next release.
-    """
-
-    def __init__(
-        self,
-        damping=None,
-        points=None,
-        relative_depth=500,
-        parallel=True,
-    ):
-        warnings.warn(
-            "The 'EQLHarmonic' class has been renamed to 'EquivalentSources' "
-            + "and will be removed on the next release, "
-            + "please use 'EquivalentSources' instead.",
-            FutureWarning,
-        )
-        super().__init__(
-            damping=damping,
-            points=points,
-            relative_depth=relative_depth,
-            parallel=parallel,
-        )
-
-
 @jit(nopython=True)
 def greens_func_spherical(
     longitude, latitude, radius, point_longitude, point_latitude, point_radius

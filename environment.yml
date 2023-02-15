@@ -6,9 +6,7 @@ dependencies:
   - python==3.10.*
   - pip
   # Build
-  - setuptools>=45
-  - setuptools_scm>=6.2
-  - wheel
+  - build
   - twine
   # Run-time
   - numpy>=1.19
@@ -52,11 +50,9 @@ dependencies:
   - flake8-mutable==1.2.*
   - flake8-rst-docstrings==0.3.*
   - flake8-simplify==0.19.*
+  - flake8-unused-arguments==0.0.12
   - pep8-naming==0.13.*
   - pip:
-      # Install flake8-unused-arguments through pip
-      # (not available through conda yet)
-      - flake8-unused-arguments==0.0.12
       # Install numba_progress through pip
       # (not available through conda yet)
       - numba_progress
