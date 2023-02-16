@@ -102,7 +102,7 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     _check_horizontal_derivative_method(method)
     if method == "finite-diff":
         # Get the easting coordinate
-        coordinate = _get_dataarray_coordinate(grid, dim=1)
+        coordinate = _get_dataarray_coordinate(grid, dimension_index=1)
         print(coordinate)
         # Apply multiple central differences
         for _ in range(order):
@@ -160,7 +160,7 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     _check_horizontal_derivative_method(method)
     if method == "finite-diff":
         # Get the northing coordinate
-        coordinate = _get_dataarray_coordinate(grid, dim=1)
+        coordinate = _get_dataarray_coordinate(grid, dimension_index=0)
         # Apply multiple central finite-differences
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
@@ -347,7 +347,7 @@ def _check_horizontal_derivative_method(method):
         )
 
 
-def _get_dataarray_coordinate(grid, dim):
+def _get_dataarray_coordinate(grid, dimension_index):
     """
     Return the name of the easting or northing coordinate in the grid
 
@@ -355,13 +355,16 @@ def _get_dataarray_coordinate(grid, dim):
     ----------
     grid : :class:`xarray.DataArray`
         Regular grid
-    dim : int
-        It can be 0 (for northing) or 1 (for easting)
+    dimension_index : int
+        Index of the dimension for the desired coordinate of the regular grid.
+        Since the dimensions of the grid should be in the order of
+        *northing*, *easting*, then 0 corresponds to *northing* and 1 to
+        *easting*.
     """
-    dim_name = grid.dims[dim]
+    dim_name = grid.dims[dimension_index]
     coords = [c for c in grid.coords if grid[c].dims == (dim_name,)]
     if len(coords) > 1:
-        if dim == 0:
+        if dimension_index == 0:
             direction = "northing"
         else:
             direction = "easting"
