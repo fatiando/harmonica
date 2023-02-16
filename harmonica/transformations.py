@@ -103,7 +103,6 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     if method == "finite-diff":
         # Get the easting coordinate
         coordinate = _get_dataarray_coordinate(grid, dimension_index=1)
-        print(coordinate)
         # Apply multiple central differences
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
