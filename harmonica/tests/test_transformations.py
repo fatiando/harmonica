@@ -17,7 +17,7 @@ import xarray.testing as xrt
 import xrft
 
 from .. import point_gravity
-from ..transformations import (
+from .._transformations import (
     derivative_easting,
     derivative_northing,
     derivative_upward,
