@@ -10,6 +10,7 @@ Test functions for regular grid transformations
 from pathlib import Path
 
 import numpy as np
+import numpy.testing as npt
 import pytest
 import verde as vd
 import xarray as xr
@@ -247,9 +248,35 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     assert rms / np.abs(g_zz).max() < 0.015
 
 
-def test_derivative_easting(sample_potential, sample_g_e):
+def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
     """
-    Test derivative_easting function against the synthetic model
+    Test derivative_easting function against the synthetic model using finite
+    differences
+    """
+    # Calculate easting derivative
+    derivative = derivative_easting(sample_potential)
+    # Compare against g_e
+    g_e = sample_g_e * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_e)
+    assert rms / np.abs(g_e).max() < 0.01
+
+
+def test_derivative_easting_finite_diff_order_2(sample_potential, sample_g_ee):
+    """
+    Test higher order of derivative_easting function against the sample grid
+    using finite differences
+    """
+    # Calculate second easting derivative
+    second_deriv = derivative_easting(sample_potential, order=2)
+    # Compare against g_e
+    g_ee = sample_g_ee * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_ee)
+    assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_easting_fft(sample_potential, sample_g_e):
+    """
+    Test derivative_easting function against the synthetic model using FFTs
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -295,6 +322,32 @@ def test_derivative_easting_order2(sample_potential, sample_g_ee):
     g_ee = sample_g_ee[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
     rms = root_mean_square_error(second_deriv, g_ee)
     assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_northing_finite_diff(sample_potential, sample_g_n):
+    """
+    Test derivative_northing function against the synthetic model using finite
+    differences
+    """
+    # Calculate northing derivative
+    derivative = derivative_northing(sample_potential)
+    # Compare against g_e
+    g_n = sample_g_n * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_n)
+    assert rms / np.abs(g_n).max() < 0.01
+
+
+def test_derivative_northing_finite_diff_order_2(sample_potential, sample_g_nn):
+    """
+    Test higher order of derivative_northing function against the sample grid
+    using finite differences
+    """
+    # Calculate second northing derivative
+    second_deriv = derivative_northing(sample_potential, order=2)
+    # Compare against g_e
+    g_nn = sample_g_nn * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_nn)
+    assert rms / np.abs(g_nn).max() < 0.1
 
 
 def test_derivative_northing(sample_potential, sample_g_n):
