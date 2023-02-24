@@ -22,19 +22,22 @@ import boule as bl
 import numpy as np
 import pygmt
 import verde as vd
+import ensaio
+import pandas as pd
 
 import harmonica as hm
 
 # Fetch the sample gravity data from South Africa
-data = hm.datasets.fetch_south_africa_gravity()
+fname = ensaio.fetch_southern_africa_gravity(version=1)
+data = pd.read_csv(fname)
 
 # Downsample the data using a blocked mean to speed-up the computations
 # for this example. This is preferred over simply discarding points to avoid
 # aliasing effects.
 blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
 (longitude, latitude, elevation), gravity_data = blocked_mean.filter(
-    (data.longitude, data.latitude, data.elevation),
-    data.gravity,
+    (data.longitude, data.latitude, data.height_sea_level_m),
+    data.gravity_mgal,
 )
 
 # Compute gravity disturbance by removing the gravity of normal Earth

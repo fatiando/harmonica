@@ -28,22 +28,26 @@ correction.
 import boule as bl
 import pygmt
 import xarray as xr
+import ensaio
 
 import harmonica as hm
 
 # Load the global gravity, topography, and geoid grids
+fname_gravity = ensaio.fetch_earth_gravity(version=1)
+fname_geoid = ensaio.fetch_earth_geoid(version=1)
+fname_topo = ensaio.fetch_earth_topography(version=1)
 data = xr.merge(
     [
-        hm.datasets.fetch_gravity_earth(),
-        hm.datasets.fetch_geoid_earth(),
-        hm.datasets.fetch_topography_earth(),
+        xr.load_dataarray(fname_gravity),
+        xr.load_dataarray(fname_geoid),
+        xr.load_dataarray(fname_topo),
     ]
 )
 print(data)
 
 # Calculate normal gravity and the disturbance
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+gamma = ellipsoid.normal_gravity(data.latitude, data.height)
 disturbance = data.gravity - gamma
 
 # Reference the topography to the ellipsoid

@@ -20,16 +20,27 @@ points.
 """
 import pygmt
 import pyproj
+import ensaio
 import verde as vd
+import xarray as xr
 
 import harmonica as hm
 
-# Read South Africa topography
-south_africa_topo = hm.datasets.fetch_south_africa_topography()
+# Read Earth's topography grid
+fname = ensaio.fetch_earth_topography(version=1)
+topography = xr.load_dataset(fname)
+
+# Crop the topography limited to South Africa
+region = (12, 33, -35, -18)
+region_padded = vd.pad_region(region, pad=5)  # pad the original region
+topography = topography.sel(
+    longitude=slice(*region_padded[:2]),
+    latitude=slice(*region_padded[2:]),
+)
 
 # Project the grid
-projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())
-south_africa_topo = vd.project_grid(south_africa_topo.topography, projection=projection)
+projection = pyproj.Proj(proj="merc", lat_ts=topography.latitude.values.mean())
+south_africa_topo = vd.project_grid(topography.topography, projection=projection)
 
 # Create a 2d array with the density of the prisms Points above the geoid will
 # have a density of 2670 kg/m^3 Points below the geoid will have a density
@@ -49,9 +60,7 @@ prisms = hm.prism_layer(
 )
 
 # Compute gravity field on a regular grid located at 4000m above the ellipsoid
-coordinates = vd.grid_coordinates(
-    region=(12, 33, -35, -18), spacing=0.2, extra_coords=4000
-)
+coordinates = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=4000)
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
 prisms_gravity = prisms.prism_layer.gravity(coordinates_projected, field="g_z")

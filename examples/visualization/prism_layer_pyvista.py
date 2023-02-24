@@ -31,11 +31,14 @@ plot using ``pyvista``.
 import pyproj
 import pyvista as pv
 import verde as vd
+import ensaio
+import xarray as xr
 
 import harmonica as hm
 
 # Read South Africa topography
-south_africa_topo = hm.datasets.fetch_south_africa_topography()
+fname = ensaio.fetch_southern_africa_topography(version=1)
+south_africa_topo = xr.load_dataset(fname)
 
 # Project the grid
 projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())

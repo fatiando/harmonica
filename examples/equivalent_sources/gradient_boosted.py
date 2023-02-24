@@ -32,11 +32,14 @@ import boule as bl
 import pygmt
 import pyproj
 import verde as vd
+import ensaio
+import pandas as pd
 
 import harmonica as hm
 
 # Fetch the sample gravity data from South Africa
-data = hm.datasets.fetch_south_africa_gravity()
+fname = ensaio.fetch_southern_africa_gravity(version=1)
+data = pd.read_csv(fname)
 
 # Slice a smaller portion of the survey data to speed-up calculations for this
 # example
@@ -44,19 +47,19 @@ region = [18, 27, -34.5, -27]
 inside = vd.inside((data.longitude, data.latitude), region)
 data = data[inside]
 print("Number of data points:", data.shape[0])
-print("Mean height of observations:", data.elevation.mean())
+print("Mean height of observations:", data.height_sea_level_m.mean())
 
 # Since this is a small area, we'll project our data and use Cartesian
 # coordinates
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
-coordinates = (easting, northing, data.elevation)
+coordinates = (easting, northing, data.height_sea_level_m)
 xy_region = vd.get_region((easting, northing))
 
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
-data["gravity_disturbance"] = data.gravity - ellipsoid.normal_gravity(
-    data.latitude, data.elevation
+data["gravity_disturbance"] = data.gravity_mgal - ellipsoid.normal_gravity(
+    data.latitude, data.height_sea_level_m
 )
 
 # Create the equivalent sources
