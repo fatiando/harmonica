@@ -1,7 +1,6 @@
 # Exclude these files from source distributions.
 # setuptools_scm includes everything else by default.
 prune .github
-prune data
 prune doc
 prune paper
 prune tutorials
