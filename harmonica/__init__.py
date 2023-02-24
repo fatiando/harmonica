@@ -19,7 +19,7 @@ from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from .forward.tesseroid import tesseroid_gravity
 from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from .gravity_corrections import bouguer_correction
-from .isostasy import isostasy_airy, isostatic_moho_airy
+from .isostasy import isostatic_moho_airy
 from .transformations import (
     derivative_easting,
     derivative_northing,
