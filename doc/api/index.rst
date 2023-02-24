@@ -101,25 +101,6 @@ Visualization
 
     visualization.prism_to_pyvista
 
-Synthetic models and surveys
-----------------------------
-
-.. warning::
-
-    The :mod:`harmonica.synthetic` module will be deprecated in Harmonica
-    v0.6.0
-
-.. autosummary::
-   :toctree: generated/
-
-    synthetic.airborne_survey
-    synthetic.ground_survey
-
-
-.. automodule:: harmonica.datasets
-
-.. currentmodule:: harmonica
-
 Datasets
 --------
 

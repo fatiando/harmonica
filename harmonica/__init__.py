@@ -6,7 +6,7 @@
 #
 #
 # Import functions/classes to make the public API
-from . import datasets, synthetic
+from . import datasets
 from ._io.icgem_gdf import load_icgem_gdf
 from ._io.oasis_montaj_grd import load_oasis_montaj_grid
 from ._version import __version__
