@@ -91,7 +91,7 @@ add_function_parentheses = False
 # -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples", "../data/examples"],
+    "examples_dirs": ["../examples"],
     # path where to save gallery generated examples
     "gallery_dirs": ["gallery", "sample_data"],
     "filename_pattern": r"\.py",
