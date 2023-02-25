@@ -10,7 +10,6 @@ Test functions for regular grid transformations
 from pathlib import Path
 
 import numpy as np
-import numpy.testing as npt
 import pytest
 import verde as vd
 import xarray as xr
