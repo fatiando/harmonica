@@ -96,8 +96,7 @@ jobs:
 
       - name: Install requirements
         run: |
-          mamba --version
-          mamba list
+          mamba install -c conda-forge ensaio=0.5
           mamba install --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
