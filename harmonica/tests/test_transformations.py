@@ -400,9 +400,11 @@ def test_derivative_northing_order2(sample_potential, sample_g_nn):
     assert rms / np.abs(g_nn).max() < 0.1
 
 
-def test_laplace(sample_potential):
+def test_laplace_fft(sample_potential):
     """
-    Test second order of derivative fullfill laplace equation
+    Test if second order of derivatives fulfill Laplace equation
+
+    We will use FFT computations only.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -415,12 +417,13 @@ def test_laplace(sample_potential):
         pad_width=pad_width,
     )
     # Calculate second northing derivative and unpad it
+    method = "fft"
+    second_deriv_ee = derivative_easting(potential_padded, order=2, method=method)
+    second_deriv_nn = derivative_northing(potential_padded, order=2, method=method)
     second_deriv_zz = derivative_upward(potential_padded, order=2)
-    second_deriv_ee = derivative_easting(potential_padded, order=2)
-    second_deriv_nn = derivative_northing(potential_padded, order=2)
-    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
     second_deriv_ee = xrft.unpad(second_deriv_ee, pad_width)
     second_deriv_nn = xrft.unpad(second_deriv_nn, pad_width)
+    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
     # Compare g_nn + g_ee against -g_zz (trim the borders to ignore boundary
     # effects)
     trim = 6
