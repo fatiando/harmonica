@@ -247,6 +247,21 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     assert rms / np.abs(g_zz).max() < 0.015
 
 
+@pytest.mark.parametrize(
+    "derivative_func",
+    [derivative_easting, derivative_northing],
+    ids=["derivative_easting", "derivative_northing"],
+)
+def test_invalid_method_horizontal_derivatives(sample_potential, derivative_func):
+    """
+    Test if passing and invalid method to horizontal derivatives raise an error
+    """
+    method = "bla"
+    err_msg = f"Invalid method '{method}'."
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(sample_potential, method=method)
+
+
 def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
     """
     Test derivative_easting function against the synthetic model using finite
