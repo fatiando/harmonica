@@ -65,7 +65,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: ${{ env.PYTHON }}
-          miniforge-variant: Mambaforge
+          # miniforge-variant: Mambaforge
           use-mamba: true
           mamba-version: "*"
           channels: conda-forge,defaults
