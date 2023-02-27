@@ -68,7 +68,7 @@ jobs:
           miniforge-variant: Mambaforge
           use-mamba: true
           channels: conda-forge,defaults
-          # Allowing to use toher than tar-bz2
+          # Allow mamba to use other than tar.bz2
           # (otherwise it cannot find latest versions that
           # don't use tar-bz2 files, see
           # https://github.com/conda-incubator/setup-miniconda/issues/267)
