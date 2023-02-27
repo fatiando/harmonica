@@ -95,7 +95,9 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: |
+          mamba search ensaio
+          mamba install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: mamba list
