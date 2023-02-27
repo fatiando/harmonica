@@ -29,11 +29,11 @@ to use them on a small example.
 
 """
 import boule as bl
+import ensaio
+import pandas as pd
 import pygmt
 import pyproj
 import verde as vd
-import ensaio
-import pandas as pd
 
 import harmonica as hm
 

@@ -40,11 +40,11 @@ shift beneath the median location obtained during the block-averaging process).
 The depth of the sources and which strategy to use can be set up through the
 ``depth`` and the ``depth_type`` parameters, respectively.
 """
+import ensaio
+import pandas as pd
 import pygmt
 import pyproj
 import verde as vd
-import ensaio
-import pandas as pd
 
 import harmonica as hm
 

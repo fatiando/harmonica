@@ -18,9 +18,9 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 """
+import ensaio
 import pygmt
 import pyproj
-import ensaio
 import verde as vd
 import xarray as xr
 

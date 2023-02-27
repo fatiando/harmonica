@@ -16,8 +16,8 @@ calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
 import boule as bl
-import pygmt
 import ensaio
+import pygmt
 import xarray as xr
 
 # Load the global gravity grid

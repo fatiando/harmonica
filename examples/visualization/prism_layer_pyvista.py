@@ -28,10 +28,10 @@ and bathymetry grid for South Africa and how we can visualize the layer as a 3D
 plot using ``pyvista``.
 
 """
+import ensaio
 import pyproj
 import pyvista as pv
 import verde as vd
-import ensaio
 import xarray as xr
 
 import harmonica as hm
