@@ -65,13 +65,14 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: ${{ env.PYTHON }}
-          # miniforge-variant: Mambaforge
-          # use-mamba: true
-          # mamba-version: "*"
+          miniforge-variant: Mambaforge
+          use-mamba: true
           channels: conda-forge,defaults
-          # Needed for caching
-          auto-update-conda: true
-          use-only-tar-bz2: true
+          # Allowing to use toher than tar-bz2
+          # (otherwise it cannot find latest versions that
+          # don't use tar-bz2 files, see
+          # https://github.com/conda-incubator/setup-miniconda/issues/267)
+          use-only-tar-bz2: false
 
       - name: Collect requirements
         run: |
