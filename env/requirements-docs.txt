@@ -7,7 +7,7 @@ sphinx-copybutton==0.5.*
 jupyter-sphinx==0.3.*
 boule
 pyproj
-ensaio
+ensaio>=0.5.*
 netcdf4
 matplotlib
 pyvista
