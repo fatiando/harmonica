@@ -67,6 +67,7 @@ jobs:
           python-version: ${{ env.PYTHON }}
           miniforge-variant: Mambaforge
           use-mamba: true
+          mamba-version: "*"
           channels: conda-forge,defaults
           # Needed for caching
           use-only-tar-bz2: true
@@ -74,6 +75,7 @@ jobs:
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
+          mamba list
           mamba install dependente==0.1.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
