@@ -68,8 +68,11 @@ jobs:
           miniforge-variant: Mambaforge
           use-mamba: true
           channels: conda-forge,defaults
-          # Needed for caching
-          use-only-tar-bz2: true
+          # Allow mamba to use other than tar.bz2
+          # (otherwise it cannot find latest versions that
+          # don't use tar-bz2 files, see
+          # https://github.com/conda-incubator/setup-miniconda/issues/267)
+          use-only-tar-bz2: false
 
       - name: Collect requirements
         run: |
