@@ -77,7 +77,6 @@ jobs:
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba list
           mamba install dependente==0.1.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
@@ -99,9 +98,7 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: |
-          mamba search ensaio
-          mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: mamba list
