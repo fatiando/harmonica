@@ -14,7 +14,7 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..visualization.prism import prism_to_pyvista
+from ..visualization import prism_to_pyvista
 
 try:
     import pyvista
@@ -118,7 +118,7 @@ def test_prism_to_pyvista_error_2d_property(prisms, density):
         prism_to_pyvista(prisms, properties={"density": density_2d})
 
 
-@patch("harmonica.visualization.prism.pyvista", None)
+@patch("harmonica.visualization._prism.pyvista", None)
 def test_prisms_pyvista_missing_error(prisms, density):
     """
     Check if prism_to_pyvista raises error if pyvista is missing
