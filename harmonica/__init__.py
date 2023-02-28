@@ -16,9 +16,9 @@ from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
-from ._isostasy import isostatic_moho_airy
 from ._io.icgem_gdf import load_icgem_gdf
 from ._io.oasis_montaj_grd import load_oasis_montaj_grid
+from ._isostasy import isostatic_moho_airy
 from ._transformations import (
     derivative_easting,
     derivative_northing,
@@ -28,6 +28,7 @@ from ._transformations import (
     reduction_to_pole,
     upward_continuation,
 )
+from ._version import __version__
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):
