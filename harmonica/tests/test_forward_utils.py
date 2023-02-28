@@ -12,7 +12,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..forward.utils import check_coordinate_system, distance
+from .._forward.utils import check_coordinate_system, distance
 
 
 @pytest.mark.use_numba
