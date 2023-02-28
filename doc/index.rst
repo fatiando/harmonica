@@ -175,6 +175,7 @@ That's how we all improve and we are happy to help others learn.
     user_guide/gravity_disturbance.rst
     user_guide/topographic_correction.rst
     user_guide/equivalent_sources/index.rst
+    user_guide/transformations.rst
 
 
 .. toctree::
