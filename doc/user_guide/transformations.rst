@@ -71,8 +71,8 @@ Now that we have the padded grid, we can apply any grid transformation.
 Upward derivative
 -----------------
 
-Let's calculate the upward derivative of the magnetic anomaly grid using the
-:func:`harmonica.upward_derivative` function:
+Let's calculate the upward derivative (a.k.a. vertical derivative) of the
+magnetic anomaly grid using the :func:`harmonica.upward_derivative` function:
 
 .. jupyter-execute::
 
