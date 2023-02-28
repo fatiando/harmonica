@@ -30,7 +30,8 @@ And plot it:
 
     tmp = magnetic_grid.plot(cmap="seismic", center=0, add_colorbar=False)
     plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly")
+    plt.title("Magnetic anomaly grid")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT")
     plt.show()
 
@@ -65,6 +66,15 @@ needed by the :func:`xrft.pad` function):
     magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
     magnetic_grid_padded
 
+.. jupyter-execute::
+
+    tmp = magnetic_grid_padded.plot(cmap="seismic", center=0, add_colorbar=False)
+    plt.gca().set_aspect("equal")
+    plt.title("Padded magnetic anomaly grid")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
+    plt.colorbar(tmp, label="nT")
+    plt.show()
+
 Now that we have the padded grid, we can apply any grid transformation.
 
 
@@ -96,6 +106,7 @@ And plot it:
     tmp = deriv_upward.plot(cmap="seismic", center=0, add_colorbar=False)
     plt.gca().set_aspect("equal")
     plt.title("Upward derivative of the magnetic anomaly")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT/m")
     plt.show()
 
@@ -132,6 +143,7 @@ And plot it:
     tmp = upward_continued.plot(cmap="seismic", center=0, add_colorbar=False)
     plt.gca().set_aspect("equal")
     plt.title("Upward continued magnetic anomaly to 1000m")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT")
     plt.show()
 
@@ -183,6 +195,7 @@ And plot it:
     tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
     plt.gca().set_aspect("equal")
     plt.title("Magnetic anomaly reduced to the pole")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT")
     plt.show()
 
@@ -211,6 +224,7 @@ magnetization vector of the sources, we can specify the
     tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
     plt.gca().set_aspect("equal")
     plt.title("Reduced to the pole with remanence")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT")
     plt.show()
 
