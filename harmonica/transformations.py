@@ -99,15 +99,15 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     --------
     harmonica.filters.derivative_easting_kernel
     """
+    # Check if the passed method is valid
     _check_horizontal_derivative_method(method)
-    if method == "finite-diff":
-        # Get the easting coordinate
-        coordinate = _get_dataarray_coordinate(grid, dimension_index=1)
-        # Apply multiple central differences
-        for _ in range(order):
-            grid = grid.differentiate(coord=coordinate)
-    elif method == "fft":
-        grid = apply_filter(grid, derivative_easting_kernel, order=order)
+    # Compute fft horizontal derivative if desired
+    if method == "fft":
+        return apply_filter(grid, derivative_easting_kernel, order=order)
+    # Compute finite-difference horizontal derivative if desired
+    coordinate = _get_dataarray_coordinate(grid, dimension_index=1)
+    for _ in range(order):
+        grid = grid.differentiate(coord=coordinate)
     return grid
 
 
@@ -156,15 +156,15 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     --------
     harmonica.filters.derivative_northing_kernel
     """
+    # Check if the passed method is valid
     _check_horizontal_derivative_method(method)
-    if method == "finite-diff":
-        # Get the northing coordinate
-        coordinate = _get_dataarray_coordinate(grid, dimension_index=0)
-        # Apply multiple central finite-differences
-        for _ in range(order):
-            grid = grid.differentiate(coord=coordinate)
-    elif method == "fft":
-        grid = apply_filter(grid, derivative_northing_kernel, order=order)
+    # Compute fft horizontal derivative if desired
+    if method == "fft":
+        return apply_filter(grid, derivative_northing_kernel, order=order)
+    # Compute finite-difference horizontal derivative if desired
+    coordinate = _get_dataarray_coordinate(grid, dimension_index=0)
+    for _ in range(order):
+        grid = grid.differentiate(coord=coordinate)
     return grid
 
 
