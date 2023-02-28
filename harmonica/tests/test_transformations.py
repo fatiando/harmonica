@@ -222,6 +222,27 @@ def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potentia
         _get_dataarray_coordinate(grid, index)
 
 
+@pytest.mark.parametrize(
+    "dimension, derivative_func",
+    (["easting", derivative_easting], ["northing", derivative_northing]),
+)
+def test_horizontal_derivative_with_invalid_grid(
+    dimension, derivative_func, sample_potential
+):
+    """
+    Test if the horizontal derivative functions raise an error when passing
+    a grid that has an additional coordinate that share the horizontal
+    dimension and the "finite-diff" method is selected.
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(grid, method="finite-diff")
+
+
 def test_derivative_upward(sample_potential, sample_g_z):
     """
     Test derivative_upward function against the synthetic model
