@@ -16,17 +16,18 @@ calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
 import boule as bl
+import ensaio
 import pygmt
-
-import harmonica as hm
+import xarray as xr
 
 # Load the global gravity grid
-data = hm.datasets.fetch_gravity_earth()
+fname = ensaio.fetch_earth_gravity(version=1)
+data = xr.load_dataset(fname)
 print(data)
 
 # Calculate normal gravity using the WGS84 ellipsoid
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+gamma = ellipsoid.normal_gravity(data.latitude, data.height)
 # The disturbance is the observed minus normal gravity (calculated at the
 # observation point)
 disturbance = data.gravity - gamma

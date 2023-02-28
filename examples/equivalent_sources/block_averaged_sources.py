@@ -40,6 +40,8 @@ shift beneath the median location obtained during the block-averaging process).
 The depth of the sources and which strategy to use can be set up through the
 ``depth`` and the ``depth_type`` parameters, respectively.
 """
+import ensaio
+import pandas as pd
 import pygmt
 import pyproj
 import verde as vd
@@ -47,7 +49,8 @@ import verde as vd
 import harmonica as hm
 
 # Fetch the sample total-field magnetic anomaly data from Great Britain
-data = hm.datasets.fetch_britain_magnetic()
+fname = ensaio.fetch_britain_magnetic(version=1)
+data = pd.read_csv(fname)
 
 # Slice a smaller portion of the survey data to speed-up calculations for this
 # example
@@ -55,13 +58,13 @@ region = [-5.5, -4.7, 57.8, 58.5]
 inside = vd.inside((data.longitude, data.latitude), region)
 data = data[inside]
 print("Number of data points:", data.shape[0])
-print("Mean height of observations:", data.altitude_m.mean())
+print("Mean height of observations:", data.height_m.mean())
 
 # Since this is a small area, we'll project our data and use Cartesian
 # coordinates
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
-coordinates = (easting, northing, data.altitude_m)
+coordinates = (easting, northing, data.height_m)
 xy_region = vd.get_region((easting, northing))
 
 # Create the equivalent sources.

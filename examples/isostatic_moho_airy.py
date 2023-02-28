@@ -24,14 +24,17 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 """
+import ensaio
 import numpy as np
 import pygmt
+import xarray as xr
 
 import harmonica as hm
 
 # Load the elevation model and cut out the portion of the data corresponding to
 # Africa
-data = hm.datasets.fetch_topography_earth()
+fname = ensaio.fetch_earth_topography(version=1)
+data = xr.load_dataset(fname)
 region = (-20, 60, -40, 45)
 data_africa = data.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 print("Topography/bathymetry grid:")

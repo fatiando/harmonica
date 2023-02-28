@@ -6,7 +6,6 @@
 #
 #
 # Import functions/classes to make the public API
-from . import datasets, synthetic
 from ._equivalent_sources.cartesian import EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph
