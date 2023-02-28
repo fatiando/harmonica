@@ -17,8 +17,8 @@ import verde as vd
 import verde.base as vdb
 
 from .. import EquivalentSources, point_gravity
-from ..equivalent_sources.cartesian import greens_func_cartesian
-from ..equivalent_sources.utils import jacobian_numba_serial
+from .._equivalent_sources.cartesian import greens_func_cartesian
+from .._equivalent_sources.utils import jacobian_numba_serial
 from .utils import run_only_with_numba
 
 
@@ -53,7 +53,7 @@ def fixture_masses(region, points):
     """
     Return the masses some sample point masses
     """
-    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
 
 @pytest.fixture(name="data")

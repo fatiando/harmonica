@@ -17,7 +17,7 @@ import verde as vd
 import xarray as xr
 
 from .. import prism_gravity, prism_layer
-from ..forward.prism_layer import _discard_thin_prisms
+from .._forward.prism_layer import _discard_thin_prisms
 
 try:
     import pyvista
@@ -452,7 +452,7 @@ def test_progress_bar(dummy_layer):
     npt.assert_allclose(result_progress_true, result_progress_false)
 
 
-@patch("harmonica.forward.prism.ProgressBar", None)
+@patch("harmonica._forward.prism.ProgressBar", None)
 def test_numba_progress_missing_error(dummy_layer):
     """
     Check if error is raised when progressbar=True and numba_progress package
