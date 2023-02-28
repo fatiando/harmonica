@@ -18,6 +18,7 @@ import xrft
 
 from .. import point_gravity
 from ..transformations import (
+    _get_dataarray_coordinate,
     derivative_easting,
     derivative_northing,
     derivative_upward,
@@ -195,6 +196,30 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
         extra_coords_names="upward",
     )
     return g_ee.g_ee
+
+
+@pytest.mark.parametrize("index, expected_dimension", ([1, "easting"], [0, "northing"]))
+def test_get_dataarray_coordinate(index, expected_dimension, sample_potential):
+    """
+    Test the _get_dataarray_coordinate private function
+    """
+    dimension = _get_dataarray_coordinate(sample_potential, index)
+    assert dimension == expected_dimension
+
+
+@pytest.mark.parametrize("index, dimension", ([1, "easting"], [0, "northing"]))
+def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potential):
+    """
+    Test if _get_dataarray_coordinate raises error when grid have an additional
+    coordinate that share one of the horizontal dimensions
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        _get_dataarray_coordinate(grid, index)
 
 
 def test_derivative_upward(sample_potential, sample_g_z):
