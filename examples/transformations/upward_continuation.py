@@ -25,9 +25,8 @@ pad_width = {
     "easting": magnetic_grid.easting.size // 3,
     "northing": magnetic_grid.northing.size // 3,
 }
-magnetic_grid_no_height = magnetic_grid.drop_vars(
-    "height"
-)  # drop the extra height coordinate
+# drop the extra height coordinate
+magnetic_grid_no_height = magnetic_grid.drop_vars("height")
 magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
 # Upward continue the magnetic grid, from 500 m to 1000 m
