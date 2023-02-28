@@ -48,7 +48,7 @@ def fixture_masses(region, points):
     """
     Return the masses some sample point masses
     """
-    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
 
 @pytest.fixture(name="data")
