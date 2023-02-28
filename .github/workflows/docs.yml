@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
-      PYTHON: "3.10.*"
+      PYTHON: "3.10"
 
     steps:
       # Cancel any previous run of the test job
@@ -98,9 +98,7 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: |
-          mamba install -c conda-forge ensaio=0.5
-          mamba install --file requirements-full.txt python=$PYTHON
+        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: mamba list
