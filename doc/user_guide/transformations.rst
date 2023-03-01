@@ -3,9 +3,9 @@
 Grid transformations
 ====================
 
-Harmonica offers some functions to apply FFT-based (Fast Fourier Transform)
-transformations to regular grids of gravity and magnetic fields located at
-a constant height.
+Harmonica offers some functions to apply FFT-based (Fast Fourier Transform) and
+finite-differences transformations to regular grids of gravity and magnetic
+fields located at a constant height.
 
 In order to apply these grid transformations, we first need a **regular grid in
 Cartesians coordinates**.
@@ -82,7 +82,7 @@ Upward derivative
 -----------------
 
 Let's calculate the upward derivative (a.k.a. vertical derivative) of the
-magnetic anomaly grid using the :func:`harmonica.upward_derivative` function:
+magnetic anomaly grid using the :func:`harmonica.derivative_upward` function:
 
 .. jupyter-execute::
 
@@ -109,6 +109,94 @@ And plot it:
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
     plt.colorbar(tmp, label="nT/m")
     plt.show()
+
+
+Horizontal derivatives
+----------------------
+
+We can also compute horizontal derivatives over a regular grid using the
+:func:`harmonica.derivative_easting` and :func:`harmonica.derivative_northing`
+functions.
+
+.. jupyter-execute::
+
+    deriv_easting = hm.derivative_easting(magnetic_grid)
+    deriv_easting
+
+.. jupyter-execute::
+
+    deriv_northing = hm.derivative_northing(magnetic_grid)
+    deriv_northing
+
+And plot them:
+
+.. jupyter-execute::
+
+    fig, (ax1, ax2) = plt.subplots(
+        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    )
+
+    cbar_kwargs=dict(
+        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    )
+    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
+
+    tmp = deriv_easting.plot(ax=ax1, **kwargs)
+    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+
+    ax1.set_title("Easting derivative of the magnetic anomaly")
+    ax2.set_title("Northing derivative of the magnetic anomaly")
+    for ax in (ax1, ax2):
+        ax.set_aspect("equal")
+        ax.ticklabel_format(style="sci", scilimits=(0, 0))
+    plt.show()
+
+By default, these two functions compute the horizontal derivatives using
+central finite differences methods. We can choose to use either the finite
+difference or the FFT-based method through the ``method`` argument.
+
+For example, we can pass ``method="fft"`` to compute the derivatives in the
+frequency domain:
+
+.. jupyter-execute::
+
+    deriv_easting = hm.derivative_easting(magnetic_grid_padded, method="fft")
+    deriv_easting = xrft.unpad(deriv_easting, pad_width)
+    deriv_easting
+
+.. jupyter-execute::
+
+    deriv_northing = hm.derivative_northing(magnetic_grid_padded, method="fft")
+    deriv_northing = xrft.unpad(deriv_northing, pad_width)
+    deriv_northing
+
+.. jupyter-execute::
+
+    fig, (ax1, ax2) = plt.subplots(
+        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    )
+
+    cbar_kwargs=dict(
+        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    )
+    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
+
+    tmp = deriv_easting.plot(ax=ax1, **kwargs)
+    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+
+    ax1.set_title("Easting derivative of the magnetic anomaly")
+    ax2.set_title("Northing derivative of the magnetic anomaly")
+    for ax in (ax1, ax2):
+        ax.set_aspect("equal")
+        ax.ticklabel_format(style="sci", scilimits=(0, 0))
+    plt.show()
+
+
+.. important::
+
+    Horizontal derivatives through finite differences are usually more accurate
+    and have less artifacts than their FFT-based counterpart.
+
 
 
 Upward continuation
