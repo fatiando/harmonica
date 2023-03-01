@@ -51,6 +51,7 @@ intersphinx_mapping = {
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
     "xrft": ("https://xrft.readthedocs.io/en/stable/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
+    "ensaio": ("https://www.fatiando.org/ensaio/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
     "boule": ("https://www.fatiando.org/boule/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
