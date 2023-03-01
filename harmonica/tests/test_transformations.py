@@ -18,6 +18,7 @@ import xrft
 
 from .. import point_gravity
 from .._transformations import (
+    _get_dataarray_coordinate,
     derivative_easting,
     derivative_northing,
     derivative_upward,
@@ -197,6 +198,51 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
     return g_ee.g_ee
 
 
+@pytest.mark.parametrize("index, expected_dimension", ([1, "easting"], [0, "northing"]))
+def test_get_dataarray_coordinate(index, expected_dimension, sample_potential):
+    """
+    Test the _get_dataarray_coordinate private function
+    """
+    dimension = _get_dataarray_coordinate(sample_potential, index)
+    assert dimension == expected_dimension
+
+
+@pytest.mark.parametrize("index, dimension", ([1, "easting"], [0, "northing"]))
+def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potential):
+    """
+    Test if _get_dataarray_coordinate raises error when grid have an additional
+    coordinate that share one of the horizontal dimensions
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        _get_dataarray_coordinate(grid, index)
+
+
+@pytest.mark.parametrize(
+    "dimension, derivative_func",
+    (["easting", derivative_easting], ["northing", derivative_northing]),
+)
+def test_horizontal_derivative_with_invalid_grid(
+    dimension, derivative_func, sample_potential
+):
+    """
+    Test if the horizontal derivative functions raise an error when passing
+    a grid that has an additional coordinate that share the horizontal
+    dimension and the "finite-diff" method is selected.
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(grid, method="finite-diff")
+
+
 def test_derivative_upward(sample_potential, sample_g_z):
     """
     Test derivative_upward function against the synthetic model
@@ -247,9 +293,50 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     assert rms / np.abs(g_zz).max() < 0.015
 
 
-def test_derivative_easting(sample_potential, sample_g_e):
+@pytest.mark.parametrize(
+    "derivative_func",
+    [derivative_easting, derivative_northing],
+    ids=["derivative_easting", "derivative_northing"],
+)
+def test_invalid_method_horizontal_derivatives(sample_potential, derivative_func):
     """
-    Test derivative_easting function against the synthetic model
+    Test if passing and invalid method to horizontal derivatives raise an error
+    """
+    method = "bla"
+    err_msg = f"Invalid method '{method}'."
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(sample_potential, method=method)
+
+
+def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
+    """
+    Test derivative_easting function against the synthetic model using finite
+    differences
+    """
+    # Calculate easting derivative
+    derivative = derivative_easting(sample_potential)
+    # Compare against g_e
+    g_e = sample_g_e * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_e)
+    assert rms / np.abs(g_e).max() < 0.01
+
+
+def test_derivative_easting_finite_diff_order_2(sample_potential, sample_g_ee):
+    """
+    Test higher order of derivative_easting function against the sample grid
+    using finite differences
+    """
+    # Calculate second easting derivative
+    second_deriv = derivative_easting(sample_potential, order=2)
+    # Compare against g_e
+    g_ee = sample_g_ee * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_ee)
+    assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_easting_fft(sample_potential, sample_g_e):
+    """
+    Test derivative_easting function against the synthetic model using FFTs
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -295,6 +382,32 @@ def test_derivative_easting_order2(sample_potential, sample_g_ee):
     g_ee = sample_g_ee[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
     rms = root_mean_square_error(second_deriv, g_ee)
     assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_northing_finite_diff(sample_potential, sample_g_n):
+    """
+    Test derivative_northing function against the synthetic model using finite
+    differences
+    """
+    # Calculate northing derivative
+    derivative = derivative_northing(sample_potential)
+    # Compare against g_e
+    g_n = sample_g_n * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_n)
+    assert rms / np.abs(g_n).max() < 0.01
+
+
+def test_derivative_northing_finite_diff_order_2(sample_potential, sample_g_nn):
+    """
+    Test higher order of derivative_northing function against the sample grid
+    using finite differences
+    """
+    # Calculate second northing derivative
+    second_deriv = derivative_northing(sample_potential, order=2)
+    # Compare against g_e
+    g_nn = sample_g_nn * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_nn)
+    assert rms / np.abs(g_nn).max() < 0.1
 
 
 def test_derivative_northing(sample_potential, sample_g_n):
@@ -347,9 +460,11 @@ def test_derivative_northing_order2(sample_potential, sample_g_nn):
     assert rms / np.abs(g_nn).max() < 0.1
 
 
-def test_laplace(sample_potential):
+def test_laplace_fft(sample_potential):
     """
-    Test second order of derivative fullfill laplace equation
+    Test if second order of derivatives fulfill Laplace equation
+
+    We will use FFT computations only.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -362,12 +477,13 @@ def test_laplace(sample_potential):
         pad_width=pad_width,
     )
     # Calculate second northing derivative and unpad it
+    method = "fft"
+    second_deriv_ee = derivative_easting(potential_padded, order=2, method=method)
+    second_deriv_nn = derivative_northing(potential_padded, order=2, method=method)
     second_deriv_zz = derivative_upward(potential_padded, order=2)
-    second_deriv_ee = derivative_easting(potential_padded, order=2)
-    second_deriv_nn = derivative_northing(potential_padded, order=2)
-    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
     second_deriv_ee = xrft.unpad(second_deriv_ee, pad_width)
     second_deriv_nn = xrft.unpad(second_deriv_nn, pad_width)
+    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
     # Compare g_nn + g_ee against -g_zz (trim the borders to ignore boundary
     # effects)
     trim = 6
