@@ -88,6 +88,7 @@ jobs:
   # Publish built wheels and source archives to PyPI and test PyPI
   publish:
     runs-on: ubuntu-latest
+    needs: build
     # Only publish from the origin repository, not forks
     if: github.repository_owner == 'fatiando' && github.event_name != 'pull_request'
 
