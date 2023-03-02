@@ -130,7 +130,7 @@ jobs:
       - name: Upload HTML documentation as an artifact
         # Only if not a pull request
         if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
@@ -148,7 +148,7 @@ jobs:
 
       # Fetch the built docs from the "build" job
       - name: Download HTML documentation artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
