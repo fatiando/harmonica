@@ -1,0 +1,222 @@
+harmonica.EquivalentSources
+===========================
+
+.. currentmodule:: harmonica
+
+.. autoclass:: EquivalentSources
+
+.. rubric:: Methods Summary
+
+.. autosummary::
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        EquivalentSources.filter
+    
+    
+    
+        EquivalentSources.fit
+    
+    
+    
+        EquivalentSources.get_params
+    
+    
+    
+        EquivalentSources.grid
+    
+    
+    
+        EquivalentSources.jacobian
+    
+    
+    
+        EquivalentSources.predict
+    
+    
+    
+        EquivalentSources.profile
+    
+    
+    
+        EquivalentSources.scatter
+    
+    
+    
+        EquivalentSources.score
+    
+    
+    
+        EquivalentSources.set_params
+    
+    
+
+----
+
+
+
+
+
+.. automethod:: EquivalentSources.filter
+
+
+
+.. automethod:: EquivalentSources.fit
+
+
+
+.. automethod:: EquivalentSources.get_params
+
+
+
+.. automethod:: EquivalentSources.grid
+
+
+
+.. automethod:: EquivalentSources.jacobian
+
+
+
+.. automethod:: EquivalentSources.predict
+
+
+
+.. automethod:: EquivalentSources.profile
+
+
+
+.. automethod:: EquivalentSources.scatter
+
+
+
+.. automethod:: EquivalentSources.score
+
+
+
+.. automethod:: EquivalentSources.set_params
+
+
+
+.. include:: backreferences/harmonica.EquivalentSources.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -1,0 +1,16 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_transformations_sg_execution_times:
+
+Computation times
+=================
+**00:11.861** total execution time for **gallery_transformations** files:
+
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py` (``reduction_to_pole.py``)     | 00:06.581 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_transformations_upward_derivative.py` (``upward_derivative.py``)     | 00:02.664 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_transformations_upward_continuation.py` (``upward_continuation.py``) | 00:02.616 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
