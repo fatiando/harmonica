@@ -37,12 +37,12 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-67
+.. GENERATED FROM PYTHON SOURCE LINES 27-78
 
 
 
 .. image-sg:: /gallery/images/sphx_glr_isostatic_moho_airy_001.png
-   :alt: Airy isostatic Moho depth of Africa
+   :alt: isostatic moho airy
    :srcset: /gallery/images/sphx_glr_isostatic_moho_airy_001.png
    :class: sphx-glr-single-img
 
@@ -55,44 +55,37 @@ isostatic Moho depth of Africa.
 
     Topography/bathymetry grid:
     <xarray.Dataset>
-    Dimensions:     (latitude: 171, longitude: 161)
+    Dimensions:     (longitude: 481, latitude: 511)
     Coordinates:
-      * longitude   (longitude) float64 -20.0 -19.5 -19.0 -18.5 ... 59.0 59.5 60.0
-      * latitude    (latitude) float64 -40.0 -39.5 -39.0 -38.5 ... 44.0 44.5 45.0
+      * longitude   (longitude) float64 -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
+      * latitude    (latitude) float64 -40.0 -39.83 -39.67 ... 44.67 44.83 45.0
     Data variables:
-        topography  (latitude, longitude) float64 -3.523e+03 -3.392e+03 ... 29.0
-    Attributes: (12/31)
-        generating_institute:  gfz-potsdam
-        generating_date:       2018/12/13
-        product_type:          topography
-        body:                  earth
-        modelname:             etopo1-2250
-        max_used_degree:       1277
-        ...                    ...
-        maxvalue:              5.6509528E+03 meter
-        minvalue:              -8.4094822E+03 meter
-        signal_wrms:           2.4872117E+03 meter
-        grid_format:           long_lat_value
-        attributes:            longitude latitude topography
-        attributes_units:      deg. deg. meter
+        topography  (latitude, longitude) float32 -3.528e+03 -3.51e+03 ... 31.0 33.0
 
     Moho depth grid:
-    <xarray.DataArray 'moho_depth' (latitude: 171, longitude: 161)>
-    array([[17528.58, 17992.32, 18169.32, ..., 11793.78, 11712.36, 11499.96],
-           [17733.9 , 18148.08, 18679.08, ..., 11436.24, 11432.7 , 11372.52],
-           [17471.94, 17946.3 , 18604.74, ..., 11269.86, 11411.46, 11397.3 ],
+    <xarray.DataArray 'moho_depth' (latitude: 511, longitude: 481)>
+    array([[17510.88  , 17574.602 , 17712.66  , ..., 11715.9   , 11602.619 ,
+            11443.32  ],
+           [17833.02  , 17942.76  , 18165.781 , ..., 11609.699 , 11581.381 ,
+            11461.02  ],
+           [17684.34  , 17797.62  , 18034.8   , ..., 11503.502 , 11570.762 ,
+            11521.201 ],
            ...,
-           [15149.7 , 13783.26, 13397.4 , ..., 30229.6 , 30207.2 , 30218.4 ],
-           [15153.24, 14215.14, 13623.96, ..., 30184.8 , 30162.4 , 30162.4 ],
-           [15139.08, 14622.24, 13900.08, ..., 30207.2 , 30184.8 , 30162.4 ]])
+           [15167.399 , 15202.8   , 14937.301 , ..., 30151.2   , 30184.8   ,
+            30184.8   ],
+           [15347.939 , 15503.7   , 15266.5205, ..., 30145.6   , 30184.8   ,
+            30184.8   ],
+           [15362.101 , 15517.86  , 15252.359 , ..., 30151.2   , 30173.6   ,
+            30184.8   ]], dtype=float32)
     Coordinates:
-      * longitude  (longitude) float64 -20.0 -19.5 -19.0 -18.5 ... 59.0 59.5 60.0
-      * latitude   (latitude) float64 -40.0 -39.5 -39.0 -38.5 ... 44.0 44.5 45.0
+      * longitude  (longitude) float64 -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
+      * latitude   (latitude) float64 -40.0 -39.83 -39.67 -39.5 ... 44.67 44.83 45.0
     Attributes:
         isostasy:        Airy
         density_crust:   2800.0
         density_mantle:  3300.0
         density_water:   1030
+    <IPython.core.display.Image object>
 
 
 
@@ -103,15 +96,17 @@ isostatic Moho depth of Africa.
 
 .. code-block:: default
 
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
+    import ensaio
     import numpy as np
+    import pygmt
+    import xarray as xr
 
     import harmonica as hm
 
     # Load the elevation model and cut out the portion of the data corresponding to
     # Africa
-    data = hm.datasets.fetch_topography_earth()
+    fname = ensaio.fetch_earth_topography(version=1)
+    data = xr.load_dataset(fname)
     region = (-20, 60, -40, 45)
     data_africa = data.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
     print("Topography/bathymetry grid:")
@@ -133,21 +128,30 @@ isostatic Moho depth of Africa.
     print(moho)
 
     # Draw the maps
-    plt.figure(figsize=(8, 9.5))
-    ax = plt.axes(projection=ccrs.LambertCylindrical(central_longitude=20))
-    pc = moho.plot.pcolormesh(
-        ax=ax, cmap="viridis_r", add_colorbar=False, transform=ccrs.PlateCarree()
+    fig = pygmt.Figure()
+
+    pygmt.grd2cpt(grid=moho, cmap="viridis", reverse=True, continuous=True)
+
+    title = "Airy isostatic Moho depth of Africa"
+
+    fig.grdimage(
+        region=region,
+        projection="Y20/0/10c",
+        frame=["ag", f"+t{title}"],
+        grid=moho,
+        cmap=True,
     )
-    plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.01, aspect=50, label="meters")
-    ax.coastlines()
-    ax.set_title("Airy isostatic Moho depth of Africa")
-    ax.set_extent(region, crs=ccrs.PlateCarree())
-    plt.show()
+
+    fig.coast(shorelines="0.5p,black", resolution="crude")
+
+    fig.colorbar(cmap=True, frame=["a10000f2500", "x+lmeters"])
+
+    fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.214 seconds)
+   **Total running time of the script:** ( 0 minutes  1.527 seconds)
 
 
 .. _sphx_glr_download_gallery_isostatic_moho_airy.py:

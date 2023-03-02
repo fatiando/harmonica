@@ -16,31 +16,39 @@ calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
 import boule as bl
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-
-import harmonica as hm
+import ensaio
+import pygmt
+import xarray as xr
 
 # Load the global gravity grid
-data = hm.datasets.fetch_gravity_earth()
+fname = ensaio.fetch_earth_gravity(version=1)
+data = xr.load_dataset(fname)
 print(data)
 
 # Calculate normal gravity using the WGS84 ellipsoid
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+gamma = ellipsoid.normal_gravity(data.latitude, data.height)
 # The disturbance is the observed minus normal gravity (calculated at the
 # observation point)
 disturbance = data.gravity - gamma
 
-# Make a plot of data using Cartopy
-plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=160))
-pc = disturbance.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="seismic"
+# Make a plot of data using PyGMT
+fig = pygmt.Figure()
+
+pygmt.grd2cpt(grid=disturbance, cmap="polar", continuous=True)
+
+title = "Gravity disturbance of the Earth"
+
+fig.grdimage(
+    region="g",
+    projection="G160/0/15c",
+    frame=f"+t{title}",
+    grid=disturbance,
+    cmap=True,
 )
-plt.colorbar(
-    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
-)
-ax.set_title("Gravity of disturbance of the Earth")
-ax.coastlines()
-plt.show()
+
+fig.coast(shorelines="0.5p,black", resolution="crude")
+
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+
+fig.show()

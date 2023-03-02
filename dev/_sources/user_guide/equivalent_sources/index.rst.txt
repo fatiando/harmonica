@@ -59,9 +59,11 @@ coordinates, so we need to project these gravity observations:
 .. jupyter-execute::
 
    import pyproj
+   import verde as vd
 
    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.values.mean())
    easting, northing = projection(data.longitude.values, data.latitude.values)
+   region = vd.get_region((easting, northing))
 
 Now we can initialize the :class:`harmonica.EquivalentSources` class.
 
@@ -112,41 +114,49 @@ And plot it:
 
 .. jupyter-execute::
 
-   import verde as vd
-   import matplotlib.pyplot as plt
+   import pygmt
 
    # Get max absolute value for the observed gravity disturbance
    maxabs = vd.maxabs(data.gravity_disturbance_mgal)
 
-   # Create a figure with two axes
-   fig, (ax1, ax2) = plt.subplots(figsize=(10, 12), nrows=2, ncols=1, sharex=True)
+   # Set figure properties
+   w, e, s, n = region
+   fig_height = 10
+   fig_width = fig_height * (e - w) / (n - s)
+   fig_ratio = (n - s) / (fig_height / 100)
+   fig_proj = f"x1:{fig_ratio}"
 
-   # Plot observed and predicted fields
-   tmp = ax1.scatter(
-       easting,
-       northing,
-       c=data.gravity_disturbance_mgal,
-       s=2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-   )
-   ax1.set_title("Observed gravity disturbance")
-   ax2.scatter(
-       easting,
-       northing,
-       c=disturbance,
-       s=2,
-       vmin=-maxabs,
-       vmax=maxabs,
-       cmap="seismic",
-   )
-   ax2.set_title("Predicted gravity disturbance")
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   title="Predicted gravity disturbance"
+   with pygmt.config(FONT_TITLE="14p"):
+      fig.plot(
+         x=easting,
+         y=northing,
+         color=disturbance,
+         cmap=True,
+         style="c3p",
+         projection=fig_proj,
+         region=region, 
+         frame=['ag', f"+t{title}"],
+      )
+   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
 
-   for ax in (ax1, ax2):
-       ax.set_aspect("equal")
-       plt.colorbar(tmp, ax=ax, label="mGal", pad=0.05, aspect=20, shrink=0.9)
-   plt.show()
+   fig.shift_origin(yshift=fig_height + 2)
+
+   title="Observed gravity disturbance"
+   with pygmt.config(FONT_TITLE="14p"):
+      fig.plot(
+         x=easting,
+         y=northing,
+         color=data.gravity_disturbance_mgal,
+         cmap=True,
+         style="c3p", 
+         frame=['ag', f"+t{title}"],
+      )
+   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
+
+   fig.show()
 
 We can also *grid* and *upper continue* the field by predicting its values on
 a regular grid at a constant height higher than the observations. To do so we
@@ -164,9 +174,6 @@ and use the equivalent sources to generate a gravity disturbance grid.
 
 .. jupyter-execute::
 
-   # Get region of the observations
-   region = vd.get_region(coordinates)
-
    # Build the grid coordinates
    grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=2.2e3)
 
@@ -178,8 +185,17 @@ And plot it
 
 .. jupyter-execute::
 
-   fig = plt.figure(figsize=(12, 8))
+   maxabs = vd.maxabs(grid.gravity_disturbance)
 
-   grid.gravity_disturbance.plot()
-   plt.gca().set_aspect("equal")
-   plt.show()
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   fig.grdimage(
+      frame=['af', 'WSen'],
+      grid=grid.gravity_disturbance,
+      region=region,
+      projection=fig_proj,
+      cmap=True,
+   )
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+
+   fig.show()

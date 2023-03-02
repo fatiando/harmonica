@@ -18,19 +18,29 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import ensaio
+import pygmt
 import pyproj
 import verde as vd
+import xarray as xr
 
 import harmonica as hm
 
-# Read South Africa topography
-south_africa_topo = hm.datasets.fetch_south_africa_topography()
+# Read Earth's topography grid
+fname = ensaio.fetch_earth_topography(version=1)
+topography = xr.load_dataset(fname)
+
+# Crop the topography limited to South Africa
+region = (12, 33, -35, -18)
+region_padded = vd.pad_region(region, pad=5)  # pad the original region
+topography = topography.sel(
+    longitude=slice(*region_padded[:2]),
+    latitude=slice(*region_padded[2:]),
+)
 
 # Project the grid
-projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())
-south_africa_topo = vd.project_grid(south_africa_topo.topography, projection=projection)
+projection = pyproj.Proj(proj="merc", lat_ts=topography.latitude.values.mean())
+south_africa_topo = vd.project_grid(topography.topography, projection=projection)
 
 # Create a 2d array with the density of the prisms Points above the geoid will
 # have a density of 2670 kg/m^3 Points below the geoid will have a density
@@ -50,28 +60,41 @@ prisms = hm.prism_layer(
 )
 
 # Compute gravity field on a regular grid located at 4000m above the ellipsoid
-coordinates = vd.grid_coordinates(
-    region=(12, 33, -35, -18), spacing=0.2, extra_coords=4000
-)
+coordinates = vd.grid_coordinates(region=region, spacing=0.2, extra_coords=4000)
 easting, northing = projection(*coordinates[:2])
 coordinates_projected = (easting, northing, coordinates[-1])
 prisms_gravity = prisms.prism_layer.gravity(coordinates_projected, field="g_z")
 
-# Make a plot of the computed gravity
-plt.figure(figsize=(8, 8))
-ax = plt.axes(projection=ccrs.Mercator())
-maxabs = vd.maxabs(prisms_gravity)
-tmp = ax.pcolormesh(
-    *coordinates[:2],
+# merge into a dataset
+grid = vd.make_xarray_grid(
+    coordinates_projected,
     prisms_gravity,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="RdBu_r",
-    transform=ccrs.PlateCarree()
+    data_names="gravity",
+    extra_coords_names="extra",
 )
-ax.set_extent(vd.get_region(coordinates), crs=ccrs.PlateCarree())
-plt.title("Gravitational acceleration of the topography")
-plt.colorbar(
-    tmp, label="mGal", orientation="horizontal", shrink=0.93, pad=0.01, aspect=50
-)
-plt.show()
+
+# Set figure properties
+xy_region = vd.get_region((easting, northing))
+w, e, s, n = xy_region
+fig_height = 10
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
+fig_proj = f"x1:{fig_ratio}"
+
+# Make a plot of the computed gravity
+fig = pygmt.Figure()
+
+title = "Gravitational acceleration of the topography"
+
+with pygmt.config(FONT_TITLE="14p"):
+    fig.grdimage(
+        region=xy_region,
+        projection=fig_proj,
+        grid=grid.gravity,
+        frame=["ag", f"+t{title}"],
+        cmap="vik",
+    )
+
+fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+
+fig.show()

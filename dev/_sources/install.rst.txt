@@ -7,6 +7,7 @@ Which Python?
 -------------
 
 You'll need **Python 3.7 or greater**.
+See :ref:`python-versions` if you require support for older versions.
 
 We recommend using the
 `Anaconda Python distribution <https://www.anaconda.com/download>`__
@@ -22,6 +23,11 @@ Dependencies
 The required dependencies should be installed automatically when you install
 Harmonica using ``conda`` or ``pip``. Optional dependencies have to be
 installed manually.
+
+.. note::
+
+    See :ref:`dependency-versions` for the our policy of oldest supported
+    versions of each dependency.
 
 Required:
 
@@ -47,9 +53,10 @@ Optional:
 The examples in the :ref:`gallery` also use:
 
 * `boule <http://www.fatiando.org/boule/>`__
-* `matplotlib <https://matplotlib.org/>`__
-* `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
+* `ensaio <http://www.fatiando.org/ensaio/>`__ for downloading sample datasets
+* `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
+* `ensaio <https://www.fatiando.org/ensaio>`__ for downloading sample datasets
 
 
 Installing with conda

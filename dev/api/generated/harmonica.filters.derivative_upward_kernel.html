@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="harmonica.EquivalentSources" href="harmonica.EquivalentSources.html" />
-    <link rel="prev" title="harmonica.derivative_upward" href="harmonica.derivative_upward.html" />
+    <link rel="next" title="harmonica.filters.upward_continuation_kernel" href="harmonica.filters.upward_continuation_kernel.html" />
+    <link rel="prev" title="harmonica.filters.derivative_northing_kernel" href="harmonica.filters.derivative_northing_kernel.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
@@ -137,11 +137,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -182,8 +177,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -274,6 +289,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -297,13 +317,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.derivative_upward.html">
      harmonica.derivative_upward
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -342,8 +422,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -352,58 +442,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -419,13 +469,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -441,7 +496,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -573,7 +628,7 @@
 <dt class="sig sig-object py" id="harmonica.filters.derivative_upward_kernel">
 <span class="sig-prename descclassname"><span class="pre">harmonica.filters.</span></span><span class="sig-name descname"><span class="pre">derivative_upward_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/filters/_filters.html#derivative_upward_kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.filters.derivative_upward_kernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter for upward derivative in frequency domain</p>
-<p>Return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with the values of the frequency domain
+<p>Return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with the values of the frequency domain
 filter for computing the upward derivative. The filter is built upon the
 frequency coordinates of the passed <code class="docutils literal notranslate"><span class="pre">fft_grid</span></code> and is defined as follows:</p>
 <div class="math notranslate nohighlight">
@@ -584,16 +639,16 @@ frequency vector) and <span class="math notranslate nohighlight">\(n\)</span> is
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fft_grid</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Array with the Fourier transform of the original grid.
+<li><p><strong>fft_grid</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Array with the Fourier transform of the original grid.
 Its dimensions should be in the following order:
 <em>freq_northing</em>, <em>freq_easting</em>.
 Use <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.fft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.fft</span></code></a> and <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.ifft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.ifft</span></code></a> functions to
 compute the Fourier Transform and its inverse, respectively.</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The order of the derivative. Default to 1.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The order of the derivative. Default to 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>da_filter</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Array with the kernel for the upward derivative filter in frequency
+<dd class="field-even"><p><strong>da_filter</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Array with the kernel for the upward derivative filter in frequency
 domain.</p>
 </dd>
 </dl>
@@ -613,17 +668,17 @@ domain.</p>
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="harmonica.derivative_upward.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="harmonica.filters.derivative_northing_kernel.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">harmonica.derivative_upward</p>
+            <p class="prev-next-title">harmonica.filters.derivative_northing_kernel</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="harmonica.EquivalentSources.html" title="next page">
+    <a class='right-next' id="next-link" href="harmonica.filters.upward_continuation_kernel.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">harmonica.EquivalentSources</p>
+        <p class="prev-next-title">harmonica.filters.upward_continuation_kernel</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -635,7 +690,7 @@ domain.</p>
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

@@ -38,12 +38,12 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-70
+.. GENERATED FROM PYTHON SOURCE LINES 28-82
 
 
 
 .. image-sg:: /gallery/images/sphx_glr_gravity_disturbance_topofree_001.png
-   :alt: Topography-free (Bouguer) gravity of disturbance of the Earth
+   :alt: gravity disturbance topofree
    :srcset: /gallery/images/sphx_glr_gravity_disturbance_topofree_001.png
    :class: sphx-glr-single-img
 
@@ -55,29 +55,29 @@ correction.
  .. code-block:: none
 
     <xarray.Dataset>
-    Dimensions:          (latitude: 361, longitude: 721)
+    Dimensions:     (longitude: 2161, latitude: 1081)
     Coordinates:
-      * longitude        (longitude) float64 -180.0 -179.5 -179.0 ... 179.5 180.0
-      * latitude         (latitude) float64 -90.0 -89.5 -89.0 ... 89.0 89.5 90.0
+      * longitude   (longitude) float64 -180.0 -179.8 -179.7 ... 179.7 179.8 180.0
+      * latitude    (latitude) float64 -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
+        height      (latitude, longitude) float32 1e+04 1e+04 1e+04 ... 1e+04 1e+04
     Data variables:
-        gravity          (latitude, longitude) float64 9.801e+05 ... 9.802e+05
-        height_over_ell  (latitude, longitude) float64 1e+04 1e+04 ... 1e+04 1e+04
-        geoid            (latitude, longitude) float64 -29.5 -29.5 ... 15.37 15.37
-        topography       (latitude, longitude) float64 2.762e+03 ... -4.179e+03
-    Attributes: (12/35)
-        generating_institute:  gfz-potsdam
-        generating_date:       2018/11/07
-        product_type:          gravity_field
-        body:                  earth
-        modelname:             EIGEN-6C4
-        max_used_degree:       1277
-        ...                    ...
-        maxvalue:              9.8018358E+05 mgal
-        minvalue:              9.7476403E+05 mgal
-        signal_wrms:           1.5467865E+03 mgal
-        grid_format:           long_lat_value
-        attributes:            longitude latitude gravity_ell
-        attributes_units:      deg. deg. mgal
+        gravity     (latitude, longitude) float32 9.801e+05 9.801e+05 ... 9.802e+05
+        geoid       (latitude, longitude) float32 -29.5 -29.5 -29.5 ... 15.4 15.4
+        topography  (latitude, longitude) float32 2.742e+03 2.742e+03 ... -4.237e+03
+    Attributes:
+        Conventions:     CF-1.8
+        title:           Gravity acceleration (EIGEN-6C4) at a constant geometric...
+        crs:             WGS84
+        source:          Generated from the EIGEN-6C4 model by the ICGEM Calculat...
+        license:         Creative Commons Attribution 4.0 International Licence
+        references:      https://doi.org/10.5880/icgem.2015.1
+        long_name:       gravity acceleration
+        description:     magnitude of the gravity acceleration vector (gravitatio...
+        units:           mGal
+        actual_range:    [974748.6 980201.9]
+        icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
+    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
+    <IPython.core.display.Image object>
 
 
 
@@ -89,25 +89,28 @@ correction.
 .. code-block:: default
 
     import boule as bl
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
+    import ensaio
+    import pygmt
     import xarray as xr
 
     import harmonica as hm
 
     # Load the global gravity, topography, and geoid grids
+    fname_gravity = ensaio.fetch_earth_gravity(version=1)
+    fname_geoid = ensaio.fetch_earth_geoid(version=1)
+    fname_topo = ensaio.fetch_earth_topography(version=1)
     data = xr.merge(
         [
-            hm.datasets.fetch_gravity_earth(),
-            hm.datasets.fetch_geoid_earth(),
-            hm.datasets.fetch_topography_earth(),
+            xr.load_dataarray(fname_gravity),
+            xr.load_dataarray(fname_geoid),
+            xr.load_dataarray(fname_topo),
         ]
     )
     print(data)
 
     # Calculate normal gravity and the disturbance
     ellipsoid = bl.WGS84
-    gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+    gamma = ellipsoid.normal_gravity(data.latitude, data.height)
     disturbance = data.gravity - gamma
 
     # Reference the topography to the ellipsoid
@@ -118,23 +121,32 @@ correction.
     bouguer = hm.bouguer_correction(topography_ell)
     disturbance_topofree = disturbance - bouguer
 
-    # Make a plot of data using Cartopy
-    plt.figure(figsize=(10, 10))
-    ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-    pc = disturbance_topofree.plot.pcolormesh(
-        ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
-    )
-    plt.colorbar(
-        pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
-    )
-    ax.set_title("Topography-free (Bouguer) gravity of disturbance of the Earth")
-    ax.coastlines()
-    plt.show()
+    # Make a plot of data using PyGMT
+    fig = pygmt.Figure()
+
+    pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik", continuous=True)
+
+    title = "Topography-free (Bouguer) gravity disturbance of the Earth"
+
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.grdimage(
+            region="g",
+            projection="G-60/0/15c",
+            frame=f"+t{title}",
+            grid=disturbance_topofree,
+            cmap=True,
+        )
+
+    fig.coast(shorelines="0.5p,black", resolution="crude")
+
+    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+
+    fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.544 seconds)
+   **Total running time of the script:** ( 0 minutes  22.413 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:

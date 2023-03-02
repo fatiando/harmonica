@@ -137,11 +137,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -182,8 +177,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -274,6 +289,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -297,13 +317,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -342,8 +422,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -352,58 +442,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -419,13 +469,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
+  <a class="reference internal" href="../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -441,7 +496,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -603,7 +658,7 @@ centrifugal potential <span class="math notranslate nohighlight">\(\Phi\)</span>
 gravity and the definition of its gravity and gravitational potentials.</p>
 </div>
 <p>We can compute the normal gravity generated by any ellipsoid through the
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and then use it
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and then use it
 to compute gravity disturbances.</p>
 <p>Lets start by loading a sample gravity dataset for the whole Earth:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -657,20 +712,22 @@ same height of 10 km above the reference ellipsoid.
 Lets plot it:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">())</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">gravity</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+    <span class="n">gravity</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;W20c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;+a45+nt0.2&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-    <span class="n">pc</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">basemap</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s2">&quot;WEsn&quot;</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">position</span><span class="o">=</span><span class="s2">&quot;JCB+w10c&quot;</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s1">&#39;y+l&quot;mGal&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;x+l&quot;observed gravity&quot;&#39;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gravity of the Earth&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -678,8 +735,8 @@ Lets plot it:</p>
 <img alt="../_images/gravity_disturbance_1_0.png" src="../_images/gravity_disturbance_1_0.png" />
 </div>
 </div>
-<p>We can then get the WGS84 ellipsoid defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and use the
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> to compute the normal gravity (the
+<p>We can then get the WGS84 ellipsoid defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and use the
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> to compute the normal gravity (the
 gravity acceleration generated by the ellipsoid) on every observation point.
 This method implements the closed-form formula of <a class="reference internal" href="../references.html#ligotze2001" id="id3"><span>[LiGotze2001]</span></a>, which
 calculates the normal gravity at any latitude and (geometric) height through an
@@ -699,26 +756,25 @@ analytic solution.</p>
 <p>And plot it:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">())</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">gravity</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">gravity</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
     <span class="n">normal_gravity</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span>
+    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;W20c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;+a45+nt0.2&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-    <span class="n">pc</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">basemap</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s2">&quot;WEsn&quot;</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">position</span><span class="o">=</span><span class="s2">&quot;JCB+w10c&quot;</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s1">&#39;y+l&quot;mGal&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;x+l&quot;normal gravity&quot;&#39;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Normal gravity of the Earth&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/gravity_disturbance_3_0.png" src="../_images/gravity_disturbance_3_0.png" />
+<img alt="../_images/gravity_disturbance_3_2.png" src="../_images/gravity_disturbance_3_2.png" />
 </div>
 </div>
 <p>Now we can compute the gravity disturbance:</p>
@@ -735,8 +791,8 @@ array([[-35.83509235, -35.83509235, -35.83509235, ..., -35.83509235,
         -35.83509235, -35.83509235],
        [-34.04097894, -34.04097894, -34.04097894, ..., -34.04097894,
         -34.04097894, -34.04097894],
-       [-33.34614029, -33.34614029, -33.34614029, ..., -33.40864029,
-        -33.40864029, -33.34614029],
+       [-33.34614042, -33.34614042, -33.34614042, ..., -33.40864042,
+        -33.40864042, -33.34614042],
        ...,
        [ 11.65385965,  11.59135965,  11.46635965, ...,  11.77885965,
          11.65385965,  11.65385965],
@@ -759,27 +815,26 @@ Coordinates:
 
 <span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">gravity_disturbance</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">())</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">gravity_disturbance</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
-    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
-    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span><span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">maxabs</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+    <span class="n">gravity_disturbance</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;W20c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;+a45+nt0.2&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-    <span class="n">pc</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mGal&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">basemap</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s2">&quot;WEsn&quot;</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">position</span><span class="o">=</span><span class="s2">&quot;JCB+w10c&quot;</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="s1">&#39;y+l&quot;mGal&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;x+l&quot;gravity disturbance&quot;&#39;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gravity disturbance of the Earth&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/gravity_disturbance_5_0.png" src="../_images/gravity_disturbance_5_0.png" />
+<img alt="../_images/gravity_disturbance_5_2.png" src="../_images/gravity_disturbance_5_2.png" />
 </div>
 </div>
 <p>The gravity disturbances can be interpreted as the gravitational effect of
@@ -814,7 +869,7 @@ every <em>anomalous mass</em>, i.e. that is not contained in the <em>normal Eart
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

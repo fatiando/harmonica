@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="harmonica.derivative_upward" href="harmonica.derivative_upward.html" />
+    <link rel="next" title="harmonica.derivative_easting" href="harmonica.derivative_easting.html" />
     <link rel="prev" title="API Reference" href="../index.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
@@ -137,11 +137,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -182,8 +177,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -274,6 +289,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -297,13 +317,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -342,8 +422,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -352,58 +442,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -419,13 +469,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -441,7 +496,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -607,7 +662,7 @@
 <h1>harmonica.bouguer_correction<a class="headerlink" href="#harmonica-bouguer-correction" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="harmonica.bouguer_correction">
-<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">bouguer_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topography</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_crust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2670</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_water</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1040</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/gravity_corrections.html#bouguer_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.bouguer_correction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">bouguer_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topography</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_crust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2670</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_water</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1040</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_gravity_corrections.html#bouguer_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.bouguer_correction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gravitational effect of topography using a Bouguer plate approximation</p>
 <p>Used to remove the gravitational attraction of topography above the
 ellipsoid from the gravity disturbance. The infinite plate approximation is
@@ -632,16 +687,16 @@ requires a thickness value (positive).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>topography</strong> (array or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Topography height and bathymetry depth in meters.
+<li><p><strong>topography</strong> (array or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Topography height and bathymetry depth in meters.
 Should be referenced to the ellipsoid (ie, geometric heights).</p></li>
-<li><p><strong>density_crust</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
+<li><p><strong>density_crust</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
 Used as the density of topography on land and the density of the normal
 Earth’s crust in the oceans.</p></li>
-<li><p><strong>density_water</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p></li>
+<li><p><strong>density_water</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>grav_bouguer</strong> (array or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The gravitational effect of topography and residual bathymetry in mGal.</p>
+<dd class="field-even"><p><strong>grav_bouguer</strong> (array or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The gravitational effect of topography and residual bathymetry in mGal.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -668,10 +723,10 @@ Earth’s crust in the oceans.</p></li>
             <p class="prev-next-title">API Reference</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="harmonica.derivative_upward.html" title="next page">
+    <a class='right-next' id="next-link" href="harmonica.derivative_easting.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">harmonica.derivative_upward</p>
+        <p class="prev-next-title">harmonica.derivative_easting</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -683,7 +738,7 @@ Earth’s crust in the oceans.</p></li>
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

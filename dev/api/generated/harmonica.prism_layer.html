@@ -54,7 +54,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="harmonica.DatasetAccessorPrismLayer" href="harmonica.DatasetAccessorPrismLayer.html" />
+    <link rel="next" title="harmonica.tesseroid_layer" href="harmonica.tesseroid_layer.html" />
     <link rel="prev" title="harmonica.tesseroid_gravity" href="harmonica.tesseroid_gravity.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
@@ -136,11 +136,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -181,8 +176,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,6 +288,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -296,13 +316,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -341,8 +421,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -351,58 +441,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -418,13 +468,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -440,7 +495,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -606,11 +661,11 @@
 <h1>harmonica.prism_layer<a class="headerlink" href="#harmonica-prism-layer" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="harmonica.prism_layer">
-<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">prism_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/forward/prism_layer.html#prism_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.prism_layer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">prism_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/prism_layer.html#prism_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.prism_layer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a layer of prisms of equal size</p>
 <p>Build a regular grid of prisms of equal size on the horizontal directions
 with variable top and bottom boundaries and properties like density,
-magnetization, etc. The function returns a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
+magnetization, etc. The function returns a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
 containing <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code> coordinates,
 and all physical properties as <code class="docutils literal notranslate"><span class="pre">data_var</span></code> s. The <code class="docutils literal notranslate"><span class="pre">easting</span></code> and
 <code class="docutils literal notranslate"><span class="pre">northing</span></code> coordinates correspond to the location of the center of each
@@ -623,29 +678,29 @@ and attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – List containing the coordinates of the centers of the prisms in the
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – List containing the coordinates of the centers of the prisms in the
 following order: <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code>. The arrays must be 1d
-arrays containing the coordiantes of the centers per axis, or could be
-2d arrays as the ones returned by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.23)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>. All
+arrays containing the coordinates of the centers per axis, or could be
+2d arrays as the ones returned by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.24)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>. All
 coordinates should be in meters and should define a regular grid.</p></li>
 <li><p><strong>surface</strong> (<em>2d-array</em>) – Array used to create the uppermost boundary of the prisms layer. All
 heights should be in meters. On every point where <code class="docutils literal notranslate"><span class="pre">surface</span></code> is below
 <code class="docutils literal notranslate"><span class="pre">reference</span></code>, the <code class="docutils literal notranslate"><span class="pre">surface</span></code> value will be used to set the
 <code class="docutils literal notranslate"><span class="pre">bottom</span></code> boundary of that prism, while the <code class="docutils literal notranslate"><span class="pre">reference</span></code> value will
 be used to set the <code class="docutils literal notranslate"><span class="pre">top</span></code> boundary of the prism.</p></li>
-<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> or </em><em>2d-array</em>) – Reference surface used to create the lowermost boundary of the prisms
+<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>2d-array</em>) – Reference surface used to create the lowermost boundary of the prisms
 layer. It can be either a plane or an irregular surface passed as 2d
 array. Height(s) must be in meters.</p></li>
-<li><p><strong>properties</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><em>None</em>) – Dictionary containing the physical properties of the prisms. The keys
+<li><p><strong>properties</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em> or </em><em>None</em>) – Dictionary containing the physical properties of the prisms. The keys
 must be strings that will be used to name the corresponding <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
-inside the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must be 2d-arrays.
+inside the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must be 2d-arrays.
 All physical properties must be passed in SI units. If None, no
-<code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default is
+<code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default is
 None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dataset</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Dataset containing the coordinates of the center of each prism, the
+<dd class="field-even"><p><strong>dataset</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Dataset containing the coordinates of the center of each prism, the
 height of its top and bottom boundaries and its corresponding physical
 properties.</p>
 </dd>
@@ -722,10 +777,10 @@ properties.</p>
             <p class="prev-next-title">harmonica.tesseroid_gravity</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="harmonica.DatasetAccessorPrismLayer.html" title="next page">
+    <a class='right-next' id="next-link" href="harmonica.tesseroid_layer.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">harmonica.DatasetAccessorPrismLayer</p>
+        <p class="prev-next-title">harmonica.tesseroid_layer</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -737,7 +792,7 @@ properties.</p>
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

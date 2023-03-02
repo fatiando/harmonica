@@ -5,16 +5,18 @@
 
 Computation times
 =================
-**01:09.005** total execution time for **gallery_forward** files:
+**01:43.366** total execution time for **gallery_forward** files:
 
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``)               | 00:59.275 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``)               | 00:49.373 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                                   | 00:04.709 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid_layer.py` (``tesseroid_layer.py``)                       | 00:39.523 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``) | 00:02.640 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)                                   | 00:04.654 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)                               | 00:01.806 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``) | 00:03.583 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_forward_point_gravity.py` (``point_gravity.py``)                           | 00:00.575 | 0.0 MB |
+| :ref:`sphx_glr_gallery_forward_point_gravity.py` (``point_gravity.py``)                           | 00:03.529 | 0.0 MB |
++---------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)                               | 00:02.704 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+

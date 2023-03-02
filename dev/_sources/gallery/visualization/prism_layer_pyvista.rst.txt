@@ -40,18 +40,21 @@ In this example we will show how we can build a prism layer out of a topography
 and bathymetry grid for South Africa and how we can visualize the layer as a 3D
 plot using ``pyvista``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-65
+.. GENERATED FROM PYTHON SOURCE LINES 31-68
 
 .. code-block:: default
 
+    import ensaio
     import pyproj
     import pyvista as pv
     import verde as vd
+    import xarray as xr
 
     import harmonica as hm
 
     # Read South Africa topography
-    south_africa_topo = hm.datasets.fetch_south_africa_topography()
+    fname = ensaio.fetch_southern_africa_topography(version=1)
+    south_africa_topo = xr.load_dataset(fname)
 
     # Project the grid
     projection = pyproj.Proj(proj="merc", lat_ts=south_africa_topo.latitude.values.mean())
@@ -89,11 +92,11 @@ plot using ``pyvista``.
     <table><tr><th>Header</th><th>Data Arrays</th></tr><tr><td>
     <table>
     <tr><th>UnstructuredGrid</th><th>Information</th></tr>
-    <tr><td>N Cells</td><td>36081</td></tr>
-    <tr><td>N Points</td><td>288648</td></tr>
-    <tr><td>X Bounds</td><td>1.191e+06, 3.295e+06</td></tr>
-    <tr><td>Y Bounds</td><td>-3.713e+06, -1.807e+06</td></tr>
-    <tr><td>Z Bounds</td><td>-4.893e+03, 3.278e+03</td></tr>
+    <tr><td>N Cells</td><td>1620522</td></tr>
+    <tr><td>N Points</td><td>12964176</td></tr>
+    <tr><td>X Bounds</td><td>1.091e+06, 3.375e+06</td></tr>
+    <tr><td>Y Bounds</td><td>-3.841e+06, -1.642e+06</td></tr>
+    <tr><td>Z Bounds</td><td>-5.634e+03, 3.358e+03</td></tr>
     <tr><td>N Arrays</td><td>1</td></tr>
     </table>
 
@@ -108,7 +111,7 @@ plot using ``pyvista``.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-90
+.. GENERATED FROM PYTHON SOURCE LINES 69-93
 
 .. code-block:: default
 
@@ -151,7 +154,7 @@ plot using ``pyvista``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.692 seconds)
+   **Total running time of the script:** ( 1 minutes  6.349 seconds)
 
 
 .. _sphx_glr_download_gallery_visualization_prism_layer_pyvista.py:

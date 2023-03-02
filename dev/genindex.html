@@ -134,11 +134,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -179,8 +174,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -271,6 +286,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -294,13 +314,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -339,8 +419,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -349,58 +439,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -416,13 +466,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="references.html">
-   References
+  <a class="reference internal" href="compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -438,7 +493,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -549,8 +604,7 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
+ <a href="#B"><strong>B</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
@@ -561,19 +615,12 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  
 </div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.synthetic.airborne_survey.html#harmonica.synthetic.airborne_survey">airborne_survey() (in module harmonica.synthetic)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -587,8 +634,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer">DatasetAccessorPrismLayer (class in harmonica)</a>
 </li>
+      <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer">DatasetAccessorTesseroidLayer (class in harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.derivative_easting.html#harmonica.derivative_easting">derivative_easting() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel">derivative_easting_kernel() (in module harmonica.filters)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.derivative_northing.html#harmonica.derivative_northing">derivative_northing() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.filters.derivative_northing_kernel.html#harmonica.filters.derivative_northing_kernel">derivative_northing_kernel() (in module harmonica.filters)</a>
+</li>
       <li><a href="api/generated/harmonica.derivative_upward.html#harmonica.derivative_upward">derivative_upward() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.filters.derivative_upward_kernel.html#harmonica.filters.derivative_upward_kernel">derivative_upward_kernel() (in module harmonica.filters)</a>
@@ -615,18 +672,6 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.datasets.fetch_britain_magnetic.html#harmonica.datasets.fetch_britain_magnetic">fetch_britain_magnetic() (in module harmonica.datasets)</a>
-</li>
-      <li><a href="api/generated/harmonica.datasets.fetch_geoid_earth.html#harmonica.datasets.fetch_geoid_earth">fetch_geoid_earth() (in module harmonica.datasets)</a>
-</li>
-      <li><a href="api/generated/harmonica.datasets.fetch_gravity_earth.html#harmonica.datasets.fetch_gravity_earth">fetch_gravity_earth() (in module harmonica.datasets)</a>
-</li>
-      <li><a href="api/generated/harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity">fetch_south_africa_gravity() (in module harmonica.datasets)</a>
-</li>
-      <li><a href="api/generated/harmonica.datasets.fetch_topography_earth.html#harmonica.datasets.fetch_topography_earth">fetch_topography_earth() (in module harmonica.datasets)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.filter">filter() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -635,6 +680,8 @@
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.filter">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.fit">fit() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -649,6 +696,14 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.gaussian_highpass.html#harmonica.gaussian_highpass">gaussian_highpass() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.filters.gaussian_highpass_kernel.html#harmonica.filters.gaussian_highpass_kernel">gaussian_highpass_kernel() (in module harmonica.filters)</a>
+</li>
+      <li><a href="api/generated/harmonica.gaussian_lowpass.html#harmonica.gaussian_lowpass">gaussian_lowpass() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.filters.gaussian_lowpass_kernel.html#harmonica.filters.gaussian_lowpass_kernel">gaussian_lowpass_kernel() (in module harmonica.filters)</a>
+</li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.get_params">get_params() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -657,12 +712,18 @@
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.get_params">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
-      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.get_prism">get_prism() (harmonica.DatasetAccessorPrismLayer method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.gravity">gravity() (harmonica.DatasetAccessorPrismLayer method)</a>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.get_prism">get_prism() (harmonica.DatasetAccessorPrismLayer method)</a>
 </li>
+      <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.get_tesseroid">get_tesseroid() (harmonica.DatasetAccessorTesseroidLayer method)</a>
+</li>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.gravity">gravity() (harmonica.DatasetAccessorPrismLayer method)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.gravity">(harmonica.DatasetAccessorTesseroidLayer method)</a>
+</li>
+      </ul></li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.grid">grid() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -671,8 +732,6 @@
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.grid">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
-      <li><a href="api/generated/harmonica.synthetic.ground_survey.html#harmonica.synthetic.ground_survey">ground_survey() (in module harmonica.synthetic)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -687,23 +746,10 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    harmonica.datasets
-
-      <ul>
-        <li><a href="api/index.html#module-harmonica.datasets">module</a>
-</li>
-      </ul></li>
-  </ul></td>
 </tr></table>
 
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.isostasy_airy.html#harmonica.isostasy_airy">isostasy_airy() (in module harmonica)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy">isostatic_moho_airy() (in module harmonica)</a>
 </li>
@@ -731,7 +777,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.datasets.locate.html#harmonica.datasets.locate">locate() (in module harmonica.datasets)</a>
+      <li><a href="api/generated/harmonica.load_oasis_montaj_grid.html#harmonica.load_oasis_montaj_grid">load_oasis_montaj_grid() (in module harmonica)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -744,8 +790,6 @@
 
       <ul>
         <li><a href="api/index.html#module-harmonica">harmonica</a>
-</li>
-        <li><a href="api/index.html#module-harmonica.datasets">harmonica.datasets</a>
 </li>
       </ul></li>
   </ul></td>
@@ -780,6 +824,18 @@
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.profile">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole">reduction_to_pole() (in module harmonica)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel">reduction_to_pole_kernel() (in module harmonica.filters)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -820,6 +876,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity">tesseroid_gravity() (in module harmonica)</a>
 </li>
+      <li><a href="api/generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer">tesseroid_layer() (in module harmonica)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.test.html#harmonica.test">test() (in module harmonica)</a>
@@ -833,6 +891,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.update_top_bottom">update_top_bottom() (harmonica.DatasetAccessorPrismLayer method)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom">(harmonica.DatasetAccessorTesseroidLayer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.upward_continuation.html#harmonica.upward_continuation">upward_continuation() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.filters.upward_continuation_kernel.html#harmonica.filters.upward_continuation_kernel">upward_continuation_kernel() (in module harmonica.filters)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -852,7 +920,7 @@
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

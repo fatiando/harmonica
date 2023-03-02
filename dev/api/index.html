@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="harmonica.bouguer_correction" href="generated/harmonica.bouguer_correction.html" />
-    <link rel="prev" title="Equivalent sources in spherical coordinates" href="../user_guide/equivalent_sources/eq-sources-spherical.html" />
+    <link rel="prev" title="Grid transformations" href="../user_guide/transformations.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
@@ -136,11 +136,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -181,8 +176,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,6 +288,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -296,13 +316,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="generated/harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="generated/harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -341,8 +421,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -351,58 +441,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="generated/harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="generated/harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="generated/harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -418,13 +468,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
+  <a class="reference internal" href="../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -440,7 +495,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -594,16 +649,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#synthetic-models-and-surveys">
-   Synthetic models and surveys
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#datasets">
-   Datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#utilities">
    Utilities
   </a>
@@ -669,16 +714,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#synthetic-models-and-surveys">
-   Synthetic models and surveys
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#datasets">
-   Datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#utilities">
    Utilities
   </a>
@@ -707,7 +742,7 @@
 </tr>
 </tbody>
 </table>
-<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
+<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
 </div>
 <div class="section" id="grid-transformations">
 <h2>Grid Transformations<a class="headerlink" href="#grid-transformations" title="Permalink to this headline">¶</a></h2>
@@ -718,8 +753,26 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.derivative_easting.html#harmonica.derivative_easting" title="harmonica.derivative_easting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative_easting</span></code></a>(grid[, order, method])</p></td>
+<td><p>Calculate the derivative of a regular grid in the easting direction</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.derivative_northing.html#harmonica.derivative_northing" title="harmonica.derivative_northing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative_northing</span></code></a>(grid[, order, method])</p></td>
+<td><p>Calculate the derivative of a regular grid in the northing direction</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.derivative_upward.html#harmonica.derivative_upward" title="harmonica.derivative_upward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative_upward</span></code></a>(grid[, order])</p></td>
 <td><p>Calculate the derivative of a potential field grid in the upward direction</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.upward_continuation.html#harmonica.upward_continuation" title="harmonica.upward_continuation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upward_continuation</span></code></a>(grid, height_displacement)</p></td>
+<td><p>Calculate the upward continuation of a potential field grid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.gaussian_lowpass.html#harmonica.gaussian_lowpass" title="harmonica.gaussian_lowpass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian_lowpass</span></code></a>(grid, wavelength)</p></td>
+<td><p>Calculate the Gaussian low-pass of a potential field grid</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.gaussian_highpass.html#harmonica.gaussian_highpass" title="harmonica.gaussian_highpass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian_highpass</span></code></a>(grid, wavelength)</p></td>
+<td><p>Calculate the Gaussian high-pass of a potential field grid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole" title="harmonica.reduction_to_pole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction_to_pole</span></code></a>(grid, inclination, declination)</p></td>
+<td><p>Calculate the reduction to the pole of a magnetic field grid</p></td>
 </tr>
 </tbody>
 </table>
@@ -733,13 +786,31 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel" title="harmonica.filters.derivative_easting_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.derivative_easting_kernel</span></code></a>(fft_grid)</p></td>
+<td><p>Filter for easting derivative in frequency domain</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.filters.derivative_northing_kernel.html#harmonica.filters.derivative_northing_kernel" title="harmonica.filters.derivative_northing_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.derivative_northing_kernel</span></code></a>(fft_grid)</p></td>
+<td><p>Filter for northing derivative in frequency domain</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.filters.derivative_upward_kernel.html#harmonica.filters.derivative_upward_kernel" title="harmonica.filters.derivative_upward_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.derivative_upward_kernel</span></code></a>(fft_grid[, ...])</p></td>
 <td><p>Filter for upward derivative in frequency domain</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.filters.upward_continuation_kernel.html#harmonica.filters.upward_continuation_kernel" title="harmonica.filters.upward_continuation_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.upward_continuation_kernel</span></code></a>(fft_grid, ...)</p></td>
+<td><p>Filter for upward continuation in frequency domain</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.filters.gaussian_lowpass_kernel.html#harmonica.filters.gaussian_lowpass_kernel" title="harmonica.filters.gaussian_lowpass_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.gaussian_lowpass_kernel</span></code></a>(fft_grid, ...)</p></td>
+<td><p>Filter for Gaussian low-pass in frequency domain</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.filters.gaussian_highpass_kernel.html#harmonica.filters.gaussian_highpass_kernel" title="harmonica.filters.gaussian_highpass_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.gaussian_highpass_kernel</span></code></a>(fft_grid, ...)</p></td>
+<td><p>Filter for Gaussian high-pass in frequency domain</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel" title="harmonica.filters.reduction_to_pole_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.reduction_to_pole_kernel</span></code></a>(fft_grid, ...)</p></td>
+<td><p>Filter for reduction to the pole in frequency domain</p></td>
 </tr>
 </tbody>
 </table>
 <p>Use <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.fft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.fft</span></code></a> and <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.ifft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.ifft</span></code></a> to apply Fast-Fourier
-Transforms and its inverse on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+Transforms and its inverse on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 </div>
 <div class="section" id="equivalent-sources">
 <h2>Equivalent Sources<a class="headerlink" href="#equivalent-sources" title="Permalink to this headline">¶</a></h2>
@@ -781,8 +852,14 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 <tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layer</span></code></a>(coordinates, surface, reference)</p></td>
 <td><p>Create a layer of prisms of equal size</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer" title="harmonica.DatasetAccessorPrismLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismLayer</span></code></a>(xarray_obj)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer" title="harmonica.tesseroid_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_layer</span></code></a>(coordinates, surface, reference)</p></td>
+<td><p>Create a layer of tesseroids of equal size</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer" title="harmonica.DatasetAccessorPrismLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismLayer</span></code></a>(xarray_obj)</p></td>
 <td><p>Defines dataset accessor for layer of prisms</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer</span></code></a>(xarray_obj)</p></td>
+<td><p>Define dataset accessor for layer of tesseroids</p></td>
 </tr>
 </tbody>
 </table>
@@ -798,17 +875,8 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy" title="harmonica.isostatic_moho_airy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isostatic_moho_airy</span></code></a>(basement[, layers, ...])</p></td>
 <td><p>Calculate the isostatic Moho depth using Airy's hypothesis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.isostasy_airy.html#harmonica.isostasy_airy" title="harmonica.isostasy_airy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isostasy_airy</span></code></a>(topography[, density_crust, ...])</p></td>
-<td><p>Calculate the isostatic Moho depth from topography using Airy's hypothesis.</p></td>
-</tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <a class="reference internal" href="generated/harmonica.isostasy_airy.html#harmonica.isostasy_airy" title="harmonica.isostasy_airy"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.isostasy_airy</span></code></a> function will be deprecated in
-Harmonica v0.6. Please use <a class="reference internal" href="generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy" title="harmonica.isostatic_moho_airy"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.isostatic_moho_airy</span></code></a>
-instead.</p>
-</div>
 </div>
 <div class="section" id="input-and-output">
 <h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
@@ -820,6 +888,9 @@ instead.</p>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.load_icgem_gdf.html#harmonica.load_icgem_gdf" title="harmonica.load_icgem_gdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_icgem_gdf</span></code></a>(fname, **kwargs)</p></td>
 <td><p>Reads data from an ICGEM .gdf file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.load_oasis_montaj_grid.html#harmonica.load_oasis_montaj_grid" title="harmonica.load_oasis_montaj_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_oasis_montaj_grid</span></code></a>(fname)</p></td>
+<td><p>Reads gridded data from an Oasis Montaj© .grd file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -833,69 +904,7 @@ instead.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.visualization.prism_to_pyvista.html#harmonica.visualization.prism_to_pyvista" title="harmonica.visualization.prism_to_pyvista"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualization.prism_to_pyvista</span></code></a>(prisms[, ...])</p></td>
-<td><p>Create a <a class="reference external" href="https://docs.pyvista.org/api/core/_autosummary/pyvista.UnstructuredGrid.html#pyvista.UnstructuredGrid" title="(in PyVista v0.36.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></a> out of prisms</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="synthetic-models-and-surveys">
-<h2>Synthetic models and surveys<a class="headerlink" href="#synthetic-models-and-surveys" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">harmonica.synthetic</span></code> module will be deprecated in Harmonica
-v0.6.0</p>
-</div>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.synthetic.airborne_survey.html#harmonica.synthetic.airborne_survey" title="harmonica.synthetic.airborne_survey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.airborne_survey</span></code></a>([region, data_region])</p></td>
-<td><p>Create measurement locations for a synthetic airborne survey</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.synthetic.ground_survey.html#harmonica.synthetic.ground_survey" title="harmonica.synthetic.ground_survey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.ground_survey</span></code></a>([region, data_region])</p></td>
-<td><p>Create measurement locations for a synthetic ground survey</p></td>
-</tr>
-</tbody>
-</table>
-<span class="target" id="module-harmonica.datasets"></span></div>
-<div class="section" id="datasets">
-<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <a class="reference internal" href="#module-harmonica.datasets" title="harmonica.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">harmonica.datasets</span></code></a> module and every sample dataset a will be
-deprecated in Harmonica v0.6.0. The examples and the user guide will
-transition to using Ensaio (<a class="reference external" href="https://www.fatiando.org/ensaio/">https://www.fatiando.org/ensaio/</a>) instead.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <a class="reference internal" href="#module-harmonica.datasets" title="harmonica.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">harmonica.datasets</span></code></a> module will be deprecated in Harmonica
-v0.6.0</p>
-</div>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.locate.html#harmonica.datasets.locate" title="harmonica.datasets.locate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.locate</span></code></a>()</p></td>
-<td><p>The absolute path to the sample data storage location on disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_gravity_earth.html#harmonica.datasets.fetch_gravity_earth" title="harmonica.datasets.fetch_gravity_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_gravity_earth</span></code></a>()</p></td>
-<td><p>Fetch a global grid of Earth gravity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_geoid_earth.html#harmonica.datasets.fetch_geoid_earth" title="harmonica.datasets.fetch_geoid_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_geoid_earth</span></code></a>()</p></td>
-<td><p>Fetch a global grid of the geoid height.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_topography_earth.html#harmonica.datasets.fetch_topography_earth" title="harmonica.datasets.fetch_topography_earth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_topography_earth</span></code></a>()</p></td>
-<td><p>Fetch a global grid of Earth relief (topography and bathymetry).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_britain_magnetic.html#harmonica.datasets.fetch_britain_magnetic" title="harmonica.datasets.fetch_britain_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_britain_magnetic</span></code></a>()</p></td>
-<td><p>Fetch total-field magnetic anomaly data of Great Britain.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.datasets.fetch_south_africa_gravity.html#harmonica.datasets.fetch_south_africa_gravity" title="harmonica.datasets.fetch_south_africa_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_south_africa_gravity</span></code></a>()</p></td>
-<td><p>Fetch gravity station data from South Africa</p></td>
+<td><p>Create a <a class="reference external" href="https://docs.pyvista.org/api/core/_autosummary/pyvista.UnstructuredGrid.html#pyvista.UnstructuredGrid" title="(in PyVista v0.38.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></a> out of prisms</p></td>
 </tr>
 </tbody>
 </table>
@@ -922,11 +931,11 @@ v0.6.0</p>
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../user_guide/equivalent_sources/eq-sources-spherical.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../user_guide/transformations.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Equivalent sources in spherical coordinates</p>
+            <p class="prev-next-title">Grid transformations</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="generated/harmonica.bouguer_correction.html" title="next page">
@@ -944,7 +953,7 @@ v0.6.0</p>
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>

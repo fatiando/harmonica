@@ -135,6 +135,10 @@ harmonica.EquivalentSourcesGB
     
     
     
+    
+    
+    
+    
         EquivalentSourcesGB.estimate_required_memory
     
     

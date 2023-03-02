@@ -34,23 +34,35 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-57
+.. GENERATED FROM PYTHON SOURCE LINES 24-67
 
 
 
 .. image-sg:: /gallery/forward/images/sphx_glr_prism_layer_001.png
-   :alt: Gravity acceleration of a layer of prisms
+   :alt: prism layer
    :srcset: /gallery/forward/images/sphx_glr_prism_layer_001.png
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <IPython.core.display.Image object>
 
 
+
+
+
+
+|
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import numpy as np
+    import pygmt
     import verde as vd
 
     import harmonica as hm
@@ -71,22 +83,32 @@ gravitational effect of the layer.
     # Compute gravity field of prisms on a regular grid of observation points
     coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=1e3)
     gravity = prisms.prism_layer.gravity(coordinates, field="g_z")
+    grid = vd.make_xarray_grid(
+        coordinates, gravity, data_names="gravity", extra_coords_names="extra"
+    )
 
     # Plot gravity field
-    plt.pcolormesh(*coordinates[:2], gravity)
-    plt.colorbar(label="mGal", shrink=0.8)
-    plt.gca().set_aspect("equal")
-    plt.ticklabel_format(axis="both", style="sci", scilimits=(0, 0))
-    plt.title("Gravity acceleration of a layer of prisms")
-    plt.xlabel("easting [m]")
-    plt.ylabel("northing [m]")
-    plt.tight_layout()
-    plt.show()
+    fig = pygmt.Figure()
+
+    title = "Gravitational acceleration of a layer of prisms"
+
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.grdimage(
+            region=region,
+            projection="X10c/10c",
+            grid=grid.gravity,
+            frame=["a", f"+t{title}", 'x+l"easting (m)"', 'y+l"northing (m)"'],
+            cmap="viridis",
+        )
+
+    fig.colorbar(cmap=True, position="JMR", frame=["a2f1", "x+lmGal"])
+
+    fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.806 seconds)
+   **Total running time of the script:** ( 0 minutes  2.704 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prism_layer.py:

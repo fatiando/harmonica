@@ -26,25 +26,28 @@ and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 """
 import boule as bl
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import ensaio
+import pygmt
 import xarray as xr
 
 import harmonica as hm
 
 # Load the global gravity, topography, and geoid grids
+fname_gravity = ensaio.fetch_earth_gravity(version=1)
+fname_geoid = ensaio.fetch_earth_geoid(version=1)
+fname_topo = ensaio.fetch_earth_topography(version=1)
 data = xr.merge(
     [
-        hm.datasets.fetch_gravity_earth(),
-        hm.datasets.fetch_geoid_earth(),
-        hm.datasets.fetch_topography_earth(),
+        xr.load_dataarray(fname_gravity),
+        xr.load_dataarray(fname_geoid),
+        xr.load_dataarray(fname_topo),
     ]
 )
 print(data)
 
 # Calculate normal gravity and the disturbance
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+gamma = ellipsoid.normal_gravity(data.latitude, data.height)
 disturbance = data.gravity - gamma
 
 # Reference the topography to the ellipsoid
@@ -55,15 +58,24 @@ topography_ell = data.topography + data.geoid
 bouguer = hm.bouguer_correction(topography_ell)
 disturbance_topofree = disturbance - bouguer
 
-# Make a plot of data using Cartopy
-plt.figure(figsize=(10, 10))
-ax = plt.axes(projection=ccrs.Orthographic(central_longitude=-60))
-pc = disturbance_topofree.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False
-)
-plt.colorbar(
-    pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
-)
-ax.set_title("Topography-free (Bouguer) gravity of disturbance of the Earth")
-ax.coastlines()
-plt.show()
+# Make a plot of data using PyGMT
+fig = pygmt.Figure()
+
+pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik", continuous=True)
+
+title = "Topography-free (Bouguer) gravity disturbance of the Earth"
+
+with pygmt.config(FONT_TITLE="14p"):
+    fig.grdimage(
+        region="g",
+        projection="G-60/0/15c",
+        frame=f"+t{title}",
+        grid=disturbance_topofree,
+        cmap=True,
+    )
+
+fig.coast(shorelines="0.5p,black", resolution="crude")
+
+fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+
+fig.show()

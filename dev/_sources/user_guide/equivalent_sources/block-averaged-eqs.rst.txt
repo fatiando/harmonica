@@ -60,28 +60,46 @@ And project the geographic coordiantes to plain Cartesian ones:
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
     easting, northing = projection(data.longitude.values, data.latitude.values)
     coordinates = (easting, northing, data.height_m)
+    xy_region=vd.get_region(coordinates)
 
 .. jupyter-execute::
 
-    import matplotlib.pyplot as plt
+    import pygmt
 
-    maxabs = vd.maxabs(data.total_field_anomaly_nt)
+    maxabs = vd.maxabs(data.total_field_anomaly_nt)*.8
 
-    plt.scatter(
-        easting,
-        northing,
-        c=data.total_field_anomaly_nt,
-        cmap="seismic",
-        vmin=-maxabs,
-        vmax=maxabs,
+    # Set figure properties
+    w, e, s, n = xy_region
+    fig_height = 15
+    fig_width = fig_height * (e - w) / (n - s)
+    fig_ratio = (n - s) / (fig_height / 100)
+    fig_proj = f"x1:{fig_ratio}"
+
+    # Plot original magnetic anomaly and the gridded and upward-continued version
+    fig = pygmt.Figure()
+
+    title = "Observed total-field magnetic anomaly"
+
+    pygmt.makecpt(
+        cmap="polar+h0",
+        series=(-maxabs, maxabs),
+        background=True,
     )
-    plt.colorbar(aspect=40, pad=0.01, label="nT")
-    plt.gca().set_aspect("equal")
-    plt.gcf().set_size_inches(12, 9)
-    plt.title("Observed total-field magnetic anomaly")
-    plt.xlabel("easting [m]")
-    plt.ylabel("northing [m]")
-    plt.show()
+
+    with pygmt.config(FONT_TITLE="12p"):
+        fig.plot(
+            projection=fig_proj,
+            region=xy_region,
+            frame=[f"WSne+t{title}", "xa10000", "ya10000"],
+            x=easting,
+            y=northing,
+            color=data.total_field_anomaly_nt,
+            style="c0.1c",
+            cmap=True,
+        )
+    fig.colorbar(cmap=True, position="JMR", frame=["a200f100", "x+lnT"])
+    fig.show()
+
 
 Most airborne surveys like this one present an anysotropic distribution of the
 data: there are more observation points along the flight lines that goes west
@@ -157,40 +175,39 @@ we are efectivelly upward continuing the data.
 
 .. jupyter-execute::
 
-    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
+    fig = pygmt.Figure()
 
-    # Get the maximum absolute value between the original and gridded data so we
-    # can use the same color scale for both plots and have 0 centered at the white
-    # color.
-    maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values)
+    title = "Observed magnetic anomaly data"
+    pygmt.makecpt(
+        cmap="polar+h0",
+        series=(-maxabs, maxabs),
+        background=True)
 
-    ax1.set_title("Observed magnetic anomaly data")
-    tmp = ax1.scatter(
-        easting,
-        northing,
-        c=data.total_field_anomaly_nt,
-        s=20,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-    )
-    plt.colorbar(tmp, ax=ax1, label="nT", pad=0.05, aspect=40, orientation="horizontal")
-    ax1.set_xlim(easting.min(), easting.max())
-    ax1.set_ylim(northing.min(), northing.max())
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.plot(
+            projection=fig_proj,
+            region=xy_region,
+            frame=[f"WSne+t{title}", "xa10000", "ya10000"],
+            x=easting,
+            y=northing,
+            color=data.total_field_anomaly_nt,
+            style="c0.1c",
+            cmap=True,
+        )
+    fig.colorbar(cmap=True, frame=["a200f100", "x+lnT"])
 
-    ax2.set_title("Gridded and upward-continued")
-    tmp = grid.magnetic_anomaly.plot.pcolormesh(
-        ax=ax2,
-        add_colorbar=False,
-        add_labels=False,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="seismic",
-    )
-    plt.colorbar(tmp, ax=ax2, label="nT", pad=0.05, aspect=40, orientation="horizontal")
-    ax2.set_xlim(easting.min(), easting.max())
-    ax2.set_ylim(northing.min(), northing.max())
+    fig.shift_origin(xshift=fig_width + 1)
 
-    plt.show()
+    title = "Gridded and upward-continued"
+
+    with pygmt.config(FONT_TITLE="14p"):
+        fig.grdimage(
+            frame=[f"ESnw+t{title}", "xa10000", "ya10000"],
+            grid=grid.magnetic_anomaly,
+            cmap=True,
+        )
+    fig.colorbar(cmap=True, frame=["a200f100", "x+lnT"])
+
+    fig.show()
 
 

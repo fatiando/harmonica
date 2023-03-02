@@ -24,15 +24,17 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 """
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
+import ensaio
 import numpy as np
+import pygmt
+import xarray as xr
 
 import harmonica as hm
 
 # Load the elevation model and cut out the portion of the data corresponding to
 # Africa
-data = hm.datasets.fetch_topography_earth()
+fname = ensaio.fetch_earth_topography(version=1)
+data = xr.load_dataset(fname)
 region = (-20, 60, -40, 45)
 data_africa = data.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 print("Topography/bathymetry grid:")
@@ -54,13 +56,22 @@ print("\nMoho depth grid:")
 print(moho)
 
 # Draw the maps
-plt.figure(figsize=(8, 9.5))
-ax = plt.axes(projection=ccrs.LambertCylindrical(central_longitude=20))
-pc = moho.plot.pcolormesh(
-    ax=ax, cmap="viridis_r", add_colorbar=False, transform=ccrs.PlateCarree()
+fig = pygmt.Figure()
+
+pygmt.grd2cpt(grid=moho, cmap="viridis", reverse=True, continuous=True)
+
+title = "Airy isostatic Moho depth of Africa"
+
+fig.grdimage(
+    region=region,
+    projection="Y20/0/10c",
+    frame=["ag", f"+t{title}"],
+    grid=moho,
+    cmap=True,
 )
-plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.01, aspect=50, label="meters")
-ax.coastlines()
-ax.set_title("Airy isostatic Moho depth of Africa")
-ax.set_extent(region, crs=ccrs.PlateCarree())
-plt.show()
+
+fig.coast(shorelines="0.5p,black", resolution="crude")
+
+fig.colorbar(cmap=True, frame=["a10000f2500", "x+lmeters"])
+
+fig.show()

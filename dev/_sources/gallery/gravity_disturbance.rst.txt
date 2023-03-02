@@ -28,12 +28,12 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-47
+.. GENERATED FROM PYTHON SOURCE LINES 18-55
 
 
 
 .. image-sg:: /gallery/images/sphx_glr_gravity_disturbance_001.png
-   :alt: Gravity of disturbance of the Earth
+   :alt: gravity disturbance
    :srcset: /gallery/images/sphx_glr_gravity_disturbance_001.png
    :class: sphx-glr-single-img
 
@@ -45,27 +45,15 @@ data.
  .. code-block:: none
 
     <xarray.Dataset>
-    Dimensions:          (latitude: 361, longitude: 721)
+    Dimensions:    (longitude: 2161, latitude: 1081)
     Coordinates:
-      * longitude        (longitude) float64 -180.0 -179.5 -179.0 ... 179.5 180.0
-      * latitude         (latitude) float64 -90.0 -89.5 -89.0 ... 89.0 89.5 90.0
+      * longitude  (longitude) float64 -180.0 -179.8 -179.7 ... 179.7 179.8 180.0
+      * latitude   (latitude) float64 -90.0 -89.83 -89.67 -89.5 ... 89.67 89.83 90.0
+        height     (latitude, longitude) float32 1e+04 1e+04 1e+04 ... 1e+04 1e+04
     Data variables:
-        gravity          (latitude, longitude) float64 9.801e+05 ... 9.802e+05
-        height_over_ell  (latitude, longitude) float64 1e+04 1e+04 ... 1e+04 1e+04
-    Attributes: (12/35)
-        generating_institute:  gfz-potsdam
-        generating_date:       2018/11/07
-        product_type:          gravity_field
-        body:                  earth
-        modelname:             EIGEN-6C4
-        max_used_degree:       1277
-        ...                    ...
-        maxvalue:              9.8018358E+05 mgal
-        minvalue:              9.7476403E+05 mgal
-        signal_wrms:           1.5467865E+03 mgal
-        grid_format:           long_lat_value
-        attributes:            longitude latitude gravity_ell
-        attributes_units:      deg. deg. mgal
+        gravity    (latitude, longitude) float32 9.801e+05 9.801e+05 ... 9.802e+05
+    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
+    <IPython.core.display.Image object>
 
 
 
@@ -77,39 +65,47 @@ data.
 .. code-block:: default
 
     import boule as bl
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
-
-    import harmonica as hm
+    import ensaio
+    import pygmt
+    import xarray as xr
 
     # Load the global gravity grid
-    data = hm.datasets.fetch_gravity_earth()
+    fname = ensaio.fetch_earth_gravity(version=1)
+    data = xr.load_dataset(fname)
     print(data)
 
     # Calculate normal gravity using the WGS84 ellipsoid
     ellipsoid = bl.WGS84
-    gamma = ellipsoid.normal_gravity(data.latitude, data.height_over_ell)
+    gamma = ellipsoid.normal_gravity(data.latitude, data.height)
     # The disturbance is the observed minus normal gravity (calculated at the
     # observation point)
     disturbance = data.gravity - gamma
 
-    # Make a plot of data using Cartopy
-    plt.figure(figsize=(10, 10))
-    ax = plt.axes(projection=ccrs.Orthographic(central_longitude=160))
-    pc = disturbance.plot.pcolormesh(
-        ax=ax, transform=ccrs.PlateCarree(), add_colorbar=False, cmap="seismic"
+    # Make a plot of data using PyGMT
+    fig = pygmt.Figure()
+
+    pygmt.grd2cpt(grid=disturbance, cmap="polar", continuous=True)
+
+    title = "Gravity disturbance of the Earth"
+
+    fig.grdimage(
+        region="g",
+        projection="G160/0/15c",
+        frame=f"+t{title}",
+        grid=disturbance,
+        cmap=True,
     )
-    plt.colorbar(
-        pc, label="mGal", orientation="horizontal", aspect=50, pad=0.01, shrink=0.5
-    )
-    ax.set_title("Gravity of disturbance of the Earth")
-    ax.coastlines()
-    plt.show()
+
+    fig.coast(shorelines="0.5p,black", resolution="crude")
+
+    fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+
+    fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.865 seconds)
+   **Total running time of the script:** ( 0 minutes  14.685 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance.py:

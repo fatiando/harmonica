@@ -123,6 +123,10 @@ harmonica.EquivalentSourcesSph
     
     
     
+    
+    
+    
+    
         EquivalentSourcesSph.filter
     
     

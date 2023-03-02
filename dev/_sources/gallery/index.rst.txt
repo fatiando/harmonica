@@ -75,27 +75,6 @@ This gallery contains a selection examples of what Harmonica can do.
    :hidden:
 
    /gallery/isostatic_moho_airy
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Upward derivative of a regular grid">
-
-.. only:: html
-
- .. figure:: /gallery/images/thumb/sphx_glr_upward_derivative_thumb.png
-     :alt: Upward derivative of a regular grid
-
-     :ref:`sphx_glr_gallery_upward_derivative.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /gallery/upward_derivative
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -291,6 +270,27 @@ Forward Modeling
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Layer of tesseroids">
+
+.. only:: html
+
+ .. figure:: /gallery/forward/images/thumb/sphx_glr_tesseroid_layer_thumb.png
+     :alt: Layer of tesseroids
+
+     :ref:`sphx_glr_gallery_forward_tesseroid_layer.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/forward/tesseroid_layer
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The harmonica.tesseroid_gravity is capable of computing the gravitational effects of tesseroids...">
 
 .. only:: html
@@ -309,6 +309,81 @@ Forward Modeling
    :hidden:
 
    /gallery/forward/tesseroid_variable_density
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_transformations:
+
+Grid transformations
+--------------------
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Reduction to the pole of a magnetic anomaly grid">
+
+.. only:: html
+
+ .. figure:: /gallery/transformations/images/thumb/sphx_glr_reduction_to_pole_thumb.png
+     :alt: Reduction to the pole of a magnetic anomaly grid
+
+     :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/transformations/reduction_to_pole
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Upward continuation of a regular grid">
+
+.. only:: html
+
+ .. figure:: /gallery/transformations/images/thumb/sphx_glr_upward_continuation_thumb.png
+     :alt: Upward continuation of a regular grid
+
+     :ref:`sphx_glr_gallery_transformations_upward_continuation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/transformations/upward_continuation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Upward derivative of a regular grid">
+
+.. only:: html
+
+ .. figure:: /gallery/transformations/images/thumb/sphx_glr_upward_derivative_thumb.png
+     :alt: Upward derivative of a regular grid
+
+     :ref:`sphx_glr_gallery_transformations_upward_derivative.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/transformations/upward_derivative
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

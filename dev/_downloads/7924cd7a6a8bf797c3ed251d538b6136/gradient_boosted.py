@@ -29,14 +29,17 @@ to use them on a small example.
 
 """
 import boule as bl
-import matplotlib.pyplot as plt
+import ensaio
+import pandas as pd
+import pygmt
 import pyproj
 import verde as vd
 
 import harmonica as hm
 
 # Fetch the sample gravity data from South Africa
-data = hm.datasets.fetch_south_africa_gravity()
+fname = ensaio.fetch_southern_africa_gravity(version=1)
+data = pd.read_csv(fname)
 
 # Slice a smaller portion of the survey data to speed-up calculations for this
 # example
@@ -44,18 +47,19 @@ region = [18, 27, -34.5, -27]
 inside = vd.inside((data.longitude, data.latitude), region)
 data = data[inside]
 print("Number of data points:", data.shape[0])
-print("Mean height of observations:", data.elevation.mean())
+print("Mean height of observations:", data.height_sea_level_m.mean())
 
 # Since this is a small area, we'll project our data and use Cartesian
 # coordinates
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
-coordinates = (easting, northing, data.elevation)
+coordinates = (easting, northing, data.height_sea_level_m)
+xy_region = vd.get_region((easting, northing))
 
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
-data["gravity_disturbance"] = data.gravity - ellipsoid.normal_gravity(
-    data.latitude, data.elevation
+data["gravity_disturbance"] = data.gravity_mgal - ellipsoid.normal_gravity(
+    data.latitude, data.height_sea_level_m
 )
 
 # Create the equivalent sources
@@ -91,41 +95,60 @@ print("R² score:", eqs_gb.score(coordinates, data.gravity_disturbance))
 # Interpolate data on a regular grid with 2 km spacing. The interpolation
 # requires the height of the grid points (upward coordinate). By passing in
 # 1000 m, we're effectively upward-continuing the data.
-region = vd.get_region(coordinates)  # get the region boundaries
-grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=1000)
+
+grid_coords = vd.grid_coordinates(region=xy_region, spacing=2e3, extra_coords=1000)
+
 grid = eqs_gb.grid(coordinates=grid_coords, data_names="gravity_disturbance")
 print(grid)
 
+# Set figure properties
+w, e, s, n = xy_region
+fig_height = 10
+fig_width = fig_height * (e - w) / (n - s)
+fig_ratio = (n - s) / (fig_height / 100)
+fig_proj = f"x1:{fig_ratio}"
+
 # Plot the original gravity disturbance and the gridded and upward-continued
 # version
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12, 9), sharey=True)
+fig = pygmt.Figure()
 
-# Get the maximum absolute value between the original and gridded data so we
-# can use the same color scale for both plots and have 0 centered at the white
-# color.
-maxabs = vd.maxabs(data.gravity_disturbance, grid.gravity_disturbance)
+title = "Observed gravity disturbance data"
 
-ax1.set_title("Observed gravity disturbance data")
-tmp = ax1.scatter(
-    easting,
-    northing,
-    c=data.gravity_disturbance,
-    s=5,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
+# Make colormap of data
+pygmt.makecpt(
+    cmap="vik",
+    series=(
+        -data.gravity_disturbance.quantile(0.99),
+        data.gravity_disturbance.quantile(0.99),
+    ),
+    background=True,
 )
-plt.colorbar(tmp, ax=ax1, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
 
-ax2.set_title("Gridded with gradient-boosted equivalent sources")
-tmp = grid.gravity_disturbance.plot.pcolormesh(
-    ax=ax2,
-    add_colorbar=False,
-    add_labels=False,
-    vmin=-maxabs,
-    vmax=maxabs,
-    cmap="seismic",
-)
-plt.colorbar(tmp, ax=ax2, label="mGal", pad=0.07, aspect=40, orientation="horizontal")
+with pygmt.config(FONT_TITLE="14p"):
+    fig.plot(
+        projection=fig_proj,
+        region=xy_region,
+        frame=[f"WSne+t{title}", "xa200000+a15", "ya100000"],
+        x=easting,
+        y=northing,
+        color=data.gravity_disturbance,
+        style="c0.1c",
+        cmap=True,
+    )
 
-plt.show()
+fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+fig.shift_origin(xshift=fig_width + 1)
+
+title = "Gridded with gradient-boosted equivalent sources"
+
+with pygmt.config(FONT_TITLE="14p"):
+    fig.grdimage(
+        frame=[f"ESnw+t{title}", "xa200000+a15", "ya100000"],
+        grid=grid.gravity_disturbance,
+        cmap=True,
+    )
+
+fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+fig.show()

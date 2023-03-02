@@ -54,8 +54,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="References" href="references.html" />
-    <link rel="prev" title="Citing Harmonica" href="citing.html" />
+    <link rel="next" title="Version compatibility" href="compatibility.html" />
+    <link rel="prev" title="References" href="references.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
@@ -136,11 +136,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="gallery/equivalent_sources/block_averaged_sources.html">
      Gridding with block-averaged equivalent sources
     </a>
@@ -181,8 +176,28 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="gallery/forward/tesseroid_layer.html">
+     Layer of tesseroids
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="gallery/forward/tesseroid_variable_density.html">
      Tesseroids with variable density
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/reduction_to_pole.html">
+     Reduction to the pole of a magnetic anomaly grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/upward_continuation.html">
+     Upward continuation of a regular grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/transformations/upward_derivative.html">
+     Upward derivative of a regular grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,6 +288,11 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="user_guide/transformations.html">
+   Grid transformations
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -296,13 +316,73 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.derivative_easting.html">
+     harmonica.derivative_easting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.derivative_northing.html">
+     harmonica.derivative_northing
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.derivative_upward.html">
      harmonica.derivative_upward
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.upward_continuation.html">
+     harmonica.upward_continuation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.gaussian_lowpass.html">
+     harmonica.gaussian_lowpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.gaussian_highpass.html">
+     harmonica.gaussian_highpass
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.reduction_to_pole.html">
+     harmonica.reduction_to_pole
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.derivative_easting_kernel.html">
+     harmonica.filters.derivative_easting_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.derivative_northing_kernel.html">
+     harmonica.filters.derivative_northing_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.filters.derivative_upward_kernel.html">
      harmonica.filters.derivative_upward_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.upward_continuation_kernel.html">
+     harmonica.filters.upward_continuation_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.gaussian_lowpass_kernel.html">
+     harmonica.filters.gaussian_lowpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.gaussian_highpass_kernel.html">
+     harmonica.filters.gaussian_highpass_kernel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.filters.reduction_to_pole_kernel.html">
+     harmonica.filters.reduction_to_pole_kernel
     </a>
    </li>
    <li class="toctree-l2">
@@ -341,8 +421,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.tesseroid_layer.html">
+     harmonica.tesseroid_layer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">
      harmonica.DatasetAccessorPrismLayer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">
+     harmonica.DatasetAccessorTesseroidLayer
     </a>
    </li>
    <li class="toctree-l2">
@@ -351,58 +441,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.isostasy_airy.html">
-     harmonica.isostasy_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">
      harmonica.load_icgem_gdf
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">
+     harmonica.load_oasis_montaj_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">
      harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.synthetic.airborne_survey.html">
-     harmonica.synthetic.airborne_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.synthetic.ground_survey.html">
-     harmonica.synthetic.ground_survey
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.locate.html">
-     harmonica.datasets.locate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_gravity_earth.html">
-     harmonica.datasets.fetch_gravity_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_geoid_earth.html">
-     harmonica.datasets.fetch_geoid_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_topography_earth.html">
-     harmonica.datasets.fetch_topography_earth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_britain_magnetic.html">
-     harmonica.datasets.fetch_britain_magnetic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/harmonica.datasets.fetch_south_africa_gravity.html">
-     harmonica.datasets.fetch_south_africa_gravity
     </a>
    </li>
    <li class="toctree-l2">
@@ -417,14 +467,19 @@
    Citing Harmonica
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="references.html">
-   References
+  <a class="reference internal" href="compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -440,7 +495,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="http://contact.fatiando.org">
+  <a class="reference external" href="https://www.fatiando.org/contact">
    Join the community
   </a>
  </li>
@@ -554,6 +609,16 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-6-0">
+   Version 0.6.0
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-5-1">
+   Version 0.5.1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#version-0-5-0">
    Version 0.5.0
   </a>
@@ -619,6 +684,16 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-6-0">
+   Version 0.6.0
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#version-0-5-1">
+   Version 0.5.1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#version-0-5-0">
    Version 0.5.0
   </a>
@@ -674,10 +749,77 @@
                 
   <div class="section" id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-0-6-0">
+<h2>Version 0.6.0<a class="headerlink" href="#version-0-6-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2023/03/01</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.7690145"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.7690145.svg" /></a>
+<p>Deprecations:</p>
+<ul class="simple">
+<li><p>Deprecate <cite>EQLHarmonic</cite> and <cite>EQLHarmonicSpherical</cite> classes (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/366">#366</a>)</p></li>
+<li><p>Deprecate <code class="docutils literal notranslate"><span class="pre">isostasy_airy</span></code> function (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/379">#379</a>)</p></li>
+<li><p>Deprecate the synthetic and dataset modules (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/380">#380</a>)</p></li>
+</ul>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Add function to create a tesseroid layer, similar to the one for the prism layer (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/316">#316</a>)</p></li>
+<li><p>Add function to read Oasis Montaj© grd files as <code class="docutils literal notranslate"><span class="pre">xarray.DataArray</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/348">#348</a>)</p></li>
+<li><p>Add option to discard thin prisms when forward modelling a prism layer (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/373">#373</a>)</p></li>
+<li><p>Add FFT-based transformations and filters for horizontal derivatives, upward continuation, reduction to the pole of magnetic grids, and low-pass and high-pass Gaussian filters (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/299">#299</a>)</p></li>
+<li><p>Make horizontal derivative functions to compute the derivatives using central finite differences (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/378">#378</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Minor optimization in prism forward modelling (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/349">#349</a>)</p></li>
+<li><p>Set lower bounds for supported dependency versions following NEP29 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/356">#356</a>)</p></li>
+<li><p>Extend support for Python 3.10 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/240">#240</a>)</p></li>
+<li><p>Bump versions of style checkers like Black and Flake8 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/368">#368</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> with PyPA <code class="docutils literal notranslate"><span class="pre">build</span></code> (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/363">#363</a>)</p></li>
+<li><p>Clean Harmonica API: make the <code class="docutils literal notranslate"><span class="pre">forward</span></code>, <code class="docutils literal notranslate"><span class="pre">equivalent_sources</span></code>, <code class="docutils literal notranslate"><span class="pre">gravity_corrections</span></code>, <code class="docutils literal notranslate"><span class="pre">isostasy</span></code> and <code class="docutils literal notranslate"><span class="pre">transformations</span></code> submodules private (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/362">#362</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Replace Cartopy with PyGMT throughout the documentation (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/327">#327</a>)</p></li>
+<li><p>Fix typo in equivalent sources tutorial (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/351">#351</a>)</p></li>
+<li><p>Add tesseroid_layer to the API reference (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/354">#354</a>)</p></li>
+<li><p>Update README to match Verde and Boule (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/358">#358</a>)</p></li>
+<li><p>Fix contact link in the documentation side bar (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/357">#357</a>)</p></li>
+<li><p>Set v0.4.0 as the last with support for Python 3.6 (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/359">#359</a>)</p></li>
+<li><p>Add more papers to “Citing the methods” section in the docs (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/375">#375</a>)</p></li>
+<li><p>Add examples and a user guide page for grid transformations (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/377">#377</a>)</p></li>
+<li><p>Add examples on how to use horizontal derivative functions to the user guide (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/384">#384</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Mariana Gomez</p></li>
+<li><p>Lu Li</p></li>
+<li><p>Agustina Pesce</p></li>
+<li><p>Santiago Soler</p></li>
+<li><p>Matt Tankersley</p></li>
+<li><p>Leonardo Uieda</p></li>
+</ul>
+</div>
+<div class="section" id="version-0-5-1">
+<h2>Version 0.5.1<a class="headerlink" href="#version-0-5-1" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2022/08/26</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.7026294"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.7026294.svg" /></a>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Fix test function for empty ICGEM gdf file (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/345">#345</a>)</p></li>
+<li><p>Add a function to ignore the tesseroid with zero density or volume (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/339">#339</a>)</p></li>
+<li><p>Fix equivalent sources figures in gallery examples (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/342">#342</a>)</p></li>
+<li><p>Replace PROJECT placeholder in changes.rst for “harmonica” (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/341">#341</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Agustina Pesce</p></li>
+<li><p>BenjMy</p></li>
+<li><p>Santiago Soler</p></li>
+</ul>
+</div>
 <div class="section" id="version-0-5-0">
 <h2>Version 0.5.0<a class="headerlink" href="#version-0-5-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Released on: 2022/08/12</em></p>
-<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.6987201"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6987201" /></a>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.6987201"><img alt="Digital Object Identifier for the Zenodo archive" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6987201.svg" /></a>
 <p>Deprecations:</p>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> to <code class="docutils literal notranslate"><span class="pre">isostasy_airy</span></code> function warning of deprecation after next release (<a class="reference external" href="https://github.com/fatiando/harmonica/pull/307">#307</a>)</p></li>
@@ -968,17 +1110,17 @@ components of acceleration
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="citing.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="references.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Citing Harmonica</p>
+            <p class="prev-next-title">References</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="references.html" title="next page">
+    <a class='right-next' id="next-link" href="compatibility.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">References</p>
+        <p class="prev-next-title">Version compatibility</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -990,7 +1132,7 @@ components of acceleration
   <p>
     
         &copy; Copyright .<br/>
-      Last updated on Aug 26, 2022.<br/>
+      Last updated on Mar 02, 2023.<br/>
   </p>
 </footer>
 </main>
