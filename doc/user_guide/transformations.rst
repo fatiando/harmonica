@@ -242,7 +242,7 @@ Reduction to the pole
 We can also apply a reduction to the pole to any magnetic anomaly grid.
 This transformation consists in obtaining the magnetic anomaly of the same
 sources as if they were located on the North magnetic pole.
-We can apply it throught the :func:`harmonica.reduction_to_pole` function.
+We can apply it through the :func:`harmonica.reduction_to_pole` function.
 
 .. important::
 
@@ -263,7 +263,7 @@ the survey (1990 in this case):
 
 If we consider that the sources are magnetized in the same direction as the
 geomagnetic survey (hypothesis that is true in case the sources don't have any
-remanenece), then we can apply the reduction to the pole passing only the
+remanence), then we can apply the reduction to the pole passing only the
 ``inclination`` and ``declination`` of the geomagnetic field:
 
 .. jupyter-execute::
@@ -321,13 +321,13 @@ Gaussians filters
 -----------------
 
 We can also apply Gaussians low-pass and high-pass filters to any regular grid.
-These two need us to select a cutoff wavelenght.
+These two need us to select a cutoff wavelength.
 The low-pass filter will remove any signal with a high spatial frequency,
-keeping only the signal components that have a wavelenght higher than the
+keeping only the signal components that have a wavelength higher than the
 selected cutoff wavelength.
 The high-pass filter, on the other hand, removes any signal with a low spatial
 frequency, keeping only the components with a wavelength lower than the cutoff
-wavelenght.
+wavelength.
 These two filters can be applied to our regular grid with the
 :func:`harmonica.gaussian_lowpass` and :func:`harmonica.gaussian_highpass`.
 
