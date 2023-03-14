@@ -419,7 +419,7 @@ def test_to_pyvista(dummy_layer, properties):
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
     for i, prism in enumerate(layer.prism_layer._to_prisms()):
-        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
+        npt.assert_allclose(prism, pv_grid.cell[i].bounds)
     # Check properties of the prisms
     if properties is None:
         assert pv_grid.n_arrays == 0
@@ -429,6 +429,31 @@ def test_to_pyvista(dummy_layer, properties):
         assert pv_grid.array_names == ["density"]
         assert pv_grid.get_array("density").ndim == 1
         npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+def test_to_pyvista_zero_volume(dummy_layer):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid when
+    some prisms have zero volume
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    # Build the layer with or without properties
+    properties = {"density": density}
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Assign zero volume to some prisms
+    layer.top.values[0, 0] = layer.bottom.values[0, 0]
+    layer.top.values[2, 1] = layer.bottom.values[2, 1]
+    # Convert the layer to pyvista UnstructuredGrid
+    pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=True)
+    # Check properties of the pyvista grid
+    expected_n_prisms = 20 - 2
+    assert pv_grid.n_cells == expected_n_prisms
+    assert pv_grid.n_points == expected_n_prisms * 8
+    assert pv_grid.n_arrays == 1
+    assert pv_grid.array_names == ["density"]
+    assert pv_grid.get_array("density").ndim == 1
+    assert pv_grid.get_array("density").size == expected_n_prisms
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
