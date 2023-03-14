@@ -519,7 +519,7 @@ def _discard_thin_prisms(
         A copy of the ``density`` array that doesn't include the density values
         for thin prisms.
     """
-    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
+    bottom, top = prisms[:, -2], prisms[:, -1]
     # Mark prisms with thickness < threshold  as null prisms
     thickness = top - bottom
     null_prisms = thickness < thickness_threshold
