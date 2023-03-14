@@ -477,7 +477,9 @@ class DatasetAccessorPrismLayer:
         Parameters
         ----------
         drop_null_prisms : bool (optional)
-            If True, prisms with zero volume are not going to be converted.
+            If True, prisms with zero volume are not going to be included in
+            the :class:`pyvista.UnstructuredGrid`.
+            If False, every prism in the layer will be included.
             Default False.
 
         Returns
