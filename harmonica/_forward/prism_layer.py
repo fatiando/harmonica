@@ -481,7 +481,7 @@ class DatasetAccessorPrismLayer:
             their top or bottom boundaries won't be included in the
             :class:`pyvista.UnstructuredGrid`.
             If False, every prism in the layer will be included.
-            Default False.
+            Default True.
 
         Returns
         -------
