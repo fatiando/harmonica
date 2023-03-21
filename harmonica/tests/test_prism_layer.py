@@ -444,10 +444,12 @@ def test_to_pyvista_zero_volume(dummy_layer):
     # Assign zero volume to some prisms
     layer.top.values[0, 0] = layer.bottom.values[0, 0]
     layer.top.values[2, 1] = layer.bottom.values[2, 1]
+    layer.top.values[3, 2] = np.nan
+    layer.bottom.values[3, 3] = np.nan
     # Convert the layer to pyvista UnstructuredGrid
     pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=True)
     # Check properties of the pyvista grid
-    expected_n_prisms = 20 - 2
+    expected_n_prisms = 20 - 4
     assert pv_grid.n_cells == expected_n_prisms
     assert pv_grid.n_points == expected_n_prisms * 8
     assert pv_grid.n_arrays == 1

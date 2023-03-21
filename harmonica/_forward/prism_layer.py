@@ -477,8 +477,9 @@ class DatasetAccessorPrismLayer:
         Parameters
         ----------
         drop_null_prisms : bool (optional)
-            If True, prisms with zero volume are not going to be included in
-            the :class:`pyvista.UnstructuredGrid`.
+            If True, prisms with zero volume or with any :class:`numpy.nan` as
+            their top or bottom boundaries won't be included in the
+            :class:`pyvista.UnstructuredGrid`.
             If False, every prism in the layer will be included.
             Default False.
 
@@ -492,7 +493,7 @@ class DatasetAccessorPrismLayer:
         null_prisms = np.zeros_like(prisms[:, 0], dtype=bool)
         if drop_null_prisms:
             bottom, top = prisms[:, -2], prisms[:, -1]
-            null_prisms = top == bottom
+            null_prisms = (top == bottom) | (np.isnan(top)) | (np.isnan(bottom))
             prisms = prisms[np.logical_not(null_prisms)]
         # Define properties
         properties = None
