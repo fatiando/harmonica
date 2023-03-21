@@ -470,7 +470,7 @@ class DatasetAccessorPrismLayer:
         top = self._obj.top.values[indices]
         return west, east, south, north, bottom, top
 
-    def to_pyvista(self, drop_null_prisms=False):
+    def to_pyvista(self, drop_null_prisms=True):
         """
         Return a pyvista UnstructuredGrid to plot the PrismLayer
 
