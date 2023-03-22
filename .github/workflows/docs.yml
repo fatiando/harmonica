@@ -115,9 +115,6 @@ jobs:
 
       - name: Build the documentation
         run: |
-          # Print available jupyter clients
-          echo "Jupyter clients"
-          jupyter kernelspec list
           # Install xvfb and run some commands to allow pyvista to run on
           # a headless system.
           sudo apt-get install xvfb
