@@ -470,9 +470,18 @@ class DatasetAccessorPrismLayer:
         top = self._obj.top.values[indices]
         return west, east, south, north, bottom, top
 
-    def to_pyvista(self):
+    def to_pyvista(self, drop_null_prisms=True):
         """
         Return a pyvista UnstructuredGrid to plot the PrismLayer
+
+        Parameters
+        ----------
+        drop_null_prisms : bool (optional)
+            If True, prisms with zero volume or with any :class:`numpy.nan` as
+            their top or bottom boundaries won't be included in the
+            :class:`pyvista.UnstructuredGrid`.
+            If False, every prism in the layer will be included.
+            Default True.
 
         Returns
         -------
@@ -481,10 +490,18 @@ class DatasetAccessorPrismLayer:
             layer as a hexahedron along with their properties.
         """
         prisms = self._to_prisms()
+        null_prisms = np.zeros_like(prisms[:, 0], dtype=bool)
+        if drop_null_prisms:
+            bottom, top = prisms[:, -2], prisms[:, -1]
+            null_prisms = (top == bottom) | (np.isnan(top)) | (np.isnan(bottom))
+            prisms = prisms[np.logical_not(null_prisms)]
+        # Define properties
         properties = None
         if self._obj.data_vars:
             properties = {
-                data_var: np.asarray(self._obj[data_var]).ravel()
+                data_var: np.asarray(self._obj[data_var]).ravel()[
+                    np.logical_not(null_prisms)
+                ]
                 for data_var in self._obj.data_vars
             }
         return prism_to_pyvista(prisms, properties=properties)
