@@ -15,3 +15,4 @@ vtk>=9
 pygmt==0.7.*
 gmt==6.4.*
 gdal==3.5.*
+ipykernel
