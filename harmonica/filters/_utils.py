@@ -62,11 +62,9 @@ def apply_filter(grid, fft_filter, **kwargs):
     # Compute inverse FFT
     filtered_grid = ifft(filtered_fft_grid).real
 
-    # use original coordinates on the filtered grid (rounding errors likely occurred)
+    # use original coordinates on the filtered grid
     filtered_grid = filtered_grid.assign_coords(
-        {
-            dims[1]:grid[dims[1]].values,
-            dims[0]:grid[dims[0]].values
-        })
+        {dims[1]: grid[dims[1]].values, dims[0]: grid[dims[0]].values}
+    )
 
     return filtered_grid
