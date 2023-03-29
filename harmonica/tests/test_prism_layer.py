@@ -401,11 +401,13 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 @pytest.mark.parametrize("properties", (False, True))
-def test_to_pyvista(dummy_layer, properties):
+@pytest.mark.parametrize("drop_null_prisms", (False, True))
+def test_to_pyvista(dummy_layer, properties, drop_null_prisms):
     """
     Test the conversion of the prism layer to pyvista.UnstructuredGrid
     """
     (easting, northing), surface, reference, density = dummy_layer
+    reference -= 1  # lower the reference so we don't get prisms with zero volume
     # Build the layer with or without properties
     if properties:
         properties = {"density": density}
@@ -413,13 +415,13 @@ def test_to_pyvista(dummy_layer, properties):
         properties = None
     layer = prism_layer((easting, northing), surface, reference, properties=properties)
     # Convert the layer to pyvista UnstructuredGrid
-    pv_grid = layer.prism_layer.to_pyvista()
+    pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=drop_null_prisms)
     # Check properties of the pyvista grid
     assert pv_grid.n_cells == 20
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
     for i, prism in enumerate(layer.prism_layer._to_prisms()):
-        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
+        npt.assert_allclose(prism, pv_grid.cell[i].bounds)
     # Check properties of the prisms
     if properties is None:
         assert pv_grid.n_arrays == 0
@@ -429,6 +431,37 @@ def test_to_pyvista(dummy_layer, properties):
         assert pv_grid.array_names == ["density"]
         assert pv_grid.get_array("density").ndim == 1
         npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+@pytest.mark.parametrize("drop_null_prisms", (False, True))
+def test_to_pyvista_drop_null_prisms(dummy_layer, drop_null_prisms):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid when
+    some prisms have zero volume
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    reference -= 1  # lower the reference so we don't get prisms with zero volume
+    # Build the layer with or without properties
+    properties = {"density": density}
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Assign zero volume to some prisms
+    layer.top.values[0, 0] = layer.bottom.values[0, 0]
+    layer.top.values[2, 1] = layer.bottom.values[2, 1]
+    layer.top.values[3, 2] = np.nan
+    layer.bottom.values[3, 3] = np.nan
+    # Convert the layer to pyvista UnstructuredGrid
+    pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=drop_null_prisms)
+    # Check properties of the pyvista grid
+    expected_n_prisms = 20
+    if drop_null_prisms:
+        expected_n_prisms -= 4
+    assert pv_grid.n_cells == expected_n_prisms
+    assert pv_grid.n_points == expected_n_prisms * 8
+    assert pv_grid.n_arrays == 1
+    assert pv_grid.array_names == ["density"]
+    assert pv_grid.get_array("density").ndim == 1
+    assert pv_grid.get_array("density").size == expected_n_prisms
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
