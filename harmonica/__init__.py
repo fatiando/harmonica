@@ -12,7 +12,7 @@ from ._equivalent_sources.spherical import EquivalentSourcesSph
 from ._forward.point import point_gravity
 from ._forward.prism import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
-from .forward.prism_magnetic import prism_magnetic, prism_magnetic_component
+from ._forward.prism_magnetic import prism_magnetic, prism_magnetic_component
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
