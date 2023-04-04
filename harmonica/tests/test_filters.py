@@ -8,13 +8,22 @@
 Test functions from the filter module
 """
 import numpy as np
+import numpy.testing as npt
 import pytest
 import xarray as xr
 import xarray.testing as xrt
 from verde import grid_coordinates, make_xarray_grid
 
 from ..filters._fft import fft, ifft
-from ..filters._filters import derivative_upward_kernel
+from ..filters._filters import (
+    derivative_easting_kernel,
+    derivative_northing_kernel,
+    derivative_upward_kernel,
+    gaussian_highpass_kernel,
+    gaussian_lowpass_kernel,
+    reduction_to_pole_kernel,
+    upward_continuation_kernel,
+)
 from ..filters._utils import apply_filter
 
 
@@ -221,8 +230,8 @@ def fixture_sample_fft_grid():
     """
     Returns a sample fft_grid to be used in test functions
     """
-    domain = (-9e-4, 9e-4, -8e-4, -8e-4)
-    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=1e-5)
+    domain = (-9e-4, 9e-4, -8e-4, 8e-4)
+    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
     dummy_fft = np.ones_like(freq_easting)
     fft_grid = make_xarray_grid(
         (freq_easting, freq_northing),
@@ -238,11 +247,191 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     """
     Check if derivative_upward_kernel works as expected
     """
+    # Load pre-computed outcome
+    expected = (
+        np.array(
+            [
+                [0.00756596, 0.00565487, 0.00756596],
+                [0.00502655, 0.0, 0.00502655],
+                [0.00756596, 0.00565487, 0.00756596],
+            ]
+        )
+        ** order
+    )
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
+    )
+
+
+@pytest.mark.parametrize("order", (1, 2, 3))
+def test_derivative_easting_kernel(sample_fft_grid, order):
+    """
+    Check if derivative_easting_kernel works as expected
+    """
+    # Load pre-computed outcome
+    expected = np.array([-0.0 - 0.00565487j, 0.0 + 0.0j, 0.0 + 0.00565487j]) ** order
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected, derivative_easting_kernel(sample_fft_grid, order=order), rtol=2e-6
+    )
+
+
+@pytest.mark.parametrize("order", (1, 2, 3))
+def test_derivative_northing_kernel(sample_fft_grid, order):
+    """
+    Check if derivative_northing_kernel works as expected
+    """
+    # Load pre-computed outcome
+    expected = np.array([-0.0 - 0.00502655j, 0.0 + 0.0j, 0.0 + 0.00502655j]) ** order
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected, derivative_northing_kernel(sample_fft_grid, order=order), rtol=2e-6
+    )
+
+
+@pytest.mark.parametrize("height_displacement", (10, 100, 1000))
+def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
+    """
+    Check if upward_continuation_kernel works as expected
+    """
+    # Load pre-computed outcome
+    k = np.array(
+        [
+            [0.00756596, 0.00565487, 0.00756596],
+            [0.00502655, 0.0, 0.00502655],
+            [0.00756596, 0.00565487, 0.00756596],
+        ]
+    )
+    expected = np.exp(-k * height_displacement)
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected,
+        upward_continuation_kernel(
+            sample_fft_grid, height_displacement=height_displacement
+        ),
+        rtol=3.5e-6,
+    )
+
+
+def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
+    """
+    Check if gaussian_lowpass_kernel works as expected
+    """
+    # Load pre-computed outcome
+    expected = np.array(
+        [
+            [0.9999275, 0.9999595, 0.9999275],
+            [0.999968, 1.0, 0.999968],
+            [0.9999275, 0.9999595, 0.9999275],
+        ]
+    )
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected,
+        gaussian_lowpass_kernel(sample_fft_grid, wavelength=wavelength),
+        rtol=2e-6,
+    )
+
+
+def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
+    """
+    Check if gaussian_highpass_kernel works as expected
+    """
+    # Load pre-computed outcome
+    expected = np.array(
+        [
+            [0.00722378, 0.00404181, 0.00722378],
+            [0.00319489, 0.0, 0.00319489],
+            [0.00722378, 0.00404181, 0.00722378],
+        ]
+    )
+    # Check if the filter returns the expected output
+    npt.assert_allclose(
+        expected,
+        gaussian_highpass_kernel(sample_fft_grid, wavelength=wavelength),
+        rtol=2e-6,
+    )
+
+
+def test_reduction_to_pole_kernel(
+    sample_fft_grid,
+    inclination=60,
+    declination=45,
+    magnetization_inclination=45,
+    magnetization_declination=50,
+):
+    """
+    Check if reduction_to_pole_kernel works as same as the old Fatiando package
+    """
+    # Transform degree to rad
+    [inclination, declination] = np.deg2rad([inclination, declination])
+    [magnetization_inclination, magnetization_declination] = np.deg2rad(
+        [magnetization_inclination, magnetization_declination]
+    )
     # Calculate expected outcome
     k_easting = 2 * np.pi * sample_fft_grid.freq_easting
     k_northing = 2 * np.pi * sample_fft_grid.freq_northing
-    expected = np.sqrt(k_easting**2 + k_northing**2) ** order
+    fx, fy, fz = [
+        np.cos(inclination) * np.sin(declination),
+        np.cos(inclination) * np.cos(declination),
+        np.sin(inclination),
+    ]
+    mx, my, mz = [
+        np.cos(magnetization_inclination) * np.sin(magnetization_declination),
+        np.cos(magnetization_inclination) * np.cos(magnetization_declination),
+        np.sin(magnetization_inclination),
+    ]
+
+    a1 = mz * fz - mx * fx
+    a2 = mz * fz - my * fy
+    a3 = -my * fx - mx * fy
+    b1 = mx * fz + mz * fx
+    b2 = my * fz + mz * fy
+
+    expected = (k_northing**2 + k_easting**2) / (
+        a1 * k_easting**2
+        + a2 * k_northing**2
+        + a3 * k_easting * k_northing
+        + 1j
+        * np.sqrt(k_northing**2 + k_easting**2)
+        * (b1 * k_easting + b2 * k_northing)
+    )
+    expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
     # Check if the filter returns the expected output
     xrt.assert_allclose(
-        expected, derivative_upward_kernel(sample_fft_grid, order=order)
+        expected,
+        reduction_to_pole_kernel(
+            sample_fft_grid,
+            inclination=60,
+            declination=45,
+            magnetization_inclination=45,
+            magnetization_declination=50,
+        ),
     )
+
+
+@pytest.mark.parametrize(
+    "magnetization_inclination, magnetization_declination", [(None, 1), (1, None)]
+)
+def test_invalid_magnetization_angles(
+    sample_fft_grid, magnetization_inclination, magnetization_declination
+):
+    """
+    Test if reduction to the pole raise errors when
+    invalid magnetization angles are passed.
+    """
+    if magnetization_inclination is None:
+        offender = "magnetization_inclination"
+    if magnetization_declination is None:
+        offender = "magnetization_declination"
+    msg = f"Invalid magnetization degrees. Found `{offender}` as "
+    inclination, declination = 1, 30
+    with pytest.raises(ValueError, match=msg):
+        reduction_to_pole_kernel(
+            sample_fft_grid,
+            inclination,
+            declination,
+            magnetization_inclination,
+            magnetization_declination,
+        )

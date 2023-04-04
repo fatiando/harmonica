@@ -51,6 +51,7 @@ intersphinx_mapping = {
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
     "xrft": ("https://xrft.readthedocs.io/en/stable/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
+    "ensaio": ("https://www.fatiando.org/ensaio/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
     "boule": ("https://www.fatiando.org/boule/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
@@ -91,9 +92,9 @@ add_function_parentheses = False
 # -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples", "../data/examples"],
+    "examples_dirs": ["../examples"],
     # path where to save gallery generated examples
-    "gallery_dirs": ["gallery", "sample_data"],
+    "gallery_dirs": ["gallery"],
     "filename_pattern": r"\.py",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,

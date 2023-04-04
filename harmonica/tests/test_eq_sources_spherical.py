@@ -40,7 +40,7 @@ def fixture_masses(region, points):
     """
     Return the masses some sample point masses
     """
-    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
 
 @pytest.fixture(name="coordinates_small")
@@ -77,7 +77,7 @@ def test_equivalent_sources_spherical():
     points = vd.grid_coordinates(
         region=region, shape=(6, 6), extra_coords=radius - 500e3
     )
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
     coordinates = vd.grid_coordinates(
         region=region, shape=(40, 40), extra_coords=radius
@@ -90,7 +90,7 @@ def test_equivalent_sources_spherical():
     # The interpolation should be perfect on the data points
     eqs = EquivalentSourcesSph(relative_depth=500e3)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1.3e-5)
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
@@ -118,7 +118,7 @@ def test_equivalent_sources_small_data_spherical():
     points = vd.grid_coordinates(
         region=region, shape=(6, 6), extra_coords=radius - 500e3
     )
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
     # Get synthetic data
@@ -162,7 +162,7 @@ def test_equivalent_sources_custom_points_spherical():
     points = vd.grid_coordinates(
         region=region, shape=(6, 6), extra_coords=radius - 500e3
     )
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
     coordinates = vd.grid_coordinates(region=region, shape=(5, 5), extra_coords=radius)
     # Get synthetic data
@@ -222,7 +222,7 @@ def test_equivalent_sources_spherical_parallel():
     points = vd.grid_coordinates(
         region=region, shape=(6, 6), extra_coords=radius - 500e3
     )
-    masses = vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
     coordinates = vd.grid_coordinates(
         region=region, shape=(40, 40), extra_coords=radius

@@ -17,6 +17,7 @@ import verde as vd
 import xarray as xr
 
 from .. import prism_gravity, prism_layer
+from .._forward.prism_layer import _discard_thin_prisms
 
 try:
     import pyvista
@@ -400,11 +401,13 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 @pytest.mark.parametrize("properties", (False, True))
-def test_to_pyvista(dummy_layer, properties):
+@pytest.mark.parametrize("drop_null_prisms", (False, True))
+def test_to_pyvista(dummy_layer, properties, drop_null_prisms):
     """
     Test the conversion of the prism layer to pyvista.UnstructuredGrid
     """
     (easting, northing), surface, reference, density = dummy_layer
+    reference -= 1  # lower the reference so we don't get prisms with zero volume
     # Build the layer with or without properties
     if properties:
         properties = {"density": density}
@@ -412,13 +415,13 @@ def test_to_pyvista(dummy_layer, properties):
         properties = None
     layer = prism_layer((easting, northing), surface, reference, properties=properties)
     # Convert the layer to pyvista UnstructuredGrid
-    pv_grid = layer.prism_layer.to_pyvista()
+    pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=drop_null_prisms)
     # Check properties of the pyvista grid
     assert pv_grid.n_cells == 20
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
     for i, prism in enumerate(layer.prism_layer._to_prisms()):
-        npt.assert_allclose(prism, pv_grid.cell_bounds(i))
+        npt.assert_allclose(prism, pv_grid.cell[i].bounds)
     # Check properties of the prisms
     if properties is None:
         assert pv_grid.n_arrays == 0
@@ -428,6 +431,37 @@ def test_to_pyvista(dummy_layer, properties):
         assert pv_grid.array_names == ["density"]
         assert pv_grid.get_array("density").ndim == 1
         npt.assert_allclose(pv_grid.get_array("density"), layer.density.values.ravel())
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+@pytest.mark.parametrize("drop_null_prisms", (False, True))
+def test_to_pyvista_drop_null_prisms(dummy_layer, drop_null_prisms):
+    """
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid when
+    some prisms have zero volume
+    """
+    (easting, northing), surface, reference, density = dummy_layer
+    reference -= 1  # lower the reference so we don't get prisms with zero volume
+    # Build the layer with or without properties
+    properties = {"density": density}
+    layer = prism_layer((easting, northing), surface, reference, properties=properties)
+    # Assign zero volume to some prisms
+    layer.top.values[0, 0] = layer.bottom.values[0, 0]
+    layer.top.values[2, 1] = layer.bottom.values[2, 1]
+    layer.top.values[3, 2] = np.nan
+    layer.bottom.values[3, 3] = np.nan
+    # Convert the layer to pyvista UnstructuredGrid
+    pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=drop_null_prisms)
+    # Check properties of the pyvista grid
+    expected_n_prisms = 20
+    if drop_null_prisms:
+        expected_n_prisms -= 4
+    assert pv_grid.n_cells == expected_n_prisms
+    assert pv_grid.n_points == expected_n_prisms * 8
+    assert pv_grid.n_arrays == 1
+    assert pv_grid.array_names == ["density"]
+    assert pv_grid.get_array("density").ndim == 1
+    assert pv_grid.get_array("density").size == expected_n_prisms
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
@@ -451,7 +485,7 @@ def test_progress_bar(dummy_layer):
     npt.assert_allclose(result_progress_true, result_progress_false)
 
 
-@patch("harmonica.forward.prism.ProgressBar", None)
+@patch("harmonica._forward.prism.ProgressBar", None)
 def test_numba_progress_missing_error(dummy_layer):
     """
     Check if error is raised when progressbar=True and numba_progress package
@@ -465,3 +499,77 @@ def test_numba_progress_missing_error(dummy_layer):
     # Check if error is raised
     with pytest.raises(ImportError):
         layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)
+
+
+def test_gravity_discarded_thin_prisms(dummy_layer):
+    """
+    Check if gravity of prism layer after discarding thin prisms is correct.
+    """
+    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    prism_coords, surface, reference, density = dummy_layer
+
+    layer = prism_layer(
+        prism_coords, surface, reference, properties={"density": density}
+    )
+    # Check that result with no threshold is the same as with a threshold of 0
+    gravity_prisms_nothres = layer.prism_layer.gravity(coordinates, field="g_z")
+    gravity_prisms_0thres = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=0
+    )
+    npt.assert_allclose(gravity_prisms_nothres, gravity_prisms_0thres)
+
+    # Check that gravity from manually removed prisms is the same as using a
+    # threshold
+    manually_removed_prisms = []
+    for _, j in enumerate(layer.prism_layer._to_prisms()):
+        if abs(j[5] - j[4]) >= 5.0:
+            manually_removed_prisms.append(j)
+    gravity_manually_removed = prism_gravity(
+        coordinates,
+        prisms=manually_removed_prisms,
+        density=[2670] * len(manually_removed_prisms),
+        field="g_z",
+    )
+    gravity_threshold_removed = layer.prism_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=5
+    )
+    npt.assert_allclose(gravity_manually_removed, gravity_threshold_removed)
+
+
+def test_discard_thin_prisms():
+    """
+    Check if thin prisms are properly discarded.
+    """
+    # create set of 4 prisms (west, east, south, north, bottom, top)
+    prism_boundaries = np.array(
+        [
+            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
+            [5000.0, 15000.0, -5000.0, 5000.0, 0.0, 55.01],
+            [-5000.0, 5000.0, 5000.0, 15000.0, 0.0, 35.0],
+            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+        ]
+    )
+
+    # assign densities to each prism
+    densities = np.array([2306, 2122, 2190, 2069])
+
+    # drop prisms and respective densities thinner than 55.05
+    # (2nd and 3rd prisms)
+    thick_prisms, thick_densities = _discard_thin_prisms(
+        prism_boundaries,
+        densities,
+        thickness_threshold=55.05,
+    )
+
+    # manually remove prisms and densities of thin prisms
+    expected_prisms = np.array(
+        [
+            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
+            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+        ]
+    )
+    expected_densities = np.array([2306, 2069])
+
+    # check the correct prisms and densities were discarded
+    npt.assert_allclose(expected_prisms, thick_prisms)
+    npt.assert_allclose(expected_densities, thick_densities)

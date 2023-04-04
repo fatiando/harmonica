@@ -6,22 +6,29 @@
 #
 #
 # Import functions/classes to make the public API
-from . import datasets, synthetic
+from ._equivalent_sources.cartesian import EquivalentSources
+from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
+from ._equivalent_sources.spherical import EquivalentSourcesSph
+from ._forward.point import point_gravity
+from ._forward.prism import prism_gravity
+from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
+from .forward.prism_magnetic import prism_magnetic, prism_magnetic_component
+from ._forward.tesseroid import tesseroid_gravity
+from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
+from ._gravity_corrections import bouguer_correction
 from ._io.icgem_gdf import load_icgem_gdf
 from ._io.oasis_montaj_grd import load_oasis_montaj_grid
+from ._isostasy import isostatic_moho_airy
+from ._transformations import (
+    derivative_easting,
+    derivative_northing,
+    derivative_upward,
+    gaussian_highpass,
+    gaussian_lowpass,
+    reduction_to_pole,
+    upward_continuation,
+)
 from ._version import __version__
-from .equivalent_sources.cartesian import EquivalentSources
-from .equivalent_sources.gradient_boosted import EquivalentSourcesGB
-from .equivalent_sources.spherical import EquivalentSourcesSph
-from .forward.point import point_gravity
-from .forward.prism import prism_gravity
-from .forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
-from .forward.prism_magnetic import prism_magnetic, prism_magnetic_component
-from .forward.tesseroid import tesseroid_gravity
-from .forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
-from .gravity_corrections import bouguer_correction
-from .isostasy import isostasy_airy, isostatic_moho_airy
-from .transformations import derivative_upward
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

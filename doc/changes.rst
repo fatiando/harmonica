@@ -3,6 +3,59 @@
 Changelog
 =========
 
+Version 0.6.0
+-------------
+
+*Released on: 2023/03/01*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7690145.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.7690145
+
+Deprecations:
+
+- Deprecate `EQLHarmonic` and `EQLHarmonicSpherical` classes (`#366 <https://github.com/fatiando/harmonica/pull/366>`__)
+- Deprecate ``isostasy_airy`` function (`#379 <https://github.com/fatiando/harmonica/pull/379>`__)
+- Deprecate the synthetic and dataset modules (`#380 <https://github.com/fatiando/harmonica/pull/380>`__)
+
+New features:
+
+- Add function to create a tesseroid layer, similar to the one for the prism layer (`#316 <https://github.com/fatiando/harmonica/pull/316>`__)
+- Add function to read Oasis Montaj© grd files as ``xarray.DataArray`` (`#348 <https://github.com/fatiando/harmonica/pull/348>`__)
+- Add option to discard thin prisms when forward modelling a prism layer (`#373 <https://github.com/fatiando/harmonica/pull/373>`__)
+- Add FFT-based transformations and filters for horizontal derivatives, upward continuation, reduction to the pole of magnetic grids, and low-pass and high-pass Gaussian filters (`#299 <https://github.com/fatiando/harmonica/pull/299>`__)
+- Make horizontal derivative functions to compute the derivatives using central finite differences (`#378 <https://github.com/fatiando/harmonica/pull/378>`__)
+
+Maintenance:
+
+- Minor optimization in prism forward modelling (`#349 <https://github.com/fatiando/harmonica/pull/349>`__)
+- Set lower bounds for supported dependency versions following NEP29 (`#356 <https://github.com/fatiando/harmonica/pull/356>`__)
+- Extend support for Python 3.10 (`#240 <https://github.com/fatiando/harmonica/pull/240>`__)
+- Bump versions of style checkers like Black and Flake8 (`#368 <https://github.com/fatiando/harmonica/pull/368>`__)
+- Replace ``setup.py`` with PyPA ``build`` (`#363 <https://github.com/fatiando/harmonica/pull/363>`__)
+- Clean Harmonica API: make the ``forward``, ``equivalent_sources``, ``gravity_corrections``, ``isostasy`` and ``transformations`` submodules private (`#362 <https://github.com/fatiando/harmonica/pull/362>`__)
+
+Documentation:
+
+- Replace Cartopy with PyGMT throughout the documentation (`#327 <https://github.com/fatiando/harmonica/pull/327>`__)
+- Fix typo in equivalent sources tutorial (`#351 <https://github.com/fatiando/harmonica/pull/351>`__)
+- Add tesseroid_layer to the API reference (`#354 <https://github.com/fatiando/harmonica/pull/354>`__)
+- Update README to match Verde and Boule (`#358 <https://github.com/fatiando/harmonica/pull/358>`__)
+- Fix contact link in the documentation side bar (`#357 <https://github.com/fatiando/harmonica/pull/357>`__)
+- Set v0.4.0 as the last with support for Python 3.6 (`#359 <https://github.com/fatiando/harmonica/pull/359>`__)
+- Add more papers to "Citing the methods" section in the docs (`#375 <https://github.com/fatiando/harmonica/pull/375>`__)
+- Add examples and a user guide page for grid transformations (`#377 <https://github.com/fatiando/harmonica/pull/377>`__)
+- Add examples on how to use horizontal derivative functions to the user guide (`#384 <https://github.com/fatiando/harmonica/pull/384>`__)
+
+This release contains contributions from:
+
+- Mariana Gomez
+- Lu Li
+- Agustina Pesce
+- Santiago Soler
+- Matt Tankersley
+- Leonardo Uieda
+
 Version 0.5.1
 -------------
 

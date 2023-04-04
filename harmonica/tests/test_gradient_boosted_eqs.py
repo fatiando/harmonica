@@ -13,7 +13,7 @@ import pytest
 import verde as vd
 
 from .. import EquivalentSourcesGB, point_gravity
-from ..equivalent_sources.gradient_boosted import _get_region_data_sources
+from .._equivalent_sources.gradient_boosted import _get_region_data_sources
 from .utils import run_only_with_numba
 
 
@@ -48,7 +48,7 @@ def fixture_masses(region, points):
     """
     Return the masses some sample point masses
     """
-    return vd.datasets.CheckerBoard(amplitude=1e13, region=region).predict(points)
+    return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
 
 @pytest.fixture(name="data")

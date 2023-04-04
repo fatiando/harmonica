@@ -138,19 +138,8 @@ jobs:
       - name: List installed packages
         run: python -m pip freeze
 
-      - name: Copy test data to cache
-        run: |
-          echo "Copy data to " $HARMONICA_DATA_DIR/main
-          set -x -e
-          mkdir -p $HARMONICA_DATA_DIR/main
-          cp -r data/* $HARMONICA_DATA_DIR/main
-        env:
-          # Define directory where sample data will be copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
-
       - name: Run the tests
         run: |
-          ls $HARMONICA_DATA_DIR
           if [ ${{ matrix.os }} == 'ubuntu' ]; then
               # Set NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
@@ -158,15 +147,12 @@ jobs:
           else
               make test
           fi
-        env:
-          # Define directory where sample data will be copied
-          HARMONICA_DATA_DIR: ${{ runner.temp }}/cache/harmonica
 
       - name: Convert coverage report to XML for codecov
         run: coverage xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml

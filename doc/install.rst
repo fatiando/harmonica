@@ -53,8 +53,10 @@ Optional:
 The examples in the :ref:`gallery` also use:
 
 * `boule <http://www.fatiando.org/boule/>`__
+* `ensaio <http://www.fatiando.org/ensaio/>`__ for downloading sample datasets
 * `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
+* `ensaio <https://www.fatiando.org/ensaio>`__ for downloading sample datasets
 
 
 Installing with conda

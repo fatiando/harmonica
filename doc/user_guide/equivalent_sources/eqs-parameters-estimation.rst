@@ -231,6 +231,6 @@ Lets plot it:
    fig.show()
 
 The best parameters not only produce a better score, but they also generate
-a visible more accurate predictions. In the first plot the equivalent sources
+a visibly more accurate prediction. In the first plot the equivalent sources
 are so shallow that we can actually see the distribution of sources in the
 produced grid.
