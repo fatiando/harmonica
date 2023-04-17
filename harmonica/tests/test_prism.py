@@ -20,13 +20,7 @@ except ImportError:
     ProgressBar = None
 
 from .. import bouguer_correction
-from .._forward.prism import (
-    _check_prisms,
-    _discard_null_prisms,
-    prism_gravity,
-    safe_atan2,
-    safe_log,
-)
+from .._forward.prism import _check_prisms, _discard_null_prisms, prism_gravity
 from .utils import run_only_with_numba
 
 
@@ -353,40 +347,6 @@ def test_g_z_symmetry_inside():
         npt.assert_allclose(results[above], -results[below])
         npt.assert_allclose(np.sign(results[above]), np.sign(density))
         npt.assert_allclose(np.sign(results[below]), -np.sign(density))
-
-
-@pytest.mark.use_numba
-def test_safe_atan2():
-    "Test the safe_atan2 function"
-    # Test safe_atan2 for one point per quadrant
-    # First quadrant
-    x, y = 1, 1
-    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
-    # Second quadrant
-    x, y = -1, 1
-    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
-    # Third quadrant
-    x, y = -1, -1
-    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
-    # Forth quadrant
-    x, y = 1, -1
-    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
-    # Test safe_atan2 if the denominator is equal to zero
-    npt.assert_allclose(safe_atan2(1, 0), np.pi / 2)
-    npt.assert_allclose(safe_atan2(-1, 0), -np.pi / 2)
-    # Test safe_atan2 if both numerator and denominator are equal to zero
-    assert safe_atan2(0, 0) == 0
-
-
-@pytest.mark.use_numba
-def test_safe_log():
-    "Test the safe_log function"
-    # Check if safe_log function satisfies safe_log(0) == 0
-    assert safe_log(0) == 0
-    # Check if safe_log behaves like the natural logarithm in case that x != 0
-    x = np.linspace(1, 100, 101)
-    for x_i in x:
-        npt.assert_allclose(safe_log(x_i), np.log(x_i))
 
 
 @pytest.mark.use_numba
