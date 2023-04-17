@@ -8,11 +8,16 @@
 Forward modelling for prisms
 """
 import numpy as np
-from choclo.prism import gravity_pot, gravity_u
+from choclo.prism import gravity_pot, gravity_e, gravity_n, gravity_u
 from numba import jit, prange
 
 # Define dictionary with available gravity fields for prisms
-FIELDS = {"potential": gravity_pot, "g_z": gravity_u}
+FIELDS = {
+    "potential": gravity_pot,
+    "g_e": gravity_e,
+    "g_n": gravity_n,
+    "g_z": gravity_u,
+}
 
 # Attempt to import numba_progress
 try:
@@ -72,6 +77,8 @@ def prism_gravity(
         The available fields are:
 
         - Gravitational potential: ``potential``
+        - Eastward acceleration: ``g_e``
+        - Northward acceleration: ``g_n``
         - Downward acceleration: ``g_z``
 
     parallel : bool (optional)
@@ -153,29 +160,23 @@ def prism_gravity(
         progress_proxy = ProgressBar(total=coordinates[0].size)
     else:
         progress_proxy = None
+    # Choose parallelized or serialized forward function
+    if parallel:
+        forward_func = jit_prism_gravity_parallel
+    else:
+        forward_func = jit_prism_gravity_serial
     # Compute gravitational field
-    dispatcher(parallel)(
-        coordinates, prisms, density, FIELDS[field], result, progress_proxy
-    )
+    forward_func(coordinates, prisms, density, FIELDS[field], result, progress_proxy)
     # Close previously created progress bars
-    if progressbar:
+    if progress_proxy:
         progress_proxy.close()
-    # Convert to more convenient units
+    # Invert sign of gravity_u (upward component)
     if field == "g_z":
+        result *= -1
+    # Convert to more convenient units
+    if field in ("g_e", "g_n", "g_z"):
         result *= 1e5  # SI to mGal
-        result *= -1  # invert sign (choclo computes upward component)
     return result.reshape(cast.shape)
-
-
-def dispatcher(parallel):
-    """
-    Return the parallelized or serialized forward modelling function
-    """
-    dispatchers = {
-        True: jit_prism_gravity_parallel,
-        False: jit_prism_gravity_serial,
-    }
-    return dispatchers[parallel]
 
 
 def _check_prisms(prisms):

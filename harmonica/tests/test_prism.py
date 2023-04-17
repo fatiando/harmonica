@@ -13,6 +13,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
+from choclo.prism import gravity_pot, gravity_e, gravity_n, gravity_u
 
 try:
     from numba_progress import ProgressBar
@@ -174,6 +175,75 @@ def test_potential_field_symmetry():
     )
     result = prism_gravity(coordinates, prism, density, field="potential")
     npt.assert_allclose(result[0], result)
+
+
+class TestAgainstChoclo:
+    """
+    Test forward modelling functions against dumb Choclo runs
+    """
+
+    @pytest.fixture()
+    def sample_prisms(self):
+        """
+        Return three sample prisms
+        """
+        prisms = np.array(
+            [
+                [-10, 10, -10, 0, -10, 0],
+                [-10, 0, -10, 10, -20, -10],
+                [5, 15, 5, 15, -15, -5],
+            ],
+            dtype=float,
+        )
+        densities = np.array([400, -200, 300], dtype=float)
+        return prisms, densities
+
+    @pytest.fixture()
+    def sample_coordinates(self):
+        """
+        Return four sample observation points
+        """
+        easting = np.array([-5, 10, 0, 15], dtype=float)
+        northing = np.array([14, -4, 11, 0], dtype=float)
+        upward = np.array([9, 6, 6, 12], dtype=float)
+        return (easting, northing, upward)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize(
+        "field, choclo_func",
+        [
+            ("potential", gravity_pot),
+            ("g_e", gravity_e),
+            ("g_n", gravity_n),
+            ("g_z", gravity_u),
+        ],
+    )
+    def test_against_choclo(
+        self,
+        field,
+        choclo_func,
+        sample_coordinates,
+        sample_prisms,
+    ):
+        """
+        Tests forward functions against dumb runs on Choclo
+        """
+        easting, northing, upward = sample_coordinates
+        prisms, densities = sample_prisms
+        # Compute expected results with dumb choclo calls
+        expected_result = np.zeros_like(easting)
+        for i in range(easting.size):
+            for j in range(densities.size):
+                expected_result[i] += choclo_func(
+                    easting[i], northing[i], upward[i], prisms[j, :], densities[j]
+                )
+        if field in ("g_e", "g_n", "g_z"):
+            expected_result *= 1e5
+        if field == "g_z":
+            expected_result *= -1
+        # Compare with Harmonica results
+        result = prism_gravity(sample_coordinates, prisms, densities, field=field)
+        npt.assert_allclose(result, expected_result)
 
 
 @pytest.mark.use_numba
