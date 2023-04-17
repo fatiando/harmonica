@@ -8,7 +8,18 @@
 Forward modelling for prisms
 """
 import numpy as np
-from choclo.prism import gravity_pot, gravity_e, gravity_n, gravity_u
+from choclo.prism import (
+    gravity_e,
+    gravity_ee,
+    gravity_en,
+    gravity_eu,
+    gravity_n,
+    gravity_nn,
+    gravity_nu,
+    gravity_pot,
+    gravity_u,
+    gravity_uu,
+)
 from numba import jit, prange
 
 # Define dictionary with available gravity fields for prisms
@@ -17,6 +28,12 @@ FIELDS = {
     "g_e": gravity_e,
     "g_n": gravity_n,
     "g_z": gravity_u,
+    "g_ee": gravity_ee,
+    "g_nn": gravity_nn,
+    "g_zz": gravity_uu,
+    "g_en": gravity_en,
+    "g_ez": gravity_eu,
+    "g_nz": gravity_nu,
 }
 
 # Attempt to import numba_progress
@@ -51,11 +68,13 @@ def prism_gravity(
     solution has on some points (see [Nagy2000]_).
 
     .. warning::
-        The **z direction points upwards**, i.e. positive and negative values
-        of ``upward`` represent points above and below the surface,
+        The **vertical direction points upwards**, i.e. positive and negative
+        values of ``upward`` represent points above and below the surface,
         respectively. But remember that the ``g_z`` field returns the downward
         component of the gravitational acceleration so that positive density
-        contrasts produce positive anomalies.
+        contrasts produce positive anomalies. The same applies to the tensor
+        components, i.e. the ``g_ez`` is the non-diagonal easting-downward
+        tensor component.
 
     Parameters
     ----------
@@ -80,6 +99,8 @@ def prism_gravity(
         - Eastward acceleration: ``g_e``
         - Northward acceleration: ``g_n``
         - Downward acceleration: ``g_z``
+        - Diagonal tensor components: ``g_ee``, ``g_nn``, ``g_zz``
+        - Non-diagonal tensor components: ``g_en``, ``g_ez``, ``g_nz``
 
     parallel : bool (optional)
         If True the computations will run in parallel using Numba built-in
@@ -170,12 +191,15 @@ def prism_gravity(
     # Close previously created progress bars
     if progress_proxy:
         progress_proxy.close()
-    # Invert sign of gravity_u (upward component)
-    if field == "g_z":
+    # Invert sign of gravity_u, gravity_eu, gravity_nu
+    if field in ("g_z", "g_ez", "g_nz"):
         result *= -1
     # Convert to more convenient units
     if field in ("g_e", "g_n", "g_z"):
         result *= 1e5  # SI to mGal
+    # Convert to more convenient units
+    if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+        result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
 
 

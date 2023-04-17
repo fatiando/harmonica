@@ -13,7 +13,18 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
-from choclo.prism import gravity_pot, gravity_e, gravity_n, gravity_u
+from choclo.prism import (
+    gravity_e,
+    gravity_ee,
+    gravity_en,
+    gravity_eu,
+    gravity_n,
+    gravity_nn,
+    gravity_nu,
+    gravity_pot,
+    gravity_u,
+    gravity_uu,
+)
 
 try:
     from numba_progress import ProgressBar
@@ -216,6 +227,12 @@ class TestAgainstChoclo:
             ("g_e", gravity_e),
             ("g_n", gravity_n),
             ("g_z", gravity_u),
+            ("g_ee", gravity_ee),
+            ("g_nn", gravity_nn),
+            ("g_zz", gravity_uu),
+            ("g_en", gravity_en),
+            ("g_ez", gravity_eu),
+            ("g_nz", gravity_nu),
         ],
     )
     def test_against_choclo(
@@ -237,13 +254,37 @@ class TestAgainstChoclo:
                 expected_result[i] += choclo_func(
                     easting[i], northing[i], upward[i], prisms[j, :], densities[j]
                 )
+        if field in ("g_z", "g_ez", "g_nz"):
+            expected_result *= -1  # invert sign
         if field in ("g_e", "g_n", "g_z"):
-            expected_result *= 1e5
-        if field == "g_z":
-            expected_result *= -1
+            expected_result *= 1e5  # convert to mGal
+        if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+            expected_result *= 1e9  # convert to Eotvos
         # Compare with Harmonica results
         result = prism_gravity(sample_coordinates, prisms, densities, field=field)
         npt.assert_allclose(result, expected_result)
+
+
+@run_only_with_numba
+def test_laplace():
+    """
+    Test if the diagonal components satisfy Laplace equation
+    """
+    region = (-10e3, 10e3, -10e3, 10e3)
+    coords = vd.grid_coordinates(region, shape=(10, 10), extra_coords=300)
+    prisms = [
+        [1e3, 7e3, -5e3, 2e3, -1e3, -500],
+        [-4e3, 1e3, 4e3, 10e3, -2e3, 200],
+    ]
+    densities = [2670.0, 2900.0]
+    diagonal_components = {
+        field: prism_gravity(coords, prisms, densities, field=field)
+        for field in ("g_ee", "g_nn", "g_zz")
+    }
+    npt.assert_allclose(
+        diagonal_components["g_ee"] + diagonal_components["g_nn"],
+        -diagonal_components["g_zz"],
+    )
 
 
 @pytest.mark.use_numba
