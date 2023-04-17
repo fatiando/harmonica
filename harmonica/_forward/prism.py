@@ -20,8 +20,6 @@ try:
 except ImportError:
     ProgressBar = None
 
-from ..constants import GRAVITATIONAL_CONST
-
 
 def prism_gravity(
     coordinates,
