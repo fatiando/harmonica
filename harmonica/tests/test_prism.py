@@ -85,7 +85,7 @@ def test_discard_null_prisms():
     )
     density = np.array([2670, 0, 3300, 3000, 2800, 2700])
     prisms, density = _discard_null_prisms(prisms, density)
-    npt.assert_allclose(prisms, np.array([[0, 10, -50, 33, -2e3, 150]]))
+    npt.assert_allclose(prisms, np.array([[0.0, 10.0, -50.0, 33.0, -2e3, 150.0]]))
     npt.assert_allclose(density, np.array([2670]))
 
 
