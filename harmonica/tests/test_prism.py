@@ -341,3 +341,128 @@ def test_numba_progress_missing_error():
         prism_gravity(
             coordinates, prisms, densities, field="potential", progressbar=True
         )
+
+
+class TestSingularPoints:
+    """
+    Tests tensor components on singular points of the prism
+    """
+
+    @pytest.fixture
+    def sample_prism(self):
+        """Return a sample prism"""
+        return np.array([-10.3, 5.4, 8.6, 14.3, -30.3, 2.4])
+
+    @pytest.fixture
+    def sample_density(self):
+        """Return a sample density for the sample prism"""
+        return np.array([2900.0])
+
+    def get_vertices(self, prism):
+        """
+        Return the vertices of the prism as points
+        """
+        easting, northing, upward = tuple(
+            c.ravel() for c in np.meshgrid(prism[:2], prism[2:4], prism[4:6])
+        )
+        return easting, northing, upward
+
+    def get_easting_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to easting
+        """
+        easting_c = (prism[0] + prism[1]) / 2
+        northing, upward = tuple(c.ravel() for c in np.meshgrid(prism[2:4], prism[4:6]))
+        easting = np.full_like(northing, easting_c)
+        return easting, northing, upward
+
+    def get_northing_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to northing
+        """
+        northing_c = (prism[2] + prism[3]) / 2
+        easting, upward = tuple(c.ravel() for c in np.meshgrid(prism[0:2], prism[4:6]))
+        northing = np.full_like(easting, northing_c)
+        return easting, northing, upward
+
+    def get_upward_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to upward
+        """
+        upward_c = (prism[4] + prism[5]) / 2
+        easting, northing = tuple(
+            c.ravel() for c in np.meshgrid(prism[0:2], prism[2:4])
+        )
+        upward = np.full_like(easting, upward_c)
+        return easting, northing, upward
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"))
+    def test_on_vertices(self, sample_prism, sample_density, field):
+        """
+        Test tensor components when observation points fall on prism vertices
+        """
+        easting, northing, upward = self.get_vertices(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_nn", "g_zz", "g_nz"))
+    def test_on_easting_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_easting_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_zz", "g_ez"))
+    def test_on_northing_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_northing_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_en"))
+    def test_on_upward_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_upward_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )

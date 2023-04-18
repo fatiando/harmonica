@@ -7,6 +7,8 @@
 """
 Forward modelling for prisms
 """
+import warnings
+
 import numpy as np
 from choclo.prism import (
     gravity_e,
@@ -19,6 +21,11 @@ from choclo.prism import (
     gravity_pot,
     gravity_u,
     gravity_uu,
+)
+from choclo.prism._utils import (
+    is_point_on_easting_edge,
+    is_point_on_northing_edge,
+    is_point_on_upward_edge,
 )
 from numba import jit, prange
 
@@ -170,6 +177,7 @@ def prism_gravity(
                 + "mismatch the number of prisms ({})".format(prisms.shape[0])
             )
         _check_prisms(prisms)
+        _check_singular_points(coordinates, prisms, field)
     # Discard null prisms (zero volume or zero density)
     prisms, density = _discard_null_prisms(prisms, density)
     # Show progress bar for 'jit_prism_gravity' function
@@ -201,6 +209,136 @@ def prism_gravity(
     if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
         result *= 1e9  # SI to Eotvos
     return result.reshape(cast.shape)
+
+
+def _check_singular_points(coordinates, prisms, field):
+    """
+    Check if any observation point is a singular point for tensor components
+
+    The analytic solutions for the tensor components of the prism have some
+    singular points:
+
+      - All prism vertices are singular points for every tensor component.
+      - Diagonal components aren't defined on edges perpendicular to the
+        component direction (e.g. ``g_ee`` is not defined on edges parallel to
+        northing and upward directions).
+      - Non-diagonal components aren't defined on edges perpendicular to the
+        two directions of the component (e.g. ``g_en`` is not defined on edges
+        parallel to the upward direction).
+    """
+    any_singular_point = False
+    easting, northing, upward = coordinates
+    if field == "g_ee":
+        any_singular_point = _any_singular_point_diagonal(
+            easting,
+            northing,
+            upward,
+            prisms,
+            is_point_on_northing_edge,
+            is_point_on_upward_edge,
+        )
+    elif field == "g_nn":
+        any_singular_point = _any_singular_point_diagonal(
+            easting,
+            northing,
+            upward,
+            prisms,
+            is_point_on_easting_edge,
+            is_point_on_upward_edge,
+        )
+    elif field == "g_zz":
+        any_singular_point = _any_singular_point_diagonal(
+            easting,
+            northing,
+            upward,
+            prisms,
+            is_point_on_easting_edge,
+            is_point_on_northing_edge,
+        )
+    elif field == "g_en":
+        any_singular_point = _any_singular_point_non_diagonal(
+            easting, northing, upward, prisms, is_point_on_upward_edge
+        )
+    elif field == "g_ez":
+        any_singular_point = _any_singular_point_non_diagonal(
+            easting, northing, upward, prisms, is_point_on_northing_edge
+        )
+    elif field == "g_nz":
+        any_singular_point = _any_singular_point_non_diagonal(
+            easting, northing, upward, prisms, is_point_on_easting_edge
+        )
+    if any_singular_point:
+        warnings.warn(
+            "Found observation point on singular point of a prism.", UserWarning
+        )
+
+
+@jit(nopython=True)
+def _any_singular_point_diagonal(
+    easting, northing, upward, prisms, check_func1, check_func2
+):
+    """
+    Check singular points for diagonal tensor components
+    """
+    n_coords = easting.size
+    n_prisms = prisms.shape[0]
+    for l in range(n_coords):
+        for m in range(n_prisms):
+            if check_func1(
+                easting[l], northing[l], upward[l], prisms[m, :]
+            ) or check_func2(easting[l], northing[l], upward[l], prisms[m, :]):
+                return True
+    return False
+
+
+@jit(nopython=True)
+def _any_singular_point_non_diagonal(easting, northing, upward, prisms, check_func):
+    """
+    Check singular points for non-diagonal tensor components
+    """
+    n_coords = easting.size
+    n_prisms = prisms.shape[0]
+    for l in range(n_coords):
+        for m in range(n_prisms):
+            if check_func(easting[l], northing[l], upward[l], prisms[m, :]):
+                return True
+    return False
+
+
+@jit(nopython=True, parallel=True)
+def _check_singular_points_diagonal(easting, northing, upward, prisms, check_functions):
+    """
+    Check singular points for diagonal tensor components
+    """
+    n_coords = easting.size
+    n_prisms = prisms.shape[0]
+    for l in prange(n_coords):
+        for m in prange(n_prisms):
+            if check_func1(
+                easting[l], northing[l], upward[l], prisms[:, m]
+            ) or check_func2(easting[l], northing[l], upward[l], prisms[:, m]):
+                raise ValueError(
+                    "Found observation point "
+                    f"'({easting[l]}, {northing[l]}, {upward[l]})' located at a "
+                    f"singular point for prism '{prisms[:, m]}'."
+                )
+
+
+@jit(nopython=True, parallel=True)
+def _check_singular_points_non_diagonal(easting, northing, upward, prisms, check_func):
+    """
+    Check singular points for non-diagonal tensor components
+    """
+    n_coords = easting.size
+    n_prisms = prisms.shape[0]
+    for l in prange(n_coords):
+        for m in prange(n_prisms):
+            if check_func(easting[l], northing[l], upward[l], prisms[:, m]):
+                raise ValueError(
+                    "Found observation point "
+                    f"'({easting[l]}, {northing[l]}, {upward[l]})' located at a "
+                    f"singular point for prism '{prisms[:, m]}'."
+                )
 
 
 def _check_prisms(prisms):
