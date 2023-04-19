@@ -108,21 +108,19 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     """
     # Compute the intensity
     vectors = np.vstack((magnetic_e, magnetic_n, magnetic_u)).T
-    intensity = np.linalg.norm(vectors)
-
-    # Compute the horizontal component of magnetic vector
-    horizontal_component = np.sqrt(magnetic_e**2 + magnetic_n**2)
-    if horizontal_component == 0:
-        inclination = -np.sign(magnetic_u) * np.pi /2
-        declination = 0
-    else:
-        # Compute the two angles
-        inclination = np.arctan(- magnetic_u / horizontal_component)
-        declination = np.arcsin(magnetic_e / horizontal_component)
-    # Convert to degrees if needed
+    intensity = np.linalg.norm(vectors, axis=1)
+    # Compute the horizontal component of magnetic vector and mask the values
+    # equal to zero
+    horizontal_component = np.ma.masked_values(
+        np.sqrt(magnetic_e**2 + magnetic_n**2), 0.
+    )
+    # Calculate the inclination and declination using the mask
+    inclination = np.arctan(- magnetic_u / horizontal_component)
+    declination = np.arcsin(magnetic_e / horizontal_component).data
+    # Fill the masked values
+    inclination = inclination.filled(- np.sign(magnetic_u) * np.pi / 2)
+    # Convert to degree if needed
     if degrees:
         inclination = np.degrees(inclination)
         declination = np.degrees(declination)
     return intensity, inclination, declination
-
-
