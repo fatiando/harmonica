@@ -6,9 +6,9 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
     Convert intensity, inclination and declination angles to a 3-component magnetic
     vector.
 
-    .. note:: Coordinate system is assumed to be x->North, y->East, z->Down.
-        Inclination is positive down and declination is measured with respect
-        to x (North).
+    .. note::
+        Inclination is measured positive downward from the horizontal plane and
+        declination is measured with respect to North and it is positive east.
 
     Parameters
     ----------
@@ -16,11 +16,11 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
         Intensity (norm) of the magnetic vector in degree.
     inclination : float or array
         Inclination angle of the magnetic vector in degree.
-        It mas be in ``degrees``.
+        It mast be in ``degrees``.
         If ``degrees`` is False, then it's returned in radians.
     declination : float or array
         Declination angle of the magnetic vector.
-        It mas be in ``degrees``.
+        It mast be in ``degrees``.
 
     Returns
     -------
@@ -29,17 +29,16 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
 
     Examples
     --------
-    >>> import numpy
-    >>> print ang2vec(3, 45, 45)
-    [1.5  1.5  2.12132034]
+    >>> magnetic_e, magnetic_n, magnetic_u = magnetic_ang_to_vec(3.0, 45.0, 45.0)
+    >>> print(magnetic_e, magnetic_n, magnetic_u)
+    1.5, 1.5000000000000002, -2.1213203435596424
     """
-    magnetic_vector = [
-        np.cos(np.deg2rad(inclination)) * np.cos(np.deg2rad(declination)),
-        np.cos(np.deg2rad(inclination)) * np.sin(np.deg2rad(declination)),
-        np.sin(np.rad2deg(inclination))
-    ]
-    return np.transpose([intensity * i for i in magnetic_vector])
-
+    inc_rad = np.radians(inclination)
+    dec_rad = np.radians(declination)
+    magnetic_e = intensity * np.cos(inc_rad) * np.sin(dec_rad)
+    magnetic_n = intensity * np.cos(inc_rad) * np.cos(dec_rad)
+    magnetic_u = - intensity *  np.sin(inc_rad)
+    return magnetic_e, magnetic_n, magnetic_u
 
 def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     r"""
@@ -50,7 +49,7 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
 
     .. math::
 
-        I = \sqrt{B_e^2 + B_n^2 + B_u^2}
+        T = \sqrt{B_e^2 + B_n^2 + B_u^2}
 
     where :math:`B_e`, :math:`B_n`, :math:`B_u` are the easting, northing and upward
     components of the magnetic vector, respectively.
@@ -60,7 +59,7 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
 
     .. math::
 
-        Inc = \arctan \frac{-B_u}{\sqrt{B_e^2 + B_n^2}}
+        Inc = \arctan \frac{- B_u}{\sqrt{B_e^2 + B_n^2}}
 
     And the declination angle is defined as the azimuth of the projection of the
     magnetic field vector onto the horizontal plane (starting from the northing
@@ -69,6 +68,11 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     .. math::
 
         Dec = \arcsin \frac{B_e}{\sqrt{B_e^2 + B_n^2}}
+
+    .. note::
+        Inclination is measured positive downward from the horizontal plane and
+        declination is measured with respect to North and it is positive east.
+
 
     Parameters
     ----------
@@ -89,18 +93,18 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
         Intensity of the magnetic vector.
     inclination : float or array
         Inclination angle of the magnetic vector.
-        If ``degrees`` is True, then the angle is returned in degrees.
-        If ``degrees`` is False, then it's returned in radians.
+        If ``degrees`` is True, then the angle is returned in degree, else it's
+        returned in radians.
     declination : float or array
         Declination angle of the magnetic vector.
-        If ``degrees`` is True, then the angle is returned in degrees.
-        If ``degrees`` is False, then it's returned in radians.
+        If ``degrees`` is True, then the angle is returned in degrees, else it's
+        returned in radians.
 
     Examples
     --------
-    >>> intensity, inc, dec = magnetic_vec_to_ang(1.5, 1.5, 2.121320343559643)
+    >>> intensity, inc, dec = magnetic_vec_to_ang(1.5, 1.5, -2.12132)
     >>> print(intensity, inc, dec)
-    3.000 45.000 45.000
+    2.999999757066657, 44.99999536031435, 45.00000000000001
     """
     # Compute the intensity
     vectors = np.vstack((magnetic_e, magnetic_n, magnetic_u)).T
