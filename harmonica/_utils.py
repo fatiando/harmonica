@@ -1,5 +1,46 @@
 import numpy as np
 
+
+def magnetic_ang_to_vec(intensity, inclination, declination):
+    """
+    Convert intensity, inclination and declination angles to a 3-component magnetic
+    vector.
+
+    .. note:: Coordinate system is assumed to be x->North, y->East, z->Down.
+        Inclination is positive down and declination is measured with respect
+        to x (North).
+
+    Parameters
+    ----------
+    intensity: float or array
+        Intensity (norm) of the magnetic vector in degree.
+    inclination : float or array
+        Inclination angle of the magnetic vector in degree.
+        It mas be in ``degrees``.
+        If ``degrees`` is False, then it's returned in radians.
+    declination : float or array
+        Declination angle of the magnetic vector.
+        It mas be in ``degrees``.
+
+    Returns
+    -------
+    magnetic_vector : array = [magnetic_e, magnetic_n, magnetic_u]
+        Magnetic vector.
+
+    Examples
+    --------
+    >>> import numpy
+    >>> print ang2vec(3, 45, 45)
+    [1.5  1.5  2.12132034]
+    """
+    magnetic_vector = [
+        np.cos(np.deg2rad(inclination)) * np.cos(np.deg2rad(declination)),
+        np.cos(np.deg2rad(inclination)) * np.sin(np.deg2rad(declination)),
+        np.sin(np.rad2deg(inclination))
+    ]
+    return np.transpose([intensity * i for i in magnetic_vector])
+
+
 def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     r"""
     Convert the 3-component of the magnetic vector to magnetic intensity and inclination
