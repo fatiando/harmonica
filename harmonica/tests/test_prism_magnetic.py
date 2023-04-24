@@ -77,7 +77,9 @@ class TestSerialVsParallel:
     @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
     def test_prisms_parallel_vs_serial_no_numba(self, component):
         """
-        Check if the parallelized run returns the same results as the serial one
+        Check results of parallelized and serials runs
+
+        Run a small problem with Numba disable to count for test coverage.
         """
         prisms = [
             [-100, 0, -100, 0, -10, 0],
@@ -106,7 +108,9 @@ class TestSerialVsParallel:
     @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
     def test_prisms_parallel_vs_serial(self, component):
         """
-        Check if the parallelized run returns the same results as the serial one
+        Check results of parallelized and serials runs
+
+        Run a large problem only with Numba enabled.
         """
         prisms = [
             [-100, 0, -100, 0, -10, 0],
