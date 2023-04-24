@@ -47,7 +47,7 @@ def test_invalid_field():
 
 def test_invalid_density_array():
     "Check if error is raised when density shape does not match prisms shape"
-    # Create a set of 4 tesseroids
+    # Create a set of 4 prisms
     prisms = [
         [-100, 0, -100, 0, -200, -100],
         [-100, 0, 0, 100, -200, -100],
