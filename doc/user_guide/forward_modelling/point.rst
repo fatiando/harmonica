@@ -93,7 +93,7 @@ Lets plot this gravitational field:
 
 .. jupyter-execute::
 
-   import pygmt 
+   import pygmt
 
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
@@ -220,7 +220,7 @@ Lets plot these results using :mod:`pygmt`:
 
 .. jupyter-execute::
 
-   import pygmt 
+   import pygmt
 
    grid = vd.make_xarray_grid(
       coordinates_spherical, g_z, data_names="g_z", extra_coords_names="extra")
@@ -236,6 +236,16 @@ Lets plot these results using :mod:`pygmt`:
       grid=grid.g_z,
       frame=[f"WSne+t{title}", "x", "y"],
       cmap=True,)
-      
+
    fig.colorbar(cmap=True, position="JMR", frame=["a0.000000005", "x+lmGal"])
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <point>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <point>`
+        :text-align: center

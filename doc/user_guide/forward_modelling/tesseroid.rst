@@ -98,7 +98,7 @@ And finally plot the computed gravitational field
 
 .. jupyter-execute::
 
-   import pygmt 
+   import pygmt
    grid = vd.make_xarray_grid(
       coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
@@ -257,3 +257,13 @@ Finally, lets plot it:
    fig.coast(shorelines="1p,black")
 
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <tesseroid>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <tesseroid>`
+        :text-align: center
