@@ -20,13 +20,13 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
     Parameters
     ----------
     intensity: float or array
-        Intensity (norm) of the magnetic vector in degree.
+        Intensity (norm) of the magnetic vector in A/m.
     inclination : float or array
         Inclination angle of the magnetic vector in degree.
-        It mast be in ``degrees``.
+        It must be in ``degrees``.
     declination : float or array
         Declination angle of the magnetic vector.
-        It mast be in ``degrees``.
+        It must be in ``degrees``.
 
     Returns
     -------
@@ -53,7 +53,7 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
     return magnetic_e, magnetic_n, magnetic_u
 
 
-def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
+def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     r"""
     Convert the 3-component of the magnetic vector to magnetic intensity and inclination
     and declination angles.
@@ -120,8 +120,7 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     2.999999757066657, 44.99999536031435, 45.00000000000001
     """
     # Compute the intensity as a norm
-    vectors = np.vstack((magnetic_e, magnetic_n, magnetic_u)).T
-    intensity = np.linalg.norm(vectors, axis=1)
+    intensity = np.sqrt(magnetic_e**2 + magnetic_n**2 + magnetic_u**2)
     # Compute the horizontal component of the magnetic vector
     horizontal_component = np.array([np.sqrt(magnetic_e**2 + magnetic_n**2)])
     # Mask the values equal to zero in the horizontal component
@@ -137,5 +136,7 @@ def magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u, degrees=True):
         inclination = np.degrees(inclination)
         declination = np.degrees(declination)
     if len(intensity) == 1:
-        intensity = intensity[0]
-    return intensity, inclination[0], declination[0]
+        intensity, = intensity
+        inclination, = inclination
+        declination, = declination
+    return intensity, inclination, declination
