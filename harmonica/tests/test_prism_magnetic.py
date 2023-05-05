@@ -336,8 +336,8 @@ class TestAgainstChoclo:
                     easting[i],
                     northing[i],
                     upward[i],
-                    sample_prisms[j, :],
-                    sample_magnetizations[j, :],
+                    *sample_prisms[j, :],
+                    *sample_magnetizations[j, :],
                 )
                 expected_magnetic_e[i] += b_e
                 expected_magnetic_n[i] += b_n
@@ -373,8 +373,8 @@ class TestAgainstChoclo:
                     easting[i],
                     northing[i],
                     upward[i],
-                    sample_prisms[j, :],
-                    sample_magnetizations[j, :],
+                    *sample_prisms[j, :],
+                    *sample_magnetizations[j, :],
                 )
         # Convert to nT
         expected_result *= 1e9

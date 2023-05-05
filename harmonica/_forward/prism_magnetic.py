@@ -262,8 +262,15 @@ def _jit_prism_magnetic_field(
                 coordinates[0][l],
                 coordinates[1][l],
                 coordinates[2][l],
-                prisms[m],
-                magnetization[m, :],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
+                magnetization[m, 0],
+                magnetization[m, 1],
+                magnetization[m, 2],
             )
             b_e[l] += easting_comp
             b_n[l] += northing_comp
@@ -315,8 +322,15 @@ def _jit_prism_magnetic_component(
                 coordinates[0][l],
                 coordinates[1][l],
                 coordinates[2][l],
-                prisms[m],
-                magnetization[m, :],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
+                magnetization[m, 0],
+                magnetization[m, 1],
+                magnetization[m, 2],
             )
         # Update progress bar if called
         if update_progressbar:
