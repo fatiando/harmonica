@@ -306,7 +306,16 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
     for l in prange(easting.size):
         for m in range(prisms.shape[0]):
             out[l] += kernel(
-                easting[l], northing[l], upward[l], prisms[m, :], density[m]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
+                density[m],
             )
         # Update progress bar if called
         if update_progressbar:
