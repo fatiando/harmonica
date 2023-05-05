@@ -209,7 +209,16 @@ class TestAgainstChoclo:
         for i in range(easting.size):
             for j in range(densities.size):
                 expected_result[i] += choclo_func(
-                    easting[i], northing[i], upward[i], prisms[j, :], densities[j]
+                    easting[i],
+                    northing[i],
+                    upward[i],
+                    prisms[j, 0],
+                    prisms[j, 1],
+                    prisms[j, 2],
+                    prisms[j, 3],
+                    prisms[j, 4],
+                    prisms[j, 5],
+                    densities[j],
                 )
         if field in ("g_z", "g_ez", "g_nz"):
             expected_result *= -1  # invert sign
