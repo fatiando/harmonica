@@ -274,7 +274,9 @@ def _discard_null_prisms(prisms, density):
     return prisms, density
 
 
-def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=None):
+def jit_prism_gravity(
+    coordinates, prisms, density, forward_func, out, progress_proxy=None
+):
     """
     Compute gravitational field of prisms on computations points
 
@@ -292,8 +294,9 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
     density : 1d-array
         Array containing the density of each prism in kg/m^3. Must have the
         same size as the number of prisms.
-    kernel : func
-        Kernel function that will be used to compute the desired field.
+    forward_func : func
+        Forward modelling function that will be used to compute the desired
+        field.
     out : 1d-array
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
@@ -305,7 +308,7 @@ def jit_prism_gravity(coordinates, prisms, density, kernel, out, progress_proxy=
     # Iterate over computation points and prisms
     for l in prange(easting.size):
         for m in range(prisms.shape[0]):
-            out[l] += kernel(
+            out[l] += forward_func(
                 easting[l],
                 northing[l],
                 upward[l],
