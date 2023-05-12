@@ -61,7 +61,7 @@ disturbance_topofree = disturbance - bouguer
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik", continuous=True)
+pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik+h0", continuous=True)
 
 title = "Topography-free (Bouguer) gravity disturbance of the Earth"
 
