@@ -4,7 +4,7 @@ sphinx-book-theme==0.2.*
 sphinx-gallery==0.10.*
 sphinx-design==0.2.*
 sphinx-copybutton==0.5.*
-jupyter-sphinx==0.3.*
+jupyter-sphinx==0.4.*
 boule
 pyproj
 ensaio>=0.5.*

@@ -234,3 +234,13 @@ The best parameters not only produce a better score, but they also generate
 a visibly more accurate prediction. In the first plot the equivalent sources
 are so shallow that we can actually see the distribution of sources in the
 produced grid.
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <eqs-parameters-estimation>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <eqs-parameters-estimation>`
+        :text-align: center
