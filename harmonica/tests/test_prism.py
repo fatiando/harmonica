@@ -260,7 +260,7 @@ def test_prism_against_infinite_slab():
     """
     # Define an observation point at 1.5m above zero
     height = 1.5
-    coordinates = (0, 0, 1.5)
+    coordinates = (0, 0, height)
     # Define prisms with a top surface located at the same height as the
     # observation point. Each prisms will have a thickness of 10.5m, and
     # horizontal dimensions from 1e3 to 1e9m, and density of 2670 kg/m^3.
