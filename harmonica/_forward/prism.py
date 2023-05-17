@@ -84,8 +84,8 @@ def prism_gravity(
         system. All coordinates should be in meters.
     prisms : list, 1d-array, or 2d-array
         List or array containing the coordinates of the prism(s) in the
-        following order:
-        west, east, south, north, bottom, top, in a Cartesian coordinate system.
+        following order: west, east, south, north, bottom, top, in a Cartesian
+        coordinate system.
         All coordinates should be in meters. Coordinates for more than one
         prism can be provided. In this case, *prisms* should be a list of lists
         or 2d-array (with one prism per row).
