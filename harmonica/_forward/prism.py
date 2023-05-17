@@ -183,11 +183,13 @@ def prism_gravity(
         progress_proxy = None
     # Choose parallelized or serialized forward function
     if parallel:
-        forward_func = jit_prism_gravity_parallel
+        gravity_prism_func = jit_prism_gravity_parallel
     else:
-        forward_func = jit_prism_gravity_serial
+        gravity_prism_func = jit_prism_gravity_serial
     # Compute gravitational field
-    forward_func(coordinates, prisms, density, FIELDS[field], result, progress_proxy)
+    gravity_prism_func(
+        coordinates, prisms, density, FIELDS[field], result, progress_proxy
+    )
     # Close previously created progress bars
     if progress_proxy:
         progress_proxy.close()
@@ -296,7 +298,8 @@ def jit_prism_gravity(
         same size as the number of prisms.
     forward_func : func
         Forward modelling function that will be used to compute the desired
-        field.
+        field. It could be one of the forward modelling functions in
+        :mod:`choclo.prism`.
     out : 1d-array
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
