@@ -82,9 +82,7 @@ Magnetic fields:
     dipole_magnetic
     dipole_magnetic_component
 
-
-Prism and tesseroid layers
---------------------------
+Layers and meshes:
 
 .. autosummary::
     prism_layer
