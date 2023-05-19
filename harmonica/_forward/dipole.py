@@ -106,6 +106,12 @@ def dipole_magnetic_component(
     """
     Compute single magnetic field component of dipoles in Cartesian coordinates
 
+    .. important::
+
+        Use this function only if you need to compute a single component of the
+        magnetic field. Use :func:`harmonica.dipole_magnetic` to compute the
+        three components more efficiently.
+
     Parameters
     ----------
     coordinates : list of arrays
