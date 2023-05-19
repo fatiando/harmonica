@@ -111,7 +111,7 @@ def prism_gravity(
     >>> # the prism generates on the computation points
     >>> gz = prism_gravity(coordinates, prism, density, field="g_z")
     >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
-    (0.06551, 0.06628, 0.06173)
+    (0.06552, 0.06629, 0.06174)
 
     Define two prisms with positive and negative density contrasts
 
@@ -120,7 +120,7 @@ def prism_gravity(
     >>> # Compute the g_z that the prisms generate on the computation points
     >>> gz = prism_gravity(coordinates, prisms, densities, field="g_z")
     >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
-    (-0.05379, 0.02908, 0.11235)
+    (-0.05380, 0.02908, 0.11237)
 
     """
     kernels = {"potential": kernel_potential, "g_z": kernel_g_z}

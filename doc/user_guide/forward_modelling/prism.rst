@@ -206,3 +206,13 @@ Finally, lets plot the gravitational field:
       cmap='viridis',)
    fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <prism>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <prism>`
+        :text-align: center
