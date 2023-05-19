@@ -52,10 +52,10 @@ def prism_gravity(
 
     Parameters
     ----------
-    coordinates : list or 1d-array
-        List or array containing ``easting``, ``northing`` and ``upward`` of
-        the computation points defined on a Cartesian coordinate system.
-        All coordinates should be in meters.
+    coordinates : list of arrays
+        List of arrays containing the ``easting``, ``northing`` and ``upward``
+        coordinates of the computation points defined on a Cartesian coordinate
+        system. All coordinates should be in meters.
     prisms : list, 1d-array, or 2d-array
         List or array containing the coordinates of the prism(s) in the
         following order:
@@ -111,7 +111,7 @@ def prism_gravity(
     >>> # the prism generates on the computation points
     >>> gz = prism_gravity(coordinates, prism, density, field="g_z")
     >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
-    (0.06551, 0.06628, 0.06173)
+    (0.06552, 0.06629, 0.06174)
 
     Define two prisms with positive and negative density contrasts
 
@@ -120,7 +120,7 @@ def prism_gravity(
     >>> # Compute the g_z that the prisms generate on the computation points
     >>> gz = prism_gravity(coordinates, prisms, densities, field="g_z")
     >>> print("({:.5f}, {:.5f}, {:.5f})".format(*gz))
-    (-0.05379, 0.02908, 0.11235)
+    (-0.05380, 0.02908, 0.11237)
 
     """
     kernels = {"potential": kernel_potential, "g_z": kernel_g_z}
