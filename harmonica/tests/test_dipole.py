@@ -1,15 +1,21 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test magnetic forward functions for dipoles
 """
-import pytest
+import choclo
 import numpy as np
 import numpy.testing as npt
+import pytest
 import verde as vd
-import choclo
 from choclo.dipole import magnetic_field
 
-from .utils import run_only_with_numba
 from .. import dipole_magnetic, dipole_magnetic_component
+from .utils import run_only_with_numba
 
 
 def test_invalid_component():

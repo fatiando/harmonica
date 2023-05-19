@@ -8,8 +8,8 @@
 Forward modelling for magnetic fields of dipoles
 """
 import numpy as np
+from choclo.dipole import magnetic_e, magnetic_field, magnetic_n, magnetic_u
 from numba import jit, prange
-from choclo.dipole import magnetic_field, magnetic_e, magnetic_n, magnetic_u
 
 
 def dipole_magnetic(
