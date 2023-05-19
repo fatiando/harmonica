@@ -52,10 +52,10 @@ def prism_gravity(
 
     Parameters
     ----------
-    coordinates : list or 1d-array
-        List or array containing ``easting``, ``northing`` and ``upward`` of
-        the computation points defined on a Cartesian coordinate system.
-        All coordinates should be in meters.
+    coordinates : list of arrays
+        List of arrays containing the ``easting``, ``northing`` and ``upward``
+        coordinates of the computation points defined on a Cartesian coordinate
+        system. All coordinates should be in meters.
     prisms : list, 1d-array, or 2d-array
         List or array containing the coordinates of the prism(s) in the
         following order:
