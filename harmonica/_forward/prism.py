@@ -271,6 +271,7 @@ def _check_singular_points(coordinates, prisms, field):
         )
 
 
+@jit(nopython=True)
 def _any_singular_point_g_ee(coordinates, prisms):
     """
     Check observation points as singular points of g_ee
@@ -281,14 +282,31 @@ def _any_singular_point_g_ee(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_northing_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ) or is_point_on_upward_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
 
 
+@jit(nopython=True)
 def _any_singular_point_g_nn(coordinates, prisms):
     """
     Check observation points as singular points of g_nn
@@ -299,14 +317,31 @@ def _any_singular_point_g_nn(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ) or is_point_on_upward_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
 
 
+@jit(nopython=True)
 def _any_singular_point_g_zz(coordinates, prisms):
     """
     Check observation points as singular points of g_zz
@@ -317,14 +352,31 @@ def _any_singular_point_g_zz(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ) or is_point_on_northing_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
 
 
+@jit(nopython=True)
 def _any_singular_point_g_en(coordinates, prisms):
     """
     Check observation points as singular points of g_en
@@ -335,12 +387,21 @@ def _any_singular_point_g_en(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_upward_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
 
 
+@jit(nopython=True)
 def _any_singular_point_g_ez(coordinates, prisms):
     """
     Check observation points as singular points of g_ez
@@ -351,12 +412,21 @@ def _any_singular_point_g_ez(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_northing_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
 
 
+@jit(nopython=True)
 def _any_singular_point_g_nz(coordinates, prisms):
     """
     Check observation points as singular points of g_nz
@@ -367,7 +437,15 @@ def _any_singular_point_g_nz(coordinates, prisms):
     for l in range(n_coords):
         for m in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l], northing[l], upward[l], *prisms[m, :]
+                easting[l],
+                northing[l],
+                upward[l],
+                prisms[m, 0],
+                prisms[m, 1],
+                prisms[m, 2],
+                prisms[m, 3],
+                prisms[m, 4],
+                prisms[m, 5],
             ):
                 return True
     return False
