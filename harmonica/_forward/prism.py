@@ -146,7 +146,7 @@ def prism_gravity(
     belong to the faces normal to their direction (e.g. ``"g_zz"`` is not
     define on horizontal faces): two different limits exist when approaching
     from the inside and from the outside of the prism.
-    This functions returns the limit of these components while approaching from
+    This function returns the limit of these components while approaching from
     the outside.
 
     References
