@@ -256,10 +256,11 @@ class DatasetAccessorTesseroidLayer:
 
         Parameters
         ----------
-        coordinates : list or 1d-array
-            List of array containing ``latitude``, ``longitude`` and ``upward``
-            of the computation points defined on a spherical coordinates
-            system. ``upward`` coordinate should be in meters.
+        coordinates : list of arrays
+            List of arrays containing the ``longitude``, ``latitude`` and
+            ``radius`` coordinates of the computation points, defined on
+            a spherical geocentric coordinate system. Both ``longitude`` and
+            ``latitude`` should be in degrees and ``radius`` in meters.
         field : str
             Gravitational field that wants to be computed.
             The variable fields are:

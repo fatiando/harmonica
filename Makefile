@@ -1,7 +1,7 @@
 # Build, package, test, and clean
 PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
-PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
+PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules --doctest-continue-on-failure -v --pyargs
 NUMBATEST_ARGS=--doctest-modules -v --pyargs -m use_numba
 STYLE_CHECK_FILES=$(PROJECT) examples doc/conf.py tools
 
