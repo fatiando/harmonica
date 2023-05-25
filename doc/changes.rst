@@ -14,7 +14,7 @@ Version 0.6.0
 
 Deprecations:
 
-- Deprecate `EQLHarmonic` and `EQLHarmonicSpherical` classes (`#366 <https://github.com/fatiando/harmonica/pull/366>`__)
+- Deprecate ``EQLHarmonic`` and ``EQLHarmonicSpherical`` classes (`#366 <https://github.com/fatiando/harmonica/pull/366>`__)
 - Deprecate ``isostasy_airy`` function (`#379 <https://github.com/fatiando/harmonica/pull/379>`__)
 - Deprecate the synthetic and dataset modules (`#380 <https://github.com/fatiando/harmonica/pull/380>`__)
 
