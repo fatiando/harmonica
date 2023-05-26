@@ -44,7 +44,7 @@ def prism_magnetic(
         west, east, south, north, bottom, top in a Cartesian coordinate system.
         All coordinates should be in meters. Coordinates for more than one
         prism can be provided. In this case, *prisms* should be a list of lists
-        or 2d-array (with one prism per line).
+        or 2d-array (with one prism per row).
     magnetization : list or array
         List or array containing the magnetization vector of each prism in
         :math:`Am^{-1}`. Each vector should be an array with three elements
