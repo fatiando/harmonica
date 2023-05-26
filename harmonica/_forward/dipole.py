@@ -69,16 +69,7 @@ def dipole_magnetic(
     magnetic_moments = np.atleast_2d(magnetic_moments)
     # Sanity checks
     if not disable_checks:
-        if magnetic_moments.shape[1] != 3:
-            raise ValueError(
-                f"Invalid magnetic moments with '{magnetic_moments.shape[1]}' elements."
-                " Magnetic moments vectors should have 3 components."
-            )
-        if magnetic_moments.shape[0] != dipoles[0].size:
-            raise ValueError(
-                f"Number of elements in magnetic_moments ({magnetic_moments.shape[0]})"
-                f" mismatch the number of dipoles ({dipoles[0].size})."
-            )
+        _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments)
     # Compute the magnetic fields of the dipoles
     if parallel:
         _jit_dipole_magnetic_field_cartesian_parallel(
@@ -161,16 +152,7 @@ def dipole_magnetic_component(
     forward_function = _get_magnetic_forward_function(component)
     # Sanity checks
     if not disable_checks:
-        if magnetic_moments.shape[1] != 3:
-            raise ValueError(
-                f"Invalid magnetic moments with '{magnetic_moments.shape[1]}' elements."
-                " Magnetic moments vectors should have 3 components."
-            )
-        if magnetic_moments.shape[0] != dipoles[0].size:
-            raise ValueError(
-                f"Number of elements in magnetic_moments ({magnetic_moments.shape[0]})"
-                f" mismatch the number of dipoles ({dipoles[0].size})."
-            )
+        _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments)
     # Compute the magnetic fields of the dipoles
     if parallel:
         _jit_dipole_magnetic_component_cartesian_parallel(
@@ -183,6 +165,22 @@ def dipole_magnetic_component(
     # Convert to nT
     result *= 1e9
     return result.reshape(cast.shape)
+
+
+def _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments):
+    """
+    Check if dipoles and magnetic moments have valid shape and size
+    """
+    if magnetic_moments.shape[1] != 3:
+        raise ValueError(
+            f"Invalid magnetic moments with '{magnetic_moments.shape[1]}' elements."
+            " Magnetic moments vectors should have 3 components."
+        )
+    if magnetic_moments.shape[0] != dipoles[0].size:
+        raise ValueError(
+            f"Number of elements in magnetic_moments ({magnetic_moments.shape[0]})"
+            f" mismatch the number of dipoles ({dipoles[0].size})."
+        )
 
 
 def _jit_dipole_magnetic_field_cartesian(
