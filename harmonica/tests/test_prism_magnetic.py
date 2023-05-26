@@ -278,7 +278,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_prisms(self):
         """
-        Return three sample prisms
+        Return four sample prisms
         """
         prisms = np.array(
             [
