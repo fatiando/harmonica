@@ -18,7 +18,7 @@ dependencies:
   - verde>=1.7.0
   - xarray>=0.16
   - xrft>=1.0
-  - choclo>=0.1.0
+  - choclo>=0.1
   # Optional requirements
   - pyvista>=0.27
   - vtk>=9

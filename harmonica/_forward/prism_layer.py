@@ -329,10 +329,10 @@ class DatasetAccessorPrismLayer:
 
         Parameters
         ----------
-        coordinates : list or 1d-array
-            List or array containing ``easting``, ``northing`` and ``upward``
-            of the computation points defined on a Cartesian coordinate system.
-            All coordinates should be in meters.
+        coordinates : list of arrays
+            List of arrays containing the ``easting``, ``northing`` and
+            ``upward`` coordinates of the computation points defined on
+            a Cartesian coordinate system. All coordinates should be in meters.
         field : str
             Gravitational field that wants to be computed.
             The available fields are:
