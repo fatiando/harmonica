@@ -34,8 +34,8 @@ def prism_magnetic(
 
     Parameters
     ----------
-    coordinates : list or 1d-array
-        List or array containing ``easting``, ``northing`` and ``upward`` of
+    coordinates : list of arrays
+        List of arrays containing the ``easting``, ``northing`` and ``upward`` coordinates of
         the computation points defined on a Cartesian coordinate system.
         All coordinates should be in meters.
     prisms : list, 1d-array, or 2d-array
