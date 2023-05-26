@@ -96,7 +96,7 @@ def dipole_magnetic_component(
     disable_checks=False,
 ):
     """
-    Compute single magnetic field component of dipoles in Cartesian coordinates
+    Single magnetic field component of dipoles in Cartesian coordinates
 
     .. important::
 
