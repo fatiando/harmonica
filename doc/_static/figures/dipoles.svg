@@ -24,36 +24,17 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="8"
-     inkscape:cx="57"
-     inkscape:cy="55.6875"
-     inkscape:window-width="1916"
-     inkscape:window-height="1013"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="21.478368"
+     inkscape:cy="50.558134"
+     inkscape:window-width="1050"
+     inkscape:window-height="1619"
      inkscape:window-x="0"
-     inkscape:window-y="29"
+     inkscape:window-y="25"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
      id="defs341">
-    <marker
-       style="overflow:visible"
-       id="Arrow2"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Arrow2"
-       markerWidth="3.700125"
-       markerHeight="3.691"
-       viewBox="0 0 7.7 5.6"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="none">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="arrow2L" />
-    </marker>
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath4450">
@@ -518,6 +499,25 @@
         </g>
       </g>
     </clipPath>
+    <marker
+       style="overflow:visible"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow2901564868668"
+       markerWidth="3.700125"
+       markerHeight="3.691"
+       viewBox="0 0 7.7 5.6"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="none"
+       id="Arrow2901564868668">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:#ececec;fill-rule:evenodd;stroke:#ececec"
+         id="path6361" />
+    </marker>
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -559,34 +559,31 @@
        style="fill:none;fill-opacity:1;stroke:#ababab;stroke-width:0.06173611;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:0.18520831,0.18520831;stroke-dashoffset:0;stroke-opacity:1"
        d="M 74.458074,103.8352 94.589302,79.288975"
        id="path10338" />
-    <g
-       id="g9070">
-      <path
-         style="fill:none;fill-opacity:1;stroke:#ececec;stroke-width:0.615944;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2)"
-         d="m 81.837173,94.803608 4.389554,-5.365134"
-         id="path857"
-         sodipodi:nodetypes="cc" />
-      <circle
-         style="fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         id="circle3780"
-         cx="123.3643"
-         cy="17.329292"
-         r="0.98239028"
-         transform="rotate(39.28876)" />
-    </g>
+    <path
+       style="fill:#ececec;fill-opacity:1;stroke:#ececec;stroke-width:0.616;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2901564868668)"
+       d="m 81.837173,94.803608 4.389554,-5.365134"
+       id="path857"
+       sodipodi:nodetypes="cc" />
+    <circle
+       style="fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+       id="circle3780"
+       cx="123.3643"
+       cy="17.329292"
+       r="0.98239028"
+       transform="rotate(39.28876)" />
     <path
        style="fill:#ababab;fill-opacity:1;stroke:none;stroke-width:0.0445293;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 77.574915,97.966378 76.975309,97.076219 76.41554,98.100298 Z"
+       d="m 76.419917,97.438267 0.599606,0.890159 0.559769,-1.024079 z"
        id="path5218"
        sodipodi:nodetypes="cccc" />
     <path
        style="fill:#ababab;fill-opacity:1;stroke:none;stroke-width:0.0445293;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
-       d="m 78.707018,97.808819 0.830674,0.679627 -1.071611,0.462318 z"
+       d="m 78.280975,100.10051 -0.830674,-0.679627 1.071611,-0.462318 z"
        id="path5214"
        sodipodi:nodetypes="cccc" />
     <path
        style="fill:#ababab;fill-opacity:1;stroke:none;stroke-width:0.0445293;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
-       d="m 79.581177,99.670174 0.991276,0.411446 -0.892938,0.75149 z"
+       d="m 80.175595,100.84119 -0.991276,-0.41145 0.892938,-0.751485 z"
        id="path5216"
        sodipodi:nodetypes="cccc" />
     <path
