@@ -44,7 +44,7 @@ def dipole_magnetic(
         Might be useful to disable parallelization if the forward model is run
         by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
-        Data type assigned to the resulting gravitational field. Default to
+        Data type assigned to the resulting magnetic field. Default to
         ``np.float64``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
@@ -128,7 +128,7 @@ def dipole_magnetic_component(
         Might be useful to disable parallelization if the forward model is run
         by an already parallelized workflow. Default to True.
     dtype : data-type (optional)
-        Data type assigned to the resulting gravitational field. Default to
+        Data type assigned to the resulting magnetic field. Default to
         ``np.float64``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
