@@ -13,9 +13,9 @@ from numba import jit, prange
 from ..constants import GRAVITATIONAL_CONST
 from ._tesseroid_utils import (
     _adaptive_discretization,
-    check_points_outside_tesseroids,
     _check_tesseroids,
     _discard_null_tesseroids,
+    check_points_outside_tesseroids,
     gauss_legendre_quadrature,
     glq_nodes_weights,
 )

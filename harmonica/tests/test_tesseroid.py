@@ -24,8 +24,8 @@ from .._forward.tesseroid import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,
-    check_points_outside_tesseroids,
     _check_tesseroids,
+    check_points_outside_tesseroids,
     tesseroid_gravity,
 )
 from ..constants import GRAVITATIONAL_CONST
