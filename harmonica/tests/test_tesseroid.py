@@ -249,7 +249,7 @@ class TestPointInsideTesseroid:
     def test_point_phased_longitude(self, point, tesseroid):
         """Test if error is raised when the longitude coords are phased."""
         point = np.atleast_2d(point).T
-        tesseroid = np.atleast_2d(tesseroid).T
+        tesseroid = np.atleast_2d(tesseroid)
         with pytest.raises(ValueError):
             check_points_outside_tesseroids(point, tesseroid)
 
