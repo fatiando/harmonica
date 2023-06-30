@@ -24,7 +24,7 @@ from .._forward.tesseroid import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,
-    _check_points_outside_tesseroids,
+    check_points_outside_tesseroids,
     _check_tesseroids,
     tesseroid_gravity,
 )
@@ -207,6 +207,7 @@ def test_disable_checks():
     npt.assert_allclose(invalid_result, -valid_result)
 
 
+@pytest.mark.use_numba
 def test_point_inside_tesseroid():
     "Check if a computation point inside the tesseroid is caught"
     tesseroids = np.atleast_2d([-10, 10, -10, 10, 100, 200])
@@ -223,19 +224,19 @@ def test_point_inside_tesseroid():
         np.atleast_2d([0, 10, 150]).T,  # point on northern surface
     ]
     for coordinates in points:
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+        check_points_outside_tesseroids(coordinates, tesseroids)
     # Test if computation point is inside the tesseroid
     coordinates = np.atleast_2d([0, 0, 150]).T
     with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+        check_points_outside_tesseroids(coordinates, tesseroids)
     # Test if computation point with phased longitude is inside the tesseroid
     coordinates = np.atleast_2d([360, 0, 150]).T
     with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+        check_points_outside_tesseroids(coordinates, tesseroids)
     tesseroids = np.atleast_2d([260, 280, -10, 10, 100, 200])
     coordinates = np.atleast_2d([-90, 0, 150]).T
     with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+        check_points_outside_tesseroids(coordinates, tesseroids)
 
 
 @pytest.mark.use_numba
