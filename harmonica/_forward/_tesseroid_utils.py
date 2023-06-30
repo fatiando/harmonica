@@ -8,7 +8,7 @@
 Utils functions for tesseroid forward modelling
 """
 import numpy as np
-from numba import jit, prange
+from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from .utils import distance_spherical
@@ -429,6 +429,7 @@ def check_points_outside_tesseroids(coordinates, tesseroids):
     ValueError
         If any computation point falls inside any tesseroid.
     """
+    longitude, latitude, radius = coordinates
     conflicting = _check_points_outside_tesseroids(coordinates, tesseroids)
     if conflicting:
         err_msg = (
@@ -436,11 +437,11 @@ def check_points_outside_tesseroids(coordinates, tesseroids):
             "Computation points must be outside of tesseroids.\n"
         )
         for i, j in conflicting:
-            longitude, latitude, radius = coordinates[:, i]
             west, east, south, north, bottom, top = tesseroids[j, :]
             err_msg += (
-                f"Computation point '({longitude}, {latitude}, {radius})' inside "
-                f"tesseroid '({west}, {east}, {south}, {north}, {bottom}, {top})'. "
+                f" - Computation point '({longitude[i]}, {latitude[i]}, {radius[i]})' "
+                "inside tesseroid "
+                f"'({west}, {east}, {south}, {north}, {bottom}, {top})'.\n"
             )
         raise ValueError(err_msg)
 
