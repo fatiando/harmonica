@@ -135,8 +135,8 @@ def point_gravity(
 
     Parameters
     ----------
-    coordinates : list or array
-        List or array containing the coordinates of computation points in the
+    coordinates : list of arrays
+        List of arrays containing the coordinates of computation points in the
         following order: ``easting``, ``northing`` and ``upward`` (if
         coordinates given in Cartesian coordinates), or ``longitude``,
         ``latitude`` and ``radius`` (if given on a spherical geocentric

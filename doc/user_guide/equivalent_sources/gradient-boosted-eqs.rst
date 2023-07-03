@@ -192,4 +192,12 @@ And plot it:
     fig.show()
 
 
+----
 
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <gradient-boosted-eqs>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <gradient-boosted-eqs>`
+        :text-align: center

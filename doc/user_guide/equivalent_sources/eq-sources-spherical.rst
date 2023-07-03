@@ -184,3 +184,13 @@ Lets plot it:
     fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
     fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <eq-sources-spherical>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <eq-sources-spherical>`
+        :text-align: center

@@ -67,7 +67,7 @@ And plot it:
       color=data.gravity_disturbance_mgal,
       cmap=True,
       style="c3p",
-      projection="M15c", 
+      projection="M15c",
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
@@ -120,7 +120,7 @@ We can now compute the Bouguer disturbance and plot it:
       color=bouguer_disturbance,
       cmap=True,
       style="c3p",
-      projection="M15c", 
+      projection="M15c",
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"])
@@ -240,8 +240,18 @@ And plot it:
       color=topo_free_disturbance,
       cmap=True,
       style="c3p",
-      projection="M15c", 
+      projection="M15c",
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <topographic_correction>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <topographic_correction>`
+        :text-align: center

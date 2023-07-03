@@ -211,3 +211,12 @@ we are efectivelly upward continuing the data.
     fig.show()
 
 
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <block-averaged-eqs>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <block-averaged-eqs>`
+        :text-align: center

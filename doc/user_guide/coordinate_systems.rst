@@ -230,3 +230,13 @@ carried out through :meth:`boule.Ellipsoid.geodetic_to_spherical`:
     print("longitude:", longitude)
     print("spherical latitude:", sph_latitude)
     print("radius:", radius)
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <coordinate_systems>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <coordinate_systems>`
+        :text-align: center
