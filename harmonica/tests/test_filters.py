@@ -220,6 +220,19 @@ def test_apply_filter_grid_with_nans(invalid_grid_with_nans):
         apply_filter(invalid_grid_with_nans, dummy_filter)
 
 
+def test_coordinate_rounding_fix(sample_grid):
+    """
+    Check that the transformed grid has the same coordinates as the input grid.
+    """
+    print(sample_grid)
+    # Apply the dummy filter
+    filtered_grid = apply_filter(sample_grid, dummy_filter)
+
+    # Compare coordinates of original grid with coordinates of filtered grid
+    npt.assert_allclose(filtered_grid.easting.values, sample_grid.easting.values)
+    npt.assert_allclose(filtered_grid.northing.values, sample_grid.northing.values)
+
+
 # -----------------------------
 # Test upward derivative filter
 # -----------------------------
