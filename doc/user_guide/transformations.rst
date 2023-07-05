@@ -395,3 +395,13 @@ Let's plot the results side by side:
         pad=0.08,
     )
     plt.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <transformations>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <transformations>`
+        :text-align: center

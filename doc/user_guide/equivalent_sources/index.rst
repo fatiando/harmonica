@@ -137,7 +137,7 @@ And plot it:
          cmap=True,
          style="c3p",
          projection=fig_proj,
-         region=region, 
+         region=region,
          frame=['ag', f"+t{title}"],
       )
    fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
@@ -151,7 +151,7 @@ And plot it:
          y=northing,
          color=data.gravity_disturbance_mgal,
          cmap=True,
-         style="c3p", 
+         style="c3p",
          frame=['ag', f"+t{title}"],
       )
    fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
@@ -199,3 +199,13 @@ And plot it
    fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
 
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <index>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <index>`
+        :text-align: center
