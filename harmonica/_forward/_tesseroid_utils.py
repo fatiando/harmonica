@@ -448,70 +448,26 @@ def check_points_outside_tesseroids(coordinates, tesseroids):
 
 @jit(nopython=True)
 def _check_points_outside_tesseroids(coordinates, tesseroids):
+    """
+    Check if observation points fall inside tesseroids.
+    """
     longitude, latitude, radius = coordinates[:]
     conflicting = []
     for i in range(longitude.size):
         for j in range(tesseroids.shape[0]):
-            if _check_point_inside_tesseroid(
-                longitude[i],
-                latitude[i],
-                radius[i],
-                tesseroids[j, 0],
-                tesseroids[j, 1],
-                tesseroids[j, 2],
-                tesseroids[j, 3],
-                tesseroids[j, 4],
-                tesseroids[j, 5],
+            # Longitudinal boundaries of the tesseroid must be compared with
+            # longitudinal coordinates of computation points when moved to
+            # [0, 360) and [-180, 180).
+            longitude_360 = longitude[i] % 360
+            longitude_180 = ((longitude[i] + 180) % 360) - 180
+            west, east, south, north, bottom, top = tesseroids[j, :]
+            if (
+                (west < longitude_180 < east or west < longitude_360 < east)
+                and south < latitude[i] < north
+                and bottom < radius[i] < top
             ):
                 conflicting.append((i, j))
     return conflicting
-
-
-@jit(nopython=True)
-def _check_point_inside_tesseroid(
-    longitude, latitude, radius, west, east, south, north, bottom, top
-):
-    """
-    Check if observation point falls inside tesseroid.
-
-    Parameters
-    ----------
-    longitude : float
-        Longitude coordinate of the observation point in degrees.
-    latitude : float
-        Spherical latitude coordinate of the observation point in degrees.
-    radius : float
-        Geoscentric spherical radius of the observation point in meters.
-    west : float
-        West longitude bound of the tesseroid in degrees.
-    east : float
-        East longitude bound of the tesseroid in degrees.
-    south : float
-        South latitude bound of the tesseroid in degrees.
-    north : float
-        North latitude bound of the tesseroid in degrees.
-    bottom : float
-        Bottom radius bound of the tesseroid in meters.
-    top : float
-        Top radius bound of the tesseroid in meters.
-
-    Returns
-    -------
-    inside : bool
-        True if the observation point falls inside the tesseroid.
-    """
-    # Longitudinal boundaries of the tesseroid must be compared with
-    # longitudinal coordinates of computation points when moved to
-    # [0, 360) and [-180, 180).
-    longitude_360 = longitude % 360
-    longitude_180 = ((longitude + 180) % 360) - 180
-    if (
-        (west < longitude_180 < east or west < longitude_360 < east)
-        and south < latitude < north
-        and bottom < radius < top
-    ):
-        return True
-    return False
 
 
 def _longitude_continuity(tesseroids):
