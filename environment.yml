@@ -41,6 +41,7 @@ dependencies:
   - pygmt==0.7.*
   - gmt==6.4.*
   - gdal==3.5.*
+  - trame # needed by pyvista
   # Code style checks and autoformat
   - black==22.10.*
   - isort==5.10.*

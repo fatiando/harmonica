@@ -255,7 +255,7 @@ class TestPointInsideTesseroid:
 
     @pytest.mark.use_numba
     def test_multiple_points_and_tesseroids(self):
-        """Check if error is raised with multiple observation points and tesseroids"""
+        """Check if error is raised with multiple points and tesseroids."""
         tesseroids = np.atleast_2d(
             [
                 [-10, 10, -10, 10, 100, 200],
