@@ -44,11 +44,11 @@ jobs:
           - optional
         include:
           - dependencies: oldest
-            python: "3.7"
+            python: "3.8"
           - dependencies: latest
-            python: "3.10"
+            python: "3.11"
           - dependencies: optional
-            python: "3.10"
+            python: "3.11"
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
       # Used to tag codecov submissions
