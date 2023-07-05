@@ -224,7 +224,6 @@ def test_coordinate_rounding_fix(sample_grid):
     """
     Check that the transformed grid has the same coordinates as the input grid.
     """
-    print(sample_grid)
     # Apply the dummy filter
     filtered_grid = apply_filter(sample_grid, dummy_filter)
 
