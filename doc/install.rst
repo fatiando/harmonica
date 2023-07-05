@@ -6,7 +6,7 @@ Installing
 Which Python?
 -------------
 
-You'll need **Python 3.7 or greater**.
+You'll need **Python 3.8 or greater**.
 See :ref:`python-versions` if you require support for older versions.
 
 We recommend using the
