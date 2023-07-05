@@ -228,8 +228,8 @@ def test_coordinate_rounding_fix(sample_grid):
     filtered_grid = apply_filter(sample_grid, dummy_filter)
 
     # Compare coordinates of original grid with coordinates of filtered grid
-    npt.assert_allclose(filtered_grid.easting.values, sample_grid.easting.values)
-    npt.assert_allclose(filtered_grid.northing.values, sample_grid.northing.values)
+    npt.assert_array_equal(filtered_grid.easting.values, sample_grid.easting.values)
+    npt.assert_array_equal(filtered_grid.northing.values, sample_grid.northing.values)
 
 
 # -----------------------------
