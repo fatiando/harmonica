@@ -53,7 +53,8 @@ def tesseroid_gravity(
 
     .. important::
 
-        - The gravitational potential is returned in :math:`\text{J}/\text{kg}`.
+        - The gravitational potential is returned in
+          :math:`\text{J}/\text{kg}`.
         - The gravity acceleration components are returned in mgal
           (:math:`\text{m}/\text{s}^2`).
 
