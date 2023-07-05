@@ -13,6 +13,18 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
+from choclo.prism import (
+    gravity_e,
+    gravity_ee,
+    gravity_en,
+    gravity_eu,
+    gravity_n,
+    gravity_nn,
+    gravity_nu,
+    gravity_pot,
+    gravity_u,
+    gravity_uu,
+)
 
 try:
     from numba_progress import ProgressBar
@@ -20,13 +32,7 @@ except ImportError:
     ProgressBar = None
 
 from .. import bouguer_correction
-from .._forward.prism import (
-    _check_prisms,
-    _discard_null_prisms,
-    prism_gravity,
-    safe_atan2,
-    safe_log,
-)
+from .._forward.prism import _check_prisms, _discard_null_prisms, prism_gravity
 from .utils import run_only_with_numba
 
 
@@ -41,7 +47,7 @@ def test_invalid_field():
 
 def test_invalid_density_array():
     "Check if error is raised when density shape does not match prisms shape"
-    # Create a set of 4 tesseroids
+    # Create a set of 4 prisms
     prisms = [
         [-100, 0, -100, 0, -200, -100],
         [-100, 0, 0, 100, -200, -100],
@@ -90,7 +96,7 @@ def test_discard_null_prisms():
     )
     density = np.array([2670, 0, 3300, 3000, 2800, 2700])
     prisms, density = _discard_null_prisms(prisms, density)
-    npt.assert_allclose(prisms, np.array([[0, 10, -50, 33, -2e3, 150]]))
+    npt.assert_allclose(prisms, np.array([[0.0, 10.0, -50.0, 33.0, -2e3, 150.0]]))
     npt.assert_allclose(density, np.array([2670]))
 
 
@@ -139,254 +145,112 @@ def test_disable_checks():
     npt.assert_allclose(invalid_result, -valid_result)
 
 
-@pytest.mark.use_numba
-def test_potential_field_symmetry():
-    "Test if the potential field satisfies symmetry"
-    prism = [-100, 100, -100, 100, -100, 100]
-    density = 2670
-    # Create six outside computation points located on the normal directions to
-    # the prism faces and at the same distance from its center
-    coordinates = (
-        [-200, 200, 0, 0, 0, 0],
-        [0, 0, -200, 200, 0, 0],
-        [0, 0, 0, 0, -200, 200],
-    )
-    result = prism_gravity(coordinates, prism, density, field="potential")
-    npt.assert_allclose(result[0], result)
-    # Create six inside computation points located on the normal directions to
-    # the prism faces and at the same distance from its center
-    coordinates = ([-50, 50, 0, 0, 0, 0], [0, 0, -50, 50, 0, 0], [0, 0, 0, 0, -50, 50])
-    result = prism_gravity(coordinates, prism, density, field="potential")
-    npt.assert_allclose(result[0], result)
-    # Create twelve outside computation points located on the diagonal
-    # directions to the prism faces and at the same distance from its center.
-    # They can be divided into three sets: one made by those points that live
-    # on the horizontal plane that passes through the prism center, and the
-    # other two that live on the pair of vertical and perpendicular planes that
-    # also passes through the center of the prism.
-    coordinates = (
-        [-200, -200, 200, 200, -200, -200, 200, 200, 0, 0, 0, 0],
-        [-200, 200, -200, 200, 0, 0, 0, 0, -200, -200, 200, 200],
-        [0, 0, 0, 0, -200, 200, -200, 200, -200, 200, -200, 200],
-    )
-    result = prism_gravity(coordinates, prism, density, field="potential")
-    npt.assert_allclose(result[0], result)
-    # Create the same twelve points as before, but now all points fall inside
-    # the prism
-    coordinates = (
-        [-50, -50, 50, 50, -50, -50, 50, 50, 0, 0, 0, 0],
-        [-50, 50, -50, 50, 0, 0, 0, 0, -50, -50, 50, 50],
-        [0, 0, 0, 0, -50, 50, -50, 50, -50, 50, -50, 50],
-    )
-    result = prism_gravity(coordinates, prism, density, field="potential")
-    npt.assert_allclose(result[0], result)
-
-
-@pytest.mark.use_numba
-def test_g_z_symmetry_outside():
+class TestAgainstChoclo:
     """
-    Test if the g_z field satisfies symmetry
-
-    In order to test if the computed g_z satisfies the symmetry of a square
-    prism we will define several set of computation points:
-
-    A. Two points located on the vertical axis of the prism (``easting == 0``
-       and ``northing == 0``), one above and one below the prism at the same
-       distance from its center.
-    B. Four points located on the ``upward == 0`` plane around the prism
-       distributed normally to its faces , i.e. only one of the horizontal
-       coordinates will be nonzero.
-    C. Same as points defined in B, but located on a plane above the prism.
-    D. Same as points defined in B, but located on a plane below the prism.
-    E. Same as points defined in B, but located on a plane slightly above the
-       ``upward == 0`` plane.
-    F. Same as points defined in B, but located on a plane slightly below the
-       ``upward == 0`` plane.
-    G. Four points located on the ``upward == 0`` plane around the prism
-       distributed on the diagonal directions , i.e. both horizontal
-       coordinates will be equal and nonzero.
-    H. Same as points defined in G, but located on an plane above the prism.
-    I. Same as points defined in G, but located on an plane below the prism.
-    J. Same as points defined in G, but located on a plane slightly above the
-       ``upward == 0`` plane.
-    K. Same as points defined in G, but located on a plane slightly below the
-       ``upward == 0`` plane.
-
-    All computation points defined on the previous groups fall outside of the
-    prism.
-
-    The g_z field for a square prism (the horizontal dimensions of the prism
-    are equal) must satisfy the following symmetry rules:
-
-    - The g_z values on points A must be opposite.
-    - The g_z values on points B must be all zero.
-    - The g_z values on points C must be all equal.
-    - The g_z values on points D must be all equal.
-    - The g_z values on points E must be all equal.
-    - The g_z values on points F must be all equal.
-    - The g_z values on points C and D must be opposite.
-    - The g_z values on points E and F must be opposite.
-    - The g_z values on points G must be all zero.
-    - The g_z values on points H must be all equal.
-    - The g_z values on points I must be all equal.
-    - The g_z values on points J must be all equal.
-    - The g_z values on points K must be all equal.
-    - The g_z values on points H and I must be opposite.
-    - The g_z values on points J and K must be opposite.
+    Test forward modelling functions against dumb Choclo runs
     """
-    prism = [-100, 100, -100, 100, -150, 150]
-    density = 2670
-    computation_points = {
-        "A": ([0, 0], [0, 0], [-200, 200]),
-        "B": ([-200, 200, 0, 0], [0, 0, -200, 200], [0, 0, 0, 0]),
-        "C": ([-200, 200, 0, 0], [0, 0, -200, 200], [200, 200, 200, 200]),
-        "D": ([-200, 200, 0, 0], [0, 0, -200, 200], [-200, -200, -200, -200]),
-        "E": ([-200, 200, 0, 0], [0, 0, -200, 200], [1, 1, 1, 1]),
-        "F": ([-200, 200, 0, 0], [0, 0, -200, 200], [-1, -1, -1, -1]),
-        "G": ([-200, 200, 0, 0], [0, 0, -200, 200], [0, 0, 0, 0]),
-        "H": ([-200, -200, 200, 200], [-200, 200, -200, 200], [200, 200, 200, 200]),
-        "I": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-200, -200, -200, -200]),
-        "J": ([-200, -200, 200, 200], [-200, 200, -200, 200], [1, 1, 1, 1]),
-        "K": ([-200, -200, 200, 200], [-200, 200, -200, 200], [-1, -1, -1, -1]),
+
+    @pytest.fixture()
+    def sample_prisms(self):
+        """
+        Return three sample prisms
+        """
+        prisms = np.array(
+            [
+                [-10, 10, -10, 0, -10, 0],
+                [-10, 0, -10, 10, -20, -10],
+                [5, 15, 5, 15, -15, -5],
+            ],
+            dtype=float,
+        )
+        densities = np.array([400, -200, 300], dtype=float)
+        return prisms, densities
+
+    @pytest.fixture()
+    def sample_coordinates(self):
+        """
+        Return four sample observation points
+        """
+        easting = np.array([-5, 10, 0, 15], dtype=float)
+        northing = np.array([14, -4, 11, 0], dtype=float)
+        upward = np.array([9, 6, 6, 12], dtype=float)
+        return (easting, northing, upward)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize(
+        "field, choclo_func",
+        [
+            ("potential", gravity_pot),
+            ("g_e", gravity_e),
+            ("g_n", gravity_n),
+            ("g_z", gravity_u),
+            ("g_ee", gravity_ee),
+            ("g_nn", gravity_nn),
+            ("g_zz", gravity_uu),
+            ("g_en", gravity_en),
+            ("g_ez", gravity_eu),
+            ("g_nz", gravity_nu),
+        ],
+    )
+    def test_against_choclo(
+        self,
+        field,
+        choclo_func,
+        sample_coordinates,
+        sample_prisms,
+    ):
+        """
+        Tests forward functions against dumb runs on Choclo
+        """
+        easting, northing, upward = sample_coordinates
+        prisms, densities = sample_prisms
+        # Compute expected results with dumb choclo calls
+        expected_result = np.zeros_like(easting)
+        for i in range(easting.size):
+            for j in range(densities.size):
+                expected_result[i] += choclo_func(
+                    easting[i],
+                    northing[i],
+                    upward[i],
+                    prisms[j, 0],
+                    prisms[j, 1],
+                    prisms[j, 2],
+                    prisms[j, 3],
+                    prisms[j, 4],
+                    prisms[j, 5],
+                    densities[j],
+                )
+        if field in ("g_z", "g_ez", "g_nz"):
+            expected_result *= -1  # invert sign
+        if field in ("g_e", "g_n", "g_z"):
+            expected_result *= 1e5  # convert to mGal
+        if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+            expected_result *= 1e9  # convert to Eotvos
+        # Compare with Harmonica results
+        result = prism_gravity(sample_coordinates, prisms, densities, field=field)
+        npt.assert_allclose(result, expected_result)
+
+
+@run_only_with_numba
+def test_laplace():
+    """
+    Test if the diagonal components satisfy Laplace equation
+    """
+    region = (-10e3, 10e3, -10e3, 10e3)
+    coords = vd.grid_coordinates(region, shape=(10, 10), extra_coords=300)
+    prisms = [
+        [1e3, 7e3, -5e3, 2e3, -1e3, -500],
+        [-4e3, 1e3, 4e3, 10e3, -2e3, 200],
+    ]
+    densities = [2670.0, 2900.0]
+    diagonal_components = {
+        field: prism_gravity(coords, prisms, densities, field=field)
+        for field in ("g_ee", "g_nn", "g_zz")
     }
-    # Compute g_z on each set of points
-    results = {}
-    for group, coords in computation_points.items():
-        results[group] = prism_gravity(coords, prism, density, field="g_z")
-    # Check symmetries
-    # Values on A must be opposite, and the value of g_z at the point above the
-    # prism must have the same sign as the density, while the one below should
-    # have the opposite
-    npt.assert_allclose(results["A"][0], -results["A"][1])
-    npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
-    npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
-    # Values on C, D, E, F, H, I, J, K must be all equal within each set
-    for group in ["C", "D", "E", "F", "H", "I", "J", "K"]:
-        npt.assert_allclose(results[group][0], results[group])
-    # Values on B and G must be zero
-    for group in ["B", "G"]:
-        npt.assert_allclose(0, results[group])
-    # Values on C and D, E and F, H and I, J and K must be opposite
-    # Moreover, the set of points that are above the prism must have the same
-    # sign as the density, while the ones below should have the opposite
-    for above, below in (("C", "D"), ("E", "F"), ("H", "I"), ("J", "K")):
-        npt.assert_allclose(results[above], -results[below])
-        npt.assert_allclose(np.sign(results[above]), np.sign(density))
-        npt.assert_allclose(np.sign(results[below]), -np.sign(density))
-
-
-def test_g_z_symmetry_inside():
-    """
-    Test g_z symmetry on computation points that fall inside the prism
-
-    In order to test if the computed g_z satisfies the symmetry of a square
-    prism on computation points that fall inside the prism, we will define
-    several set of computation points:
-
-    A. Two points located on the vertical axis of the prism (``easting == 0``
-       and ``northing == 0``), one above and one below the center of prism,
-       but at the same distance from it.
-    B. Four points located on the ``upward == 0`` plane around the prism
-       distributed normally to its faces , i.e. only one of the horizontal
-       coordinates will be nonzero.
-    C. Same as points defined in B, but located on a plane above the
-       ``upward == 0`` plane.
-    D. Same as points defined in B, but located on a plane below the
-       ``upward == 0`` plane.
-    E. Four points located on the ``upward == 0`` plane around the prism
-       distributed on the diagonal directions , i.e. both horizontal
-       coordinates will be equal and nonzero.
-    F. Same as points defined in E, but located on a plane above the
-       ``upward == 0`` plane.
-    G. Same as points defined in E, but located on a plane below the
-       ``upward == 0`` plane.
-
-    All computation points defined on the previous groups fall outside of the
-    prism.
-
-    The g_z field for a square prism (the horizontal dimensions of the prism
-    are equal) must satisfy the following symmetry rules:
-
-    - The g_z values on points A must be opposite.
-    - The g_z values on points B must be all zero.
-    - The g_z values on points C must be all equal.
-    - The g_z values on points D must be all equal.
-    - The g_z values on points C and D must be opposite.
-    - The g_z values on points E must be all zero.
-    - The g_z values on points F must be all equal.
-    - The g_z values on points G must be all equal.
-    - The g_z values on points F and G must be opposite.
-    """
-    prism = [-100, 100, -100, 100, -150, 150]
-    density = 2670
-    computation_points = {
-        "A": ([0, 0], [0, 0], [-50, 50]),
-        "B": ([-50, 50, 0, 0], [0, 0, -50, 50], [0, 0, 0, 0]),
-        "C": ([-50, 50, 0, 0], [0, 0, -50, 50], [50, 50, 50, 50]),
-        "D": ([-50, 50, 0, 0], [0, 0, -50, 50], [-50, -50, -50, -50]),
-        "E": ([-50, -50, 50, 50], [-50, 50, -50, 50], [0, 0, 0, 0]),
-        "F": ([-50, -50, 50, 50], [-50, 50, -50, 50], [50, 50, 50, 50]),
-        "G": ([-50, -50, 50, 50], [-50, 50, -50, 50], [-50, -50, -50, -50]),
-    }
-    # Compute g_z on each set of points
-    results = {}
-    for group, coords in computation_points.items():
-        results[group] = prism_gravity(coords, prism, density, field="g_z")
-    # Check symmetries
-    # Values on A must be opposite, and the value of g_z at the point above the
-    # center of the prism must have the same sign as the density, while the one
-    # below should have the opposite
-    npt.assert_allclose(results["A"][0], -results["A"][1])
-    npt.assert_allclose(np.sign(results["A"][0]), -np.sign(density))
-    npt.assert_allclose(np.sign(results["A"][1]), np.sign(density))
-    # Values on C, D, F, G must be all equal within each set
-    for group in ["C", "D", "F", "G"]:
-        npt.assert_allclose(results[group][0], results[group])
-    # Values on B and E must be zero
-    for group in ["B", "E"]:
-        npt.assert_allclose(0, results[group])
-    # Values on C and D, F and G must be opposite
-    # Moreover, the set of points that are above the center of the prism must
-    # have the same sign as the density, while the ones below should have the
-    # opposite
-    for above, below in (("C", "D"), ("F", "G")):
-        npt.assert_allclose(results[above], -results[below])
-        npt.assert_allclose(np.sign(results[above]), np.sign(density))
-        npt.assert_allclose(np.sign(results[below]), -np.sign(density))
-
-
-@pytest.mark.use_numba
-def test_safe_atan2():
-    "Test the safe_atan2 function"
-    # Test safe_atan2 for one point per quadrant
-    # First quadrant
-    x, y = 1, 1
-    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
-    # Second quadrant
-    x, y = -1, 1
-    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
-    # Third quadrant
-    x, y = -1, -1
-    npt.assert_allclose(safe_atan2(y, x), np.pi / 4)
-    # Forth quadrant
-    x, y = 1, -1
-    npt.assert_allclose(safe_atan2(y, x), -np.pi / 4)
-    # Test safe_atan2 if the denominator is equal to zero
-    npt.assert_allclose(safe_atan2(1, 0), np.pi / 2)
-    npt.assert_allclose(safe_atan2(-1, 0), -np.pi / 2)
-    # Test safe_atan2 if both numerator and denominator are equal to zero
-    assert safe_atan2(0, 0) == 0
-
-
-@pytest.mark.use_numba
-def test_safe_log():
-    "Test the safe_log function"
-    # Check if safe_log function satisfies safe_log(0) == 0
-    assert safe_log(0) == 0
-    # Check if safe_log behaves like the natural logarithm in case that x != 0
-    x = np.linspace(1, 100, 101)
-    for x_i in x:
-        npt.assert_allclose(safe_log(x_i), np.log(x_i))
+    npt.assert_allclose(
+        diagonal_components["g_ee"] + diagonal_components["g_nn"],
+        -diagonal_components["g_zz"],
+    )
 
 
 @pytest.mark.use_numba
@@ -394,15 +258,19 @@ def test_prism_against_infinite_slab():
     """
     Test if g_z of a large prism matches the solution for an infinite slab
     """
-    # Define an observation point 1.5 m above the prism
-    coordinates = (0, 0, 1.5)
-    # Define prisms with thickness of 10.5 m and horizontal dimensions from 1e3
-    # to 1e9m and density of 2670 kg/m^3
+    # Define an observation point at 1.5m above zero
+    height = 1.5
+    coordinates = (0, 0, height)
+    # Define prisms with a top surface located at the same height as the
+    # observation point. Each prisms will have a thickness of 10.5m, and
+    # horizontal dimensions from 1e3 to 1e9m, and density of 2670 kg/m^3.
+    top = height
     thickness = 10.5
+    bottom = top - thickness
     sizes = np.logspace(3, 9, 7)
-    bottom, top = -thickness, 0
     density = 2670
-    # Compute the gravity fields generated by each prism
+    # Compute the gravity field generated by each prism
+    # (from smaller to larger)
     results = np.zeros_like(sizes)
     for i, size in enumerate(sizes):
         prism = [-size / 2, size / 2, -size / 2, size / 2, bottom, top]
@@ -410,8 +278,8 @@ def test_prism_against_infinite_slab():
     # Check convergence: assert if as the prism size increases, the result gets
     # closer to the analytical solution for an infinite slab
     analytical = bouguer_correction(np.array(thickness), density)
-    diffs = abs((results - analytical) / analytical)
-    assert (diffs[1:] < diffs[:-1]).all()
+    errors = abs(analytical - results)
+    assert (errors[1:] < errors[:-1]).all()
     # Check if the largest size is close enough to the analytical solution
     npt.assert_allclose(analytical, results[-1])
 
@@ -486,3 +354,128 @@ def test_numba_progress_missing_error():
         prism_gravity(
             coordinates, prisms, densities, field="potential", progressbar=True
         )
+
+
+class TestSingularPoints:
+    """
+    Tests tensor components on singular points of the prism
+    """
+
+    @pytest.fixture
+    def sample_prism(self):
+        """Return a sample prism"""
+        return np.array([-10.3, 5.4, 8.6, 14.3, -30.3, 2.4])
+
+    @pytest.fixture
+    def sample_density(self):
+        """Return a sample density for the sample prism"""
+        return np.array([2900.0])
+
+    def get_vertices(self, prism):
+        """
+        Return the vertices of the prism as points
+        """
+        easting, northing, upward = tuple(
+            c.ravel() for c in np.meshgrid(prism[:2], prism[2:4], prism[4:6])
+        )
+        return easting, northing, upward
+
+    def get_easting_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to easting
+        """
+        easting_c = (prism[0] + prism[1]) / 2
+        northing, upward = tuple(c.ravel() for c in np.meshgrid(prism[2:4], prism[4:6]))
+        easting = np.full_like(northing, easting_c)
+        return easting, northing, upward
+
+    def get_northing_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to northing
+        """
+        northing_c = (prism[2] + prism[3]) / 2
+        easting, upward = tuple(c.ravel() for c in np.meshgrid(prism[0:2], prism[4:6]))
+        northing = np.full_like(easting, northing_c)
+        return easting, northing, upward
+
+    def get_upward_edges_center(self, prism):
+        """
+        Return points on the center of prism edges parallel to upward
+        """
+        upward_c = (prism[4] + prism[5]) / 2
+        easting, northing = tuple(
+            c.ravel() for c in np.meshgrid(prism[0:2], prism[2:4])
+        )
+        upward = np.full_like(easting, upward_c)
+        return easting, northing, upward
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"))
+    def test_on_vertices(self, sample_prism, sample_density, field):
+        """
+        Test tensor components when observation points fall on prism vertices
+        """
+        easting, northing, upward = self.get_vertices(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_nn", "g_zz", "g_nz"))
+    def test_on_easting_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_easting_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_zz", "g_ez"))
+    def test_on_northing_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_northing_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_en"))
+    def test_on_upward_edges(self, sample_prism, sample_density, field):
+        """
+        Test tensor components that have singular points on edges parallel to
+        easting direction
+        """
+        easting, northing, upward = self.get_upward_edges_center(sample_prism)
+        for i in range(easting.size):
+            msg = "Found observation point"
+            with pytest.warns(UserWarning, match=msg):
+                prism_gravity(
+                    (easting[i], northing[i], upward[i]),
+                    sample_prism,
+                    sample_density,
+                    field=field,
+                )

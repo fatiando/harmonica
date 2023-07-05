@@ -18,6 +18,7 @@ dependencies:
   - verde>=1.7.0
   - xarray>=0.16
   - xrft>=1.0
+  - choclo>=0.1
   # Optional requirements
   - pyvista>=0.27
   - vtk>=9
@@ -40,6 +41,7 @@ dependencies:
   - pygmt==0.7.*
   - gmt==6.4.*
   - gdal==3.5.*
+  - trame # needed by pyvista
   # Code style checks and autoformat
   - black==22.10.*
   - isort==5.10.*

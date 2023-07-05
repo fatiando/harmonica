@@ -44,7 +44,7 @@ jobs:
           - optional
         include:
           - dependencies: oldest
-            python: "3.7"
+            python: "3.8"
           - dependencies: latest
             python: "3.11"
           - dependencies: optional
@@ -157,7 +157,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           env_vars: OS,PYTHON,DEPENDENCIES
-          # Don't mark the job as failed if the upload fails for some reason.
-          # It does sometimes but shouldn't be the reason for running
-          # everything again unless something else is broken.
-          fail_ci_if_error: false
+          # Fail the job so we know coverage isn't being updated. Otherwise it
+          # can silently drop and we won't know.
+          fail_ci_if_error: true
