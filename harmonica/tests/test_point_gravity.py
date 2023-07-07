@@ -14,6 +14,18 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
+from choclo.point import (
+    gravity_e,
+    gravity_ee,
+    gravity_en,
+    gravity_eu,
+    gravity_n,
+    gravity_nn,
+    gravity_nu,
+    gravity_pot,
+    gravity_u,
+    gravity_uu,
+)
 
 from .._forward.point import point_gravity
 from .._forward.utils import distance_cartesian
@@ -47,7 +59,7 @@ def test_not_implemented_field():
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
     coordinate_system = "spherical"
-    for field in ("g_northing", "g_easting"):
+    for field in ("g_n", "g_e"):
         with pytest.raises(NotImplementedError):
             point_gravity(
                 coordinates,
@@ -159,7 +171,7 @@ def test_potential_symmetry_cartesian():
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
 def test_acceleration_symmetry_cartesian(field):
     """
     Test if the acceleration components verify the expected symmetry
@@ -175,10 +187,10 @@ def test_acceleration_symmetry_cartesian(field):
     easting = point_mass[0] * np.ones(2)
     northing = point_mass[1] * np.ones(2)
     upward = point_mass[2] * np.ones(2)
-    if field == "g_northing":
+    if field == "g_n":
         northing[0] += distance
         northing[1] -= distance
-    elif field == "g_easting":
+    elif field == "g_e":
         easting[0] += distance
         easting[1] -= distance
     elif field == "g_z":
@@ -204,8 +216,8 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
     mass : float
         Mass of the point source.
     field : str
-        Acceleration component that needs to be approximated ("g_easting",
-        "g_northing", "g_z").
+        Acceleration component that needs to be approximated ("g_e",
+        "g_n", "g_z").
     delta : float
         Distance use to compute the finite difference in meters.
 
@@ -219,9 +231,9 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
     # Build a two computation points slightly shifted from the original
     # computation point by a small delta
     coordinates_pair = tuple([coord, coord] for coord in coordinates)
-    if field == "g_easting":
+    if field == "g_e":
         index = 0
-    elif field == "g_northing":
+    elif field == "g_n":
         index = 1
     elif field == "g_z":
         index = 2
@@ -247,7 +259,7 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
 @pytest.mark.parametrize(
     "coordinates, point, mass",
     (
@@ -271,7 +283,7 @@ def test_acceleration_finite_diff_cartesian(coordinates, point, mass, field):
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_northing", "g_easting", "g_z"))
+@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
 def test_acceleration_sign(field):
     """
     Test if acceleration components have the correct sign
@@ -281,9 +293,9 @@ def test_acceleration_sign(field):
     mass = [2670]
     # Define computation points
     coordinates = [np.zeros(3) for i in range(3)]
-    if field == "g_easting":
+    if field == "g_e":
         coordinates[0] = np.array([-150.7, -10, 79])
-    elif field == "g_northing":
+    elif field == "g_n":
         coordinates[1] = np.array([0, 100.2, 210.7])
     elif field == "g_z":
         coordinates[2] = np.array([100.11, -300.7, -400])
@@ -300,7 +312,7 @@ def test_acceleration_sign(field):
     "field",
     # fmt: off
     (
-        "potential", "g_z", "g_northing", "g_easting",
+        "potential", "g_z", "g_n", "g_e",
         "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"
     ),
     # fmt: on
@@ -764,3 +776,86 @@ def test_point_mass_spherical_parallel():
             parallel=True,
         )
         npt.assert_allclose(result_serial, result_parallel)
+
+
+class TestAgainstChoclo:
+    """
+    Test forward modelling functions against dumb Choclo runs
+    """
+
+    @pytest.fixture()
+    def sample_points(self):
+        """
+        Return three sample prisms
+        """
+        points = np.array(
+            [
+                [-5, 5, -5, 5],
+                [-5, -5, 5, 5],
+                [-10, -10, -10, -5],
+            ],
+            dtype=float,
+        )
+        masses = np.array([100.0, -100.0, 200.0, -300.0], dtype=float)
+        return points, masses
+
+    @pytest.fixture()
+    def sample_coordinates(self):
+        """
+        Return four sample observation points
+        """
+        easting = np.array([-5, 10, 0, 15], dtype=float)
+        northing = np.array([14, -4, 11, 0], dtype=float)
+        upward = np.array([9, 6, 6, 12], dtype=float)
+        return (easting, northing, upward)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize(
+        "field, choclo_func",
+        [
+            ("potential", gravity_pot),
+            ("g_e", gravity_e),
+            ("g_n", gravity_n),
+            ("g_z", gravity_u),
+            ("g_ee", gravity_ee),
+            ("g_nn", gravity_nn),
+            ("g_zz", gravity_uu),
+            ("g_en", gravity_en),
+            ("g_ez", gravity_eu),
+            ("g_nz", gravity_nu),
+        ],
+    )
+    def test_against_choclo(
+        self,
+        field,
+        choclo_func,
+        sample_coordinates,
+        sample_points,
+    ):
+        """
+        Tests forward functions against dumb runs on Choclo
+        """
+        easting, northing, upward = sample_coordinates
+        points, masses = sample_points
+        # Compute expected results with dumb choclo calls
+        expected_result = np.zeros_like(easting)
+        for i in range(easting.size):
+            for j in range(masses.size):
+                expected_result[i] += choclo_func(
+                    easting[i],
+                    northing[i],
+                    upward[i],
+                    points[j, 0],
+                    points[j, 1],
+                    points[j, 2],
+                    masses[j],
+                )
+        if field in ("g_z", "g_ez", "g_nz"):
+            expected_result *= -1  # invert sign
+        if field in ("g_e", "g_n", "g_z"):
+            expected_result *= 1e5  # convert to mGal
+        if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+            expected_result *= 1e9  # convert to Eotvos
+        # Compare with Harmonica results
+        result = point_gravity(sample_coordinates, points, masses, field=field)
+        npt.assert_allclose(result, expected_result)
