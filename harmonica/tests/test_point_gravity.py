@@ -563,19 +563,19 @@ def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
     # computed
     direction_i, direction_j = field[-2], field[-1]
     if direction_i == "e":
-        direction_i = "easting"
+        direction_i = "e"
     if direction_i == "n":
-        direction_i = "northing"
+        direction_i = "n"
     if direction_j == "e":
-        direction_j = "easting"
+        direction_j = "e"
     if direction_j == "n":
-        direction_j = "northing"
+        direction_j = "n"
     # Build a two computation points slightly shifted from the original
     # computation point by a small delta
     coordinates_pair = tuple([coord, coord] for coord in coordinates)
-    if direction_j == "easting":
+    if direction_j == "e":
         index = 0
-    elif direction_j == "northing":
+    elif direction_j == "n":
         index = 1
     elif direction_j == "z":
         index = 2
@@ -845,12 +845,12 @@ class TestAgainstChoclo:
                     easting[i],
                     northing[i],
                     upward[i],
-                    points[j, 0],
-                    points[j, 1],
-                    points[j, 2],
+                    points[0, j],
+                    points[1, j],
+                    points[2, j],
                     masses[j],
                 )
-        if field in ("g_z", "g_ez", "g_nz"):
+        if field in ("g_z", "g_ez", "g_ze", "g_nz", "g_zn"):
             expected_result *= -1  # invert sign
         if field in ("g_e", "g_n", "g_z"):
             expected_result *= 1e5  # convert to mGal
