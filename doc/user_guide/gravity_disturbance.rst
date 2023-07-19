@@ -148,3 +148,13 @@ And plot it:
 
 The gravity disturbances can be interpreted as the gravitational effect of
 every *anomalous mass*, i.e. that is not contained in the *normal Earth*.
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <gravity_disturbance>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <gravity_disturbance>`
+        :text-align: center

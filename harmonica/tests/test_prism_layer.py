@@ -420,8 +420,8 @@ def test_to_pyvista(dummy_layer, properties, drop_null_prisms):
     assert pv_grid.n_cells == 20
     assert pv_grid.n_points == 20 * 8
     # Check coordinates of prisms
-    for i, prism in enumerate(layer.prism_layer._to_prisms()):
-        npt.assert_allclose(prism, pv_grid.cell[i].bounds)
+    for prism, cell in zip(layer.prism_layer._to_prisms(), pv_grid.cell):
+        npt.assert_allclose(prism, cell.bounds)
     # Check properties of the prisms
     if properties is None:
         assert pv_grid.n_arrays == 0

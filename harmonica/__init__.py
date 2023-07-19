@@ -9,6 +9,7 @@
 from ._equivalent_sources.cartesian import EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph
+from ._forward.dipole import dipole_magnetic, dipole_magnetic_component
 from ._forward.point import point_gravity
 from ._forward.prism import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer

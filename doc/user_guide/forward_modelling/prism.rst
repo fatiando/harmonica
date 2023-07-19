@@ -48,6 +48,97 @@ computation point:
    print(potential, "J/kg")
 
 
+Gravitational fields
+^^^^^^^^^^^^^^^^^^^^
+
+The :func:`harmonica.prism_gravity` is able to compute the gravitational
+potential (``"potential"``), the acceleration components (``"g_e"``, ``"g_n"``,
+``"g_z"``), and tensor components (``"g_ee"``, ``"g_nn"``, ``"g_zz"``,
+``"g_en"``, ``"g_ez"``, ``"g_nz"``).
+
+
+Build a regular grid of computation points located a 10m above the zero height:
+
+.. jupyter-execute::
+
+   import verde as vd
+
+   region = (-10e3, 10e3, -10e3, 10e3)
+   shape = (51, 51)
+   height = 10
+   coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+
+Define a single prism:
+
+.. jupyter-execute::
+
+   prism = [-2e3, 2e3, -2e3, 2e3, -1.6e3, -900]
+   density = 3300
+
+Compute the gravitational fields that this prism generate on each observation
+point:
+
+.. jupyter-execute::
+
+   fields = (
+      "potential",
+      "g_e", "g_n", "g_z",
+      "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"
+   )
+
+   results = {}
+   for field in fields:
+      results[field] = hm.prism_gravity(coordinates, prism, density, field=field)
+
+Plot the results:
+
+.. jupyter-execute::
+
+   import matplotlib.pyplot as plt
+
+   plt.pcolormesh(coordinates[0], coordinates[1], results["potential"])
+   plt.gca().set_aspect("equal")
+   plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
+   plt.colorbar(label="J/kg")
+   plt.show()
+
+
+.. jupyter-execute::
+
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+
+   for field, ax in zip(("g_e", "g_n", "g_z"), axes):
+      tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
+      ax.set_aspect("equal")
+      ax.set_title(field)
+      ax.ticklabel_format(style="sci", scilimits=(0, 0))
+      plt.colorbar(tmp, ax=ax, label="mGal", orientation="horizontal", pad=0.08)
+   plt.show()
+
+.. jupyter-execute::
+
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+
+   for field, ax in zip(("g_ee", "g_nn", "g_zz"), axes):
+      tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
+      ax.set_aspect("equal")
+      ax.set_title(field)
+      ax.ticklabel_format(style="sci", scilimits=(0, 0))
+      plt.colorbar(tmp, ax=ax, label="Eotvos", orientation="horizontal", pad=0.08)
+   plt.show()
+
+.. jupyter-execute::
+
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+
+   for field, ax in zip(("g_en", "g_ez", "g_nz"), axes):
+      tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
+      ax.set_aspect("equal")
+      ax.set_title(field)
+      ax.ticklabel_format(style="sci", scilimits=(0, 0))
+      plt.colorbar(tmp, ax=ax, label="Eotvos", orientation="horizontal", pad=0.08)
+   plt.show()
+
 Passing multiple prisms
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -206,3 +297,13 @@ Finally, lets plot the gravitational field:
       cmap='viridis',)
    fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
    fig.show()
+
+----
+
+.. grid:: 2
+
+    .. grid-item-card:: :jupyter-download-script:`Download Python script <prism>`
+        :text-align: center
+
+    .. grid-item-card:: :jupyter-download-nb:`Download Jupyter notebook <prism>`
+        :text-align: center

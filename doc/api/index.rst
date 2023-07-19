@@ -65,12 +65,26 @@ Equivalent Sources
 Forward modelling
 -----------------
 
+Gravity fields:
+
 .. autosummary::
     :toctree: generated/
 
     point_gravity
     prism_gravity
     tesseroid_gravity
+
+Magnetic fields:
+
+.. autosummary::
+    :toctree: generated/
+
+    dipole_magnetic
+    dipole_magnetic_component
+
+Layers and meshes:
+
+.. autosummary::
     prism_layer
     tesseroid_layer
     DatasetAccessorPrismLayer
