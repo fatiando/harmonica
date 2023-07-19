@@ -41,7 +41,7 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
     --------
     >>> magnetic_e, magnetic_n, magnetic_u = magnetic_ang_to_vec(3.0, 45.0, 45.0)
     >>> print(magnetic_e, magnetic_n, magnetic_u)
-    1.5, 1.5000000000000002, -2.1213203435596424
+    1.5 1.5 -2.121
     """
     # Transform to radians
     inc_rad = np.radians(inclination)
@@ -115,9 +115,9 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
 
     Examples
     --------
-    >>> intensity, inc, dec = magnetic_vec_to_ang(1.5, 1.5, -2.12132)
+    >>> intensity, inc, dec = magnetic_vec_to_angles(1.5, 1.5, -2.12132)
     >>> print(intensity, inc, dec)
-    2.999999757066657, 44.99999536031435, 45.00000000000001
+    3.0 45.0 45.0
     """
     # Compute the intensity as a norm
     intensity = np.sqrt(magnetic_e**2 + magnetic_n**2 + magnetic_u**2)
