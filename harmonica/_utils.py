@@ -9,13 +9,16 @@ import numpy as np
 
 def magnetic_ang_to_vec(intensity, inclination, declination):
     """
-    Convert intensity, inclination and declination angles of the magnetic field to a
-    3-component magnetic vector.
+    Convert magnetic field angles to magnetic field vector
+
+    Convert intensity, inclination and declination angles of the magnetic field
+    to a 3-component magnetic vector.
 
     .. note::
-        Inclination is measured positive downward from the horizontal plane, and
-        declination is measured with respect to north, where positive angles indicate
-        east.
+
+        Inclination is measured positive downward from the horizontal plane,
+        and declination is measured with respect to north, where positive
+        angles indicate east.
 
     Parameters
     ----------
@@ -30,7 +33,7 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
 
     Returns
     -------
-     magnetic_e : float or array
+    magnetic_e : float or array
         Easting component of the magnetic vector.
     magnetic_n : float or array
         Northing component of the magnetic vector.
@@ -55,34 +58,13 @@ def magnetic_ang_to_vec(intensity, inclination, declination):
 
 def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     r"""
-    Convert the 3-component of the magnetic vector to magnetic intensity and inclination
-    and declination angles.
+    Convert magnetic field vector to magnetic field angles
 
-    The intensity of the magnetic vector is calculate as:
-
-    .. math::
-
-        T = \sqrt{B_e^2 + B_n^2 + B_u^2}
-
-    where :math:`B_e`, :math:`B_n`, :math:`B_u` are the easting, northing and upward
-    components of the magnetic vector, respectively.
-
-    The inclination angle is defined as the angle between the magnetic field vector and
-    the horizontal plane:
-
-    .. math::
-
-        Inc = \arctan \frac{- B_u}{\sqrt{B_e^2 + B_n^2}}
-
-    And the declination angle is defined as the azimuth of the projection of the
-    magnetic field vector onto the horizontal plane (starting from the northing
-    direction, positive to the east and negative to the west):
-
-    .. math::
-
-        Dec = \arcsin \frac{B_e}{\sqrt{B_e^2 + B_n^2}}
+    Convert the 3-component magnetic vector to intensity, and inclination and
+    declination angles.
 
     .. note::
+
         Inclination is measured positive downward from the horizontal plane and
         declination is measured with respect to North and it is positive east.
 
@@ -110,8 +92,34 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
         returned in radians.
     declination : float or array
         Declination angle of the magnetic vector.
-        If ``degrees`` is True, then the angle is returned in degrees, else it's
-        returned in radians.
+        If ``degrees`` is True, then the angle is returned in degrees, else
+        it's returned in radians.
+
+    Notes
+    -----
+    The intensity of the magnetic vector is calculated as:
+
+    .. math::
+
+        T = \sqrt{B_e^2 + B_n^2 + B_u^2}
+
+    where :math:`B_e`, :math:`B_n`, :math:`B_u` are the easting, northing and
+    upward components of the magnetic vector, respectively.
+
+    The inclination angle is defined as the angle between the magnetic field
+    vector and the horizontal plane:
+
+    .. math::
+
+        I = \arctan \frac{- B_u}{\sqrt{B_e^2 + B_n^2}}
+
+    And the declination angle is defined as the azimuth of the projection of
+    the magnetic field vector onto the horizontal plane (starting from the
+    northing direction, positive to the east and negative to the west):
+
+    .. math::
+
+        D = \arcsin \frac{B_e}{\sqrt{B_e^2 + B_n^2}}
 
     Examples
     --------
