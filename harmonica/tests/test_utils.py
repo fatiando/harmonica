@@ -8,7 +8,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .. import magnetic_angles_to_vec, magnetic_vec_to_ang
+from .. import magnetic_angles_to_vec, magnetic_vec_to_angles
 
 VECTORS = [
     [0.5, 0.5, -0.70710678],
@@ -46,7 +46,7 @@ def test_magnetic_ang_to_vec_float():
         )
 
 
-def test_magnetic_vec_to_ang_float():
+def test_magnetic_vec_to_angles_float():
     """
     Check if the function returns the expected values for a given magnetic
     vector as float
@@ -55,7 +55,7 @@ def test_magnetic_vec_to_ang_float():
         intensity, inclination, declination = ANGLES[i]
         magnetic_e, magnetic_n, magnetic_u = VECTORS[i]
         npt.assert_allclose(
-            magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u),
+            magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
             (intensity, inclination, declination),
         )
 
@@ -73,7 +73,7 @@ def test_magnetic_ang_to_vec_array(data):
     )
 
 
-def test_magnetic_vec_to_ang_array(data):
+def test_magnetic_vec_to_angles_array(data):
     """
     Check if the function returns the expected values for the given magnentic
     vector as array
@@ -81,14 +81,14 @@ def test_magnetic_vec_to_ang_array(data):
     intensity, inclination, declination = data[:3]
     magnetic_e, magnetic_n, magnetic_u = data[3:]
     npt.assert_allclose(
-        magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u),
+        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
         (intensity, inclination, declination),
     )
 
 
 def test_unity(data):
     magnetic_e, magnetic_n, magnetic_u = data[3:]
-    angles = magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u)
+    angles = magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u)
     npt.assert_almost_equal(
         magnetic_angles_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
     )
