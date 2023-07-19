@@ -8,7 +8,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .. import magnetic_ang_to_vec, magnetic_vec_to_ang
+from .. import magnetic_angles_to_vec, magnetic_vec_to_ang
 
 VECTORS = [
     [0.5, 0.5, -0.70710678],
@@ -41,7 +41,7 @@ def test_magnetic_ang_to_vec_float():
         intensity, inclination, declination = ANGLES[i]
         magnetic_e, magnetic_n, magnetic_u = VECTORS[i]
         npt.assert_almost_equal(
-            magnetic_ang_to_vec(intensity, inclination, declination),
+            magnetic_angles_to_vec(intensity, inclination, declination),
             (magnetic_e, magnetic_n, magnetic_u),
         )
 
@@ -68,7 +68,7 @@ def test_magnetic_ang_to_vec_array(data):
     intensity, inclination, declination = data[:3]
     magnetic_e, magnetic_n, magnetic_u = data[3:]
     npt.assert_almost_equal(
-        magnetic_ang_to_vec(intensity, inclination, declination),
+        magnetic_angles_to_vec(intensity, inclination, declination),
         (magnetic_e, magnetic_n, magnetic_u),
     )
 
@@ -90,5 +90,5 @@ def test_unity(data):
     magnetic_e, magnetic_n, magnetic_u = data[3:]
     angles = magnetic_vec_to_ang(magnetic_e, magnetic_n, magnetic_u)
     npt.assert_almost_equal(
-        magnetic_ang_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
+        magnetic_angles_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
     )
