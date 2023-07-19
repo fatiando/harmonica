@@ -24,8 +24,8 @@ from .._forward.tesseroid import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,
-    _check_points_outside_tesseroids,
     _check_tesseroids,
+    check_points_outside_tesseroids,
     tesseroid_gravity,
 )
 from ..constants import GRAVITATIONAL_CONST
@@ -129,7 +129,7 @@ def test_valid_tesseroid():
     _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, bottom]))
     # Check if valid tesseroid with west > east is not caught
     _check_tesseroids(np.atleast_2d([350, 10, s, n, bottom, top]))
-    # Check if tesseroids on [-180, 180) are not caught
+    # Check if tesseroids on -180, 180 are not caught
     _check_tesseroids(np.atleast_2d([-70, -60, s, n, bottom, top]))
     _check_tesseroids(np.atleast_2d([-10, 10, s, n, bottom, top]))
     _check_tesseroids(np.atleast_2d([-150, 150, s, n, bottom, top]))
@@ -207,35 +207,71 @@ def test_disable_checks():
     npt.assert_allclose(invalid_result, -valid_result)
 
 
-def test_point_inside_tesseroid():
-    "Check if a computation point inside the tesseroid is caught"
-    tesseroids = np.atleast_2d([-10, 10, -10, 10, 100, 200])
-    # Test if outside point is not caught
-    points = [
-        np.atleast_2d([0, 0, 250]).T,  # outside point on radius
-        np.atleast_2d([20, 0, 150]).T,  # outside point on longitude
-        np.atleast_2d([0, 20, 150]).T,  # outside point on latitude
-        np.atleast_2d([0, 0, 200]).T,  # point on top surface
-        np.atleast_2d([0, 0, 100]).T,  # point on bottom surface
-        np.atleast_2d([-10, 0, 150]).T,  # point on western surface
-        np.atleast_2d([10, 0, 150]).T,  # point on eastern surface
-        np.atleast_2d([0, -10, 150]).T,  # point on southern surface
-        np.atleast_2d([0, 10, 150]).T,  # point on northern surface
-    ]
-    for coordinates in points:
-        _check_points_outside_tesseroids(coordinates, tesseroids)
-    # Test if computation point is inside the tesseroid
-    coordinates = np.atleast_2d([0, 0, 150]).T
-    with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
-    # Test if computation point with phased longitude is inside the tesseroid
-    coordinates = np.atleast_2d([360, 0, 150]).T
-    with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
-    tesseroids = np.atleast_2d([260, 280, -10, 10, 100, 200])
-    coordinates = np.atleast_2d([-90, 0, 150]).T
-    with pytest.raises(ValueError):
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+class TestPointInsideTesseroid:
+    """Test checks for points inside tesseroids."""
+
+    @pytest.mark.use_numba
+    def test_points_outside_tesseroid(self):
+        """Check if error is not raised when no point is inside a tesseroid."""
+        points = np.array(
+            [
+                [0, 0, 250],  # outside point on radius
+                [20, 0, 150],  # outside point on longitude
+                [0, 20, 150],  # outside point on latitude
+                [0, 0, 200],  # point on top surface
+                [0, 0, 100],  # point on bottom surface
+                [-10, 0, 150],  # point on western surface
+                [10, 0, 150],  # point on eastern surface
+                [0, -10, 150],  # point on southern surface
+                [0, 10, 150],  # point on northern surface
+            ]
+        ).T
+        tesseroid = np.atleast_2d([-10, 10, -10, 10, 100, 200])
+        check_points_outside_tesseroids(points, tesseroid)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("points", [[0, 0, 150], [360, 0, 150]])
+    def test_point_inside_tesseroid(self, points):
+        """Check if error is raised when point fall inside the tesseroid."""
+        points = np.atleast_2d(points).T
+        tesseroid = np.atleast_2d([-10, 10, -10, 10, 100, 200])
+        with pytest.raises(ValueError):
+            check_points_outside_tesseroids(points, tesseroid)
+
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize(
+        "point, tesseroid",
+        [
+            ([360, 0, 150], [-10, 10, -10, 10, 100, 200]),
+            ([-90, 0, 150], [260, 280, -10, 10, 100, 200]),
+        ],
+    )
+    def test_point_phased_longitude(self, point, tesseroid):
+        """Test if error is raised when the longitude coords are phased."""
+        point = np.atleast_2d(point).T
+        tesseroid = np.atleast_2d(tesseroid)
+        with pytest.raises(ValueError):
+            check_points_outside_tesseroids(point, tesseroid)
+
+    @pytest.mark.use_numba
+    def test_multiple_points_and_tesseroids(self):
+        """Check if error is raised with multiple points and tesseroids."""
+        tesseroids = np.atleast_2d(
+            [
+                [-10, 10, -10, 10, 100, 200],
+                [20, 30, 20, 30, 400, 500],
+                [-50, -40, -30, -20, 100, 500],
+            ]
+        )
+        points = np.array(
+            [
+                [0, 0, 150],
+                [80, 82, 4000],
+                [10, 10, 450],
+            ]
+        ).T
+        with pytest.raises(ValueError):
+            check_points_outside_tesseroids(points, tesseroids)
 
 
 @pytest.mark.use_numba

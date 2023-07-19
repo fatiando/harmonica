@@ -402,7 +402,7 @@ def _check_tesseroids(tesseroids):
     return tesseroids
 
 
-def _check_points_outside_tesseroids(coordinates, tesseroids):
+def check_points_outside_tesseroids(coordinates, tesseroids):
     """
     Check if computation points are not inside the tesseroids
 
@@ -423,42 +423,51 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
         This array of tesseroids must have longitude continuity and valid
         boundaries.
         Run ``_check_tesseroids`` before.
+
+    Raises
+    ------
+    ValueError
+        If any computation point falls inside any tesseroid.
     """
-    longitude, latitude, radius = coordinates[:]
-    west, east, south, north, bottom, top = tuple(tesseroids[:, i] for i in range(6))
-    # Longitudinal boundaries of the tesseroid must be compared with
-    # longitudinal coordinates of computation points when moved to
-    # [0, 360) and [-180, 180).
-    longitude_360 = longitude % 360
-    longitude_180 = ((longitude + 180) % 360) - 180
-    inside_longitude = np.logical_or(
-        np.logical_and(
-            west < longitude_360[:, np.newaxis], longitude_360[:, np.newaxis] < east
-        ),
-        np.logical_and(
-            west < longitude_180[:, np.newaxis], longitude_180[:, np.newaxis] < east
-        ),
-    )
-    inside_latitude = np.logical_and(
-        south < latitude[:, np.newaxis], latitude[:, np.newaxis] < north
-    )
-    inside_radius = np.logical_and(
-        bottom < radius[:, np.newaxis], radius[:, np.newaxis] < top
-    )
-    # Build array of booleans.
-    # The (i, j) element is True if the computation point i is inside the
-    # tesseroid j.
-    inside = inside_longitude * inside_latitude * inside_radius
-    if inside.any():
+    longitude, latitude, radius = coordinates
+    conflicting = _check_points_outside_tesseroids(coordinates, tesseroids)
+    if conflicting:
         err_msg = (
-            "Found computation point inside tesseroid. "
-            + "Computation points must be outside of tesseroids.\n"
+            "Found computation point(s) inside tesseroid(s). "
+            "Computation points must be outside of tesseroids.\n"
         )
-        for point_i, tess_i in np.argwhere(inside):
-            err_msg += "\tComputation point '{}' found inside tesseroid '{}'\n".format(
-                coordinates[:, point_i], tesseroids[tess_i, :]
+        for i, j in conflicting:
+            west, east, south, north, bottom, top = tesseroids[j, :]
+            err_msg += (
+                f" - Computation point '({longitude[i]}, {latitude[i]}, {radius[i]})' "
+                "inside tesseroid "
+                f"'({west}, {east}, {south}, {north}, {bottom}, {top})'.\n"
             )
         raise ValueError(err_msg)
+
+
+@jit(nopython=True)
+def _check_points_outside_tesseroids(coordinates, tesseroids):
+    """
+    Check if observation points fall inside tesseroids.
+    """
+    longitude, latitude, radius = coordinates[:]
+    conflicting = []
+    for i in range(longitude.size):
+        for j in range(tesseroids.shape[0]):
+            # Longitudinal boundaries of the tesseroid must be compared with
+            # longitudinal coordinates of computation points when moved to
+            # [0, 360) and [-180, 180).
+            longitude_360 = longitude[i] % 360
+            longitude_180 = ((longitude[i] + 180) % 360) - 180
+            west, east, south, north, bottom, top = tesseroids[j, :]
+            if (
+                (west < longitude_180 < east or west < longitude_360 < east)
+                and south < latitude[i] < north
+                and bottom < radius[i] < top
+            ):
+                conflicting.append((i, j))
+    return conflicting
 
 
 def _longitude_continuity(tesseroids):

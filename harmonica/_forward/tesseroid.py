@@ -13,9 +13,9 @@ from numba import jit, prange
 from ..constants import GRAVITATIONAL_CONST
 from ._tesseroid_utils import (
     _adaptive_discretization,
-    _check_points_outside_tesseroids,
     _check_tesseroids,
     _discard_null_tesseroids,
+    check_points_outside_tesseroids,
     gauss_legendre_quadrature,
     glq_nodes_weights,
 )
@@ -163,7 +163,7 @@ def tesseroid_gravity(
     # Sanity checks for tesseroids and computation points
     if not disable_checks:
         tesseroids = _check_tesseroids(tesseroids)
-        _check_points_outside_tesseroids(coordinates, tesseroids)
+        check_points_outside_tesseroids(coordinates, tesseroids)
     # Check if density is a function or constant values
     if callable(density):
         # Run density-based discretization on each tesseroid
