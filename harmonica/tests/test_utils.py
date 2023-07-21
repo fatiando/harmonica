@@ -36,16 +36,19 @@ def test_magnetic_ang_to_vec_float(angles, vector):
     )
 
 
+@pytest.mark.parametrize("degrees", (False, True))
 @pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
-def test_magnetic_vec_to_angles_float(angles, vector):
+def test_magnetic_vec_to_angles_float(angles, vector, degrees):
     """
     Check if the function returns the expected values for a given magnetic
     vector as float
     """
     intensity, inclination, declination = angles
     magnetic_e, magnetic_n, magnetic_u = vector
+    if not degrees:
+        inclination, declination = np.radians(inclination), np.radians(declination)
     npt.assert_allclose(
-        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
+        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=degrees),
         (intensity, inclination, declination),
     )
 
@@ -73,15 +76,18 @@ def test_magnetic_ang_to_vec_array(arrays):
     )
 
 
-def test_magnetic_vec_to_angles_array(arrays):
+@pytest.mark.parametrize("degrees", (False, True))
+def test_magnetic_vec_to_angles_array(arrays, degrees):
     """
     Check if the function returns the expected values for the given magnetic
     vector as arrays
     """
     intensity, inclination, declination = arrays[0]
     magnetic_e, magnetic_n, magnetic_u = arrays[1]
+    if not degrees:
+        inclination, declination = np.radians(inclination), np.radians(declination)
     npt.assert_allclose(
-        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
+        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=degrees),
         (intensity, inclination, declination),
     )
 
