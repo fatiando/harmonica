@@ -22,73 +22,84 @@ VECTORS = [
 ANGLES = [[1, 45, 45], [1, -45, 45.0], [1, 45, -45], [1, 90, 0], [1, 0, 90], [1, 0, 0]]
 
 
-@pytest.fixture(name="data")
-def create_angles_vectors():
-    """
-    Generate a tuple of angles and vectors
-    """
-    intensity, inclination, declination = np.vstack(ANGLES).T
-    magnetic_e, magnetic_n, magnetic_u = np.vstack(VECTORS).T
-    return intensity, inclination, declination, magnetic_e, magnetic_n, magnetic_u
-
-
-def test_magnetic_ang_to_vec_float():
+@pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
+def test_magnetic_ang_to_vec_float(angles, vector):
     """
     Check if the function returns the expected values for a given intensity
     inclination and declination as float
     """
-    for i in range(len(ANGLES)):
-        intensity, inclination, declination = ANGLES[i]
-        magnetic_e, magnetic_n, magnetic_u = VECTORS[i]
-        npt.assert_almost_equal(
-            magnetic_angles_to_vec(intensity, inclination, declination),
-            (magnetic_e, magnetic_n, magnetic_u),
-        )
-
-
-def test_magnetic_vec_to_angles_float():
-    """
-    Check if the function returns the expected values for a given magnetic
-    vector as float
-    """
-    for i in range(len(VECTORS)):
-        intensity, inclination, declination = ANGLES[i]
-        magnetic_e, magnetic_n, magnetic_u = VECTORS[i]
-        npt.assert_allclose(
-            magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
-            (intensity, inclination, declination),
-        )
-
-
-def test_magnetic_ang_to_vec_array(data):
-    """
-    Check if the function returns the expected values for a given intensity,
-    inclination and declination a array
-    """
-    intensity, inclination, declination = data[:3]
-    magnetic_e, magnetic_n, magnetic_u = data[3:]
+    intensity, inclination, declination = angles
+    magnetic_e, magnetic_n, magnetic_u = vector
     npt.assert_almost_equal(
         magnetic_angles_to_vec(intensity, inclination, declination),
         (magnetic_e, magnetic_n, magnetic_u),
     )
 
 
-def test_magnetic_vec_to_angles_array(data):
+@pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
+def test_magnetic_vec_to_angles_float(angles, vector):
     """
-    Check if the function returns the expected values for the given magnentic
-    vector as array
+    Check if the function returns the expected values for a given magnetic
+    vector as float
     """
-    intensity, inclination, declination = data[:3]
-    magnetic_e, magnetic_n, magnetic_u = data[3:]
+    intensity, inclination, declination = angles
+    magnetic_e, magnetic_n, magnetic_u = vector
     npt.assert_allclose(
         magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
         (intensity, inclination, declination),
     )
 
 
-def test_unity(data):
-    magnetic_e, magnetic_n, magnetic_u = data[3:]
-    angles = magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u)
+@pytest.fixture(name="arrays")
+def angles_vectors_as_arrays():
+    """
+    Generate magnetic angles and vectors as arrays
+    """
+    intensity, inclination, declination = np.vstack(ANGLES).T
+    magnetic_e, magnetic_n, magnetic_u = np.vstack(VECTORS).T
+    return (intensity, inclination, declination), (magnetic_e, magnetic_n, magnetic_u)
+
+
+def test_magnetic_ang_to_vec_array(arrays):
+    """
+    Check if the function returns the expected values for a given intensity,
+    inclination and declination a array
+    """
+    intensity, inclination, declination = arrays[0]
+    magnetic_e, magnetic_n, magnetic_u = arrays[1]
     npt.assert_almost_equal(
-        magnetic_angles_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
+        magnetic_angles_to_vec(intensity, inclination, declination),
+        (magnetic_e, magnetic_n, magnetic_u),
     )
+
+
+def test_magnetic_vec_to_angles_array(arrays):
+    """
+    Check if the function returns the expected values for the given magnetic
+    vector as arrays
+    """
+    intensity, inclination, declination = arrays[0]
+    magnetic_e, magnetic_n, magnetic_u = arrays[1]
+    npt.assert_allclose(
+        magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u),
+        (intensity, inclination, declination),
+    )
+
+
+@pytest.mark.parametrize("start_with", ("angles", "vectors"))
+def test_identity(arrays, start_with):
+    """
+    Check if applying both conversions return the original set of vectors
+    """
+    if start_with == "angles":
+        intensity, inclination, declination = arrays[0]
+        vector = magnetic_angles_to_vec(intensity, inclination, declination)
+        npt.assert_almost_equal(
+            magnetic_vec_to_angles(*vector), (intensity, inclination, declination)
+        )
+    else:
+        magnetic_e, magnetic_n, magnetic_u = arrays[1]
+        angles = magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u)
+        npt.assert_almost_equal(
+            magnetic_angles_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
+        )
