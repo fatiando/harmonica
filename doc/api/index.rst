@@ -121,4 +121,5 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    test
+    magnetic_vec_to_angles
+    magnetic_angles_to_vec
