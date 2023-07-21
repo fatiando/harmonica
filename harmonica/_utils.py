@@ -42,7 +42,7 @@ def magnetic_angles_to_vec(intensity, inclination, declination):
 
     Examples
     --------
-    >>> mag_e, mag_n, mag_u = mag_angles_to_vec(3.0, 45.0, 45.0)
+    >>> mag_e, mag_n, mag_u = magnetic_angles_to_vec(3.0, 45.0, 45.0)
     >>> print(mag_e, mag_n, mag_u)
     1.5 1.5 -2.121
     """
