@@ -53,13 +53,18 @@ def test_magnetic_vec_to_angles_float(angles, vector, degrees):
     )
 
 
-@pytest.fixture(name="arrays")
-def angles_vectors_as_arrays():
+@pytest.fixture(name="arrays", params=["single-element", "multi-element"])
+def angles_vectors_as_arrays(request):
     """
     Generate magnetic angles and vectors as arrays
     """
-    intensity, inclination, declination = np.vstack(ANGLES).T
-    magnetic_e, magnetic_n, magnetic_u = np.vstack(VECTORS).T
+    if request.param == "single-element":
+        # Generate arrays with a single element
+        intensity, inclination, declination = tuple(np.atleast_1d(i) for i in ANGLES[0])
+        magnetic_e, magnetic_n, magnetic_u = tuple(np.atleast_1d(i) for i in VECTORS[0])
+    else:
+        intensity, inclination, declination = np.vstack(ANGLES).T
+        magnetic_e, magnetic_n, magnetic_u = np.vstack(VECTORS).T
     return (intensity, inclination, declination), (magnetic_e, magnetic_n, magnetic_u)
 
 
