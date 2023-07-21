@@ -130,7 +130,7 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     # Compute the intensity as a norm
     intensity = np.sqrt(magnetic_e**2 + magnetic_n**2 + magnetic_u**2)
     # Compute the horizontal component of the magnetic vector
-    horizontal_component = np.array([np.sqrt(magnetic_e**2 + magnetic_n**2)])
+    horizontal_component = np.atleast_1d(np.sqrt(magnetic_e**2 + magnetic_n**2))
     # Mask the values equal to zero in the horizontal component
     horizontal_component = np.ma.masked_values(horizontal_component, 0.0)
     # Calculate the inclination and declination using the mask
