@@ -36,7 +36,7 @@ def test_magnetic_ang_to_vec_float(angles, vector):
     )
 
 
-@pytest.mark.parametrize("degrees", (False, True))
+@pytest.mark.parametrize("degrees", (False, True), ids=("radians", "degrees"))
 @pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
 def test_magnetic_vec_to_angles_float(angles, vector, degrees):
     """
@@ -81,7 +81,7 @@ def test_magnetic_ang_to_vec_array(arrays):
     )
 
 
-@pytest.mark.parametrize("degrees", (False, True))
+@pytest.mark.parametrize("degrees", (False, True), ids=("radians", "degrees"))
 def test_magnetic_vec_to_angles_array(arrays, degrees):
     """
     Check if the function returns the expected values for the given magnetic
