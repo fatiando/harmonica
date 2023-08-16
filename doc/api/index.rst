@@ -85,6 +85,8 @@ Magnetic fields:
 Layers and meshes:
 
 .. autosummary::
+    :toctree: generated/
+
     prism_layer
     tesseroid_layer
     DatasetAccessorPrismLayer
