@@ -143,9 +143,8 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     if degrees:
         inclination = np.degrees(inclination)
         declination = np.degrees(declination)
-    if intensity.ndim != 0 and intensity.size == 1:
-        (intensity,) = intensity
-    if inclination.ndim != 0 and inclination.size == 1:
+    # Cast to floats if all components are floats
+    if intensity.ndim == 0:
         (inclination,) = inclination
         (declination,) = declination
     return intensity, inclination, declination
