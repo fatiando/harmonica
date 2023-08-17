@@ -549,6 +549,8 @@ def jit_prism_gravity(
     out : 1d-array
         Array where the resulting field values will be stored.
         Must have the same size as the arrays contained on ``coordinates``.
+    progress_proxy : :class:`numba_progress.ProgressBar` or None
+        Instance of :class:`numba_progress.ProgressBar` or None.
     """
     # Unpack coordinates
     easting, northing, upward = coordinates

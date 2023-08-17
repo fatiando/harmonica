@@ -338,6 +338,10 @@ class DatasetAccessorPrismLayer:
             The available fields are:
             - Gravitational potential: ``potential``
             - Downward acceleration: ``g_z``
+        progressbar : bool (optional)
+            If True, a progress bar of the computation will be printed to
+            standard error (stderr). Requires :mod:`numba_progress` to be
+            installed. Default to ``False``.
         density_name : str (optional)
             Name of the property layer (or ``data_var`` of the
             :class:`xarray.Dataset`) that will be used for the density of each
