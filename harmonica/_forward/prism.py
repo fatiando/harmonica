@@ -29,6 +29,8 @@ from choclo.prism._utils import (
 )
 from numba import jit, prange
 
+from .utils import initialize_progressbar
+
 # Define dictionary with available gravity fields for prisms
 FIELDS = {
     "potential": gravity_pot,
@@ -42,12 +44,6 @@ FIELDS = {
     "g_ez": gravity_eu,
     "g_nz": gravity_nu,
 }
-
-# Attempt to import numba_progress
-try:
-    from numba_progress import ProgressBar
-except ImportError:
-    ProgressBar = None
 
 
 def prism_gravity(
@@ -216,16 +212,10 @@ def prism_gravity(
         _check_singular_points(coordinates, prisms, field)
     # Discard null prisms (zero volume or zero density)
     prisms, density = _discard_null_prisms(prisms, density)
-    # Show progress bar for 'jit_prism_gravity' function
-    if progressbar:
-        if ProgressBar is None:
-            raise ImportError(
-                "Missing optional dependency 'numba_progress' required "
-                "if progressbar=True"
-            )
-        progress_proxy = ProgressBar(total=coordinates[0].size)
-    else:
-        progress_proxy = None
+    # Initialize progress bar for 'jit_prism_gravity' function
+    progress_proxy = initialize_progressbar(
+        total=coordinates[0].size, use_progressbar=progressbar
+    )
     # Choose parallelized or serialized forward function
     if parallel:
         gravity_prism_func = jit_prism_gravity_parallel

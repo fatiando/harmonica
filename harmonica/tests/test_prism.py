@@ -335,7 +335,7 @@ def test_progress_bar():
         npt.assert_allclose(result_progress_true, result_progress_false)
 
 
-@patch("harmonica._forward.prism.ProgressBar", None)
+@patch("harmonica._forward.utils.ProgressBar", None)
 def test_numba_progress_missing_error():
     """
     Check if error is raised when progresbar=True and numba_progress package
