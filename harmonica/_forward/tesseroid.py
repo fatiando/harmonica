@@ -234,7 +234,7 @@ def dispatcher(parallel, density):
     return dispatchers[parallel]
 
 
-def jit_tesseroid_gravity(
+def jit_tesseroid_gravity(  # noqa: CFQ002
     coordinates,
     tesseroids,
     density,
@@ -337,7 +337,7 @@ def jit_tesseroid_gravity(
             progress_proxy.update(1)
 
 
-def jit_tesseroid_gravity_variable_density(
+def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
     coordinates,
     tesseroids,
     density,

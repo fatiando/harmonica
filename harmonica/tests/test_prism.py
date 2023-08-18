@@ -366,8 +366,8 @@ class TestProgressBar:
     @patch("harmonica._forward.utils.ProgressBar", None)
     def test_numba_progress_missing_error(self, coordinates, prisms, densities):
         """
-        Check if error is raised when progresbar=True and numba_progress package
-        is not installed.
+        Check if error is raised when progresbar=True and numba_progress
+        package is not installed.
         """
         # Check if error is raised
         with pytest.raises(ImportError):
