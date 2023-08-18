@@ -324,13 +324,13 @@ class TestProgressBar:
     @pytest.fixture
     def densities(self):
         """Sample densities"""
-        return [2000, 3000, 4000]
+        return [2000, 3000, 4000, 5000]
 
     @pytest.fixture
     def coordinates(self):
         """Sample coordinates"""
         coordinates = vd.grid_coordinates(
-            region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
+            region=(-100, 100, -100, 100), spacing=20, extra_coords=10
         )
         return coordinates
 
