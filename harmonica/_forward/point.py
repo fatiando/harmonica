@@ -23,7 +23,7 @@ from choclo.point import (
 )
 from numba import jit, prange
 
-from ..constants import GRAVITATIONAL_CONST
+from choclo.constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_spherical_core
 
 
