@@ -5,6 +5,7 @@ sphinx-gallery==0.10.*
 sphinx-design==0.2.*
 sphinx-copybutton==0.5.*
 jupyter-sphinx==0.4.*
+ipykernel
 boule
 pyproj
 ensaio>=0.5.*
