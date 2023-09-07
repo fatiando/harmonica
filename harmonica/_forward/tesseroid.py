@@ -195,7 +195,7 @@ def tesseroid_gravity(
         kernels[field],
         dtype,
     )
-    # Convert to more convenient units and Invert sign
+    # Convert to more convenient units and invert sign
     if field == "g_z":
         result *= -1e5  # SI to mGal
     return result.reshape(cast.shape)
