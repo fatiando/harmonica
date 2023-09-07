@@ -9,6 +9,7 @@ dependencies:
   - twine
   # Run-time
   - numpy
+  - pandas
   - numba
   - scipy
   - scikit-learn
@@ -41,7 +42,6 @@ dependencies:
   - gmt
   - gdal
   - trame # needed by pyvista
-  - pandas
   # Code style checks and autoformat
   - black==22.10.*
   - isort==5.10.*
