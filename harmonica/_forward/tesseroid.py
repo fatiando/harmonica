@@ -22,7 +22,7 @@ from ._tesseroid_variable_density import (
     density_based_discretization,
     gauss_legendre_quadrature_variable_density,
 )
-from .point import kernel_gravity_u_spherical, kernel_potential_spherical
+from .point import gravity_u_spherical, potential_spherical
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
@@ -151,8 +151,8 @@ def tesseroid_gravity(
 
     """
     kernels = {
-        "potential": kernel_potential_spherical,
-        "g_z": kernel_gravity_u_spherical,
+        "potential": potential_spherical,
+        "g_z": gravity_u_spherical,
     }
     if field not in kernels:
         raise ValueError("Gravitational field {} not recognized".format(field))
@@ -196,8 +196,11 @@ def tesseroid_gravity(
         dtype,
     )
     # Convert to more convenient units and invert sign
-    if field == "g_z":
-        result *= -1e5  # SI to mGal
+    if field in ("g_z"):
+        result *= -1
+    # Convert to more convenient units
+    if field in ("g_z"):
+        result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
 

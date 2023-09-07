@@ -562,14 +562,6 @@ def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
     # Determine the direction along which the finite difference will be
     # computed
     direction_i, direction_j = field[-2], field[-1]
-    if direction_i == "e":
-        direction_i = "e"
-    if direction_i == "n":
-        direction_i = "n"
-    if direction_j == "e":
-        direction_j = "e"
-    if direction_j == "n":
-        direction_j = "n"
     # Build a two computation points slightly shifted from the original
     # computation point by a small delta
     coordinates_pair = tuple([coord, coord] for coord in coordinates)

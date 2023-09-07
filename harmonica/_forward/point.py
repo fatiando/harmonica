@@ -9,6 +9,7 @@ Forward modelling for point masses
 """
 
 import numpy as np
+from choclo.constants import GRAVITATIONAL_CONST
 from choclo.point import (
     gravity_e,
     gravity_ee,
@@ -23,7 +24,6 @@ from choclo.point import (
 )
 from numba import jit, prange
 
-from choclo.constants import GRAVITATIONAL_CONST
 from .utils import check_coordinate_system, distance_spherical_core
 
 
@@ -280,8 +280,8 @@ def get_kernel(coordinate_system, field):
             "g_zn": gravity_nu,
         },
         "spherical": {
-            "potential": kernel_potential_spherical,
-            "g_z": kernel_gravity_u_spherical,
+            "potential": potential_spherical,
+            "g_z": gravity_u_spherical,
             "g_n": None,
             "g_e": None,
         },
@@ -300,7 +300,7 @@ def get_kernel(coordinate_system, field):
 
 
 @jit(nopython=True)
-def kernel_potential_spherical(
+def potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
@@ -317,7 +317,7 @@ def kernel_potential_spherical(
 
 
 @jit(nopython=True)
-def kernel_gravity_u_spherical(
+def gravity_u_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
