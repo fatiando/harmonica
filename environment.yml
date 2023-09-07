@@ -1,7 +1,6 @@
 name: harmonica
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python==3.10.*
   - pip
@@ -9,19 +8,18 @@ dependencies:
   - build
   - twine
   # Run-time
-  - numpy>=1.19
-  - pandas>=1.1
-  - numba>=0.52
-  - scipy>=1.5
-  - scikit-learn>=0.24
-  - pooch>=1.2
+  - numpy
+  - numba
+  - scipy
+  - scikit-learn
   - verde>=1.7.0
-  - xarray>=0.16
+  - xarray
   - xrft>=1.0
   - choclo>=0.1
   # Optional requirements
-  - pyvista>=0.27
-  - vtk>=9
+  - pyvista
+  - vtk
+  - numba-progress
   # Testing requirements
   - pytest
   - pytest-cov
@@ -36,12 +34,13 @@ dependencies:
   - jupyter-sphinx==0.4.*
   - pyproj
   - matplotlib
-  - ensaio
+  - ensaio>=0.5.0
   - netcdf4
-  - pygmt==0.7.*
-  - gmt==6.4.*
-  - gdal==3.5.*
+  - pygmt
+  - gmt
+  - gdal
   - trame # needed by pyvista
+  - pandas
   # Code style checks and autoformat
   - black==22.10.*
   - isort==5.10.*
@@ -54,7 +53,3 @@ dependencies:
   - flake8-simplify==0.19.*
   - flake8-unused-arguments==0.0.12
   - pep8-naming==0.13.*
-  - pip:
-      # Install numba_progress through pip
-      # (not available through conda yet)
-      - numba_progress
