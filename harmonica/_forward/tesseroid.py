@@ -40,7 +40,7 @@ def tesseroid_gravity(
     dtype=np.float64,
     disable_checks=False,
 ):
-    """
+    r"""
     Compute gravitational field of tesseroids on computation points.
 
     .. warning::
