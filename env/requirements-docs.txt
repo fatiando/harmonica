@@ -18,4 +18,3 @@ gmt
 gdal
 ipykernel
 trame
-pandas
