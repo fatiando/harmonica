@@ -183,31 +183,25 @@ def tesseroid_gravity(
             )
         # Discard null tesseroids (zero density or zero volume)
         tesseroids, density = _discard_null_tesseroids(tesseroids, density)
-    # Initialize progress bar for 'jit_prism_gravity' function
-    progress_proxy = initialize_progressbar(
-        total=coordinates[0].size, use_progressbar=progressbar
-    )
     # Get GLQ unscaled nodes, weights and number of nodes for each small
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
     # Compute gravitational field
-    dispatcher(parallel, density)(
-        coordinates,
-        tesseroids,
-        density,
-        result,
-        DISTANCE_SIZE_RATII[field],
-        radial_adaptive_discretization,
-        glq_nodes,
-        glq_weights,
-        kernels[field],
-        dtype,
-        progress_proxy,
-    )
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        dispatcher(parallel, density)(
+            coordinates,
+            tesseroids,
+            density,
+            result,
+            DISTANCE_SIZE_RATII[field],
+            radial_adaptive_discretization,
+            glq_nodes,
+            glq_weights,
+            kernels[field],
+            dtype,
+            progress_proxy,
+        )
     result *= GRAVITATIONAL_CONST
-    # Close previously created progress bars
-    if progress_proxy:
-        progress_proxy.close()
     # Convert to more convenient units
     if field == "g_z":
         result *= 1e5  # SI to mGal

@@ -7,6 +7,7 @@
 """
 Utilities for forward modelling
 """
+import contextlib
 import numpy as np
 from numba import jit
 
@@ -351,9 +352,10 @@ def initialize_progressbar(total, use_progressbar):
 
     Returns
     -------
-    :class:`numba_progress.ProgressBar` or None
+    :class:`numba_progress.ProgressBar` or :class:`contextlib.nullcontext`
         Instance of :class:`numba_progress.ProgressBar` if ``use_progressbar``
-        is True.
+        is True. Instance of :class:`contextlib.nullcontext` if
+        ``use_progressbar`` is False.
 
     Raises
     ------
@@ -363,10 +365,23 @@ def initialize_progressbar(total, use_progressbar):
     See also
     --------
     :func:`harmonica.prism_gravity`
+
+    Examples
+    --------
+    This function is meant to be used inside a context manager, like ``with``:
+
+    >>> with initialize_progressbar(3, True) as progress_proxy:
+    ...     for _ in range(3):
+    ...        progress_proxy.update(3) # doctest: +SKIP
+
+    >>> with initialize_progressbar(3, False) as progress_proxy:
+    ...     print(progress_proxy is None) # doctest: +SKIP
+    True
+
     """
     # Return None if progressbar is not desired
     if not use_progressbar:
-        return None
+        return contextlib.nullcontext()
     # Raise error if numba_progress is not installed
     if ProgressBar is None:
         raise ImportError(

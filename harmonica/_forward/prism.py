@@ -212,22 +212,16 @@ def prism_gravity(
         _check_singular_points(coordinates, prisms, field)
     # Discard null prisms (zero volume or zero density)
     prisms, density = _discard_null_prisms(prisms, density)
-    # Initialize progress bar for 'jit_prism_gravity' function
-    progress_proxy = initialize_progressbar(
-        total=coordinates[0].size, use_progressbar=progressbar
-    )
     # Choose parallelized or serialized forward function
     if parallel:
         gravity_prism_func = jit_prism_gravity_parallel
     else:
         gravity_prism_func = jit_prism_gravity_serial
     # Compute gravitational field
-    gravity_prism_func(
-        coordinates, prisms, density, FIELDS[field], result, progress_proxy
-    )
-    # Close previously created progress bars
-    if progress_proxy:
-        progress_proxy.close()
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        gravity_prism_func(
+            coordinates, prisms, density, FIELDS[field], result, progress_proxy
+        )
     # Invert sign of gravity_u, gravity_eu, gravity_nu
     if field in ("g_z", "g_ez", "g_nz"):
         result *= -1
