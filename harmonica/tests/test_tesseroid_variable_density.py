@@ -7,10 +7,12 @@
 """
 Test forward modelling for tesseroids with variable density
 """
+from unittest.mock import patch
 import numpy as np
 import numpy.testing as npt
 import pytest
 from numba import jit
+import verde as vd
 from verde import grid_coordinates
 
 import harmonica
@@ -24,6 +26,11 @@ from .._forward._tesseroid_variable_density import (
 )
 from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
@@ -503,3 +510,60 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
         analytic[field],
         rtol=ACCURACY_THRESHOLD,
     )
+
+
+class TestProgressBar:
+    @pytest.fixture
+    def tesseroids(self):
+        """Sample tesseroids"""
+        tesseroids = [
+            [30.3, 50.5, -72.2, -34.2, 6e4, 6.1e4],
+            [30.3, 50.5, 20.1, 32.3, 6.1e4, 6.2e4],
+            [-10.3, 5.3, 20.1, 32.3, 6.2e4, 6.3e4],
+        ]
+        return tesseroids
+
+    @pytest.fixture
+    def densities(self):
+        """Sample variable density densities"""
+
+        @jit(nopython=True)
+        def density(r):
+            return r
+
+        return density
+
+    @pytest.fixture
+    def coordinates(self):
+        """Sample coordinates"""
+        coordinates = vd.grid_coordinates(
+            region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
+        )
+        return coordinates
+
+    @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ["potential", "g_z"])
+    def test_progress_bar(self, coordinates, tesseroids, densities, field):
+        """
+        Check if forward gravity results with and without progress bar match
+        """
+        result_progress_true = tesseroid_gravity(
+            coordinates, tesseroids, densities, field=field, progressbar=True
+        )
+        result_progress_false = tesseroid_gravity(
+            coordinates, tesseroids, densities, field=field, progressbar=False
+        )
+        npt.assert_allclose(result_progress_true, result_progress_false)
+
+    @patch("harmonica._forward.utils.ProgressBar", None)
+    def test_numba_progress_missing_error(self, coordinates, tesseroids, densities):
+        """
+        Check if error is raised when progresbar=True and numba_progress
+        package is not installed.
+        """
+        # Check if error is raised
+        with pytest.raises(ImportError):
+            tesseroid_gravity(
+                coordinates, tesseroids, densities, field="potential", progressbar=True
+            )

@@ -748,15 +748,9 @@ class TestProgressBar:
         ]
         return tesseroids
 
-    @pytest.fixture(params=[False, True], ids=["constant-density", "variable-density"])
-    def densities(self, request):
+    @pytest.fixture
+    def densities(self):
         """Sample densities"""
-        if request.param:
-
-            def density(r):
-                return r
-
-            return density
         return [2000, 3000, 4000]
 
     @pytest.fixture
