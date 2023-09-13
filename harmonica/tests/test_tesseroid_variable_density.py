@@ -8,11 +8,12 @@
 Test forward modelling for tesseroids with variable density
 """
 from unittest.mock import patch
+
 import numpy as np
 import numpy.testing as npt
 import pytest
-from numba import jit
 import verde as vd
+from numba import jit
 from verde import grid_coordinates
 
 import harmonica

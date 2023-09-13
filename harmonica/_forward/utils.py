@@ -8,6 +8,7 @@
 Utilities for forward modelling
 """
 import contextlib
+
 import numpy as np
 from numba import jit
 

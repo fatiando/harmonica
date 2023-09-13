@@ -8,7 +8,7 @@
 Test utils functions for forward modelling
 """
 from unittest.mock import patch
-import contextlib
+
 import boule as bl
 import numpy as np
 import numpy.testing as npt
