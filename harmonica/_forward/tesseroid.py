@@ -139,7 +139,7 @@ def tesseroid_gravity(
     >>> # Define a linear density function for the same tesseroid.
     >>> # It should be decorated with numba.njit
     >>> from numba import jit
-    >>> @jit
+    >>> @jit(nopython=True)
     ... def linear_density(radius):
     ...     density_top = 2670.
     ...     density_bottom = 3300.
