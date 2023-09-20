@@ -627,7 +627,7 @@ def test_point_mass_on_origin():
     longitude = np.linspace(-180, 180, 37)
     latitude = np.linspace(-90, 90, 19)
     longitude, latitude, radius = np.meshgrid(longitude, latitude, radius)
-    # Analytical solutions (accelerations are in mgal and tensor components in
+    # Analytical solutions (accelerations are in mGal and tensor components in
     # eotvos)
     analytical = {
         "potential": GRAVITATIONAL_CONST * mass / radius,
@@ -661,7 +661,7 @@ def test_point_mass_same_radial_direction(field):
                     np.array(height + sphere_radius),
                 ]
                 # Analytical solutions
-                # (accelerations are in mgal and tensor components in eotvos)
+                # (accelerations are in mGal and tensor components in eotvos)
                 analytical = {
                     "potential": GRAVITATIONAL_CONST * mass / height,
                     "g_z": GRAVITATIONAL_CONST * mass / height**2 * 1e5,
@@ -689,7 +689,7 @@ def test_point_mass_potential_on_equator():
                     np.array(radius),
                 ]
                 # Analytical solutions
-                # (accelerations are in mgal and tensor components in eotvos)
+                # (accelerations are in mGal and tensor components in eotvos)
                 distance = (
                     2 * radius * np.sin(0.5 * np.radians(abs(longitude - longitude_p)))
                 )
@@ -719,7 +719,7 @@ def test_point_mass_potential_on_same_meridian():
                     np.array(radius),
                 ]
                 # Analytical solutions
-                # (accelerations are in mgal and tensor components in eotvos)
+                # (accelerations are in mGal and tensor components in eotvos)
                 distance = (
                     2 * radius * np.sin(0.5 * np.radians(abs(latitude - latitude_p)))
                 )
