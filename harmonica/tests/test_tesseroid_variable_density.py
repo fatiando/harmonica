@@ -95,7 +95,7 @@ def fixture_quadratic_density(quadratic_params):
     """
     factor, vertex_radius, vertex_density = quadratic_params
 
-    @jit
+    @jit(nopython=True)
     def density(radius):
         """Quadratic density function"""
         return factor * (radius - vertex_radius) ** 2 + vertex_density
@@ -111,7 +111,7 @@ def fixture_straight_line_analytic(bottom, top, quadratic_density):
     density_bottom, density_top = quadratic_density(bottom), quadratic_density(top)
     slope = (density_top - density_bottom) / (top - bottom)
 
-    @jit
+    @jit(nopython=True)
     def line(radius):
         return slope * (radius - bottom) + density_bottom
 
@@ -197,7 +197,7 @@ def test_density_minmax_exponential_function(bottom, top):
     thickness = top - bottom
     b_factor = 50
 
-    @jit
+    @jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density
@@ -276,7 +276,7 @@ def test_density_based_discret_linear_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    @jit
+    @jit(nopython=True)
     def linear_density(radius):
         """Define a dummy linear density"""
         return 3 * radius + 2
@@ -323,7 +323,7 @@ def test_single_tesseroid_against_constant_density(field):
     density = 2900.0
 
     # Define a constant density
-    @jit
+    @jit(nopython=True)
     def constant_density(
         radius,  # noqa: U100 # the radius argument is needed for the density function
     ):
@@ -440,7 +440,7 @@ def test_spherical_shell_linear_density(field, thickness):
     slope = (density_outer - density_inner) / (top - bottom)
     constant_term = density_outer - slope * top
 
-    @jit
+    @jit(nopython=True)
     def linear_density(radius):
         """
         Create a dummy linear density
@@ -480,7 +480,7 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
     a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
     constant_term = density_inner - a_factor
 
-    @jit
+    @jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density
