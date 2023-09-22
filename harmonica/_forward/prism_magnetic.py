@@ -11,7 +11,7 @@ import numpy as np
 from choclo.prism import magnetic_e, magnetic_field, magnetic_n, magnetic_u
 from numba import jit, prange
 
-from .prism import _check_prisms
+from .prism_gravity import _check_prisms
 from .utils import initialize_progressbar
 
 
