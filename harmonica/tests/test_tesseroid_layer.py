@@ -171,7 +171,7 @@ def test_tesseroid_layer_invalid_surface_reference(dummy_layer):
         tesseroid_layer(coordinates, surface, reference_invalid)
 
 
-def test_tesseroid_leyer_properties(dummy_layer):
+def test_tesseroid_layer_properties(dummy_layer):
     """
     Check passing physical properties to the tesseroid layer
     """
