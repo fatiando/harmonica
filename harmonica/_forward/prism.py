@@ -565,7 +565,7 @@ def jit_prism_gravity(
                 prisms[m, 5],
                 density[m],
             )
-        # Update progress bar if called
+        # Update progress bar
         if update_progressbar:
             progress_proxy.update(1)
 

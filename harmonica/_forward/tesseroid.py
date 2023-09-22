@@ -326,7 +326,7 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
                     glq_weights,
                     kernel,
                 )
-        # Update progress bar if called
+        # Update progress bar
         if update_progressbar:
             progress_proxy.update(1)
 
@@ -429,7 +429,7 @@ def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
                     glq_weights,
                     kernel,
                 )
-        # Update progress bar if called
+        # Update progress bar
         if update_progressbar:
             progress_proxy.update(1)
 
