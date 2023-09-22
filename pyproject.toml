@@ -47,10 +47,9 @@ visualizations = ["pyvista>=0.27", "vtk>=9"]
 numba_progress = ["numba_progress"]
 
 [tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
 version_file = "harmonica/_version.py"
-# version_scheme = "post-release"
-# local_scheme = "node-and-date"
-# write_to = "harmonica/_version_generated.py"
 
 [tool.pytest.ini_options]
 markers = [
