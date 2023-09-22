@@ -12,12 +12,7 @@ from choclo.prism import magnetic_e, magnetic_field, magnetic_n, magnetic_u
 from numba import jit, prange
 
 from .prism import _check_prisms
-
-# Attempt to import numba_progress
-try:
-    from numba_progress import ProgressBar
-except ImportError:
-    ProgressBar = None
+from .utils import initialize_progressbar
 
 
 def prism_magnetic(
@@ -86,28 +81,17 @@ def prism_magnetic(
         _run_sanity_checks(prisms, magnetization)
     # Discard null prisms (zero volume or null magnetization)
     prisms, magnetization = _discard_null_prisms(prisms, magnetization)
-    # Show progress bar
-    progress_proxy = None
-    if progressbar:
-        if ProgressBar is None:
-            raise ImportError(
-                "Missing optional dependency 'numba_progress' required if "
-                + "'progressbar=True'."
-            )
-        progress_proxy = ProgressBar(total=coordinates[0].size)
     # Run computations
     b_e, b_n, b_u = tuple(np.zeros(cast.size, dtype=dtype) for _ in range(3))
-    if parallel:
-        _jit_prism_magnetic_field_parallel(
-            coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
-        )
-    else:
-        _jit_prism_magnetic_field_serial(
-            coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
-        )
-    # Close previously created progress bars
-    if progressbar:
-        progress_proxy.close()
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        if parallel:
+            _jit_prism_magnetic_field_parallel(
+                coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
+            )
+        else:
+            _jit_prism_magnetic_field_serial(
+                coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
+            )
     # Convert to nT
     b_e *= 1e9
     b_n *= 1e9
@@ -192,28 +176,27 @@ def prism_magnetic_component(
         _run_sanity_checks(prisms, magnetization)
     # Discard null prisms (zero volume or null magnetization)
     prisms, magnetization = _discard_null_prisms(prisms, magnetization)
-    # Show progress bar
-    progress_proxy = None
-    if progressbar:
-        if ProgressBar is None:
-            raise ImportError(
-                "Missing optional dependency 'numba_progress' required if "
-                + "'progressbar=True'."
-            )
-        progress_proxy = ProgressBar(total=coordinates[0].size)
     # Run computations
     result = np.zeros(cast.size, dtype=dtype)
-    if parallel:
-        _jit_prism_magnetic_component_parallel(
-            coordinates, prisms, magnetization, result, forward_function, progress_proxy
-        )
-    else:
-        _jit_prism_magnetic_component_serial(
-            coordinates, prisms, magnetization, result, forward_function, progress_proxy
-        )
-    # Close previously created progress bars
-    if progressbar:
-        progress_proxy.close()
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        if parallel:
+            _jit_prism_magnetic_component_parallel(
+                coordinates,
+                prisms,
+                magnetization,
+                result,
+                forward_function,
+                progress_proxy,
+            )
+        else:
+            _jit_prism_magnetic_component_serial(
+                coordinates,
+                prisms,
+                magnetization,
+                result,
+                forward_function,
+                progress_proxy,
+            )
     # Convert to nT
     result *= 1e9
     return result.reshape(cast.shape)
