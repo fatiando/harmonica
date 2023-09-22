@@ -7,12 +7,19 @@
 """
 Test utils functions for forward modelling
 """
+from unittest.mock import patch
+
 import boule as bl
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .._forward.utils import check_coordinate_system, distance
+from .._forward.utils import check_coordinate_system, distance, initialize_progressbar
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 @pytest.mark.use_numba
@@ -104,3 +111,27 @@ def test_geodetic_distance_equator_poles():
                     ellipsoid=ellipsoid,
                 ),
             )
+
+
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+@pytest.mark.parametrize("use_progressbar", (True, False))
+def test_initialize_progressbar(use_progressbar):
+    """Test initialize_progressbar."""
+    with initialize_progressbar(3, use_progressbar) as progress_proxy:
+        if use_progressbar:
+            assert isinstance(progress_proxy, ProgressBar)
+        else:
+            assert progress_proxy is None
+
+
+@patch("harmonica._forward.utils.ProgressBar", None)
+@pytest.mark.parametrize("use_progressbar", (True, False))
+def test_initialize_progressbar_import_error(use_progressbar):
+    """Test if it raises ImportError when numba_progress is missing."""
+    if use_progressbar:
+        with pytest.raises(ImportError):  # noqa: SIM117
+            with initialize_progressbar(3, use_progressbar) as progress_proxy:
+                pass
+    else:
+        with initialize_progressbar(3, use_progressbar) as progress_proxy:
+            assert progress_proxy is None

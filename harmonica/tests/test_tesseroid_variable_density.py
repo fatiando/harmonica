@@ -7,9 +7,12 @@
 """
 Test forward modelling for tesseroids with variable density
 """
+from unittest.mock import patch
+
 import numpy as np
 import numpy.testing as npt
 import pytest
+import verde as vd
 from numba import jit
 from verde import grid_coordinates
 
@@ -24,6 +27,11 @@ from .._forward._tesseroid_variable_density import (
 )
 from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
 # relative error (0.001)
@@ -95,7 +103,7 @@ def fixture_quadratic_density(quadratic_params):
     """
     factor, vertex_radius, vertex_density = quadratic_params
 
-    @jit
+    @jit(nopython=True)
     def density(radius):
         """Quadratic density function"""
         return factor * (radius - vertex_radius) ** 2 + vertex_density
@@ -111,7 +119,7 @@ def fixture_straight_line_analytic(bottom, top, quadratic_density):
     density_bottom, density_top = quadratic_density(bottom), quadratic_density(top)
     slope = (density_top - density_bottom) / (top - bottom)
 
-    @jit
+    @jit(nopython=True)
     def line(radius):
         return slope * (radius - bottom) + density_bottom
 
@@ -197,7 +205,7 @@ def test_density_minmax_exponential_function(bottom, top):
     thickness = top - bottom
     b_factor = 50
 
-    @jit
+    @jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density
@@ -276,7 +284,7 @@ def test_density_based_discret_linear_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    @jit
+    @jit(nopython=True)
     def linear_density(radius):
         """Define a dummy linear density"""
         return 3 * radius + 2
@@ -323,7 +331,7 @@ def test_single_tesseroid_against_constant_density(field):
     density = 2900.0
 
     # Define a constant density
-    @jit
+    @jit(nopython=True)
     def constant_density(
         radius,  # noqa: U100 # the radius argument is needed for the density function
     ):
@@ -440,7 +448,7 @@ def test_spherical_shell_linear_density(field, thickness):
     slope = (density_outer - density_inner) / (top - bottom)
     constant_term = density_outer - slope * top
 
-    @jit
+    @jit(nopython=True)
     def linear_density(radius):
         """
         Create a dummy linear density
@@ -480,7 +488,7 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
     a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
     constant_term = density_inner - a_factor
 
-    @jit
+    @jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density
@@ -503,3 +511,60 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
         analytic[field],
         rtol=ACCURACY_THRESHOLD,
     )
+
+
+class TestProgressBar:
+    @pytest.fixture
+    def tesseroids(self):
+        """Sample tesseroids"""
+        tesseroids = [
+            [30.3, 50.5, -72.2, -34.2, 6e4, 6.1e4],
+            [30.3, 50.5, 20.1, 32.3, 6.1e4, 6.2e4],
+            [-10.3, 5.3, 20.1, 32.3, 6.2e4, 6.3e4],
+        ]
+        return tesseroids
+
+    @pytest.fixture
+    def densities(self):
+        """Sample variable density densities"""
+
+        @jit(nopython=True)
+        def density(r):
+            return r
+
+        return density
+
+    @pytest.fixture
+    def coordinates(self):
+        """Sample coordinates"""
+        coordinates = vd.grid_coordinates(
+            region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
+        )
+        return coordinates
+
+    @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize("field", ["potential", "g_z"])
+    def test_progress_bar(self, coordinates, tesseroids, densities, field):
+        """
+        Check if forward gravity results with and without progress bar match
+        """
+        result_progress_true = tesseroid_gravity(
+            coordinates, tesseroids, densities, field=field, progressbar=True
+        )
+        result_progress_false = tesseroid_gravity(
+            coordinates, tesseroids, densities, field=field, progressbar=False
+        )
+        npt.assert_allclose(result_progress_true, result_progress_false)
+
+    @patch("harmonica._forward.utils.ProgressBar", None)
+    def test_numba_progress_missing_error(self, coordinates, tesseroids, densities):
+        """
+        Check if error is raised when progresbar=True and numba_progress
+        package is not installed.
+        """
+        # Check if error is raised
+        with pytest.raises(ImportError):
+            tesseroid_gravity(
+                coordinates, tesseroids, densities, field="potential", progressbar=True
+            )
