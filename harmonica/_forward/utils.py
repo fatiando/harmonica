@@ -7,8 +7,16 @@
 """
 Utilities for forward modelling
 """
+import contextlib
+
 import numpy as np
 from numba import jit
+
+# Attempt to import numba_progress
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
@@ -325,3 +333,60 @@ def geodetic_distance_core(
         )
     )
     return dist
+
+
+def initialize_progressbar(total, use_progressbar):
+    """
+    Generate an instance of ``numba_progress.ProgressBar``
+
+    This function is meant to be used within other forward modelling functions
+    that have a ``progressbar`` optional argument.
+
+    Parameters
+    ----------
+    total : int
+        Number of iterations that will be assumed as the total for the
+        :class:`numba_progress.ProgressBar`.
+    use_progressbar : bool
+        Weather to initialize a progressbar or not. If True, then the function
+        will return None.
+
+    Returns
+    -------
+    :class:`numba_progress.ProgressBar` or :class:`contextlib.nullcontext`
+        Instance of :class:`numba_progress.ProgressBar` if ``use_progressbar``
+        is True. Instance of :class:`contextlib.nullcontext` if
+        ``use_progressbar`` is False.
+
+    Raises
+    ------
+    ImportError
+        If ``numba_progress`` is missing and ``use_progress`` is set to True.
+
+    See also
+    --------
+    :func:`harmonica.prism_gravity`
+
+    Examples
+    --------
+    This function is meant to be used inside a context manager, like ``with``:
+
+    >>> with initialize_progressbar(3, True) as progress_proxy:
+    ...     for _ in range(3):
+    ...        progress_proxy.update(3) # doctest: +SKIP
+
+    >>> with initialize_progressbar(3, False) as progress_proxy:
+    ...     print(progress_proxy is None) # doctest: +SKIP
+    True
+
+    """
+    # Return None if progressbar is not desired
+    if not use_progressbar:
+        return contextlib.nullcontext()
+    # Raise error if numba_progress is not installed
+    if ProgressBar is None:
+        raise ImportError(
+            "Missing optional dependency 'numba_progress' required "
+            "if progressbar=True"
+        )
+    return ProgressBar(total=total)

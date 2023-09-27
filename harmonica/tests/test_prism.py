@@ -32,7 +32,7 @@ except ImportError:
     ProgressBar = None
 
 from .. import bouguer_correction
-from .._forward.prism import _check_prisms, _discard_null_prisms, prism_gravity
+from .._forward.prism_gravity import _check_prisms, _discard_null_prisms, prism_gravity
 from .utils import run_only_with_numba
 
 
@@ -309,23 +309,52 @@ def test_prisms_parallel_vs_serial():
         npt.assert_allclose(result_parallel, result_serial)
 
 
-@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-@pytest.mark.use_numba
-def test_progress_bar():
-    """
-    Check if forward gravity results with and without progress bar match
-    """
-    prisms = [
-        [-100, 0, -100, 0, -10, 0],
-        [0, 100, -100, 0, -10, 0],
-        [-100, 0, 0, 100, -10, 0],
-        [0, 100, 0, 100, -10, 0],
-    ]
-    densities = [2000, 3000, 4000, 5000]
-    coordinates = vd.grid_coordinates(
-        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+class TestProgressBar:
+    @pytest.fixture
+    def prisms(self):
+        """Sample prisms"""
+        prisms = [
+            [-100, 0, -100, 0, -10, 0],
+            [0, 100, -100, 0, -10, 0],
+            [-100, 0, 0, 100, -10, 0],
+            [0, 100, 0, 100, -10, 0],
+        ]
+        return prisms
+
+    @pytest.fixture
+    def densities(self):
+        """Sample densities"""
+        return [2000, 3000, 4000, 5000]
+
+    @pytest.fixture
+    def coordinates(self):
+        """Sample coordinates"""
+        coordinates = vd.grid_coordinates(
+            region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+        )
+        return coordinates
+
+    @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+    @pytest.mark.use_numba
+    @pytest.mark.parametrize(
+        "field",
+        [
+            "potential",
+            "g_e",
+            "g_n",
+            "g_z",
+            "g_ee",
+            "g_nn",
+            "g_zz",
+            "g_en",
+            "g_ez",
+            "g_nz",
+        ],
     )
-    for field in ("potential", "g_z"):
+    def test_progress_bar(self, coordinates, prisms, densities, field):
+        """
+        Check if forward gravity results with and without progress bar match
+        """
         result_progress_true = prism_gravity(
             coordinates, prisms, densities, field=field, progressbar=True
         )
@@ -334,26 +363,17 @@ def test_progress_bar():
         )
         npt.assert_allclose(result_progress_true, result_progress_false)
 
-
-@patch("harmonica._forward.prism.ProgressBar", None)
-def test_numba_progress_missing_error():
-    """
-    Check if error is raised when progresbar=True and numba_progress package
-    is not installed.
-    """
-    prisms = [
-        [-100, 0, -100, 0, -10, 0],
-        [0, 100, -100, 0, -10, 0],
-        [-100, 0, 0, 100, -10, 0],
-        [0, 100, 0, 100, -10, 0],
-    ]
-    densities = [2000, 3000, 4000, 5000]
-    coordinates = [0, 0, 0]
-    # Check if error is raised
-    with pytest.raises(ImportError):
-        prism_gravity(
-            coordinates, prisms, densities, field="potential", progressbar=True
-        )
+    @patch("harmonica._forward.utils.ProgressBar", None)
+    def test_numba_progress_missing_error(self, coordinates, prisms, densities):
+        """
+        Check if error is raised when progresbar=True and numba_progress
+        package is not installed.
+        """
+        # Check if error is raised
+        with pytest.raises(ImportError):
+            prism_gravity(
+                coordinates, prisms, densities, field="potential", progressbar=True
+            )
 
 
 class TestSingularPoints:
