@@ -229,7 +229,7 @@ For example:
 
 Each row of the ``magnetization`` 2D vector corresponds to the easting,
 northing and upward components of the magnetization vector of each prism in
-``prisms``, provided in :math:`Am^2`.
+``prisms``, provided in :math:`Am^{-1}`.
 
 With the :func:`harmonica.prism_magnetic` function we can compute the three
 components of the magnetic field the prisms generates on any set of observation
