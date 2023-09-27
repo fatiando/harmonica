@@ -81,10 +81,14 @@ Magnetic fields:
 
     dipole_magnetic
     dipole_magnetic_component
+    prism_magnetic
+    prism_magnetic_component
 
 Layers and meshes:
 
 .. autosummary::
+    :toctree: generated/
+
     prism_layer
     tesseroid_layer
     DatasetAccessorPrismLayer

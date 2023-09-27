@@ -5,6 +5,7 @@ sphinx-gallery==0.10.*
 sphinx-design==0.2.*
 sphinx-copybutton==0.5.*
 jupyter-sphinx==0.4.*
+ipykernel
 boule
 pyproj
 ensaio>=0.5.*
@@ -12,8 +13,8 @@ netcdf4
 matplotlib
 pyvista
 vtk>=9
-pygmt==0.7.*
-gmt==6.4.*
-gdal==3.5.*
+pygmt
+gmt
+gdal
 ipykernel
 trame
