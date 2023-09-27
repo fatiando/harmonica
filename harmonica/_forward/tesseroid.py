@@ -23,6 +23,7 @@ from ._tesseroid_variable_density import (
     gauss_legendre_quadrature_variable_density,
 )
 from .point import gravity_u_spherical, potential_spherical
+from .utils import initialize_progressbar
 
 STACK_SIZE = 100
 MAX_DISCRETIZATIONS = 100000
@@ -38,6 +39,7 @@ def tesseroid_gravity(
     parallel=True,
     radial_adaptive_discretization=False,
     dtype=np.float64,
+    progressbar=False,
     disable_checks=False,
 ):
     r"""
@@ -98,6 +100,10 @@ def tesseroid_gravity(
     dtype : data-type (optional)
         Data type assigned to the resulting gravitational field. Default to
         ``np.float64``.
+    progressbar : bool (optional)
+        If True, a progress bar of the computation will be printed to standard
+        error (stderr). Requires :mod:`numba_progress` to be installed.
+        Default to ``False``.
     disable_checks : bool (optional)
         Flag that controls whether to perform a sanity check on the model.
         Should be set to ``True`` only when it is certain that the input model
@@ -138,7 +144,7 @@ def tesseroid_gravity(
     >>> # Define a linear density function for the same tesseroid.
     >>> # It should be decorated with numba.njit
     >>> from numba import jit
-    >>> @jit
+    >>> @jit(nopython=True)
     ... def linear_density(radius):
     ...     density_top = 2670.
     ...     density_bottom = 3300.
@@ -183,19 +189,21 @@ def tesseroid_gravity(
     # tesseroid
     glq_nodes, glq_weights = glq_nodes_weights(GLQ_DEGREES)
     # Compute gravitational field
-    dispatcher(parallel, density)(
-        coordinates,
-        tesseroids,
-        density,
-        result,
-        DISTANCE_SIZE_RATII[field],
-        radial_adaptive_discretization,
-        glq_nodes,
-        glq_weights,
-        kernels[field],
-        dtype,
-    )
-    # Convert to more convenient units and invert sign
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        dispatcher(parallel, density)(
+            coordinates,
+            tesseroids,
+            density,
+            result,
+            DISTANCE_SIZE_RATII[field],
+            radial_adaptive_discretization,
+            glq_nodes,
+            glq_weights,
+            kernels[field],
+            dtype,
+            progress_proxy,
+        )
+    # Invert sign
     if field in ("g_z"):
         result *= -1
     # Convert to more convenient units
@@ -224,7 +232,7 @@ def dispatcher(parallel, density):
     return dispatchers[parallel]
 
 
-def jit_tesseroid_gravity(
+def jit_tesseroid_gravity(  # noqa: CFQ002
     coordinates,
     tesseroids,
     density,
@@ -235,6 +243,7 @@ def jit_tesseroid_gravity(
     glq_weights,
     kernel,
     dtype,
+    progress_proxy,
 ):
     """
     Compute gravitational field of tesseroids on computations points
@@ -280,7 +289,11 @@ def jit_tesseroid_gravity(
         Kernel function for the gravitational field of point masses.
     dtype : data-type
         Data type assigned to the resulting gravitational field.
+    progress_proxy : :class:`numba_progress.ProgressBar` or None
+        Instance of :class:`numba_progress.ProgressBar` or None.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
     # Get coordinates of the observation points
     # and precompute trigonometric functions
     longitude, latitude, radius = coordinates[:]
@@ -317,9 +330,12 @@ def jit_tesseroid_gravity(
                     glq_weights,
                     kernel,
                 )
+        # Update progress bar
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
-def jit_tesseroid_gravity_variable_density(
+def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
     coordinates,
     tesseroids,
     density,
@@ -330,6 +346,7 @@ def jit_tesseroid_gravity_variable_density(
     glq_weights,
     kernel,
     dtype,
+    progress_proxy,
 ):
     """
     Compute gravitational field of tesseroids on computations points
@@ -375,7 +392,11 @@ def jit_tesseroid_gravity_variable_density(
         Kernel function for the gravitational field of point masses.
     dtype : data-type
         Data type assigned to the resulting gravitational field.
+    progress_proxy : :class:`numba_progress.ProgressBar` or None
+        Instance of :class:`numba_progress.ProgressBar` or None.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
     # Get coordinates of the observation points
     # and precompute trigonometric functions
     longitude, latitude, radius = coordinates[:]
@@ -412,6 +433,9 @@ def jit_tesseroid_gravity_variable_density(
                     glq_weights,
                     kernel,
                 )
+        # Update progress bar
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
 # Define jitted versions of the forward modelling function
