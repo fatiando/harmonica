@@ -371,7 +371,6 @@ def test_tensor_non_diagonal_components(field, flipped_field):
 
 
 class TestTensorSymmetryCartesian:
-
     # Define sample point source and its mass
     point = [1.1, 1.2, 1.3]
     mass = [2670]

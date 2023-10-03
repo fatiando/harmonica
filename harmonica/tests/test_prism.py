@@ -32,7 +32,7 @@ except ImportError:
     ProgressBar = None
 
 from .. import bouguer_correction
-from .._forward.prism import _check_prisms, _discard_null_prisms, prism_gravity
+from .._forward.prism_gravity import _check_prisms, _discard_null_prisms, prism_gravity
 from .utils import run_only_with_numba
 
 
@@ -284,7 +284,7 @@ def test_prism_against_infinite_slab():
     npt.assert_allclose(analytical, results[-1])
 
 
-@run_only_with_numba
+@pytest.mark.use_numba
 def test_prisms_parallel_vs_serial():
     """
     Check if the parallelized run returns the same results as the serial one
@@ -297,7 +297,7 @@ def test_prisms_parallel_vs_serial():
     ]
     densities = [2000, 3000, 4000, 5000]
     coordinates = vd.grid_coordinates(
-        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+        region=(-100, 100, -100, 100), shape=(3, 3), extra_coords=10
     )
     for field in ("potential", "g_z"):
         result_parallel = prism_gravity(
