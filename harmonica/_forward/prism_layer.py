@@ -14,7 +14,7 @@ import verde as vd
 import xarray as xr
 
 from ..visualization import prism_to_pyvista
-from .prism import prism_gravity
+from .prism_gravity import prism_gravity
 
 
 def prism_layer(
@@ -342,6 +342,10 @@ class DatasetAccessorPrismLayer:
             - Downward acceleration: ``g_z``
             - Diagonal tensor components: ``g_ee``, ``g_nn``, ``g_zz``
             - Non-diagonal tensor components: ``g_en``, ``g_ez``, ``g_nz``
+        progressbar : bool (optional)
+            If True, a progress bar of the computation will be printed to
+            standard error (stderr). Requires :mod:`numba_progress` to be
+            installed. Default to ``False``.
         density_name : str (optional)
             Name of the property layer (or ``data_var`` of the
             :class:`xarray.Dataset`) that will be used for the density of each

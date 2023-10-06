@@ -165,6 +165,7 @@ def _density_based_discretization(tesseroid, density):
     tesseroids : list
         List containing the boundaries of discretized tesseroids.
     """
+
     # Define normalized density
     def normalized_density(radius):
         return (density(radius) - density_min) / (density_max - density_min)

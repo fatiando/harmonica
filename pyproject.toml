@@ -52,6 +52,7 @@ local_scheme = "node-and-date"
 version_file = "harmonica/_version.py"
 
 [tool.pytest.ini_options]
+doctest_optionflags = "NUMBER"
 markers = [
     "use_numba: mark test functions that call Numba jitted functions"
 ]

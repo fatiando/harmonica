@@ -11,8 +11,9 @@ from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph
 from ._forward.dipole import dipole_magnetic, dipole_magnetic_component
 from ._forward.point import point_gravity
-from ._forward.prism import prism_gravity
+from ._forward.prism_gravity import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
+from ._forward.prism_magnetic import prism_magnetic, prism_magnetic_component
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
@@ -28,6 +29,7 @@ from ._transformations import (
     reduction_to_pole,
     upward_continuation,
 )
+from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles
 from ._version import __version__
 
 # Append a leading "v" to the generated version by setuptools_scm

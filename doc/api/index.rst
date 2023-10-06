@@ -81,6 +81,8 @@ Magnetic fields:
 
     dipole_magnetic
     dipole_magnetic_component
+    prism_magnetic
+    prism_magnetic_component
 
 Layers and meshes:
 
@@ -123,4 +125,5 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    test
+    magnetic_vec_to_angles
+    magnetic_angles_to_vec
