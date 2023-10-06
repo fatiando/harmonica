@@ -29,6 +29,7 @@ from ._transformations import (
     reduction_to_pole,
     upward_continuation,
 )
+from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles
 from ._version import __version__
 
 
