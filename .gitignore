@@ -17,4 +17,4 @@ doc/sample_data
 MANIFEST
 dask-worker-space
 .coverage.*
-harmonica/_version_generated.py
+harmonica/_version.py

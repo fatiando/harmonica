@@ -77,7 +77,7 @@ jobs:
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba install dependente==0.1.0 -c conda-forge
+          mamba install dependente==0.3.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
           dependente --source install > requirements-full.txt
