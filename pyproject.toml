@@ -14,7 +14,7 @@ maintainers = [
 ]
 readme = "README.md"
 requires-python = ">=3.8"
-license = {file = "LICENSE.txt"}
+license = {text = "BSD-3-Clause"}
 keywords = ["geoscience", "geophysics"]
 classifiers = [
     "Programming Language :: Python :: 3",
