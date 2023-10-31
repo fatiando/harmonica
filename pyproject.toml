@@ -1,26 +1,22 @@
-[build-system]
-requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0.3"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "harmonica"
 description = "Forward modeling, inversion, and processing gravity and magnetic data"
 dynamic = ["version"]
 authors = [
-  { name="The Harmonica Developers", email="fatiandoaterra@protonmail.com" },
+  {name="The Harmonica Developers", email="fatiandoaterra@protonmail.com"},
 ]
 maintainers = [
   {name = "Santiago Soler", email = "santisoler@fastmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.8"
 license = {text = "BSD-3-Clause"}
 keywords = ["geoscience", "geophysics"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
 ]
+requires-python = ">=3.8"
 dependencies = [
     "numpy >= 1.21",
     "pandas >= 1.1",
@@ -45,6 +41,10 @@ dependencies = [
 [project.optional-dependencies]
 visualizations = ["pyvista>=0.27", "vtk>=9"]
 numba_progress = ["numba_progress"]
+
+[build-system]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0.3"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
