@@ -29,7 +29,11 @@ from ._transformations import (
     reduction_to_pole,
     upward_continuation,
 )
+from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles
 from ._version import __version__
+
+# Append a leading "v" to the generated version by setuptools_scm
+__version__ = f"v{__version__}"
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=False):

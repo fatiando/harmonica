@@ -1,15 +1,58 @@
-# Specify that we use setuptools and setuptools_scm (to generate the version
-# string). Actual configuration is in setup.py and setup.cfg.
+[project]
+name = "harmonica"
+description = "Forward modeling, inversion, and processing gravity and magnetic data"
+dynamic = ["version"]
+authors = [
+  {name="The Harmonica Developers", email="fatiandoaterra@protonmail.com"},
+]
+maintainers = [
+  {name = "Santiago Soler", email = "santisoler@fastmail.com"}
+]
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+keywords = ["geoscience", "geophysics"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy >= 1.21",
+    "pandas >= 1.1",
+    "scipy >= 1.5",
+    "scikit-learn >= 0.24",
+    "numba >= 0.52",
+    "xarray >= 0.16",
+    "verde >= 1.7",
+    "xrft >= 1.0",
+    "choclo >= 0.1",
+]
+
+[project.urls]
+"Homepage" = "https://www.fatiando.org/harmonica"
+"Documentation" = "https://www.fatiando.org/harmonica"
+"Repository" = "https://github.com/fatiando/harmonica.git"
+"Changelog" = "https://www.fatiando.org/harmonica/latest/changes.html"
+"Bug Tracker" = "https://github.com/fatiando/harmonica/issues"
+"Source Code" = "https://github.com/fatiando/harmonica"
+"Release Notes" = "https://github.com/fatiando/harmonica/releases"
+
+[project.optional-dependencies]
+visualizations = ["pyvista>=0.27", "vtk>=9"]
+numba_progress = ["numba_progress"]
+
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-version_scheme =  "post-release"
-local_scheme =  "node-and-date"
-write_to =  "harmonica/_version_generated.py"
+version_scheme = "post-release"
+local_scheme = "node-and-date"
+version_file = "harmonica/_version.py"
 
 [tool.pytest.ini_options]
+doctest_optionflags = "NUMBER"
 markers = [
     "use_numba: mark test functions that call Numba jitted functions"
 ]
