@@ -652,12 +652,16 @@ def _gravity_coarser(
 
     # Get bounding indices of the finer box
     easting_min, northing_min = prisms_easting.min(), prisms_northing.min()
-    i_min = int((easting - easting_min - fine_distance) // spacing_easting)
-    i_max = int((easting - easting_min + fine_distance) // spacing_easting + 1)
-    j_min = int((northing - northing_min - fine_distance) // spacing_northing)
-    j_max = int((northing - northing_min + fine_distance) // spacing_northing + 1)
-
-    print(i_min, i_max, j_min, j_max)
+    i_min = max(int((easting - easting_min - fine_distance) // spacing_easting), 0)
+    i_max = min(
+        int((easting - easting_min + fine_distance) // spacing_easting + 1),
+        prisms_easting.size,
+    )
+    j_min = max(int((northing - northing_min - fine_distance) // spacing_northing), 0)
+    j_max = min(
+        int((northing - northing_min + fine_distance) // spacing_northing + 1),
+        prisms_northing.size,
+    )
 
     # Forward model the finer grid
     result = 0
