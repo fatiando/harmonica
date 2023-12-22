@@ -7,14 +7,18 @@
 """
 Define a layer of prisms
 """
+from typing import Callable
 import warnings
 
 import numpy as np
+from numpy.typing import NDArray
 import verde as vd
 import xarray as xr
 
 from ..visualization import prism_to_pyvista
-from .prism_gravity import prism_gravity
+from .prism_gravity import prism_gravity, FIELDS
+
+from numba import jit, prange
 
 
 def prism_layer(
@@ -305,6 +309,41 @@ class DatasetAccessorPrismLayer:
         self._obj.coords["top"] = (self.dims, top)
         self._obj.coords["bottom"] = (self.dims, bottom)
 
+    def gravity_coarser(
+        self,
+        coordinates,
+        field,
+        fine_distance: float,
+        factor: int = 2,
+        density_name="density",
+    ):
+        cast = np.broadcast(*coordinates[:3])
+        result = np.zeros(cast.size, dtype=np.float64)
+        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+        _check_regular_grid(self._obj.easting.values, self._obj.northing.values)
+        gravity_coarser(
+            coordinates,
+            self._obj.easting.values,
+            self._obj.northing.values,
+            self._obj.bottom.values,
+            self._obj.top.values,
+            self._obj[density_name].values,
+            FIELDS[field],
+            fine_distance,
+            factor,
+            result,
+        )
+        # Invert sign of gravity_u, gravity_eu, gravity_nu
+        if field in ("g_z", "g_ez", "g_nz"):
+            result *= -1
+        # Convert to more convenient units
+        if field in ("g_e", "g_n", "g_z"):
+            result *= 1e5  # SI to mGal
+        # Convert to more convenient units
+        if field in ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"):
+            result *= 1e9  # SI to Eotvos
+        return result.reshape(cast.shape)
+
     def gravity(
         self,
         coordinates,
@@ -552,3 +591,122 @@ def _discard_thin_prisms(
     prisms = prisms[np.logical_not(null_prisms), :]
     density = density[np.logical_not(null_prisms)]
     return prisms, density
+
+
+@jit(nopython=True, parallel=True)
+def gravity_coarser(
+    coordinates: tuple[NDArray, NDArray, NDArray],
+    prisms_easting: NDArray,
+    prisms_northing: NDArray,
+    prisms_bottom: NDArray,
+    prisms_top: NDArray,
+    prisms_densities: NDArray,
+    forward_func: Callable,
+    fine_distance: float,
+    factor: int,
+    out,
+):
+    # Unpack coordinates
+    easting, northing, upward = coordinates
+    # Iterate over computation points and prisms
+    for k in prange(easting.size):
+        out[k] += _gravity_coarser(
+            easting[k],
+            northing[k],
+            upward[k],
+            prisms_easting,
+            prisms_northing,
+            prisms_bottom,
+            prisms_top,
+            prisms_densities,
+            fine_distance,
+            factor,
+            forward_func,
+        )
+
+
+@jit(nopython=True)
+def _gravity_coarser(
+    easting: float,
+    northing: float,
+    upward: float,
+    prisms_easting: NDArray,
+    prisms_northing: NDArray,
+    prisms_bottom: NDArray,
+    prisms_top: NDArray,
+    prisms_densities: NDArray,
+    fine_distance: float,
+    factor: int,
+    forward_func: Callable,
+) -> float:
+    """
+    Forward model of prism layer coarsening far prisms
+    """
+    # Get size of finer prisms
+    prism_size_easting = prisms_easting[1] - prisms_easting[0]
+    prism_size_northing = prisms_northing[1] - prisms_northing[0]
+
+    # Get size of coarser prisms
+    spacing_easting = prism_size_easting * factor
+    spacing_northing = prism_size_northing * factor
+
+    # Get bounding indices of the finer box
+    easting_min, northing_min = prisms_easting.min(), prisms_northing.min()
+    i_min = int((easting - easting_min - fine_distance) // spacing_easting)
+    i_max = int((easting - easting_min + fine_distance) // spacing_easting + 1)
+    j_min = int((northing - northing_min - fine_distance) // spacing_northing)
+    j_max = int((northing - northing_min + fine_distance) // spacing_northing + 1)
+
+    print(i_min, i_max, j_min, j_max)
+
+    # Forward model the finer grid
+    result = 0
+    for i in range(i_min, i_max):
+        west = prisms_easting[i] - prism_size_easting / 2
+        east = prisms_easting[i] + prism_size_easting / 2
+        for j in range(j_min, j_max):
+            south = prisms_northing[j] - prism_size_northing / 2
+            north = prisms_northing[j] + prism_size_northing / 2
+            bottom = prisms_bottom[j, i]
+            top = prisms_top[j, i]
+            density = prisms_densities[j, i]
+            result += forward_func(
+                easting,
+                northing,
+                upward,
+                west,
+                east,
+                south,
+                north,
+                bottom,
+                top,
+                density,
+            )
+
+    # Forward model the coarser grid
+    for i in range(0, prisms_easting.size, factor):
+        west = prisms_easting[i] - 0.5 * prism_size_easting
+        east = prisms_easting[i] + (factor - 0.5) * prism_size_easting
+        for j in range(0, prisms_northing.size, factor):
+            if i_min <= i < i_max and j_min <= j < j_max:
+                continue
+            south = prisms_northing[j] - 0.5 * prism_size_northing
+            north = prisms_northing[j] + (factor - 0.5) * prism_size_northing
+            bottom = np.mean(prisms_bottom[j : j + factor, i : i + factor])
+            top = np.mean(prisms_top[j : j + factor, i : i + factor])
+            density = np.mean(prisms_densities[j : j + factor, i : i + factor])
+            if np.isnan(density):
+                continue
+            result += forward_func(
+                easting,
+                northing,
+                upward,
+                west,
+                east,
+                south,
+                north,
+                bottom,
+                top,
+                density,
+            )
+    return result
