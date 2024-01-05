@@ -14,7 +14,6 @@ from numba import jit, prange
 from .prism_gravity import _check_prisms
 from .utils import initialize_progressbar
 
-
 VALID_FIELDS = ("b", "b_e", "b_n", "b_u")
 FORWARD_FUNCTIONS = {
     "b_e": magnetic_e,
@@ -130,18 +129,31 @@ def _prism_magnetic_vector(
 ):
     """
     Forward model the three components of the magnetic vector
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+    prisms : 2d-array
+    magnetization : 2d-array
+    cast : np.broadcast
+    parallel : bool
+    dtype : np.dtype
+
+    Returns
+    -------
+    magnetic_components : tuple of arrays
+        Tuple containing the three components of the magnetic vector:
+        ``b_e``, ``b_n``, ``b_u``.
     """
+    # Decide which function should be used
+    if parallel:
+        jit_func = _jit_prism_magnetic_field_parallel
+    else:
+        jit_func = _jit_prism_magnetic_field_serial
     # Run forward model
     b_e, b_n, b_u = tuple(np.zeros(cast.size, dtype=dtype) for _ in range(3))
     with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
-        if parallel:
-            _jit_prism_magnetic_field_parallel(
-                coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
-            )
-        else:
-            _jit_prism_magnetic_field_serial(
-                coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy
-            )
+        jit_func(coordinates, prisms, magnetization, b_e, b_n, b_u, progress_proxy)
     # Convert to nT
     b_e *= 1e9
     b_n *= 1e9
@@ -156,28 +168,38 @@ def _prism_single_component(
 ):
     """
     Forward model the three components of the magnetic vector
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+    prisms : 2d-array
+    magnetization : 2d-array
+    forward_func : callable
+    cast : np.broadcast
+    parallel : bool
+    dtype : np.dtype
+
+    Returns
+    -------
+    magnetic_component : arrays
+        Array containing the desired magnetic component.
     """
+    # Decide which function should be used
+    if parallel:
+        jit_func = _jit_prism_magnetic_component_parallel
+    else:
+        jit_func = _jit_prism_magnetic_component_serial
     # Run computations
     result = np.zeros(cast.size, dtype=dtype)
     with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
-        if parallel:
-            _jit_prism_magnetic_component_parallel(
-                coordinates,
-                prisms,
-                magnetization,
-                result,
-                forward_func,
-                progress_proxy,
-            )
-        else:
-            _jit_prism_magnetic_component_serial(
-                coordinates,
-                prisms,
-                magnetization,
-                result,
-                forward_func,
-                progress_proxy,
-            )
+        jit_func(
+            coordinates,
+            prisms,
+            magnetization,
+            result,
+            forward_func,
+            progress_proxy,
+        )
     # Convert to nT
     result *= 1e9
     return result.reshape(cast.shape)
