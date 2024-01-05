@@ -48,11 +48,11 @@ def prism_magnetic(
         All coordinates should be in meters. Coordinates for more than one
         prism can be provided. In this case, *prisms* should be a list of lists
         or 2d-array (with one prism per row).
-    magnetization : list or array
-        List or array containing the magnetization vector of each prism in
-        :math:`Am^{-1}`. Each vector should be an array with three elements
-        in the following order: ``magnetization_e``, ``magnetization_n``,
-        ``magnetization_u``.
+    magnetization : tuple or arrays
+        Tuple containing the three arrays corresponding to the magnetization
+        vector components of each prism in :math:`Am^{-1}`. These arrays should
+        be provided in the following order: ``magnetization_e``,
+        ``magnetization_n``, ``magnetization_u``.
     field : str
         Magnetic field that will be computed. The available fields are:
 
@@ -96,9 +96,9 @@ def prism_magnetic(
     # Figure out the shape and size of the output array(s)
     cast = np.broadcast(*coordinates[:3])
     # Convert coordinates, prisms and magnetization to arrays with proper shape
-    coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+    coordinates = tuple(np.atleast_1d(c).ravel() for c in coordinates[:3])
     prisms = np.atleast_2d(prisms)
-    magnetization = np.atleast_2d(magnetization)
+    magnetization = tuple(np.atleast_1d(m).ravel() for m in magnetization)
     # Sanity checks
     if not disable_checks:
         _run_sanity_checks(prisms, magnetization)
@@ -134,7 +134,7 @@ def _prism_magnetic_vector(
     ----------
     coordinates : tuple of arrays
     prisms : 2d-array
-    magnetization : 2d-array
+    magnetization : tuple of arrays
     cast : np.broadcast
     parallel : bool
     dtype : np.dtype
@@ -173,7 +173,7 @@ def _prism_single_component(
     ----------
     coordinates : tuple of arrays
     prisms : 2d-array
-    magnetization : 2d-array
+    magnetization : tuple of arrays
     forward_func : callable
     cast : np.broadcast
     parallel : bool
@@ -222,9 +222,11 @@ def _jit_prism_magnetic_field(
         following order: west, east, south, north, bottom, top in a Cartesian
         coordinate system.
         All coordinates should be in meters.
-    magnetization : 2d-array
-        Array containing the magnetization vector of each prism in
-        :math:`Am^{-1}`. Each vector will be a row in the 2d-array.
+    magnetization : tuple of arrays
+        Tuple containing the three arrays corresponding to the magnetization
+        vector components of each prism in :math:`Am^{-1}`. These arrays should
+        be provided in the following order: ``magnetization_e``,
+        ``magnetization_n``, ``magnetization_u``.
     b_e : 1d-array
         Array where the resulting values of the easting component of the
         magnetic field will be stored.
@@ -254,9 +256,9 @@ def _jit_prism_magnetic_field(
                 prisms[m, 3],
                 prisms[m, 4],
                 prisms[m, 5],
-                magnetization[m, 0],
-                magnetization[m, 1],
-                magnetization[m, 2],
+                magnetization[0][m],
+                magnetization[1][m],
+                magnetization[2][m],
             )
             b_e[l] += easting_comp
             b_n[l] += northing_comp
@@ -283,9 +285,11 @@ def _jit_prism_magnetic_component(
         following order: west, east, south, north, bottom, top in a Cartesian
         coordinate system.
         All coordinates should be in meters.
-    magnetization : 2d-array
-        Array containing the magnetization vector of each prism in
-        :math:`Am^{-1}`. Each vector will be a row in the 2d-array.
+    magnetization : tuple of arrays
+        Tuple containing the three arrays corresponding to the magnetization
+        vector components of each prism in :math:`Am^{-1}`. These arrays should
+        be provided in the following order: ``magnetization_e``,
+        ``magnetization_n``, ``magnetization_u``.
     result : 1d-array
         Array where the resulting values of the desired component of the
         magnetic field will be stored.
@@ -314,9 +318,9 @@ def _jit_prism_magnetic_component(
                 prisms[m, 3],
                 prisms[m, 4],
                 prisms[m, 5],
-                magnetization[m, 0],
-                magnetization[m, 1],
-                magnetization[m, 2],
+                magnetization[0][m],
+                magnetization[1][m],
+                magnetization[2][m],
             )
         # Update progress bar if called
         if update_progressbar:
@@ -354,10 +358,12 @@ def _discard_null_prisms(prisms, magnetization):
     # Mark prisms with zero volume as null prisms
     null_prisms = (west == east) | (south == north) | (bottom == top)
     # Mark prisms with null magnetization as null prisms
-    null_prisms[(magnetization == 0).all(axis=1)] = True
+    mag_e, mag_n, mag_u = magnetization
+    null_mag = (mag_e == 0) & (mag_n == 0) & (mag_u == 0)
+    null_prisms[null_mag] = True
     # Keep only non null prisms
     prisms = prisms[np.logical_not(null_prisms), :]
-    magnetization = magnetization[np.logical_not(null_prisms)]
+    magnetization = tuple(m[np.logical_not(null_prisms)] for m in magnetization)
     return prisms, magnetization
 
 
@@ -365,15 +371,15 @@ def _run_sanity_checks(prisms, magnetization):
     """
     Run sanity checks on prisms and their magnetization
     """
-    if magnetization.shape[0] != prisms.shape[0]:
+    if (size := len(magnetization)) != 3:
         raise ValueError(
-            f"Number of magnetization vectors ({magnetization.shape[0]}) "
-            + f"mismatch the number of prisms ({prisms.shape[0]})"
+            f"Invalid magnetization vectors with '{size}' elements. "
+            + "Magnetization vectors should have only 3 elements."
         )
-    if magnetization.shape[1] != 3:
+    if magnetization[0].size != prisms.shape[0]:
         raise ValueError(
-            f"Found magnetization vectors with '{magnetization.shape[1]}' "
-            + "elements. Magnetization vectors should have only 3 elements."
+            f"Number of magnetization vectors ({magnetization[0].size}) "
+            + f"mismatch the number of prisms ({prisms.shape[0]})"
         )
     _check_prisms(prisms)
 

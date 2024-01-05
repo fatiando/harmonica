@@ -44,10 +44,7 @@ def test_progress_bar(field):
         [-100, 0, -100, 0, -10, 0],
         [0, 100, -100, 0, -10, 0],
     ]
-    magnetizations = [
-        [1.0, 1.0, 1.0],
-        [1.0, -1.0, 5.0],
-    ]
+    magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
     coordinates = vd.grid_coordinates(
         region=(-100, 100, -100, 100), spacing=20, extra_coords=10
     )
@@ -76,10 +73,7 @@ class TestSerialVsParallel:
             [-100, 0, -100, 0, -10, 0],
             [0, 100, -100, 0, -10, 0],
         ]
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
-        ]
+        magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
         coordinates = ([0, 10], [0, 10], [0, 10])
         parallel = prism_magnetic(
             coordinates, prisms, magnetizations, field=field, parallel=True
@@ -103,12 +97,11 @@ class TestSerialVsParallel:
             [-100, 0, 0, 100, -10, 0],
             [0, 100, 0, 100, -10, 0],
         ]
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
-            [-2.0, 1.0, 3.0],
-            [5.0, 4.0, 1.0],
-        ]
+        magnetizations = (
+            [1.0, 1.0, -2.0, 5.0],
+            [1.0, -1.0, 1.0, 4.0],
+            [1.0, 5.0, 3.0, 1.0],
+        )
         coordinates = vd.grid_coordinates(
             region=(-100, 100, -100, 100), spacing=20, extra_coords=10
         )
@@ -197,10 +190,7 @@ class TestInvalidMagnetization:
     def test_invalid_number_of_vectors(self, sample_coordinates, sample_prisms, field):
         """Check error when magnetization has invalid number of vectors"""
         # Generate an array with only two magnetization vectors
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [-2.0, 3.0, -5.0],
-        ]
+        magnetizations = ([1.0, -2.0], [1.0, 3.0], [1.0, -5.0])
         msg = "Number of magnetization vectors"
         with pytest.raises(ValueError, match=msg):
             prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
@@ -208,14 +198,27 @@ class TestInvalidMagnetization:
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_invalid_number_of_elements(self, sample_coordinates, sample_prisms, field):
         """Check error when magnetization has invalid number of elements"""
-        # Generate an array with only two magnetization vectors
-        magnetizations = [
+        magnetizations = (
+            [1.0, 1.0, 1.0, 3.4, 1.3],
+            [-2.0, 3.0, -5.0, 3.4, 1.3],
+            [-2.0, 3.0, -5.0, 3.4, 1.3],
+        )
+        msg = "Number of magnetization vectors"
+        with pytest.raises(ValueError, match=msg):
+            prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
+
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_invalid_number_of_components(
+        self, sample_coordinates, sample_prisms, field
+    ):
+        """Check error when magnetization has invalid number of components"""
+        magnetizations = (
             [1.0, 1.0, 1.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
-        ]
-        msg = "Found magnetization vectors with"
+        )
+        msg = "Invalid magnetization vectors with "
         with pytest.raises(ValueError, match=msg):
             prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
 
@@ -246,14 +249,10 @@ class TestAgainstChoclo:
         """
         Return sample magnetization vectors for the prisms
         """
-        magnetizations = np.array(
-            [
-                [1.0, 1.0, 1],
-                [-1.0, -0.5, 2.0],
-                [3, -1.0, -3.0],
-                [-1.5, 2.0, -2.0],
-            ],
-            dtype=np.float64,
+        magnetizations = (
+            np.array([1.0, -1.0, 3.0, -1.5]),
+            np.array([1.0, -0.5, -1.0, 2.0]),
+            np.array([1.0, 2.0, -3.0, -2.0]),
         )
         return magnetizations
 
@@ -282,12 +281,13 @@ class TestAgainstChoclo:
         expected_magnetic_u = np.zeros(n_coords, dtype=np.float64)
         for i in range(n_coords):
             for j in range(n_prisms):
+                magnetization = tuple([m[j] for m in sample_magnetizations])
                 b_e, b_n, b_u = magnetic_field(
                     easting[i],
                     northing[i],
                     upward[i],
                     *sample_prisms[j, :],
-                    *sample_magnetizations[j, :],
+                    *magnetization,
                 )
                 expected_magnetic_e[i] += b_e
                 expected_magnetic_n[i] += b_n
@@ -319,12 +319,13 @@ class TestAgainstChoclo:
         forward_func = getattr(choclo.prism, f"magnetic_{field[-1]}")
         for i in range(n_coords):
             for j in range(n_prisms):
+                magnetization = tuple([m[j] for m in sample_magnetizations])
                 expected_result[i] += forward_func(
                     easting[i],
                     northing[i],
                     upward[i],
                     *sample_prisms[j, :],
-                    *sample_magnetizations[j, :],
+                    *magnetization,
                 )
         # Convert to nT
         expected_result *= 1e9
