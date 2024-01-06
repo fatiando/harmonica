@@ -243,22 +243,25 @@ def _jit_prism_magnetic_field(
     """
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
+    # Unpack coordinates and magnetization
+    easting, northing, upward = coordinates
+    mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for l in prange(coordinates[0].size):
+    for l in prange(easting.size):
         for m in range(prisms.shape[0]):
             easting_comp, northing_comp, upward_comp = magnetic_field(
-                coordinates[0][l],
-                coordinates[1][l],
-                coordinates[2][l],
+                easting[l],
+                northing[l],
+                upward[l],
                 prisms[m, 0],
                 prisms[m, 1],
                 prisms[m, 2],
                 prisms[m, 3],
                 prisms[m, 4],
                 prisms[m, 5],
-                magnetization[0][m],
-                magnetization[1][m],
-                magnetization[2][m],
+                mag_e[m],
+                mag_n[m],
+                mag_u[m],
             )
             b_e[l] += easting_comp
             b_n[l] += northing_comp
@@ -305,22 +308,25 @@ def _jit_prism_magnetic_component(
     """
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
+    # Unpack coordinates and magnetization
+    easting, northing, upward = coordinates
+    mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for l in prange(coordinates[0].size):
+    for l in prange(easting.size):
         for m in range(prisms.shape[0]):
             result[l] += forward_function(
-                coordinates[0][l],
-                coordinates[1][l],
-                coordinates[2][l],
+                easting[l],
+                northing[l],
+                upward[l],
                 prisms[m, 0],
                 prisms[m, 1],
                 prisms[m, 2],
                 prisms[m, 3],
                 prisms[m, 4],
                 prisms[m, 5],
-                magnetization[0][m],
-                magnetization[1][m],
-                magnetization[2][m],
+                mag_e[m],
+                mag_n[m],
+                mag_u[m],
             )
         # Update progress bar if called
         if update_progressbar:
