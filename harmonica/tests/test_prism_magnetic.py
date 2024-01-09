@@ -309,7 +309,7 @@ class TestAgainstChoclo:
         self, sample_coordinates, sample_prisms, sample_magnetizations, field
     ):
         """
-        Test prism_magnetic_component against raw Choclo runs
+        Test prism_magnetic against raw Choclo runs
         """
         easting, northing, upward = sample_coordinates
         # Compute expected results with dumb Choclo runs
