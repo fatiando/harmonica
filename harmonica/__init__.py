@@ -13,7 +13,7 @@ from ._forward.dipole import dipole_magnetic, dipole_magnetic_component
 from ._forward.point import point_gravity
 from ._forward.prism_gravity import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
-from ._forward.prism_magnetic import prism_magnetic, prism_magnetic_component
+from ._forward.prism_magnetic import prism_magnetic
 from ._forward.tesseroid import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
