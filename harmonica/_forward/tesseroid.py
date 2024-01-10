@@ -207,7 +207,7 @@ def tesseroid_gravity(
     if field in ("g_z"):
         result *= -1
     # Convert to more convenient units
-    if field in ("g_z"):
+    if field in ("g_z", ):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
