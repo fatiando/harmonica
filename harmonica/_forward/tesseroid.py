@@ -10,7 +10,6 @@ Forward modelling for tesseroids
 import numpy as np
 from numba import jit, prange
 
-from ..constants import GRAVITATIONAL_CONST
 from ._tesseroid_utils import (
     _adaptive_discretization,
     _check_tesseroids,
@@ -23,7 +22,7 @@ from ._tesseroid_variable_density import (
     density_based_discretization,
     gauss_legendre_quadrature_variable_density,
 )
-from .point import kernel_g_z_spherical, kernel_potential_spherical
+from .point import gravity_u_spherical, potential_spherical
 from .utils import initialize_progressbar
 
 STACK_SIZE = 100
@@ -157,7 +156,10 @@ def tesseroid_gravity(
     ... )
 
     """
-    kernels = {"potential": kernel_potential_spherical, "g_z": kernel_g_z_spherical}
+    kernels = {
+        "potential": potential_spherical,
+        "g_z": gravity_u_spherical,
+    }
     if field not in kernels:
         raise ValueError("Gravitational field {} not recognized".format(field))
     # Figure out the shape and size of the output array
@@ -201,9 +203,11 @@ def tesseroid_gravity(
             dtype,
             progress_proxy,
         )
-    result *= GRAVITATIONAL_CONST
+    # Invert sign
+    if field in ("g_z",):
+        result *= -1
     # Convert to more convenient units
-    if field == "g_z":
+    if field in ("g_z",):
         result *= 1e5  # SI to mGal
     return result.reshape(cast.shape)
 
