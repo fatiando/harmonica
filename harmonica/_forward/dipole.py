@@ -7,9 +7,13 @@
 """
 Forward modelling for magnetic fields of dipoles
 """
+from math import prod
+
 import numpy as np
 from choclo.dipole import magnetic_e, magnetic_field, magnetic_n, magnetic_u
 from numba import jit, prange
+
+from .utils import initialize_progressbar
 
 
 def dipole_magnetic(
@@ -29,8 +33,8 @@ def dipole_magnetic(
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
-    dipoles : list of arrays
-        List of arrays containing the ``easting``, ``northing`` and ``upward``
+    dipoles : tuple of arrays
+        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``
         locations of the dipoles defined on a Cartesian coordinate system. All
         coordinates should be in meters.
     magnetic_moments : 2d-array
@@ -167,6 +171,77 @@ def dipole_magnetic_component(
     return result.reshape(cast.shape)
 
 
+def _dipole_single_component(
+    coordinates,
+    prisms,
+    magnetic_moments,
+    forward_func,
+    shape,
+    dtype,
+    parallel,
+    progressbar,
+):
+    """
+    Forward model a single component of the magnetic vector
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Tuple containing ``easting``, ``northing`` and ``upward`` of the
+        computation points as arrays, all defined on a Cartesian coordinate
+        system and in meters.
+    dipoles : tuple of arrays
+        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``
+        locations of the dipoles defined on a Cartesian coordinate system. All
+        coordinates should be in meters.
+    magnetic_moments : tuple of arrays
+        Tuple containing the three arrays corresponding to the magnetic moment
+        components of each dipole in :math:`Am^2`. These arrays should
+        be provided in the following order: ``mag_moment_easting``,
+        ``mag_moment_northing``, ``mag_moment_upward``.
+    forward_func : callable
+        Forward function to be used to compute the desired component of the
+        magnetic field. Choose one of :func:`choclo.dipole.magnetic_easting`,
+        :func:`choclo.dipole.magnetic_northing` or
+        :func:`choclo.dipole.magnetic_upward`.
+    shape : tuple of int
+        Shape of the expected output array.
+    dtype : np.dtype
+        Data type of the expected output array.
+    parallel : bool
+        If True, the forward modelling will be run in parallel. If False, it
+        will be run in a single thread.
+    progressbar : bool
+        If True, a progress bar of the computation will be printed to standard
+        error (stderr). Requires :mod:`numba_progress` to be installed.
+
+    Returns
+    -------
+    magnetic_component : arrays
+        Array containing the desired magnetic component.
+    """
+    # Decide which function should be used
+    if parallel:
+        jit_func = _jit_dipole_magnetic_component_cartesian_parallel
+    else:
+        jit_func = _jit_dipole_magnetic_component_cartesian_serial
+    # Run computations
+    size = prod(shape)
+    result = np.zeros(size, dtype=dtype)
+    with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
+        jit_func(
+            coordinates,
+            prisms,
+            magnetic_moments,
+            result,
+            forward_func,
+            progress_proxy,
+        )
+    # Convert to nT
+    result *= 1e9
+    return result.reshape(shape)
+
+
 def _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments):
     """
     Check if dipoles and magnetic moments have valid shape and size
@@ -184,7 +259,7 @@ def _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments):
 
 
 def _jit_dipole_magnetic_field_cartesian(
-    coordinates, dipoles, magnetic_moments, b_e, b_n, b_u
+    coordinates, dipoles, magnetic_moments, b_e, b_n, b_u, progress_proxy
 ):
     """
     Compute the magnetic field components of dipoles in Cartesian coordinates
@@ -208,9 +283,18 @@ def _jit_dipole_magnetic_field_cartesian(
     b_u : 1d-array
         Array where the resulting values of the upward component of the
         magnetic field will be stored.
+    progress_proxy : :class:`numba_progress.ProgressBar` or None
+        Instance of :class:`numba_progress.ProgressBar` that gets updated after
+        each iteration on the observation points. Use None if no progress bar
+        is should be used.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
+    # Unpack coordinates and magnetic_moments
     easting, northing, upward = coordinates
     easting_p, northing_p, upward_p = dipoles
+    mag_e, mag_n, mag_u = magnetic_moments
+    # Iterate over computation points and prisms
     for l in prange(easting.size):
         for m in range(easting_p.size):
             easting_comp, northing_comp, upward_comp = magnetic_field(
@@ -220,17 +304,20 @@ def _jit_dipole_magnetic_field_cartesian(
                 easting_p[m],
                 northing_p[m],
                 upward_p[m],
-                magnetic_moments[m, 0],
-                magnetic_moments[m, 1],
-                magnetic_moments[m, 2],
+                mag_e[m],
+                mag_n[m],
+                mag_u[m],
             )
             b_e[l] += easting_comp
             b_n[l] += northing_comp
             b_u[l] += upward_comp
+        # Update progress bar if called
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
 def _jit_dipole_magnetic_component_cartesian(
-    coordinates, dipoles, magnetic_moments, result, forward_func
+    coordinates, dipoles, magnetic_moments, result, forward_func, progress_proxy
 ):
     """
     Compute a single magnetic component of dipoles in Cartesian coordinates
@@ -253,9 +340,18 @@ def _jit_dipole_magnetic_component_cartesian(
         magnetic field. Choose one of :func:`choclo.dipole.magnetic_easting`,
         :func:`choclo.dipole.magnetic_northing` or
         :func:`choclo.dipole.magnetic_upward`.
+    progress_proxy : :class:`numba_progress.ProgressBar` or None
+        Instance of :class:`numba_progress.ProgressBar` that gets updated after
+        each iteration on the observation points. Use None if no progress bar
+        is should be used.
     """
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
+    # Unpack coordinates and magnetic_moments
     easting, northing, upward = coordinates
     easting_p, northing_p, upward_p = dipoles
+    mag_e, mag_n, mag_u = magnetic_moments
+    # Iterate over computation points and prisms
     for l in prange(easting.size):
         for m in range(easting_p.size):
             result[l] += forward_func(
@@ -265,10 +361,13 @@ def _jit_dipole_magnetic_component_cartesian(
                 easting_p[m],
                 northing_p[m],
                 upward_p[m],
-                magnetic_moments[m, 0],
-                magnetic_moments[m, 1],
-                magnetic_moments[m, 2],
+                mag_e[m],
+                mag_n[m],
+                mag_u[m],
             )
+        # Update progress bar if called
+        if update_progressbar:
+            progress_proxy.update(1)
 
 
 def _get_magnetic_forward_function(component):
