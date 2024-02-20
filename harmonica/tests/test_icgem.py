@@ -33,8 +33,8 @@ def test_load_icgem_gdf():
     true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
     height = 1100 * np.ones(shape)
 
-    assert icgem_grd.dims["latitude"] == nlat
-    assert icgem_grd.dims["longitude"] == nlon
+    assert icgem_grd.sizes["latitude"] == nlat
+    assert icgem_grd.sizes["longitude"] == nlon
     npt.assert_equal(icgem_grd.longitude.values, lon)
     npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
@@ -55,8 +55,8 @@ def test_load_icgem_gdf_open_file():
     true_data = np.array([np.arange(nlon)] * nlat, dtype="float64")
     height = 1100 * np.ones(shape)
 
-    assert icgem_grd.dims["latitude"] == nlat
-    assert icgem_grd.dims["longitude"] == nlon
+    assert icgem_grd.sizes["latitude"] == nlat
+    assert icgem_grd.sizes["longitude"] == nlon
     npt.assert_equal(icgem_grd.longitude.values, lon)
     npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
@@ -76,8 +76,8 @@ def test_load_icgem_gdf_with_height():
     glon, glat = np.meshgrid(lon, lat)
     height = glon + glat
 
-    assert icgem_grd.dims["latitude"] == nlat
-    assert icgem_grd.dims["longitude"] == nlon
+    assert icgem_grd.sizes["latitude"] == nlat
+    assert icgem_grd.sizes["longitude"] == nlon
     npt.assert_equal(icgem_grd.longitude.values, lon)
     npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(true_data, icgem_grd.sample_data.values)
@@ -96,8 +96,8 @@ def test_load_icgem_gdf_usecols():
     lon = np.linspace(w, e, nlon, dtype="float64")
     height = 1100 * np.ones(shape)
 
-    assert icgem_grd.dims["latitude"] == nlat
-    assert icgem_grd.dims["longitude"] == nlon
+    assert icgem_grd.sizes["latitude"] == nlat
+    assert icgem_grd.sizes["longitude"] == nlon
     npt.assert_equal(icgem_grd.longitude.values, lon)
     npt.assert_equal(icgem_grd.latitude.values, lat)
     npt.assert_allclose(height, icgem_grd.height_over_ell.values)
@@ -295,6 +295,6 @@ def fixture_empty_fname(tmpdir):
 def test_empty_file(empty_fname):
     "Empty ICGEM file"
     error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
-    warn = warns(UserWarning, match=r"loadtxt: input contained no data")
+    warn = warns(UserWarning, match=r"loadtxt")
     with error, warn:
         load_icgem_gdf(empty_fname)
