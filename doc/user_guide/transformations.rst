@@ -317,10 +317,10 @@ magnetization vector of the sources, we can specify the
     plt.show()
 
 
-Gaussians filters
+Gaussian filters
 -----------------
 
-We can also apply Gaussians low-pass and high-pass filters to any regular grid.
+We can also apply Gaussian low-pass and high-pass filters to any regular grid.
 These two need us to select a cutoff wavelength.
 The low-pass filter will remove any signal with a high spatial frequency,
 keeping only the signal components that have a wavelength higher than the
