@@ -20,8 +20,8 @@ except ImportError:
     ProgressBar = None
 
 from .. import dipole_magnetic
-from .utils import run_only_with_numba
 from .._forward.dipole import VALID_FIELDS
+from .utils import run_only_with_numba
 
 
 def test_invalid_field():
