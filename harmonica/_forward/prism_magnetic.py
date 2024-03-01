@@ -201,7 +201,7 @@ def _prism_single_component(
     progressbar,
 ):
     """
-    Forward model the three components of the magnetic vector
+    Forward model a single component of the magnetic vector
 
     Parameters
     ----------
