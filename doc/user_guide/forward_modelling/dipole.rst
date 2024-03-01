@@ -36,7 +36,7 @@ choosing ``field="b"``:
 
 .. jupyter-execute::
 
-   b_e, b_n, b_u = hm.dipole_magnetic(coordinates, dipole, magnetic_moment, field='b")
+   b_e, b_n, b_u = hm.dipole_magnetic(coordinates, dipole, magnetic_moment, field="b")
    print(b_e, b_n, b_u)
 
 We can compute just a single component with ``field`` set to ``"b_e"``,
@@ -44,7 +44,7 @@ We can compute just a single component with ``field`` set to ``"b_e"``,
 
 .. jupyter-execute::
 
-   b_u = hm.dipole_magnetic_component(
+   b_u = hm.dipole_magnetic(
       coordinates, dipole, magnetic_moment, field="b_u"
    )
    print(b_u)
