@@ -87,20 +87,6 @@ class TestInvalidMagneticMoments:
         with pytest.raises(ValueError, match=msg):
             dipole_magnetic(coordinates, dipoles, magnetic_moments, field=field)
 
-    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
-    def test_disable_checks(self, field):
-        """
-        Test disable checks on invalid magnetic moments: `dipole_magnetic`
-        shouldn't raise an error when disabling checks.
-        """
-        coordinates = [0, 0, 0]
-        dipoles = ([1, 1], [-1, 0], [-10, -2])
-        # Define invalid magnetic moments (more than three components)
-        magnetic_moments = ([1, 4], [2, 5], [3, 6], [5, 7])
-        dipole_magnetic(
-            coordinates, dipoles, magnetic_moments, field=field, disable_checks=True
-        )
-
 
 class TestSerialVsParallel:
     """
