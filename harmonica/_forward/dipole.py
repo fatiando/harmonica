@@ -389,30 +389,6 @@ def _jit_dipole_magnetic_component_cartesian(
             progress_proxy.update(1)
 
 
-def _get_magnetic_forward_function(component):
-    """
-    Returns the Choclo magnetic forward modelling function for the desired
-    component
-
-    Parameters
-    ----------
-    component : str
-        Magnetic field component.
-
-    Returns
-    -------
-    forward_function : callable
-        Forward modelling function for the desired component.
-    """
-    if component not in ("easting", "northing", "upward"):
-        raise ValueError(
-            f"Invalid component '{component}'. "
-            "It must be either 'easting', 'northing' or 'upward'."
-        )
-    functions = {"easting": magnetic_e, "northing": magnetic_n, "upward": magnetic_u}
-    return functions[component]
-
-
 _jit_dipole_magnetic_field_cartesian_serial = jit(nopython=True)(
     _jit_dipole_magnetic_field_cartesian
 )
