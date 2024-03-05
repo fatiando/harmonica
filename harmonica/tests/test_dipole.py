@@ -35,6 +35,21 @@ def test_invalid_field():
         )
 
 
+@pytest.mark.parametrize("field", VALID_FIELDS)
+def test_disable_checks(field):
+    """Test if disabling checks works as expected"""
+    coordinates = [0, 0, 0]
+    dipoles = ([1, 1, 2], [-1, 0, 2], [-10, -2, -4])
+    magnetic_moments = (
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+    )
+    dipole_magnetic(
+        coordinates, dipoles, magnetic_moments, disable_checks=True, field=field
+    )
+
+
 @pytest.mark.use_numba
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
 @pytest.mark.parametrize("field", VALID_FIELDS)
