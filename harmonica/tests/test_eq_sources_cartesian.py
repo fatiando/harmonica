@@ -214,45 +214,17 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     npt.assert_allclose(true, profile.scalars, rtol=0.05)
 
 
-@pytest.mark.parametrize("depth_type", ("relative", "constant"))
-def test_equivalent_sources_build_points(coordinates, depth_type):
+def test_equivalent_sources_build_points(coordinates):
     """
     Check if build_points method works as expected
 
     Test only with block-averaging disabled
     """
     depth = 1.5e3
-    eqs = EquivalentSources(depth=depth, depth_type=depth_type)
+    eqs = EquivalentSources(depth=depth)
     points = eqs._build_points(coordinates)
-    if depth_type == "constant":
-        upward_expected = -depth * np.ones_like(coordinates[0])
-    else:
-        upward_expected = coordinates[-1] - depth
+    upward_expected = coordinates[-1] - depth
     expected = (*coordinates[:2], upward_expected)
-    npt.assert_allclose(points, expected)
-
-
-def test_equivalent_sources_build_points_bacwkards(coordinates):
-    """
-    Check if the old relative_depth argument is well supported
-
-    This test is intended to check if backward compatibility is working
-    correctly. The ``relative_depth`` parameter will be deprecated on the next
-    major release.
-    """
-    depth = 4.5e3
-    expected_upward = coordinates[2] - depth
-    # Check if FutureWarning is raised after passing relative_depth
-    with warnings.catch_warnings(record=True) as warn:
-        eqs = EquivalentSources(relative_depth=depth)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, FutureWarning)
-    # Check if the `depth` and `depth_type` attributes are well fixed
-    npt.assert_allclose(eqs.depth, depth)
-    assert eqs.depth_type == "relative"
-    # Check if location of sources are correct
-    points = eqs._build_points(coordinates)
-    expected = (*coordinates[:2], expected_upward)
     npt.assert_allclose(points, expected)
 
 
@@ -280,32 +252,20 @@ def test_block_averaging_coordinates(coordinates_9x9, block_size):
     npt.assert_allclose(expected, eqs._block_average_coordinates(coordinates_9x9))
 
 
-@pytest.mark.parametrize("depth_type", ("constant", "relative"))
-def test_build_points_block_average(coordinates_9x9, depth_type):
+def test_build_points_block_average(coordinates_9x9):
     """
     Test the _build_points method with block-averaging
     """
     depth = 1.5e3
     block_size = 750
-    eqs = EquivalentSources(depth=depth, depth_type=depth_type, block_size=block_size)
+    eqs = EquivalentSources(depth=depth, block_size=block_size)
     expected = [
         np.array([-2750, -2000, -1250, -2750, -2000, -1250, -2750, -2000, -1250]),
         np.array([5250, 5250, 5250, 6000, 6000, 6000, 6750, 6750, 6750]),
         np.array([10.0, 13.0, 16.0, 37.0, 40.0, 43.0, 64.0, 67.0, 70.0]),
     ]
-    if depth_type == "relative":
-        expected[-1] -= depth
-    if depth_type == "constant":
-        expected[-1] = np.zeros_like(expected[0]) - depth
+    expected[-1] -= depth
     npt.assert_allclose(expected, eqs._build_points(coordinates_9x9))
-
-
-def test_equivalent_sources_invalid_depth_type():
-    """
-    Check if ValueError is raised if invalid depth_type is passed
-    """
-    with pytest.raises(ValueError):
-        EquivalentSources(depth=300, depth_type="blabla")
 
 
 def test_equivalent_sources_points_depth(points, coordinates_small, data_small):
@@ -313,29 +273,11 @@ def test_equivalent_sources_points_depth(points, coordinates_small, data_small):
     Check if the points coordinates are properly defined by the fit method
     """
     easting, northing, upward = coordinates_small[:]
-    # Test with constant depth
-    eqs = EquivalentSources(depth=1.3e3, depth_type="constant")
-    eqs.fit(coordinates_small, data_small)
-    expected_points = vdb.n_1d_arrays(
-        (easting, northing, -1.3e3 * np.ones_like(easting)), n=3
-    )
-    npt.assert_allclose(expected_points, eqs.points_)
 
-    # Test with relative depth
-    eqs = EquivalentSources(depth=1.3e3, depth_type="relative")
+    eqs = EquivalentSources(depth=1.3e3)
     eqs.fit(coordinates_small, data_small)
     expected_points = vdb.n_1d_arrays((easting, northing, upward - 1.3e3), n=3)
     npt.assert_allclose(expected_points, eqs.points_)
-
-    # Test with invalid depth_type
-    eqs = EquivalentSources(
-        depth=300, depth_type="constant"
-    )  # init with valid depth_type
-    eqs.depth_type = "blabla"  # change depth_type afterwards
-    points = eqs._build_points(
-        vd.grid_coordinates(region=(-1, 1, -1, 1), spacing=0.25, extra_coords=1)
-    )
-    assert points is None
 
 
 def test_equivalent_sources_custom_points_cartesian(region, coordinates, data):
