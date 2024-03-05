@@ -74,7 +74,7 @@ class TestInvalidMagneticMoments:
         with pytest.raises(ValueError, match=msg):
             dipole_magnetic(coordinates, dipoles, magnetic_moments, field=field)
 
-    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_magnetic_moments_field(self, field):
         """
         Test if error is raised when magnetic moments have != 3 elements
@@ -93,7 +93,7 @@ class TestSerialVsParallel:
     Test serial vs parallel
     """
 
-    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_dipoles_parallel_vs_serial_no_numba(self, field):
         """
         Check results of parallelized and serials runs
@@ -115,7 +115,7 @@ class TestSerialVsParallel:
         npt.assert_allclose(parallel, serial)
 
     @run_only_with_numba
-    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_dipoles_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs
