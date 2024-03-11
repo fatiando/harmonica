@@ -172,6 +172,25 @@ def derivative_northing_kernel(fft_grid, order=1):
     return da_filter
 
 
+def total_gradient_amplitude_kernel(fft_grid):
+
+    
+    # Catch the dims of the Fourier transformed grid
+    dims = fft_grid.dims    
+    # Grab the coordinates of the Fourier transformed grid
+    freq_easting = fft_grid.coords[dims[1]]
+    freq_northing = fft_grid.coords[dims[0]]    
+    # Convert frequencies to wavenumbers
+    k_easting = 2 * np.pi * freq_easting
+    k_northing = 2 * np.pi * freq_northing    
+    # Compute the filter for upward derivative in frequency domain
+    da_filter_up = np.sqrt(k_easting**2 + k_northing**2)
+    da_filter_easting = (k_easting * 1j)
+    da_filter_northing = (k_northing * 1j)
+
+    return np.sqrt(da_filter_up**2 + da_filter_easting**2 + da_filter_northing**2)
+
+
 def upward_continuation_kernel(fft_grid, height_displacement):
     r"""
     Filter for upward continuation in frequency domain

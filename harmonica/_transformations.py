@@ -15,8 +15,10 @@ from .filters._filters import (
     gaussian_lowpass_kernel,
     reduction_to_pole_kernel,
     upward_continuation_kernel,
+    total_gradient_amplitude_kernel,
 )
 from .filters._utils import apply_filter
+# from harmonica._transformations import total_gradient_amplitude
 
 
 def derivative_upward(grid, order=1):
@@ -338,6 +340,8 @@ def reduction_to_pole(
         magnetization_declination=magnetization_declination,
     )
 
+def total_gradient_amplitude(grid):
+    return apply_filter(grid, total_gradient_amplitude_kernel)
 
 def _get_dataarray_coordinate(grid, dimension_index):
     """

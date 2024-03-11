@@ -26,6 +26,7 @@ from .._transformations import (
     gaussian_lowpass,
     reduction_to_pole,
     upward_continuation,
+    # total_gradient_amplitude,
 )
 from .utils import root_mean_square_error
 
