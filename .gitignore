@@ -12,6 +12,7 @@ doc/_build
 doc/api/generated
 doc/gallery
 doc/sample_data
+doc/sg_execution_times.rst
 .ipynb_checkpoints
 *.egg-info
 MANIFEST
