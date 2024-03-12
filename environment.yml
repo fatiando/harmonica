@@ -54,3 +54,5 @@ dependencies:
   - flake8-simplify==0.19.*
   - flake8-unused-arguments==0.0.12
   - pep8-naming==0.13.*
+  - pip:
+    - burocrata==0.2.*
