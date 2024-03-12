@@ -133,7 +133,7 @@ Lastly we can generate a :class:`xarray.DataArray` using
         data_names=["gravity_disturbance"],
         extra_coords_names="upward",
     )
-    grid
+    print(grid)
 
 Since the data points don't cover the entire area, we might want to mask those
 grid points that are too far away from any data point:

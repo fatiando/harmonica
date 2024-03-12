@@ -170,7 +170,7 @@ we are efectivelly upward continuing the data.
         extra_coords=1500,
     )
     grid = eqs.grid(grid_coords, data_names=["magnetic_anomaly"])
-    grid
+    print(grid)
 
 
 .. jupyter-execute::

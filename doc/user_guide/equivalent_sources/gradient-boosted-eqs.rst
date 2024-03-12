@@ -133,7 +133,7 @@ And then predict the field on a regular grid of computation points:
         extra_coords=2.5e3,
     )
     grid = eqs.grid(grid_coords, data_names=["gravity_disturbance"])
-    grid
+    print(grid)
 
 Since this particular dataset doesn't have a good coverage of the entire area,
 we might want to mask the output grid based on the distance to the closest data

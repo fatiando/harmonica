@@ -147,7 +147,7 @@ We can download a global topography grid:
 
    fname = ensaio.fetch_southern_africa_topography(version=1)
    topography = xr.load_dataarray(fname)
-   topography
+   print(topography)
 
 And then crop it to a slightly larger region than the gravity observations:
 
@@ -160,7 +160,7 @@ And then crop it to a slightly larger region than the gravity observations:
        longitude=slice(region_pad[0], region_pad[1]),
        latitude=slice(region_pad[2], region_pad[3]),
    )
-   topography
+   print(topography)
 
 And project it to plain coordinates using :mod:`pyproj` and :mod:`verde`.
 We start by defining a Mercator projection:
@@ -176,7 +176,7 @@ And project the grid using :func:`verde.project_grid`:
 .. jupyter-execute::
 
    topography_proj = vd.project_grid(topography, projection, method="nearest")
-   topography_proj
+   print(topography_proj)
 
 .. tip::
 
@@ -204,7 +204,7 @@ the density of the upper crust.
        reference=0,
        properties={"density": density},
    )
-   prisms
+   print(prisms)
 
 Now we need to compute the gravitational effect of these prisms on every
 observation point. We can do it through the

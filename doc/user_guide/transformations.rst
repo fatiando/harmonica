@@ -20,7 +20,7 @@ We can load the data file using :mod:`xarray`:
 
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
-    magnetic_grid
+    print(magnetic_grid)
 
 And plot it:
 
@@ -64,7 +64,7 @@ needed by the :func:`xrft.pad` function):
 
     magnetic_grid_no_height = magnetic_grid.drop_vars("height")
     magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-    magnetic_grid_padded
+    print(magnetic_grid_padded)
 
 .. jupyter-execute::
 
@@ -89,7 +89,7 @@ magnetic anomaly grid using the :func:`harmonica.derivative_upward` function:
     import harmonica as hm
 
     deriv_upward = hm.derivative_upward(magnetic_grid_padded)
-    deriv_upward
+    print(deriv_upward)
 
 This grid includes all the padding we added to the original magnetic grid, so
 we better unpad it using :func:`xrft.unpad`:
@@ -97,7 +97,7 @@ we better unpad it using :func:`xrft.unpad`:
 .. jupyter-execute::
 
     deriv_upward = xrft.unpad(deriv_upward, pad_width)
-    deriv_upward
+    print(deriv_upward)
 
 And plot it:
 
@@ -121,12 +121,12 @@ functions.
 .. jupyter-execute::
 
     deriv_easting = hm.derivative_easting(magnetic_grid)
-    deriv_easting
+    print(deriv_easting)
 
 .. jupyter-execute::
 
     deriv_northing = hm.derivative_northing(magnetic_grid)
-    deriv_northing
+    print(deriv_northing)
 
 And plot them:
 
@@ -162,13 +162,13 @@ frequency domain:
 
     deriv_easting = hm.derivative_easting(magnetic_grid_padded, method="fft")
     deriv_easting = xrft.unpad(deriv_easting, pad_width)
-    deriv_easting
+    print(deriv_easting)
 
 .. jupyter-execute::
 
     deriv_northing = hm.derivative_northing(magnetic_grid_padded, method="fft")
     deriv_northing = xrft.unpad(deriv_northing, pad_width)
-    deriv_northing
+    print(deriv_northing)
 
 .. jupyter-execute::
 
@@ -222,7 +222,7 @@ we better unpad it using :func:`xrft.unpad`:
 .. jupyter-execute::
 
     upward_continued = xrft.unpad(upward_continued, pad_width)
-    upward_continued
+    print(upward_continued)
 
 And plot it:
 
@@ -274,7 +274,7 @@ remanence), then we can apply the reduction to the pole passing only the
 
     # Unpad the reduced to the pole grid
     rtp_grid = xrft.unpad(rtp_grid, pad_width)
-    rtp_grid
+    print(rtp_grid)
 
 And plot it:
 
@@ -305,7 +305,7 @@ magnetization vector of the sources, we can specify the
 
     # Unpad the reduced to the pole grid
     rtp_grid = xrft.unpad(rtp_grid, pad_width)
-    rtp_grid
+    print(rtp_grid)
 
 .. jupyter-execute::
 
@@ -357,11 +357,11 @@ And unpad them:
 
 .. jupyter-execute::
 
-    magnetic_low_freqs
+    print(magnetic_low_freqs)
 
 .. jupyter-execute::
 
-    magnetic_high_freqs
+    print(magnetic_high_freqs)
 
 Let's plot the results side by side:
 
