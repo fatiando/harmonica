@@ -189,7 +189,7 @@ And plot it:
 
     fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-    fig.show()
+    fig.show(method="notebook")
 
 
 ----

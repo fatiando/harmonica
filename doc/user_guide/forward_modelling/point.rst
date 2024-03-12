@@ -110,7 +110,7 @@ Lets plot this gravitational field:
       frame=["a", "x+leasting (m)", "y+lnorthing (m)"],
       cmap=True,)
    fig.colorbar(cmap=True, position="JMR", frame=["a.0005", "x+lmGal"])
-   fig.show()
+   fig.show(method="notebook")
 
 
 
@@ -238,7 +238,7 @@ Lets plot these results using :mod:`pygmt`:
       cmap=True,)
 
    fig.colorbar(cmap=True, position="JMR", frame=["a0.000000005", "x+lmGal"])
-   fig.show()
+   fig.show(method="notebook")
 
 ----
 

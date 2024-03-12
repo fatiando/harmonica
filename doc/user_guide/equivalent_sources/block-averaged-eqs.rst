@@ -98,7 +98,7 @@ And project the geographic coordiantes to plain Cartesian ones:
             cmap=True,
         )
     fig.colorbar(cmap=True, position="JMR", frame=["a200f100", "x+lnT"])
-    fig.show()
+    fig.show(method="notebook")
 
 
 Most airborne surveys like this one present an anysotropic distribution of the
@@ -208,7 +208,7 @@ we are efectivelly upward continuing the data.
         )
     fig.colorbar(cmap=True, frame=["a200f100", "x+lnT"])
 
-    fig.show()
+    fig.show(method="notebook")
 
 
 ----

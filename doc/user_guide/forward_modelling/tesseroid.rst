@@ -116,7 +116,7 @@ And finally plot the computed gravitational field
    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
    fig.coast(shorelines="1p,black")
 
-   fig.show()
+   fig.show(method="notebook")
 
 
 Multiple tesseroids
@@ -170,7 +170,7 @@ And plot the results:
    fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
    fig.coast(shorelines="1p,black")
 
-   fig.show()
+   fig.show(method="notebook")
 
 
 Tesseroids with variable density
@@ -256,7 +256,7 @@ Finally, lets plot it:
    fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
    fig.coast(shorelines="1p,black")
 
-   fig.show()
+   fig.show(method="notebook")
 
 ----
 

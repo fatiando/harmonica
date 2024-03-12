@@ -228,7 +228,7 @@ Lets plot it:
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-   fig.show()
+   fig.show(method="notebook")
 
 The best parameters not only produce a better score, but they also generate
 a visibly more accurate prediction. In the first plot the equivalent sources

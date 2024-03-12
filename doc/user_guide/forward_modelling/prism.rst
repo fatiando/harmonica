@@ -198,7 +198,7 @@ Lets plot this gravitational field:
       frame=["WSne", "x+leasting (m)", "y+lnorthing (m)"],
       cmap='viridis',)
    fig.colorbar(cmap=True, position="JMR", frame=["a2", "x+lmGal"])
-   fig.show()
+   fig.show(method="notebook")
 
 
 Magnetic fields
@@ -412,7 +412,7 @@ Finally, lets plot the gravitational field:
       frame=[f"WSne+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
       cmap='viridis',)
    fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
-   fig.show()
+   fig.show(method="notebook")
 
 ----
 
