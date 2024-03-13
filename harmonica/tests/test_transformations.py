@@ -26,7 +26,7 @@ from .._transformations import (
     gaussian_lowpass,
     reduction_to_pole,
     upward_continuation,
-    # total_gradient_amplitude,
+    total_gradient_amplitude,
 )
 from .utils import root_mean_square_error
 
@@ -518,6 +518,34 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     # Drop upward for comparison
     g_z_upward = g_z_upward.drop("upward")
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
+
+
+def test_total_gradient_amplitude(sample_potential, sample_g_n, sample_g_e, sample_g_z):
+    """
+    Test total_gradient_amplitude function against the synthetic model
+    """
+    # Pad the potential field grid to improve accuracy
+    pad_width = {
+        "easting": sample_potential.easting.size // 3,
+        "northing": sample_potential.northing.size // 3,
+    }
+    # need to drop upward coordinate (bug in xrft)
+    potential_padded = xrft.pad(
+        sample_potential.drop_vars("upward"),
+        pad_width=pad_width,
+    )
+    # Calculate total gradient amplitude and unpad it
+    tga = total_gradient_amplitude(potential_padded)
+    tga = xrft.unpad(tga, pad_width)
+    # Compare against g_tga (trim the borders to ignore boundary effects)
+    trim = 6
+    tga = tga[trim:-trim, trim:-trim]
+    g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    g_tga = np.sqrt(g_n**2 + g_e**2 + g_z**2)
+    rms = root_mean_square_error(tga, g_tga)
+    assert rms / np.abs(g_tga).max() < 0.1
 
 
 class Testfilter:

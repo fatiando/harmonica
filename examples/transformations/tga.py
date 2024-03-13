@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Upward derivative of a regular grid
+Total gradient amplitude of a regular grid
 ===================================
 """
 import ensaio
@@ -30,16 +30,16 @@ pad_width = {
 magnetic_grid_no_height = magnetic_grid.drop_vars("height")
 magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
-# Compute the upward derivative of the grid
+# Compute the total gradient amplitude of the grid
 tga = hm.total_gradient_amplitude(magnetic_grid_padded)
 
-# Unpad the derivative grid
+# Unpad the total gradient amplitude grid
 tga = xrft.unpad(tga, pad_width)
 
-# Show the upward derivative
+# Show the total gradient amplitude
 print("\nTotal Gradient Amplitude:\n", tga)
 
-# Plot original magnetic anomaly and the upward derivative
+# Plot original magnetic anomaly and the total gradient amplitude
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     with fig.set_panel(panel=0):
@@ -58,10 +58,10 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
-        # Make colormap for upward derivative (saturate it a little bit)
+        # Make colormap for total gradient amplitude (saturate it a little bit)
         scale = 0.6 * vd.maxabs(tga)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
-        # Plot upward derivative
+        pygmt.makecpt(cmap="polar+h", series=[0, scale], background=True)
+        # Plot total gradient amplitude
         fig.grdimage(grid=tga, projection="X?", cmap=True)
         # Add colorbar
         fig.colorbar(
@@ -69,5 +69,3 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             position="JBC+h+o0/1c+e",
         )
 fig.show()
-
-a = 2

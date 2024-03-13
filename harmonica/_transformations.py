@@ -15,10 +15,10 @@ from .filters._filters import (
     gaussian_lowpass_kernel,
     reduction_to_pole_kernel,
     upward_continuation_kernel,
-    total_gradient_amplitude_kernel,
 )
 from .filters._utils import apply_filter
-# from harmonica._transformations import total_gradient_amplitude
+
+import numpy as np
 
 
 def derivative_upward(grid, order=1):
@@ -340,8 +340,59 @@ def reduction_to_pole(
         magnetization_declination=magnetization_declination,
     )
 
+
 def total_gradient_amplitude(grid):
-    return apply_filter(grid, total_gradient_amplitude_kernel)
+    """
+    Calculate the total gradient amplitude a magnetic field grid
+
+    Compute the total gradient amplitude of a regular gridded potential
+    field `M` through `A(x, y) = sqrt((dM/dx)^2 + (dM/dy)^2 + (dM/dz)^2)`.
+    So far the horizontal derivatives are calculated though finite-differences
+    while the upward derivative is calculated using fft.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. Its coordinates should be defined in the
+        same units.
+
+    Returns
+    -------
+    total_gradient_amplitude_grid : :class:`xarray.DataArray`
+        A :class:`xarray.DataArray` after calculating the
+        total gradient amplitude of the passed ``grid``.
+
+    References
+    ----------
+    [Blakely1995]_
+    """
+
+   # Catch the dims of the grid
+    dims = grid.dims
+    # Check if the array has two dimensions
+    if len(dims) != 2:
+        raise ValueError(
+            f"Invalid grid with {len(dims)} dimensions. "
+            + "The passed grid must be a 2 dimensional array."
+        )
+    # Check if the grid has nans
+    if np.isnan(grid).any():
+        raise ValueError(
+            "Found nan(s) on the passed grid. "
+            + "The grid must not have missing values before computing the "
+            + "Fast Fourier Transform."
+        )
+    # Calculate the gradients of the grid
+    gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1),
+        derivative_upward(grid, order=1),
+    )
+    # return the total gradient amplitude
+    return np.sqrt(gradient[0]**2 + gradient[1]**2 + gradient[2]**2)
+
 
 def _get_dataarray_coordinate(grid, dimension_index):
     """
