@@ -71,7 +71,7 @@ And plot it:
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
-   fig.show(method="notebook")
+   fig.show()
 
 
 Bouguer correction
@@ -124,7 +124,7 @@ We can now compute the Bouguer disturbance and plot it:
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"])
-   fig.show(method="notebook")
+   fig.show()
 
 
 
@@ -244,7 +244,7 @@ And plot it:
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
-   fig.show(method="notebook")
+   fig.show()
 
 ----
 

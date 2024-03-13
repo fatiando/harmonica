@@ -183,7 +183,7 @@ Lets plot it:
     fig.coast(shorelines="0.5p,black", area_thresh=1e4)
     fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-    fig.show(method="notebook")
+    fig.show()
 
 ----
 

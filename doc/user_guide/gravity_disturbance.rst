@@ -80,7 +80,7 @@ Lets plot it:
        frame=["af", 'y+l"mGal"', 'x+l"observed gravity"'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
-   fig.show(method="notebook")
+   fig.show()
 
 We can then get the WGS84 ellipsoid defined in :mod:`boule` and use the
 :meth:`boule.Ellipsoid.normal_gravity` to compute the normal gravity (the
@@ -113,7 +113,7 @@ And plot it:
        frame=["af", 'y+l"mGal"', 'x+l"normal gravity"'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
-   fig.show(method="notebook")
+   fig.show()
 
 Now we can compute the gravity disturbance:
 
@@ -144,7 +144,7 @@ And plot it:
        frame=["af", 'y+l"mGal"', 'x+l"gravity disturbance"'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
-   fig.show(method="notebook")
+   fig.show()
 
 The gravity disturbances can be interpreted as the gravitational effect of
 every *anomalous mass*, i.e. that is not contained in the *normal Earth*.

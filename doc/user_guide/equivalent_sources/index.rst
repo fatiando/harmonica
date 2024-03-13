@@ -156,7 +156,7 @@ And plot it:
       )
    fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
 
-   fig.show(method="notebook")
+   fig.show()
 
 We can also *grid* and *upper continue* the field by predicting its values on
 a regular grid at a constant height higher than the observations. To do so we
@@ -198,7 +198,7 @@ And plot it
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
 
-   fig.show(method="notebook")
+   fig.show()
 
 ----
 
