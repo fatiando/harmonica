@@ -51,7 +51,7 @@ the data:
     data = data[inside]
     data
 
-And project the geographic coordiantes to plain Cartesian ones:
+And project the geographic coordinates to plain Cartesian ones:
 
 .. jupyter-execute::
 
