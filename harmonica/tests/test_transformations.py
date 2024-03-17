@@ -258,7 +258,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
         pad_width=pad_width,
     )
     # Calculate upward derivative and unpad it
-    derivative = derivative_upward(potential_padded)
+    derivative = derivative_upward(potential_padded, method="fft")
     derivative = xrft.unpad(derivative, pad_width)
     # Compare against g_z (trim the borders to ignore boundary effects)
     trim = 6
@@ -283,8 +283,36 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
         pad_width=pad_width,
     )
     # Calculate second upward derivative and unpad it
-    second_deriv = derivative_upward(potential_padded, order=2)
+    second_deriv = derivative_upward(potential_padded, order=2, method="fft")
     second_deriv = xrft.unpad(second_deriv, pad_width)
+    # Compare against g_zz (trim the borders to ignore boundary effects)
+    trim = 6
+    second_deriv = second_deriv[trim:-trim, trim:-trim]
+    g_zz = sample_g_zz[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_zz)
+    assert rms / np.abs(g_zz).max() < 0.015
+
+
+def test_derivative_upward_finite_diff(sample_potential, sample_g_z):
+    """
+    Test derivative_upward function with finite differences against the
+    synthetic model
+    """
+    derivative = derivative_upward(sample_potential, method="finite-diff")
+    # Compare against g_z (trim the borders to ignore boundary effects)
+    trim = 6
+    derivative = derivative[trim:-trim, trim:-trim]
+    g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_z)
+    assert rms / np.abs(g_z).max() < 0.015
+
+
+def test_derivative_upward_finite_diff_order2(sample_potential, sample_g_zz):
+    """
+    Test higher order of derivative_upward function with finite differences
+    against the sample grid
+    """
+    second_deriv = derivative_upward(sample_potential, order=2, method="finite-diff")
     # Compare against g_zz (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]

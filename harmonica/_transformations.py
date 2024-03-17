@@ -7,6 +7,8 @@
 """
 Apply transformations to regular grids of potential fields
 """
+import numpy as np
+
 from .filters._filters import (
     derivative_easting_kernel,
     derivative_northing_kernel,
@@ -19,7 +21,7 @@ from .filters._filters import (
 from .filters._utils import apply_filter
 
 
-def derivative_upward(grid, order=1):
+def derivative_upward(grid, order=1, method="finite-diff"):
     """
     Calculate the derivative of a potential field grid in the upward direction
 
@@ -51,7 +53,22 @@ def derivative_upward(grid, order=1):
     --------
     harmonica.filters.derivative_upward_kernel
     """
-    return apply_filter(grid, derivative_upward_kernel, order=order)
+    if method == "finite-diff":
+        spacing = np.mean([
+            np.abs(grid[dim][1] - grid[dim][0]) for dim in grid.dims
+        ])
+        for _ in range(order):
+            up = upward_continuation(grid, spacing / 2)
+            down = upward_continuation(grid, -spacing / 2)
+            grid = (up - down) / spacing
+    elif method == "fft":
+        grid = apply_filter(grid, derivative_upward_kernel, order=order)
+    else:
+        raise ValueError(
+            f"Invalid method '{method}'. "
+            "Please select one from 'finite-diff' or 'fft'."
+        )
+    return grid
 
 
 def derivative_easting(grid, order=1, method="finite-diff"):
