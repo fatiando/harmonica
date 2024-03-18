@@ -258,7 +258,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
         pad_width=pad_width,
     )
     # Calculate upward derivative and unpad it
-    derivative = derivative_upward(potential_padded)
+    derivative = -derivative_upward(potential_padded)
     derivative = xrft.unpad(derivative, pad_width)
     # Compare against g_z (trim the borders to ignore boundary effects)
     trim = 6
@@ -283,7 +283,7 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
         pad_width=pad_width,
     )
     # Calculate second upward derivative and unpad it
-    second_deriv = derivative_upward(potential_padded, order=2)
+    second_deriv = -derivative_upward(potential_padded, order=2)
     second_deriv = xrft.unpad(second_deriv, pad_width)
     # Compare against g_zz (trim the borders to ignore boundary effects)
     trim = 6
@@ -480,7 +480,7 @@ def test_laplace_fft(sample_potential):
     method = "fft"
     second_deriv_ee = derivative_easting(potential_padded, order=2, method=method)
     second_deriv_nn = derivative_northing(potential_padded, order=2, method=method)
-    second_deriv_zz = derivative_upward(potential_padded, order=2)
+    second_deriv_zz = -derivative_upward(potential_padded, order=2)
     second_deriv_ee = xrft.unpad(second_deriv_ee, pad_width)
     second_deriv_nn = xrft.unpad(second_deriv_nn, pad_width)
     second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)

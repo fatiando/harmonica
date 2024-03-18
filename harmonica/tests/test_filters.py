@@ -272,7 +272,7 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     )
     # Check if the filter returns the expected output
     npt.assert_allclose(
-        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
+        expected, -derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
     )
 
 

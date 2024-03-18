@@ -61,7 +61,7 @@ def derivative_upward_kernel(fft_grid, order=1):
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for upward derivative in frequency domain
     da_filter = np.sqrt(k_easting**2 + k_northing**2) ** order
-    return da_filter
+    return -da_filter
 
 
 def derivative_easting_kernel(fft_grid, order=1):
