@@ -258,7 +258,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
         pad_width=pad_width,
     )
     # Calculate upward derivative and unpad it
-    derivative = derivative_upward(potential_padded)
+    derivative = -derivative_upward(potential_padded)
     derivative = xrft.unpad(derivative, pad_width)
     # Compare against g_z (trim the borders to ignore boundary effects)
     trim = 6
