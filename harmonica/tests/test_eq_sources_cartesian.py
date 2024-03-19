@@ -7,7 +7,6 @@
 """
 Test the EquivalentSources gridder
 """
-import warnings
 from collections.abc import Iterable
 
 import numpy as np
@@ -268,7 +267,7 @@ def test_build_points_block_average(coordinates_9x9):
     npt.assert_allclose(expected, eqs._build_points(coordinates_9x9))
 
 
-def test_equivalent_sources_points_depth(points, coordinates_small, data_small):
+def test_equivalent_sources_points_depth(coordinates_small, data_small):
     """
     Check if the points coordinates are properly defined by the fit method
     """
