@@ -261,18 +261,18 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     """
     # Load pre-computed outcome
     expected = (
-        np.array(
+        (-np.array(
             [
                 [0.00756596, 0.00565487, 0.00756596],
                 [0.00502655, 0.0, 0.00502655],
                 [0.00756596, 0.00565487, 0.00756596],
             ]
-        )
+        ))
         ** order
     )
     # Check if the filter returns the expected output
     npt.assert_allclose(
-        expected, -derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
+        expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6
     )
 
 
