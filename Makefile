@@ -3,7 +3,7 @@ PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules --doctest-continue-on-failure -v --pyargs
 NUMBATEST_ARGS=--doctest-modules -v --pyargs -m use_numba
-STYLE_CHECK_FILES=$(PROJECT) examples doc/conf.py tools
+STYLE_CHECK_FILES=$(PROJECT) examples doc
 
 help:
 	@echo "Commands:"
@@ -39,29 +39,19 @@ test_numba:
 	cd $(TESTDIR); NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest $(NUMBATEST_ARGS) $(PROJECT)
 	rm -rvf $(TESTDIR)
 
-format: license isort black
-
-check: isort-check black-check license-check flake8
-
-black:
-	black $(STYLE_CHECK_FILES)
-
-black-check:
-	black --check $(STYLE_CHECK_FILES)
-
-isort:
+format:
 	isort $(STYLE_CHECK_FILES)
+	black $(STYLE_CHECK_FILES)
+	burocrata --extension=py $(STYLE_CHECK_FILES)
 
-isort-check:
+check: check-format check-style
+
+check-format:
 	isort --check $(STYLE_CHECK_FILES)
+	black --check $(STYLE_CHECK_FILES)
+	burocrata --check --extension=py $(STYLE_CHECK_FILES)
 
-license:
-	python tools/license_notice.py
-
-license-check:
-	python tools/license_notice.py --check
-
-flake8:
+check-style:
 	flake8 $(STYLE_CHECK_FILES)
 
 clean:
