@@ -3,19 +3,47 @@
 Installing
 ==========
 
+There are different ways to install Harmonica:
+
+.. tab-set::
+
+    .. tab-item:: pip
+
+        Using the `pip package manager <https://pypi.org/project/pip/>`__:
+
+        .. code:: bash
+
+            pip install harmonica
+
+    .. tab-item:: conda/mamba
+
+        Using the `conda package manager <https://conda.io/>`__ (or ``mamba``)
+        that comes with the Anaconda/Miniconda distribution:
+
+        .. code:: bash
+
+            conda install harmonica --channel conda-forge
+
+    .. tab-item:: Development version
+
+        You can use ``pip`` to install the latest **unreleased** version from
+        GitHub (**not recommended** in most situations):
+
+        .. code:: bash
+
+            python -m pip install --upgrade git+https://github.com/fatiando/harmonica
+
+.. note::
+
+   The commands above should be executed in a terminal. On Windows, use the
+   ``cmd.exe`` or the "Anaconda Prompt" app if you’re using Anaconda.
+
+
 Which Python?
 -------------
 
 You'll need **Python 3.8 or greater**.
 See :ref:`python-versions` if you require support for older versions.
-
-We recommend using the
-`Anaconda Python distribution <https://www.anaconda.com/download>`__
-to ensure you have all dependencies installed and the ``conda`` package manager
-available.
-Installing Anaconda does not require administrative rights to your computer and
-doesn't interfere with any other Python installations in your system.
-
 
 Dependencies
 ------------
