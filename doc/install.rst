@@ -90,19 +90,3 @@ there::
     git clone https://github.com/fatiando/harmonica.git
     cd harmonica
     pip install .
-
-
-Testing your install
---------------------
-
-We ship a full test suite with the package.
-To run the tests, you'll need to install some extra dependencies first:
-
-* `pytest <https://docs.pytest.org/>`__
-* `boule <http://www.fatiando.org/boule/>`__
-
-After that, you can test your installation by running the following inside
-a Python interpreter::
-
-    import harmonica
-    harmonica.test()
