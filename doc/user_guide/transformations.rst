@@ -1,4 +1,4 @@
-	.. _transformations:
+.. _transformations:
 
 Grid transformations
 ====================
@@ -397,8 +397,8 @@ Let's plot the results side by side:
     plt.show()
 
 
-Total gradient amplitude (aka Analytic Signal)
-----------------------------------------------
+Total gradient amplitude
+------------------------
 
 We can also calculate the total gradient amplitude of any magnetic anomaly grid.
 This transformation consists in obtaining the amplitude of the gradient of the
@@ -426,14 +426,11 @@ And plot it:
 
     import verde as vd
 
-    maxabs = vd.maxabs(tga_grid)
-    kwargs = dict(cmap="seismic", vmin=0, vmax=maxabs, add_colorbar=False)
-
-    tmp = tga_grid.plot(cmap="seismic", center=0, add_colorbar=False)
+    tmp = tga_grid.plot(cmap="viridis", add_colorbar=False)
     plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly total gradient amplitude")
+    plt.title("Total gradient amplitude of the magnetic anomaly")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
+    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 ----

@@ -540,10 +540,10 @@ def test_total_gradient_amplitude(sample_potential, sample_g_n, sample_g_e, samp
     # Compare against g_tga (trim the borders to ignore boundary effects)
     trim = 6
     tga = tga[trim:-trim, trim:-trim]
-    g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
     g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
     g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
-    g_tga = np.sqrt(g_n**2 + g_e**2 + g_z**2)
+    g_tga = np.sqrt(g_e**2 + g_n**2 + g_z**2)
     rms = root_mean_square_error(tga, g_tga)
     assert rms / np.abs(g_tga).max() < 0.1
 

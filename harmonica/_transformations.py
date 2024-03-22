@@ -347,8 +347,8 @@ def total_gradient_amplitude(grid):
 
     Compute the total gradient amplitude of a regular gridded potential
     field `M` through ``A(x, y) = sqrt((dM/dx)^2 + (dM/dy)^2 + (dM/dz)^2)``.
-    So far the horizontal derivatives are calculated though finite-differences
-    while the upward derivative is calculated using fft.
+    The horizontal derivatives are calculated though finite-differences
+    while the upward derivative is calculated using FFT.
 
     Parameters
     ----------

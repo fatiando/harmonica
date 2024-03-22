@@ -6,7 +6,7 @@
 #
 """
 Total gradient amplitude of a regular grid
-===================================
+==========================================
 """
 import ensaio
 import pygmt
