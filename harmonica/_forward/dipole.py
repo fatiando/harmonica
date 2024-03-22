@@ -144,16 +144,15 @@ def _dipole_magnetic_vector(
         Tuple containing ``easting``, ``northing`` and ``upward`` of the
         computation points as arrays, all defined on a Cartesian coordinate
         system and in meters.
-    prisms : 2d-array
-        Two dimensional array containing the coordinates of the prism(s) in the
-        following order: west, east, south, north, bottom, top in a Cartesian
-        coordinate system.
-        All coordinates should be in meters.
-    magnetization : tuple of arrays
-        Tuple containing the three arrays corresponding to the magnetization
-        vector components of each prism in :math:`Am^{-1}`. These arrays should
-        be provided in the following order: ``magnetization_e``,
-        ``magnetization_n``, ``magnetization_u``.
+    dipoles : tuple of arrays
+        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``
+        locations of the dipoles defined on a Cartesian coordinate system. All
+        coordinates should be in meters.
+    magnetic_moments : tuple of arrays
+        Tuple containing the three arrays corresponding to the magnetic moment
+        components of each dipole in :math:`Am^2`. These arrays should
+        be provided in the following order: ``mag_moment_easting``,
+        ``mag_moment_northing``, ``mag_moment_upward``.
     shape : tuple of int
         Shape of the expected output arrays.
     dtype : np.dtype
@@ -168,8 +167,8 @@ def _dipole_magnetic_vector(
     Returns
     -------
     magnetic_components : tuple of arrays
-        Tuple containing the three components of the magnetic vector:
-        ``b_e``, ``b_n``, ``b_u``.
+        Tuple containing the three components of the magnetic vector in
+        :math:`nT`: ``b_e``, ``b_n``, ``b_u``.
     """
     # Decide which function should be used
     if parallel:
