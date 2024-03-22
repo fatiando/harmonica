@@ -86,40 +86,6 @@ The examples in the :ref:`gallery` also use:
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
 
 
-
-Installing with conda
----------------------
-
-You can install Harmonica using the `conda package manager
-<https://conda.io/>`__ that comes with the Anaconda distribution::
-
-    conda install harmonica --channel conda-forge
-
-
-Installing with pip
--------------------
-
-Alternatively, you can also use the `pip package manager
-<https://pypi.org/project/pip/>`__::
-
-    pip install harmonica
-
-
-Installing the latest development version
------------------------------------------
-
-You can use ``pip`` to install the latest source from Github::
-
-    pip install git+https://github.com/fatiando/harmonica
-
-Alternatively, you can clone the git repository locally and install from
-there::
-
-    git clone https://github.com/fatiando/harmonica.git
-    cd harmonica
-    pip install .
-
-
 Testing your install
 --------------------
 
