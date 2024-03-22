@@ -400,9 +400,13 @@ Let's plot the results side by side:
 Total gradient amplitude
 ------------------------
 
+.. hint::
+
+    Total gradient amplitude is also known as *analytic signal*.
+
 We can also calculate the total gradient amplitude of any magnetic anomaly grid.
 This transformation consists in obtaining the amplitude of the gradient of the
-magnetic field in all the three spatial directions by applying  
+magnetic field in all the three spatial directions by applying
 
 .. math::
     |A(x, y)| = \sqrt{\left( \frac{\partial M}{\partial x} \right)^2 + \left( \frac{\partial M}{\partial y} \right)^2 + \left( \frac{\partial M}{\partial z} \right)^2}
