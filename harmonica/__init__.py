@@ -27,8 +27,8 @@ from ._transformations import (
     gaussian_highpass,
     gaussian_lowpass,
     reduction_to_pole,
-    upward_continuation,
     total_gradient_amplitude,
+    upward_continuation,
 )
 from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles
 from ._version import __version__

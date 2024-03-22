@@ -7,6 +7,8 @@
 """
 Apply transformations to regular grids of potential fields
 """
+import numpy as np
+
 from .filters._filters import (
     derivative_easting_kernel,
     derivative_northing_kernel,
@@ -17,8 +19,6 @@ from .filters._filters import (
     upward_continuation_kernel,
 )
 from .filters._utils import apply_filter
-
-import numpy as np
 
 
 def derivative_upward(grid, order=1):
@@ -346,7 +346,7 @@ def total_gradient_amplitude(grid):
     Calculate the total gradient amplitude a magnetic field grid
 
     Compute the total gradient amplitude of a regular gridded potential
-    field `M` through `A(x, y) = sqrt((dM/dx)^2 + (dM/dy)^2 + (dM/dz)^2)`.
+    field `M` through ``A(x, y) = sqrt((dM/dx)^2 + (dM/dy)^2 + (dM/dz)^2)``.
     So far the horizontal derivatives are calculated though finite-differences
     while the upward derivative is calculated using fft.
 
@@ -369,7 +369,7 @@ def total_gradient_amplitude(grid):
     [Blakely1995]_
     """
 
-   # Catch the dims of the grid
+    # Catch the dims of the grid
     dims = grid.dims
     # Check if the array has two dimensions
     if len(dims) != 2:
@@ -391,7 +391,7 @@ def total_gradient_amplitude(grid):
         derivative_upward(grid, order=1),
     )
     # return the total gradient amplitude
-    return np.sqrt(gradient[0]**2 + gradient[1]**2 + gradient[2]**2)
+    return np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
 
 
 def _get_dataarray_coordinate(grid, dimension_index):
