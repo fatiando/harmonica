@@ -346,8 +346,7 @@ def total_gradient_amplitude(grid):
     Calculate the total gradient amplitude a magnetic field grid
 
     Compute the total gradient amplitude of a regular gridded potential
-    field `M` through ``A(x, y) = sqrt((dM/dx)^2 + (dM/dy)^2 + (dM/dz)^2)``.
-    The horizontal derivatives are calculated though finite-differences
+    field `M`. The horizontal derivatives are calculated though finite-differences
     while the upward derivative is calculated using FFT.
 
     Parameters
@@ -363,6 +362,20 @@ def total_gradient_amplitude(grid):
     total_gradient_amplitude_grid : :class:`xarray.DataArray`
         A :class:`xarray.DataArray` after calculating the
         total gradient amplitude of the passed ``grid``.
+
+    Notes
+    -----
+    The total gradient amplitude is calculated as:
+
+    .. math::
+    
+        A(x, y) = \sqrt{
+            \left( \frac{\partial M}{\partial x} \right)^2 
+            + \left( \frac{\partial M}{\partial y} \right)^2 
+            + \left( \frac{\partial M}{\partial z} \right)^2
+        }
+
+    where :math:`M` is the regularly gridded potential field.
 
     References
     ----------

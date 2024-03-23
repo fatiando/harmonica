@@ -409,7 +409,7 @@ This transformation consists in obtaining the amplitude of the gradient of the
 magnetic field in all the three spatial directions by applying
 
 .. math::
-    |A(x, y)| = \sqrt{\left( \frac{\partial M}{\partial x} \right)^2 + \left( \frac{\partial M}{\partial y} \right)^2 + \left( \frac{\partial M}{\partial z} \right)^2}
+    A(x, y) = \sqrt{\left( \frac{\partial M}{\partial x} \right)^2 + \left( \frac{\partial M}{\partial y} \right)^2 + \left( \frac{\partial M}{\partial z} \right)^2}
 
 
 We can apply it through the :func:`harmonica.total_gradient_amplitude` function.
