@@ -81,12 +81,6 @@ This *relative depth* can be set through the ``depth`` argument.
 Deepest sources generate smoother predictions (*underfitting*), while shallow
 ones tend to overfit the data.
 
-.. note::
-
-   If instead we want to place every source at a constant depth, we can change
-   it by passing  ``depth_type="constant"``. In that case, the ``depth``
-   argument will be the exact depth at which the sources will be located.
-
 The ``damping`` parameter is used to smooth the coefficients of the sources and
 stabilize the least square problem. A higher ``damping`` will create smoother
 predictions, while a lower one could overfit the data and create artifacts.

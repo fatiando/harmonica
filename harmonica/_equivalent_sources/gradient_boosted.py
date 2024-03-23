@@ -48,18 +48,10 @@ class EquivalentSourcesGB(EquivalentSources):
     depth : float
         Parameter used to control the depth at which the point sources will be
         located.
-        If ``depth_type`` is ``"constant"``, each source is located at the same
-        depth specified through the ``depth`` argument.
-        If ``depth_type`` is ``"relative"``, each source is located beneath
-        each data point (or block-averaged location) at a depth equal to its
-        elevation minus the ``depth`` value.
+        Each source is located beneath each data point (or block-averaged
+        location) at a depth equal to its elevation minus the ``depth`` value.
         This parameter is ignored if *points* is specified.
         Defaults to 500.
-    depth_type : str
-        Strategy used for setting the depth of the point sources.
-        The two available strategies are ``"constant"`` and ``"relative"``.
-        This parameter is ignored if *points* is specified.
-        Defaults to ``"relative"``.
     block_size: float, tuple = (s_north, s_east) or None
         Size of the blocks used on block-averaged equivalent sources.
         If a single value is passed, the blocks will have a square shape.
@@ -106,7 +98,6 @@ class EquivalentSourcesGB(EquivalentSources):
         damping=None,
         points=None,
         depth=500,
-        depth_type="relative",
         block_size=None,
         window_size=5e3,
         parallel=True,
@@ -117,7 +108,6 @@ class EquivalentSourcesGB(EquivalentSources):
             damping=damping,
             points=points,
             depth=depth,
-            depth_type=depth_type,
             block_size=block_size,
             parallel=parallel,
             dtype=dtype,
