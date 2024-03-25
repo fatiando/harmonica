@@ -194,7 +194,7 @@ def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
 
 def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
     """
-    Check if apply_filter raises error on grid with single dimension
+    Check if apply_filter raises error on grid with three dimensions
     """
     with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
         apply_filter(invalid_grid_3_dims, dummy_filter)
