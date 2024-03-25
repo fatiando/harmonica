@@ -74,7 +74,7 @@ def grid_sanity_checks(grid):
     Raises
     ------
     ValueError
-        If the passed grid is not 2D or if it contain nan values.
+        If the passed grid is not 2D or if it contains nan values.
     """
     # Check if the array has two dimensions
     if (n_dims := len(grid.dims)) != 2:
