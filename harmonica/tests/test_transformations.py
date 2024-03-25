@@ -520,32 +520,72 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
-def test_total_gradient_amplitude(sample_potential, sample_g_n, sample_g_e, sample_g_z):
+class TestTotalGradientAmplitude:
     """
-    Test total_gradient_amplitude function against the synthetic model
+    Test total_gradient_amplitude function
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate total gradient amplitude and unpad it
-    tga = total_gradient_amplitude(potential_padded)
-    tga = xrft.unpad(tga, pad_width)
-    # Compare against g_tga (trim the borders to ignore boundary effects)
-    trim = 6
-    tga = tga[trim:-trim, trim:-trim]
-    g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
-    g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
-    g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
-    g_tga = np.sqrt(g_e**2 + g_n**2 + g_z**2)
-    rms = root_mean_square_error(tga, g_tga)
-    assert rms / np.abs(g_tga).max() < 0.1
+
+    def test_against_synthetic(
+        self, sample_potential, sample_g_n, sample_g_e, sample_g_z
+    ):
+        """
+        Test total_gradient_amplitude function against the synthetic model
+        """
+        # Pad the potential field grid to improve accuracy
+        pad_width = {
+            "easting": sample_potential.easting.size // 3,
+            "northing": sample_potential.northing.size // 3,
+        }
+        # need to drop upward coordinate (bug in xrft)
+        potential_padded = xrft.pad(
+            sample_potential.drop_vars("upward"),
+            pad_width=pad_width,
+        )
+        # Calculate total gradient amplitude and unpad it
+        tga = total_gradient_amplitude(potential_padded)
+        tga = xrft.unpad(tga, pad_width)
+        # Compare against g_tga (trim the borders to ignore boundary effects)
+        trim = 6
+        tga = tga[trim:-trim, trim:-trim]
+        g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_tga = np.sqrt(g_e**2 + g_n**2 + g_z**2)
+        rms = root_mean_square_error(tga, g_tga)
+        assert rms / np.abs(g_tga).max() < 0.1
+
+    def test_invalid_grid_single_dimension(self):
+        """
+        Check if total_gradient_amplitude raises error on grid with single
+        dimension
+        """
+        x = np.linspace(0, 10, 11)
+        y = x**2
+        grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+        with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+            total_gradient_amplitude(grid)
+
+    def test_invalid_grid_three_dimensions(self):
+        """
+        Check if total_gradient_amplitude raises error on grid with three
+        dimensions
+        """
+        x = np.linspace(0, 10, 11)
+        y = np.linspace(-4, 4, 9)
+        z = np.linspace(20, 30, 5)
+        xx, yy, zz = np.meshgrid(x, y, z)
+        data = xx + yy + zz
+        grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+        with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+            total_gradient_amplitude(grid)
+
+    def test_invalid_grid_with_nans(self, sample_potential):
+        """
+        Check if total_gradient_amplitude raises error on grid with single dimension
+        """
+        sample_potential.values[0, 0] = np.nan
+        with pytest.raises(ValueError, match="Found nan"):
+            total_gradient_amplitude(sample_potential)
 
 
 class Testfilter:
