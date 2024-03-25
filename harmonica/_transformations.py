@@ -342,11 +342,11 @@ def reduction_to_pole(
 
 
 def total_gradient_amplitude(grid):
-    """
+    r"""
     Calculate the total gradient amplitude a magnetic field grid
 
-    Compute the total gradient amplitude of a regular gridded potential
-    field `M`. The horizontal derivatives are calculated though finite-differences
+    Compute the total gradient amplitude of a regular gridded potential field
+    `M`. The horizontal derivatives are calculated though finite-differences
     while the upward derivative is calculated using FFT.
 
     Parameters
@@ -368,10 +368,10 @@ def total_gradient_amplitude(grid):
     The total gradient amplitude is calculated as:
 
     .. math::
-    
+
         A(x, y) = \sqrt{
-            \left( \frac{\partial M}{\partial x} \right)^2 
-            + \left( \frac{\partial M}{\partial y} \right)^2 
+            \left( \frac{\partial M}{\partial x} \right)^2
+            + \left( \frac{\partial M}{\partial y} \right)^2
             + \left( \frac{\partial M}{\partial z} \right)^2
         }
 
