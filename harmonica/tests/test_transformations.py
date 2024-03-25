@@ -581,7 +581,7 @@ class TestTotalGradientAmplitude:
 
     def test_invalid_grid_with_nans(self, sample_potential):
         """
-        Check if total_gradient_amplitude raises error on grid with single dimension
+        Check if total_gradient_amplitude raises error if grid contains nans
         """
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
