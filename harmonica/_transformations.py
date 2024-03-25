@@ -18,7 +18,7 @@ from .filters._filters import (
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
-from .filters._utils import apply_filter
+from .filters._utils import apply_filter, grid_sanity_checks
 
 
 def derivative_upward(grid, order=1):
@@ -381,22 +381,8 @@ def total_gradient_amplitude(grid):
     ----------
     [Blakely1995]_
     """
-
-    # Catch the dims of the grid
-    dims = grid.dims
-    # Check if the array has two dimensions
-    if len(dims) != 2:
-        raise ValueError(
-            f"Invalid grid with {len(dims)} dimensions. "
-            + "The passed grid must be a 2 dimensional array."
-        )
-    # Check if the grid has nans
-    if np.isnan(grid).any():
-        raise ValueError(
-            "Found nan(s) on the passed grid. "
-            + "The grid must not have missing values before computing the "
-            + "Fast Fourier Transform."
-        )
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
     # Calculate the gradients of the grid
     gradient = (
         derivative_easting(grid, order=1),
