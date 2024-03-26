@@ -321,7 +321,7 @@ def _jit_dipole_magnetic_field_cartesian(
     easting, northing, upward = coordinates
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
-    # Iterate over computation points and prisms
+    # Iterate over computation points and dipoles
     for l in prange(easting.size):
         for m in range(easting_p.size):
             easting_comp, northing_comp, upward_comp = magnetic_field(
@@ -378,7 +378,7 @@ def _jit_dipole_magnetic_component_cartesian(
     easting, northing, upward = coordinates
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
-    # Iterate over computation points and prisms
+    # Iterate over computation points and dipoles
     for l in prange(easting.size):
         for m in range(easting_p.size):
             result[l] += forward_func(
