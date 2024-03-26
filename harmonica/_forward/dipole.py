@@ -245,7 +245,7 @@ def _dipole_magnetic_component(
     Returns
     -------
     magnetic_component : arrays
-        Array containing the desired magnetic component.
+        Array containing the desired magnetic component in :math:`nT`.
     """
     # Decide which function should be used
     if parallel:
