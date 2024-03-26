@@ -271,6 +271,9 @@ def test_derivative_upward(sample_potential, sample_g_z):
 def test_derivative_upward_order2(sample_potential, sample_g_zz):
     """
     Test higher order of derivative_upward function against the sample grid
+
+    Note: We omit the minus sign here because the second derivative is positive
+    for both downward (negative) and upward (positive) derivatives.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
