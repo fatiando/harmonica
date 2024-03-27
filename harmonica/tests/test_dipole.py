@@ -14,89 +14,93 @@ import pytest
 import verde as vd
 from choclo.dipole import magnetic_field
 
-from .. import dipole_magnetic, dipole_magnetic_component
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
+
+from .. import dipole_magnetic
+from .._forward.dipole import VALID_FIELDS
 from .utils import run_only_with_numba
 
 
-def test_invalid_component():
-    "Check if passing an invalid component raises an error"
+def test_invalid_field():
+    "Check if passing an invalid field raises an error"
     coordinates = [0, 0, 0]
-    dipoles = [[-100, 100], [-100, 100], [-200, -100]]
-    magnetic_moments = [[1, 1, 2], [-1, -2, 3]]
-    with pytest.raises(ValueError, match="Invalid component"):
-        dipole_magnetic_component(
-            coordinates, dipoles, magnetic_moments, component="Not a valid field"
+    dipoles = ([-100, 100], [-100, 100], [-200, -100])
+    magnetic_moments = ([1, -1], [1, -2], [2, 3])
+    with pytest.raises(ValueError, match="Invalid field"):
+        dipole_magnetic(
+            coordinates, dipoles, magnetic_moments, field="Not a valid field"
         )
 
 
+@pytest.mark.parametrize("field", VALID_FIELDS)
+def test_disable_checks(field):
+    """Test if disabling checks works as expected"""
+    coordinates = [0, 0, 0]
+    dipoles = ([1, 1, 2], [-1, 0, 2], [-10, -2, -4])
+    magnetic_moments = (
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+    )
+    dipole_magnetic(
+        coordinates, dipoles, magnetic_moments, disable_checks=True, field=field
+    )
+
+
+@pytest.mark.use_numba
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+@pytest.mark.parametrize("field", VALID_FIELDS)
+def test_progress_bar(field):
+    """
+    Check if forward modelling results with and without progress bar match
+    """
+    dipoles = ([1, 1], [-1, 0], [-10, -2])
+    magnetic_moments = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
+    coordinates = vd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    )
+    result_progress_true = dipole_magnetic(
+        coordinates, dipoles, magnetic_moments, field=field, progressbar=True
+    )
+    result_progress_false = dipole_magnetic(
+        coordinates, dipoles, magnetic_moments, field=field, progressbar=False
+    )
+    npt.assert_allclose(result_progress_true, result_progress_false)
+
+
 class TestInvalidMagneticMoments:
-    @pytest.mark.parametrize("component", ("all", "easting", "northing", "upward"))
-    def test_magnetic_moments_and_dipoles(self, component):
+    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
+    def test_magnetic_moments_and_dipoles(self, field):
         """
         Test error when dipoles and magnetic moments mismatch
         """
         coordinates = [0, 0, 0]
-        dipoles = [[1, 1], [-1, 0], [-10, -2]]
+        dipoles = ([1, 1], [-1, 0], [-10, -2])
         # Define invalid magnetic moments (more moments than dipoles)
-        magnetic_moments = [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9],
-        ]
+        magnetic_moments = (
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9],
+        )
         msg = "Number of elements in magnetic_moments"
-        if component == "all":
-            with pytest.raises(ValueError, match=msg):
-                dipole_magnetic(coordinates, dipoles, magnetic_moments)
-        else:
-            with pytest.raises(ValueError, match=msg):
-                dipole_magnetic_component(
-                    coordinates, dipoles, magnetic_moments, component
-                )
+        with pytest.raises(ValueError, match=msg):
+            dipole_magnetic(coordinates, dipoles, magnetic_moments, field=field)
 
-    @pytest.mark.parametrize("component", ("all", "easting", "northing", "upward"))
-    def test_magnetic_moments_components(self, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_magnetic_moments_field(self, field):
         """
-        Test if error is raised when magnetic moments have != 3 components
+        Test if error is raised when magnetic moments have != 3 elements
         """
         coordinates = [0, 0, 0]
-        dipoles = [[1, 1], [-1, 0], [-10, -2]]
+        dipoles = ([1, 1], [-1, 0], [-10, -2])
         # Define invalid magnetic moments (more than three components)
-        magnetic_moments = [
-            [1, 2, 3, 5],
-            [4, 5, 6, 7],
-        ]
+        magnetic_moments = ([1, 4], [2, 5], [3, 6], [5, 7])
         msg = "Invalid magnetic moments with '4' elements."
-        if component == "all":
-            with pytest.raises(ValueError, match=msg):
-                dipole_magnetic(coordinates, dipoles, magnetic_moments)
-        else:
-            with pytest.raises(ValueError, match=msg):
-                dipole_magnetic_component(
-                    coordinates, dipoles, magnetic_moments, component
-                )
-
-    @pytest.mark.parametrize("component", ("all", "easting", "northing", "upward"))
-    def test_disable_checks(self, component):
-        """
-        Test disable checks on invalid magnetic moments
-        """
-        coordinates = [0, 0, 0]
-        dipoles = [[1, 1], [-1, 0], [-10, -2]]
-        # Define invalid magnetic moments (more than three components)
-        magnetic_moments = [
-            [1, 2, 3, 5],
-            [4, 5, 6, 7],
-        ]
-        if component == "all":
-            dipole_magnetic(coordinates, dipoles, magnetic_moments, disable_checks=True)
-        else:
-            dipole_magnetic_component(
-                coordinates,
-                dipoles,
-                magnetic_moments,
-                component,
-                disable_checks=True,
-            )
+        with pytest.raises(ValueError, match=msg):
+            dipole_magnetic(coordinates, dipoles, magnetic_moments, field=field)
 
 
 class TestSerialVsParallel:
@@ -104,37 +108,30 @@ class TestSerialVsParallel:
     Test serial vs parallel
     """
 
-    @pytest.mark.parametrize("component", ("all", "easting", "northing", "upward"))
-    def test_dipoles_parallel_vs_serial_no_numba(self, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_dipoles_parallel_vs_serial_no_numba(self, field):
         """
         Check results of parallelized and serials runs
         Run a small problem with Numba disable to count for test coverage.
         """
         coordinates = ([0, 10], [0, 10], [0, 10])
-        dipoles = [[-100, 0], [0, 100], [-20, -50]]
-        magnetic_moments = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
-        ]
-        if component == "all":
-            parallel = dipole_magnetic(
-                coordinates, dipoles, magnetic_moments, parallel=True
-            )
-            serial = dipole_magnetic(
-                coordinates, dipoles, magnetic_moments, parallel=False
-            )
-        else:
-            parallel = dipole_magnetic_component(
-                coordinates, dipoles, magnetic_moments, component, parallel=True
-            )
-            serial = dipole_magnetic_component(
-                coordinates, dipoles, magnetic_moments, component, parallel=False
-            )
+        dipoles = ([-100, 0], [0, 100], [-20, -50])
+        magnetic_moments = (
+            [1.0, 1.0],
+            [1.0, -1.0],
+            [1.0, 5.0],
+        )
+        parallel = dipole_magnetic(
+            coordinates, dipoles, magnetic_moments, field=field, parallel=True
+        )
+        serial = dipole_magnetic(
+            coordinates, dipoles, magnetic_moments, field=field, parallel=False
+        )
         npt.assert_allclose(parallel, serial)
 
     @run_only_with_numba
-    @pytest.mark.parametrize("component", ("all", "easting", "northing", "upward"))
-    def test_dipoles_parallel_vs_serial(self, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_dipoles_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs
         Run a large problem only with Numba enabled.
@@ -142,25 +139,18 @@ class TestSerialVsParallel:
         coordinates = vd.grid_coordinates(
             region=(-100, 100, -100, 100), spacing=20, extra_coords=10
         )
-        dipoles = [[-100, 0], [0, 100], [-20, -50]]
+        dipoles = ([-100, 0], [0, 100], [-20, -50])
         magnetic_moments = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
+            [1.0, 1.0],
+            [1.0, -1.0],
+            [1.0, 5.0],
         ]
-        if component == "all":
-            parallel = dipole_magnetic(
-                coordinates, dipoles, magnetic_moments, parallel=True
-            )
-            serial = dipole_magnetic(
-                coordinates, dipoles, magnetic_moments, parallel=False
-            )
-        else:
-            parallel = dipole_magnetic_component(
-                coordinates, dipoles, magnetic_moments, component, parallel=True
-            )
-            serial = dipole_magnetic_component(
-                coordinates, dipoles, magnetic_moments, component, parallel=False
-            )
+        parallel = dipole_magnetic(
+            coordinates, dipoles, magnetic_moments, field=field, parallel=True
+        )
+        serial = dipole_magnetic(
+            coordinates, dipoles, magnetic_moments, field=field, parallel=False
+        )
         npt.assert_allclose(parallel, serial)
 
 
@@ -186,14 +176,10 @@ class TestAgainstChoclo:
         """
         Return sample magnetic moment vectors for the dipoles
         """
-        magnetic_moments = np.array(
-            [
-                [1.0, 1.0, 1],
-                [-1.0, -0.5, 2.0],
-                [3, -1.0, -3.0],
-                [-1.5, 2.0, -2.0],
-            ],
-            dtype=np.float64,
+        magnetic_moments = (
+            np.array([1.0, -1.0, 3.0, -1.5]),
+            np.array([1.0, -0.5, -1.0, 2.0]),
+            np.array([1.0, 2.0, -3.0, -2.0]),
         )
         return magnetic_moments
 
@@ -230,7 +216,9 @@ class TestAgainstChoclo:
                     easting_p[j],
                     northing_p[j],
                     upward_p[j],
-                    *sample_magnetic_moments[j, :],
+                    sample_magnetic_moments[0][j],
+                    sample_magnetic_moments[1][j],
+                    sample_magnetic_moments[2][j],
                 )
                 expected_magnetic_e[i] += b_e
                 expected_magnetic_n[i] += b_n
@@ -241,15 +229,15 @@ class TestAgainstChoclo:
         expected_magnetic_u *= 1e9
         # Compare with harmonica results
         b_e, b_n, b_u = dipole_magnetic(
-            sample_coordinates, sample_dipoles, sample_magnetic_moments
+            sample_coordinates, sample_dipoles, sample_magnetic_moments, field="b"
         )
         npt.assert_allclose(b_e, expected_magnetic_e)
         npt.assert_allclose(b_n, expected_magnetic_n)
         npt.assert_allclose(b_u, expected_magnetic_u)
 
-    @pytest.mark.parametrize("component", ("easting", "northing", "upward"))
+    @pytest.mark.parametrize("field", ("b_e", "b_n", "b_u"))
     def test_component_against_choclo(
-        self, sample_coordinates, sample_dipoles, sample_magnetic_moments, component
+        self, sample_coordinates, sample_dipoles, sample_magnetic_moments, field
     ):
         """
         Test dipole_magnetic_component against raw Choclo runs
@@ -260,7 +248,7 @@ class TestAgainstChoclo:
         n_coords = easting.size
         n_dipoles = sample_dipoles[0].size
         expected_result = np.zeros(n_coords, dtype=np.float64)
-        forward_func = getattr(choclo.dipole, f"magnetic_{component[0]}")
+        forward_func = getattr(choclo.dipole, f"magnetic_{field[-1]}")
         for i in range(n_coords):
             for j in range(n_dipoles):
                 expected_result[i] += forward_func(
@@ -270,15 +258,17 @@ class TestAgainstChoclo:
                     easting_p[j],
                     northing_p[j],
                     upward_p[j],
-                    *sample_magnetic_moments[j, :],
+                    sample_magnetic_moments[0][j],
+                    sample_magnetic_moments[1][j],
+                    sample_magnetic_moments[2][j],
                 )
         # Convert to nT
         expected_result *= 1e9
         # Compare with harmonica results
-        result = dipole_magnetic_component(
+        result = dipole_magnetic(
             sample_coordinates,
             sample_dipoles,
             sample_magnetic_moments,
-            component,
+            field=field,
         )
         npt.assert_allclose(result, expected_result)
