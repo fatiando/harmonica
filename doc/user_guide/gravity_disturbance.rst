@@ -64,6 +64,18 @@ same height of 10 km above the reference ellipsoid.
 Lets plot it:
 
 .. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
+.. jupyter-execute::
 
    import pygmt
 
