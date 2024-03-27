@@ -84,19 +84,3 @@ The examples in the :ref:`gallery` also use:
 * `ensaio <http://www.fatiando.org/ensaio/>`__ for downloading sample datasets
 * `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
-
-
-Testing your install
---------------------
-
-We ship a full test suite with the package.
-To run the tests, you'll need to install some extra dependencies first:
-
-* `pytest <https://docs.pytest.org/>`__
-* `boule <http://www.fatiando.org/boule/>`__
-
-After that, you can test your installation by running the following inside
-a Python interpreter::
-
-    import harmonica
-    harmonica.test()
