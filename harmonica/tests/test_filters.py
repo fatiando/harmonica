@@ -194,7 +194,7 @@ def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
 
 def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
     """
-    Check if apply_filter raises error on grid with single dimension
+    Check if apply_filter raises error on grid with three dimensions
     """
     with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
         apply_filter(invalid_grid_3_dims, dummy_filter)
@@ -261,15 +261,14 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     """
     # Load pre-computed outcome
     expected = (
-        np.array(
+        -np.array(
             [
                 [0.00756596, 0.00565487, 0.00756596],
                 [0.00502655, 0.0, 0.00502655],
                 [0.00756596, 0.00565487, 0.00756596],
             ]
         )
-        ** order
-    )
+    ) ** order
     # Check if the filter returns the expected output
     npt.assert_allclose(
         expected, derivative_upward_kernel(sample_fft_grid, order=order), rtol=2e-6

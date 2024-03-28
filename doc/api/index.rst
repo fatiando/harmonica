@@ -81,7 +81,6 @@ Magnetic fields:
     :toctree: generated/
 
     dipole_magnetic
-    dipole_magnetic_component
     prism_magnetic
 
 Layers and meshes:

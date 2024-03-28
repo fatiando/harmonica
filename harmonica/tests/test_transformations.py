@@ -261,17 +261,20 @@ def test_derivative_upward(sample_potential, sample_g_z):
     # Calculate upward derivative and unpad it
     derivative = derivative_upward(potential_padded)
     derivative = xrft.unpad(derivative, pad_width)
-    # Compare against g_z (trim the borders to ignore boundary effects)
+    # Compare against g_up (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
-    g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
-    rms = root_mean_square_error(derivative, g_z)
-    assert rms / np.abs(g_z).max() < 0.015
+    g_up = -sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_up)
+    assert rms / np.abs(g_up).max() < 0.015
 
 
 def test_derivative_upward_order2(sample_potential, sample_g_zz):
     """
     Test higher order of derivative_upward function against the sample grid
+
+    Note: We omit the minus sign here because the second derivative is positive
+    for both downward (negative) and upward (positive) derivatives.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
