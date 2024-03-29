@@ -395,7 +395,8 @@ def total_gradient_amplitude(grid):
 
 def tilt(grid):
     r"""
-    Calculates the tilt of a potential field grid as defined by Miller and Singh (1994)
+    Calculates the tilt of a potential field grid as defined
+    by Miller and Singh (1994)
 
     Compute the tilt of a regular gridded potential field
     `M`. The horizontal derivatives are calculated though finite-differences
