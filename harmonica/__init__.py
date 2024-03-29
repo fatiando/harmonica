@@ -27,6 +27,7 @@ from ._transformations import (
     gaussian_highpass,
     gaussian_lowpass,
     reduction_to_pole,
+    tilt,
     total_gradient_amplitude,
     upward_continuation,
 )
