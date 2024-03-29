@@ -392,10 +392,11 @@ def total_gradient_amplitude(grid):
     # return the total gradient amplitude
     return np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
 
+
 def tilt(grid):
     r"""
     Calculates the tilt of a potential field grid as defined by Miller and Singh (1994)
-    
+
     Compute the tilt of a regular gridded potential field
     `M`. The horizontal derivatives are calculated though finite-differences
     while the upward derivative is calculated using FFT.
@@ -448,9 +449,9 @@ def tilt(grid):
         derivative_northing(grid, order=1),
         derivative_upward(grid, order=1),
     )
-    # Calculate and return the tilt    
-    horiz_deriv = np.sqrt(gradient[0]**2 + gradient[1]**2)
-    tilt = np.arctan2(gradient[2], horiz_deriv)    
+    # Calculate and return the tilt
+    horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
+    tilt = np.arctan2(gradient[2], horiz_deriv)
     return tilt
 
 

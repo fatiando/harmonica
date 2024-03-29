@@ -6,7 +6,7 @@
 #
 """
 Tilt of a regular grid
-==========================================
+======================
 """
 import ensaio
 import pygmt
@@ -97,8 +97,8 @@ with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
         pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
         # Plot tilt
         fig.grdimage(
-            grid=tilt_grid, 
-            projection="X?", 
+            grid=tilt_grid,
+            projection="X?",
             cmap=True,
             # frame=["a", "+tTilt from TMI"],
         )
@@ -120,4 +120,3 @@ with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
             position="JMR+o1/1c+e",
         )
 fig.show()
-a = 2

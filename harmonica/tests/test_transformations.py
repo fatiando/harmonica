@@ -623,7 +623,7 @@ class TestTilt:
         g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
         g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
         g_horiz_deriv = np.sqrt(g_e**2 + g_n**2)
-        g_tilt = np.arctan2(g_z, g_horiz_deriv)          
+        g_tilt = np.arctan2(g_z, g_horiz_deriv)
         rms = root_mean_square_error(tilt_grid, g_tilt)
         assert rms / np.abs(tilt_grid).max() < 0.1
 
