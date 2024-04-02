@@ -73,7 +73,8 @@ class EquivalentSourcesGB(EquivalentSources):
         algorithm. Smaller windows reduce the memory requirements of the source
         coefficients fitting process. Very small windows may impact on the
         accuracy of the interpolations.
-        Defaults to 5000.
+        Defaults to estimating a window size such that approximately 5000 data
+        points are in each window.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -108,7 +109,7 @@ class EquivalentSourcesGB(EquivalentSources):
         depth=500,
         depth_type="relative",
         block_size=None,
-        window_size=5e3,
+        window_size="default",
         parallel=True,
         random_state=None,
         dtype="float64",
@@ -303,17 +304,28 @@ class EquivalentSourcesGB(EquivalentSources):
             ``shuffle_windows`` is True, although the order of the windows is
             the same as the one in ``source_windows_nonempty``.
         """
-        # Compute window spacing based on overlapping
-        window_spacing = self.window_size * (1 - self.overlapping)
+
         # Get the region that contains every data point and every source
         region = _get_region_data_sources(coordinates, self.points_)
+        # Calculate the window size such that there are approximately 5000 data
+        # points in each window. Otherwise use the given window size.
+        if self.window_size == "default":
+            area = (region[1] - region[0]) * (region[3] - region[2])
+            ndata = coordinates[0].size
+            points_per_m2 = ndata / area
+            window_area = 5e3 / points_per_m2
+            self.window_size_ = np.sqrt(window_area)
+        else:
+            self.window_size_ = self.window_size
+        # Compute window spacing based on overlapping
+        window_spacing = self.window_size_ * (1 - self.overlapping)
         # The windows for sources and data points are the same, but the
         # verde.rolling_window function creates indices for the given
         # coordinates. That's why we need to create two set of window indices:
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
-        kwargs = dict(region=region, size=self.window_size, spacing=window_spacing)
+        kwargs = dict(region=region, size=self.window_size_, spacing=window_spacing)
         _, source_windows = rolling_window(self.points_, **kwargs)
         _, data_windows = rolling_window(coordinates, **kwargs)
         # Ravel the indices
