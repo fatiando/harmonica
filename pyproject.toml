@@ -41,13 +41,10 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://www.fatiando.org/harmonica"
 "Documentation" = "https://www.fatiando.org/harmonica"
-"Repository" = "https://github.com/fatiando/harmonica.git"
 "Changelog" = "https://www.fatiando.org/harmonica/latest/changes.html"
 "Bug Tracker" = "https://github.com/fatiando/harmonica/issues"
 "Source Code" = "https://github.com/fatiando/harmonica"
-"Release Notes" = "https://github.com/fatiando/harmonica/releases"
 
 [project.optional-dependencies]
 visualizations = ["pyvista>=0.27", "vtk>=9"]
