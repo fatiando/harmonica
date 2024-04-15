@@ -31,7 +31,7 @@ magnetic_grid_no_height = magnetic_grid.drop_vars("height")
 magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
 # Compute the tilt of the grid
-tilt_grid = hm.tilt(magnetic_grid_padded)
+tilt_grid = hm.tilt_angle(magnetic_grid_padded)
 
 # Unpad the tilt grid
 tilt_grid = xrft.unpad(tilt_grid, pad_width)
@@ -54,7 +54,7 @@ rtp_grid_padded = hm.reduction_to_pole(
 rtp_grid = xrft.unpad(rtp_grid_padded, pad_width)
 
 # Compute the tilt of the padded rtp grid
-tilt_rtp_grid = hm.tilt(rtp_grid_padded)
+tilt_rtp_grid = hm.tilt_angle(rtp_grid_padded)
 
 # Unpad the tilt grid
 tilt_rtp_grid = xrft.unpad(tilt_rtp_grid, pad_width)

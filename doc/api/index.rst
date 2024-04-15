@@ -33,7 +33,7 @@ Apply well known transformations regular gridded potential fields data.
     gaussian_highpass
     reduction_to_pole
     total_gradient_amplitude
-    tilt
+    tilt_angle
 
 Frequency domain filters
 ------------------------

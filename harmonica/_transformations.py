@@ -393,14 +393,21 @@ def total_gradient_amplitude(grid):
     return np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
 
 
-def tilt(grid):
+def tilt_angle(grid):
     r"""
-    Calculates the tilt of a potential field grid as defined
+    Calculates the tilt angle of a potential field grid
     by Miller and Singh (1994)
 
-    Compute the tilt of a regular gridded potential field
-    `M`. The horizontal derivatives are calculated though finite-differences
-    while the upward derivative is calculated using FFT.
+    Compute the tilt angle of a potential field :math:`M` sampled on a regular grid.
+
+    .. tip::
+
+        When used on magnetic total field anomaly data, works best if the data is
+        reduced to the pole.
+
+        It's useful to plot the zero contour line of the tilt to represent possible
+        outlines of the source bodies. Use matplotlib's ``pyplot.contour`` or
+        ``pyplot.tricontour`` for this.
 
     Parameters
     ----------
@@ -431,16 +438,10 @@ def tilt(grid):
 
     where :math:`M` is the regularly gridded potential field.
 
-    When used on magnetic total field anomaly data, works best if the data is
-    reduced to the pole.
-
-    It's useful to plot the zero contour line of the tilt to represent possible
-    outlines of the source bodies. Use matplotlib's ``pyplot.contour`` or
-    ``pyplot.tricontour`` for this.
-
     References
     ----------
     [Blakely1995]_
+    [MillerSingh1994]_
     """
     # Run sanity checks on the grid
     grid_sanity_checks(grid)

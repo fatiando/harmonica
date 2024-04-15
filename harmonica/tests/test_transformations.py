@@ -25,7 +25,7 @@ from .._transformations import (
     gaussian_highpass,
     gaussian_lowpass,
     reduction_to_pole,
-    tilt,
+    tilt_angle,
     total_gradient_amplitude,
     upward_continuation,
 )
@@ -614,7 +614,7 @@ class TestTilt:
             pad_width=pad_width,
         )
         # Calculate the tilt and unpad it
-        tilt_grid = tilt(potential_padded)
+        tilt_grid = tilt_angle(potential_padded)
         tilt_grid = xrft.unpad(tilt_grid, pad_width)
         # Compare against g_tilt (trim the borders to ignore boundary effects)
         trim = 6
@@ -636,7 +636,7 @@ class TestTilt:
         y = x**2
         grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
         with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
-            tilt(grid)
+            tilt_angle(grid)
 
     def test_invalid_grid_three_dimensions(self):
         """
@@ -650,7 +650,7 @@ class TestTilt:
         data = xx + yy + zz
         grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
         with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
-            tilt(grid)
+            tilt_angle(grid)
 
     def test_invalid_grid_with_nans(self, sample_potential):
         """
@@ -658,7 +658,7 @@ class TestTilt:
         """
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
-            tilt(sample_potential)
+            tilt_angle(sample_potential)
 
 
 class Testfilter:
