@@ -435,8 +435,8 @@ def tilt(grid):
     reduced to the pole.
 
     It's useful to plot the zero contour line of the tilt to represent possible
-    outlines of the source bodies. Use matplotlib's ``pyplot.contour`` or
-    ``pyplot.tricontour`` for this.
+    outlines of the source bodies. Use :func:`matplotlib.pyplot.contour` or
+    :func:`matplotlib.pyplot.tricontour` for this.
 
     References
     ----------
