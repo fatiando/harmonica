@@ -63,18 +63,16 @@ class EquivalentSources(vdb.BaseGridder):
     grid where interpolations will be carried out.
 
     The depth of the sources can be controlled by the ``depth`` argument.
-    If ``depth_type`` is set to ``"relative"``, then each source is located
-    beneath each data point or block-averaged location at a depth equal to its
-    elevation minus the value of the ``depth`` argument.
-    If ``depth_type`` is set to ``"constant"``, then every source is located at
-    a constant depth given by the ``depth`` argument.
+    Each source is located beneath each data point or block-averaged location
+    at a depth equal to its elevation minus the value of the ``depth``
+    argument.
     In both cases a positive value of ``depth`` locates sources _beneath_ the
     data points or the block-averaged locations, thus a negative ``depth`` will
     put the sources _above_ them.
 
     Custom source locations can be chosen by specifying the ``points``
-    argument, in which case the ``depth_type``, ``block_size`` and ``depth``
-    arguments will be ignored.
+    argument, in which case the ``block_size`` and ``depth`` arguments will be
+    ignored.
 
     The corresponding coefficient for each point source is estimated through
     linear least-squares with damping (Tikhonov 0th order) regularization.
@@ -105,18 +103,10 @@ class EquivalentSources(vdb.BaseGridder):
     depth : float
         Parameter used to control the depth at which the point sources will be
         located.
-        If ``depth_type`` is ``"constant"``, each source is located at the same
-        depth specified through the ``depth`` argument.
-        If ``depth_type`` is ``"relative"``, each source is located beneath
-        each data point (or block-averaged location) at a depth equal to its
-        elevation minus the ``depth`` value.
+        Each source is located beneath each data point (or block-averaged
+        location) at a depth equal to its elevation minus the ``depth`` value.
         This parameter is ignored if *points* is specified.
         Defaults to 500.
-    depth_type : str
-        Strategy used for setting the depth of the point sources.
-        The two available strategies are ``"constant"`` and ``"relative"``.
-        This parameter is ignored if *points* is specified.
-        Defaults to ``"relative"``.
     block_size: float, tuple = (s_north, s_east) or None
         Size of the blocks used on block-averaged equivalent sources.
         If a single value is passed, the blocks will have a square shape.
@@ -165,35 +155,18 @@ class EquivalentSources(vdb.BaseGridder):
         damping=None,
         points=None,
         depth=500,
-        depth_type="relative",
         block_size=None,
         parallel=True,
         dtype="float64",
-        **kwargs,
     ):
         self.damping = damping
         self.points = points
         self.depth = depth
-        self.depth_type = depth_type
         self.block_size = block_size
         self.parallel = parallel
         self.dtype = dtype
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
-        # Check if depth_type is valid
-        if depth_type not in ("constant", "relative"):
-            raise ValueError(
-                f"Invalid depth type '{depth_type}'. Should be either be 'constant' or 'relative'."
-            )
-        # Check if relative_depth has been passed (will be deprecated)
-        if "relative_depth" in kwargs:
-            warnings.warn(
-                "The 'relative_depth' parameter is deprecated, please use "
-                + "the 'depth' paramter and set 'depth_type' to 'relative_depth' instead. ",
-                FutureWarning,
-            )
-            # Override depth and depth_type
-            self.depth, self.depth_type = kwargs["relative_depth"], "relative"
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -243,14 +216,11 @@ class EquivalentSources(vdb.BaseGridder):
         """
         Generate coordinates of point sources based on the data points
 
-        Locate the point sources following the chosen ``depth_type`` strategy
+        Locate the point sources using a relative depth strategy
         and apply block-averaging if ``block_size`` is not None.
-        If ``depth_type`` is equal to ``"relative"``, the point sources will be
-        placed beneath the (averaged) observation points at a depth calculated
-        as the elevation of the data point minus the ``depth``.
-        If ``depth_type`` is equal to ``"constant"``, the point sources will be
-        placed beneath the (averaged) observation points at the same height
-        equal to minus ``depth``.
+        The point sources will be placed beneath the (averaged) observation
+        points at a depth calculated as the elevation of the data point minus
+        the ``depth``.
 
         Parameters
         ----------
@@ -268,19 +238,11 @@ class EquivalentSources(vdb.BaseGridder):
         """
         if self.block_size is not None:
             coordinates = self._block_average_coordinates(coordinates)
-        if self.depth_type == "relative":
-            return (
-                coordinates[0],
-                coordinates[1],
-                coordinates[2] - self.depth,
-            )
-        if self.depth_type == "constant":
-            return (
-                coordinates[0],
-                coordinates[1],
-                -self.depth * np.ones_like(coordinates[0]),
-            )
-        return None
+        return (
+            coordinates[0],
+            coordinates[1],
+            coordinates[2] - self.depth,
+        )
 
     def _block_average_coordinates(self, coordinates):
         """
