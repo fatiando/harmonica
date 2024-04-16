@@ -449,3 +449,17 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+def test_default_depth(coordinates, data):
+    """
+    Test if the depth of sources is correctly set by the default strategy
+    """
+    # Get distance to first neighbour in the grid
+    easting, northing = coordinates[:2]
+    d_easting = easting[1, 1] - easting[0, 0]
+    d_northing = northing[1, 1] - northing[0, 0]
+    first_neighbour_distance = min(d_easting, d_northing)
+    # Fit the equivalent sources with default `depth`
+    eqs = EquivalentSources().fit(coordinates, data)
+    npt.assert_allclose(eqs.depth_, first_neighbour_distance * 4.5)
