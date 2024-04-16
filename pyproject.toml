@@ -12,9 +12,20 @@ readme = "README.md"
 license = {text = "BSD-3-Clause"}
 keywords = ["geoscience", "geophysics"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
     "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
     "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -30,13 +41,10 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://www.fatiando.org/harmonica"
 "Documentation" = "https://www.fatiando.org/harmonica"
-"Repository" = "https://github.com/fatiando/harmonica.git"
 "Changelog" = "https://www.fatiando.org/harmonica/latest/changes.html"
 "Bug Tracker" = "https://github.com/fatiando/harmonica/issues"
 "Source Code" = "https://github.com/fatiando/harmonica"
-"Release Notes" = "https://github.com/fatiando/harmonica/releases"
 
 [project.optional-dependencies]
 visualizations = ["pyvista>=0.27", "vtk>=9"]

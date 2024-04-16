@@ -62,6 +62,19 @@ And project the geographic coordinates to plain Cartesian ones:
     coordinates = (easting, northing, data.height_m)
     xy_region=vd.get_region(coordinates)
 
+
+.. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
 .. jupyter-execute::
 
     import pygmt

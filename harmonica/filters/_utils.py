@@ -38,21 +38,10 @@ def apply_filter(grid, fft_filter, **kwargs):
         A :class:`xarray.DataArray` with the filtered version of the passed
         ``grid``. Defined are in the spatial domain.
     """
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
     # Catch the dims of the grid
     dims = grid.dims
-    # Check if the array has two dimensions
-    if len(dims) != 2:
-        raise ValueError(
-            f"Invalid grid with {len(dims)} dimensions. "
-            + "The passed grid must be a 2 dimensional array."
-        )
-    # Check if the grid has nans
-    if np.isnan(grid).any():
-        raise ValueError(
-            "Found nan(s) on the passed grid. "
-            + "The grid must not have missing values before computing the "
-            + "Fast Fourier Transform."
-        )
     # Compute Fourier Transform of the grid
     fft_grid = fft(grid)
     # Build the filter
@@ -68,3 +57,35 @@ def apply_filter(grid, fft_filter, **kwargs):
     )
 
     return filtered_grid
+
+
+def grid_sanity_checks(grid):
+    """
+    Run sanity checks on the grid
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. Its coordinates should be defined in the
+        same units.
+
+    Raises
+    ------
+    ValueError
+        If the passed grid is not 2D or if it contains nan values.
+    """
+    # Check if the array has two dimensions
+    if (n_dims := len(grid.dims)) != 2:
+        raise ValueError(
+            f"Invalid grid with {n_dims} dimensions. "
+            + "The passed grid must be a 2 dimensional array."
+        )
+    # Check if the grid has nans
+    if np.isnan(grid).any():
+        raise ValueError(
+            "Found nan(s) on the passed grid. "
+            + "The grid must not have missing values before computing the "
+            + "Fast Fourier Transform."
+        )

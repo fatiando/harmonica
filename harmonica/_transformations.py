@@ -7,6 +7,8 @@
 """
 Apply transformations to regular grids of potential fields
 """
+import numpy as np
+
 from .filters._filters import (
     derivative_easting_kernel,
     derivative_northing_kernel,
@@ -16,7 +18,7 @@ from .filters._filters import (
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
-from .filters._utils import apply_filter
+from .filters._utils import apply_filter, grid_sanity_checks
 
 
 def derivative_upward(grid, order=1):
@@ -337,6 +339,58 @@ def reduction_to_pole(
         magnetization_inclination=magnetization_inclination,
         magnetization_declination=magnetization_declination,
     )
+
+
+def total_gradient_amplitude(grid):
+    r"""
+    Calculate the total gradient amplitude a magnetic field grid
+
+    Compute the total gradient amplitude of a regular gridded potential field
+    `M`. The horizontal derivatives are calculated though finite-differences
+    while the upward derivative is calculated using FFT.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. Its coordinates should be defined in the
+        same units.
+
+    Returns
+    -------
+    total_gradient_amplitude_grid : :class:`xarray.DataArray`
+        A :class:`xarray.DataArray` after calculating the
+        total gradient amplitude of the passed ``grid``.
+
+    Notes
+    -----
+    The total gradient amplitude is calculated as:
+
+    .. math::
+
+        A(x, y) = \sqrt{
+            \left( \frac{\partial M}{\partial x} \right)^2
+            + \left( \frac{\partial M}{\partial y} \right)^2
+            + \left( \frac{\partial M}{\partial z} \right)^2
+        }
+
+    where :math:`M` is the regularly gridded potential field.
+
+    References
+    ----------
+    [Blakely1995]_
+    """
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
+    # Calculate the gradients of the grid
+    gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1),
+        derivative_upward(grid, order=1),
+    )
+    # return the total gradient amplitude
+    return np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
 
 
 def _get_dataarray_coordinate(grid, dimension_index):
