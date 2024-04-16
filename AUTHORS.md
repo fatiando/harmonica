@@ -3,6 +3,7 @@
 The following people have made contributions to the project (in alphabetical
 order by last name) and are considered "The Harmonica Developers":
 
+* [Yago Moreira Castro](https://github.com/YagoMCastro) - Universidade de São Paulo, Brazil (ORCID: 0009-0003-3884-9675)
 * [Federico D Esteban](https://github.com/Esteban82) - CONICET, Argentina; Instituto de Geociencias Básicas, Aplicadas y Ambientales de Buenos Aires, Universidad de Buenos Aires, Argentina (ORCID: 0000-0002-0641-7371)
 * [Lu Li](https://github.com/LL-Geo) - School of Earth Sciences, The University of Western Australia, Australia (ORCID: 0000-0001-6165-2828)
 * [Vanderlei C Oliveira Jr](https://github.com/birocoles) - Observatório Nacional, Brazil (ORCID: 0000-0002-6338-4086)
