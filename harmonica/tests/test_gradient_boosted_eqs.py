@@ -373,3 +373,26 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+def test_window_size_less_than_5000():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(64, 64), extra_coords=0)
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    eqs._create_windows(grid_coords)
+    expected_window_size = np.sqrt(5e3 / (64**2 / 10e3**2))
+    npt.assert_allclose(eqs.window_size_, expected_window_size)
+
+def test_window_size():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(100, 100), extra_coords=0)
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    eqs._create_windows(grid_coords)
+    expected_window_size = np.sqrt(5e3 / (100**2 / 10e3**2))
+    npt.assert_allclose(eqs.window_size_, expected_window_size)
