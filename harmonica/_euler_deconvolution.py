@@ -68,52 +68,6 @@ class EulerDeconvolution:
         self
             The instance itself, updated with the estimated `location_`
             and `base_level_`.
-
-        Examples
-        --------
-        >>> import numpy as np
-        >>> import verde as vd
-        >>> import harmonica as hm
-        >>> # Generate the dipole position and magnetic moment
-        >>> dipole_coordinates = [[50e3], [50e3], [-10e3]]
-        >>> dipole_moments = hm.magnetic_angles_to_vec(1.0e14, 0, 0)
-        >>> # Set a regional field
-        >>> inc, dec = -40, 15
-        >>> fe, fn, fu = hm.magnetic_angles_to_vec(1, inc, dec)
-        >>> # Generate the coordinates
-        >>> region = [0, 100e3, 0, 80e3]
-        >>> coordinates = vd.grid_coordinates(region, spacing=500,
-        ...                                   extra_coords=500)
-        >>> # Calculate the dipole signal and total anomaly
-        >>> be, bn, bu = hm.dipole_magnetic(coordinates, dipole_coordinates,
-        ...                                 dipole_moments, field='b')
-        >>> anomaly = fe * be + fn * bn + fu * bu
-        >>> grid = vd.make_xarray_grid(coordinates, anomaly, data_names="tfa",
-        ...                            extra_coords_names="upward")
-        >>> # Caclulate the derivatives
-        >>> grid["d_east"] = hm.derivative_easting(grid.tfa)
-        >>> grid["d_north"] = hm.derivative_northing(grid.tfa)
-        >>> grid["d_up"] = hm.derivative_upward(grid.tfa)
-        >>> # Slice the window data
-        >>> window = [30e3, 70e3, 30e3, 80e3]
-        >>> grid_sliced = grid.sel(northing=slice(window[0], window[1]),
-        ...                        easting=slice(window[2], window[3]))
-        >>> grid_table = vd.grid_to_table(grid_sliced)
-        >>> euler = EulerDeconvolution(structural_index=3)
-        >>> coordinates=(grid_table.easting, grid_table.northing,
-        ...              grid_table.upward)
-        >>> euler.fit(
-        ...     (grid_table.easting, grid_table.northing, grid_table.upward),
-        ...     grid_table.tfa, grid_table.d_east, grid_table.d_north,
-        ...     grid_table.d_up)
-        >>> print(f'{euler.location_[0]:.2e}')
-        5.00e+04
-        >>> print(f'{euler.location_[1]:.2e}')
-        5.00e+04
-        >>> print(f'{euler.location_[2]:.2e}')
-        -1.00e+04
-        >>> print(f'{euler.base_level_:.1f}')
-        -7.2
         """
         n_data = field.shape[0]
         matrix = np.empty((n_data, 4))
