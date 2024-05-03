@@ -72,7 +72,7 @@ Now we can initialize the :class:`harmonica.EquivalentSources` class.
 
    import harmonica as hm
 
-   equivalent_sources = hm.EquivalentSources(depth=10e3, damping=10)
+   equivalent_sources = hm.EquivalentSources(damping=10)
    equivalent_sources
 
 By default, it places the sources one beneath each data point at a relative
@@ -80,6 +80,16 @@ depth from the elevation of the data point following [Cooper2000]_.
 This *relative depth* can be set through the ``depth`` argument.
 Deepest sources generate smoother predictions (*underfitting*), while shallow
 ones tend to overfit the data.
+
+.. hint::
+
+   By default, since Harmonica v0.7.0, the sources will be located at a depth
+   below the data points estimated as 4.5 times the distance between
+   first neighboring sources. Alternatively, we can set a value for this depth
+   below the data points through the ``depth`` argument.
+
+   The estimated value for the depth of the sources can be explored through the
+   :attr:`harmonica.EquivalentSources.depth_` attribute.
 
 The ``damping`` parameter is used to smooth the coefficients of the sources and
 stabilize the least square problem. A higher ``damping`` will create smoother
