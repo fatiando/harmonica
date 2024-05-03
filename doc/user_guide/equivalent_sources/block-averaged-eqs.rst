@@ -106,7 +106,7 @@ And project the geographic coordinates to plain Cartesian ones:
             frame=[f"WSne+t{title}", "xa10000", "ya10000"],
             x=easting,
             y=northing,
-            color=data.total_field_anomaly_nt,
+            fill=data.total_field_anomaly_nt,
             style="c0.1c",
             cmap=True,
         )
@@ -193,7 +193,7 @@ we are efectivelly upward continuing the data.
             frame=[f"WSne+t{title}", "xa10000", "ya10000"],
             x=easting,
             y=northing,
-            color=data.total_field_anomaly_nt,
+            fill=data.total_field_anomaly_nt,
             style="c0.1c",
             cmap=True,
         )
