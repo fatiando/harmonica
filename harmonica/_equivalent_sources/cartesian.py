@@ -69,7 +69,7 @@ class EquivalentSources(vdb.BaseGridder):
     at a depth equal to its elevation minus the value of the ``depth_``
     attribute.
     If ``"default"`` is passed to the ``depth`` argument, then the ``depth_``
-    attribute is set to 4.5 times the distance between first neighbouring
+    attribute is set to 4.5 times the distance between first neighboring
     sources.
     If a numerical value is passed to the ``depth`` argument, then this is the
     one used for the ``depth_`` attribute.
@@ -114,7 +114,7 @@ class EquivalentSources(vdb.BaseGridder):
         (or block-averaged location) at a depth equal to its elevation minus
         the ``depth`` value.
         If set to ``"default"``, the depth of the sources will be estimated as
-        4.5 times the median distance between first neighbouring sources.
+        4.5 times the median distance between first neighboring sources.
         This parameter is ignored if *points* is specified.
         Defaults to ``"default"``.
     block_size: float, tuple = (s_north, s_east) or None
@@ -141,7 +141,7 @@ class EquivalentSources(vdb.BaseGridder):
         Estimated coefficients of every point source.
     depth_ : float or None
         Estimated depth of the sources calculated as 4.5 times the median
-        distance between first neighbouring sources. This attribute is set to
+        distance between first neighboring sources. This attribute is set to
         None if ``points`` is passed.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
@@ -243,7 +243,7 @@ class EquivalentSources(vdb.BaseGridder):
         the ``depth_`` attribute.
 
         If ``depth`` is set to ``"default"``, the ``depth_`` attribute is set
-        as 4.5 times the median distance between first neighbouring sources.
+        as 4.5 times the median distance between first neighboring sources.
         If ``depth`` is set to a numerical value, this is used for the
         ``depth_`` attribute.
 
