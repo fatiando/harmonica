@@ -343,10 +343,10 @@ bottom boundaries.
 It returns a :class:`xarray.Dataset` with the coordinates of the centers of the
 prisms and their corresponding physical properties.
 
-The :class:`harmonica.DatasetAccessorPrismsLayer` Dataset accessor can be used
+The :class:`harmonica.DatasetAccessorPrismLayer` Dataset accessor can be used
 to obtain some properties of the layer like its shape and size or the
 boundaries of any prism in the layer.
-Moreover, we can use the :meth:`harmonica.DatasetAcessorPrismsLayer.gravity`
+Moreover, we can use the :meth:`harmonica.DatasetAcessorPrismLayer.gravity`
 method to compute the gravitational field of the prism layer on any set of
 computation points.
 
