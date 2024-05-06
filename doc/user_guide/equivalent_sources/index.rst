@@ -149,7 +149,7 @@ And plot it:
       fig.plot(
          x=easting,
          y=northing,
-         color=disturbance,
+         fill=disturbance,
          cmap=True,
          style="c3p",
          projection=fig_proj,
@@ -165,7 +165,7 @@ And plot it:
       fig.plot(
          x=easting,
          y=northing,
-         color=data.gravity_disturbance_mgal,
+         fill=data.gravity_disturbance_mgal,
          cmap=True,
          style="c3p",
          frame=['ag', f"+t{title}"],
