@@ -170,7 +170,7 @@ def test_prism_layer_no_regular_grid(
 
 def test_prism_layer_attributes():
     """
-    Check attributes of the DatasetAccessorPrismsLayer class
+    Check attributes of the DatasetAccessorPrismLayer class
     """
     easting = np.linspace(1, 3, 5)
     northing = np.linspace(7, 10, 4)
