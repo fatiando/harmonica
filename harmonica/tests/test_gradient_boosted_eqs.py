@@ -386,6 +386,7 @@ def test_window_size_less_than_5000():
         eqs._create_windows(grid_coords)
     assert eqs.window_size_ is None
 
+
 def test_window_size():
     region = (0, 10e3, -5e3, 5e3)
     grid_coords = vd.grid_coordinates(region=region, shape=(100, 100), extra_coords=0)

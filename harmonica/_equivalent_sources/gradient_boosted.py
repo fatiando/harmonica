@@ -7,6 +7,8 @@
 """
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
+import warnings
+
 import numpy as np
 import verde.base as vdb
 from sklearn import utils
@@ -14,7 +16,6 @@ from verde import get_region, rolling_window
 
 from .cartesian import EquivalentSources
 from .utils import cast_fit_input, predict_numba_parallel
-import warnings
 
 
 class EquivalentSourcesGB(EquivalentSources):
@@ -291,9 +292,9 @@ class EquivalentSourcesGB(EquivalentSources):
             the same as the one in ``data_windows_nonempty``.
         data_windows_nonempty : list
             List containing arrays with the indices of the data points that
-            fall under each window. The order of the windows is randomly shuffled if
-            ``shuffle_windows`` is True, although the order of the windows is
-            the same as the one in ``source_windows_nonempty``.
+            fall under each window. The order of the windows is randomly
+            shuffled if ``shuffle_windows`` is True, although the order of the
+            windows is the same as the one in ``source_windows_nonempty``.
         """
 
         # Get the region that contains every data point and every source
@@ -304,7 +305,9 @@ class EquivalentSourcesGB(EquivalentSources):
             area = (region[1] - region[0]) * (region[3] - region[2])
             ndata = coordinates[0].size
             if ndata <= 5e3:
-                warnings.warn(f"Found {ndata} number of coordinates (<= 5e3). Only one window will be used.")
+                warnings.warn(
+                    f"Found {ndata} number of coordinates (<= 5e3). Only one window will be used."
+                )
                 source_windows_nonempty = [np.arange(self.points_[0].size)]
                 data_windows_nonempty = [np.arange(ndata)]
                 self.window_size_ = None
