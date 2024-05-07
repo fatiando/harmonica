@@ -14,6 +14,7 @@ from verde import get_region, rolling_window
 
 from .cartesian import EquivalentSources
 from .utils import cast_fit_input, predict_numba_parallel
+import warnings
 
 
 class EquivalentSourcesGB(EquivalentSources):
@@ -275,7 +276,7 @@ class EquivalentSourcesGB(EquivalentSources):
         coordinates : tuple
             Arrays with the coordinates of each data point. Should be in the
             following order: (``easting``, ``northing``, ``upward``).
-        shuffle_windows : bool
+        shuffle : bool
             Enable or disable the random shuffling of windows order. It's is
             highly recommended to enable shuffling for better fitting results.
             This argument is mainly included for testing purposes. Default to
@@ -290,7 +291,7 @@ class EquivalentSourcesGB(EquivalentSources):
             the same as the one in ``data_windows_nonempty``.
         data_windows_nonempty : list
             List containing arrays with the indices of the data points that
-            under each window. The order of the windows is randomly shuffled if
+            fall under each window. The order of the windows is randomly shuffled if
             ``shuffle_windows`` is True, although the order of the windows is
             the same as the one in ``source_windows_nonempty``.
         """
@@ -302,6 +303,12 @@ class EquivalentSourcesGB(EquivalentSources):
         if self.window_size == "default":
             area = (region[1] - region[0]) * (region[3] - region[2])
             ndata = coordinates[0].size
+            if ndata <= 5e3:
+                warnings.warn(f"Found {ndata} number of coordinates (<= 5e3). Only one window will be used.")
+                source_windows_nonempty = [np.arange(self.points_[0].size)]
+                data_windows_nonempty = [np.arange(ndata)]
+                self.window_size_ = None
+                return source_windows_nonempty, data_windows_nonempty
             points_per_m2 = ndata / area
             window_area = 5e3 / points_per_m2
             self.window_size_ = np.sqrt(window_area)

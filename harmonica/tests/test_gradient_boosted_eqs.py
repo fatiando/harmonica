@@ -382,9 +382,9 @@ def test_window_size_less_than_5000():
     eqs.points_ = eqs._build_points(
         grid_coords
     )  # need to build sources first before creating windows.
-    eqs._create_windows(grid_coords)
-    expected_window_size = np.sqrt(5e3 / (64**2 / 10e3**2))
-    npt.assert_allclose(eqs.window_size_, expected_window_size)
+    with pytest.warns(UserWarning, match=f"Found {64**2} number of coordinates"):
+        eqs._create_windows(grid_coords)
+    assert eqs.window_size_ is None
 
 def test_window_size():
     region = (0, 10e3, -5e3, 5e3)
