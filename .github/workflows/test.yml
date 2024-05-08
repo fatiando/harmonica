@@ -150,7 +150,10 @@ jobs:
         run: coverage xml
 
       - name: Upload coverage report as an artifact
-        if: success() && runner.os == 'Linux' && matrix.dependencies == 'latest'
+        # Upload a single report for the whole matrix: the one obtained in the
+        # Ubuntu runner using optional dependencies (to maximize the tests
+        # being run)
+        if: success() && runner.os == 'Linux' && matrix.dependencies == 'optional'
         uses: actions/upload-artifact@v4
         with:
           name: coverage
@@ -166,7 +169,7 @@ jobs:
       # Used to tag codecov submissions
       OS: "ubuntu"
       PYTHON: "3.11"
-      DEPENDENCIES: "latest"
+      DEPENDENCIES: "optional"
 
     steps:
 
