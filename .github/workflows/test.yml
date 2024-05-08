@@ -145,8 +145,10 @@ jobs:
           if [ $RUNNER_OS == "Linux" ]; then
               # Set NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
+              echo "Running `NUMBA_THREADING_LAYER=workqueue make test`"
               NUMBA_THREADING_LAYER=workqueue make test
           else
+              echo "Running `make test`"
               make test
           fi
 
