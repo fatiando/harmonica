@@ -12,5 +12,4 @@ order by last name) and are considered "The Harmonica Developers":
 * [Santiago Soler](https://github.com/santisoler) - Department of Earth, Ocean and Atmospheric Sciences, University of British Columbia (ORCID: 0000-0001-9202-5317)
 * [Matthew Tankersley](https://github.com/mdtanker) - Antarctic Research Centre, Victoria University of Wellington, New Zealand (ORCID: 0000-0003-4266-8554)
 * [Leonardo Uieda](https://github.com/leouieda) - Universidade de São Paulo, Brazil (ORCID: 0000-0001-6123-9515)
-* [India Uppal](https://github.com/indiauppal) - The University of Liverpool, UK (ORCID:0000-0003-3531-2656)
 * [ziebam](https://github.com/ziebam) (not included in Zenodo)
