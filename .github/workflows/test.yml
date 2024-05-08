@@ -18,12 +18,6 @@ on:
     types:
       - published
 
-
-# Define variables used by all jobs
-env:
-  PYTHON_OLDEST = "3.8"
-  PYTHON_LATEST = "3.11"
-
 # Use bash by default in all jobs
 defaults:
   run:
@@ -50,15 +44,15 @@ jobs:
           - optional
         include:
           - dependencies: oldest
-            python: ${{ env.PYTHON_OLDEST }}
+            python: "3.8"
           - dependencies: latest
-            python: ${{ env.PYTHON_LATEST }}
+            python: "3.11"
           - dependencies: optional
-            python: ${{ env.PYTHON_LATEST }}
+            python: "3.11"
           # test on macos-13 (x86) using oldest dependencies and python 3.8
           - os: macos-13
             dependencies: oldest
-            python: ${{ env.PYTHON_OLDEST }}
+            python: "3.8"
         exclude:
           # don't test on macos-latest (arm64) with oldest dependencies
           - os: macos-latest
@@ -176,7 +170,7 @@ jobs:
     env:
       # Used to tag codecov submissions
       OS: "ubuntu"
-      PYTHON: ${{ env.PYTHON_LATEST }}
+      PYTHON: "3.11"
       DEPENDENCIES: "optional"
 
     steps:
