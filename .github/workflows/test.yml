@@ -21,8 +21,8 @@ on:
 
 # Define variables used by all jobs
 env:
-  PYTHON_OLDEST = "3.8"
-  PYTHON_LATEST = "3.11"
+  PYTHON_OLDEST: "3.8"
+  PYTHON_LATEST: "3.11"
 
 # Use bash by default in all jobs
 defaults:
