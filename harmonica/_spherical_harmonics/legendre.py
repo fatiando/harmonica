@@ -108,7 +108,13 @@ def assoc_legendre_deriv(x, p):
     """
     max_degree = p.shape[0] + 1
     p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
-    return p
+    p_deriv[0, 0] = 0
+    for n in range(1, max_degree + 1):
+        p_deriv[n, 0] = -p[n, 1]
+        for m in range(1, n):
+            p_deriv[n, m] = 0.5 * ((n + m) * (n - m + 1) * p[n, m - 1] - p[n, m + 1])
+        p_deriv[n, n] = n * p[n, n - 1]
+    return p_deriv
 
 
 @numba.jit(nopython=True)
