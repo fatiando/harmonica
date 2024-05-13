@@ -7,8 +7,6 @@
 """
 Calculation of associated Legendre functions and their derivatives.
 """
-import math
-
 import numba
 import numpy as np
 
