@@ -40,6 +40,31 @@ def legendre_analytical(x):
     return p
 
 
+def legendre_analytical_derivative(x):
+    "Analytical expressions for theta derivatives unnormalized Legendre functions"
+    max_degree = 4
+    dp = np.full((max_degree + 1, max_degree + 1), np.nan)
+    cos = x
+    sin = np.sqrt(1 - x**2)
+    dp[0, 0] = 0
+    dp[1, 0] = -sin
+    dp[1, 1] = cos
+    dp[2, 0] = -3 * cos * sin
+    dp[2, 1] = 3 * (cos**2 - sin**2)
+    dp[2, 2] = 6 * sin * cos
+    dp[3, 0] = (3 * sin - 15 * cos**2 * sin) / 2
+    dp[3, 1] = 3 / 2 * (5 * cos**3 - 10 * cos * sin**2 - cos)
+    dp[3, 2] = 30 * cos**2 * sin - 15 * sin**3
+    dp[3, 3] = 45 * sin**2 * cos
+    dp[4, 0] = (15 * cos - 35 * cos**3) * sin / 2
+    dp[4, 1] = 3 / 2 * (1 - 35 * cos**2) * sin**2
+    # Parei aqui
+    dp[4, 2] = 15 / 2 * (7 * x**2 - 1) * (1 - x**2)
+    dp[4, 3] = 105 * x * np.sqrt(1 - x**2) ** 3
+    dp[4, 4] = 105 * np.sqrt(1 - x**2) ** 4
+    return dp
+
+
 def schmidt_normalization(max_degree):
     "Calculate the Schmidt normalization factor"
     s = np.full((max_degree + 1, max_degree + 1), np.nan)
@@ -112,3 +137,30 @@ def test_legendre_assoc_legendre_full():
             # Make sure the upper diagonal is all NaNs
             for m in range(n + 1, max_degree + 1):
                 assert np.isnan(p[n, m])
+
+
+def test_legendre_schmidt_identity():
+    "Check Schmidt normalized functions against a known identity"
+    # Higher degrees than this yield bad results
+    max_degree = 600
+    true_value = np.ones(max_degree + 1)
+    for x in np.linspace(-1, 1, 100):
+        p = assoc_legendre_schmidt(x, max_degree)
+        p[np.isnan(p)] = 0
+        np.testing.assert_allclose((p ** 2).sum(axis=1), true_value, atol=1e-12, rtol=0)
+
+
+def test_legendre_assoc_legendre_deriv():
+    "Check if the first few degrees match analytical expressions"
+    for angle in np.linspace(0, np.pi, 180):
+        x = np.cos(angle)
+        p_analytical = legendre_derivative_analytical(x)
+        max_degree = p_analytical.shape[0] - 1
+        p = assoc_legendre(x, max_degree)
+        dp = assoc_legendre_derivative(x, p)
+        for n in range(max_degree + 1):
+            for m in range(n + 1):
+                np.testing.assert_allclose(p_analytical[n, m], dp[n, m], atol=1e-10)
+            # Make sure the upper diagonal is all NaNs
+            for m in range(n + 1, max_degree + 1):
+                assert np.isnan(dp[n, m])
