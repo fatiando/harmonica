@@ -149,7 +149,13 @@ jobs:
           fi
 
       - name: Convert coverage report to XML for codecov
-        run: coverage xml
+        run: |
+          coverage xml
+          # Rename coverage file to upload it as artifact
+          mv coverage.xml coverage-$OS-$DEPENDENCIES.xml
+        env:
+          OS: ${{ matrix.os }}
+          DEPENDENCIES: ${{ matrix.dependencies }}
 
       - name: Upload coverage report as an artifact
         # Upload coverage reports for the whole matrix. Coverage is achieved
