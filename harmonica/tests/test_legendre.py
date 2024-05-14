@@ -16,6 +16,8 @@ from .._spherical_harmonics.legendre import (
     assoc_legendre_deriv,
     assoc_legendre_full,
     assoc_legendre_schmidt,
+    assoc_legendre_schmidt_deriv,
+    assoc_legendre_full_deriv,
 )
 
 
@@ -62,7 +64,7 @@ def legendre_derivative_analytical(x):
         35 * cos**4 - 15 * cos**2 + 15 * sin**2 - 105 * cos**2 * sin**2
     ) / 2
     dp[4, 2] = 105 * sin * cos**3 - 105 * cos * sin**3 - 15 * sin * cos
-    dp[4, 3] = 315 * cos**4 * sin**2 - 105 * sin**4
+    dp[4, 3] = 315 * cos**2 * sin**2 - 105 * sin**4
     dp[4, 4] = 420 * sin**3 * cos
     return dp
 
@@ -88,7 +90,7 @@ def full_normalization(max_degree):
     return s
 
 
-def test_legendre_assoc_legendre():
+def test_assoc_legendre():
     "Check if the first few degrees match analytical expressions"
     for angle in np.linspace(0, np.pi, 180):
         x = np.cos(angle)
@@ -103,7 +105,7 @@ def test_legendre_assoc_legendre():
                 assert np.isnan(p[n, m])
 
 
-def test_legendre_assoc_legendre_schmidt():
+def test_assoc_legendre_schmidt():
     "Check if the first few degrees match analytical expressions"
     for angle in np.linspace(0, np.pi, 180):
         x = np.cos(angle)
@@ -122,7 +124,7 @@ def test_legendre_assoc_legendre_schmidt():
                 assert np.isnan(p[n, m])
 
 
-def test_legendre_assoc_legendre_full():
+def test_assoc_legendre_full():
     "Check if the first few degrees match analytical expressions"
     for angle in np.linspace(0, np.pi, 180):
         x = np.cos(angle)
@@ -141,7 +143,7 @@ def test_legendre_assoc_legendre_full():
                 assert np.isnan(p[n, m])
 
 
-def test_legendre_schmidt_identity():
+def test_assoc_legengre_schmidt_identity():
     "Check Schmidt normalized functions against a known identity"
     # Higher degrees than this yield bad results
     max_degree = 600
@@ -149,17 +151,57 @@ def test_legendre_schmidt_identity():
     for x in np.linspace(-1, 1, 100):
         p = assoc_legendre_schmidt(x, max_degree)
         p[np.isnan(p)] = 0
-        np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-12, rtol=0)
+        np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-12)
 
 
-def test_legendre_assoc_legendre_deriv():
+def test_assoc_legendre_deriv():
     "Check if the first few degrees match analytical expressions"
-    for angle in np.linspace(0, np.pi, 180):
+    for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         p_analytical = legendre_derivative_analytical(x)
         max_degree = p_analytical.shape[0] - 1
         p = assoc_legendre(x, max_degree)
         dp = assoc_legendre_deriv(x, p)
+        for n in range(max_degree + 1):
+            for m in range(n + 1):
+                np.testing.assert_allclose(
+                    p_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
+                )
+            # Make sure the upper diagonal is all NaNs
+            for m in range(n + 1, max_degree + 1):
+                assert np.isnan(dp[n, m])
+
+
+def test_assoc_legendre_schmidt_deriv():
+    "Check if the first few degrees match analytical expressions"
+    for angle in np.linspace(0, np.pi, 360):
+        x = np.cos(angle)
+        p_analytical_unnormalized = legendre_derivative_analytical(x)
+        max_degree = p_analytical_unnormalized.shape[0] - 1
+        s = schmidt_normalization(max_degree)
+        p_analytical = s * p_analytical_unnormalized
+        p = assoc_legendre_schmidt(x, max_degree)
+        dp = assoc_legendre_schmidt_deriv(x, p)
+        for n in range(max_degree + 1):
+            for m in range(n + 1):
+                np.testing.assert_allclose(
+                    p_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
+                )
+            # Make sure the upper diagonal is all NaNs
+            for m in range(n + 1, max_degree + 1):
+                assert np.isnan(dp[n, m])
+
+
+def test_assoc_legendre_full_deriv():
+    "Check if the first few degrees match analytical expressions"
+    for angle in np.linspace(0, np.pi, 360):
+        x = np.cos(angle)
+        p_analytical_unnormalized = legendre_derivative_analytical(x)
+        max_degree = p_analytical_unnormalized.shape[0] - 1
+        s = full_normalization(max_degree)
+        p_analytical = s * p_analytical_unnormalized
+        p = assoc_legendre_full(x, max_degree)
+        dp = assoc_legendre_full_deriv(x, p)
         for n in range(max_degree + 1):
             for m in range(n + 1):
                 np.testing.assert_allclose(

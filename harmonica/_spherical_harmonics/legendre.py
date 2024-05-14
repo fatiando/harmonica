@@ -110,10 +110,14 @@ def assoc_legendre_deriv(x, p):
     p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
     p_deriv[0, 0] = 0
     for n in range(1, max_degree + 1):
-        p_deriv[n, 0] = -p[n, 1]
+        a_nm = -1
+        p_deriv[n, 0] = a_nm * p[n, 1]
         for m in range(1, n):
-            p_deriv[n, m] = 0.5 * ((n + m) * (n - m + 1) * p[n, m - 1] - p[n, m + 1])
-        p_deriv[n, n] = n * p[n, n - 1]
+            b_nm = 0.5 * (n + m) * (n - m + 1)
+            c_nm = -0.5
+            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+        d_nm = n
+        p_deriv[n, n] = d_nm * p[n, n - 1]
     return p_deriv
 
 
@@ -175,6 +179,70 @@ def assoc_legendre_schmidt(x, max_degree):
 
 
 @numba.jit(nopython=True)
+def assoc_legendre_schmidt_deriv(x, p):
+    """
+    Derivatives in theta of Schmidt normalized associated Legendre functions.
+
+    Calculates the derivative:
+
+    .. math::
+
+        \\dfrac{\\partial P_n^m}{\\partial \\theta}(\\cos \\theta)
+
+    using the recursive relations defined in Alken (2022).
+
+    Higher-order derivatives can be calculated by passing the output of this
+    function as the ``p`` argument.
+
+    .. note::
+
+        This function does not include the Condon-Shortly phase.
+
+    Parameters
+    ----------
+    x : float
+        The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
+    p : numpy.ndarray
+        A 2D array with the Schmidt normalized associated Legendre functions
+        calculated for x.
+
+    Returns
+    -------
+    p_deriv : 2D numpy.array
+        Array with the values of the derivative with shape ``(max_degree + 1,
+        max_degree + 1)``. The degree n varies with the first axis and the
+        order m varies with the second axis. Array values where ``m > n`` are
+        set to ``numpy.nan``.
+
+    References
+    ----------
+
+    Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
+      Implementation of associated Legendre functions in GSL.
+      https://www.gnu.org/software/gsl/tr/tr001.pdf
+    """
+    max_degree = p.shape[0] + 1
+    sqrt = np.sqrt(np.arange((max_degree + 1)**2))
+    p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
+    p_deriv[0, 0] = 0
+    p_deriv[1, 0] = -p[1, 1]
+    p_deriv[1, 1] =  p[1, 0]
+    for n in range(2, max_degree + 1):
+        a_nm = -sqrt[n * (n + 1)] / sqrt[2]
+        p_deriv[n, 0] = a_nm * p[n, 1]
+        b_nm = 0.5 * sqrt[n * (n + 1)] * sqrt[2]
+        c_nm = -0.5 * sqrt[(n + 2) * (n - 1)]
+        p_deriv[n, 1] = b_nm * p[n, 0] + c_nm * p[n, 2]
+        for m in range(2, n):
+            b_nm = 0.5 * sqrt[(n + m) * (n - m + 1)]
+            c_nm = -0.5 * sqrt[(n + m + 1) * (n - m)]
+            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+        d_nm = 0.5 * sqrt[2] * sqrt[n]
+        p_deriv[n, n] = d_nm * p[n, n - 1]
+    return p_deriv
+
+
+@numba.jit(nopython=True)
 def assoc_legendre_full(x, max_degree):
     """
     Fully normalized associated Legendre functions up to maximum degree.
@@ -230,3 +298,62 @@ def assoc_legendre_full(x, max_degree):
         d_nm = np.sqrt(1 + 1 / (2 * n))
         p[n][n] = d_nm * sqrt_x * p[n - 1, n - 1]
     return p
+
+
+@numba.jit(nopython=True)
+def assoc_legendre_full_deriv(x, p):
+    """
+    Derivatives in theta of fully normalized associated Legendre functions.
+
+    Calculates the derivative:
+
+    .. math::
+
+        \\dfrac{\\partial P_n^m}{\\partial \\theta}(\\cos \\theta)
+
+    using the recursive relations defined in Alken (2022).
+
+    Higher-order derivatives can be calculated by passing the output of this
+    function as the ``p`` argument.
+
+    .. note::
+
+        This function does not include the Condon-Shortly phase.
+
+    Parameters
+    ----------
+    x : float
+        The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
+    p : numpy.ndarray
+        A 2D array with the fully normalized associated Legendre functions
+        calculated for x.
+
+    Returns
+    -------
+    p_deriv : 2D numpy.array
+        Array with the values of the derivative with shape ``(max_degree + 1,
+        max_degree + 1)``. The degree n varies with the first axis and the
+        order m varies with the second axis. Array values where ``m > n`` are
+        set to ``numpy.nan``.
+
+    References
+    ----------
+
+    Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
+      Implementation of associated Legendre functions in GSL.
+      https://www.gnu.org/software/gsl/tr/tr001.pdf
+    """
+    max_degree = p.shape[0] + 1
+    sqrt = np.sqrt(np.arange((max_degree + 1)**2))
+    p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
+    p_deriv[0, 0] = 0
+    for n in range(1, max_degree + 1):
+        a_nm = -sqrt[n * (n + 1)]
+        p_deriv[n, 0] = a_nm * p[n, 1]
+        for m in range(1, n):
+            b_nm = 0.5 * sqrt[(n + m) * (n - m + 1)]
+            c_nm = -0.5 * sqrt[(n + m + 1) * (n - m)]
+            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+        d_nm = 0.5 * sqrt[2] * sqrt[n]
+        p_deriv[n, n] = d_nm * p[n, n - 1]
+    return p_deriv
