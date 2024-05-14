@@ -28,16 +28,16 @@ jobs:
   # Run tests and upload to codecov
   test:
     name: ${{ matrix.os }} python=${{ matrix.python }} dependencies=${{ matrix.dependencies }}
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       # Otherwise, the workflow would stop if a single job fails. We want to
       # run all of them to catch failures in different combinations.
       fail-fast: false
       matrix:
         os:
-          - ubuntu
-          - macos
-          - windows
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
         dependencies:
           - oldest
           - latest
@@ -49,6 +49,15 @@ jobs:
             python: "3.11"
           - dependencies: optional
             python: "3.11"
+          # test on macos-13 (x86) using oldest dependencies and python 3.8
+          - os: macos-13
+            dependencies: oldest
+            python: "3.8"
+        exclude:
+          # don't test on macos-latest (arm64) with oldest dependencies
+          - os: macos-latest
+            dependencies: oldest
+
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
       # Used to tag codecov submissions
@@ -133,11 +142,13 @@ jobs:
 
       - name: Run the tests
         run: |
-          if [ ${{ matrix.os }} == 'ubuntu' ]; then
+          if [ $RUNNER_OS == "Linux" ]; then
               # Set NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
+              echo "Running 'NUMBA_THREADING_LAYER=workqueue make test'"
               NUMBA_THREADING_LAYER=workqueue make test
           else
+              echo "Running 'make test'"
               make test
           fi
 
