@@ -12,7 +12,7 @@ import numpy as np
 
 
 @numba.jit(nopython=True)
-def assoc_legendre(x, max_degree):
+def assoc_legendre(x, max_degree, p):
     """
     Unnormalized associated Legendre functions up to a maximum degree.
 
@@ -30,16 +30,9 @@ def assoc_legendre(x, max_degree):
         The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     max_degree : int
         The maximum degree for the calculation.
-
-
-    Returns
-    -------
-    p : 2D numpy.array
-        Array with the values of :math:`P_n^m(x)` with shape
-        ``(max_degree + 1, max_degree + 1)``. The degree n varies with the
-        first axis and the order m varies with the second axis. For example,
-        :math:`P_2^1(x)` is ``p[n, m]``. Array values where ``m > n`` are set
-        to ``numpy.nan``.
+    p : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     References
     ----------
@@ -48,7 +41,6 @@ def assoc_legendre(x, max_degree):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    p = np.full((max_degree + 1, max_degree + 1), np.nan)
     sqrt_x = np.sqrt(1 - x**2)
     p[0, 0] = 1
     for n in range(1, max_degree + 1):
@@ -57,14 +49,14 @@ def assoc_legendre(x, max_degree):
             b_nm = -(n + m - 1) / (n - m)
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
         c_nm = 2 * n - 1
-        p[n][n - 1] = c_nm * x * p[n - 1, n - 1]
+        p[n, n - 1] = c_nm * x * p[n - 1, n - 1]
         d_nm = 2 * n - 1
-        p[n][n] = d_nm * sqrt_x * p[n - 1, n - 1]
+        p[n, n] = d_nm * sqrt_x * p[n - 1, n - 1]
     return p
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_deriv(x, p):
+def assoc_legendre_deriv(p, dp):
     """
     Derivatives in theta of unnormalized associated Legendre functions.
 
@@ -85,19 +77,12 @@ def assoc_legendre_deriv(x, p):
 
     Parameters
     ----------
-    x : float
-        The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     p : numpy.ndarray
         A 2D array with the unnormalized associated Legendre functions
-        calculated for x.
-
-    Returns
-    -------
-    p_deriv : 2D numpy.array
-        Array with the values of the derivative with shape ``(max_degree + 1,
-        max_degree + 1)``. The degree n varies with the first axis and the
-        order m varies with the second axis. Array values where ``m > n`` are
-        set to ``numpy.nan``.
+        calculated for :math:`\\cos\\theta`.
+    dp : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     References
     ----------
@@ -106,23 +91,22 @@ def assoc_legendre_deriv(x, p):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    max_degree = p.shape[0] + 1
-    p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
-    p_deriv[0, 0] = 0
+    max_degree = p.shape[0] - 1
+    dp[0, 0] = 0
     for n in range(1, max_degree + 1):
         a_nm = -1
-        p_deriv[n, 0] = a_nm * p[n, 1]
+        dp[n, 0] = a_nm * p[n, 1]
         for m in range(1, n):
             b_nm = 0.5 * (n + m) * (n - m + 1)
             c_nm = -0.5
-            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+            dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
         d_nm = n
-        p_deriv[n, n] = d_nm * p[n, n - 1]
-    return p_deriv
+        dp[n, n] = d_nm * p[n, n - 1]
+    return dp
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_schmidt(x, max_degree):
+def assoc_legendre_schmidt(x, max_degree, p):
     """
     Schmidt normalized associated Legendre functions up to maximum degree.
 
@@ -142,7 +126,9 @@ def assoc_legendre_schmidt(x, max_degree):
         The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     max_degree : int
         The maximum degree for the calculation.
-
+    p : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     Returns
     -------
@@ -160,26 +146,27 @@ def assoc_legendre_schmidt(x, max_degree):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    p = np.full((max_degree + 1, max_degree + 1), np.nan)
+    # Pre-compute square roots of integers used in the loops
+    sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
     sqrt_x = np.sqrt(1 - x**2)
     p[0, 0] = 1
     for n in range(1, max_degree + 1):
         for m in range(0, n - 1):
-            a_nm = (2 * n - 1) / np.sqrt((n + m) * (n - m))
-            b_nm = -np.sqrt((n + m - 1) * (n - m - 1) / ((n + m) * (n - m)))
+            a_nm = (2 * n - 1) / (sqrt[n + m] * sqrt[n - m])
+            b_nm = -sqrt[n + m - 1] * sqrt[n - m - 1] / (sqrt[n + m] * sqrt[n - m])
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
-        c_nm = np.sqrt(2 * n - 1)
-        p[n][n - 1] = c_nm * x * p[n - 1, n - 1]
+        c_nm = sqrt[2 * n - 1]
+        p[n, n - 1] = c_nm * x * p[n - 1, n - 1]
         if n == 1:
             d_nm = 1
         else:
-            d_nm = np.sqrt(1 - 1 / (2 * n))
-        p[n][n] = d_nm * sqrt_x * p[n - 1, n - 1]
+            d_nm = sqrt[2 * n - 1] / sqrt[2 * n]
+        p[n, n] = d_nm * sqrt_x * p[n - 1, n - 1]
     return p
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_schmidt_deriv(x, p):
+def assoc_legendre_schmidt_deriv(p, dp):
     """
     Derivatives in theta of Schmidt normalized associated Legendre functions.
 
@@ -200,19 +187,12 @@ def assoc_legendre_schmidt_deriv(x, p):
 
     Parameters
     ----------
-    x : float
-        The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     p : numpy.ndarray
         A 2D array with the Schmidt normalized associated Legendre functions
-        calculated for x.
-
-    Returns
-    -------
-    p_deriv : 2D numpy.array
-        Array with the values of the derivative with shape ``(max_degree + 1,
-        max_degree + 1)``. The degree n varies with the first axis and the
-        order m varies with the second axis. Array values where ``m > n`` are
-        set to ``numpy.nan``.
+        calculated for :math:`\\cos\\theta`.
+    dp : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     References
     ----------
@@ -221,29 +201,29 @@ def assoc_legendre_schmidt_deriv(x, p):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    max_degree = p.shape[0] + 1
-    sqrt = np.sqrt(np.arange((max_degree + 1)**2))
-    p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
-    p_deriv[0, 0] = 0
-    p_deriv[1, 0] = -p[1, 1]
-    p_deriv[1, 1] =  p[1, 0]
+    max_degree = p.shape[0] - 1
+    # Pre-compute square roots of integers used in the loops
+    sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
+    dp[0, 0] = 0
+    dp[1, 0] = -p[1, 1]
+    dp[1, 1] = p[1, 0]
     for n in range(2, max_degree + 1):
-        a_nm = -sqrt[n * (n + 1)] / sqrt[2]
-        p_deriv[n, 0] = a_nm * p[n, 1]
-        b_nm = 0.5 * sqrt[n * (n + 1)] * sqrt[2]
-        c_nm = -0.5 * sqrt[(n + 2) * (n - 1)]
-        p_deriv[n, 1] = b_nm * p[n, 0] + c_nm * p[n, 2]
+        a_nm = -sqrt[n] * sqrt[n + 1] / sqrt[2]
+        dp[n, 0] = a_nm * p[n, 1]
+        b_nm = 0.5 * sqrt[n] * sqrt[n + 1] * sqrt[2]
+        c_nm = -0.5 * sqrt[n + 2] * sqrt[n - 1]
+        dp[n, 1] = b_nm * p[n, 0] + c_nm * p[n, 2]
         for m in range(2, n):
-            b_nm = 0.5 * sqrt[(n + m) * (n - m + 1)]
-            c_nm = -0.5 * sqrt[(n + m + 1) * (n - m)]
-            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+            b_nm = 0.5 * sqrt[n + m] * sqrt[n - m + 1]
+            c_nm = -0.5 * sqrt[n + m + 1] * sqrt[n - m]
+            dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
         d_nm = 0.5 * sqrt[2] * sqrt[n]
-        p_deriv[n, n] = d_nm * p[n, n - 1]
-    return p_deriv
+        dp[n, n] = d_nm * p[n, n - 1]
+    return dp
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_full(x, max_degree):
+def assoc_legendre_full(x, max_degree, p):
     """
     Fully normalized associated Legendre functions up to maximum degree.
 
@@ -262,16 +242,9 @@ def assoc_legendre_full(x, max_degree):
         The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     max_degree : int
         The maximum degree for the calculation.
-
-
-    Returns
-    -------
-    p : 2D numpy.array
-        Array with the values of :math:`P_n^m(x)` with shape
-        ``(max_degree + 1, max_degree + 1)``. The degree n varies with the
-        first axis and the order m varies with the second axis. For example,
-        :math:`P_2^1(x)` is ``p[n, m]``. Array values where ``m > n`` are set
-        to ``numpy.nan``.
+    p : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     References
     ----------
@@ -280,28 +253,29 @@ def assoc_legendre_full(x, max_degree):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    p = np.full((max_degree + 1, max_degree + 1), np.nan)
+    # Pre-compute square roots of integers used in the loops
+    sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
     sqrt_x = np.sqrt(1 - x**2)
-    p[0, 0] = np.sqrt(0.5)
+    p[0, 0] = 1 / sqrt[2]
     for n in range(1, max_degree + 1):
         for m in range(0, n - 1):
-            a_nm = np.sqrt((2 * n + 1) * (2 * n - 1) / ((n + m) * (n - m)))
-            b_nm = -np.sqrt(
-                (n + m - 1)
-                * (n - m - 1)
-                * (2 * n + 1)
-                / ((n + m) * (n - m) * (2 * n - 3))
+            a_nm = sqrt[2 * n + 1] * sqrt[2 * n - 1] / (sqrt[n + m] * sqrt[n - m])
+            b_nm = (
+                -sqrt[n + m - 1]
+                * sqrt[n - m - 1]
+                * sqrt[2 * n + 1]
+                / (sqrt[n + m] * sqrt[n - m] * sqrt[2 * n - 3])
             )
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
-        c_nm = np.sqrt(2 * n + 1)
-        p[n][n - 1] = c_nm * x * p[n - 1, n - 1]
-        d_nm = np.sqrt(1 + 1 / (2 * n))
-        p[n][n] = d_nm * sqrt_x * p[n - 1, n - 1]
+        c_nm = sqrt[2 * n + 1]
+        p[n, n - 1] = c_nm * x * p[n - 1, n - 1]
+        d_nm = sqrt[2 * n + 1] / sqrt[2 * n]
+        p[n, n] = d_nm * sqrt_x * p[n - 1, n - 1]
     return p
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_full_deriv(x, p):
+def assoc_legendre_full_deriv(p, dp):
     """
     Derivatives in theta of fully normalized associated Legendre functions.
 
@@ -322,19 +296,12 @@ def assoc_legendre_full_deriv(x, p):
 
     Parameters
     ----------
-    x : float
-        The argument of :math:`P_n^m(x)`. Must be in the range [-1, 1].
     p : numpy.ndarray
         A 2D array with the fully normalized associated Legendre functions
-        calculated for x.
-
-    Returns
-    -------
-    p_deriv : 2D numpy.array
-        Array with the values of the derivative with shape ``(max_degree + 1,
-        max_degree + 1)``. The degree n varies with the first axis and the
-        order m varies with the second axis. Array values where ``m > n`` are
-        set to ``numpy.nan``.
+        calculated for :math:`\\cos\\theta`.
+    dp : numpy.array
+        An 2D array with shape ``(max_degree + 1, max_degree + 1)`` that will
+        be filled with the output values.
 
     References
     ----------
@@ -343,17 +310,17 @@ def assoc_legendre_full_deriv(x, p):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
-    max_degree = p.shape[0] + 1
-    sqrt = np.sqrt(np.arange((max_degree + 1)**2))
-    p_deriv = np.full((max_degree + 1, max_degree + 1), np.nan)
-    p_deriv[0, 0] = 0
+    max_degree = p.shape[0] - 1
+    # Pre-compute square roots of integers used in the loops
+    sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
+    dp[0, 0] = 0
     for n in range(1, max_degree + 1):
-        a_nm = -sqrt[n * (n + 1)]
-        p_deriv[n, 0] = a_nm * p[n, 1]
+        a_nm = -sqrt[n] * sqrt[n + 1]
+        dp[n, 0] = a_nm * p[n, 1]
         for m in range(1, n):
-            b_nm = 0.5 * sqrt[(n + m) * (n - m + 1)]
-            c_nm = -0.5 * sqrt[(n + m + 1) * (n - m)]
-            p_deriv[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
+            b_nm = 0.5 * sqrt[n + m] * sqrt[n - m + 1]
+            c_nm = -0.5 * sqrt[n + m + 1] * sqrt[n - m]
+            dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
         d_nm = 0.5 * sqrt[2] * sqrt[n]
-        p_deriv[n, n] = d_nm * p[n, n - 1]
-    return p_deriv
+        dp[n, n] = d_nm * p[n, n - 1]
+    return dp
