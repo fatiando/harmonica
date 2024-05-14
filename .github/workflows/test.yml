@@ -149,13 +149,7 @@ jobs:
           fi
 
       - name: Convert coverage report to XML for codecov
-        run: |
-          coverage xml
-          # Rename coverage file to upload it as artifact
-          mv coverage.xml coverage-$OS-$DEPENDENCIES.xml
-        env:
-          OS: ${{ matrix.os }}
-          DEPENDENCIES: ${{ matrix.dependencies }}
+        run: coverage xml
 
       - name: Upload coverage report as an artifact
         # Upload coverage reports for the whole matrix. Coverage is achieved
@@ -163,7 +157,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.os }}-${{ matrix.dependencies }}
-          path: ./coverage-${{ matrix.os }}-${{ matrix.dependencies }}.xml
+          path: ./coverage.xml
 
 
   #############################################################################
@@ -182,16 +176,15 @@ jobs:
       - name: Download coverage report artifacts
         uses: actions/download-artifact@v4
         with:
-          name: coverage
           pattern: coverage-*
-          merge-multiple: true
+          path: coverages/
 
       - run: ls -l .
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: ./coverage-*.xml
+          files: ./coverages/**/coverage.xml
           env_vars: OS,PYTHON,DEPENDENCIES
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
