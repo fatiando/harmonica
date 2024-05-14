@@ -154,7 +154,7 @@ jobs:
       - name: Upload coverage report as an artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-${{ matrix.os }}-${{ matrix.dependencies }}
+          name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
           path: ./coverage.xml
 
 
@@ -173,7 +173,7 @@ jobs:
         # the artifact.
         uses: actions/download-artifact@v4
         with:
-          pattern: coverage-*
+          pattern: coverage_*
 
       - name: List all downloaded artifacts
         run: ls -l -R .
@@ -182,7 +182,7 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           # Upload all coverage report files
-          files: ./coverage-*/coverage.xml
+          files: ./coverage_*/coverage.xml
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
           fail_ci_if_error: true
