@@ -163,11 +163,6 @@ jobs:
   codecov-upload:
     runs-on: ubuntu-latest
     needs: test
-    env:
-      # Used to tag codecov submissions
-      OS: "ubuntu"
-      PYTHON: "3.11"
-      DEPENDENCIES: "optional"
 
     steps:
 
@@ -188,7 +183,6 @@ jobs:
         with:
           # Upload all coverage report files
           files: ./coverage-*/coverage.xml
-          env_vars: OS,PYTHON,DEPENDENCIES
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
           fail_ci_if_error: true
