@@ -152,14 +152,12 @@ jobs:
         run: coverage xml
 
       - name: Upload coverage report as an artifact
-        # Upload a single report for the whole matrix: the one obtained in the
-        # Ubuntu runner using optional dependencies (to maximize the tests
-        # being run)
-        if: success() && runner.os == 'Linux' && matrix.dependencies == 'optional'
+        # Upload coverage reports for the whole matrix. Coverage is achieved
+        # combining reports from every runner.
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: ./coverage.xml
+          name: coverage-${{ matrix.os }}-${{ matrix.dependencies }}
+          path: ./coverage-${{ matrix.os }}-${{ matrix.dependencies }}.xml
 
 
   #############################################################################
@@ -175,15 +173,19 @@ jobs:
 
     steps:
 
-      - name: Download coverage report artifact
+      - name: Download coverage report artifacts
         uses: actions/download-artifact@v4
         with:
           name: coverage
+          pattern: coverage-*
+          merge-multiple: true
+
+      - run: ls -l .
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          file: ./coverage.xml
+          files: ./coverage-*.xml
           env_vars: OS,PYTHON,DEPENDENCIES
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
