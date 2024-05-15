@@ -152,10 +152,9 @@ def test_assoc_legengre_schmidt_identity():
     max_degree = 600
     # The sum of the coefs squared for a degree should be 1
     true_value = np.ones(max_degree + 1)
-    p = np.empty((max_degree + 1, max_degree + 1))
+    p = np.zeros((max_degree + 1, max_degree + 1))
     for x in np.linspace(-1, 1, 100):
         assoc_legendre_schmidt(x, max_degree, p)
-        p[np.isnan(p)] = 0
         np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-12)
 
 
