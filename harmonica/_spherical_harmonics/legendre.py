@@ -120,6 +120,12 @@ def assoc_legendre_schmidt(x, max_degree, p):
 
         This function does not include the Condon-Shortly phase.
 
+
+    .. note::
+
+        This function uses the scaling scheme of Holmes and Featherstone (2002)
+        and produces valid results until degree and order 2700.
+
     Parameters
     ----------
     x : float
@@ -149,19 +155,33 @@ def assoc_legendre_schmidt(x, max_degree, p):
     # Pre-compute square roots of integers used in the loops
     sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
     sqrt_x = np.sqrt(1 - x**2)
+    # Calculate the zero order terms first because they are not scaled to
+    # preserve numerical stability
     p[0, 0] = 1
-    for n in range(1, max_degree + 1):
-        for m in range(0, n - 1):
+    p[1, 0] = x
+    for n in range(2, max_degree + 1):
+        a_n0 = (2 * n - 1) / (sqrt[n] ** 2)
+        b_n0 = -((sqrt[n - 1] / sqrt[n]) ** 2)
+        p[n, 0] = a_n0 * x * p[n - 1, 0] + b_n0 * p[n - 2, 0]
+    # Start the following terms with P1,1 scaled (divided by sqrt(x) and 1e280
+    # which the 64bit floating point range)
+    p[1, 1] = p[0, 0] * 1e-280
+    for n in range(2, max_degree + 1):
+        for m in range(1, n - 1):
             a_nm = (2 * n - 1) / (sqrt[n + m] * sqrt[n - m])
             b_nm = -sqrt[n + m - 1] * sqrt[n - m - 1] / (sqrt[n + m] * sqrt[n - m])
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
         c_nm = sqrt[2 * n - 1]
         p[n, n - 1] = c_nm * x * p[n - 1, n - 1]
-        if n == 1:
-            d_nm = 1
-        else:
-            d_nm = sqrt[2 * n - 1] / sqrt[2 * n]
-        p[n, n] = d_nm * sqrt_x * p[n - 1, n - 1]
+        d_nm = sqrt[2 * n - 1] / sqrt[2 * n]
+        # This equation doesn't have the sqrt(x) because of the scaling
+        p[n, n] = d_nm * p[n - 1, n - 1]
+    # Now return everything to the original range and rescale the by sqrt(x)**m
+    rescale = 1e280
+    for m in range(1, max_degree + 1):
+        rescale *= sqrt_x
+        for n in range(m, max_degree + 1):
+            p[n, m] *= rescale
     return p
 
 

@@ -149,13 +149,13 @@ def test_assoc_legendre_full():
 def test_assoc_legengre_schmidt_identity():
     "Check Schmidt normalized functions against a known identity"
     # Higher degrees than this yield bad results
-    max_degree = 600
+    max_degree = 2800
     # The sum of the coefs squared for a degree should be 1
     true_value = np.ones(max_degree + 1)
     p = np.zeros((max_degree + 1, max_degree + 1))
     for x in np.linspace(-1, 1, 100):
         assoc_legendre_schmidt(x, max_degree, p)
-        np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-12)
+        np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-11, rtol=0)
 
 
 def test_assoc_legendre_deriv():
