@@ -35,6 +35,11 @@ def assoc_legendre(x, max_degree, p):
 
         This function does not include the Condon-Shortly phase.
 
+    .. warning::
+
+        Unnormalized functions should not be used beyond degree 13 because they
+        will overflow 64-bit float range.
+
     Parameters
     ----------
     x : float
@@ -85,6 +90,11 @@ def assoc_legendre_deriv(max_degree, p, dp):
 
         This function does not include the Condon-Shortly phase.
 
+    .. warning::
+
+        Unnormalized functions should not be used beyond degree 13 because they
+        will overflow 64-bit float range.
+
     Parameters
     ----------
     max_degree : int
@@ -130,11 +140,10 @@ def assoc_legendre_schmidt(x, max_degree, p):
 
         This function does not include the Condon-Shortly phase.
 
-
     .. note::
 
         This function uses the scaling scheme of Holmes and Featherstone (2002)
-        and is tested until degree and order 2700.
+        and produces accurate results until degree and order 2800.
 
     Parameters
     ----------
@@ -204,7 +213,9 @@ def assoc_legendre_schmidt_deriv(max_degree, p, dp):
 
     .. note::
 
-        This function is tested until degree 2700.
+        First and second order derivatives are tested against the Legendre
+        differential equation and produce accurate results until degree and
+        order 2800.
 
     Parameters
     ----------
@@ -274,12 +285,23 @@ def assoc_legendre_full(x, max_degree, p):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
+    u = np.sqrt((1 - x) * (1 + x))
     # Pre-compute square roots of integers used in the loops
     sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
-    sqrt_x = np.sqrt(1 - x**2)
-    p[0, 0] = 1 / sqrt[2]
-    for n in range(1, max_degree + 1):
-        for m in range(0, n - 1):
+    # Use the Holmes and Featherstone (2002) scaling to compute scaled Pnm
+    # All terms are scaled by the max float range 1e280
+    p[0, 0] = 1 * 1e-280
+    p[1, 0] = x * sqrt[3] * 1e-280
+    # This equation doesn't have u because of the scaling
+    p[1, 1] = p[0, 0] * sqrt[6]
+    # Calculate the zero order terms first
+    for n in range(2, max_degree + 1):
+        a_n0 = sqrt[2 * n - 1] * sqrt[2*n+1] / n
+        b_n0 = -(n - 1) * sqrt[2*n+1] / (n * sqrt[2*n - 3])
+        p[n, 0] = a_n0 * x * p[n - 1, 0] + b_n0 * p[n - 2, 0]
+    # Now calculate the other terms
+    for n in range(2, max_degree + 1):
+        for m in range(1, n - 1):
             a_nm = sqrt[2 * n + 1] * sqrt[2 * n - 1] / (sqrt[n + m] * sqrt[n - m])
             b_nm = (
                 -sqrt[n + m - 1]
@@ -291,7 +313,10 @@ def assoc_legendre_full(x, max_degree, p):
         c_nm = sqrt[2 * n + 1]
         p[n, n - 1] = c_nm * x * p[n - 1, n - 1]
         d_nm = sqrt[2 * n + 1] / sqrt[2 * n]
-        p[n, n] = d_nm * sqrt_x * p[n - 1, n - 1]
+        # This equation doesn't have u because of the scaling
+        p[n, n] = d_nm * p[n - 1, n - 1]
+    # Now return everything to the original float range and rescale by u**m
+    _rescale(u, max_degree, p)
 
 
 @numba.jit(nopython=True)

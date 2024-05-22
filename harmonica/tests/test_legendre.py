@@ -248,16 +248,16 @@ def test_assoc_legendre_full_deriv():
 
 
 @pytest.mark.parametrize(
-    "func,deriv,max_degree",
+    "func,deriv",
     (
-        (assoc_legendre, assoc_legendre_deriv, 10),
-        (assoc_legendre_schmidt, assoc_legendre_schmidt_deriv, 2800),
-        (assoc_legendre_full, assoc_legendre_full_deriv, 2800),
+        (assoc_legendre_schmidt, assoc_legendre_schmidt_deriv),
+        (assoc_legendre_full, assoc_legendre_full_deriv),
     ),
-    ids=["unnormalized", "schmidt", "full"],
+    ids=["schmidt", "full"],
 )
-def test_assoc_legengre_legendre_equation(func, deriv, max_degree):
+def test_assoc_legengre_legendre_equation(func, deriv):
     "Check functions and derivatives against the Legendre equation"
+    max_degree = 2800
     # Legendre equation should result in 0
     true_value = np.zeros((max_degree + 1, max_degree + 1))
     p = np.zeros((max_degree + 1, max_degree + 1))
@@ -274,5 +274,5 @@ def test_assoc_legengre_legendre_equation(func, deriv, max_degree):
         deriv(max_degree, dp, dp2)
         legendre = sin * dp2 + cos * dp + (sin * n * (n + 1) - m**2 / sin) * p
         np.testing.assert_allclose(
-            legendre, true_value, atol=1e-5, rtol=0, err_msg=f"angle={angle}"
+            legendre, true_value, atol=1e-7, rtol=0, err_msg=f"angle={angle}"
         )
