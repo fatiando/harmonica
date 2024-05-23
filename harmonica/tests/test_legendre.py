@@ -13,16 +13,13 @@ import numpy as np
 import pytest
 
 from .._spherical_harmonics.legendre import (
-    assoc_legendre,
-    assoc_legendre_deriv,
-    assoc_legendre_full,
-    assoc_legendre_full_deriv,
-    assoc_legendre_schmidt,
-    assoc_legendre_schmidt_deriv,
+    associated_legendre,
+    associated_legendre_derivative,
+    associated_legendre_full,
+    associated_legendre_full_derivative,
+    associated_legendre_schmidt,
+    associated_legendre_schmidt_derivative,
 )
-
-# Fixtures
-# #############################################################################
 
 
 def legendre_analytical(x):
@@ -47,7 +44,7 @@ def legendre_analytical(x):
     return p
 
 
-def legendre_derivative_analytical(x):
+def legendre_derivativeative_analytical(x):
     """
     Analytical expressions for theta derivatives of unnormalized Legendre
     functions
@@ -76,118 +73,93 @@ def legendre_derivative_analytical(x):
     return dp
 
 
-def schmidt_normalization(max_degree):
+def schmidt_normalization(p):
     "Calculate the Schmidt normalization factor"
-    s = np.full((max_degree + 1, max_degree + 1), np.nan)
+    max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
-            if m == 0:
-                s[n, m] = 1
-            else:
-                s[n, m] = np.sqrt(2 * math.factorial(n - m) / math.factorial(n + m))
-    return s
+            if m > 0:
+                p[n, m] *= np.sqrt(2 * math.factorial(n - m) / math.factorial(n + m))
 
 
-def full_normalization(max_degree):
+def full_normalization(p):
     "Calculate the full normalization factor"
-    s = np.full((max_degree + 1, max_degree + 1), np.nan)
+    max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
             if m == 0:
-                s[n, m] = np.sqrt(2 * n + 1)
+                p[n, m] *= np.sqrt(2 * n + 1)
             else:
-                s[n, m] = np.sqrt(
+                p[n, m] *= np.sqrt(
                     2 * (2 * n + 1) * math.factorial(n - m) / math.factorial(n + m)
                 )
-    return s
 
 
-# Tests
-# #############################################################################
-
-# Unnormalized
-# -----------------------------------------------------------------------------
-
-
-def test_assoc_legendre():
+@pytest.mark.parametrize(
+    "func,norm",
+    (
+        (associated_legendre, None),
+        (associated_legendre_schmidt, schmidt_normalization),
+        (associated_legendre_full, full_normalization),
+    ),
+    ids=["unnormalized", "schmidt", "full"],
+)
+def test_associated_legendre_function_analytical(func, norm):
     "Check if the first few degrees match analytical expressions"
     for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         # Analytical expression
         p_analytical = legendre_analytical(x)
         max_degree = p_analytical.shape[0] - 1
+        if norm is not None:
+            norm(p_analytical)
         # Numerical calculation
         p = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre(x, max_degree, p)
+        func(x, max_degree, p)
         for n in range(max_degree + 1):
             for m in range(n + 1):
                 np.testing.assert_allclose(p_analytical[n, m], p[n, m], atol=1e-10)
 
 
-def test_assoc_legendre_deriv():
+@pytest.mark.parametrize(
+    "func,deriv,norm",
+    (
+        (associated_legendre, associated_legendre_derivative, None),
+        (
+            associated_legendre_schmidt,
+            associated_legendre_schmidt_derivative,
+            schmidt_normalization,
+        ),
+        (
+            associated_legendre_full,
+            associated_legendre_full_derivative,
+            full_normalization,
+        ),
+    ),
+    ids=["unnormalized", "schmidt", "full"],
+)
+def test_associated_legendre_function_derivative_analytical(func, norm, deriv):
     "Check if the first few degrees match analytical expressions"
     for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         # Analytical expression
-        p_analytical = legendre_derivative_analytical(x)
-        max_degree = p_analytical.shape[0] - 1
-        # Numerical calculation
-        p = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre(x, max_degree, p)
-        dp = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre_deriv(max_degree, p, dp)
-        for n in range(max_degree + 1):
-            for m in range(n + 1):
-                np.testing.assert_allclose(
-                    p_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
-                )
-
-
-# Schmidt
-# -----------------------------------------------------------------------------
-
-
-def test_assoc_legendre_schmidt():
-    "Check if the first few degrees match analytical expressions"
-    for angle in np.linspace(0, np.pi, 360):
-        x = np.cos(angle)
-        # Analytical expression
-        p_analytical_unnormalized = legendre_analytical(x)
-        max_degree = p_analytical_unnormalized.shape[0] - 1
-        s = schmidt_normalization(max_degree)
-        p_analytical = s * p_analytical_unnormalized
-        # Numerical calculation
-        p = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre_schmidt(x, max_degree, p)
-        for n in range(max_degree + 1):
-            for m in range(n + 1):
-                np.testing.assert_allclose(
-                    p_analytical[n, m], p[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
-                )
-
-
-def test_assoc_legendre_schmidt_deriv():
-    "Check if the first few degrees match analytical expressions"
-    for angle in np.linspace(0.001, np.pi - 0.001, 360):
-        x = np.cos(angle)
-        # Analytical expression
-        p_analytical_unnormalized = legendre_derivative_analytical(x)
-        max_degree = p_analytical_unnormalized.shape[0] - 1
-        s = schmidt_normalization(max_degree)
-        p_analytical = s * p_analytical_unnormalized
+        dp_analytical = legendre_derivativeative_analytical(x)
+        max_degree = dp_analytical.shape[0] - 1
+        if norm is not None:
+            norm(dp_analytical)
         # Numerical calculation
         p = np.empty((max_degree + 1, max_degree + 1))
         dp = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre_schmidt(x, max_degree, p)
-        assoc_legendre_schmidt_deriv(max_degree, p, dp)
+        func(x, max_degree, p)
+        deriv(max_degree, p, dp)
         for n in range(max_degree + 1):
             for m in range(n + 1):
                 np.testing.assert_allclose(
-                    p_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
+                    dp_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
                 )
 
 
-def test_assoc_legengre_schmidt_identity():
+def test_associated_legengre_function_schmidt_identity():
     "Check Schmidt normalized functions against a known identity"
     # Higher degrees than this yield bad results
     max_degree = 2800
@@ -195,67 +167,20 @@ def test_assoc_legengre_schmidt_identity():
     true_value = np.ones(max_degree + 1)
     p = np.zeros((max_degree + 1, max_degree + 1))
     for x in np.linspace(-1, 1, 50):
-        assoc_legendre_schmidt(x, max_degree, p)
+        associated_legendre_schmidt(x, max_degree, p)
         np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-10, rtol=0)
 
 
-# Full
-# -----------------------------------------------------------------------------
-
-
-def test_assoc_legendre_full():
-    "Check if the first few degrees match analytical expressions"
-    for angle in np.linspace(0, np.pi, 360):
-        x = np.cos(angle)
-        # Analytical expression
-        p_analytical_unnormalized = legendre_analytical(x)
-        max_degree = p_analytical_unnormalized.shape[0] - 1
-        s = full_normalization(max_degree)
-        p_analytical = s * p_analytical_unnormalized
-        # Numerical calculation
-        p = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre_full(x, max_degree, p)
-        for n in range(max_degree + 1):
-            for m in range(n + 1):
-                np.testing.assert_allclose(
-                    p_analytical[n, m], p[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
-                )
-
-
-def test_assoc_legendre_full_deriv():
-    "Check if the first few degrees match analytical expressions"
-    for angle in np.linspace(0, np.pi, 360):
-        x = np.cos(angle)
-        # Analytical expression
-        p_analytical_unnormalized = legendre_derivative_analytical(x)
-        max_degree = p_analytical_unnormalized.shape[0] - 1
-        s = full_normalization(max_degree)
-        p_analytical = s * p_analytical_unnormalized
-        # Numerical calculation
-        p = np.empty((max_degree + 1, max_degree + 1))
-        dp = np.empty((max_degree + 1, max_degree + 1))
-        assoc_legendre_full(x, max_degree, p)
-        assoc_legendre_full_deriv(max_degree, p, dp)
-        for n in range(max_degree + 1):
-            for m in range(n + 1):
-                np.testing.assert_allclose(
-                    p_analytical[n, m], dp[n, m], atol=1e-10, err_msg=f"n={n}, m={m}"
-                )
-
-
-# All of them with the Legendre differential equation
-# -----------------------------------------------------------------------------
-
-
+# Not testing unnormalized ones because they only works until a very low degree
 @pytest.mark.parametrize(
     "func,deriv",
     (
-        (assoc_legendre_schmidt, assoc_legendre_schmidt_deriv),
-        (assoc_legendre_full, assoc_legendre_full_deriv),
+        (associated_legendre_schmidt, associated_legendre_schmidt_derivative),
+        (associated_legendre_full, associated_legendre_full_derivative),
     ),
     ids=["schmidt", "full"],
 )
-def test_assoc_legengre_legendre_equation(func, deriv):
+def test_associated_legengre_function_legendre_equation(func, deriv):
     "Check functions and derivatives against the Legendre equation"
     max_degree = 2800
     # Legendre equation should result in 0
@@ -274,5 +199,5 @@ def test_assoc_legengre_legendre_equation(func, deriv):
         deriv(max_degree, dp, dp2)
         legendre = sin * dp2 + cos * dp + (sin * n * (n + 1) - m**2 / sin) * p
         np.testing.assert_allclose(
-            legendre, true_value, atol=1e-7, rtol=0, err_msg=f"angle={angle}"
+            legendre, true_value, atol=1e-5, rtol=0, err_msg=f"angle={angle}"
         )

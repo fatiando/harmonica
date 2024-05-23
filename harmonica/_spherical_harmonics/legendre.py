@@ -23,7 +23,7 @@ def _rescale(u, max_degree, p):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre(x, max_degree, p):
+def associated_legendre(x, max_degree, p):
     """
     Unnormalized associated Legendre functions up to a maximum degree.
 
@@ -71,7 +71,7 @@ def assoc_legendre(x, max_degree, p):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_deriv(max_degree, p, dp):
+def associated_legendre_derivative(max_degree, p, dp):
     """
     Derivatives in theta of unnormalized associated Legendre functions.
 
@@ -126,7 +126,7 @@ def assoc_legendre_deriv(max_degree, p, dp):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_schmidt(x, max_degree, p):
+def associated_legendre_schmidt(x, max_degree, p):
     """
     Schmidt normalized associated Legendre functions up to maximum degree.
 
@@ -192,7 +192,7 @@ def assoc_legendre_schmidt(x, max_degree, p):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_schmidt_deriv(max_degree, p, dp):
+def associated_legendre_schmidt_derivative(max_degree, p, dp):
     """
     Derivatives in theta of Schmidt normalized associated Legendre functions.
 
@@ -255,14 +255,16 @@ def assoc_legendre_schmidt_deriv(max_degree, p, dp):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_full(x, max_degree, p):
+def associated_legendre_full(x, max_degree, p):
     """
     Fully normalized associated Legendre functions up to maximum degree.
 
     The functions :math:`P_n^m` are solutions to Legendre's equation. The full
     normalization is applied to the functions to constrain their value range.
     This normalization if often used in gravity field models. We calculate
-    their values using the recursive relations defined in Alken (2022).
+    their values using the recursive relations defined in Alken (2022) but with
+    the definition of the normalization from Hofmann-Wellenhof and Moritz
+    (2006).
 
     .. note::
 
@@ -284,6 +286,8 @@ def assoc_legendre_full(x, max_degree, p):
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
+    Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr.
+      ed. 2006 edition ed.). Wien ; New York: Springer.
     """
     u = np.sqrt((1 - x) * (1 + x))
     # Pre-compute square roots of integers used in the loops
@@ -293,11 +297,11 @@ def assoc_legendre_full(x, max_degree, p):
     p[0, 0] = 1 * 1e-280
     p[1, 0] = x * sqrt[3] * 1e-280
     # This equation doesn't have u because of the scaling
-    p[1, 1] = p[0, 0] * sqrt[6]
+    p[1, 1] = p[0, 0] * sqrt[3]
     # Calculate the zero order terms first
     for n in range(2, max_degree + 1):
-        a_n0 = sqrt[2 * n - 1] * sqrt[2*n+1] / n
-        b_n0 = -(n - 1) * sqrt[2*n+1] / (n * sqrt[2*n - 3])
+        a_n0 = sqrt[2 * n - 1] * sqrt[2 * n + 1] / n
+        b_n0 = -(n - 1) * sqrt[2 * n + 1] / (n * sqrt[2 * n - 3])
         p[n, 0] = a_n0 * x * p[n - 1, 0] + b_n0 * p[n - 2, 0]
     # Now calculate the other terms
     for n in range(2, max_degree + 1):
@@ -320,7 +324,7 @@ def assoc_legendre_full(x, max_degree, p):
 
 
 @numba.jit(nopython=True)
-def assoc_legendre_full_deriv(max_degree, p, dp):
+def associated_legendre_full_derivative(max_degree, p, dp):
     """
     Derivatives in theta of fully normalized associated Legendre functions.
 
@@ -330,7 +334,8 @@ def assoc_legendre_full_deriv(max_degree, p, dp):
 
         \\dfrac{\\partial P_n^m}{\\partial \\theta}(\\cos \\theta)
 
-    using the recursive relations defined in Alken (2022).
+    Uses the recursive relations defined in Alken (2022) but with the
+    definition of the normalization from Hofmann-Wellenhof and Moritz (2006).
 
     Higher-order derivatives can be calculated by passing the output of this
     function as the ``p`` argument.
@@ -356,15 +361,21 @@ def assoc_legendre_full_deriv(max_degree, p, dp):
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
+    Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr.
+      ed. 2006 edition ed.). Wien ; New York: Springer.
     """
-    max_degree = p.shape[0] - 1
     # Pre-compute square roots of integers used in the loops
     sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))
     dp[0, 0] = 0
-    for n in range(1, max_degree + 1):
-        a_nm = -sqrt[n] * sqrt[n + 1]
+    dp[1, 0] = -p[1, 1]
+    dp[1, 1] = p[1, 0]
+    for n in range(2, max_degree + 1):
+        a_nm = -sqrt[n] * sqrt[n + 1] / sqrt[2]
         dp[n, 0] = a_nm * p[n, 1]
-        for m in range(1, n):
+        b_n1 = 0.5 * sqrt[2] * sqrt[n + 1] * sqrt[n]
+        c_n1 = -0.5 * sqrt[n + 2] * sqrt[n - 1]
+        dp[n, 1] = b_n1 * p[n, 0] + c_n1 * p[n, 2]
+        for m in range(2, n):
             b_nm = 0.5 * sqrt[n + m] * sqrt[n - m + 1]
             c_nm = -0.5 * sqrt[n + m + 1] * sqrt[n - m]
             dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
