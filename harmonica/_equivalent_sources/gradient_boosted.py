@@ -107,6 +107,11 @@ class EquivalentSourcesGB(EquivalentSources):
         random_state=None,
         dtype="float64",
     ):
+        if isinstance(window_size, str) and window_size != "default":
+            raise ValueError(
+                f"Found invalid 'window_size' value equal to '{window_size}'."
+                "It should be 'default' or a numeric value."
+            )
         super().__init__(
             damping=damping,
             points=points,

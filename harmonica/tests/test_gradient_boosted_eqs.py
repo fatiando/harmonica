@@ -405,3 +405,8 @@ def test_window_size():
     eqs._create_windows(grid_coords)
     expected_window_size = np.sqrt(5e3 / (100**2 / 10e3**2))
     npt.assert_allclose(eqs.window_size_, expected_window_size)
+
+
+def test_invalid_window_size():
+    with pytest.raises(ValueError, match=f"Found invalid 'window_size' value equal to"):
+        EquivalentSourcesGB(window_size="Chuckie took my soul!")
