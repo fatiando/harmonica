@@ -408,5 +408,5 @@ def test_window_size():
 
 
 def test_invalid_window_size():
-    with pytest.raises(ValueError, match=f"Found invalid 'window_size' value equal to"):
+    with pytest.raises(ValueError, match="Found invalid 'window_size' value equal to"):
         EquivalentSourcesGB(window_size="Chuckie took my soul!")

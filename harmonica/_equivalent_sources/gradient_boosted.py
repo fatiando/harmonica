@@ -88,8 +88,8 @@ class EquivalentSourcesGB(EquivalentSources):
         interpolator. Used as the default region for the
         :meth:`~harmonica.EquivalentSources.grid` method.
     window_size_ : float or None
-        Size of the overlapping windows used in gradient-boosting equivalent 
-        point sources. It will be set to None if ``window_size = "default"`` 
+        Size of the overlapping windows used in gradient-boosting equivalent
+        point sources. It will be set to None if ``window_size = "default"``
         and less than 5000 data points were used to fit the sources; a single
         window will be used in such case.
 
