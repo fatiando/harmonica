@@ -62,7 +62,7 @@ class EquivalentSourcesGB(EquivalentSources):
         If None, no block-averaging is applied.
         This parameter is ignored if *points* are specified.
         Default to None.
-    window_size : float
+    window_size : float or "default"
         Size of overlapping windows used during the gradient-boosting
         algorithm. Smaller windows reduce the memory requirements of the source
         coefficients fitting process. Very small windows may impact on the
@@ -87,6 +87,11 @@ class EquivalentSourcesGB(EquivalentSources):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~harmonica.EquivalentSources.grid` method.
+    window_size_ : float or None
+        Size of the overlapping windows used in gradient-boosting equivalent 
+        point sources. It will be set to None if ``window_size = "default"`` 
+        and less than 5000 data points were used to fit the sources; a single
+        window will be used in such case.
 
     References
     ----------
