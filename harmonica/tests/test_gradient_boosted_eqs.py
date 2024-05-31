@@ -378,13 +378,21 @@ def test_error_ignored_args(coordinates_small, data_small, region):
 def test_window_size_less_than_5000():
     region = (0, 10e3, -5e3, 5e3)
     grid_coords = vd.grid_coordinates(region=region, shape=(64, 64), extra_coords=0)
+    grid_coords = [c.ravel() for c in grid_coords]
     eqs = EquivalentSourcesGB()
     eqs.points_ = eqs._build_points(
         grid_coords
     )  # need to build sources first before creating windows.
     with pytest.warns(UserWarning, match=f"Found {64**2} number of coordinates"):
-        eqs._create_windows(grid_coords)
+        source_windows, data_windows = eqs._create_windows(grid_coords)
     assert eqs.window_size_ is None
+    assert len(source_windows) == 1
+    assert len(data_windows) == 1
+    # Check if all sources and data points are inside the window
+    for coord in eqs.points_:
+        npt.assert_allclose(coord, coord[source_windows[0]])
+    for coord in grid_coords:
+        npt.assert_allclose(coord, coord[data_windows[0]])
 
 
 def test_window_size():
