@@ -44,7 +44,7 @@ def legendre_analytical(x):
     return p
 
 
-def legendre_derivativeative_analytical(x):
+def legendre_derivative_analytical(x):
     """
     Analytical expressions for theta derivatives of unnormalized Legendre
     functions
@@ -74,7 +74,7 @@ def legendre_derivativeative_analytical(x):
 
 
 def schmidt_normalization(p):
-    "Calculate the Schmidt normalization factor"
+    "Multiply by the Schmidt normalization factor"
     max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
@@ -83,7 +83,7 @@ def schmidt_normalization(p):
 
 
 def full_normalization(p):
-    "Calculate the full normalization factor"
+    "Multiply by the full normalization factor"
     max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
@@ -143,7 +143,7 @@ def test_associated_legendre_function_derivative_analytical(func, norm, deriv):
     for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         # Analytical expression
-        dp_analytical = legendre_derivativeative_analytical(x)
+        dp_analytical = legendre_derivative_analytical(x)
         max_degree = dp_analytical.shape[0] - 1
         if norm is not None:
             norm(dp_analytical)
