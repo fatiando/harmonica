@@ -440,3 +440,13 @@ def test_default_depth(coordinates, data):
     # Fit the equivalent sources with default `depth`
     eqs = EquivalentSources().fit(coordinates, data)
     npt.assert_allclose(eqs.depth_, first_neighbour_distance * 4.5)
+
+
+def test_invalid_depth():
+    """
+    Test if error is raised after passing invalid value for depth.
+    """
+    invalid_depth = "this is not a valid one"
+    msg = f"Found invalid 'depth' value equal to '{invalid_depth}'"
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSources(depth=invalid_depth)
