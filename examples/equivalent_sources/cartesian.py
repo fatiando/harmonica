@@ -21,8 +21,7 @@ point sources that fit the observed data. The fitted sources can then be used
 to predict data values wherever we want, like on a grid at a certain altitude.
 By default, the sources for :class:`~harmonica.EquivalentSources` are placed
 one beneath each data point at a relative depth from the elevation of the data
-point following [Cooper2000]_. This behaviour can be changed throught the
-`depth_type` optional argument.
+point following [Cooper2000]_.
 
 The advantage of using equivalent sources is that it takes into account the 3D
 nature of the observations, not just their horizontal positions. It also allows
@@ -113,7 +112,7 @@ with pygmt.config(FONT_TITLE="12p"):
         frame=[f"WSne+t{title}", "xa10000", "ya10000"],
         x=easting,
         y=northing,
-        color=data.total_field_anomaly_nt,
+        fill=data.total_field_anomaly_nt,
         style="c0.1c",
         cmap=True,
     )

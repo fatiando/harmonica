@@ -21,7 +21,7 @@
 
         .. image:: ./_static/harmonica-logo.svg
             :width: 200px
-            :class: sd-m-auto
+            :class: sd-m-auto dark-light
 
 **Harmonica** is a Python library for processing and modeling gravity and
 magnetic data.

@@ -27,12 +27,13 @@ dependencies:
   - coverage
   - boule
   # Documentation requirements
-  - sphinx==4.5.*
-  - sphinx-book-theme==0.2.*
-  - sphinx-gallery==0.10.*
-  - sphinx-design==0.2.*
+  - sphinx==7.2.*
+  - numpydoc==1.7.*
+  - sphinx-book-theme==1.1.*
+  - sphinx-gallery==0.15.*
+  - sphinx-design==0.5.*
   - sphinx-copybutton==0.5.*
-  - jupyter-sphinx==0.4.*
+  - jupyter-sphinx==0.5.*
   - ipykernel
   - pyproj
   - matplotlib
