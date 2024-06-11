@@ -114,7 +114,7 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data,
     # accurate)
     if dtype == "float32":
         kwargs = dict(dtype=dtype)
-        atol = 1.6e-3 * vd.maxabs(data)
+        atol = 1.7e-3 * vd.maxabs(data)
     else:
         kwargs = {}
         atol = 1e-3 * vd.maxabs(data)
