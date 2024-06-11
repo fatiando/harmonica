@@ -13,7 +13,7 @@ dependencies:
   - numba
   - scipy
   - scikit-learn
-  - verde>=1.7.0
+  - verde>=1.8.1
   - xarray
   - xrft>=1.0
   - choclo>=0.1
