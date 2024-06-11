@@ -373,3 +373,40 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+def test_window_size_less_than_5000():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(64, 64), extra_coords=0)
+    grid_coords = [c.ravel() for c in grid_coords]
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    with pytest.warns(UserWarning, match=f"Found {64**2} number of coordinates"):
+        source_windows, data_windows = eqs._create_windows(grid_coords)
+    assert eqs.window_size_ is None
+    assert len(source_windows) == 1
+    assert len(data_windows) == 1
+    # Check if all sources and data points are inside the window
+    for coord in eqs.points_:
+        npt.assert_allclose(coord, coord[source_windows[0]])
+    for coord in grid_coords:
+        npt.assert_allclose(coord, coord[data_windows[0]])
+
+
+def test_window_size():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(100, 100), extra_coords=0)
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    eqs._create_windows(grid_coords)
+    expected_window_size = np.sqrt(5e3 / (100**2 / 10e3**2))
+    npt.assert_allclose(eqs.window_size_, expected_window_size)
+
+
+def test_invalid_window_size():
+    with pytest.raises(ValueError, match="Found invalid 'window_size' value equal to"):
+        EquivalentSourcesGB(window_size="Chuckie took my soul!")
