@@ -84,7 +84,7 @@ ones tend to overfit the data.
 .. hint::
 
    By default, since Harmonica v0.7.0, the sources will be located at a depth
-   below the data points estimated as 4.5 times the distance between
+   below the data points estimated as 4.5 times the mean distance between
    first neighboring sources. Alternatively, we can set a value for this depth
    below the data points through the ``depth`` argument.
 
