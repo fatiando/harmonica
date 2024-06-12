@@ -175,7 +175,7 @@ class EquivalentSources(vdb.BaseGridder):
     ):
         if isinstance(depth, str) and depth != "default":
             raise ValueError(
-                f"Found invalid 'depth' value equal to '{depth}' ."
+                f"Found invalid 'depth' value equal to '{depth}'. "
                 "It should be 'default' or a numeric value."
             )
         self.damping = damping
