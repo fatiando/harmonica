@@ -316,7 +316,9 @@ class EquivalentSourcesGB(EquivalentSources):
             ndata = coordinates[0].size
             if ndata <= 5e3:
                 warnings.warn(
-                    f"Found {ndata} number of coordinates (<= 5e3). Only one window will be used."
+                    f"Found {ndata} number of coordinates (<= 5e3). "
+                    "Only one window will be used.",
+                    stacklevel=1,
                 )
                 source_windows_nonempty = [np.arange(self.points_[0].size)]
                 data_windows_nonempty = [np.arange(ndata)]

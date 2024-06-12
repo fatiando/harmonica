@@ -311,6 +311,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
                 f"The {args} arguments are being ignored. The 'grid' method "
                 + "will not take any keyword arguments in the next Harmonica release",
                 FutureWarning,
+                stacklevel=1,
             )
 
         # Grid data
