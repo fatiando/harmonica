@@ -7,6 +7,8 @@
 """
 Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
+from __future__ import annotations
+
 import warnings
 
 import numpy as np
@@ -64,11 +66,16 @@ class EquivalentSources(vdb.BaseGridder):
 
     The depth of the sources can be controlled by the ``depth`` argument.
     Each source is located beneath each data point or block-averaged location
-    at a depth equal to its elevation minus the value of the ``depth``
-    argument.
-    In both cases a positive value of ``depth`` locates sources _beneath_ the
-    data points or the block-averaged locations, thus a negative ``depth`` will
-    put the sources _above_ them.
+    at a depth equal to its elevation minus the value of the ``depth_``
+    attribute.
+    If ``"default"`` is passed to the ``depth`` argument, then the ``depth_``
+    attribute is set to 4.5 times the mean distance between first neighboring
+    sources.
+    If a numerical value is passed to the ``depth`` argument, then this is the
+    one used for the ``depth_`` attribute.
+    A positive value of ``depth_`` locates sources _beneath_ the data points or
+    the block-averaged locations, thus a negative ``depth_`` will put the
+    sources _above_ them.
 
     Custom source locations can be chosen by specifying the ``points``
     argument, in which case the ``block_size`` and ``depth`` arguments will be
@@ -100,13 +107,16 @@ class EquivalentSources(vdb.BaseGridder):
         If None, will place one point source below each observation point at
         a fixed relative depth below the observation point [Cooper2000]_.
         Defaults to None.
-    depth : float
+    depth : float or "default"
         Parameter used to control the depth at which the point sources will be
         located.
-        Each source is located beneath each data point (or block-averaged
-        location) at a depth equal to its elevation minus the ``depth`` value.
+        If a value is provided, each source is located beneath each data point
+        (or block-averaged location) at a depth equal to its elevation minus
+        the ``depth`` value.
+        If set to ``"default"``, the depth of the sources will be estimated as
+        4.5 times the mean distance between first neighboring sources.
         This parameter is ignored if *points* is specified.
-        Defaults to 500.
+        Defaults to ``"default"``.
     block_size: float, tuple = (s_north, s_east) or None
         Size of the blocks used on block-averaged equivalent sources.
         If a single value is passed, the blocks will have a square shape.
@@ -129,6 +139,10 @@ class EquivalentSources(vdb.BaseGridder):
         Coordinates of the equivalent point sources.
     coefs_ : array
         Estimated coefficients of every point source.
+    depth_ : float or None
+        Estimated depth of the sources calculated as 4.5 times the mean
+        distance between first neighboring sources. This attribute is set to
+        None if ``points`` is passed.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -154,11 +168,16 @@ class EquivalentSources(vdb.BaseGridder):
         self,
         damping=None,
         points=None,
-        depth=500,
+        depth: float | str = "default",
         block_size=None,
         parallel=True,
         dtype="float64",
     ):
+        if isinstance(depth, str) and depth != "default":
+            raise ValueError(
+                f"Found invalid 'depth' value equal to '{depth}'. "
+                "It should be 'default' or a numeric value."
+            )
         self.damping = damping
         self.points = points
         self.depth = depth
@@ -205,6 +224,7 @@ class EquivalentSources(vdb.BaseGridder):
         if self.points is None:
             self.points_ = self._build_points(coordinates)
         else:
+            self.depth_ = None  # set depth_ to None so we don't leave it unset
             self.points_ = tuple(
                 p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
             )
@@ -220,7 +240,12 @@ class EquivalentSources(vdb.BaseGridder):
         and apply block-averaging if ``block_size`` is not None.
         The point sources will be placed beneath the (averaged) observation
         points at a depth calculated as the elevation of the data point minus
-        the ``depth``.
+        the ``depth_`` attribute.
+
+        If ``depth`` is set to ``"default"``, the ``depth_`` attribute is set
+        as 4.5 times the mean distance between first neighboring sources.
+        If ``depth`` is set to a numerical value, this is used for the
+        ``depth_`` attribute.
 
         Parameters
         ----------
@@ -238,10 +263,14 @@ class EquivalentSources(vdb.BaseGridder):
         """
         if self.block_size is not None:
             coordinates = self._block_average_coordinates(coordinates)
+        if self.depth == "default":
+            self.depth_ = 4.5 * np.mean(vd.median_distance(coordinates, k_nearest=1))
+        else:
+            self.depth_ = self.depth
         return (
             coordinates[0],
             coordinates[1],
-            coordinates[2] - self.depth,
+            coordinates[2] - self.depth_,
         )
 
     def _block_average_coordinates(self, coordinates):
