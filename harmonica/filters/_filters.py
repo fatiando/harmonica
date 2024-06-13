@@ -472,7 +472,7 @@ def reduction_to_pole_kernel(
         magnetization_declination,
     )
     # Set 0 wavenumber to 0
-    da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    da_filter.loc[{dims[0] : 0, dims[1] : 0}] = 0
     return da_filter
 
 
