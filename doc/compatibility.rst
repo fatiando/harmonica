@@ -65,4 +65,4 @@ following releases to ensure compatibility:
     * - 3.7
       - 0.6.0
     * - 3.8
-      - 0.7.0
+      - 0.6.0
