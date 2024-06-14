@@ -151,8 +151,11 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
 
 
 def total_field_anomaly(magnetic_field, inclination, declination):
-    """
-    The total field anomaly from the anomalous magnetic field and regional field direction.
+    r"""
+    The total field anomaly from the anomalous magnetic field.
+
+    Compute the total field anomaly from the anomalous magnetic field given the
+    regional field direction.
 
     .. note::
 
