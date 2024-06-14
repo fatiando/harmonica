@@ -123,7 +123,7 @@ def _read_gdf_file(fname, **kwargs):
         rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
     _check_gdf_integrity(metadata)
     # Remove column names from the metadata if they weren't read
-    if kwargs.get("usecols", None) is not None:
+    if kwargs.get("usecols") is not None:
         metadata["attributes"] = [metadata["attributes"][i] for i in kwargs["usecols"]]
     if len(metadata["attributes"]) != rawdata.shape[0]:
         raise IOError(
