@@ -523,6 +523,14 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
+def test_reduction_to_pole(sample_potential):
+    """
+    Test reduction_to_pole function with non-typical dim names
+    """
+    renamed_dims_grid = sample_potential.rename({"easting" : "name_one", "northing" : "name_two"})
+    reduction_to_pole(renamed_dims_grid, 60, 45)
+    
+    
 class TestTotalGradientAmplitude:
     """
     Test total_gradient_amplitude function
