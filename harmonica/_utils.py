@@ -148,3 +148,53 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
         (inclination,) = inclination
         (declination,) = declination
     return intensity, inclination, declination
+
+
+def total_field_anomaly(magnetic_field, inclination, declination):
+    """
+    The total field anomaly from the anomalous magnetic field and regional field direction.
+
+    .. note::
+
+        Inclination is measured positive downward from the horizontal plane and
+        declination is measured with respect to North and it is positive east.
+
+    Parameters
+    ----------
+    magnetic_field : tuple of floats or tuple of arrays
+        Three component vector of the anomalous magnetic field.
+    inclination : float or array
+        Inclination angle of the regional field.
+        It must be in degrees.
+    declination : float or array
+        Declination angle of the regional field.
+        It must be in degrees.
+
+    Returns
+    -------
+    total_field_anomaly : float or array
+        The magnetic total field anomaly in the same units as the
+        ``magnetic_field``.
+
+    Notes
+    -----
+    Given the magnetic field, :math:`\mathbf{B}`, the regional field,
+    :math:`\mathbf{F}`, the total field anomaly can be computed as:
+
+    .. math::
+
+        \Delta T = \mathbf{B} \cdot \mathbf{\hat{F}}
+
+    where :math:`\mathbf{\hat{F}}` is the unit vector in the same direction
+    as the regional field.
+
+    Examples
+    --------
+    >>> tfa = total_field_anomaly([0, 0, -50e3], 90.0, 0.0)
+    >>> print(tfa)
+    50000.0
+    """
+    b_e, b_n, b_u = magnetic_field
+    f_e, f_n, f_u = magnetic_angles_to_vec(1, inclination, declination)
+    tfa = b_e * f_e + b_n * f_n + b_u * f_u
+    return tfa
