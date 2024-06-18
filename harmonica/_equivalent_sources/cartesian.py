@@ -19,7 +19,6 @@ from sklearn.utils.validation import check_is_fitted
 
 from .._forward.utils import distance_cartesian
 from .utils import (
-    cast_fit_input,
     jacobian_numba_parallel,
     jacobian_numba_serial,
     pop_extra_coords,

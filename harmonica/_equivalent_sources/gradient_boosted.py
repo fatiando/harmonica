@@ -15,7 +15,7 @@ from sklearn import utils
 from verde import get_region, rolling_window
 
 from .cartesian import EquivalentSources
-from .utils import cast_fit_input, predict_numba_parallel
+from .utils import predict_numba_parallel
 
 
 class EquivalentSourcesGB(EquivalentSources):
