@@ -22,18 +22,17 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "numpy >= 1.21",
-    "pandas >= 1.1",
-    "scipy >= 1.5",
+    "pandas >= 1.4",
+    "scipy >= 1.9",
     "scikit-learn >= 0.24",
-    "numba >= 0.52",
+    "numba >= 0.53",
     "xarray >= 0.16",
     "verde >= 1.7",
     "xrft >= 1.0",

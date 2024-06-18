@@ -261,7 +261,9 @@ def _check_singular_points(coordinates, prisms, field):
         return None
     if functions[field](coordinates, prisms):
         warnings.warn(
-            "Found observation point on singular point of a prism.", UserWarning
+            "Found observation point on singular point of a prism.",
+            UserWarning,
+            stacklevel=1,
         )
 
 

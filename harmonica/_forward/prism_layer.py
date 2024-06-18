@@ -420,10 +420,10 @@ class DatasetAccessorPrismLayer:
             # Warn if a nan is found within the masked property
             if not mask_property[mask].all():
                 warnings.warn(
-                    'Found missing values in "{}" property '.format(property_name)
-                    + "of the prisms layer. "
-                    + "The prisms with a nan as "
-                    + '"{}" will be ignored.'.format(property_name)
+                    f"Found missing values in '{property_name}' property "
+                    + "of the prisms layer. The prisms with a nan as "
+                    + f"'{property_name}' will be ignored.",
+                    stacklevel=1,
                 )
             mask = np.logical_and(mask, mask_property)
         return mask

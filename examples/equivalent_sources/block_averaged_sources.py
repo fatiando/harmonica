@@ -123,7 +123,7 @@ with pygmt.config(FONT_TITLE="12p"):
         frame=[f"WSne+t{title}", "xa10000", "ya10000"],
         x=easting,
         y=northing,
-        color=data.total_field_anomaly_nt,
+        fill=data.total_field_anomaly_nt,
         style="c0.1c",
         cmap=True,
     )
