@@ -222,7 +222,9 @@ class EquivalentSources(vdb.BaseGridder):
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = self._build_points(coordinates)
+            self.points_ = tuple(
+                p.astype(self.dtype) for p in self._build_points(coordinates)
+            )
         else:
             self.depth_ = None  # set depth_ to None so we don't leave it unset
             self.points_ = tuple(

@@ -142,7 +142,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Returns
         -------
-        memory_required : float
+        memory_required : int
             Amount of memory required to store the largest Jacobian matrix in
             bytes.
 
@@ -157,7 +157,8 @@ class EquivalentSourcesGB(EquivalentSources):
         ...     random_state=42,
         ... )
         >>> eqs = EquivalentSourcesGB(window_size=2e3)
-        >>> eqs.estimate_required_memory(coordinates)
+        >>> n_bytes = eqs.estimate_required_memory(coordinates)
+        >>> int(n_bytes)
         9800
         """
         # Build the sources and assign the points_ attribute
@@ -216,7 +217,9 @@ class EquivalentSourcesGB(EquivalentSources):
             weights = weights.ravel()
         # Build point sources
         if self.points is None:
-            self.points_ = self._build_points(coordinates)
+            self.points_ = tuple(
+                p.astype(self.dtype) for p in self._build_points(coordinates)
+            )
         else:
             self.points_ = tuple(
                 p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
