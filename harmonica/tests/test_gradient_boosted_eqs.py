@@ -115,7 +115,7 @@ def test_custom_points(region, coordinates_small, data_small):
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
     )
-    eqs = EquivalentSourcesGB(points=points_custom, window_size=500)
+    eqs = EquivalentSourcesGB(points=points_custom, window_size=500, depth=500)
     eqs.fit(coordinates_small, data_small)
     # Check that the proper source locations were set
     npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
@@ -171,7 +171,7 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     """
     Test GB eq-sources with a single window that covers the whole region
     """
-    eqs = EquivalentSourcesGB(window_size=region[1] - region[0])
+    eqs = EquivalentSourcesGB(depth=500, window_size=region[1] - region[0])
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
     # Gridding onto a denser grid should be reasonably accurate when compared
@@ -410,3 +410,27 @@ def test_window_size():
 def test_invalid_window_size():
     with pytest.raises(ValueError, match="Found invalid 'window_size' value equal to"):
         EquivalentSourcesGB(window_size="Chuckie took my soul!")
+
+
+def test_default_depth(coordinates, data):
+    """
+    Test if the depth of sources is correctly set by the default strategy
+    """
+    # Get distance to first neighbour in the grid
+    easting, northing = coordinates[:2]
+    d_easting = easting[1, 1] - easting[0, 0]
+    d_northing = northing[1, 1] - northing[0, 0]
+    first_neighbour_distance = min(d_easting, d_northing)
+    # Fit the equivalent sources with default `depth`
+    eqs = EquivalentSourcesGB().fit(coordinates, data)
+    npt.assert_allclose(eqs.depth_, first_neighbour_distance * 4.5)
+
+
+def test_invalid_depth():
+    """
+    Test if error is raised after passing invalid value for depth.
+    """
+    invalid_depth = "this is not a valid one"
+    msg = f"Found invalid 'depth' value equal to '{invalid_depth}'"
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSourcesGB(depth=invalid_depth)
