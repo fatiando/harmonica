@@ -107,11 +107,13 @@ def prism_layer(
         coords_units:      meters
         properties_units:  SI
     >>> # Get the boundaries of the layer (will exceed the region)
-    >>> print(prisms.prism_layer.boundaries)
-    (-1.25, 11.25, 1.0, 9.0)
+    >>> boundaries = prisms.prism_layer.boundaries
+    >>> list(float(b) for b in boundaries)
+    [-1.25, 11.25, 1.0, 9.0]
     >>> # Get the boundaries of one of the prisms
-    >>> print(prisms.prism_layer.get_prism((0, 2)))
-    (3.75, 6.25, 1.0, 3.0, 0.0, 2.0)
+    >>> prism = prisms.prism_layer.get_prism((0, 2))
+    >>> list(float(b) for b in prism)
+    [3.75, 6.25, 1.0, 3.0, 0.0, 2.0]
     """  # noqa: W505
     dims = ("northing", "easting")
     # Initialize data and data_names as None
