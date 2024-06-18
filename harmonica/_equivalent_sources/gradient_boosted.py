@@ -73,7 +73,7 @@ class EquivalentSourcesGB(EquivalentSources):
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
-    dtype : data-type
+    dtype : dtype, optional
         The desired data-type for the predictions and the Jacobian matrix.
         Default to ``"float64"``.
 
@@ -205,9 +205,6 @@ class EquivalentSourcesGB(EquivalentSources):
             Returns this estimator instance for chaining operations.
         """
         coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
-        coordinates, data, weights = cast_fit_input(
-            coordinates, data, weights, self.dtype
-        )
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         # Ravel coordinates, data and weights to 1d-arrays
@@ -217,13 +214,9 @@ class EquivalentSourcesGB(EquivalentSources):
             weights = weights.ravel()
         # Build point sources
         if self.points is None:
-            self.points_ = tuple(
-                p.astype(self.dtype) for p in self._build_points(coordinates)
-            )
+            self.points_ = self._build_points(coordinates)
         else:
-            self.points_ = tuple(
-                p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
-            )
+            self.points_ = vdb.n_1d_arrays(self.points, 3)
         # Initialize coefficients
         self.coefs_ = np.zeros_like(self.points_[0])
         # Fit coefficients through gradient boosting
