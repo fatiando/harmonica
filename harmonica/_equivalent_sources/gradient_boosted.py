@@ -217,7 +217,9 @@ class EquivalentSourcesGB(EquivalentSources):
             weights = weights.ravel()
         # Build point sources
         if self.points is None:
-            self.points_ = self._build_points(coordinates)
+            self.points_ = tuple(
+                p.astype(self.dtype) for p in self._build_points(coordinates)
+            )
         else:
             self.points_ = tuple(
                 p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
