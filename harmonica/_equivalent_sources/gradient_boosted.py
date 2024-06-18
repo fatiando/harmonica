@@ -7,6 +7,8 @@
 """
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
+from __future__ import annotations
+
 import warnings
 
 import numpy as np
