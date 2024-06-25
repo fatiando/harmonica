@@ -7,6 +7,8 @@
 """
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
+from __future__ import annotations
+
 import warnings
 
 import numpy as np
@@ -47,13 +49,16 @@ class EquivalentSourcesGB(EquivalentSources):
         If None, will place one point source below each observation point at
         a fixed relative depth below the observation point [Cooper2000]_.
         Defaults to None.
-    depth : float
+    depth : float or "default"
         Parameter used to control the depth at which the point sources will be
         located.
-        Each source is located beneath each data point (or block-averaged
-        location) at a depth equal to its elevation minus the ``depth`` value.
+        If a value is provided, each source is located beneath each data point
+        (or block-averaged location) at a depth equal to its elevation minus
+        the ``depth`` value.
+        If set to ``"default"``, the depth of the sources will be estimated as
+        4.5 times the mean distance between first neighboring sources.
         This parameter is ignored if *points* is specified.
-        Defaults to 500.
+        Defaults to ``"default"``.
     block_size: float, tuple = (s_north, s_east) or None
         Size of the blocks used on block-averaged equivalent sources.
         If a single value is passed, the blocks will have a square shape.
@@ -87,6 +92,10 @@ class EquivalentSourcesGB(EquivalentSources):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~harmonica.EquivalentSources.grid` method.
+    depth_ : float or None
+        Estimated depth of the sources calculated as 4.5 times the mean
+        distance between first neighboring sources. This attribute is set to
+        None if ``points`` is passed.
     window_size_ : float or None
         Size of the overlapping windows used in gradient-boosting equivalent
         point sources. It will be set to None if ``window_size = "default"``
@@ -105,7 +114,7 @@ class EquivalentSourcesGB(EquivalentSources):
         self,
         damping=None,
         points=None,
-        depth=500,
+        depth: float | str = "default",
         block_size=None,
         window_size="default",
         parallel=True,
@@ -221,6 +230,7 @@ class EquivalentSourcesGB(EquivalentSources):
                 p.astype(self.dtype) for p in self._build_points(coordinates)
             )
         else:
+            self.depth_ = None  # set depth_ to None so we don't leave it unset
             self.points_ = tuple(
                 p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
             )
