@@ -129,7 +129,7 @@ class EquivalentSources(vdb.BaseGridder):
         parallel through Numba's ``jit.prange``, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
     dtype : dtype, optional
-        The desired data-type for the predictions and the Jacobian matrix.
+        The desired data-type for the Jacobian matrix.
         Default to ``"float64"``.
 
     Attributes
@@ -319,7 +319,7 @@ class EquivalentSources(vdb.BaseGridder):
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-        data = np.zeros(size, dtype=self.dtype)
+        data = np.zeros(size)
         self._predict_kernel[self.parallel](
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )

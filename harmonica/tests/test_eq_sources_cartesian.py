@@ -343,7 +343,7 @@ def test_dtype(
     dtype,
 ):
     """
-    Test if predictions have the dtype passed as argument.
+    Test if predictions have the default dtype.
     """
     # Define the points argument for EquivalentSources
     points = (
@@ -360,7 +360,7 @@ def test_dtype(
     eqs.fit(coordinates, data, weights)
     # Ensure predictions have the expected dtype
     prediction = eqs.predict(coordinates)
-    assert prediction.dtype == np.dtype(dtype)
+    assert prediction.dtype == np.float64
     # Locations of sources should be the same dtype as the coordinates
     for coord in eqs.points_:
         assert coord.dtype == coordinates[0].dtype

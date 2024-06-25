@@ -74,7 +74,7 @@ class EquivalentSourcesGB(EquivalentSources):
         parallel through Numba's ``jit.prange``, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
     dtype : dtype, optional
-        The desired data-type for the predictions and the Jacobian matrix.
+        The desired data-type for the Jacobian matrix.
         Default to ``"float64"``.
 
     Attributes
