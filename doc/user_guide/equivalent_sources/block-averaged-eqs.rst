@@ -6,7 +6,7 @@ Block-averaged equivalent sources
 When we introduced the :ref:`equivalent_sources` we saw that
 by default the :class:`harmonica.EquivalentSources` class locates one point
 source beneath each data point during the fitting process, following
-[Cooper2000]_.
+[Cordell1992]_.
 
 Alternatively, we can use another strategy: the *block-averaged sources*,
 introduced in [Soler2021]_.
