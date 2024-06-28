@@ -296,7 +296,7 @@ def test_dtype(
     dtype,
 ):
     """
-    Test dtype argument on EquivalentSourcesGB
+    Test if predictions have the default dtype.
     """
     # Define the points argument for EquivalentSources
     points = None
