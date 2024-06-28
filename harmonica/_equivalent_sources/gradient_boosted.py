@@ -47,7 +47,7 @@ class EquivalentSourcesGB(EquivalentSources):
         Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
         If None, will place one point source below each observation point at
-        a fixed relative depth below the observation point [Cooper2000]_.
+        a fixed relative depth below the observation point [Cordell1992]_.
         Defaults to None.
     depth : float or "default"
         Parameter used to control the depth at which the point sources will be

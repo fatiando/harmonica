@@ -4,7 +4,7 @@ References
 .. [Balmino1973] Balmino, G., Lambeck, K., & Kaula, W. M. (1973). A spherical harmonic analysis of the Earth's topography. Journal of Geophysical Research, 78(2), 478-481.
 .. [BarthelmesKohler2016] Barthelmes, F. and Kohler, W. (2016), International Centre for Global Earth Models (ICGEM), in: Drewes, H., Kuglitsch, F., Adam, J. et al., The Geodesists Handbook 2016, Journal of Geodesy (2016), 90(10), pp 907-1205, doi:`10.1007/s00190-016-0948-z <https://doi.org/10.1007/s00190-016-0948-z>`__
 .. [Blakely1995] Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:`10.1017/CBO9780511549816 <https://doi.org/10.1017/CBO9780511549816>`__
-.. [Cooper2000] Cooper, G.R.J. (2000), Gridding gravity data using an equivalent layer, Computers & Geosciences, Computers & Geosciences, doi:`10.1016/S0098-3004(99)00089-8 <https://doi.org/10.1016/S0098-3004(99)00089-8>`__
+.. [Cordell1992] Lindrith Cordell (1992). A scattered equivalent‐source method for interpolation and gridding of potential‐field data in three dimensions. GEOPHYSICS 57: 629-636. doi:`10.1190/1.1443275 <https://doi.org/10.1190/1.1443275>`__
 .. [Dampney1969] Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:`10.1190/1.1439996 <https://doi.org/10.1190/1.1439996>`__
 .. [Fukushima2020] Fukushima, T. (2020). Speed and accuracy improvements in standard algorithm for prismatic gravitational field. Geophysical Journal International. doi:`10.1093/gji/ggaa240 <https://doi.org/10.1093/gji/ggaa240>`__
 .. [Geosoft1999] Geosoft Incorporated. (1999). Montaj MAGMAP filtering; 2–D frequency domain of potential field data extension for Oasis Montaj v. 6.1.
