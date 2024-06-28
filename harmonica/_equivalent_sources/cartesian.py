@@ -319,7 +319,7 @@ class EquivalentSources(vdb.BaseGridder):
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
-        data = np.zeros(size)
+        data = np.zeros(size, dtype=np.float64)
         self._predict_kernel[self.parallel](
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )
