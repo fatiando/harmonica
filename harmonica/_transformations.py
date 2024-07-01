@@ -398,8 +398,9 @@ def tilt_angle(grid):
     Calculates the tilt angle of a potential field grid
 
     Compute the tilt of a regular gridded potential field
-    :math:`M`. The horizontal derivatives are calculated though finite-differences
-    while the upward derivative is calculated using FFT.
+    :math:`M`. The horizontal derivatives are calculated 
+    though finite-differences while the upward derivative
+    is calculated using FFT.
 
     Parameters
     ----------
