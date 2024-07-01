@@ -421,12 +421,17 @@ def tilt(grid):
 
     .. math::
 
-        tilt(f) = tan^{-1}\left(
+        \text{tilt}(f) = \tan^{-1} \left(
             \frac{
-                \frac{\partial M}{\partial z}}{
-                \sqrt{\frac{\partial M}{\partial x}^2 +
-                      \frac{\partial M}{\partial y}^2}}
-            \right)
+                \frac{\partial M}{\partial z}
+            }{
+                \sqrt{
+                    \left( \frac{\partial M}{\partial x} \right)^2
+                    +
+                    \left( \frac{\partial M}{\partial y} \right)^2
+                }
+            }
+        \right)
 
     where :math:`M` is the regularly gridded potential field.
 
