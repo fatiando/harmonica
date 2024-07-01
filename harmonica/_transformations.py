@@ -398,16 +398,17 @@ def tilt_angle(grid):
     Calculates the tilt angle of a potential field grid
     by Miller and Singh (1994)
 
-    Compute the tilt angle of a potential field :math:`M` sampled on a regular grid.
+    Compute the tilt angle of a potential field
+    :math:`M` sampled on a regular grid.
 
     .. tip::
 
-        When used on magnetic total field anomaly data, works best if the data is
-        reduced to the pole.
+        When used on magnetic total field anomaly data, works best
+        if the data is reduced to the pole.
 
-        It's useful to plot the zero contour line of the tilt to represent possible
-        outlines of the source bodies. Use matplotlib's ``pyplot.contour`` or
-        ``pyplot.tricontour`` for this.
+        It's useful to plot the zero contour line of the tilt
+        to represent possible outlines of the source bodies. 
+        Use matplotlib's ``pyplot.contour`` or ``pyplot.tricontour`` for this.
 
     Parameters
     ----------
