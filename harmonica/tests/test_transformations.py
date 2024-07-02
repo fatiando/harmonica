@@ -619,6 +619,9 @@ class TestTilt:
         # Compare against g_tilt (trim the borders to ignore boundary effects)
         trim = 6
         tilt_grid = tilt_grid[trim:-trim, trim:-trim]
+        g_e = sample_g_e[trim:-trim, trim:-trim]
+        g_n = sample_g_n[trim:-trim, trim:-trim]
+        g_z = sample_g_z[trim:-trim, trim:-trim]
         g_horiz_deriv = np.sqrt(g_e**2 + g_n**2)
         g_tilt = np.arctan2(-g_z, g_horiz_deriv)  # use -g_z to use the _upward_ derivative
         rms = root_mean_square_error(tilt_grid, g_tilt)
