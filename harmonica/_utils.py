@@ -197,7 +197,7 @@ def total_field_anomaly(magnetic_field, inclination, declination):
     >>> print(tfa)
     50000.0
     """
-    b_e, b_n, b_u = tuple(np.atleast_1d(i) for i in magnetic_field)
+    b_e, b_n, b_u = tuple(np.array(i) for i in magnetic_field)
     f_e, f_n, f_u = magnetic_angles_to_vec(1, inclination, declination)
     tfa = b_e * f_e + b_n * f_n + b_u * f_u
     return tfa
