@@ -76,7 +76,7 @@ Now we can initialize the :class:`harmonica.EquivalentSources` class.
    equivalent_sources
 
 By default, it places the sources one beneath each data point at a relative
-depth from the elevation of the data point following [Cooper2000]_.
+depth from the elevation of the data point following [Cordell1992]_.
 This *relative depth* can be set through the ``depth`` argument.
 Deepest sources generate smoother predictions (*underfitting*), while shallow
 ones tend to overfit the data.

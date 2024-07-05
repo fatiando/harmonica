@@ -51,7 +51,7 @@ class EquivalentSources(vdb.BaseGridder):
     * Analytical derivative calculations
 
     By default, the point sources are located beneath the observed
-    potential-field measurement points [Cooper2000]_ that are passed as
+    potential-field measurement points [Cordell1992]_ that are passed as
     arguments to the :meth:`EquivalentSources.fit` method, producing the same
     number of sources as data points.
     Alternatively, we can reduce the number of sources by using block-averaged
@@ -105,7 +105,7 @@ class EquivalentSources(vdb.BaseGridder):
         Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
         If None, will place one point source below each observation point at
-        a fixed relative depth below the observation point [Cooper2000]_.
+        a fixed relative depth below the observation point [Cordell1992]_.
         Defaults to None.
     depth : float or "default"
         Parameter used to control the depth at which the point sources will be
