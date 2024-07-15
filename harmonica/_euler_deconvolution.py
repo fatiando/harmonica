@@ -12,7 +12,7 @@ class EulerDeconvolution:
     r"""
     Estimate source location and base level using Euler Deconvolution
 
-    Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source 
+    Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source
     location and a base level constant from potential field data and their
     directional derivatives. The approach employs linear least-squares to solve
     Euler's homogeneity equation. **Assumes a single data window** and provides
@@ -21,8 +21,8 @@ class EulerDeconvolution:
     Parameters
     ----------
     structural_index : int
-        Defines the nature of the source of the potential field data. It's the 
-        degree of the field's rate of change with distance from the source, 
+        Defines the nature of the source of the potential field data. It's the
+        degree of the field's rate of change with distance from the source,
         influencing the decay rate of the field and the formulation of Euler's
         homogeneity equation. **Correlated with the depth estimate**, so larger
         structural index will lead to larger depths. **Choose based on known
@@ -31,7 +31,7 @@ class EulerDeconvolution:
     Attributes
     ----------
     location_ : numpy.ndarray
-        Estimated (easting, northing, upward) coordinates of the source after 
+        Estimated (easting, northing, upward) coordinates of the source after
         model fitting.
     base_level_ : float
         Estimated base level constant of the anomaly after model fitting.

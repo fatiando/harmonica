@@ -68,7 +68,7 @@ def test_euler_with_analytic_derivatives():
     gz = point_gravity(coordinates, masses_coordinates, masses, field="g_z")
 
     # Convert Eötvös to mGal because derivatives must be in mGal/m
-    eotvos2mgal = 1.0e-4  
+    eotvos2mgal = 1.0e-4
     gzz = (
         -point_gravity(coordinates, masses_coordinates, masses, field="g_zz")
         * eotvos2mgal
