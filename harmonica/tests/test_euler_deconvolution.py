@@ -43,9 +43,6 @@ def test_euler_with_numeric_derivatives():
     grid["d_north"] = derivative_northing(grid.tfa)
     grid["d_up"] = derivative_upward(grid.tfa)
     grid_table = vd.grid_to_table(grid)
-    # Verde drops non-dimension coordinates so we have to add z back.
-    # This is a bug in Verde.
-    grid_table["upward"] = grid.upward.values.ravel()
 
     euler = EulerDeconvolution(structural_index=3)
 
