@@ -49,10 +49,7 @@ def test_euler_with_numeric_derivatives():
     coordinates = (grid_table.easting, grid_table.northing, grid_table.upward)
     euler.fit(
         (grid_table.easting, grid_table.northing, grid_table.upward),
-        grid_table.tfa,
-        grid_table.d_east,
-        grid_table.d_north,
-        grid_table.d_up,
+        (grid_table.tfa, grid_table.d_east, grid_table.d_north, grid_table.d_up),
     )
 
     npt.assert_allclose(euler.location_, dipole_coordinates, atol=1.0e-3, rtol=1.0e-3)
@@ -84,11 +81,8 @@ def test_euler_with_analytic_derivatives():
 
     euler = EulerDeconvolution(structural_index=2)
     euler.fit(
-        (coordinates[0].ravel(), coordinates[1].ravel(), coordinates[2].ravel()),
-        gz.ravel(),
-        gze.ravel(),
-        gzn.ravel(),
-        gzz.ravel(),
+        (coordinates[0], coordinates[1], coordinates[2]),
+        (gz, gze, gzn, gzz),
     )
 
     npt.assert_allclose(euler.location_, masses_coordinates, atol=1.0e-3, rtol=1.0e-3)
