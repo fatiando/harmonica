@@ -20,7 +20,6 @@ from .._spherical_harmonics.legendre import (
     associated_legendre_schmidt,
     associated_legendre_schmidt_derivative,
 )
-
 from .utils import run_only_with_numba
 
 
@@ -181,7 +180,8 @@ class BaseSchmidt:
                 (p**2).sum(axis=1), true_value, atol=1e-10, rtol=0
             )
 
-    # Not testing unnormalized ones because they only works until a very low degree
+    # Not testing unnormalized ones because they only work until a very
+    # low degree
     @pytest.mark.parametrize(
         "func,deriv",
         (
