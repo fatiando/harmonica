@@ -1,4 +1,4 @@
-name: harmonica
+name: harmonica-testing
 channels:
   - conda-forge
 dependencies:
@@ -19,7 +19,7 @@ dependencies:
   - choclo>=0.1
   # Optional requirements
   - pyvista
-  - vtk
+  - vtk>9.2.0=*qt*
   - numba-progress
   # Testing requirements
   - pytest
