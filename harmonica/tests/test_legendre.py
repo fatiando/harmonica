@@ -20,6 +20,7 @@ from .._spherical_harmonics.legendre import (
     associated_legendre_schmidt,
     associated_legendre_schmidt_derivative,
 )
+from .utils import run_only_with_numba
 
 
 def legendre_analytical(x):
@@ -44,6 +45,7 @@ def legendre_analytical(x):
     return p
 
 
+@pytest.mark.use_numba
 def legendre_derivative_analytical(x):
     """
     Analytical expressions for theta derivatives of unnormalized Legendre
@@ -93,6 +95,7 @@ def full_normalization(p):
                 )
 
 
+@pytest.mark.use_numba
 @pytest.mark.parametrize(
     "func,norm",
     (
@@ -119,6 +122,7 @@ def test_associated_legendre_function_analytical(func, norm):
                 np.testing.assert_allclose(p_analytical[n, m], p[n, m], atol=1e-10)
 
 
+@pytest.mark.use_numba
 @pytest.mark.parametrize(
     "func,deriv,norm",
     (
@@ -157,45 +161,62 @@ def test_associated_legendre_function_derivative_analytical(func, norm, deriv):
                 )
 
 
-def test_associated_legengre_function_schmidt_identity():
-    "Check Schmidt normalized functions against a known identity"
-    # Higher degrees than this yield bad results
-    max_degree = 2800
-    # The sum of the coefs squared for a degree should be 1
-    true_value = np.ones(max_degree + 1)
-    p = np.zeros((max_degree + 1, max_degree + 1))
-    for x in np.linspace(-1, 1, 50):
-        associated_legendre_schmidt(x, max_degree, p)
-        np.testing.assert_allclose((p**2).sum(axis=1), true_value, atol=1e-10, rtol=0)
+class BaseSchmidt:
+    """
+    Base class to run tests using Schmidt identity.
+
+    Child classes of this one need to define a ``max_degree`` attribute.
+    Degrees higher than 2800 lead to bad results.
+    """
+
+    def test_associated_legengre_function_schmidt_identity(self):
+        "Check Schmidt normalized functions against a known identity"
+        # The sum of the coefs squared for a degree should be 1
+        true_value = np.ones(self.max_degree + 1)
+        p = np.zeros((self.max_degree + 1, self.max_degree + 1))
+        for x in np.linspace(-1, 1, 50):
+            associated_legendre_schmidt(x, self.max_degree, p)
+            np.testing.assert_allclose(
+                (p**2).sum(axis=1), true_value, atol=1e-10, rtol=0
+            )
+
+    # Not testing unnormalized ones because they only work until a very
+    # low degree
+    @pytest.mark.parametrize(
+        "func,deriv",
+        (
+            (associated_legendre_schmidt, associated_legendre_schmidt_derivative),
+            (associated_legendre_full, associated_legendre_full_derivative),
+        ),
+        ids=["schmidt", "full"],
+    )
+    def test_associated_legengre_function_legendre_equation(self, func, deriv):
+        "Check functions and derivatives against the Legendre equation"
+        max_degree = self.max_degree
+        # Legendre equation should result in 0
+        true_value = np.zeros((max_degree + 1, max_degree + 1))
+        p = np.zeros((max_degree + 1, max_degree + 1))
+        dp = np.zeros((max_degree + 1, max_degree + 1))
+        dp2 = np.zeros((max_degree + 1, max_degree + 1))
+        index = np.arange(max_degree + 1).reshape((max_degree + 1, 1))
+        n = np.repeat(index, max_degree + 1, axis=1)
+        m = np.repeat(index.T, max_degree + 1, axis=0)
+        for angle in np.linspace(0.001, np.pi - 0.001, 10):
+            cos = np.cos(angle)
+            sin = np.sin(angle)
+            func(cos, max_degree, p)
+            deriv(max_degree, p, dp)
+            deriv(max_degree, dp, dp2)
+            legendre = sin * dp2 + cos * dp + (sin * n * (n + 1) - m**2 / sin) * p
+            np.testing.assert_allclose(
+                legendre, true_value, atol=1e-5, rtol=0, err_msg=f"angle={angle}"
+            )
 
 
-# Not testing unnormalized ones because they only works until a very low degree
-@pytest.mark.parametrize(
-    "func,deriv",
-    (
-        (associated_legendre_schmidt, associated_legendre_schmidt_derivative),
-        (associated_legendre_full, associated_legendre_full_derivative),
-    ),
-    ids=["schmidt", "full"],
-)
-def test_associated_legengre_function_legendre_equation(func, deriv):
-    "Check functions and derivatives against the Legendre equation"
+@run_only_with_numba
+class TestSchmidtHighDegree(BaseSchmidt):
     max_degree = 2800
-    # Legendre equation should result in 0
-    true_value = np.zeros((max_degree + 1, max_degree + 1))
-    p = np.zeros((max_degree + 1, max_degree + 1))
-    dp = np.zeros((max_degree + 1, max_degree + 1))
-    dp2 = np.zeros((max_degree + 1, max_degree + 1))
-    index = np.arange(max_degree + 1).reshape((max_degree + 1, 1))
-    n = np.repeat(index, max_degree + 1, axis=1)
-    m = np.repeat(index.T, max_degree + 1, axis=0)
-    for angle in np.linspace(0.001, np.pi - 0.001, 10):
-        cos = np.cos(angle)
-        sin = np.sin(angle)
-        func(cos, max_degree, p)
-        deriv(max_degree, p, dp)
-        deriv(max_degree, dp, dp2)
-        legendre = sin * dp2 + cos * dp + (sin * n * (n + 1) - m**2 / sin) * p
-        np.testing.assert_allclose(
-            legendre, true_value, atol=1e-5, rtol=0, err_msg=f"angle={angle}"
-        )
+
+
+class TestSchmidtLowDegree(BaseSchmidt):
+    max_degree = 30
