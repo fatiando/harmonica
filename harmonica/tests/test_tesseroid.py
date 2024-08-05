@@ -633,7 +633,13 @@ def spherical_shell_analytical(top, bottom, density, radius):
     homogeneous spherical shell
     """
     potential = (
-        4 / 3 * np.pi * GRAVITATIONAL_CONST * density * (top**3 - bottom**3) / radius
+        4
+        / 3
+        * np.pi
+        * GRAVITATIONAL_CONST
+        * density
+        * (top**3 - bottom**3)
+        / radius
     )
     analytical = {
         "potential": potential,

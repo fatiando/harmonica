@@ -66,7 +66,9 @@ def legendre_derivative_analytical(x):
     dp[3, 2] = 30 * cos**2 * sin - 15 * sin**3
     dp[3, 3] = 45 * sin**2 * cos
     dp[4, 0] = (15 * cos - 35 * cos**3) * sin / 2
-    dp[4, 1] = (35 * cos**4 - 15 * cos**2 + 15 * sin**2 - 105 * cos**2 * sin**2) / 2
+    dp[4, 1] = (
+        35 * cos**4 - 15 * cos**2 + 15 * sin**2 - 105 * cos**2 * sin**2
+    ) / 2
     dp[4, 2] = 105 * sin * cos**3 - 105 * cos * sin**3 - 15 * sin * cos
     dp[4, 3] = 315 * cos**2 * sin**2 - 105 * sin**4
     dp[4, 4] = 420 * sin**3 * cos

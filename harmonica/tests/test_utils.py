@@ -8,7 +8,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .. import magnetic_angles_to_vec, magnetic_vec_to_angles
+from .. import magnetic_angles_to_vec, magnetic_vec_to_angles, total_field_anomaly
 
 VECTORS = [
     [0.5, 0.5, -0.70710678],
@@ -114,3 +114,52 @@ def test_identity(arrays, start_with):
         npt.assert_almost_equal(
             magnetic_angles_to_vec(*angles), (magnetic_e, magnetic_n, magnetic_u)
         )
+
+
+@pytest.mark.parametrize("direction", ("easting", "northing", "upward"))
+def test_tfa(direction):
+    b = [30.0, -40.0, 50.0]
+    if direction == "easting":
+        inc, dec = 0.0, 90.0
+        expected_tfa = b[0]
+    elif direction == "northing":
+        inc, dec = 0.0, 0.0
+        expected_tfa = b[1]
+    else:
+        inc, dec = -90.0, 0.0
+        expected_tfa = b[2]
+    tfa = total_field_anomaly(b, inc, dec)
+    npt.assert_allclose(tfa, expected_tfa)
+
+
+@pytest.mark.parametrize("direction", ("easting", "northing", "upward"))
+def test_tfa_b_as_array(direction):
+    b = [[20, -30, -40, 50], [-60, 70, -80, 10], [21, -31, 41, -51]]
+    if direction == "easting":
+        inc, dec = 0.0, 90.0
+        expected_tfa = b[0]
+    elif direction == "northing":
+        inc, dec = 0.0, 0.0
+        expected_tfa = b[1]
+    else:
+        inc, dec = -90.0, 0.0
+        expected_tfa = b[2]
+    tfa = total_field_anomaly(b, inc, dec)
+    npt.assert_allclose(tfa, expected_tfa)
+
+
+def test_tfa_inc_dec_as_array():
+    be = [20.0, -30.0, -40.0, 50.0]
+    bn = [-60.0, 70.0, -80.0, 10.0]
+    bu = [21.0, -31.0, 41.0, -51.0]
+    b = [be, bn, bu]
+    inc = [0.0, 0.0, 45.0, -90.0]
+    dec = [90.0, 0.0, 45.0, 0.0]
+    tfa = total_field_anomaly(b, inc, dec)
+    expected_tfa = [
+        be[0],
+        bn[1],
+        0.5 * be[2] + 0.5 * bn[2] - 1 / np.sqrt(2) * bu[2],
+        bu[3],
+    ]
+    npt.assert_allclose(tfa, expected_tfa)
