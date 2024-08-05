@@ -131,7 +131,7 @@ with pygmt.config(FONT_TITLE="14p"):
         frame=[f"WSne+t{title}", "xa200000+a15", "ya100000"],
         x=easting,
         y=northing,
-        color=data.gravity_disturbance,
+        fill=data.gravity_disturbance,
         style="c0.1c",
         cmap=True,
     )
