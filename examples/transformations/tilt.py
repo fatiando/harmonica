@@ -63,8 +63,21 @@ tilt_rtp_grid = xrft.unpad(tilt_rtp_grid, pad_width)
 print("\nTilt from RTP:\n", tilt_rtp_grid)
 
 # Plot original magnetic anomaly, its RTP, and the tilt of both
+region = (
+    magnetic_grid.easting.values.min(),
+    magnetic_grid.easting.values.max(),
+    magnetic_grid.northing.values.min(),
+    magnetic_grid.northing.values.max(),
+)
 fig = pygmt.Figure()
-with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
+with fig.subplot(
+    nrows=2,
+    ncols=2,
+    subsize=("20c", "20c"),
+    sharex="b",
+    sharey="l",
+    margins=["1c", "1c"],
+):
     scale = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
     with fig.set_panel(panel=0):
         # Make colormap of data
@@ -74,7 +87,7 @@ with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
             grid=magnetic_grid,
             projection="X?",
             cmap=True,
-            # frame=["a", "+tMagnetic anomaly intensity (TMI)"],
+            frame=["a", "+tTotal field anomaly grid"],
         )
     with fig.set_panel(panel=1):
         # Make colormap of data
@@ -84,13 +97,15 @@ with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
             grid=rtp_grid,
             projection="X?",
             cmap=True,
-            # frame=["a", "+tTMI reduced to the pole (RTP)"],
+            frame=["a", "+tReduced to the pole (RTP)"],
         )
         # Add colorbar
+        label = "nT"
         fig.colorbar(
-            frame='af+l"Magnetic anomaly intensity [nT]"',
-            position="JMR+o1/1c+e",
+            frame=f"af+l{label}",
+            position="JMR+o1/-0.25c+e",
         )
+
     scale = 0.6 * vd.maxabs(tilt_grid, tilt_rtp_grid)
     with fig.set_panel(panel=2):
         # Make colormap for tilt (saturate it a little bit)
@@ -100,23 +115,22 @@ with fig.subplot(nrows=2, ncols=2, figsize=("28c", "30c"), sharey="l"):
             grid=tilt_grid,
             projection="X?",
             cmap=True,
-            # frame=["a", "+tTilt from TMI"],
+            frame=["a", "+tTilt of total field anomaly grid"],
         )
-        # Add colorbar
     with fig.set_panel(panel=3):
         # Make colormap for tilt rtp (saturate it a little bit)
-        scale = 0.6 * vd.maxabs(tilt_rtp_grid)
         pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
         # Plot tilt
         fig.grdimage(
             grid=tilt_rtp_grid,
             projection="X?",
             cmap=True,
-            # frame=["a", "+tTilt from RTP"],
+            frame=["a", "+tTilt of RTP grid"],
         )
         # Add colorbar
+        label = "rad"
         fig.colorbar(
-            frame='af+l"Tilt [rad]"',
-            position="JMR+o1/1c+e",
+            frame=f"af+l{label}",
+            position="JMR+o1/-0.25c+e",
         )
 fig.show()
