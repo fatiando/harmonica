@@ -6,7 +6,7 @@ Changelog
 Version 0.7.0
 -------------
 
-*Released on: 2024/08/13*
+*Released on: 2024/08/12*
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.13308312.svg
    :alt: Digital Object Identifier for the Zenodo archive
