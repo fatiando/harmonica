@@ -59,8 +59,8 @@ tilt_rtp_grid = hm.tilt_angle(rtp_grid_padded)
 # Unpad the tilt grid
 tilt_rtp_grid = xrft.unpad(tilt_rtp_grid, pad_width)
 
-# # Show the tilt from RTP
-# print("\nTilt from RTP:\n", tilt_rtp_grid)
+# Show the tilt from RTP
+print("\nTilt from RTP:\n", tilt_rtp_grid)
 
 # Plot original magnetic anomaly, its RTP, and the tilt of both
 fig = pygmt.Figure()
