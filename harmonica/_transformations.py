@@ -413,8 +413,8 @@ def tilt_angle(grid):
     Returns
     -------
     tilt_grid : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` after calculating the
-        tilt of the passed ``grid``.
+        A :class:`xarray.DataArray` with the calculated tilt
+        in radians.
 
     Notes
     -----
