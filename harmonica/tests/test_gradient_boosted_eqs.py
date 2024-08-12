@@ -434,3 +434,13 @@ def test_invalid_depth():
     msg = f"Found invalid 'depth' value equal to '{invalid_depth}'"
     with pytest.raises(ValueError, match=msg):
         EquivalentSourcesGB(depth=invalid_depth)
+
+
+def test_zero_depth():
+    """
+    Test if error is raised after passing zero for depth.
+    """
+    zero_depth = 0
+    msg = "Depth value cannot be zero. It should be a non-zero numeric value."
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSourcesGB(depth=zero_depth)
