@@ -2,56 +2,65 @@
 
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="../" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     
         <title>API Reference | Harmonica dev</title>
     
 
-    
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
-    
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/thebelab-helper.js"></script>
-    <script src="../_static/design-tabs.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
-    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="harmonica.bouguer_correction" href="generated/harmonica.bouguer_correction.html" />
@@ -60,698 +69,474 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
-      
-      
-      <img src="../_static/harmonica-logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Getting Started
- </span>
-</p>
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../overview.html">
-   Overview
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../install.html">
-   Installing
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../gallery/index.html">
-   Gallery
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/gravity_disturbance.html">
-     Gravity Disturbances
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/gravity_disturbance_topofree.html">
-     Topography-free (Bouguer) Gravity Disturbances
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/isostatic_moho_airy.html">
-     Airy Isostatic Moho
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">
-     Gridding with block-averaged equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/equivalent_sources/cartesian.html">
-     Gridding and upward continuation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/equivalent_sources/gradient_boosted.html">
-     Gradient-boosted equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/equivalent_sources/spherical.html">
-     Gridding in spherical coordinates
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/point_gravity.html">
-     Point Masses in Cartesian Coordinates
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/prism_layer.html">
-     Layer of prisms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/prisms_topo_gravity.html">
-     Gravitational effect of topography
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/tesseroid.html">
-     Tesseroids (spherical prisms)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/tesseroid_layer.html">
-     Layer of tesseroids
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">
-     Tesseroids with variable density
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/transformations/reduction_to_pole.html">
-     Reduction to the pole of a magnetic anomaly grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/transformations/upward_continuation.html">
-     Upward continuation of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/transformations/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/visualization/prism_layer_pyvista.html">
-     Plot a prism layer in 3D
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  User Guide
- </span>
-</p>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../user_guide/coordinate_systems.html">
-   Coordinate systems
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../user_guide/forward_modelling/index.html">
-   Forward modelling
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/forward_modelling/point.html">
-     Point sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/forward_modelling/prism.html">
-     Rectangular prisms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/forward_modelling/tesseroid.html">
-     Tesseroids
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../user_guide/gravity_disturbance.html">
-   Gravity Disturbance
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../user_guide/topographic_correction.html">
-   Topographic Correction
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../user_guide/equivalent_sources/index.html">
-   Equivalent Sources
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/equivalent_sources/eqs-parameters-estimation.html">
-     Estimating damping and depth parameters
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/equivalent_sources/block-averaged-eqs.html">
-     Block-averaged equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/equivalent_sources/gradient-boosted-eqs.html">
-     Gradient-boosted equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../user_guide/equivalent_sources/eq-sources-spherical.html">
-     Equivalent sources in spherical coordinates
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../user_guide/transformations.html">
-   Grid transformations
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Reference documentation
- </span>
-</p>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
-   API Reference
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.bouguer_correction.html">
-     harmonica.bouguer_correction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.derivative_easting.html">
-     harmonica.derivative_easting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.derivative_northing.html">
-     harmonica.derivative_northing
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.derivative_upward.html">
-     harmonica.derivative_upward
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.upward_continuation.html">
-     harmonica.upward_continuation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.gaussian_lowpass.html">
-     harmonica.gaussian_lowpass
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.gaussian_highpass.html">
-     harmonica.gaussian_highpass
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.reduction_to_pole.html">
-     harmonica.reduction_to_pole
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.derivative_easting_kernel.html">
-     harmonica.filters.derivative_easting_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.derivative_northing_kernel.html">
-     harmonica.filters.derivative_northing_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.derivative_upward_kernel.html">
-     harmonica.filters.derivative_upward_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.upward_continuation_kernel.html">
-     harmonica.filters.upward_continuation_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.gaussian_lowpass_kernel.html">
-     harmonica.filters.gaussian_lowpass_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.gaussian_highpass_kernel.html">
-     harmonica.filters.gaussian_highpass_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.filters.reduction_to_pole_kernel.html">
-     harmonica.filters.reduction_to_pole_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.EquivalentSources.html">
-     harmonica.EquivalentSources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.EquivalentSourcesGB.html">
-     harmonica.EquivalentSourcesGB
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.EquivalentSourcesSph.html">
-     harmonica.EquivalentSourcesSph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.point_gravity.html">
-     harmonica.point_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.prism_gravity.html">
-     harmonica.prism_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.tesseroid_gravity.html">
-     harmonica.tesseroid_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.prism_layer.html">
-     harmonica.prism_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.tesseroid_layer.html">
-     harmonica.tesseroid_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html">
-     harmonica.DatasetAccessorPrismLayer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html">
-     harmonica.DatasetAccessorTesseroidLayer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.isostatic_moho_airy.html">
-     harmonica.isostatic_moho_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.load_icgem_gdf.html">
-     harmonica.load_icgem_gdf
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.load_oasis_montaj_grid.html">
-     harmonica.load_oasis_montaj_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.visualization.prism_to_pyvista.html">
-     harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/harmonica.test.html">
-     harmonica.test
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../citing.html">
-   Citing Harmonica
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../changes.html">
-   Changelog
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../compatibility.html">
-   Version compatibility
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../versions.html">
-   Documentation for other versions
-  </a>
- </li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Community
- </span>
-</p>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference external" href="https://www.fatiando.org/contact">
-   Join the community
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
-   How to contribute
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
-   Code of Conduct
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica">
-   Source code on GitHub
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://www.fatiando.org">
-   The Fatiando a Terra project
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
-<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
-<div class="sbt-scroll-pixel-helper"></div>
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            <div class="topbar-left">
-                
-                <label class="nav-toggle-button" for="__navigation">
-                    <div class="visually-hidden">Toggle navigation</div>
-                    <i class="fas fa-bars"></i>
-                </label>
-                
-            </div>
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
         
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/api/index.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/edit/main/doc/api/index.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/index.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/index.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/api/index.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>API Reference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#gravity-corrections">
-   Gravity Corrections
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#grid-transformations">
-   Grid Transformations
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#frequency-domain-filters">
-   Frequency domain filters
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#equivalent-sources">
-   Equivalent Sources
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#forward-modelling">
-   Forward modelling
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#isostatic-moho">
-   Isostatic Moho
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input-and-output">
-   Input and Output
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#visualization">
-   Visualization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#utilities">
-   Utilities
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravity-corrections">Gravity Corrections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-transformations">Grid Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-filters">Frequency domain filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalent-sources">Equivalent Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-modelling">Forward modelling</a><ul class="nav section-nav flex-column">
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isostatic-moho">Isostatic Moho</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-position-estimation">Source position estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output">Input and Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>API Reference</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#gravity-corrections">
-   Gravity Corrections
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#grid-transformations">
-   Grid Transformations
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#frequency-domain-filters">
-   Frequency domain filters
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#equivalent-sources">
-   Equivalent Sources
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#forward-modelling">
-   Forward modelling
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#isostatic-moho">
-   Isostatic Moho
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input-and-output">
-   Input and Output
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#visualization">
-   Visualization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#utilities">
-   Utilities
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+              
                 
-  <div class="section" id="module-harmonica">
-<span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-harmonica" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="gravity-corrections">
-<h2>Gravity Corrections<a class="headerlink" href="#gravity-corrections" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-harmonica">
+<span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-harmonica" title="Link to this heading">#</a></h1>
+<section id="gravity-corrections">
+<h2>Gravity Corrections<a class="headerlink" href="#gravity-corrections" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.bouguer_correction.html#harmonica.bouguer_correction" title="harmonica.bouguer_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bouguer_correction</span></code></a>(topography[, ...])</p></td>
 <td><p>Gravitational effect of topography using a Bouguer plate approximation</p></td>
 </tr>
 </tbody>
 </table>
-<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
 </div>
-<div class="section" id="grid-transformations">
-<h2>Grid Transformations<a class="headerlink" href="#grid-transformations" title="Permalink to this headline">¶</a></h2>
+<p>For the Normal Earth correction, see package <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
+</section>
+<section id="grid-transformations">
+<h2>Grid Transformations<a class="headerlink" href="#grid-transformations" title="Link to this heading">#</a></h2>
 <p>Apply well known transformations regular gridded potential fields data.</p>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.derivative_easting.html#harmonica.derivative_easting" title="harmonica.derivative_easting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivative_easting</span></code></a>(grid[, order, method])</p></td>
 <td><p>Calculate the derivative of a regular grid in the easting direction</p></td>
@@ -774,17 +559,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole" title="harmonica.reduction_to_pole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction_to_pole</span></code></a>(grid, inclination, declination)</p></td>
 <td><p>Calculate the reduction to the pole of a magnetic field grid</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude" title="harmonica.total_gradient_amplitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_gradient_amplitude</span></code></a>(grid)</p></td>
+<td><p>Calculates the total gradient amplitude of a potential field grid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tilt_angle.html#harmonica.tilt_angle" title="harmonica.tilt_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tilt_angle</span></code></a>(grid)</p></td>
+<td><p>Calculates the tilt angle of a potential field grid</p></td>
+</tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="frequency-domain-filters">
-<h2>Frequency domain filters<a class="headerlink" href="#frequency-domain-filters" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="frequency-domain-filters">
+<h2>Frequency domain filters<a class="headerlink" href="#frequency-domain-filters" title="Link to this heading">#</a></h2>
 <p>Define filters in the frequency domain.</p>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel" title="harmonica.filters.derivative_easting_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filters.derivative_easting_kernel</span></code></a>(fft_grid)</p></td>
 <td><p>Filter for easting derivative in frequency domain</p></td>
@@ -809,16 +597,13 @@
 </tr>
 </tbody>
 </table>
-<p>Use <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.fft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.fft</span></code></a> and <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.ifft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.ifft</span></code></a> to apply Fast-Fourier
-Transforms and its inverse on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.2.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 </div>
-<div class="section" id="equivalent-sources">
-<h2>Equivalent Sources<a class="headerlink" href="#equivalent-sources" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<p>Use <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.fft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.fft</span></code></a> and <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.ifft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.ifft</span></code></a> to apply Fast-Fourier
+Transforms and its inverse on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+</section>
+<section id="equivalent-sources">
+<h2>Equivalent Sources<a class="headerlink" href="#equivalent-sources" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EquivalentSources</span></code></a>([damping, points, depth, ...])</p></td>
 <td><p>Equivalent sources for generic harmonic functions (gravity, magnetics).</p></td>
@@ -832,13 +617,11 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 </tbody>
 </table>
 </div>
-<div class="section" id="forward-modelling">
-<h2>Forward modelling<a class="headerlink" href="#forward-modelling" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+</section>
+<section id="forward-modelling">
+<h2>Forward modelling<a class="headerlink" href="#forward-modelling" title="Link to this heading">#</a></h2>
+<p>Gravity fields:</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.point_gravity.html#harmonica.point_gravity" title="harmonica.point_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_gravity</span></code></a>(coordinates, points, masses, field)</p></td>
 <td><p>Compute gravitational fields of point masses.</p></td>
@@ -849,28 +632,43 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity" title="harmonica.tesseroid_gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_gravity</span></code></a>(coordinates, tesseroids, ...)</p></td>
 <td><p>Compute gravitational field of tesseroids on computation points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layer</span></code></a>(coordinates, surface, reference)</p></td>
+</tbody>
+</table>
+</div>
+<p>Magnetic fields:</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.dipole_magnetic.html#harmonica.dipole_magnetic" title="harmonica.dipole_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dipole_magnetic</span></code></a>(coordinates, dipoles, ...[, ...])</p></td>
+<td><p>Magnetic field of dipoles in Cartesian coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.prism_magnetic.html#harmonica.prism_magnetic" title="harmonica.prism_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_magnetic</span></code></a>(coordinates, prisms, ...[, ...])</p></td>
+<td><p>Magnetic field of right-rectangular prisms in Cartesian coordinates</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Layers and meshes:</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layer</span></code></a>(coordinates, surface, reference)</p></td>
 <td><p>Create a layer of prisms of equal size</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer" title="harmonica.tesseroid_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_layer</span></code></a>(coordinates, surface, reference)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer" title="harmonica.tesseroid_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroid_layer</span></code></a>(coordinates, surface, reference)</p></td>
 <td><p>Create a layer of tesseroids of equal size</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer" title="harmonica.DatasetAccessorPrismLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismLayer</span></code></a>(xarray_obj)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer" title="harmonica.DatasetAccessorPrismLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorPrismLayer</span></code></a>(xarray_obj)</p></td>
 <td><p>Defines dataset accessor for layer of prisms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer</span></code></a>(xarray_obj)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer</span></code></a>(xarray_obj)</p></td>
 <td><p>Define dataset accessor for layer of tesseroids</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="isostatic-moho">
-<h2>Isostatic Moho<a class="headerlink" href="#isostatic-moho" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+</section>
+<section id="isostatic-moho">
+<h2>Isostatic Moho<a class="headerlink" href="#isostatic-moho" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy" title="harmonica.isostatic_moho_airy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isostatic_moho_airy</span></code></a>(basement[, layers, ...])</p></td>
 <td><p>Calculate the isostatic Moho depth using Airy's hypothesis.</p></td>
@@ -878,13 +676,21 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 </tbody>
 </table>
 </div>
-<div class="section" id="input-and-output">
-<h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+</section>
+<section id="source-position-estimation">
+<h2>Source position estimation<a class="headerlink" href="#source-position-estimation" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution" title="harmonica.EulerDeconvolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EulerDeconvolution</span></code></a>(structural_index)</p></td>
+<td><p>Estimate source location and base level using Euler Deconvolution</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="input-and-output">
+<h2>Input and Output<a class="headerlink" href="#input-and-output" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.load_icgem_gdf.html#harmonica.load_icgem_gdf" title="harmonica.load_icgem_gdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_icgem_gdf</span></code></a>(fname, **kwargs)</p></td>
 <td><p>Reads data from an ICGEM .gdf file.</p></td>
@@ -895,74 +701,138 @@ Transforms and its inverse on <a class="reference external" href="https://docs.x
 </tbody>
 </table>
 </div>
-<div class="section" id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.visualization.prism_to_pyvista.html#harmonica.visualization.prism_to_pyvista" title="harmonica.visualization.prism_to_pyvista"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualization.prism_to_pyvista</span></code></a>(prisms[, ...])</p></td>
-<td><p>Create a <a class="reference external" href="https://docs.pyvista.org/api/core/_autosummary/pyvista.UnstructuredGrid.html#pyvista.UnstructuredGrid" title="(in PyVista v0.38.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></a> out of prisms</p></td>
+<td><p>Create a <a class="reference external" href="https://docs.pyvista.org/api/core/_autosummary/pyvista.UnstructuredGrid.html#pyvista.UnstructuredGrid" title="(in PyVista v0.44.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></a> out of prisms</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="utilities">
-<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.test.html#harmonica.test" title="harmonica.test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></a>([doctest, verbose, coverage, figures])</p></td>
-<td><p>Run the test suite.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.magnetic_vec_to_angles.html#harmonica.magnetic_vec_to_angles" title="harmonica.magnetic_vec_to_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">magnetic_vec_to_angles</span></code></a>(magnetic_e, ...[, ...])</p></td>
+<td><p>Convert magnetic field vector to magnetic field angles</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/harmonica.magnetic_angles_to_vec.html#harmonica.magnetic_angles_to_vec" title="harmonica.magnetic_angles_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">magnetic_angles_to_vec</span></code></a>(intensity, ...)</p></td>
+<td><p>Convert magnetic field angles to magnetic field vector</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/harmonica.total_field_anomaly.html#harmonica.total_field_anomaly" title="harmonica.total_field_anomaly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_field_anomaly</span></code></a>(magnetic_field, ...)</p></td>
+<td><p>The total field anomaly from the anomalous magnetic field.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
+</section>
+</section>
 
 
-              </div>
+                </article>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../user_guide/transformations.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Grid transformations</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../user_guide/transformations.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Grid transformations</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="generated/harmonica.bouguer_correction.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="generated/harmonica.bouguer_correction.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">harmonica.bouguer_correction</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
+                </footer>
+              
+            </div>
             
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-        &copy; Copyright .<br/>
-      Last updated on Mar 02, 2023.<br/>
-  </p>
-</footer>
-</main>
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-      </div>
-    </div>
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravity-corrections">Gravity Corrections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-transformations">Grid Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-filters">Frequency domain filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalent-sources">Equivalent Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-modelling">Forward modelling</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isostatic-moho">Isostatic Moho</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-position-estimation">Source position estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output">Input and Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

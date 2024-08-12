@@ -2,56 +2,65 @@
 
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="../../" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     
         <title>Block-averaged equivalent sources | Harmonica dev</title>
     
 
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/thebelab-helper.js"></script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
-    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/equivalent_sources/block-averaged-eqs';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Gradient-boosted equivalent sources" href="gradient-boosted-eqs.html" />
@@ -60,573 +69,441 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
-      
-      
-      <img src="../../_static/harmonica-logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Harmonica <span class="project-version">dev</span></h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Getting Started
- </span>
-</p>
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../overview.html">
-   Overview
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../install.html">
-   Installing
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../gallery/index.html">
-   Gallery
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/gravity_disturbance.html">
-     Gravity Disturbances
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">
-     Topography-free (Bouguer) Gravity Disturbances
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/isostatic_moho_airy.html">
-     Airy Isostatic Moho
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">
-     Gridding with block-averaged equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">
-     Gridding and upward continuation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">
-     Gradient-boosted equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">
-     Gridding in spherical coordinates
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/point_gravity.html">
-     Point Masses in Cartesian Coordinates
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/prism_layer.html">
-     Layer of prisms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">
-     Gravitational effect of topography
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/tesseroid.html">
-     Tesseroids (spherical prisms)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">
-     Layer of tesseroids
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">
-     Tesseroids with variable density
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">
-     Reduction to the pole of a magnetic anomaly grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/transformations/upward_continuation.html">
-     Upward continuation of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/transformations/upward_derivative.html">
-     Upward derivative of a regular grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">
-     Plot a prism layer in 3D
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  User Guide
- </span>
-</p>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../coordinate_systems.html">
-   Coordinate systems
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../forward_modelling/index.html">
-   Forward modelling
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../forward_modelling/point.html">
-     Point sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../forward_modelling/prism.html">
-     Rectangular prisms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../forward_modelling/tesseroid.html">
-     Tesseroids
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../gravity_disturbance.html">
-   Gravity Disturbance
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../topographic_correction.html">
-   Topographic Correction
-  </a>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="index.html">
-   Equivalent Sources
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="eqs-parameters-estimation.html">
-     Estimating damping and depth parameters
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Block-averaged equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="gradient-boosted-eqs.html">
-     Gradient-boosted equivalent sources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="eq-sources-spherical.html">
-     Equivalent sources in spherical coordinates
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../transformations.html">
-   Grid transformations
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../forward_modelling/tesseroid.html">Tesseroids</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Reference documentation
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../api/index.html">
-   API Reference
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.bouguer_correction.html">
-     harmonica.bouguer_correction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.derivative_easting.html">
-     harmonica.derivative_easting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.derivative_northing.html">
-     harmonica.derivative_northing
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.derivative_upward.html">
-     harmonica.derivative_upward
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.upward_continuation.html">
-     harmonica.upward_continuation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.gaussian_lowpass.html">
-     harmonica.gaussian_lowpass
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.gaussian_highpass.html">
-     harmonica.gaussian_highpass
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.reduction_to_pole.html">
-     harmonica.reduction_to_pole
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.derivative_easting_kernel.html">
-     harmonica.filters.derivative_easting_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.derivative_northing_kernel.html">
-     harmonica.filters.derivative_northing_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.derivative_upward_kernel.html">
-     harmonica.filters.derivative_upward_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.upward_continuation_kernel.html">
-     harmonica.filters.upward_continuation_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">
-     harmonica.filters.gaussian_lowpass_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">
-     harmonica.filters.gaussian_highpass_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">
-     harmonica.filters.reduction_to_pole_kernel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">
-     harmonica.EquivalentSources
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">
-     harmonica.EquivalentSourcesGB
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">
-     harmonica.EquivalentSourcesSph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">
-     harmonica.point_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">
-     harmonica.prism_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">
-     harmonica.tesseroid_gravity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">
-     harmonica.prism_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">
-     harmonica.tesseroid_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">
-     harmonica.DatasetAccessorPrismLayer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">
-     harmonica.DatasetAccessorTesseroidLayer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">
-     harmonica.isostatic_moho_airy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">
-     harmonica.load_icgem_gdf
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">
-     harmonica.load_oasis_montaj_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">
-     harmonica.visualization.prism_to_pyvista
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/harmonica.test.html">
-     harmonica.test
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../citing.html">
-   Citing Harmonica
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../changes.html">
-   Changelog
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../compatibility.html">
-   Version compatibility
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../versions.html">
-   Documentation for other versions
-  </a>
- </li>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Equivalent Sources</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Community
- </span>
-</p>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference external" href="https://www.fatiando.org/contact">
-   Join the community
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">
-   How to contribute
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">
-   Code of Conduct
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/fatiando/harmonica">
-   Source code on GitHub
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://www.fatiando.org">
-   The Fatiando a Terra project
-  </a>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
-<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
-<div class="sbt-scroll-pixel-helper"></div>
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            <div class="topbar-left">
-                
-                <label class="nav-toggle-button" for="__navigation">
-                    <div class="visually-hidden">Toggle navigation</div>
-                    <i class="fas fa-bars"></i>
-                </label>
-                
-            </div>
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
         
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/user_guide/equivalent_sources/block-averaged-eqs.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/edit/main/doc/user_guide/equivalent_sources/block-averaged-eqs.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fuser_guide/equivalent_sources/block-averaged-eqs.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/harmonica"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fuser_guide/equivalent_sources/block-averaged-eqs.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/harmonica/edit/main/doc/user_guide/equivalent_sources/block-averaged-eqs.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/user_guide/equivalent_sources/block-averaged-eqs.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Block-averaged equivalent sources</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Block-averaged equivalent sources</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+
+              
                 
-  <div class="section" id="block-averaged-equivalent-sources">
-<span id="block-averaged-eqs"></span><h1>Block-averaged equivalent sources<a class="headerlink" href="#block-averaged-equivalent-sources" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="block-averaged-equivalent-sources">
+<span id="block-averaged-eqs"></span><h1>Block-averaged equivalent sources<a class="headerlink" href="#block-averaged-equivalent-sources" title="Link to this heading">#</a></h1>
 <p>When we introduced the <a class="reference internal" href="index.html#equivalent-sources"><span class="std std-ref">Equivalent Sources</span></a> we saw that
 by default the <a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources" title="harmonica.EquivalentSources"><code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.EquivalentSources</span></code></a> class locates one point
 source beneath each data point during the fitting process, following
-<a class="reference internal" href="../../references.html#cooper2000" id="id1"><span>[Cooper2000]</span></a>.</p>
+<a class="reference internal" href="../../references.html#cordell1992" id="id1"><span>[Cordell1992]</span></a>.</p>
 <p>Alternatively, we can use another strategy: the <em>block-averaged sources</em>,
 introduced in <a class="reference internal" href="../../references.html#soler2021" id="id2"><span>[Soler2021]</span></a>.
 This method divides the survey region (defined by the data) into square blocks
@@ -648,7 +525,7 @@ surveys with oversampling along a particular direction, like airborne ones.</p><
 <p>Lets load some total-field magnetic data over Great Britain:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">fname</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_britain_magnetic</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -793,7 +670,7 @@ surveys with oversampling along a particular direction, like airborne ones.</p><
 the data:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 
 <span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">5.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.7</span><span class="p">,</span> <span class="mf">57.8</span><span class="p">,</span> <span class="mf">58.5</span><span class="p">)</span>
 <span class="n">inside</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">inside</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">region</span><span class="p">)</span>
@@ -934,10 +811,10 @@ the data:</p>
 <p>7054 rows × 6 columns</p>
 </div></div></div>
 </div>
-<p>And project the geographic coordiantes to plain Cartesian ones:</p>
+<p>And project the geographic coordinates to plain Cartesian ones:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
 
 <span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -949,9 +826,13 @@ the data:</p>
 <div class="cell_output docutils container">
 </div>
 </div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+</div>
+</div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
 
 <span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">)</span><span class="o">*</span><span class="mf">.8</span>
 
@@ -980,7 +861,7 @@ the data:</p>
         <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;WSne+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;xa10000&quot;</span><span class="p">,</span> <span class="s2">&quot;ya10000&quot;</span><span class="p">],</span>
         <span class="n">x</span><span class="o">=</span><span class="n">easting</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="n">northing</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">,</span>
+        <span class="n">fill</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">,</span>
         <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
@@ -990,7 +871,7 @@ the data:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/block-averaged-eqs_3_0.png" src="../../_images/block-averaged-eqs_3_0.png" />
+<img alt="../../_images/block-averaged-eqs_4_0.png" src="../../_images/block-averaged-eqs_4_0.png" />
 </div>
 </div>
 <p>Most airborne surveys like this one present an anysotropic distribution of the
@@ -1004,29 +885,19 @@ creating a <a class="reference internal" href="../../api/generated/harmonica.Equ
 the blocks through the <code class="docutils literal notranslate"><span class="pre">block_size</span></code> parameter.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
 
-<span class="n">eqs</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSources</span><span class="p">(</span>
-    <span class="n">depth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">depth_type</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span>
-<span class="p">)</span>
+<span class="n">eqs</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSources</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>These sources were set at a constant depth of 1km bellow the zeroth height and
-with a <code class="docutils literal notranslate"><span class="pre">damping</span></code> equal to 1. See how you can choose values for these
-parameters in <a class="reference internal" href="eqs-parameters-estimation.html#eqs-parameters-estimation"><span class="std std-ref">Estimating damping and depth parameters</span></a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The depth of the sources can be set analogously to the regular equivalent
-sources: we can use a <code class="docutils literal notranslate"><span class="pre">constant</span></code> depth (every source is located at the same
-depth) or a <code class="docutils literal notranslate"><span class="pre">relative</span></code> depth (where each source is located at a constant
-shift beneath the median location obtained during the block-averaging process).
-The depth of the sources and which strategy to use can be set up through the
-<code class="docutils literal notranslate"><span class="pre">depth</span></code> and the <code class="docutils literal notranslate"><span class="pre">depth_type</span></code> parameters, respectively.</p>
-</div>
+<p>These sources were set at a depth of 1km below the average height of the data
+points inside each block. The <code class="docutils literal notranslate"><span class="pre">damping</span></code> is equal to 1 to avoid overfitting
+the data. See how you can choose values for these parameters in
+<a class="reference internal" href="eqs-parameters-estimation.html#eqs-parameters-estimation"><span class="std std-ref">Estimating damping and depth parameters</span></a>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>We recommend using a <code class="docutils literal notranslate"><span class="pre">block_size</span></code> not larger than the desired resolution
@@ -1036,12 +907,416 @@ of the interpolation grid.</p>
 step the point sources are created through the block averaging process.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>EquivalentSources(block_size=500, damping=1, depth=1000, depth_type=&#x27;constant&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">EquivalentSources</label><div class="sk-toggleable__content"><pre>EquivalentSources(block_size=500, damping=1, depth=1000, depth_type=&#x27;constant&#x27;)</pre></div></div></div></div></div></div></div>
+<div class="output text_html"><style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>EquivalentSources(block_size=500, damping=1, depth=1000)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;EquivalentSources<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>EquivalentSources(block_size=500, damping=1, depth=1000)</pre></div> </div></div></div></div></div></div>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1049,7 +1324,7 @@ step the point sources are created through the block averaging process.</p>
 attribute. Lets see how many sources it created:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">points_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">points_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
 </pre></div>
 </div>
 </div>
@@ -1067,7 +1342,7 @@ m height. Since the maximum height of the observation points is around 1000 m
 we are efectivelly upward continuing the data.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid_coords</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_coords</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span>
     <span class="n">spacing</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
     <span class="n">extra_coords</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span>
@@ -1109,6 +1384,7 @@ we are efectivelly upward continuing the data.</p>
 }
 
 html[theme=dark],
+html[data-theme=dark],
 body[data-theme=dark],
 body.vscode-dark {
   --xr-font-color0: rgba(255, 255, 255, 1);
@@ -1441,16 +1717,16 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
-</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 241kB
 Dimensions:           (northing: 157, easting: 95)
 Coordinates:
-  * easting           (easting) float64 -3.24e+05 -3.235e+05 ... -2.769e+05
-  * northing          (northing) float64 4.175e+06 4.176e+06 ... 4.253e+06
-    upward            (northing, easting) float64 1.5e+03 1.5e+03 ... 1.5e+03
+  * easting           (easting) float64 760B -3.24e+05 -3.235e+05 ... -2.769e+05
+  * northing          (northing) float64 1kB 4.175e+06 4.176e+06 ... 4.253e+06
+    upward            (northing, easting) float64 119kB 1.5e+03 ... 1.5e+03
 Data variables:
-    magnetic_anomaly  (northing, easting) float64 28.68 28.71 ... 167.5 157.7
+    magnetic_anomaly  (northing, easting) float64 119kB 30.31 30.5 ... 151.0
 Attributes:
-    metadata:  Generated by EquivalentSources(block_size=500, damping=1, dept...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-e5b7a38e-f392-4bcb-837c-6f2a9c8244e9' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-e5b7a38e-f392-4bcb-837c-6f2a9c8244e9' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 157</li><li><span class='xr-has-index'>easting</span>: 95</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-60b67a3f-7d1e-4f6c-904a-306218e3e972' class='xr-section-summary-in' type='checkbox'  checked><label for='section-60b67a3f-7d1e-4f6c-904a-306218e3e972' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.24e+05 -3.235e+05 ... -2.769e+05</div><input id='attrs-a938588d-c211-46c8-8e70-b4b4e4fa4ca8' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a938588d-c211-46c8-8e70-b4b4e4fa4ca8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8a3e38ab-c3a0-488d-8f9e-9fd76d11236b' class='xr-var-data-in' type='checkbox'><label for='data-8a3e38ab-c3a0-488d-8f9e-9fd76d11236b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-324001.54862 , -323500.364776, -322999.180932, -322497.997088,
+    metadata:  Generated by EquivalentSources(block_size=500, damping=1, dept...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-4d631279-4c45-4162-a835-f67735c177d7' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-4d631279-4c45-4162-a835-f67735c177d7' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 157</li><li><span class='xr-has-index'>easting</span>: 95</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-bea67ed1-3de8-4202-8b1d-43e81576383f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-bea67ed1-3de8-4202-8b1d-43e81576383f' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.24e+05 -3.235e+05 ... -2.769e+05</div><input id='attrs-5169086b-0a65-443b-b11f-43ac2fa695f2' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5169086b-0a65-443b-b11f-43ac2fa695f2' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-22d70a0f-07c4-40c8-828e-5c6bf53fb758' class='xr-var-data-in' type='checkbox'><label for='data-22d70a0f-07c4-40c8-828e-5c6bf53fb758' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-324001.54862 , -323500.364776, -322999.180932, -322497.997088,
        -321996.813244, -321495.6294  , -320994.445556, -320493.261712,
        -319992.077868, -319490.894024, -318989.71018 , -318488.526336,
        -317987.342492, -317486.158648, -316984.974804, -316483.79096 ,
@@ -1473,7 +1749,7 @@ Attributes:
        -283906.8411  , -283405.657256, -282904.473412, -282403.289568,
        -281902.105724, -281400.92188 , -280899.738036, -280398.554192,
        -279897.370348, -279396.186504, -278895.00266 , -278393.818816,
-       -277892.634972, -277391.451128, -276890.267284])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>4.175e+06 4.176e+06 ... 4.253e+06</div><input id='attrs-7c8ed351-90ef-4664-b48c-8fd6bfbb4c2a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7c8ed351-90ef-4664-b48c-8fd6bfbb4c2a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3f4b3416-e0d1-4205-b731-528530a0f6ce' class='xr-var-data-in' type='checkbox'><label for='data-3f4b3416-e0d1-4205-b731-528530a0f6ce' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([4175067.781431, 4175567.603835, 4176067.426239, 4176567.248643,
+       -277892.634972, -277391.451128, -276890.267284])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>4.175e+06 4.176e+06 ... 4.253e+06</div><input id='attrs-666cdfe3-af1a-4324-86ef-5e2857396d74' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-666cdfe3-af1a-4324-86ef-5e2857396d74' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-88808e1e-2280-45fb-ad86-ab24242a04f6' class='xr-var-data-in' type='checkbox'><label for='data-88808e1e-2280-45fb-ad86-ab24242a04f6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([4175067.781431, 4175567.603835, 4176067.426239, 4176567.248643,
        4177067.071047, 4177566.893451, 4178066.715855, 4178566.538259,
        4179066.360663, 4179566.183067, 4180066.005471, 4180565.827876,
        4181065.65028 , 4181565.472684, 4182065.295088, 4182565.117492,
@@ -1512,70 +1788,70 @@ Attributes:
        4247042.207616, 4247542.03002 , 4248041.852424, 4248541.674828,
        4249041.497232, 4249541.319636, 4250041.14204 , 4250540.964444,
        4251040.786848, 4251540.609252, 4252040.431656, 4252540.25406 ,
-       4253040.076464])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>upward</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.5e+03 1.5e+03 ... 1.5e+03 1.5e+03</div><input id='attrs-6c0cbc22-b6eb-489f-9381-5cfce4c62abf' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6c0cbc22-b6eb-489f-9381-5cfce4c62abf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-30e14aec-1ac2-46ca-a0fb-6f0154b0ad01' class='xr-var-data-in' type='checkbox'><label for='data-30e14aec-1ac2-46ca-a0fb-6f0154b0ad01' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[1500., 1500., 1500., ..., 1500., 1500., 1500.],
+       4253040.076464])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>upward</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.5e+03 1.5e+03 ... 1.5e+03 1.5e+03</div><input id='attrs-5bd30bf8-c022-4bff-af06-6948a7df975e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5bd30bf8-c022-4bff-af06-6948a7df975e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-998748a3-8b99-4aeb-9468-f0e882467b17' class='xr-var-data-in' type='checkbox'><label for='data-998748a3-8b99-4aeb-9468-f0e882467b17' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[1500., 1500., 1500., ..., 1500., 1500., 1500.],
        [1500., 1500., 1500., ..., 1500., 1500., 1500.],
        [1500., 1500., 1500., ..., 1500., 1500., 1500.],
        ...,
        [1500., 1500., 1500., ..., 1500., 1500., 1500.],
        [1500., 1500., 1500., ..., 1500., 1500., 1500.],
-       [1500., 1500., 1500., ..., 1500., 1500., 1500.]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-2db15a47-36e1-4b79-aca9-c29e9b3d9a2b' class='xr-section-summary-in' type='checkbox'  checked><label for='section-2db15a47-36e1-4b79-aca9-c29e9b3d9a2b' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>magnetic_anomaly</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>28.68 28.71 28.68 ... 167.5 157.7</div><input id='attrs-4bd1fe63-5130-4799-bd49-9aaea485279a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-4bd1fe63-5130-4799-bd49-9aaea485279a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b3f0a890-0faa-4aa7-8489-1247376288fa' class='xr-var-data-in' type='checkbox'><label for='data-b3f0a890-0faa-4aa7-8489-1247376288fa' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by EquivalentSources(block_size=500, damping=1, depth=1000, depth_type=&#x27;constant&#x27;)</dd></dl></div><div class='xr-var-data'><pre>array([[  28.67794093,   28.70902862,   28.67531194, ...,  -40.4288177 ,
-         -41.63671138,  -41.70466688],
-       [  28.42593352,   28.15010485,   27.70229419, ...,  -46.36629196,
-         -47.54835635,  -47.30391268],
-       [  28.08726452,   27.65547081,   26.96106854, ...,  -52.05879178,
-         -53.25362026,  -52.73096297],
+       [1500., 1500., 1500., ..., 1500., 1500., 1500.]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-26b7f3a4-b490-49c2-a8f3-644d4913557f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-26b7f3a4-b490-49c2-a8f3-644d4913557f' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>magnetic_anomaly</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>30.31 30.5 30.78 ... 161.6 151.0</div><input id='attrs-a9e88a7f-34cf-4961-9322-78608d91fef3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a9e88a7f-34cf-4961-9322-78608d91fef3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0a6907cf-2855-4e43-9a4b-068a2b4a085b' class='xr-var-data-in' type='checkbox'><label for='data-0a6907cf-2855-4e43-9a4b-068a2b4a085b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by EquivalentSources(block_size=500, damping=1, depth=1000)</dd></dl></div><div class='xr-var-data'><pre>array([[  30.31003313,   30.49654102,   30.7823292 , ...,  -31.96379805,
+         -32.56790533,  -32.12304918],
+       [  30.06327417,   29.86619023,   29.71075788, ...,  -38.74067359,
+         -39.18710613,  -38.13022937],
+       [  29.95695104,   29.42992858,   28.88405137, ...,  -45.99698021,
+         -46.30898677,  -44.49734899],
        ...,
-       [ -99.38643972, -102.59126519, -105.22124717, ...,  189.92893309,
-         179.42484501,  169.44227383],
-       [ -95.13160137,  -98.03214091, -100.5075938 , ...,  184.80774639,
-         173.80268995,  163.78538101],
-       [ -90.84441423,  -93.456212  ,  -95.76492836, ...,  178.59065885,
-         167.53468387,  157.72824814]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1c3183fb-3e48-4ce5-a359-ae9b4d086f9c' class='xr-section-summary-in' type='checkbox'  ><label for='section-1c3183fb-3e48-4ce5-a359-ae9b4d086f9c' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>easting</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-ba3b6a38-f713-4356-815f-41b630f1dfe7' class='xr-index-data-in' type='checkbox'/><label for='index-ba3b6a38-f713-4356-815f-41b630f1dfe7' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Float64Index([-324001.54862008226,  -323500.3647760797, -322999.18093207723,
-               -322497.9970880747, -321996.81324407214,  -321495.6294000696,
-               -320994.4455560671, -320493.26171206456,   -319992.077868062,
-               -319490.8940240595,   -318989.710180057, -318488.52633605443,
-              -317987.34249205195,  -317486.1586480494, -316984.97480404685,
-               -316483.7909600443,  -315982.6071160418,  -315481.4232720393,
-              -314980.23942803673, -314479.05558403424,  -313977.8717400317,
-              -313476.68789602915, -312975.50405202666,  -312474.3202080241,
-               -311973.1363640216,   -311471.952520019, -310970.76867601654,
-                -310469.584832014, -309968.40098801145, -309467.21714400896,
-               -308966.0333000064, -308464.84945600387,  -307963.6656120014,
-              -307462.48176799883,  -306961.2979239963, -306460.11407999374,
-              -305958.93023599125,  -305457.7463919887, -304956.56254798616,
-               -304455.3787039837, -303954.19485998113,  -303453.0110159786,
-               -302951.8271719761, -302450.64332797355,   -301949.459483971,
-              -301448.27563996846,   -300947.091795966,  -300445.9079519634,
-               -299944.7241079609,  -299443.5402639584, -298942.35641995585,
-               -298441.1725759533, -297939.98873195075, -297438.80488794827,
-               -296937.6210439457,  -296436.4371999432,  -295935.2533559407,
-              -295434.06951193814,  -294932.8856679356,  -294431.7018239331,
-              -293930.51797993056,   -293429.334135928, -292928.15029192547,
-                -292426.966447923, -291925.78260392044,  -291424.5987599179,
-               -290923.4149159154, -290422.23107191286,  -289921.0472279103,
-               -289419.8633839078,  -288918.6795399053, -288417.49569590273,
-               -287916.3118519002,  -287415.1280078977, -286913.94416389515,
-               -286412.7603198926,  -285911.5764758901,  -285410.3926318876,
-                -284909.208787885,  -284408.0249438825,    -283906.84109988,
-              -283405.65725587745,  -282904.4734118749,  -282403.2895678724,
-              -281902.10572386987,  -281400.9218798673, -280899.73803586484,
-               -280398.5541918623, -279897.37034785975, -279396.18650385726,
-               -278895.0026598547, -278393.81881585217,  -277892.6349718496,
-              -277391.45112784713,  -276890.2672838446],
-             dtype=&#x27;float64&#x27;, name=&#x27;easting&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>northing</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-59471cf9-e7cb-449a-8437-aceae79c9efa' class='xr-index-data-in' type='checkbox'/><label for='index-59471cf9-e7cb-449a-8437-aceae79c9efa' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Float64Index([4175067.7814308777,  4175567.603834939, 4176067.4262390006,
-               4176567.248643062,  4177067.071047124, 4177566.8934511854,
-               4178066.715855247, 4178566.5382593083, 4179066.3606633698,
-              4179566.1830674317,
-              ...
-               4248541.674827921,  4249041.497231983,  4249541.319636044,
-               4250041.142040106,  4250540.964444168,  4251040.786848229,
-               4251540.609252291,  4252040.431656352,  4252540.254060414,
-               4253040.076464475],
-             dtype=&#x27;float64&#x27;, name=&#x27;northing&#x27;, length=157))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-e763084e-56c5-41ce-a26c-9ccb7f19eb0f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-e763084e-56c5-41ce-a26c-9ccb7f19eb0f' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by EquivalentSources(block_size=500, damping=1, depth=1000, depth_type=&#x27;constant&#x27;)</dd></dl></div></li></ul></div></div></div></div>
+       [ -95.23980312,  -98.54776027, -101.26884606, ...,  185.81556536,
+         174.64451844,  163.64177385],
+       [ -90.91540985,  -93.86388719,  -96.40439275, ...,  180.19267243,
+         168.58848242,  157.57748055],
+       [ -86.64924048,  -89.27198246,  -91.62034733, ...,  173.10071854,
+         161.62414987,  150.97713403]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1e62f74a-234a-4b57-a8c3-472f3d54ee10' class='xr-section-summary-in' type='checkbox'  ><label for='section-1e62f74a-234a-4b57-a8c3-472f3d54ee10' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>easting</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-2b000951-a135-47f9-84f4-0d387b0518af' class='xr-index-data-in' type='checkbox'/><label for='index-2b000951-a135-47f9-84f4-0d387b0518af' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-324001.54862008226,  -323500.3647760797, -322999.18093207723,
+        -322497.9970880747, -321996.81324407214,  -321495.6294000696,
+        -320994.4455560671, -320493.26171206456,   -319992.077868062,
+        -319490.8940240595,   -318989.710180057, -318488.52633605443,
+       -317987.34249205195,  -317486.1586480494, -316984.97480404685,
+        -316483.7909600443,  -315982.6071160418,  -315481.4232720393,
+       -314980.23942803673, -314479.05558403424,  -313977.8717400317,
+       -313476.68789602915, -312975.50405202666,  -312474.3202080241,
+        -311973.1363640216,   -311471.952520019, -310970.76867601654,
+         -310469.584832014, -309968.40098801145, -309467.21714400896,
+        -308966.0333000064, -308464.84945600387,  -307963.6656120014,
+       -307462.48176799883,  -306961.2979239963, -306460.11407999374,
+       -305958.93023599125,  -305457.7463919887, -304956.56254798616,
+        -304455.3787039837, -303954.19485998113,  -303453.0110159786,
+        -302951.8271719761, -302450.64332797355,   -301949.459483971,
+       -301448.27563996846,   -300947.091795966,  -300445.9079519634,
+        -299944.7241079609,  -299443.5402639584, -298942.35641995585,
+        -298441.1725759533, -297939.98873195075, -297438.80488794827,
+        -296937.6210439457,  -296436.4371999432,  -295935.2533559407,
+       -295434.06951193814,  -294932.8856679356,  -294431.7018239331,
+       -293930.51797993056,   -293429.334135928, -292928.15029192547,
+         -292426.966447923, -291925.78260392044,  -291424.5987599179,
+        -290923.4149159154, -290422.23107191286,  -289921.0472279103,
+        -289419.8633839078,  -288918.6795399053, -288417.49569590273,
+        -287916.3118519002,  -287415.1280078977, -286913.94416389515,
+        -286412.7603198926,  -285911.5764758901,  -285410.3926318876,
+         -284909.208787885,  -284408.0249438825,    -283906.84109988,
+       -283405.65725587745,  -282904.4734118749,  -282403.2895678724,
+       -281902.10572386987,  -281400.9218798673, -280899.73803586484,
+        -280398.5541918623, -279897.37034785975, -279396.18650385726,
+        -278895.0026598547, -278393.81881585217,  -277892.6349718496,
+       -277391.45112784713,  -276890.2672838446],
+      dtype=&#x27;float64&#x27;, name=&#x27;easting&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>northing</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-d4ab7c87-d850-4d48-bb0c-5b97682cfdd4' class='xr-index-data-in' type='checkbox'/><label for='index-d4ab7c87-d850-4d48-bb0c-5b97682cfdd4' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([4175067.7814308777,  4175567.603834939, 4176067.4262390006,
+        4176567.248643062,  4177067.071047124, 4177566.8934511854,
+        4178066.715855247, 4178566.5382593083, 4179066.3606633698,
+       4179566.1830674317,
+       ...
+        4248541.674827921,  4249041.497231983,  4249541.319636044,
+        4250041.142040106,  4250540.964444168,  4251040.786848229,
+        4251540.609252291,  4252040.431656352,  4252540.254060414,
+        4253040.076464475],
+      dtype=&#x27;float64&#x27;, name=&#x27;northing&#x27;, length=157))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-9d9d989e-ab1b-4f92-9bb6-067a623777ae' class='xr-section-summary-in' type='checkbox'  checked><label for='section-9d9d989e-ab1b-4f92-9bb6-067a623777ae' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by EquivalentSources(block_size=500, damping=1, depth=1000)</dd></dl></div></li></ul></div></div></div></div>
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
 
 <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Observed magnetic anomaly data&quot;</span>
 <span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
@@ -1590,7 +1866,7 @@ Attributes:
         <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;WSne+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;xa10000&quot;</span><span class="p">,</span> <span class="s2">&quot;ya10000&quot;</span><span class="p">],</span>
         <span class="n">x</span><span class="o">=</span><span class="n">easting</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="n">northing</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">,</span>
+        <span class="n">fill</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span><span class="p">,</span>
         <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
@@ -1613,49 +1889,107 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/block-averaged-eqs_8_0.png" src="../../_images/block-averaged-eqs_8_0.png" />
+<img alt="../../_images/block-averaged-eqs_9_0.png" src="../../_images/block-averaged-eqs_9_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference download internal" download="" href="../../_downloads/fdbda62da95b0d31be01517026c20440/block-averaged-eqs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">script</span></code></a></div>
 </div>
 </div>
 </div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference download internal" download="" href="../../_downloads/1f7576c73bc5880a61a9d7907166c9e9/block-averaged-eqs.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
 
-              </div>
+                </article>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="eqs-parameters-estimation.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Estimating damping and depth parameters</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="eqs-parameters-estimation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Estimating damping and depth parameters</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="gradient-boosted-eqs.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="gradient-boosted-eqs.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Gradient-boosted equivalent sources</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
+                </footer>
+              
+            </div>
             
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-        &copy; Copyright .<br/>
-      Last updated on Mar 02, 2023.<br/>
-  </p>
-</footer>
-</main>
-
-
-      </div>
-    </div>
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

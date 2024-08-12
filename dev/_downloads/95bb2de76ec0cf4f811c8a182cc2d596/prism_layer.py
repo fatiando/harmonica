@@ -15,7 +15,7 @@ to create a layer of prisms: a regular grid of prisms of equal size on the
 horizontal directions with variable top and bottom boundaries. It returns
 a :class:`xarray.Dataset` with the coordinates of the centers of the prisms and
 their corresponding physical properties.
-The :class:`harmonica.DatasetAccessorPrismsLayer` Dataset accessor can be used
+The :class:`harmonica.DatasetAccessorPrismLayer` Dataset accessor can be used
 to obtain some properties of the layer like its shape and size or the
 boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
