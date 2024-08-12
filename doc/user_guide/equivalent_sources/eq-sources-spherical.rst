@@ -176,7 +176,7 @@ Lets plot it:
         frame=[f"WSne+t{title}", "xa5", "ya4"],
         x=longitude,
         y=latitude,
-        color=gravity_disturbance,
+        fill=gravity_disturbance,
         style="c0.1c",
         cmap=True,
     )

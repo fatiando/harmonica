@@ -102,6 +102,15 @@ Isostatic Moho
 
     isostatic_moho_airy
 
+Source estimation
+-----------------
+
+.. autosummary::
+    :toctree: generated/
+
+    EulerDeconvolution
+
+
 Input and Output
 ----------------
 

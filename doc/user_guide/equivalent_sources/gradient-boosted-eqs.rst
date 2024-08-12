@@ -183,7 +183,7 @@ And plot it:
             frame=[f"WSne+t{title}", "xa500000+a15", "ya400000"],
             x=easting,
             y=northing,
-            color=disturbance,
+            fill=disturbance,
             style="c0.1c",
             cmap=True,
         )

@@ -2,7 +2,7 @@ name: harmonica
 channels:
   - conda-forge
 dependencies:
-  - python==3.10.*
+  - python==3.12.*
   - pip
   # Build
   - build
@@ -13,7 +13,7 @@ dependencies:
   - numba
   - scipy
   - scikit-learn
-  - verde>=1.7.0
+  - verde>=1.8.1
   - xarray
   - xrft>=1.0
   - choclo>=0.1
@@ -28,6 +28,7 @@ dependencies:
   - boule
   # Documentation requirements
   - sphinx==7.2.*
+  - numpydoc==1.7.*
   - sphinx-book-theme==1.1.*
   - sphinx-gallery==0.15.*
   - sphinx-design==0.5.*
@@ -43,16 +44,16 @@ dependencies:
   - gdal
   - trame # needed by pyvista
   # Code style checks and autoformat
-  - black==22.10.*
-  - isort==5.10.*
-  - flake8==6.0.*
-  - flake8-bugbear==22.10.*
-  - flake8-builtins==2.0.*
-  - flake8-functions==0.0.7
+  - black==24.4.*
+  - isort==5.13.*
+  - flake8==7.0.*
+  - flake8-bugbear==24.4.*
+  - flake8-builtins==2.5.*
+  - flake8-functions==0.0.8
   - flake8-mutable==1.2.*
   - flake8-rst-docstrings==0.3.*
-  - flake8-simplify==0.19.*
-  - flake8-unused-arguments==0.0.12
-  - pep8-naming==0.13.*
+  - flake8-simplify==0.21.*
+  - flake8-unused-arguments==0.0.13
+  - pep8-naming==0.14.*
   - pip:
     - burocrata==0.2.*
