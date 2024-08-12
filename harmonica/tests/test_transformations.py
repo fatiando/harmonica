@@ -527,10 +527,12 @@ def test_reduction_to_pole(sample_potential):
     """
     Test reduction_to_pole function with non-typical dim names
     """
-    renamed_dims_grid = sample_potential.rename({"easting" : "name_one", "northing" : "name_two"})
+    renamed_dims_grid = sample_potential.rename(
+        {"easting": "name_one", "northing": "name_two"}
+    )
     reduction_to_pole(renamed_dims_grid, 60, 45)
-    
-    
+
+
 class TestTotalGradientAmplitude:
     """
     Test total_gradient_amplitude function
