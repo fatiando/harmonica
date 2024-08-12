@@ -36,8 +36,8 @@ tilt_grid = hm.tilt_angle(magnetic_grid_padded)
 # Unpad the tilt grid
 tilt_grid = xrft.unpad(tilt_grid, pad_width)
 
-# # Show the tilt
-# print("\nTilt:\n", tilt_grid)
+# Show the tilt
+print("\nTilt:\n", tilt_grid)
 
 # Define the inclination and declination of the region by the time of the data
 # acquisition (1990).
