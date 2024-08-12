@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica.filters._filters | Harmonica v0.7.0</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/filters/_filters';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.7.0</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/filters/_filters.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica.filters._filters</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Frequency domain filters meant to be applied on regular grids</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="derivative_upward_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html#harmonica.filters.derivative_upward_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_upward_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for upward derivative in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
+<span class="sd">    filter for computing the upward derivative. The filter is built upon the</span>
+<span class="sd">    frequency coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) = |\mathbf{k}| ^ n</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector) and :math:`n` is the order of the derivative.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the upward derivative filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.derivative_upward</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for upward derivative in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="n">order</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="derivative_easting_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_easting_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for easting derivative in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
+<span class="sd">    filter for computing the easting derivative. The filter is built upon the</span>
+<span class="sd">    frequency coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) = (i k_e)^n</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector), :math:`k_e` is the easting wavenumber component of</span>
+<span class="sd">    :math:`\mathbf{k}`, :math:`i` is the imaginary unit and :math:`n` is the</span>
+<span class="sd">    order of the derivative.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the easting derivative filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.derivative_easting</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="c1"># Compute the filter for easting derivative in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_easting</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span> <span class="o">**</span> <span class="n">order</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="derivative_northing_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html#harmonica.filters.derivative_northing_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_northing_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for northing derivative in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
+<span class="sd">    filter for computing the northing derivative. The filter is built upon the</span>
+<span class="sd">    frequency coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) = (i k_n)^n</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector), :math:`k_n` is the northing wavenumber component of</span>
+<span class="sd">    :math:`\mathbf{k}`, :math:`i` is the imaginary unit and :math:`n` is the</span>
+<span class="sd">    order of the derivative.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the northing derivative filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.derivative_northing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for northing derivative in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_northing</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span> <span class="o">**</span> <span class="n">order</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="upward_continuation_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html#harmonica.filters.upward_continuation_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">upward_continuation_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for upward continuation in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
+<span class="sd">    filter for computing the upward continuation. The filter is built upon the</span>
+<span class="sd">    frequency coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) = e^{-|\mathbf{k}| \Delta h}</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector) and :math:`\Delta h` is the height displacement of the</span>
+<span class="sd">    upward continuation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    height_displacement : float</span>
+<span class="sd">        The height displacement of upward continuation. For upward</span>
+<span class="sd">        continuation, the height displacement should be positive.</span>
+<span class="sd">        It has the same units as the input xarray data coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the upward continuation filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.upward_continuation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for upward continuation in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">height_displacement</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="gaussian_lowpass_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html#harmonica.filters.gaussian_lowpass_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian_lowpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for Gaussian low-pass in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass</span>
+<span class="sd">    filter the frequency domain. The filter is built upon the frequency</span>
+<span class="sd">    coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) =</span>
+<span class="sd">            e^{</span>
+<span class="sd">                - \frac{1}{2} \left( \frac{|\mathbf{k}|}{k_c} \right)^2</span>
+<span class="sd">            }</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector) and :math:`k_c` is the cutoff wavenumber:</span>
+<span class="sd">    :math:`k_c = \frac{2\pi}{\lambda_c}`,</span>
+<span class="sd">    where :math:`\lambda_c` is the cutoff wavelength.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The cutoff wavelength for the low-pass filter.</span>
+<span class="sd">        Its units should be the inverse units of the coordinates in</span>
+<span class="sd">        ``fft_grid``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the Gaussian low-pass filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Geosoft1999]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.gaussian_lowpass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for northing derivative in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">wavelength</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="gaussian_highpass_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html#harmonica.filters.gaussian_highpass_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian_highpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for Gaussian high-pass in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of a Gaussian high-pass</span>
+<span class="sd">    filter the frequency domain. The filter is built upon the frequency</span>
+<span class="sd">    coordinates of the passed ``fft_grid`` and is defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) =</span>
+<span class="sd">            1 - e^{</span>
+<span class="sd">                - \frac{1}{2} \left( \frac{|\mathbf{k}|}{k_c} \right)^2</span>
+<span class="sd">            }</span>
+
+<span class="sd">    where :math:`\mathbf{k}` is the wavenumber vector</span>
+<span class="sd">    (:math:`\mathbf{k} = 2\pi \mathbf{f}` where :math:`\mathbf{f}` is the</span>
+<span class="sd">    frequency vector) and :math:`k_c` is the cutoff wavenumber:</span>
+<span class="sd">    :math:`k_c = \frac{2\pi}{\lambda_c}`,</span>
+<span class="sd">    where :math:`\lambda_c` is the cutoff wavelength.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The cutoff wavelength for the high-pass filter.</span>
+<span class="sd">        Its units should be the inverse units of the coordinates in</span>
+<span class="sd">        ``fft_grid``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the Gaussian high-pass filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Geosoft1999]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.gaussian_highpass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for northing derivative in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">wavelength</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<div class="viewcode-block" id="reduction_to_pole_kernel">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel">[docs]</a>
+<span class="k">def</span> <span class="nf">reduction_to_pole_kernel</span><span class="p">(</span>
+    <span class="n">fft_grid</span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">,</span>
+    <span class="n">declination</span><span class="p">,</span>
+    <span class="n">magnetization_inclination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">magnetization_declination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter for reduction to the pole in frequency domain</span>
+
+<span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
+<span class="sd">    filter for applying a reduction to the pole on magnetic data. The filter</span>
+<span class="sd">    is built upon the frequency coordinates of the passed ``fft_grid`` and is</span>
+<span class="sd">    defined as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g(\mathbf{k}) = \frac{1}{\Theta_m \Theta_f}</span>
+
+<span class="sd">    with</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Theta_m = m_z + i \frac{m_e k_e + m_n k_n}{|\mathbf{k}|}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}</span>
+
+<span class="sd">    where :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel</span>
+<span class="sd">    to the geomagnetic field and :math:`\hat{\mathbf{m}} = (m_e, m_n, m_z)`</span>
+<span class="sd">    is a unit vector parallel to the magnetization vector of the source. The</span>
+<span class="sd">    :math:`f_e`, :math:`f_n`, :math:`m_e`, :math:`m_n` are the easting and</span>
+<span class="sd">    northing components while the :math:`f_z` and :math:`m_z` are the</span>
+<span class="sd">    **downward** coordinates.</span>
+<span class="sd">    Each of these components can be obtained from the inclination and</span>
+<span class="sd">    declination angles of the geomagnetic field (:math:`I` and :math:`D`,</span>
+<span class="sd">    respectively) and for the magnetization vector (:math:`I_m` and</span>
+<span class="sd">    :math:`D_m`, respectively):</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \begin{cases}</span>
+<span class="sd">            f_e = \sin D \cos I \\</span>
+<span class="sd">            f_n = \cos D \cos I \\</span>
+<span class="sd">            f_u = \sin I</span>
+<span class="sd">        \end{cases}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \begin{cases}</span>
+<span class="sd">            m_e = \sin D_m \cos I_m \\</span>
+<span class="sd">            m_n = \cos D_m \cos I_m \\</span>
+<span class="sd">            m_u = \sin I_m</span>
+<span class="sd">        \end{cases}</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fft_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the Fourier transform of the original grid.</span>
+<span class="sd">        Its dimensions should be in the following order:</span>
+<span class="sd">        *freq_northing*, *freq_easting*.</span>
+<span class="sd">        Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` functions to</span>
+<span class="sd">        compute the Fourier Transform and its inverse, respectively.</span>
+<span class="sd">    inclination : float in degrees</span>
+<span class="sd">        The inclination of the inducing Geomagnetic field.</span>
+<span class="sd">    declination : float in degrees</span>
+<span class="sd">        The declination of the inducing Geomagnetic field.</span>
+<span class="sd">    magnetization_inclination : float in degrees or None</span>
+<span class="sd">        The inclination of the total magnetization of the anomaly source. If</span>
+<span class="sd">        None, the ``magnetization_inclination`` will be set equal to the</span>
+<span class="sd">        ``inclination``, neglecting remanent magnetization and self</span>
+<span class="sd">        demagnetization. Default None.</span>
+<span class="sd">    magnetization_declination : float in degrees</span>
+<span class="sd">        The declination of the total magnetization of the anomaly source. If</span>
+<span class="sd">        None, the ``magnetization_declination`` will be set equal to the</span>
+<span class="sd">        ``declination``, neglecting remanent magnetization and self</span>
+<span class="sd">        demagnetization. Default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_filter : :class:`xarray.DataArray`</span>
+<span class="sd">        Array with the kernel for the reduction to the pole filter in frequency</span>
+<span class="sd">        domain.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.reduction_to_pole</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if magnetization angles are valid</span>
+    <span class="n">_check_magnetization_angles</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span><span class="p">)</span>
+    <span class="c1"># Define magnetization angles if they are None</span>
+    <span class="k">if</span> <span class="n">magnetization_declination</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">magnetization_inclination</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">magnetization_inclination</span> <span class="o">=</span> <span class="n">inclination</span>
+        <span class="n">magnetization_declination</span> <span class="o">=</span> <span class="n">declination</span>
+    <span class="c1"># Catch the dims of the Fourier transformed grid</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">dims</span>
+    <span class="c1"># Grab the coordinates of the Fourier transformed grid</span>
+    <span class="n">freq_easting</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">freq_northing</span> <span class="o">=</span> <span class="n">fft_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1"># Convert frequencies to wavenumbers</span>
+    <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
+    <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Compute the filter for reduction to pole in frequency domain</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="n">_get_rtp_filter</span><span class="p">(</span>
+        <span class="n">k_easting</span><span class="p">,</span>
+        <span class="n">k_northing</span><span class="p">,</span>
+        <span class="n">inclination</span><span class="p">,</span>
+        <span class="n">declination</span><span class="p">,</span>
+        <span class="n">magnetization_inclination</span><span class="p">,</span>
+        <span class="n">magnetization_declination</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Set 0 wavenumber to 0</span>
+    <span class="n">da_filter</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">0</span><span class="p">}]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">da_filter</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_check_magnetization_angles</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if magnetization angles are both None or both numbers</span>
+
+<span class="sd">    They could either be two Nones or two angles, but not one None and one</span>
+<span class="sd">    angle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">magnetization_inclination</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">magnetization_declination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid magnetization degrees. Found `magnetization_inclination` as &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;None and `magnetization_declination` as&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">magnetization_declination</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="s2">&quot;Please, provide two valid angles in degrees or both angles as None.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">magnetization_declination</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">magnetization_inclination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid magnetization degrees. Found `magnetization_declination` as &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;None and `magnetization_inclination` as&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">magnetization_inclination</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="s2">&quot;Please, provide two valid angles in degrees or both angles as None.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_rtp_filter</span><span class="p">(</span>
+    <span class="n">k_easting</span><span class="p">,</span>
+    <span class="n">k_northing</span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">,</span>
+    <span class="n">declination</span><span class="p">,</span>
+    <span class="n">magnetization_inclination</span><span class="p">,</span>
+    <span class="n">magnetization_declination</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build the reduction to the pole filter</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k_easting : array</span>
+<span class="sd">        Wavenumber array for the easting direction.</span>
+<span class="sd">    k_northing : array</span>
+<span class="sd">        Wavenumber array for the northing direction.</span>
+<span class="sd">    inclination : float in degrees</span>
+<span class="sd">        The inclination of the inducing Geomagnetic field.</span>
+<span class="sd">    declination : float in degrees</span>
+<span class="sd">        The declination of the inducing Geomagnetic field.</span>
+<span class="sd">    magnetization_inclination : float in degrees</span>
+<span class="sd">        The inclination of the total magnetization of the anomaly source.</span>
+<span class="sd">    magnetization_declination : float in degrees</span>
+<span class="sd">        The declination of the total magnetization of the anomaly source.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rtp_filter: array</span>
+<span class="sd">        Array with the kernel for the reduction to the pole filter in frequency</span>
+<span class="sd">        domain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert angles to radians</span>
+    <span class="n">inc_rad</span><span class="p">,</span> <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">declination</span><span class="p">)</span>
+    <span class="n">mag_inc_rad</span><span class="p">,</span> <span class="n">mag_dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span>
+        <span class="n">magnetization_declination</span>
+    <span class="p">)</span>
+    <span class="c1"># Compute unit vector components for geomagnetic field and magnetization</span>
+    <span class="n">cos_inc</span><span class="p">,</span> <span class="n">sin_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">)</span>
+    <span class="n">cos_dec</span><span class="p">,</span> <span class="n">sin_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">)</span>
+    <span class="n">cos_mag_inc</span><span class="p">,</span> <span class="n">sin_mag_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">)</span>
+    <span class="n">cos_mag_dec</span><span class="p">,</span> <span class="n">sin_mag_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">)</span>
+    <span class="n">f_e</span> <span class="o">=</span> <span class="n">sin_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
+    <span class="n">f_n</span> <span class="o">=</span> <span class="n">cos_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
+    <span class="n">f_z</span> <span class="o">=</span> <span class="n">sin_inc</span>
+    <span class="n">m_e</span> <span class="o">=</span> <span class="n">sin_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
+    <span class="n">m_n</span> <span class="o">=</span> <span class="n">cos_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
+    <span class="n">m_z</span> <span class="o">=</span> <span class="n">sin_mag_inc</span>
+    <span class="c1"># Precompute |k|^2 and |k|</span>
+    <span class="n">k_squared</span> <span class="o">=</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_squared</span><span class="p">)</span>
+    <span class="c1"># Compute the rtp filter</span>
+    <span class="n">rtp_filter</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">k_squared</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">f_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">f_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">m_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">rtp_filter</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

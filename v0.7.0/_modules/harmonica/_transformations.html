@@ -1,0 +1,1007 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._transformations | Harmonica v0.7.0</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_transformations';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.7.0</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_transformations.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._transformations</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Apply transformations to regular grids of potential fields</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.filters._filters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">derivative_easting_kernel</span><span class="p">,</span>
+    <span class="n">derivative_northing_kernel</span><span class="p">,</span>
+    <span class="n">derivative_upward_kernel</span><span class="p">,</span>
+    <span class="n">gaussian_highpass_kernel</span><span class="p">,</span>
+    <span class="n">gaussian_lowpass_kernel</span><span class="p">,</span>
+    <span class="n">reduction_to_pole_kernel</span><span class="p">,</span>
+    <span class="n">upward_continuation_kernel</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.filters._utils</span> <span class="kn">import</span> <span class="n">apply_filter</span><span class="p">,</span> <span class="n">grid_sanity_checks</span>
+
+
+<div class="viewcode-block" id="derivative_upward">
+<a class="viewcode-back" href="../../api/generated/harmonica.derivative_upward.html#harmonica.derivative_upward">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_upward</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the derivative of a potential field grid in the upward direction</span>
+
+<span class="sd">    Compute the spatial derivative in the upward direction of regular gridded</span>
+<span class="sd">    data using frequency domain calculations through Fast Fourier Transform.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    derivative : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` with the upward derivatives of the passed</span>
+<span class="sd">        ``grid``. Its units are the same units of the ``grid`` per units of its</span>
+<span class="sd">        coordinates.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.derivative_upward_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">derivative_upward_kernel</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="derivative_easting">
+<a class="viewcode-back" href="../../api/generated/harmonica.derivative_easting.html#harmonica.derivative_easting">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_easting</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the derivative of a regular grid in the easting direction</span>
+
+<span class="sd">    Compute the spatial derivative in the easting direction of regular gridded</span>
+<span class="sd">    data. It can compute using accurate central differences using</span>
+<span class="sd">    :func:`xarray.differentiate` or through frequency domain calculations</span>
+<span class="sd">    through Fast Fourier Transform.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        Choosing the finite differences option produces more accurate results</span>
+<span class="sd">        without border effects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+<span class="sd">    method : str (optional)</span>
+<span class="sd">        Method that will be used for computing the easting derivative. It can</span>
+<span class="sd">        be either ``&quot;finite-diff&quot;``, for computing using</span>
+<span class="sd">        :func:`xarray.differentiate`, or ``&quot;fft&quot;``, for using FFT-based</span>
+<span class="sd">        filters.</span>
+<span class="sd">        Default ``&quot;finite-diff&quot;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    derivative : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` with the easting derivatives of the passed</span>
+<span class="sd">        ``grid``. Its units are the same units of the ``grid`` per units of its</span>
+<span class="sd">        coordinates to the power of the passed ``order``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.derivative_easting_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;finite-diff&quot;</span><span class="p">:</span>
+        <span class="n">coordinate</span> <span class="o">=</span> <span class="n">_get_dataarray_coordinate</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dimension_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">differentiate</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="n">coordinate</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fft&quot;</span><span class="p">:</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">derivative_easting_kernel</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="s2">&quot;Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">grid</span></div>
+
+
+
+<div class="viewcode-block" id="derivative_northing">
+<a class="viewcode-back" href="../../api/generated/harmonica.derivative_northing.html#harmonica.derivative_northing">[docs]</a>
+<span class="k">def</span> <span class="nf">derivative_northing</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the derivative of a regular grid in the northing direction</span>
+
+<span class="sd">    Compute the spatial derivative in the northing direction of regular gridded</span>
+<span class="sd">    data. It can compute using accurate central differences using</span>
+<span class="sd">    :func:`xarray.differentiate` or through frequency domain calculations</span>
+<span class="sd">    through Fast Fourier Transform.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        Choosing the finite differences option produces more accurate results</span>
+<span class="sd">        without border effects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        The order of the derivative. Default to 1.</span>
+<span class="sd">    method : str (optional)</span>
+<span class="sd">        Method that will be used for computing the easting derivative. It can</span>
+<span class="sd">        be either ``&quot;finite-diff&quot;``, for computing using</span>
+<span class="sd">        :func:`xarray.differentiate`, or ``&quot;fft&quot;``, for using FFT-based</span>
+<span class="sd">        filters.</span>
+<span class="sd">        Default ``&quot;finite-diff&quot;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    derivative : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` with the northing derivatives of the passed</span>
+<span class="sd">        ``grid``. Its units are the same units of the ``grid`` per units of its</span>
+<span class="sd">        coordinates to the power of the passed ``order``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.derivative_northing_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;finite-diff&quot;</span><span class="p">:</span>
+        <span class="n">coordinate</span> <span class="o">=</span> <span class="n">_get_dataarray_coordinate</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dimension_index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">differentiate</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="n">coordinate</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fft&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">derivative_northing_kernel</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="s2">&quot;Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">grid</span></div>
+
+
+
+<div class="viewcode-block" id="upward_continuation">
+<a class="viewcode-back" href="../../api/generated/harmonica.upward_continuation.html#harmonica.upward_continuation">[docs]</a>
+<span class="k">def</span> <span class="nf">upward_continuation</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the upward continuation of a potential field grid</span>
+
+<span class="sd">    Compute the upward continuation of regular gridded data using frequency</span>
+<span class="sd">    domain calculations through Fast Fourier Transform.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    height_displacement : float</span>
+<span class="sd">        The height displacement of upward continuation. For upward</span>
+<span class="sd">        continuation, the height displacement should be positive. Its units</span>
+<span class="sd">        are the same units of the ``grid`` coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    upward continuation : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` after upward continuation of the passed</span>
+<span class="sd">        ``grid``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.upward_continuation_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span>
+        <span class="n">grid</span><span class="p">,</span> <span class="n">upward_continuation_kernel</span><span class="p">,</span> <span class="n">height_displacement</span><span class="o">=</span><span class="n">height_displacement</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gaussian_lowpass">
+<a class="viewcode-back" href="../../api/generated/harmonica.gaussian_lowpass.html#harmonica.gaussian_lowpass">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian_lowpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Gaussian low-pass of a potential field grid</span>
+
+<span class="sd">    Compute the Gaussian low-pass of regular gridded data using frequency</span>
+<span class="sd">    domain calculations through Fast Fourier Transform.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The cutoff wavelength in low-pass filter. Its units are the same units</span>
+<span class="sd">        of the ``grid`` coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gaussian lowpass : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` after Gaussian low-pass of the passed</span>
+<span class="sd">        ``grid``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Geosoft1999]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.gaussian_lowpass_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">gaussian_lowpass_kernel</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gaussian_highpass">
+<a class="viewcode-back" href="../../api/generated/harmonica.gaussian_highpass.html#harmonica.gaussian_highpass">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian_highpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Gaussian high-pass of a potential field grid</span>
+
+<span class="sd">    Compute the Gaussian high-pass of regular gridded data using frequency</span>
+<span class="sd">    domain calculations through Fast Fourier Transform.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The cutoff wavelength in high-pass filter. Its units are the same</span>
+<span class="sd">        units of the ``grid`` coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gaussian highpass : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` after Gaussian high-pass of the passed</span>
+<span class="sd">        ``grid``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Geosoft1999]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.gaussian_highpass_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">gaussian_highpass_kernel</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="reduction_to_pole">
+<a class="viewcode-back" href="../../api/generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole">[docs]</a>
+<span class="k">def</span> <span class="nf">reduction_to_pole</span><span class="p">(</span>
+    <span class="n">grid</span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">,</span>
+    <span class="n">declination</span><span class="p">,</span>
+    <span class="n">magnetization_inclination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">magnetization_declination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the reduction to the pole of a magnetic field grid</span>
+
+<span class="sd">    Compute the reduction to the pole of regular gridded magnetic data using</span>
+<span class="sd">    frequency domain calculations through Fast Fourier Transform.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+<span class="sd">    inclination : float in degrees</span>
+<span class="sd">        The inclination of the inducing Geomagnetic field.</span>
+<span class="sd">    declination : float in degrees</span>
+<span class="sd">        The declination of the inducing Geomagnetic field.</span>
+<span class="sd">    magnetization_inclination : float in degrees or None</span>
+<span class="sd">        The inclination of the total magnetization of the anomaly source. If</span>
+<span class="sd">        None, the ``magnetization_inclination`` will be set equal to the</span>
+<span class="sd">        ``inclination``, neglecting remanent magnetization and self</span>
+<span class="sd">        demagnetization. Default None.</span>
+<span class="sd">    magnetization_declination : float in degrees</span>
+<span class="sd">        The declination of the total magnetization of the anomaly source. If</span>
+<span class="sd">        None, the ``magnetization_declination`` will be set equal to the</span>
+<span class="sd">        ``declination``, neglecting remanent magnetization and self</span>
+<span class="sd">        demagnetization. Default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    reduced_to_pole_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` after reduction to the pole of the passed</span>
+<span class="sd">        ``grid``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    harmonica.filters.reduction_to_pole_kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span>
+        <span class="n">grid</span><span class="p">,</span>
+        <span class="n">reduction_to_pole_kernel</span><span class="p">,</span>
+        <span class="n">inclination</span><span class="o">=</span><span class="n">inclination</span><span class="p">,</span>
+        <span class="n">declination</span><span class="o">=</span><span class="n">declination</span><span class="p">,</span>
+        <span class="n">magnetization_inclination</span><span class="o">=</span><span class="n">magnetization_inclination</span><span class="p">,</span>
+        <span class="n">magnetization_declination</span><span class="o">=</span><span class="n">magnetization_declination</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="total_gradient_amplitude">
+<a class="viewcode-back" href="../../api/generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude">[docs]</a>
+<span class="k">def</span> <span class="nf">total_gradient_amplitude</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the total gradient amplitude of a potential field grid</span>
+
+<span class="sd">    Compute the total gradient amplitude of a regular gridded potential field</span>
+<span class="sd">    `M`. The horizontal derivatives are calculated though finite-differences</span>
+<span class="sd">    while the upward derivative is calculated using FFT.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    total_gradient_amplitude_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` after calculating the</span>
+<span class="sd">        total gradient amplitude of the passed ``grid``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The total gradient amplitude is calculated as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        A(x, y) = \sqrt{</span>
+<span class="sd">            \left( \frac{\partial M}{\partial x} \right)^2</span>
+<span class="sd">            + \left( \frac{\partial M}{\partial y} \right)^2</span>
+<span class="sd">            + \left( \frac{\partial M}{\partial z} \right)^2</span>
+<span class="sd">        }</span>
+
+<span class="sd">    where :math:`M` is the regularly gridded potential field.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Run sanity checks on the grid</span>
+    <span class="n">grid_sanity_checks</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="c1"># Calculate the gradients of the grid</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">derivative_easting</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">derivative_northing</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">derivative_upward</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c1"># return the total gradient amplitude</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gradient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">gradient</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">gradient</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tilt_angle">
+<a class="viewcode-back" href="../../api/generated/harmonica.tilt_angle.html#harmonica.tilt_angle">[docs]</a>
+<span class="k">def</span> <span class="nf">tilt_angle</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the tilt angle of a potential field grid</span>
+
+<span class="sd">    Compute the tilt of a regular gridded potential field</span>
+<span class="sd">    :math:`M`. The horizontal derivatives are calculated</span>
+<span class="sd">    through finite-differences while the upward derivative</span>
+<span class="sd">    is calculated using FFT.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A two dimensional :class:`xarray.DataArray` whose coordinates are</span>
+<span class="sd">        evenly spaced (regular grid). Its dimensions should be in the following</span>
+<span class="sd">        order: *northing*, *easting*. Its coordinates should be defined in the</span>
+<span class="sd">        same units.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tilt_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A :class:`xarray.DataArray` with the calculated tilt</span>
+<span class="sd">        in radians.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The tilt is calculated as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{tilt}(f) = \tan^{-1} \left(</span>
+<span class="sd">            \frac{</span>
+<span class="sd">                \frac{\partial M}{\partial z}</span>
+<span class="sd">            }{</span>
+<span class="sd">                \sqrt{</span>
+<span class="sd">                    \left( \frac{\partial M}{\partial x} \right)^2</span>
+<span class="sd">                    +</span>
+<span class="sd">                    \left( \frac{\partial M}{\partial y} \right)^2</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+<span class="sd">        \right)</span>
+
+<span class="sd">    where :math:`M` is the regularly gridded potential field.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Blakely1995]_</span>
+<span class="sd">    [MillerSingh1994]_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Run sanity checks on the grid</span>
+    <span class="n">grid_sanity_checks</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="c1"># Calculate the gradients of the grid</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">derivative_easting</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">derivative_northing</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">derivative_upward</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c1"># Calculate and return the tilt</span>
+    <span class="n">horiz_deriv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gradient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">gradient</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">tilt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">gradient</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">horiz_deriv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tilt</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_get_dataarray_coordinate</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dimension_index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the name of the easting or northing coordinate in the grid</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        Regular grid</span>
+<span class="sd">    dimension_index : int</span>
+<span class="sd">        Index of the dimension for the desired coordinate of the regular grid.</span>
+<span class="sd">        Since the dimensions of the grid should be in the order of</span>
+<span class="sd">        *northing*, *easting*, then 0 corresponds to *northing* and 1 to</span>
+<span class="sd">        *easting*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim_name</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">dimension_index</span><span class="p">]</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span> <span class="o">==</span> <span class="p">(</span><span class="n">dim_name</span><span class="p">,)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dimension_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;northing&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;easting&quot;</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Grid contains more than one coordinate along the &#39;</span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;direction: &#39;</span><span class="si">{</span><span class="n">coords</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

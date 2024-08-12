@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._forward.dipole | Harmonica v0.7.0</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_forward/dipole';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.7.0</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_forward/dipole.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._forward.dipole</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Forward modelling for magnetic fields of dipoles</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">prod</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">choclo.dipole</span> <span class="kn">import</span> <span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_field</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">,</span> <span class="n">magnetic_u</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">initialize_progressbar</span>
+
+<span class="n">VALID_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b_e&quot;</span><span class="p">,</span> <span class="s2">&quot;b_n&quot;</span><span class="p">,</span> <span class="s2">&quot;b_u&quot;</span><span class="p">)</span>
+<span class="n">FORWARD_FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;b_e&quot;</span><span class="p">:</span> <span class="n">magnetic_e</span><span class="p">,</span>
+    <span class="s2">&quot;b_n&quot;</span><span class="p">:</span> <span class="n">magnetic_n</span><span class="p">,</span>
+    <span class="s2">&quot;b_u&quot;</span><span class="p">:</span> <span class="n">magnetic_u</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="dipole_magnetic">
+<a class="viewcode-back" href="../../../api/generated/harmonica.dipole_magnetic.html#harmonica.dipole_magnetic">[docs]</a>
+<span class="k">def</span> <span class="nf">dipole_magnetic</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">dipoles</span><span class="p">,</span>
+    <span class="n">magnetic_moments</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="n">progressbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Magnetic field of dipoles in Cartesian coordinates</span>
+
+<span class="sd">    Compute the component(s) of the magnetic field vector generated by</span>
+<span class="sd">    a collection of dipoles on a set of observation points.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        The component(s) of the magnetic field are returned in :math:`nT`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : list of arrays</span>
+<span class="sd">        List of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        coordinates of the computation points defined on a Cartesian coordinate</span>
+<span class="sd">        system. All coordinates should be in meters.</span>
+<span class="sd">    dipoles : tuple of arrays</span>
+<span class="sd">        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        locations of the dipoles defined on a Cartesian coordinate system. All</span>
+<span class="sd">        coordinates should be in meters.</span>
+<span class="sd">    magnetic_moments : tuple of arrays</span>
+<span class="sd">        Tuple containing the three arrays corresponding to the magnetic moment</span>
+<span class="sd">        components of each dipole in :math:`Am^2`. These arrays should</span>
+<span class="sd">        be provided in the following order: ``mag_moment_easting``,</span>
+<span class="sd">        ``mag_moment_northing``, ``mag_moment_upward``.</span>
+<span class="sd">    field : str</span>
+<span class="sd">        Magnetic field that will be computed. The available fields are:</span>
+
+<span class="sd">        - The full magnetic vector: ``b``</span>
+<span class="sd">        - Easting component of the magnetic vector: ``b_e``</span>
+<span class="sd">        - Northing component of the magnetic vector: ``b_n``</span>
+<span class="sd">        - Upward component of the magnetic vector: ``b_u``</span>
+
+<span class="sd">    parallel : bool (optional)</span>
+<span class="sd">        If True the computations will run in parallel using Numba built-in</span>
+<span class="sd">        parallelization. If False, the forward model will run on a single core.</span>
+<span class="sd">        Might be useful to disable parallelization if the forward model is run</span>
+<span class="sd">        by an already parallelized workflow. Default to True.</span>
+<span class="sd">    dtype : data-type (optional)</span>
+<span class="sd">        Data type assigned to the resulting magnetic field. Default to</span>
+<span class="sd">        ``np.float64``.</span>
+<span class="sd">    progressbar : bool (optional)</span>
+<span class="sd">        If True, a progress bar of the computation will be printed to standard</span>
+<span class="sd">        error (stderr). Requires :mod:`numba_progress` to be installed.</span>
+<span class="sd">        Default to ``False``.</span>
+<span class="sd">    disable_checks : bool (optional)</span>
+<span class="sd">        Flag that controls whether to perform a sanity check on the model.</span>
+<span class="sd">        Should be set to ``True`` only when it is certain that the input model</span>
+<span class="sd">        is valid and it does not need to be checked.</span>
+<span class="sd">        Default to ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    magnetic_field : array or tuple of arrays</span>
+<span class="sd">        Computed magnetic field on every observation point in :math:`nT`.</span>
+<span class="sd">        If ``field`` is set to a single component, then a single array with the</span>
+<span class="sd">        computed magnetic field component will be returned.</span>
+<span class="sd">        If ``field`` is set to ``&quot;b&quot;``, then a tuple containing the three</span>
+<span class="sd">        components of the magnetic vector will be returned in the following</span>
+<span class="sd">        order: ``b_e``, ``b_n``, ``b_u``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if field is valid</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_FIELDS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid field &#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Please choose one of &#39;</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">VALID_FIELDS</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># Figure out the shape and size of the output array(s)</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># Convert coordinates, dipoles and magnetic moments to arrays</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">dipoles</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dipoles</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">magnetic_moments</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnetic_moments</span><span class="p">)</span>
+    <span class="c1"># Sanity checks</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">disable_checks</span><span class="p">:</span>
+        <span class="n">_check_dipoles_and_magnetic_moments</span><span class="p">(</span><span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">)</span>
+    <span class="c1"># Run computations</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_dipole_magnetic_vector</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">dipoles</span><span class="p">,</span>
+            <span class="n">magnetic_moments</span><span class="p">,</span>
+            <span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="p">,</span>
+            <span class="n">progressbar</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">forward_func</span> <span class="o">=</span> <span class="n">FORWARD_FUNCTIONS</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_dipole_magnetic_component</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">dipoles</span><span class="p">,</span>
+            <span class="n">magnetic_moments</span><span class="p">,</span>
+            <span class="n">forward_func</span><span class="p">,</span>
+            <span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="p">,</span>
+            <span class="n">progressbar</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_dipole_magnetic_vector</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">dipoles</span><span class="p">,</span>
+    <span class="n">magnetic_moments</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="p">,</span>
+    <span class="n">progressbar</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forward model the three components of the magnetic vector</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Tuple containing ``easting``, ``northing`` and ``upward`` of the</span>
+<span class="sd">        computation points as arrays, all defined on a Cartesian coordinate</span>
+<span class="sd">        system and in meters.</span>
+<span class="sd">    dipoles : tuple of arrays</span>
+<span class="sd">        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        locations of the dipoles defined on a Cartesian coordinate system. All</span>
+<span class="sd">        coordinates should be in meters.</span>
+<span class="sd">    magnetic_moments : tuple of arrays</span>
+<span class="sd">        Tuple containing the three arrays corresponding to the magnetic moment</span>
+<span class="sd">        components of each dipole in :math:`Am^2`. These arrays should</span>
+<span class="sd">        be provided in the following order: ``mag_moment_easting``,</span>
+<span class="sd">        ``mag_moment_northing``, ``mag_moment_upward``.</span>
+<span class="sd">    shape : tuple of int</span>
+<span class="sd">        Shape of the expected output arrays.</span>
+<span class="sd">    dtype : np.dtype</span>
+<span class="sd">        Data type of the expected output arrays.</span>
+<span class="sd">    parallel : bool</span>
+<span class="sd">        If True, the forward modelling will be run in parallel. If False, it</span>
+<span class="sd">        will be run in a single thread.</span>
+<span class="sd">    progressbar : bool</span>
+<span class="sd">        If True, a progress bar of the computation will be printed to standard</span>
+<span class="sd">        error (stderr). Requires :mod:`numba_progress` to be installed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    magnetic_components : tuple of arrays</span>
+<span class="sd">        Tuple containing the three components of the magnetic vector in</span>
+<span class="sd">        :math:`nT`: ``b_e``, ``b_n``, ``b_u``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Decide which function should be used</span>
+    <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
+        <span class="n">jit_func</span> <span class="o">=</span> <span class="n">_jit_dipole_magnetic_field_cartesian_parallel</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jit_func</span> <span class="o">=</span> <span class="n">_jit_dipole_magnetic_field_cartesian_serial</span>
+    <span class="c1"># Run forward model</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">with</span> <span class="n">initialize_progressbar</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">progressbar</span><span class="p">)</span> <span class="k">as</span> <span class="n">progress_proxy</span><span class="p">:</span>
+        <span class="n">jit_func</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">,</span> <span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span><span class="p">,</span> <span class="n">progress_proxy</span><span class="p">)</span>
+    <span class="c1"># Convert to nT</span>
+    <span class="n">b_e</span> <span class="o">*=</span> <span class="mf">1e9</span>
+    <span class="n">b_n</span> <span class="o">*=</span> <span class="mf">1e9</span>
+    <span class="n">b_u</span> <span class="o">*=</span> <span class="mf">1e9</span>
+    <span class="c1"># Cast shape and form the tuple</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">(</span><span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">_dipole_magnetic_component</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">dipoles</span><span class="p">,</span>
+    <span class="n">magnetic_moments</span><span class="p">,</span>
+    <span class="n">forward_func</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="p">,</span>
+    <span class="n">progressbar</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forward model a single component of the magnetic vector</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Tuple containing ``easting``, ``northing`` and ``upward`` of the</span>
+<span class="sd">        computation points as arrays, all defined on a Cartesian coordinate</span>
+<span class="sd">        system and in meters.</span>
+<span class="sd">    dipoles : tuple of arrays</span>
+<span class="sd">        Tuple of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        locations of the dipoles defined on a Cartesian coordinate system. All</span>
+<span class="sd">        coordinates should be in meters.</span>
+<span class="sd">    magnetic_moments : tuple of arrays</span>
+<span class="sd">        Tuple containing the three arrays corresponding to the magnetic moment</span>
+<span class="sd">        components of each dipole in :math:`Am^2`. These arrays should</span>
+<span class="sd">        be provided in the following order: ``mag_moment_easting``,</span>
+<span class="sd">        ``mag_moment_northing``, ``mag_moment_upward``.</span>
+<span class="sd">    forward_func : callable</span>
+<span class="sd">        Forward function to be used to compute the desired component of the</span>
+<span class="sd">        magnetic field. Choose one of :func:`choclo.dipole.magnetic_easting`,</span>
+<span class="sd">        :func:`choclo.dipole.magnetic_northing` or</span>
+<span class="sd">        :func:`choclo.dipole.magnetic_upward`.</span>
+<span class="sd">    shape : tuple of int</span>
+<span class="sd">        Shape of the expected output array.</span>
+<span class="sd">    dtype : np.dtype</span>
+<span class="sd">        Data type of the expected output array.</span>
+<span class="sd">    parallel : bool</span>
+<span class="sd">        If True, the forward modelling will be run in parallel. If False, it</span>
+<span class="sd">        will be run in a single thread.</span>
+<span class="sd">    progressbar : bool</span>
+<span class="sd">        If True, a progress bar of the computation will be printed to standard</span>
+<span class="sd">        error (stderr). Requires :mod:`numba_progress` to be installed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    magnetic_component : arrays</span>
+<span class="sd">        Array containing the desired magnetic component in :math:`nT`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Decide which function should be used</span>
+    <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
+        <span class="n">jit_func</span> <span class="o">=</span> <span class="n">_jit_dipole_magnetic_component_cartesian_parallel</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jit_func</span> <span class="o">=</span> <span class="n">_jit_dipole_magnetic_component_cartesian_serial</span>
+    <span class="c1"># Run computations</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">initialize_progressbar</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">progressbar</span><span class="p">)</span> <span class="k">as</span> <span class="n">progress_proxy</span><span class="p">:</span>
+        <span class="n">jit_func</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">dipoles</span><span class="p">,</span>
+            <span class="n">magnetic_moments</span><span class="p">,</span>
+            <span class="n">result</span><span class="p">,</span>
+            <span class="n">forward_func</span><span class="p">,</span>
+            <span class="n">progress_proxy</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="c1"># Convert to nT</span>
+    <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e9</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_check_dipoles_and_magnetic_moments</span><span class="p">(</span><span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if dipoles and magnetic moments have valid shape and size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnetic_moments</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid magnetic moments with &#39;</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&#39; elements.&quot;</span>
+            <span class="s2">&quot; Magnetic moments vectors should have 3 components.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">magnetic_moments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">dipoles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of elements in magnetic_moments (</span><span class="si">{</span><span class="n">magnetic_moments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; mismatch the number of dipoles (</span><span class="si">{</span><span class="n">dipoles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_jit_dipole_magnetic_field_cartesian</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">,</span> <span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span><span class="p">,</span> <span class="n">progress_proxy</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the magnetic field components of dipoles in Cartesian coordinates</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple</span>
+<span class="sd">        Tuple containing the ``easting``, ``northing``, ``upward`` coordinates</span>
+<span class="sd">        of the computation points in Cartesian coordinate system.</span>
+<span class="sd">    dipoles : tuple</span>
+<span class="sd">        Tuple containing the ``easting``, ``northing``, ``upward`` coordinates</span>
+<span class="sd">        of the dipoles in Cartesian coordinate system.</span>
+<span class="sd">    magnetic_moments : 2d-array</span>
+<span class="sd">        Array with the components of the magnetic moment for each dipole.</span>
+<span class="sd">    b_e : 1d-array</span>
+<span class="sd">        Array where the resulting values of the easting component of the</span>
+<span class="sd">        magnetic field will be stored.</span>
+<span class="sd">    b_n : 1d-array</span>
+<span class="sd">        Array where the resulting values of the northing component of the</span>
+<span class="sd">        magnetic field will be stored.</span>
+<span class="sd">    b_u : 1d-array</span>
+<span class="sd">        Array where the resulting values of the upward component of the</span>
+<span class="sd">        magnetic field will be stored.</span>
+<span class="sd">    progress_proxy : :class:`numba_progress.ProgressBar` or None</span>
+<span class="sd">        Instance of :class:`numba_progress.ProgressBar` that gets updated after</span>
+<span class="sd">        each iteration on the observation points. Use None if no progress bar</span>
+<span class="sd">        is should be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if we need to update the progressbar on each iteration</span>
+    <span class="n">update_progressbar</span> <span class="o">=</span> <span class="n">progress_proxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># Unpack coordinates and magnetic_moments</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">easting_p</span><span class="p">,</span> <span class="n">northing_p</span><span class="p">,</span> <span class="n">upward_p</span> <span class="o">=</span> <span class="n">dipoles</span>
+    <span class="n">mag_e</span><span class="p">,</span> <span class="n">mag_n</span><span class="p">,</span> <span class="n">mag_u</span> <span class="o">=</span> <span class="n">magnetic_moments</span>
+    <span class="c1"># Iterate over computation points and dipoles</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">easting_comp</span><span class="p">,</span> <span class="n">northing_comp</span><span class="p">,</span> <span class="n">upward_comp</span> <span class="o">=</span> <span class="n">magnetic_field</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_e</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_n</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_u</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">b_e</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">easting_comp</span>
+            <span class="n">b_n</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">northing_comp</span>
+            <span class="n">b_u</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">upward_comp</span>
+        <span class="c1"># Update progress bar if called</span>
+        <span class="k">if</span> <span class="n">update_progressbar</span><span class="p">:</span>
+            <span class="n">progress_proxy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_jit_dipole_magnetic_component_cartesian</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">,</span> <span class="n">progress_proxy</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute a single magnetic component of dipoles in Cartesian coordinates</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple</span>
+<span class="sd">        Tuple containing the ``easting``, ``northing``, ``upward`` coordinates</span>
+<span class="sd">        of the computation points in Cartesian coordinate system.</span>
+<span class="sd">    dipoles : tuple</span>
+<span class="sd">        Tuple containing the ``easting``, ``northing``, ``upward`` coordinates</span>
+<span class="sd">        of the dipoles in Cartesian coordinate system.</span>
+<span class="sd">    magnetic_moments : 2d-array</span>
+<span class="sd">        Array with the components of the magnetic moment for each dipole.</span>
+<span class="sd">    result : 1d-array</span>
+<span class="sd">        Array where the resulting values of the selected component of the</span>
+<span class="sd">        magnetic field will be stored.</span>
+<span class="sd">    forward_function : callable</span>
+<span class="sd">        Forward function to be used to compute the desired component of the</span>
+<span class="sd">        magnetic field. Choose one of :func:`choclo.dipole.magnetic_easting`,</span>
+<span class="sd">        :func:`choclo.dipole.magnetic_northing` or</span>
+<span class="sd">        :func:`choclo.dipole.magnetic_upward`.</span>
+<span class="sd">    progress_proxy : :class:`numba_progress.ProgressBar` or None</span>
+<span class="sd">        Instance of :class:`numba_progress.ProgressBar` that gets updated after</span>
+<span class="sd">        each iteration on the observation points. Use None if no progress bar</span>
+<span class="sd">        is should be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if we need to update the progressbar on each iteration</span>
+    <span class="n">update_progressbar</span> <span class="o">=</span> <span class="n">progress_proxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># Unpack coordinates and magnetic_moments</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">easting_p</span><span class="p">,</span> <span class="n">northing_p</span><span class="p">,</span> <span class="n">upward_p</span> <span class="o">=</span> <span class="n">dipoles</span>
+    <span class="n">mag_e</span><span class="p">,</span> <span class="n">mag_n</span><span class="p">,</span> <span class="n">mag_u</span> <span class="o">=</span> <span class="n">magnetic_moments</span>
+    <span class="c1"># Iterate over computation points and dipoles</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_e</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_n</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">mag_u</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="c1"># Update progress bar if called</span>
+        <span class="k">if</span> <span class="n">update_progressbar</span><span class="p">:</span>
+            <span class="n">progress_proxy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">_jit_dipole_magnetic_field_cartesian_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_jit_dipole_magnetic_field_cartesian</span>
+<span class="p">)</span>
+<span class="n">_jit_dipole_magnetic_field_cartesian_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_jit_dipole_magnetic_field_cartesian</span>
+<span class="p">)</span>
+<span class="n">_jit_dipole_magnetic_component_cartesian_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_jit_dipole_magnetic_component_cartesian</span>
+<span class="p">)</span>
+<span class="n">_jit_dipole_magnetic_component_cartesian_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_jit_dipole_magnetic_component_cartesian</span>
+<span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

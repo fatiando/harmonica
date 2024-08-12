@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._forward.point | Harmonica v0.7.0</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_forward/point';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.7.0</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_forward/point.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._forward.point</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Forward modelling for point masses</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">choclo.constants</span> <span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
+<span class="kn">from</span> <span class="nn">choclo.point</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">gravity_e</span><span class="p">,</span>
+    <span class="n">gravity_ee</span><span class="p">,</span>
+    <span class="n">gravity_en</span><span class="p">,</span>
+    <span class="n">gravity_eu</span><span class="p">,</span>
+    <span class="n">gravity_n</span><span class="p">,</span>
+    <span class="n">gravity_nn</span><span class="p">,</span>
+    <span class="n">gravity_nu</span><span class="p">,</span>
+    <span class="n">gravity_pot</span><span class="p">,</span>
+    <span class="n">gravity_u</span><span class="p">,</span>
+    <span class="n">gravity_uu</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_coordinate_system</span><span class="p">,</span> <span class="n">distance_spherical_core</span>
+
+
+<div class="viewcode-block" id="point_gravity">
+<a class="viewcode-back" href="../../../api/generated/harmonica.point_gravity.html#harmonica.point_gravity">[docs]</a>
+<span class="k">def</span> <span class="nf">point_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">points</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">coordinate_system</span><span class="o">=</span><span class="s2">&quot;cartesian&quot;</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational fields of point masses.</span>
+
+<span class="sd">    Compute the gravitational potential, gravitational acceleration and tensor</span>
+<span class="sd">    components generated by a collection of point masses on a set of</span>
+<span class="sd">    observation points defined either in Cartesian or geocentric spherical</span>
+<span class="sd">    coordinates.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The **vertical direction points upwards**, i.e. positive and negative</span>
+<span class="sd">        values of ``upward`` represent points above and below the surface,</span>
+<span class="sd">        respectively. But ``g_z`` field returns the **downward component** of</span>
+<span class="sd">        the gravitational acceleration so that positive density contrasts</span>
+<span class="sd">        produce positive anomalies. The same applies to the tensor components,</span>
+<span class="sd">        i.e. the ``g_ez`` is the non-diagonal **easting-downward** tensor</span>
+<span class="sd">        component.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        - The gravitational potential is returned in</span>
+<span class="sd">          :math:`\text{J}/\text{kg}`.</span>
+<span class="sd">        - The gravity acceleration components are returned in mGal</span>
+<span class="sd">          (:math:`\text{m}/\text{s}^2`).</span>
+<span class="sd">        - The tensor components are returned in Eotvos (:math:`\text{s}^{-2}`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : list of arrays</span>
+<span class="sd">        List of arrays containing the coordinates of computation points in the</span>
+<span class="sd">        following order: ``easting``, ``northing`` and ``upward`` (if</span>
+<span class="sd">        coordinates given in Cartesian coordinates), or ``longitude``,</span>
+<span class="sd">        ``latitude`` and ``radius`` (if given on a spherical geocentric</span>
+<span class="sd">        coordinate system).</span>
+<span class="sd">        All ``easting``, ``northing`` and ``upward`` should be in meters.</span>
+<span class="sd">        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``</span>
+<span class="sd">        in meters.</span>
+<span class="sd">    points : list or array</span>
+<span class="sd">        List or array containing the coordinates of the point masses in the</span>
+<span class="sd">        following order: ``easting``, ``northing`` and ``upward`` (if</span>
+<span class="sd">        coordinates given in Cartesian coordinates), or ``longitude``,</span>
+<span class="sd">        ``latitude`` and ``radius`` (if given on a spherical geocentric</span>
+<span class="sd">        coordinate system).</span>
+<span class="sd">        All ``easting``, ``northing`` and ``upward`` should be in meters.</span>
+<span class="sd">        Both ``longitude`` and ``latitude`` should be in degrees and ``radius``</span>
+<span class="sd">        in meters.</span>
+<span class="sd">    masses : list or array</span>
+<span class="sd">        List or array containing the mass of each point mass in kg.</span>
+<span class="sd">    field : str</span>
+<span class="sd">        Gravitational field that wants to be computed.</span>
+<span class="sd">        The available fields coordinates are:</span>
+
+<span class="sd">        - Gravitational potential: ``potential``</span>
+<span class="sd">        - Easting acceleration: ``g_e``</span>
+<span class="sd">        - Northing acceleration: ``g_n``</span>
+<span class="sd">        - Downward acceleration: ``g_z``</span>
+<span class="sd">        - Tensor components:</span>
+<span class="sd">            - ``g_ee``</span>
+<span class="sd">            - ``g_nn``</span>
+<span class="sd">            - ``g_zz``</span>
+<span class="sd">            - ``g_en``</span>
+<span class="sd">            - ``g_ez``</span>
+<span class="sd">            - ``g_nz``</span>
+
+<span class="sd">    coordinate_system : str (optional)</span>
+<span class="sd">        Coordinate system of the coordinates of the computation points and the</span>
+<span class="sd">        point masses.</span>
+<span class="sd">        Available coordinates systems: ``cartesian``, ``spherical``.</span>
+<span class="sd">        Default ``cartesian``.</span>
+<span class="sd">    parallel : bool (optional)</span>
+<span class="sd">        If True the computations will run in parallel using Numba built-in</span>
+<span class="sd">        parallelization. If False, the forward model will run on a single core.</span>
+<span class="sd">        Might be useful to disable parallelization if the forward model is run</span>
+<span class="sd">        by an already parallelized workflow. Default to True.</span>
+<span class="sd">    dtype : data-type (optional)</span>
+<span class="sd">        Data type assigned to resulting gravitational field. Default to</span>
+<span class="sd">        ``np.float64``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : array</span>
+<span class="sd">        Gravitational field generated by the ``point_mass`` on the computation</span>
+<span class="sd">        points defined in ``coordinates``.</span>
+<span class="sd">        The potential is given in SI units, the accelerations in mGal and the</span>
+<span class="sd">        Marussi tensor components in Eotvos.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The gravitational potential field generated by a point mass with mass</span>
+<span class="sd">    :math:`m` located at a point :math:`Q` on a computation point :math:`P` can</span>
+<span class="sd">    be computed as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        V(P) = \frac{G m}{l},</span>
+
+<span class="sd">    where :math:`G` is the gravitational constant and :math:`l` is the</span>
+<span class="sd">    Euclidean distance between :math:`P` and :math:`Q` [Blakely1995]_.</span>
+
+<span class="sd">    In Cartesian coordinates, the points :math:`P` and :math:`Q` are given by</span>
+<span class="sd">    :math:`x`, :math:`y` and :math:`z` coordinates, which can be translated</span>
+<span class="sd">    into ``northing``, ``easting`` and ``upward``, respectively. If :math:`P`</span>
+<span class="sd">    is located at :math:`(x, y, z)`, and :math:`Q` at :math:`(x_p, y_p, z_p)`,</span>
+<span class="sd">    the distance :math:`l` can be computed as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        l = \sqrt{ (x - x_p)^2 + (y - y_p)^2 + (z - z_p)^2 }.</span>
+
+<span class="sd">    The gradient of the potential, also known as the gravitational acceleration</span>
+<span class="sd">    vector :math:`\vec{g}`, is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \vec{g} = \nabla V</span>
+
+<span class="sd">    and has components :math:`g_{northing}(P)`, :math:`g_{easting}(P)` and</span>
+<span class="sd">    :math:`g_{upward}(P)` given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_{northing}(P) = - \frac{G m}{l^3} (x - x_p),</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_{easting}(P) = - \frac{G m}{l^3} (y - y_p)</span>
+
+<span class="sd">    and</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_{upward}(P) = - \frac{G m}{l^3} (z - z_p).</span>
+
+<span class="sd">    We define the downward component of the gravitational acceleration as the</span>
+<span class="sd">    opposite of :math:`g_{upward}` (remember that :math:`z` points upwards):</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_{z}(P) = \frac{G m}{l^3} (z - z_p).</span>
+
+<span class="sd">    On a geocentric spherical coordinate system, the points :math:`P` and</span>
+<span class="sd">    :math:`Q` are given by the ``longitude``, ``latitude`` and ``radius``</span>
+<span class="sd">    coordinates, i.e. :math:`\lambda`, :math:`\varphi` and :math:`r`,</span>
+<span class="sd">    respectively. On this coordinate system, the Euclidean distance between</span>
+<span class="sd">    :math:`P(r, \varphi, \lambda)` and :math:`Q(r_p, \varphi_p, \lambda_p)` can</span>
+<span class="sd">    be calculated  as follows [Grombein2013]_:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        l = \sqrt{ r^2 + r_p^2 - 2 r r_p \cos \Psi },</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \cos \Psi = \sin \varphi \sin \varphi_p +</span>
+<span class="sd">        \cos \varphi \cos \varphi_p \cos(\lambda - \lambda_p).</span>
+
+<span class="sd">    The radial component of the acceleration vector on a local North-oriented</span>
+<span class="sd">    system whose origin is located on the point :math:`P(r, \varphi, \lambda)`</span>
+<span class="sd">    is given by [Grombein2013]_:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_r(P) =  - \frac{G m}{l^3} (r - r_p \cos \Psi).</span>
+
+<span class="sd">    We define the downward component of the gravitational acceleration</span>
+<span class="sd">    :math:`g_z` as the opposite of the radial component:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        g_z(P) = \frac{G m}{l^3} (r - r_p \cos \Psi).</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        When working in Cartesian coordinates, the **z direction points</span>
+<span class="sd">        upwards**, i.e. positive and negative values of ``upward`` represent</span>
+<span class="sd">        points above and below the surface, respectively. But remember that the</span>
+<span class="sd">        ``g_z`` field returns the downward component of the gravitational</span>
+<span class="sd">        acceleration.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        When working in geocentric spherical coordinates, remember that the</span>
+<span class="sd">        ``g_z`` field returns the downward component of the gravitational</span>
+<span class="sd">        acceleration on the local North oriented coordinate system. It is</span>
+<span class="sd">        equivalent to the opposite of the radial component, therefore it&#39;s</span>
+<span class="sd">        positive if the acceleration vector points inside the spheroid.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity checks for coordinate_system</span>
+    <span class="n">check_coordinate_system</span><span class="p">(</span>
+        <span class="n">coordinate_system</span><span class="p">,</span> <span class="n">valid_coord_systems</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cartesian&quot;</span><span class="p">,</span> <span class="s2">&quot;spherical&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># Figure out the shape and size of the output array</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Prepare arrays to be passed to the jitted functions</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="c1"># Sanity checks</span>
+    <span class="k">if</span> <span class="n">masses</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Number of elements in masses (</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">masses</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;mismatch the number of points (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># Compute gravitational field</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">get_kernel</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+    <span class="n">dispatcher</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">parallel</span><span class="p">)(</span>
+        <span class="o">*</span><span class="n">coordinates</span><span class="p">,</span> <span class="o">*</span><span class="n">points</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">kernel</span>
+    <span class="p">)</span>
+    <span class="c1"># Invert sign of gravity_u, gravity_eu, gravity_nu</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g_z&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ez&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ze&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nz&quot;</span><span class="p">,</span> <span class="s2">&quot;g_zn&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># Convert to more convenient units</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g_e&quot;</span><span class="p">,</span> <span class="s2">&quot;g_n&quot;</span><span class="p">,</span> <span class="s2">&quot;g_z&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e5</span>  <span class="c1"># SI to mGal</span>
+    <span class="n">tensors</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;g_ee&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nn&quot;</span><span class="p">,</span> <span class="s2">&quot;g_zz&quot;</span><span class="p">,</span> <span class="s2">&quot;g_en&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ez&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nz&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ne&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ze&quot;</span><span class="p">,</span> <span class="s2">&quot;g_zn&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e9</span>  <span class="c1"># SI to Eotvos</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">parallel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the appropriate forward model function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dispatchers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kc">True</span><span class="p">:</span> <span class="n">point_mass_cartesian_parallel</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">:</span> <span class="n">point_mass_cartesian_serial</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;spherical&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kc">True</span><span class="p">:</span> <span class="n">point_mass_spherical_parallel</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">:</span> <span class="n">point_mass_spherical_serial</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">dispatchers</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">][</span><span class="n">parallel</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the appropriate kernel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="n">gravity_pot</span><span class="p">,</span>
+            <span class="s2">&quot;g_e&quot;</span><span class="p">:</span> <span class="n">gravity_e</span><span class="p">,</span>
+            <span class="s2">&quot;g_n&quot;</span><span class="p">:</span> <span class="n">gravity_n</span><span class="p">,</span>
+            <span class="s2">&quot;g_z&quot;</span><span class="p">:</span> <span class="n">gravity_u</span><span class="p">,</span>
+            <span class="c1"># diagonal tensor components</span>
+            <span class="s2">&quot;g_ee&quot;</span><span class="p">:</span> <span class="n">gravity_ee</span><span class="p">,</span>
+            <span class="s2">&quot;g_nn&quot;</span><span class="p">:</span> <span class="n">gravity_nn</span><span class="p">,</span>
+            <span class="s2">&quot;g_zz&quot;</span><span class="p">:</span> <span class="n">gravity_uu</span><span class="p">,</span>
+            <span class="c1"># non-diagonal tensor components</span>
+            <span class="s2">&quot;g_en&quot;</span><span class="p">:</span> <span class="n">gravity_en</span><span class="p">,</span>
+            <span class="s2">&quot;g_ez&quot;</span><span class="p">:</span> <span class="n">gravity_eu</span><span class="p">,</span>
+            <span class="s2">&quot;g_nz&quot;</span><span class="p">:</span> <span class="n">gravity_nu</span><span class="p">,</span>
+            <span class="s2">&quot;g_ne&quot;</span><span class="p">:</span> <span class="n">gravity_en</span><span class="p">,</span>
+            <span class="s2">&quot;g_ze&quot;</span><span class="p">:</span> <span class="n">gravity_eu</span><span class="p">,</span>
+            <span class="s2">&quot;g_zn&quot;</span><span class="p">:</span> <span class="n">gravity_nu</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;spherical&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="n">potential_spherical</span><span class="p">,</span>
+            <span class="s2">&quot;g_z&quot;</span><span class="p">:</span> <span class="n">gravity_u_spherical</span><span class="p">,</span>
+            <span class="s2">&quot;g_n&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;g_e&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Gravitational field &#39;</span><span class="si">{}</span><span class="s2">&#39; not recognized&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">kernels</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">kernel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">return</span> <span class="n">kernel</span>
+
+
+<span class="c1"># ------------------------------------------</span>
+<span class="c1"># Kernel functions for Spherical coordinates</span>
+<span class="c1"># ------------------------------------------</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">potential_spherical</span><span class="p">(</span>
+    <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Kernel function for potential gravitational field in spherical coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">distance</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">distance_spherical_core</span><span class="p">(</span>
+        <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">GRAVITATIONAL_CONST</span>
+
+
+<span class="c1">#  Acceleration components</span>
+<span class="c1">#  -------------------</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">gravity_u_spherical</span><span class="p">(</span>
+    <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Kernel for upward component of gravitational acceleration</span>
+
+<span class="sd">    Use spherical coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">distance</span><span class="p">,</span> <span class="n">cospsi</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">distance_spherical_core</span><span class="p">(</span>
+        <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
+    <span class="p">)</span>
+    <span class="n">delta_z</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">-</span> <span class="n">radius_p</span> <span class="o">*</span> <span class="n">cospsi</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">GRAVITATIONAL_CONST</span> <span class="o">*</span> <span class="n">delta_z</span> <span class="o">/</span> <span class="n">distance</span><span class="o">**</span><span class="mi">3</span>
+
+
+<span class="k">def</span> <span class="nf">point_mass_cartesian</span><span class="p">(</span>
+    <span class="n">easting</span><span class="p">,</span>
+    <span class="n">northing</span><span class="p">,</span>
+    <span class="n">upward</span><span class="p">,</span>
+    <span class="n">easting_p</span><span class="p">,</span>
+    <span class="n">northing_p</span><span class="p">,</span>
+    <span class="n">upward_p</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">,</span>
+    <span class="n">out</span><span class="p">,</span>
+    <span class="n">forward_func</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational field of point masses in Cartesian coordinates</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    easting, northing, upward : 1d-arrays</span>
+<span class="sd">        Coordinates of computation points in Cartesian coordinate system.</span>
+<span class="sd">    easting_p, northing_p, upward_p : 1d-arrays</span>
+<span class="sd">        Coordinates of point masses in Cartesian coordinate system.</span>
+<span class="sd">    masses : 1d-array</span>
+<span class="sd">        Mass of each point mass in SI units.</span>
+<span class="sd">    out : 1d-array</span>
+<span class="sd">        Array where the gravitational field on each computation point will be</span>
+<span class="sd">        appended.</span>
+<span class="sd">        It must have the same size of ``easting``, ``northing`` and ``upward``.</span>
+<span class="sd">    forward_func : func</span>
+<span class="sd">        forward_func function that will be used to compute the gravitational</span>
+<span class="sd">        field on the computation points. It could be one of the forward</span>
+<span class="sd">        modelling functions in :mod:`choclo.point`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">masses</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">point_mass_spherical</span><span class="p">(</span>
+    <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">latitude_p</span><span class="p">,</span> <span class="n">radius_p</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">kernel</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational field of point masses in spherical coordinates</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    longitude, latitude, radius : 1d-arrays</span>
+<span class="sd">        Coordinates of computation points in spherical geocentric coordinate</span>
+<span class="sd">        system.</span>
+<span class="sd">    longitude_p, latitude_p, radius_p : 1d-arrays</span>
+<span class="sd">        Coordinates of point masses in spherical geocentric coordinate system.</span>
+<span class="sd">    masses : 1d-array</span>
+<span class="sd">        Mass of each point mass in SI units.</span>
+<span class="sd">    out : 1d-array</span>
+<span class="sd">        Array where the gravitational field on each computation point will be</span>
+<span class="sd">        appended.</span>
+<span class="sd">        It must have the same size of ``longitude``, ``latitude`` and</span>
+<span class="sd">        ``radius``.</span>
+<span class="sd">    kernel : func</span>
+<span class="sd">        Kernel function that will be used to compute the gravitational field on</span>
+<span class="sd">        the computation points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute quantities related to computation point</span>
+    <span class="n">longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+    <span class="n">cosphi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+    <span class="n">sinphi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+    <span class="c1"># Compute quantities related to point masses</span>
+    <span class="n">longitude_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">longitude_p</span><span class="p">)</span>
+    <span class="n">latitude_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
+    <span class="n">cosphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
+    <span class="n">sinphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
+    <span class="c1"># Compute gravitational field</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">longitude_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">masses</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">(</span>
+                <span class="n">longitude</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">cosphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">sinphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">radius</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">longitude_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">cosphi_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">sinphi_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">radius_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="p">)</span>
+
+
+<span class="c1"># Define jitted versions of the forward modelling functions</span>
+<span class="n">point_mass_cartesian_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_cartesian</span><span class="p">)</span>
+<span class="n">point_mass_cartesian_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_cartesian</span><span class="p">)</span>
+<span class="n">point_mass_spherical_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_spherical</span><span class="p">)</span>
+<span class="n">point_mass_spherical_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">point_mass_spherical</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

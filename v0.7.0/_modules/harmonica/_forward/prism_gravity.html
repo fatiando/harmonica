@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._forward.prism_gravity | Harmonica v0.7.0</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_forward/prism_gravity';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.7.0</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_forward/prism_gravity.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._forward.prism_gravity</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Forward modelling for prisms</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">choclo.prism</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">gravity_e</span><span class="p">,</span>
+    <span class="n">gravity_ee</span><span class="p">,</span>
+    <span class="n">gravity_en</span><span class="p">,</span>
+    <span class="n">gravity_eu</span><span class="p">,</span>
+    <span class="n">gravity_n</span><span class="p">,</span>
+    <span class="n">gravity_nn</span><span class="p">,</span>
+    <span class="n">gravity_nu</span><span class="p">,</span>
+    <span class="n">gravity_pot</span><span class="p">,</span>
+    <span class="n">gravity_u</span><span class="p">,</span>
+    <span class="n">gravity_uu</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">choclo.prism._utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_point_on_easting_edge</span><span class="p">,</span>
+    <span class="n">is_point_on_northing_edge</span><span class="p">,</span>
+    <span class="n">is_point_on_upward_edge</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">initialize_progressbar</span>
+
+<span class="c1"># Define dictionary with available gravity fields for prisms</span>
+<span class="n">FIELDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="n">gravity_pot</span><span class="p">,</span>
+    <span class="s2">&quot;g_e&quot;</span><span class="p">:</span> <span class="n">gravity_e</span><span class="p">,</span>
+    <span class="s2">&quot;g_n&quot;</span><span class="p">:</span> <span class="n">gravity_n</span><span class="p">,</span>
+    <span class="s2">&quot;g_z&quot;</span><span class="p">:</span> <span class="n">gravity_u</span><span class="p">,</span>
+    <span class="s2">&quot;g_ee&quot;</span><span class="p">:</span> <span class="n">gravity_ee</span><span class="p">,</span>
+    <span class="s2">&quot;g_nn&quot;</span><span class="p">:</span> <span class="n">gravity_nn</span><span class="p">,</span>
+    <span class="s2">&quot;g_zz&quot;</span><span class="p">:</span> <span class="n">gravity_uu</span><span class="p">,</span>
+    <span class="s2">&quot;g_en&quot;</span><span class="p">:</span> <span class="n">gravity_en</span><span class="p">,</span>
+    <span class="s2">&quot;g_ez&quot;</span><span class="p">:</span> <span class="n">gravity_eu</span><span class="p">,</span>
+    <span class="s2">&quot;g_nz&quot;</span><span class="p">:</span> <span class="n">gravity_nu</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="prism_gravity">
+<a class="viewcode-back" href="../../../api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity">[docs]</a>
+<span class="k">def</span> <span class="nf">prism_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">prisms</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="n">progressbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gravitational fields of right-rectangular prisms in Cartesian coordinates</span>
+
+<span class="sd">    Compute the gravitational potential, gravitational acceleration and tensor</span>
+<span class="sd">    components generated by a collection of prisms on a set of observation</span>
+<span class="sd">    points.</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        The **vertical direction points upwards**, i.e. positive and negative</span>
+<span class="sd">        values of ``upward`` represent points above and below the surface,</span>
+<span class="sd">        respectively. But ``g_z`` field returns the **downward component** of</span>
+<span class="sd">        the gravitational acceleration so that positive density contrasts</span>
+<span class="sd">        produce positive anomalies. The same applies to the tensor components,</span>
+<span class="sd">        i.e. the ``g_ez`` is the non-diagonal **easting-downward** tensor</span>
+<span class="sd">        component.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        - The gravitational potential is returned in</span>
+<span class="sd">          :math:`\text{J}/\text{kg}`.</span>
+<span class="sd">        - The gravity acceleration components are returned in mGal</span>
+<span class="sd">          (:math:`\text{m}/\text{s}^2`).</span>
+<span class="sd">        - The tensor components are returned in Eotvos (:math:`\text{s}^{-2}`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : list of arrays</span>
+<span class="sd">        List of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        coordinates of the computation points defined on a Cartesian coordinate</span>
+<span class="sd">        system. All coordinates should be in meters.</span>
+<span class="sd">    prisms : list, 1d-array, or 2d-array</span>
+<span class="sd">        List or array containing the coordinates of the prism(s) in the</span>
+<span class="sd">        following order: west, east, south, north, bottom, top, in a Cartesian</span>
+<span class="sd">        coordinate system.</span>
+<span class="sd">        All coordinates should be in meters. Coordinates for more than one</span>
+<span class="sd">        prism can be provided. In this case, *prisms* should be a list of lists</span>
+<span class="sd">        or 2d-array (with one prism per row).</span>
+<span class="sd">    density : list or array</span>
+<span class="sd">        List or array containing the density of each prism in kg/m^3.</span>
+<span class="sd">    field : str</span>
+<span class="sd">        Gravitational field that wants to be computed.</span>
+<span class="sd">        The available fields are:</span>
+
+<span class="sd">        - Gravitational potential: ``potential``</span>
+<span class="sd">        - Eastward acceleration: ``g_e``</span>
+<span class="sd">        - Northward acceleration: ``g_n``</span>
+<span class="sd">        - Downward acceleration: ``g_z``</span>
+<span class="sd">        - Diagonal tensor components: ``g_ee``, ``g_nn``, ``g_zz``</span>
+<span class="sd">        - Non-diagonal tensor components: ``g_en``, ``g_ez``, ``g_nz``</span>
+
+<span class="sd">    parallel : bool (optional)</span>
+<span class="sd">        If True the computations will run in parallel using Numba built-in</span>
+<span class="sd">        parallelization. If False, the forward model will run on a single core.</span>
+<span class="sd">        Might be useful to disable parallelization if the forward model is run</span>
+<span class="sd">        by an already parallelized workflow. Default to True.</span>
+<span class="sd">    dtype : data-type (optional)</span>
+<span class="sd">        Data type assigned to the resulting gravitational field. Default to</span>
+<span class="sd">        ``np.float64``.</span>
+<span class="sd">    progressbar : bool (optional)</span>
+<span class="sd">        If True, a progress bar of the computation will be printed to standard</span>
+<span class="sd">        error (stderr). Requires :mod:`numba_progress` to be installed.</span>
+<span class="sd">        Default to ``False``.</span>
+<span class="sd">    disable_checks : bool (optional)</span>
+<span class="sd">        Flag that controls whether to perform a sanity check on the model.</span>
+<span class="sd">        Should be set to ``True`` only when it is certain that the input model</span>
+<span class="sd">        is valid and it does not need to be checked.</span>
+<span class="sd">        Default to ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : array</span>
+<span class="sd">        Gravitational field generated by the prisms on the computation points.</span>
+<span class="sd">        Gravitational potential is returned in :math:`\text{J}/\text{kg}`,</span>
+<span class="sd">        acceleration components in mGal, and tensor components in Eotvos.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function makes use of :mod:`choclo.prism` forward modelling functions</span>
+<span class="sd">    to compute each gravitational field.</span>
+
+<span class="sd">    The gravitational potential (``&quot;potential&quot;``) and the acceleration</span>
+<span class="sd">    components (``&quot;g_e&quot;``, ``&quot;g_n&quot;`` and ``&quot;g_z&quot;``) are well defined on the</span>
+<span class="sd">    entire domain.</span>
+<span class="sd">    Tensor components aren&#39;t defined on prism vertices.</span>
+<span class="sd">    Diagonal tensor components aren&#39;t defined on edges normal to the direction</span>
+<span class="sd">    of the tensor (e.g. `&quot;g_ee&quot;` is not defined on edges parallel to northing</span>
+<span class="sd">    and upward directions).</span>
+<span class="sd">    Non-diagonal tensor components aren&#39;t defined on edges normal to the</span>
+<span class="sd">    remaining direction of the tensor (e.g. `&quot;g_en&quot;` is not defined on edges</span>
+<span class="sd">    parallel to the upward direction).</span>
+<span class="sd">    The function returns :func:`numpy.nan` on every singular point.</span>
+
+<span class="sd">    The diagonal tensor components aren&#39;t defined on observation points that</span>
+<span class="sd">    belong to the faces normal to their direction (e.g. ``&quot;g_zz&quot;`` is not</span>
+<span class="sd">    define on horizontal faces): two different limits exist when approaching</span>
+<span class="sd">    from the inside and from the outside of the prism.</span>
+<span class="sd">    This function returns the limit of these components while approaching from</span>
+<span class="sd">    the outside.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    * [Nagy2000]_</span>
+<span class="sd">    * [Nagy2002]_</span>
+<span class="sd">    * [Fukushima2020]_</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    Compute gravitational effect of a single a prism</span>
+
+<span class="sd">    &gt;&gt;&gt; # Define prisms boundaries, it must be beneath the surface</span>
+<span class="sd">    &gt;&gt;&gt; prism = [-34, 5, -18, 14, -345, -146]</span>
+<span class="sd">    &gt;&gt;&gt; # Set prism density to 2670 kg/m³</span>
+<span class="sd">    &gt;&gt;&gt; density = 2670</span>
+<span class="sd">    &gt;&gt;&gt; # Define three computation points along the easting direction at 30m</span>
+<span class="sd">    &gt;&gt;&gt; # above the surface</span>
+<span class="sd">    &gt;&gt;&gt; easting = [-40, 0, 40]</span>
+<span class="sd">    &gt;&gt;&gt; northing = [0, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; upward = [30, 30, 30]</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = (easting, northing, upward)</span>
+<span class="sd">    &gt;&gt;&gt; # Compute the downward component of the gravitational acceleration that</span>
+<span class="sd">    &gt;&gt;&gt; # the prism generates on the computation points</span>
+<span class="sd">    &gt;&gt;&gt; gz = prism_gravity(coordinates, prism, density, field=&quot;g_z&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;({:.5f}, {:.5f}, {:.5f})&quot;.format(*gz))</span>
+<span class="sd">    (0.06552, 0.06629, 0.06174)</span>
+
+<span class="sd">    Define two prisms with positive and negative density contrasts</span>
+
+<span class="sd">    &gt;&gt;&gt; prisms = [[-134, -5, -45, 45, -200, -50], [5, 134, -45, 45, -180, -30]]</span>
+<span class="sd">    &gt;&gt;&gt; densities = [-300, 300]</span>
+<span class="sd">    &gt;&gt;&gt; # Compute the g_z that the prisms generate on the computation points</span>
+<span class="sd">    &gt;&gt;&gt; gz = prism_gravity(coordinates, prisms, densities, field=&quot;g_z&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;({:.5f}, {:.5f}, {:.5f})&quot;.format(*gz))</span>
+<span class="sd">    (-0.05380, 0.02908, 0.11237)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FIELDS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Gravitational field </span><span class="si">{}</span><span class="s2"> not recognized&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+    <span class="c1"># Figure out the shape and size of the output array</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Convert coordinates, prisms and density to arrays with proper shape</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">prisms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">prisms</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">density</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="c1"># Sanity checks</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">disable_checks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">density</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of elements in density (</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">density</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;mismatch the number of prisms (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="n">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">)</span>
+        <span class="n">_check_singular_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+    <span class="c1"># Discard null prisms (zero volume or zero density)</span>
+    <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span> <span class="o">=</span> <span class="n">_discard_null_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+    <span class="c1"># Choose parallelized or serialized forward function</span>
+    <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
+        <span class="n">gravity_prism_func</span> <span class="o">=</span> <span class="n">jit_prism_gravity_parallel</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gravity_prism_func</span> <span class="o">=</span> <span class="n">jit_prism_gravity_serial</span>
+    <span class="c1"># Compute gravitational field</span>
+    <span class="k">with</span> <span class="n">initialize_progressbar</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">progressbar</span><span class="p">)</span> <span class="k">as</span> <span class="n">progress_proxy</span><span class="p">:</span>
+        <span class="n">gravity_prism_func</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">FIELDS</span><span class="p">[</span><span class="n">field</span><span class="p">],</span> <span class="n">result</span><span class="p">,</span> <span class="n">progress_proxy</span>
+        <span class="p">)</span>
+    <span class="c1"># Invert sign of gravity_u, gravity_eu, gravity_nu</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g_z&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ez&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nz&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># Convert to more convenient units</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g_e&quot;</span><span class="p">,</span> <span class="s2">&quot;g_n&quot;</span><span class="p">,</span> <span class="s2">&quot;g_z&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e5</span>  <span class="c1"># SI to mGal</span>
+    <span class="c1"># Convert to more convenient units</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g_ee&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nn&quot;</span><span class="p">,</span> <span class="s2">&quot;g_zz&quot;</span><span class="p">,</span> <span class="s2">&quot;g_en&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ez&quot;</span><span class="p">,</span> <span class="s2">&quot;g_nz&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="mf">1e9</span>  <span class="c1"># SI to Eotvos</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_check_singular_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if any observation point is a singular point for tensor components</span>
+
+<span class="sd">    The analytic solutions for the tensor components of the prism have some</span>
+<span class="sd">    singular points:</span>
+
+<span class="sd">      - All prism vertices are singular points for every tensor component.</span>
+<span class="sd">      - Diagonal components aren&#39;t defined on edges perpendicular to the</span>
+<span class="sd">        component direction (e.g. ``g_ee`` is not defined on edges parallel to</span>
+<span class="sd">        northing and upward directions).</span>
+<span class="sd">      - Non-diagonal components aren&#39;t defined on edges perpendicular to the</span>
+<span class="sd">        two directions of the component (e.g. ``g_en`` is not defined on edges</span>
+<span class="sd">        parallel to the upward direction).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">functions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;g_ee&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_ee</span><span class="p">,</span>
+        <span class="s2">&quot;g_nn&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_nn</span><span class="p">,</span>
+        <span class="s2">&quot;g_zz&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_zz</span><span class="p">,</span>
+        <span class="s2">&quot;g_en&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_en</span><span class="p">,</span>
+        <span class="s2">&quot;g_ez&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_ez</span><span class="p">,</span>
+        <span class="s2">&quot;g_nz&quot;</span><span class="p">:</span> <span class="n">_any_singular_point_g_nz</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">functions</span><span class="p">[</span><span class="n">field</span><span class="p">](</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Found observation point on singular point of a prism.&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_ee</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_ee</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_northing_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="n">is_point_on_upward_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_nn</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_nn</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_easting_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="n">is_point_on_upward_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_zz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_zz</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_easting_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="n">is_point_on_northing_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_en</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_en</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_upward_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_ez</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_ez</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_northing_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_any_singular_point_g_nz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check observation points as singular points of g_nz</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">n_coords</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_prisms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_point_on_easting_edge</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if prisms boundaries are well defined</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prisms : 2d-array</span>
+<span class="sd">        Array containing the boundaries of the prisms in the following order:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.</span>
+<span class="sd">        The array must have the following shape: (``n_prisms``, 6), where</span>
+<span class="sd">        ``n_prisms`` is the total number of prisms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">prisms</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid prism or prisms. &quot;</span>
+    <span class="n">bad_we</span> <span class="o">=</span> <span class="n">west</span> <span class="o">&gt;</span> <span class="n">east</span>
+    <span class="n">bad_sn</span> <span class="o">=</span> <span class="n">south</span> <span class="o">&gt;</span> <span class="n">north</span>
+    <span class="n">bad_bt</span> <span class="o">=</span> <span class="n">bottom</span> <span class="o">&gt;</span> <span class="n">top</span>
+    <span class="k">if</span> <span class="n">bad_we</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The west boundary can&#39;t be greater than the east one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">prism</span> <span class="ow">in</span> <span class="n">prisms</span><span class="p">[</span><span class="n">bad_we</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid prism: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prism</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bad_sn</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The south boundary can&#39;t be greater than the north one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">prism</span> <span class="ow">in</span> <span class="n">prisms</span><span class="p">[</span><span class="n">bad_sn</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid prism: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prism</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bad_bt</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;The bottom radius boundary can&#39;t be greater than the top one.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">prism</span> <span class="ow">in</span> <span class="n">prisms</span><span class="p">[</span><span class="n">bad_bt</span><span class="p">]:</span>
+            <span class="n">err_msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Invalid tesseroid: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prism</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_discard_null_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Discard prisms with zero volume or zero density</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prisms : 2d-array</span>
+<span class="sd">        Array containing the boundaries of the prisms in the following order:</span>
+<span class="sd">        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.</span>
+<span class="sd">        The array must have the following shape: (``n_prisms``, 6), where</span>
+<span class="sd">        ``n_prisms`` is the total number of prisms.</span>
+<span class="sd">        This array of prisms must have valid boundaries.</span>
+<span class="sd">        Run ``_check_prisms`` before.</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        Array containing the density of each prism in kg/m^3. Must have the</span>
+<span class="sd">        same size as the number of prisms.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prisms : 2d-array</span>
+<span class="sd">        A copy of the ``prisms`` array that doesn&#39;t include the null prisms</span>
+<span class="sd">        (prisms with zero volume or zero density).</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        A copy of the ``density`` array that doesn&#39;t include the density values</span>
+<span class="sd">        for null prisms (prisms with zero volume or zero density).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">prisms</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="c1"># Mark prisms with zero volume as null prisms</span>
+    <span class="n">null_prisms</span> <span class="o">=</span> <span class="p">(</span><span class="n">west</span> <span class="o">==</span> <span class="n">east</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">south</span> <span class="o">==</span> <span class="n">north</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">bottom</span> <span class="o">==</span> <span class="n">top</span><span class="p">)</span>
+    <span class="c1"># Mark prisms with zero density as null prisms</span>
+    <span class="n">null_prisms</span><span class="p">[</span><span class="n">density</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Keep only non null prisms</span>
+    <span class="n">prisms</span> <span class="o">=</span> <span class="n">prisms</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">null_prisms</span><span class="p">),</span> <span class="p">:]</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">density</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">null_prisms</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span>
+
+
+<span class="k">def</span> <span class="nf">jit_prism_gravity</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">progress_proxy</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute gravitational field of prisms on computations points</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple</span>
+<span class="sd">        Tuple containing ``easting``, ``northing`` and ``upward`` of the</span>
+<span class="sd">        computation points as arrays, all defined on a Cartesian coordinate</span>
+<span class="sd">        system and in meters.</span>
+<span class="sd">    prisms : 2d-array</span>
+<span class="sd">        Two dimensional array containing the coordinates of the prism(s) in the</span>
+<span class="sd">        following order: west, east, south, north, bottom, top in a Cartesian</span>
+<span class="sd">        coordinate system.</span>
+<span class="sd">        All coordinates should be in meters.</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        Array containing the density of each prism in kg/m^3. Must have the</span>
+<span class="sd">        same size as the number of prisms.</span>
+<span class="sd">    forward_func : func</span>
+<span class="sd">        Forward modelling function that will be used to compute the desired</span>
+<span class="sd">        field. It could be one of the forward modelling functions in</span>
+<span class="sd">        :mod:`choclo.prism`.</span>
+<span class="sd">    out : 1d-array</span>
+<span class="sd">        Array where the resulting field values will be stored.</span>
+<span class="sd">        Must have the same size as the arrays contained on ``coordinates``.</span>
+<span class="sd">    progress_proxy : :class:`numba_progress.ProgressBar` or None</span>
+<span class="sd">        Instance of :class:`numba_progress.ProgressBar` or None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack coordinates</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="c1"># Check if we need to update the progressbar on each iteration</span>
+    <span class="n">update_progressbar</span> <span class="o">=</span> <span class="n">progress_proxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># Iterate over computation points and prisms</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">prisms</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                <span class="n">prisms</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+                <span class="n">density</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="c1"># Update progress bar</span>
+        <span class="k">if</span> <span class="n">update_progressbar</span><span class="p">:</span>
+            <span class="n">progress_proxy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># Define jitted versions of the forward modelling function</span>
+<span class="n">jit_prism_gravity_serial</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">jit_prism_gravity</span><span class="p">)</span>
+<span class="n">jit_prism_gravity_parallel</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">jit_prism_gravity</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 12, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
