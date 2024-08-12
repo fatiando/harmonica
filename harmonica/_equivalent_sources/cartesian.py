@@ -110,7 +110,7 @@ class EquivalentSources(vdb.BaseGridder):
     depth : float or "default"
         Parameter used to control the depth at which the point sources will be
         located.
-        If a value is provided, each source is located beneath each data point
+        If a non-zero value is provided, each source is located beneath each data point
         (or block-averaged location) at a depth equal to its elevation minus
         the ``depth`` value.
         If set to ``"default"``, the depth of the sources will be estimated as
@@ -178,6 +178,11 @@ class EquivalentSources(vdb.BaseGridder):
                 f"Found invalid 'depth' value equal to '{depth}'. "
                 "It should be 'default' or a numeric value."
             )
+        if depth == 0:
+            raise ValueError(
+                "Depth value cannot be zero. It should be a non-zero numeric value."
+            )
+
         self.damping = damping
         self.points = points
         self.depth = depth
