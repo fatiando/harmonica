@@ -101,8 +101,8 @@ Isostatic Moho
 
     isostatic_moho_airy
 
-Source estimation
------------------
+Source position estimation
+--------------------------
 
 .. autosummary::
     :toctree: generated/
