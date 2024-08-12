@@ -3,6 +3,112 @@
 Changelog
 =========
 
+Version 0.7.0
+-------------
+
+*Released on: 2024/08/13*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.13308312.svg
+   :alt: Digital Object Identifier for the Zenodo archive
+   :target: https://doi.org/10.5281/zenodo.13308312
+
+Breaking changes:
+
+- Update the gravitational constant (`#412 <https://github.com/fatiando/harmonica/pull/412>`__)
+- Remove the ``harmonica.test()`` function (`#482 <https://github.com/fatiando/harmonica/pull/482>`__)
+- Remove ``depth_type`` from ``EquivalentSources`` (`#468 <https://github.com/fatiando/harmonica/pull/468>`__)
+- Change default value for ``depth`` in ``EquivalentSourcesGB`` (`#515 <https://github.com/fatiando/harmonica/pull/515>`__)
+- Change default for window size in ``EquivalentSourcesGB`` (`#487 <https://github.com/fatiando/harmonica/pull/487>`__)
+
+Bug fixes:
+
+- Make ``reduce_to_pole`` work for arbitrary dimension names  (`#509 <https://github.com/fatiando/harmonica/pull/509>`__)
+- Fix inverted sign in upward derivative filter (`#479 <https://github.com/fatiando/harmonica/pull/479>`__)
+- Fix coordinate rounding errors in FFT (`#398 <https://github.com/fatiando/harmonica/pull/398>`__)
+
+New features:
+
+- Remove horizontal coordinates when ditching thin prisms (`#394 <https://github.com/fatiando/harmonica/pull/394>`__)
+- Raise error for zero depth value in equivalent sources (`#524 <https://github.com/fatiando/harmonica/pull/524>`__)
+- Merge magnetic forward functions for prisms (`#448 <https://github.com/fatiando/harmonica/pull/448>`__)
+- Merge magnetic forward functions for dipoles (`#453 <https://github.com/fatiando/harmonica/pull/453>`__)
+- Magnetic field of dipoles in Cartesian coordinates (`#414 <https://github.com/fatiando/harmonica/pull/414>`__)
+- Forward models of prisms gravity fields with Choclo (`#400 <https://github.com/fatiando/harmonica/pull/400>`__)
+- Drop null prisms when converting a prism layer to pyvista (`#393 <https://github.com/fatiando/harmonica/pull/393>`__)
+- Add total gradient amplitude transformation (`#478 <https://github.com/fatiando/harmonica/pull/478>`__)
+- Add ``total_field_anomaly`` function (`#510 <https://github.com/fatiando/harmonica/pull/510>`__)
+- Add progressbar to tesseroid forward modelling (`#430 <https://github.com/fatiando/harmonica/pull/430>`__)
+- Add new ``tilt_angle`` transformation function (`#486 <https://github.com/fatiando/harmonica/pull/486>`__)
+- Add magnetic field forward modelling of rectangular prisms (`#369 <https://github.com/fatiando/harmonica/pull/369>`__)
+- Add function to convert magnetic vector to inclination and declination (`#402 <https://github.com/fatiando/harmonica/pull/402>`__)
+- Add Euler Deconvolution of a single window (`#493 <https://github.com/fatiando/harmonica/pull/493>`__)
+- Add covariance, change fit data, more docs to Euler Deconvolution (`#519 <https://github.com/fatiando/harmonica/pull/519>`__)
+- Add associated Legendre function calculations (`#505 <https://github.com/fatiando/harmonica/pull/505>`__)
+
+Maintenance:
+
+- Use Dependabot to update GitHub Actions workflows (`#455 <https://github.com/fatiando/harmonica/pull/455>`__)
+- Use Choclo functions for forward modelling point sources (`#422 <https://github.com/fatiando/harmonica/pull/422>`__)
+- Use Burocrata to check and add license notices (`#469 <https://github.com/fatiando/harmonica/pull/469>`__)
+- Use a text field for license in pyproject.toml (`#442 <https://github.com/fatiando/harmonica/pull/442>`__)
+- Specify nopython=True on jit functions (`#435 <https://github.com/fatiando/harmonica/pull/435>`__)
+- Setup Trusted Publisher deployment to PyPI (`#477 <https://github.com/fatiando/harmonica/pull/477>`__)
+- Run serial vs parallel test on prisms without Numba (`#434 <https://github.com/fatiando/harmonica/pull/434>`__)
+- Rewrite check for point inside tesseroid with Numba (`#419 <https://github.com/fatiando/harmonica/pull/419>`__)
+- Fix prism_layer test when accessing PyVista cells (`#409 <https://github.com/fatiando/harmonica/pull/409>`__)
+- Fix broken ICGEM file loader test (`#457 <https://github.com/fatiando/harmonica/pull/457>`__)
+- Extend support to Python 3.12 (`#484 <https://github.com/fatiando/harmonica/pull/484>`__)
+- Extend support for Numpy 2.0 (`#514 <https://github.com/fatiando/harmonica/pull/514>`__)
+- Drop support for Python 3.8 (`#497 <https://github.com/fatiando/harmonica/pull/497>`__)
+- Drop support for Python 3.7 (`#404 <https://github.com/fatiando/harmonica/pull/404>`__)
+- Ditch setup.cfg and use only pyproject.toml (`#438 <https://github.com/fatiando/harmonica/pull/438>`__)
+- Decorate tests for Legendre functions (`#521 <https://github.com/fatiando/harmonica/pull/521>`__)
+- Continue running doctests after failure (`#411 <https://github.com/fatiando/harmonica/pull/411>`__)
+- Add Yago M Castro to AUTHORS.md (`#489 <https://github.com/fatiando/harmonica/pull/489>`__)
+- Add India Uppal to AUTHORS.md (`#500 <https://github.com/fatiando/harmonica/pull/500>`__)
+- Add Gelson to AUTHORS.md (`#520 <https://github.com/fatiando/harmonica/pull/520>`__)
+
+Documentation:
+
+- Update versions of Sphinx and its plugins (`#472 <https://github.com/fatiando/harmonica/pull/472>`__)
+- Update how to pip install dev version in install.rst (`#444 <https://github.com/fatiando/harmonica/pull/444>`__)
+- Set hinge to zero in gallery example plot (`#408 <https://github.com/fatiando/harmonica/pull/408>`__)
+- Replace sphinx napoleon for numpydoc (`#492 <https://github.com/fatiando/harmonica/pull/492>`__)
+- Replace ``color`` for ``fill`` in examples using PyGMT (`#495 <https://github.com/fatiando/harmonica/pull/495>`__)
+- Minor typo in eq sources parameter estimation docs (`#389 <https://github.com/fatiando/harmonica/pull/389>`__)
+- Minor edits to grid transformations guides (`#391 <https://github.com/fatiando/harmonica/pull/391>`__)
+- Make gravity units more explicit (`#421 <https://github.com/fatiando/harmonica/pull/421>`__)
+- Improve installation instructions in the docs (`#483 <https://github.com/fatiando/harmonica/pull/483>`__)
+- Improve docstrings of prism gravity functions (`#429 <https://github.com/fatiando/harmonica/pull/429>`__)
+- Improve docstring of ``prism_magnetic`` function (`#481 <https://github.com/fatiando/harmonica/pull/481>`__)
+- Improve coordinates description in forward functions (`#413 <https://github.com/fatiando/harmonica/pull/413>`__)
+- Fix wrong citations of Cordell (1992) (`#518 <https://github.com/fatiando/harmonica/pull/518>`__)
+- Fix visualization test using deprecated PyVista method (`#433 <https://github.com/fatiando/harmonica/pull/433>`__)
+- Fix typo in user guide (`#475 <https://github.com/fatiando/harmonica/pull/475>`__)
+- Fix typo in Installing (`#416 <https://github.com/fatiando/harmonica/pull/416>`__)
+- Fix spelling of "Gaussian" in tranformations guide (`#464 <https://github.com/fatiando/harmonica/pull/464>`__)
+- Fix prism and tesseroid layer in API Reference (`#428 <https://github.com/fatiando/harmonica/pull/428>`__)
+- Fix multiple typos on `DatasetAccessorPrismLayer` (`#494 <https://github.com/fatiando/harmonica/pull/494>`__)
+- Fix missing PyGMT images in user guide (`#474 <https://github.com/fatiando/harmonica/pull/474>`__)
+- Download User Guides as scripts and notebooks (`#405 <https://github.com/fatiando/harmonica/pull/405>`__)
+
+This release contains contributions from:
+
+- Agustina Pesce
+- Federico Esteban
+- Gelson F. Souza-Junior
+- India Uppal
+- Leonardo Miquelutti
+- Leonardo Uieda
+- Lu Li
+- Mariana Gómez
+- Matt Tankersley
+- RichardScottOZ
+- Santiago Soler
+- Sergei Freiman
+- Yago Moreira Castro
+
+
 Version 0.6.0
 -------------
 
