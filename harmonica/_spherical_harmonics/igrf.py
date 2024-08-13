@@ -2,14 +2,15 @@
 Calculation of the IGRF magnetic field.
 """
 import pathlib
-import numpy as np
-import numba
-import xarray as xr
-from . import legendre
-from .._version import __version__
 
-import pooch
 import boule
+import numba
+import numpy as np
+import pooch
+import xarray as xr
+
+from .._version import __version__
+from . import legendre
 
 
 def fetch_igrf13():
@@ -46,10 +47,18 @@ class IGRF13():
 
     def __init__(self, date, ellipsoid=boule.WGS84):
         self.date = date
-        path = fetch_igrf13()
-        g, h, years = load_igrf(path)
-        self._g, self._h = interpolate_coefficients(date, g, h, years)
+        self._g, self._h = None, None
         self.reference_radius = 6371.2e3  # meters
+        self.max_degree = 13
+
+    @property
+    def coefficients(self):
+        "The Gauss coefficients g and h, respectively"
+        if self._g is None or self._h is None:
+            path = fetch_igrf13()
+            g, h, years = load_igrf(path)
+            self._g, self._h = interpolate_coefficients(date, g, h, years)
+        return self._g, self._h
 
     @property
     def dipole_moment(self):
@@ -62,16 +71,23 @@ class IGRF13():
         """
         Calculate the IGRF magnetic field at the given coordinates
         """
-        latitude = coordinates[1]
+        longitude, latitude, height = coordinates
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
-            *coordinates
+            longitude, latitude, height
         )
         longitude = np.radians(longitude)
         colatitude = np.radians(90 - latitude_sph)
+        n_data = colatitude.size
+        b_east = np.zeros(n_data)
+        b_north = np.zeros(n_data)
+        b_up = np.zeros(n_data)
+        g, h = self.coefficients
+        _evaluate_igrf(longitude, colatitude, radius, g, h, self.max_degree, b_east, b_north, b_up)
+        return b_east, b_north, b_up
 
 
-        return magnetic_field
-
-
-@numba.jit(nopython=True)
-def _cal
+@numba.jit(parallel=True, nopython=True)
+def _evaluate_igrf(longitude, colatitude, radius, g, h, max_degree, b_east, b_north, b_up):
+    n_data = longitude.size
+    for i in numba.prange(n_data):
+        plm =
