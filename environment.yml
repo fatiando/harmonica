@@ -5,7 +5,7 @@ dependencies:
   - python==3.12.*
   - pip
   # Build
-  - build
+  - python-build
   - twine
   # Run-time
   - numpy
