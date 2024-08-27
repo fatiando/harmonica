@@ -84,6 +84,12 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
+      - name: Rename conda-forge packages
+        run: |
+          echo "Rename conda-forge packages in requirements-full.txt"
+          # Replace "build" for "python-build"
+          sed -s 's/^build$/python-build'
+
       - name: Setup caching for conda packages
         uses: actions/cache@v4
         with:
