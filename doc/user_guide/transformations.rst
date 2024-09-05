@@ -317,10 +317,10 @@ magnetization vector of the sources, we can specify the
     plt.show()
 
 
-Gaussians filters
+Gaussian filters
 -----------------
 
-We can also apply Gaussians low-pass and high-pass filters to any regular grid.
+We can also apply Gaussian low-pass and high-pass filters to any regular grid.
 These two need us to select a cutoff wavelength.
 The low-pass filter will remove any signal with a high spatial frequency,
 keeping only the signal components that have a wavelength higher than the
@@ -394,6 +394,52 @@ Let's plot the results side by side:
         shrink=0.8,
         pad=0.08,
     )
+    plt.show()
+
+
+Total gradient amplitude
+------------------------
+
+.. hint::
+
+    Total gradient amplitude is also known as *analytic signal*.
+
+We can also calculate the total gradient amplitude of any magnetic anomaly grid.
+This transformation consists in obtaining the amplitude of the gradient of the
+magnetic field in all the three spatial directions by applying
+
+.. math::
+
+   A(x, y) = \sqrt{
+     \left( \frac{\partial M}{\partial x} \right)^2
+     + \left( \frac{\partial M}{\partial y} \right)^2
+     + \left( \frac{\partial M}{\partial z} \right)^2
+   }.
+
+
+We can apply it through the :func:`harmonica.total_gradient_amplitude` function.
+
+.. jupyter-execute::
+
+    tga_grid = hm.total_gradient_amplitude(
+        magnetic_grid_padded
+    )
+
+    # Unpad the total gradient amplitude grid
+    tga_grid = xrft.unpad(tga_grid, pad_width)
+    tga_grid
+
+And plot it:
+
+.. jupyter-execute::
+
+    import verde as vd
+
+    tmp = tga_grid.plot(cmap="viridis", add_colorbar=False)
+    plt.gca().set_aspect("equal")
+    plt.title("Total gradient amplitude of the magnetic anomaly")
+    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
+    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 ----

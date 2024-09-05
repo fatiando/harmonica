@@ -72,20 +72,24 @@ Now we can initialize the :class:`harmonica.EquivalentSources` class.
 
    import harmonica as hm
 
-   equivalent_sources = hm.EquivalentSources(depth=10e3, damping=10)
+   equivalent_sources = hm.EquivalentSources(damping=10)
    equivalent_sources
 
 By default, it places the sources one beneath each data point at a relative
-depth from the elevation of the data point following [Cooper2000]_.
+depth from the elevation of the data point following [Cordell1992]_.
 This *relative depth* can be set through the ``depth`` argument.
 Deepest sources generate smoother predictions (*underfitting*), while shallow
 ones tend to overfit the data.
 
-.. note::
+.. hint::
 
-   If instead we want to place every source at a constant depth, we can change
-   it by passing  ``depth_type="constant"``. In that case, the ``depth``
-   argument will be the exact depth at which the sources will be located.
+   By default, since Harmonica v0.7.0, the sources will be located at a depth
+   below the data points estimated as 4.5 times the mean distance between
+   first neighboring sources. Alternatively, we can set a value for this depth
+   below the data points through the ``depth`` argument.
+
+   The estimated value for the depth of the sources can be explored through the
+   :attr:`harmonica.EquivalentSources.depth_` attribute.
 
 The ``damping`` parameter is used to smooth the coefficients of the sources and
 stabilize the least square problem. A higher ``damping`` will create smoother
@@ -113,6 +117,18 @@ sources are able to reproduce the observed field.
 And plot it:
 
 .. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
+.. jupyter-execute::
 
    import pygmt
 
@@ -133,7 +149,7 @@ And plot it:
       fig.plot(
          x=easting,
          y=northing,
-         color=disturbance,
+         fill=disturbance,
          cmap=True,
          style="c3p",
          projection=fig_proj,
@@ -149,7 +165,7 @@ And plot it:
       fig.plot(
          x=easting,
          y=northing,
-         color=data.gravity_disturbance_mgal,
+         fill=data.gravity_disturbance_mgal,
          cmap=True,
          style="c3p",
          frame=['ag', f"+t{title}"],

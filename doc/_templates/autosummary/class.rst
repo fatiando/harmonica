@@ -4,27 +4,17 @@
 
 .. autoclass:: {{ objname }}
 
-.. rubric:: Methods Summary
-
-.. autosummary::
-    {% for item in members %}
-    {% if item in ['__call__'] %}
-        {{ objname }}.{{ item }}
-    {% endif %}
-    {% endfor %}
-    {% for item in methods %}
-    {% if item != '__init__' %}
-        {{ objname }}.{{ item }}
-    {% endif %}
-    {% endfor %}
-
-----
+{% if methods %}
 
 {% for item in methods %}
 {% if item != '__init__' %}
 .. automethod:: {{ objname }}.{{ item }}
 {% endif %}
 {% endfor %}
+
+{% endif %}
+
+----
 
 .. include:: backreferences/{{ fullname }}.examples
 

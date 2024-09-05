@@ -79,5 +79,5 @@ def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
         fourier_transform,
         true_phase=true_phase,
         true_amplitude=true_amplitude,
-        **kwargs
+        **kwargs,
     )

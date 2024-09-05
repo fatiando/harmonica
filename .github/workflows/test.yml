@@ -25,49 +25,47 @@ defaults:
 
 jobs:
   #############################################################################
-  # Run tests and upload to codecov
+  # Run tests
   test:
     name: ${{ matrix.os }} python=${{ matrix.python }} dependencies=${{ matrix.dependencies }}
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       # Otherwise, the workflow would stop if a single job fails. We want to
       # run all of them to catch failures in different combinations.
       fail-fast: false
       matrix:
         os:
-          - ubuntu
-          - macos
-          - windows
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
         dependencies:
           - oldest
           - latest
           - optional
         include:
           - dependencies: oldest
-            python: "3.8"
+            python: "3.9"
           - dependencies: latest
-            python: "3.11"
+            python: "3.12"
           - dependencies: optional
-            python: "3.11"
+            python: "3.12"
+          # test on macos-13 (x86) using oldest dependencies and python 3.8
+          - os: macos-13
+            dependencies: oldest
+            python: "3.9"
+        exclude:
+          # don't test on macos-latest (arm64) with oldest dependencies
+          - os: macos-latest
+            dependencies: oldest
+
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
-      # Used to tag codecov submissions
-      OS: ${{ matrix.os }}
-      PYTHON: ${{ matrix.python }}
-      DEPENDENCIES: ${{ matrix.dependencies }}
 
     steps:
-      # Cancel any previous run of the test job
-      # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
-      # because we are giving full access through the github.token.
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@148d9a848c6acaf90a3ec30bc5062f646f8a4163
-        with:
-          access_token: ${{ github.token }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -83,7 +81,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
 
@@ -116,7 +114,7 @@ jobs:
           echo "dir="$(pip cache dir) >> $GITHUB_OUTPUT
 
       - name: Setup caching for pip packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements-full.txt') }}
@@ -140,23 +138,53 @@ jobs:
 
       - name: Run the tests
         run: |
-          if [ ${{ matrix.os }} == 'ubuntu' ]; then
+          if [ $RUNNER_OS == "Linux" ]; then
               # Set NUMBA_THREADING_LAYER to workqueue on Ubuntu to prevent
               # endless loop on some test functions that make use of Numba
+              echo "Running 'NUMBA_THREADING_LAYER=workqueue make test'"
               NUMBA_THREADING_LAYER=workqueue make test
           else
+              echo "Running 'make test'"
               make test
           fi
 
       - name: Convert coverage report to XML for codecov
         run: coverage xml
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage report as an artifact
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          env_vars: OS,PYTHON,DEPENDENCIES
+          name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
+          path: ./coverage.xml
+
+
+  #############################################################################
+  # Upload coverage report to codecov
+  codecov-upload:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+
+      - name: Download coverage report artifacts
+        # Download coverage reports from every runner.
+        # Maximum coverage is achieved by combining reports from every runner.
+        # Each coverage file will live in its own folder with the same name as
+        # the artifact.
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage_*
+
+      - name: List all downloaded artifacts
+        run: ls -l -R .
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          # Upload all coverage report files
+          files: ./coverage_*/coverage.xml
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
           fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

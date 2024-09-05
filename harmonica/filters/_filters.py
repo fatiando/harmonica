@@ -60,7 +60,7 @@ def derivative_upward_kernel(fft_grid, order=1):
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
     # Compute the filter for upward derivative in frequency domain
-    da_filter = np.sqrt(k_easting**2 + k_northing**2) ** order
+    da_filter = (-np.sqrt(k_easting**2 + k_northing**2)) ** order
     return da_filter
 
 
@@ -472,7 +472,7 @@ def reduction_to_pole_kernel(
         magnetization_declination,
     )
     # Set 0 wavenumber to 0
-    da_filter.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    da_filter.loc[{dims[0]: 0, dims[1]: 0}] = 0
     return da_filter
 
 

@@ -48,7 +48,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
     * Analytical derivative calculations
 
     Point sources are located beneath the observed potential-field measurement
-    points by default [Cooper2000]_. Custom source locations can be used by
+    points by default [Cordell1992]_. Custom source locations can be used by
     specifying the *points* argument. Coefficients associated with each point
     source are estimated through linear least-squares with damping (Tikhonov
     0th order) regularization.
@@ -75,7 +75,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         (``longitude``, ``latitude``, ``radius``). Both ``longitude`` and
         ``latitude`` must be in degrees and ``radius`` in meters.
         If None, will place one point source below each observation point at
-        a fixed relative depth below the observation point [Cooper2000]_.
+        a fixed relative depth below the observation point [Cordell1992]_.
         Defaults to None.
     relative_depth : float
         Relative depth at which the point sources are placed beneath the
@@ -311,6 +311,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
                 f"The {args} arguments are being ignored. The 'grid' method "
                 + "will not take any keyword arguments in the next Harmonica release",
                 FutureWarning,
+                stacklevel=1,
             )
 
         # Grid data

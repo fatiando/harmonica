@@ -32,6 +32,8 @@ Apply well known transformations regular gridded potential fields data.
     gaussian_lowpass
     gaussian_highpass
     reduction_to_pole
+    total_gradient_amplitude
+    tilt_angle
 
 Frequency domain filters
 ------------------------
@@ -80,9 +82,7 @@ Magnetic fields:
     :toctree: generated/
 
     dipole_magnetic
-    dipole_magnetic_component
     prism_magnetic
-    prism_magnetic_component
 
 Layers and meshes:
 
@@ -101,6 +101,15 @@ Isostatic Moho
     :toctree: generated/
 
     isostatic_moho_airy
+
+Source position estimation
+--------------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    EulerDeconvolution
+
 
 Input and Output
 ----------------
@@ -127,3 +136,4 @@ Utilities
 
     magnetic_vec_to_angles
     magnetic_angles_to_vec
+    total_field_anomaly

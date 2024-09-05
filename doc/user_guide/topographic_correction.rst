@@ -53,6 +53,18 @@ in Southern Africa.
 And plot it:
 
 .. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
+.. jupyter-execute::
 
    import pygmt
    import verde as vd
@@ -64,7 +76,7 @@ And plot it:
    fig.plot(
       x=data.longitude,
       y=data.latitude,
-      color=data.gravity_disturbance_mgal,
+      fill=data.gravity_disturbance_mgal,
       cmap=True,
       style="c3p",
       projection="M15c",
@@ -117,7 +129,7 @@ We can now compute the Bouguer disturbance and plot it:
    fig.plot(
       x=data.longitude,
       y=data.latitude,
-      color=bouguer_disturbance,
+      fill=bouguer_disturbance,
       cmap=True,
       style="c3p",
       projection="M15c",
@@ -237,7 +249,7 @@ And plot it:
    fig.plot(
       x=data.longitude,
       y=data.latitude,
-      color=topo_free_disturbance,
+      fill=topo_free_disturbance,
       cmap=True,
       style="c3p",
       projection="M15c",

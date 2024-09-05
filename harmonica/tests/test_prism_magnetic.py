@@ -19,25 +19,24 @@ try:
 except ImportError:
     ProgressBar = None
 
-from .. import prism_magnetic, prism_magnetic_component
+from .. import prism_magnetic
+from .._forward.prism_magnetic import VALID_FIELDS
 from .utils import run_only_with_numba
 
 
-def test_invalid_component():
-    "Check if passing an invalid component raises an error"
+def test_invalid_field():
+    "Check if passing an invalid field raises an error"
     prism = [-100, 100, -100, 100, -200, -100]
     magnetization = [1000, 1, 2]
     coordinates = [0, 0, 0]
-    with pytest.raises(ValueError, match="Invalid component"):
-        prism_magnetic_component(
-            coordinates, prism, magnetization, component="Not a valid field"
-        )
+    with pytest.raises(ValueError, match="Invalid field"):
+        prism_magnetic(coordinates, prism, magnetization, field="Not a valid field")
 
 
 @pytest.mark.use_numba
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-@pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-def test_progress_bar(component):
+@pytest.mark.parametrize("field", VALID_FIELDS)
+def test_progress_bar(field):
     """
     Check if forward modelling results with and without progress bar match
     """
@@ -45,27 +44,16 @@ def test_progress_bar(component):
         [-100, 0, -100, 0, -10, 0],
         [0, 100, -100, 0, -10, 0],
     ]
-    magnetizations = [
-        [1.0, 1.0, 1.0],
-        [1.0, -1.0, 5.0],
-    ]
+    magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
     coordinates = vd.grid_coordinates(
         region=(-100, 100, -100, 100), spacing=20, extra_coords=10
     )
-    if component is None:
-        result_progress_true = prism_magnetic(
-            coordinates, prisms, magnetizations, progressbar=True
-        )
-        result_progress_false = prism_magnetic(
-            coordinates, prisms, magnetizations, progressbar=False
-        )
-    else:
-        result_progress_true = prism_magnetic_component(
-            coordinates, prisms, magnetizations, component, progressbar=True
-        )
-        result_progress_false = prism_magnetic_component(
-            coordinates, prisms, magnetizations, component, progressbar=False
-        )
+    result_progress_true = prism_magnetic(
+        coordinates, prisms, magnetizations, field=field, progressbar=True
+    )
+    result_progress_false = prism_magnetic(
+        coordinates, prisms, magnetizations, field=field, progressbar=False
+    )
     npt.assert_allclose(result_progress_true, result_progress_false)
 
 
@@ -74,8 +62,8 @@ class TestSerialVsParallel:
     Test serial vs parallel
     """
 
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-    def test_prisms_parallel_vs_serial_no_numba(self, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_prisms_parallel_vs_serial_no_numba(self, field):
         """
         Check results of parallelized and serials runs
 
@@ -85,28 +73,19 @@ class TestSerialVsParallel:
             [-100, 0, -100, 0, -10, 0],
             [0, 100, -100, 0, -10, 0],
         ]
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
-        ]
+        magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
         coordinates = ([0, 10], [0, 10], [0, 10])
-        if component is None:
-            parallel = prism_magnetic(
-                coordinates, prisms, magnetizations, parallel=True
-            )
-            serial = prism_magnetic(coordinates, prisms, magnetizations, parallel=False)
-        else:
-            parallel = prism_magnetic_component(
-                coordinates, prisms, magnetizations, component, parallel=True
-            )
-            serial = prism_magnetic_component(
-                coordinates, prisms, magnetizations, component, parallel=False
-            )
+        parallel = prism_magnetic(
+            coordinates, prisms, magnetizations, field=field, parallel=True
+        )
+        serial = prism_magnetic(
+            coordinates, prisms, magnetizations, field=field, parallel=False
+        )
         npt.assert_allclose(parallel, serial)
 
     @run_only_with_numba
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-    def test_prisms_parallel_vs_serial(self, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_prisms_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs
 
@@ -118,27 +97,20 @@ class TestSerialVsParallel:
             [-100, 0, 0, 100, -10, 0],
             [0, 100, 0, 100, -10, 0],
         ]
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [1.0, -1.0, 5.0],
-            [-2.0, 1.0, 3.0],
-            [5.0, 4.0, 1.0],
-        ]
+        magnetizations = (
+            [1.0, 1.0, -2.0, 5.0],
+            [1.0, -1.0, 1.0, 4.0],
+            [1.0, 5.0, 3.0, 1.0],
+        )
         coordinates = vd.grid_coordinates(
             region=(-100, 100, -100, 100), spacing=20, extra_coords=10
         )
-        if component is None:
-            parallel = prism_magnetic(
-                coordinates, prisms, magnetizations, parallel=True
-            )
-            serial = prism_magnetic(coordinates, prisms, magnetizations, parallel=False)
-        else:
-            parallel = prism_magnetic_component(
-                coordinates, prisms, magnetizations, component, parallel=True
-            )
-            serial = prism_magnetic_component(
-                coordinates, prisms, magnetizations, component, parallel=False
-            )
+        parallel = prism_magnetic(
+            coordinates, prisms, magnetizations, field=field, parallel=True
+        )
+        serial = prism_magnetic(
+            coordinates, prisms, magnetizations, field=field, parallel=False
+        )
         npt.assert_allclose(parallel, serial)
 
 
@@ -168,9 +140,9 @@ class TestInvalidPrisms:
         """Return sample valid prism (with zero and non-zero volume)"""
         return np.atleast_2d(request.param)
 
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
+    @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_invalid_prisms(
-        self, sample_coordinates, invalid_prism, sample_magnetization, component
+        self, sample_coordinates, invalid_prism, sample_magnetization, field
     ):
         """
         Test forward modelling functions with invalid prisms
@@ -178,32 +150,19 @@ class TestInvalidPrisms:
         It should raise any error
         """
         msg = "boundary can't be greater than the"
-        if component is None:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic(sample_coordinates, invalid_prism, sample_magnetization)
-        else:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic_component(
-                    sample_coordinates, invalid_prism, sample_magnetization, component
-                )
+        with pytest.raises(ValueError, match=msg):
+            prism_magnetic(
+                sample_coordinates, invalid_prism, sample_magnetization, field
+            )
 
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-    def test_disable_checks(self, invalid_prism, component):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_disable_checks(self, invalid_prism, field):
         """Test if disabling checks doesn't raise errors on invalid prisms"""
         magnetization = [100, 10, -10]
         coordinates = [0, 0, 0]
-        if component is None:
-            prism_magnetic(
-                coordinates, invalid_prism, magnetization, disable_checks=True
-            )
-        else:
-            prism_magnetic_component(
-                coordinates,
-                invalid_prism,
-                magnetization,
-                component,
-                disable_checks=True,
-            )
+        prism_magnetic(
+            coordinates, invalid_prism, magnetization, field, disable_checks=True
+        )
 
 
 class TestInvalidMagnetization:
@@ -227,47 +186,41 @@ class TestInvalidMagnetization:
         ]
         return prisms
 
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-    def test_invalid_number_of_vectors(
-        self, sample_coordinates, sample_prisms, component
-    ):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_invalid_number_of_vectors(self, sample_coordinates, sample_prisms, field):
         """Check error when magnetization has invalid number of vectors"""
         # Generate an array with only two magnetization vectors
-        magnetizations = [
-            [1.0, 1.0, 1.0],
-            [-2.0, 3.0, -5.0],
-        ]
+        magnetizations = ([1.0, -2.0], [1.0, 3.0], [1.0, -5.0])
         msg = "Number of magnetization vectors"
-        if component is None:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic(sample_coordinates, sample_prisms, magnetizations)
-        else:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic_component(
-                    sample_coordinates, sample_prisms, magnetizations, component
-                )
+        with pytest.raises(ValueError, match=msg):
+            prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
 
-    @pytest.mark.parametrize("component", (None, "easting", "northing", "upward"))
-    def test_invalid_number_of_elements(
-        self, sample_coordinates, sample_prisms, component
-    ):
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_invalid_number_of_elements(self, sample_coordinates, sample_prisms, field):
         """Check error when magnetization has invalid number of elements"""
-        # Generate an array with only two magnetization vectors
-        magnetizations = [
+        magnetizations = (
+            [1.0, 1.0, 1.0, 3.4, 1.3],
+            [-2.0, 3.0, -5.0, 3.4, 1.3],
+            [-2.0, 3.0, -5.0, 3.4, 1.3],
+        )
+        msg = "Number of magnetization vectors"
+        with pytest.raises(ValueError, match=msg):
+            prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
+
+    @pytest.mark.parametrize("field", VALID_FIELDS)
+    def test_invalid_number_of_components(
+        self, sample_coordinates, sample_prisms, field
+    ):
+        """Check error when magnetization has invalid number of components"""
+        magnetizations = (
             [1.0, 1.0, 1.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
-        ]
-        msg = "Found magnetization vectors with"
-        if component is None:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic(sample_coordinates, sample_prisms, magnetizations)
-        else:
-            with pytest.raises(ValueError, match=msg):
-                prism_magnetic_component(
-                    sample_coordinates, sample_prisms, magnetizations, component
-                )
+        )
+        msg = "Invalid magnetization vectors with "
+        with pytest.raises(ValueError, match=msg):
+            prism_magnetic(sample_coordinates, sample_prisms, magnetizations, field)
 
 
 class TestAgainstChoclo:
@@ -296,14 +249,10 @@ class TestAgainstChoclo:
         """
         Return sample magnetization vectors for the prisms
         """
-        magnetizations = np.array(
-            [
-                [1.0, 1.0, 1],
-                [-1.0, -0.5, 2.0],
-                [3, -1.0, -3.0],
-                [-1.5, 2.0, -2.0],
-            ],
-            dtype=np.float64,
+        magnetizations = (
+            np.array([1.0, -1.0, 3.0, -1.5]),
+            np.array([1.0, -0.5, -1.0, 2.0]),
+            np.array([1.0, 2.0, -3.0, -2.0]),
         )
         return magnetizations
 
@@ -332,12 +281,13 @@ class TestAgainstChoclo:
         expected_magnetic_u = np.zeros(n_coords, dtype=np.float64)
         for i in range(n_coords):
             for j in range(n_prisms):
+                magnetization = tuple([m[j] for m in sample_magnetizations])
                 b_e, b_n, b_u = magnetic_field(
                     easting[i],
                     northing[i],
                     upward[i],
                     *sample_prisms[j, :],
-                    *sample_magnetizations[j, :],
+                    *magnetization,
                 )
                 expected_magnetic_e[i] += b_e
                 expected_magnetic_n[i] += b_n
@@ -348,41 +298,42 @@ class TestAgainstChoclo:
         expected_magnetic_u *= 1e9
         # Compare with harmonica results
         b_e, b_n, b_u = prism_magnetic(
-            sample_coordinates, sample_prisms, sample_magnetizations
+            sample_coordinates, sample_prisms, sample_magnetizations, field="b"
         )
         npt.assert_allclose(b_e, expected_magnetic_e)
         npt.assert_allclose(b_n, expected_magnetic_n)
         npt.assert_allclose(b_u, expected_magnetic_u)
 
-    @pytest.mark.parametrize("component", ("easting", "northing", "upward"))
+    @pytest.mark.parametrize("field", ("b_e", "b_n", "b_u"))
     def test_component_against_choclo(
-        self, sample_coordinates, sample_prisms, sample_magnetizations, component
+        self, sample_coordinates, sample_prisms, sample_magnetizations, field
     ):
         """
-        Test prism_magnetic_component against raw Choclo runs
+        Test prism_magnetic against raw Choclo runs
         """
         easting, northing, upward = sample_coordinates
         # Compute expected results with dumb Choclo runs
         n_coords = easting.size
         n_prisms = sample_prisms.shape[0]
         expected_result = np.zeros(n_coords, dtype=np.float64)
-        forward_func = getattr(choclo.prism, f"magnetic_{component[0]}")
+        forward_func = getattr(choclo.prism, f"magnetic_{field[-1]}")
         for i in range(n_coords):
             for j in range(n_prisms):
+                magnetization = tuple([m[j] for m in sample_magnetizations])
                 expected_result[i] += forward_func(
                     easting[i],
                     northing[i],
                     upward[i],
                     *sample_prisms[j, :],
-                    *sample_magnetizations[j, :],
+                    *magnetization,
                 )
         # Convert to nT
         expected_result *= 1e9
         # Compare with harmonica results
-        result = prism_magnetic_component(
+        result = prism_magnetic(
             sample_coordinates,
             sample_prisms,
             sample_magnetizations,
-            component,
+            field,
         )
         npt.assert_allclose(result, expected_result)

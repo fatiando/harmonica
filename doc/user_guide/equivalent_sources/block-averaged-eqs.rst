@@ -6,7 +6,7 @@ Block-averaged equivalent sources
 When we introduced the :ref:`equivalent_sources` we saw that
 by default the :class:`harmonica.EquivalentSources` class locates one point
 source beneath each data point during the fitting process, following
-[Cooper2000]_.
+[Cordell1992]_.
 
 Alternatively, we can use another strategy: the *block-averaged sources*,
 introduced in [Soler2021]_.
@@ -51,7 +51,7 @@ the data:
     data = data[inside]
     data
 
-And project the geographic coordiantes to plain Cartesian ones:
+And project the geographic coordinates to plain Cartesian ones:
 
 .. jupyter-execute::
 
@@ -61,6 +61,19 @@ And project the geographic coordiantes to plain Cartesian ones:
     easting, northing = projection(data.longitude.values, data.latitude.values)
     coordinates = (easting, northing, data.height_m)
     xy_region=vd.get_region(coordinates)
+
+
+.. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
 
 .. jupyter-execute::
 
@@ -93,7 +106,7 @@ And project the geographic coordiantes to plain Cartesian ones:
             frame=[f"WSne+t{title}", "xa10000", "ya10000"],
             x=easting,
             y=northing,
-            color=data.total_field_anomaly_nt,
+            fill=data.total_field_anomaly_nt,
             style="c0.1c",
             cmap=True,
         )
@@ -116,22 +129,12 @@ the blocks through the ``block_size`` parameter.
 
     import harmonica as hm
 
-    eqs = hm.EquivalentSources(
-        depth=1000, damping=1, block_size=500, depth_type="constant"
-    )
+    eqs = hm.EquivalentSources(depth=1000, damping=1, block_size=500)
 
-These sources were set at a constant depth of 1km bellow the zeroth height and
-with a ``damping`` equal to 1. See how you can choose values for these
-parameters in :ref:`eqs-parameters-estimation`.
-
-.. note::
-
-    The depth of the sources can be set analogously to the regular equivalent
-    sources: we can use a ``constant`` depth (every source is located at the same
-    depth) or a ``relative`` depth (where each source is located at a constant
-    shift beneath the median location obtained during the block-averaging process).
-    The depth of the sources and which strategy to use can be set up through the
-    ``depth`` and the ``depth_type`` parameters, respectively.
+These sources were set at a depth of 1km below the average height of the data
+points inside each block. The ``damping`` is equal to 1 to avoid overfitting
+the data. See how you can choose values for these parameters in
+:ref:`eqs-parameters-estimation`.
 
 .. important::
 
@@ -190,7 +193,7 @@ we are efectivelly upward continuing the data.
             frame=[f"WSne+t{title}", "xa10000", "ya10000"],
             x=easting,
             y=northing,
-            color=data.total_field_anomaly_nt,
+            fill=data.total_field_anomaly_nt,
             style="c0.1c",
             cmap=True,
         )
