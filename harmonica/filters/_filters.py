@@ -9,6 +9,8 @@ Frequency domain filters meant to be applied on regular grids
 """
 import numpy as np
 
+from .._utils import magnetic_angles_to_vec
+
 
 def derivative_upward_kernel(fft_grid, order=1):
     r"""
@@ -363,7 +365,7 @@ def reduction_to_pole_kernel(
     magnetization_declination=None,
 ):
     r"""
-    Filter for reduction to the pole in frequency domain
+    Filter for reduction to the pole in the frequency domain
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for applying a reduction to the pole on magnetic data. The filter
@@ -384,32 +386,13 @@ def reduction_to_pole_kernel(
 
         \Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}
 
-    where :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel
+    where :math:`\mathbf{k} = (k_e, k_n)` is the wavenumber vector,
+    :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel
     to the geomagnetic field and :math:`\hat{\mathbf{m}} = (m_e, m_n, m_z)`
     is a unit vector parallel to the magnetization vector of the source. The
     :math:`f_e`, :math:`f_n`, :math:`m_e`, :math:`m_n` are the easting and
     northing components while the :math:`f_z` and :math:`m_z` are the
-    **downward** coordinates.
-    Each of these components can be obtained from the inclination and
-    declination angles of the geomagnetic field (:math:`I` and :math:`D`,
-    respectively) and for the magnetization vector (:math:`I_m` and
-    :math:`D_m`, respectively):
-
-    .. math::
-
-        \begin{cases}
-            f_e = \sin D \cos I \\
-            f_n = \cos D \cos I \\
-            f_u = \sin I
-        \end{cases}
-
-    .. math::
-
-        \begin{cases}
-            m_e = \sin D_m \cos I_m \\
-            m_n = \cos D_m \cos I_m \\
-            m_u = \sin I_m
-        \end{cases}
+    **downward** components.
 
     Parameters
     ----------
@@ -462,14 +445,23 @@ def reduction_to_pole_kernel(
     # Convert frequencies to wavenumbers
     k_easting = 2 * np.pi * freq_easting
     k_northing = 2 * np.pi * freq_northing
+    # Convert inclination and declination to versor components
+    m_e, m_n, m_u = magnetic_angles_to_vec(
+        1, magnetization_inclination, magnetization_declination
+    )
+    f_e, f_n, f_u = magnetic_angles_to_vec(1, inclination, declination)
+    # Convert the upward components to downward components because the
+    # equations below for the filter use downward instead
+    m_z = -m_u
+    f_z = -f_u
     # Compute the filter for reduction to pole in frequency domain
-    da_filter = _get_rtp_filter(
-        k_easting,
-        k_northing,
-        inclination,
-        declination,
-        magnetization_inclination,
-        magnetization_declination,
+    k_squared = k_northing**2 + k_easting**2
+    k = np.sqrt(k_squared)
+    # Compute the rtp filter
+    da_filter = (
+        k_squared
+        * (f_z * k + 1j * (f_e * k_easting + f_n * k_northing)) ** (-1)
+        * (m_z * k + 1j * (m_e * k_easting + m_n * k_northing)) ** (-1)
     )
     # Set 0 wavenumber to 0
     da_filter.loc[{dims[0]: 0, dims[1]: 0}] = 0
@@ -497,63 +489,3 @@ def _check_magnetization_angles(magnetization_inclination, magnetization_declina
             + f"'{magnetization_inclination}'. "
             "Please, provide two valid angles in degrees or both angles as None."
         )
-
-
-def _get_rtp_filter(
-    k_easting,
-    k_northing,
-    inclination,
-    declination,
-    magnetization_inclination,
-    magnetization_declination,
-):
-    """
-    Build the reduction to the pole filter
-
-    Parameters
-    ----------
-    k_easting : array
-        Wavenumber array for the easting direction.
-    k_northing : array
-        Wavenumber array for the northing direction.
-    inclination : float in degrees
-        The inclination of the inducing Geomagnetic field.
-    declination : float in degrees
-        The declination of the inducing Geomagnetic field.
-    magnetization_inclination : float in degrees
-        The inclination of the total magnetization of the anomaly source.
-    magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source.
-
-    Returns
-    -------
-    rtp_filter: array
-        Array with the kernel for the reduction to the pole filter in frequency
-        domain.
-    """
-    # Convert angles to radians
-    inc_rad, dec_rad = np.deg2rad(inclination), np.deg2rad(declination)
-    mag_inc_rad, mag_dec_rad = np.deg2rad(magnetization_inclination), np.deg2rad(
-        magnetization_declination
-    )
-    # Compute unit vector components for geomagnetic field and magnetization
-    cos_inc, sin_inc = np.cos(inc_rad), np.sin(inc_rad)
-    cos_dec, sin_dec = np.cos(dec_rad), np.sin(dec_rad)
-    cos_mag_inc, sin_mag_inc = np.cos(mag_inc_rad), np.sin(mag_inc_rad)
-    cos_mag_dec, sin_mag_dec = np.cos(mag_dec_rad), np.sin(mag_dec_rad)
-    f_e = sin_dec * cos_inc
-    f_n = cos_dec * cos_inc
-    f_z = sin_inc
-    m_e = sin_mag_dec * cos_mag_inc
-    m_n = cos_mag_dec * cos_mag_inc
-    m_z = sin_mag_inc
-    # Precompute |k|^2 and |k|
-    k_squared = k_northing**2 + k_easting**2
-    k = np.sqrt(k_squared)
-    # Compute the rtp filter
-    rtp_filter = (
-        k_squared
-        * (f_z * k + 1j * (f_e * k_easting + f_n * k_northing)) ** (-1)
-        * (m_z * k + 1j * (m_e * k_easting + m_n * k_northing)) ** (-1)
-    )
-    return rtp_filter
