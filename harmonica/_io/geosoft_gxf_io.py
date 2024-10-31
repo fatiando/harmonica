@@ -145,10 +145,12 @@ Default: none, must be included as the last object in a
 GXF file.
 """
 
+"""
+Function to read USGS GXF file
+"""
 
 import numpy as np
 import xarray as xr
-
 from typing import Tuple, List, Dict, Union, Any
 
 def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
