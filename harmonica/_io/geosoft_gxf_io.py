@@ -4,6 +4,148 @@
 # Written by Thomas Martin, Unidata
 # Inspired by this gist: https://gist.github.com/jobar8/683483df605a906fb3da747b64627305
 
+# Information about the GXF format found on a USGS Readme:
+
+"""
+1. Grid eXchange Format (*.gxf)
+
+GXF (Grid eXchange File) is a standard ASCII file format for
+exchanging gridded data among different software systems. 
+Software that supports the GXF standard will be able to import
+properly formatted GXF files and export grids in GXF format.
+
+Grid Description:
+A grid is a rectangular array of points at which single data
+values define a two dimensional function. Grid point locations
+are related to a Grid Coordinate System (GCS), which is a right
+handed Cartesian system with X and Y axis defined by the bottom
+and left sides of a grid array.  The grid point at the bottom,
+left corner of the array is the origin of the GCS.  All distances
+are in meters.
+
+GCS coordinates are related to a Base Coordinate System (BCS)
+through a plane translation and rotation.  The origin of the GCS
+is located at point (x0,y0) in the BCS, and the X and Y grid
+indices are related to BCS units through the separation between
+points in the GCS X and Y directions.
+
+Labeled Data Objects and Comments
+
+A GXF file is an ASCII file made up of a number of labeled data
+objects and comments.  Each labeled data object has a label line
+followed by one or more data lines.  A label line is identified
+by a '#' character in the first column followed immediately by an
+upper-case label.  The data associated with that label are found
+on one or more lines that follow the label.
+
+Lines
+
+All lines in a GXF file must be less than or equal to 80
+characters in length. Any lines that are not part of a labeled
+data object are ignored and can be used to place comments within
+a GXF file.  Programs that read GXF files will skip such comment
+lines while they search for the next GXF data object.
+
+GXF Object Definitions
+
+#TITLE
+A one line descriptive title of the grid.  Some grid formats
+include textual descriptions of the grid, and this information
+can be placed in a #TITLE object.
+Default:        blank title
+
+#POINTS
+The number of points in each grid row (horizontal or vertical as
+defined by the #SENSE object).
+Default:        no default - this object is required.
+
+#ROWS
+The number of rows in the grid.  A grid row (or vector) is a
+collection of consecutive grid points that represent the grid
+values along a horizontal or vertical line in the grid.  The
+complete grid is then defined by a consecutive sequence of grid
+rows.
+Default:        no default - this object is required.
+
+#PTSEPARATION
+The separation between points in the grid.  This should be in
+Base Coordinate System units (ground units for geographically
+based grids).
+Default:        1.0
+
+#RWSEPARATION
+The separation between rows in the grid.  These should be in Base
+Coordinate System units (ground units for geographically based
+grids).
+Default:        1.0
+
+#XORIGIN 
+The X location of the bottom left corner of the grid in the Base
+Coordinate System.
+Default:        0.0
+
+#YORIGIN
+The Y location of the bottom left corner of the grid in the Base
+Coordinate System.
+Default:        0.0
+
+#ROTATION
+The rotation angle of the grid.  This is the counter-clockwise
+angle of the bottom edge of the grid with respect to the Base
+Coordinate System X axis. Rotation only has meaning for Base
+Coordinate Systems that use the same units on the X and Y axis.
+Default:        0.0
+
+#SENSE
+The first point of the first row of the stored grid can be at any
+corner of the grid rectangle, and the grid rows can be run
+vertically or horizontally. The SENSE object defines this storage
+sense as follows:
+        ą1      first point at bottom left of grid
+        ą2      first point at upper left of grid
+        ą3      first point at upper right of grid
+        ą4      first point at bottom right of grid
+A positive SENSE stores rows in a right-handed sense; a negative
+SENSE stores rows in a left-handed sense.  This means that if you
+were standing at the first grid point and looking into the grid,
+the first grid row would extend to your right for a right handed
+grid (positive sense), or to your left for a left handed sense
+(left-handed grid): (All grids on this CD have SENSE=+1.)
+Default:        1 (first point at bottom left, rows left to
+right)
+
+#TRANSFORM
+This keyword is followed by two numbers on the same line:  SCALE
+and OFFSET, which are used to transform the grid data to desired
+units:
+Z = G * SCALE + OFFSET
+where
+        Z       grid value in the desired unit
+        G       are grid values as specified in the #GRID object
+Default:        SCALE = 1.0,  OFFSET = 0.0
+
+#DUMMY
+The grid must be rectangular (every row must have the same number
+of points). The dummy value defined by this object is used to
+define blank areas of the grid.  Any grids that include blank
+areas must define a dummy value.
+Default:        no dummy value.
+
+#GRID
+The grid data is listed point by point and row by row.  The #GRID
+object and data is always the last object in a GXF file. The
+first data point is at the location indicated by #SENSE, and is
+followed by successive points in that row of points (either
+horizontal or vertical), then the points in the next row, and so
+on.  The points in a row can follow on to the next data line,
+although each new row must start on a new data line.  A GXF
+reading program can expect #ROWS of #POINTS for a total of #ROWS
+times  #POINTS data values.
+Default: none, must be included as the last object in a
+GXF file.
+"""
+
+
 import numpy as np
 import xarray as xr
 
