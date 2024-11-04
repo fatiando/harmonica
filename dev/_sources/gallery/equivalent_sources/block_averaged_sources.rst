@@ -200,7 +200,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.428 seconds)
+   **Total running time of the script:** (0 minutes 5.956 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_block_averaged_sources.py:

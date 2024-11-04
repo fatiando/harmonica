@@ -126,7 +126,7 @@ grid given in Cartesian coordinates using the
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.337 seconds)
+   **Total running time of the script:** (0 minutes 2.408 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_point_gravity.py:
