@@ -143,6 +143,11 @@ reading program can expect #ROWS of #POINTS for a total of #ROWS
 times  #POINTS data values.
 Default: none, must be included as the last object in a
 GXF file.
+
+Data for testing is also from the USGS:
+
+Kucks, R.P., and Hill, P.L., 2000, Wyoming aeromagnetic and gravity maps and data—A web site for distribution of data: U.S. Geological Survey Open-File Report 00-0198, https://pubs.usgs.gov/of/2000/ofr-00-0198/html/wyoming.htm
+
 """
 
 """

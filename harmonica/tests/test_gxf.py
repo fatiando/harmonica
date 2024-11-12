@@ -1,5 +1,11 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+#
+# Dataset for testing provided by USGS
+# Kucks, R.P., and Hill, P.L., 2000, Wyoming aeromagnetic and gravity maps and data—
+# A web site for distribution of data:
+# U.S. Geological Survey Open-File Report 00-0198, https://pubs.usgs.gov/of/2000/ofr-00-0198/html/wyoming.htm
+
 """
 Test functions for reading GXF (Grid eXchange Format) files
 """
