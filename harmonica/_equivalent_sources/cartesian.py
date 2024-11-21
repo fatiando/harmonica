@@ -19,7 +19,6 @@ from sklearn.utils.validation import check_is_fitted
 
 from .._forward.utils import distance_cartesian
 from .utils import (
-    cast_fit_input,
     jacobian_numba_parallel,
     jacobian_numba_serial,
     pop_extra_coords,
@@ -129,8 +128,8 @@ class EquivalentSources(vdb.BaseGridder):
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
-    dtype : data-type
-        The desired data-type for the predictions and the Jacobian matrix.
+    dtype : dtype, optional
+        The desired data-type for the Jacobian matrix.
         Default to ``"float64"``.
 
     Attributes
@@ -220,21 +219,14 @@ class EquivalentSources(vdb.BaseGridder):
             Returns this estimator instance for chaining operations.
         """
         coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
-        coordinates, data, weights = cast_fit_input(
-            coordinates, data, weights, self.dtype
-        )
         # Capture the data region to use as a default when gridding.
         self.region_ = vd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
-            self.points_ = tuple(
-                p.astype(self.dtype) for p in self._build_points(coordinates)
-            )
+            self.points_ = self._build_points(coordinates)
         else:
             self.depth_ = None  # set depth_ to None so we don't leave it unset
-            self.points_ = tuple(
-                p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
-            )
+            self.points_ = vdb.n_1d_arrays(self.points, 3)
         jacobian = self.jacobian(coordinates, self.points_)
         self.coefs_ = vdb.least_squares(jacobian, data, weights, self.damping)
         return self
@@ -331,10 +323,8 @@ class EquivalentSources(vdb.BaseGridder):
         check_is_fitted(self, ["coefs_"])
         shape = np.broadcast(*coordinates[:3]).shape
         size = np.broadcast(*coordinates[:3]).size
-        coordinates = tuple(
-            np.atleast_1d(i.astype(self.dtype)).ravel() for i in coordinates[:3]
-        )
-        data = np.zeros(size, dtype=self.dtype)
+        coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
+        data = np.zeros(size, dtype=np.float64)
         self._predict_kernel[self.parallel](
             coordinates, self.points_, self.coefs_, data, self.greens_function
         )
