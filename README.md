@@ -14,36 +14,11 @@ Part of the <a href="https://www.fatiando.org"><strong>Fatiando a Terra</strong>
 </p>
 
 <p align="center">
-<a href="https://pypi.python.org/pypi/harmonica">
-<img
-src="http://img.shields.io/pypi/v/harmonica.svg?style=flat-square"
-alt="Latest version on PyPI"
-/>
-</a>
-<a href="https://github.com/conda-forge/harmonica-feedstock">
-<img
-src="https://img.shields.io/conda/vn/conda-forge/harmonica.svg?style=flat-square"
-alt="Latest version on conda-forge"
-/>
-</a>
-<a href="https://codecov.io/gh/fatiando/harmonica">
-<img
-src="https://img.shields.io/codecov/c/github/fatiando/harmonica/main.svg?style=flat-square"
-alt="Test coverage status"
-/>
-</a>
-<a href="https://pypi.python.org/pypi/harmonica">
-<img
-src="https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square"
-alt="Compatible Python versions."
-/>
-</a>
-<a href="https://doi.org/10.5281/zenodo.3628741">
-<img
-src="https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628741-blue.svg?style=flat-square"
-alt="Digital Object Identifier for the Zenodo archive"
-/>
-</a>
+<a href="https://pypi.python.org/pypi/harmonica"><img src="http://img.shields.io/pypi/v/harmonica.svg?style=flat-square" alt="Latest version on PyPI"/></a>
+<a href="https://github.com/conda-forge/harmonica-feedstock"><img src="https://img.shields.io/conda/vn/conda-forge/harmonica.svg?style=flat-square" alt="Latest version on conda-forge"/></a>
+<a href="https://codecov.io/gh/fatiando/harmonica"><img src="https://img.shields.io/codecov/c/github/fatiando/harmonica/main.svg?style=flat-square" alt="Test coverage status"/></a>
+<a href="https://pypi.python.org/pypi/harmonica"><img src="https://img.shields.io/pypi/pyversions/harmonica.svg?style=flat-square" alt="Compatible Python versions."/></a>
+<a href="https://doi.org/10.5281/zenodo.3628741"><img src="https://img.shields.io/badge/doi-10.5281%2Fzenodo.3628741-blue.svg?style=flat-square" alt="Digital Object Identifier for the Zenodo archive"/></a>
 </p>
 
 # About
@@ -76,8 +51,8 @@ Things that will *not* be covered in Harmonica:
 - Multi-physics partial differential equation solvers. Use
   [SimPEG](http://www.simpeg.xyz/) or [PyGIMLi](https://www.pygimli.org/)
   instead.
-- Generic grid processing methods (like horizontal derivatives and FFT). We'll
-  rely on [Verde](https://www.fatiando.org/verde),
+- Generic grid processing methods (like FFT and standards interpolation).
+  We'll rely on [Verde](https://www.fatiando.org/verde),
   [xrft](https://xrft.readthedocs.io/en/latest/) and
   [xarray](https://xarray.dev) for those.
 - Data visualization.
