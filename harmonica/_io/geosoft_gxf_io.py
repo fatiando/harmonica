@@ -3,6 +3,7 @@
 
 # Written by Thomas Martin, Unidata
 # Inspired by this gist: https://gist.github.com/jobar8/683483df605a906fb3da747b64627305
+# created by Joseph Barraud and made available under the BSD License.
 
 # Information about the GXF format found on a USGS Readme:
 
