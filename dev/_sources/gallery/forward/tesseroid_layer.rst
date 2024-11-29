@@ -97,7 +97,7 @@ Layer of tesseroids
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 25.108 seconds)
+   **Total running time of the script:** (0 minutes 24.985 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_tesseroid_layer.py:

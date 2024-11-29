@@ -135,7 +135,7 @@ Reduction to the pole of a magnetic anomaly grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.623 seconds)
+   **Total running time of the script:** (0 minutes 2.540 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_reduction_to_pole.py:

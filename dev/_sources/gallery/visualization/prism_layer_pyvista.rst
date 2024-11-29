@@ -154,7 +154,7 @@ plot using ``pyvista``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 22.229 seconds)
+   **Total running time of the script:** (2 minutes 22.856 seconds)
 
 
 .. _sphx_glr_download_gallery_visualization_prism_layer_pyvista.py:
