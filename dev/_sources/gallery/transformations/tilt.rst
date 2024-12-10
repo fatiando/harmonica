@@ -213,7 +213,7 @@ Tilt of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.096 seconds)
+   **Total running time of the script:** (0 minutes 1.106 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tilt.py:

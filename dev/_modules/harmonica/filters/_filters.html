@@ -19,17 +19,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -43,10 +45,11 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
@@ -80,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -100,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -108,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -127,7 +118,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -157,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -389,24 +377,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -443,6 +423,8 @@ document.write(`
 <span class="sd">Frequency domain filters meant to be applied on regular grids</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.._utils</span> <span class="kn">import</span> <span class="n">magnetic_angles_to_vec</span>
 
 
 <div class="viewcode-block" id="derivative_upward_kernel">
@@ -818,7 +800,7 @@ document.write(`
     <span class="n">magnetization_declination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for reduction to the pole in frequency domain</span>
+<span class="sd">    Filter for reduction to the pole in the frequency domain</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for applying a reduction to the pole on magnetic data. The filter</span>
@@ -839,32 +821,13 @@ document.write(`
 
 <span class="sd">        \Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}</span>
 
-<span class="sd">    where :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel</span>
+<span class="sd">    where :math:`\mathbf{k} = (k_e, k_n)` is the wavenumber vector,</span>
+<span class="sd">    :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel</span>
 <span class="sd">    to the geomagnetic field and :math:`\hat{\mathbf{m}} = (m_e, m_n, m_z)`</span>
 <span class="sd">    is a unit vector parallel to the magnetization vector of the source. The</span>
 <span class="sd">    :math:`f_e`, :math:`f_n`, :math:`m_e`, :math:`m_n` are the easting and</span>
 <span class="sd">    northing components while the :math:`f_z` and :math:`m_z` are the</span>
-<span class="sd">    **downward** coordinates.</span>
-<span class="sd">    Each of these components can be obtained from the inclination and</span>
-<span class="sd">    declination angles of the geomagnetic field (:math:`I` and :math:`D`,</span>
-<span class="sd">    respectively) and for the magnetization vector (:math:`I_m` and</span>
-<span class="sd">    :math:`D_m`, respectively):</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        \begin{cases}</span>
-<span class="sd">            f_e = \sin D \cos I \\</span>
-<span class="sd">            f_n = \cos D \cos I \\</span>
-<span class="sd">            f_u = \sin I</span>
-<span class="sd">        \end{cases}</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        \begin{cases}</span>
-<span class="sd">            m_e = \sin D_m \cos I_m \\</span>
-<span class="sd">            m_n = \cos D_m \cos I_m \\</span>
-<span class="sd">            m_u = \sin I_m</span>
-<span class="sd">        \end{cases}</span>
+<span class="sd">    **downward** components.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -917,14 +880,23 @@ document.write(`
     <span class="c1"># Convert frequencies to wavenumbers</span>
     <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
     <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Convert inclination and declination to versor components</span>
+    <span class="n">m_e</span><span class="p">,</span> <span class="n">m_n</span><span class="p">,</span> <span class="n">m_u</span> <span class="o">=</span> <span class="n">magnetic_angles_to_vec</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span>
+    <span class="p">)</span>
+    <span class="n">f_e</span><span class="p">,</span> <span class="n">f_n</span><span class="p">,</span> <span class="n">f_u</span> <span class="o">=</span> <span class="n">magnetic_angles_to_vec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">)</span>
+    <span class="c1"># Convert the upward components to downward components because the</span>
+    <span class="c1"># equations below for the filter use downward instead</span>
+    <span class="n">m_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">m_u</span>
+    <span class="n">f_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">f_u</span>
     <span class="c1"># Compute the filter for reduction to pole in frequency domain</span>
-    <span class="n">da_filter</span> <span class="o">=</span> <span class="n">_get_rtp_filter</span><span class="p">(</span>
-        <span class="n">k_easting</span><span class="p">,</span>
-        <span class="n">k_northing</span><span class="p">,</span>
-        <span class="n">inclination</span><span class="p">,</span>
-        <span class="n">declination</span><span class="p">,</span>
-        <span class="n">magnetization_inclination</span><span class="p">,</span>
-        <span class="n">magnetization_declination</span><span class="p">,</span>
+    <span class="n">k_squared</span> <span class="o">=</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_squared</span><span class="p">)</span>
+    <span class="c1"># Compute the rtp filter</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">k_squared</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">f_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">f_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">m_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="c1"># Set 0 wavenumber to 0</span>
     <span class="n">da_filter</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">0</span><span class="p">}]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -953,66 +925,6 @@ document.write(`
             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">magnetization_inclination</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
             <span class="s2">&quot;Please, provide two valid angles in degrees or both angles as None.&quot;</span>
         <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_get_rtp_filter</span><span class="p">(</span>
-    <span class="n">k_easting</span><span class="p">,</span>
-    <span class="n">k_northing</span><span class="p">,</span>
-    <span class="n">inclination</span><span class="p">,</span>
-    <span class="n">declination</span><span class="p">,</span>
-    <span class="n">magnetization_inclination</span><span class="p">,</span>
-    <span class="n">magnetization_declination</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Build the reduction to the pole filter</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    k_easting : array</span>
-<span class="sd">        Wavenumber array for the easting direction.</span>
-<span class="sd">    k_northing : array</span>
-<span class="sd">        Wavenumber array for the northing direction.</span>
-<span class="sd">    inclination : float in degrees</span>
-<span class="sd">        The inclination of the inducing Geomagnetic field.</span>
-<span class="sd">    declination : float in degrees</span>
-<span class="sd">        The declination of the inducing Geomagnetic field.</span>
-<span class="sd">    magnetization_inclination : float in degrees</span>
-<span class="sd">        The inclination of the total magnetization of the anomaly source.</span>
-<span class="sd">    magnetization_declination : float in degrees</span>
-<span class="sd">        The declination of the total magnetization of the anomaly source.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    rtp_filter: array</span>
-<span class="sd">        Array with the kernel for the reduction to the pole filter in frequency</span>
-<span class="sd">        domain.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Convert angles to radians</span>
-    <span class="n">inc_rad</span><span class="p">,</span> <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">declination</span><span class="p">)</span>
-    <span class="n">mag_inc_rad</span><span class="p">,</span> <span class="n">mag_dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span>
-        <span class="n">magnetization_declination</span>
-    <span class="p">)</span>
-    <span class="c1"># Compute unit vector components for geomagnetic field and magnetization</span>
-    <span class="n">cos_inc</span><span class="p">,</span> <span class="n">sin_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">)</span>
-    <span class="n">cos_dec</span><span class="p">,</span> <span class="n">sin_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">)</span>
-    <span class="n">cos_mag_inc</span><span class="p">,</span> <span class="n">sin_mag_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">)</span>
-    <span class="n">cos_mag_dec</span><span class="p">,</span> <span class="n">sin_mag_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">)</span>
-    <span class="n">f_e</span> <span class="o">=</span> <span class="n">sin_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
-    <span class="n">f_n</span> <span class="o">=</span> <span class="n">cos_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
-    <span class="n">f_z</span> <span class="o">=</span> <span class="n">sin_inc</span>
-    <span class="n">m_e</span> <span class="o">=</span> <span class="n">sin_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
-    <span class="n">m_n</span> <span class="o">=</span> <span class="n">cos_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
-    <span class="n">m_z</span> <span class="o">=</span> <span class="n">sin_mag_inc</span>
-    <span class="c1"># Precompute |k|^2 and |k|</span>
-    <span class="n">k_squared</span> <span class="o">=</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_squared</span><span class="p">)</span>
-    <span class="c1"># Compute the rtp filter</span>
-    <span class="n">rtp_filter</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">k_squared</span>
-        <span class="o">*</span> <span class="p">(</span><span class="n">f_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">f_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="o">*</span> <span class="p">(</span><span class="n">m_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">rtp_filter</span>
 </pre></div>
 
                 </article>
@@ -1049,7 +961,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Dec 10, 2024.
   <br/>
 </p>
   </div>
@@ -1067,8 +979,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

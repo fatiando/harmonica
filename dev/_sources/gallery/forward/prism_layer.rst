@@ -96,7 +96,7 @@ gravitational effect of the layer.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.503 seconds)
+   **Total running time of the script:** (0 minutes 1.499 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prism_layer.py:
