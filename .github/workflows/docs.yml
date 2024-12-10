@@ -58,7 +58,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          miniforge-variant: latest
+          miniforge-version: latest
           channels: conda-forge
           # Allow conda to use other than tar.bz2
           # (otherwise it cannot find latest versions that
