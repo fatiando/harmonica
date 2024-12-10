@@ -57,3 +57,4 @@ dependencies:
   - pep8-naming==0.14.*
   - pip:
     - burocrata==0.2.*
+    - zizmor
