@@ -145,6 +145,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
 
       # Fetch the built docs from the "build" job
       - name: Download HTML documentation artifact
@@ -161,33 +165,36 @@ jobs:
           path: deploy
           # Download the entire history
           fetch-depth: 0
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
 
       - name: Push the built HTML to gh-pages
         run: |
           # Detect if this is a release or from the main branch
           if [[ "${{ github.event_name }}" == "release" ]]; then
-              # Get the tag name without the "refs/tags/" part
-              version="${GITHUB_REF#refs/*/}"
+            # Get the tag name without the "refs/tags/" part
+            version="${GITHUB_REF#refs/*/}"
           else
-              version=dev
+            version=dev
           fi
           echo "Deploying version: $version"
           # Make the new commit message. Needs to happen before cd into deploy
           # to get the right commit hash.
           message="Deploy $version from $(git rev-parse --short HEAD)"
-          cd deploy
+          cd deploy || exit 1
           # Need to have this file so that Github doesn't try to run Jekyll
           touch .nojekyll
           # Delete all the files and replace with our new  set
           echo -e "\nRemoving old files from previous builds of ${version}:"
-          rm -rvf ${version}
+          rm -rvf "${version}"
           echo -e "\nCopying HTML files to ${version}:"
-          cp -Rvf ../doc/_build/html/ ${version}/
+          cp -Rvf ../doc/_build/html/ "${version}/"
           # If this is a new release, update the link from /latest to it
           if [[ "${version}" != "dev" ]]; then
-              echo -e "\nSetup link from ${version} to 'latest'."
-              rm -f latest
-              ln -sf ${version} latest
+            echo -e "\nSetup link from ${version} to 'latest'."
+            rm -f latest
+            ln -sf "${version}" latest
           fi
           # Stage the commit
           git add -A .
@@ -199,15 +206,15 @@ jobs:
           # If this is a dev build and the last commit was from a dev build
           # (detect if "dev" was in the previous commit message), reuse the
           # same commit
-          if [[ "${version}" == "dev" && `git log -1 --format='%s'` == *"dev"* ]]; then
-              echo -e "\nAmending last commit:"
-              git commit --amend --reset-author -m "$message"
+          if [[ "${version}" == "dev" && $(git log -1 --format='%s') == *"dev"* ]]; then
+            echo -e "\nAmending last commit:"
+            git commit --amend --reset-author -m "$message"
           else
-              echo -e "\nMaking a new commit:"
-              git commit -m "$message"
+            echo -e "\nMaking a new commit:"
+            git commit -m "$message"
           fi
           # Make the push quiet just in case there is anything that could leak
           # sensitive information.
           echo -e "\nPushing changes to gh-pages."
-          git push -fq origin gh-pages 2>&1 >/dev/null
+          { git push -fq origin gh-pages >/dev/null; } 2>&1
           echo -e "\nFinished uploading generated files."
