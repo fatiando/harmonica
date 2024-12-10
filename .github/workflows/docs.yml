@@ -58,10 +58,9 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          miniforge-variant: Mambaforge
-          use-mamba: true
-          channels: conda-forge,defaults
-          # Allow mamba to use other than tar.bz2
+          miniforge-variant: latest
+          channels: conda-forge
+          # Allow conda to use other than tar.bz2
           # (otherwise it cannot find latest versions that
           # don't use tar-bz2 files, see
           # https://github.com/conda-incubator/setup-miniconda/issues/267)
@@ -70,7 +69,7 @@ jobs:
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba install dependente==0.3.0 -c conda-forge
+          conda install dependente==0.3.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
           dependente --source install > requirements-full.txt
@@ -99,10 +98,10 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: conda install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
-        run: mamba list
+        run: conda list
 
       - name: Build source and wheel distributions
         run: |
