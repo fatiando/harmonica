@@ -146,6 +146,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
 
       # Fetch the built docs from the "build" job
       - name: Download HTML documentation artifact
@@ -162,6 +166,9 @@ jobs:
           path: deploy
           # Download the entire history
           fetch-depth: 0
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
 
       - name: Push the built HTML to gh-pages
         run: |
