@@ -129,7 +129,7 @@ Total gradient amplitude of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.414 seconds)
+   **Total running time of the script:** (0 minutes 0.407 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tga.py:

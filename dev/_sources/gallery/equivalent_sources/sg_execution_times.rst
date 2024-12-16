@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:21.026** total execution time for 4 files **from gallery/equivalent_sources**:
+**00:21.121** total execution time for 4 files **from gallery/equivalent_sources**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``cartesian.py``)
-     - 00:07.180
+     - 00:07.276
      - 0.0
    * - :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py` (``gradient_boosted.py``)
-     - 00:05.885
+     - 00:06.064
      - 0.0
    * - :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py` (``block_averaged_sources.py``)
-     - 00:05.428
+     - 00:05.286
      - 0.0
    * - :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``spherical.py``)
-     - 00:02.532
+     - 00:02.494
      - 0.0

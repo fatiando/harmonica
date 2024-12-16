@@ -142,7 +142,7 @@ isostatic Moho depth of Africa.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.401 seconds)
+   **Total running time of the script:** (0 minutes 0.398 seconds)
 
 
 .. _sphx_glr_download_gallery_isostatic_moho_airy.py:
