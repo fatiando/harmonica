@@ -12,3 +12,4 @@ flake8-simplify==0.21.*
 flake8-unused-arguments==0.0.13
 pep8-naming==0.14.*
 burocrata==0.2.*
+zizmor
