@@ -104,23 +104,37 @@ def fixture_coordinates_9x9(region):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("dtype", ("default", "float32"))
-def test_equivalent_sources_cartesian(region, points, masses, coordinates, data, dtype):
+@pytest.mark.parametrize(
+    ("damping", "dtype"),
+    [
+        (None, "default"),
+        pytest.param(
+            None,
+            np.float32,
+            marks=pytest.mark.xfail(
+                reason=(
+                    "equivalent sources with f32 values + no damping became "
+                    "unstable after sklearn 1.6.0"
+                )
+            ),
+        ),
+        (1e-12, "default"),
+        (1e-12, np.float32),
+    ],
+)
+def test_equivalent_sources_cartesian(
+    region, points, masses, coordinates, data, dtype, damping
+):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
     """
-    # Set absolute tolerances for tests based on dtype (float32 should be less
-    # accurate)
-    if dtype == "float32":
-        kwargs = dict(dtype=dtype)
-        atol = 1.7e-3 * vd.maxabs(data)
-    else:
-        kwargs = {}
-        atol = 1e-3 * vd.maxabs(data)
+    # Set absolute tolerance
+    atol = 1e-3 * vd.maxabs(data)
 
     # Fit the equivalent sources
-    eqs = EquivalentSources(**kwargs)
+    kwargs = {"dtype": dtype} if dtype == "float32" else {}
+    eqs = EquivalentSources(damping=damping, **kwargs)
     eqs.fit(coordinates, data)
 
     # The interpolation should be perfect on the data points
