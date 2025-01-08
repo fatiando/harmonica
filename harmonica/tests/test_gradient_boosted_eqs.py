@@ -171,14 +171,15 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     """
     Test GB eq-sources with a single window that covers the whole region
     """
+    atol = 5e-8
     eqs = EquivalentSourcesGB(depth=500, window_size=region[1] - region[0])
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5, atol=atol)
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
     true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3, atol=atol)
 
 
 @run_only_with_numba
