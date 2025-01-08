@@ -108,6 +108,8 @@ def fixture_coordinates_9x9(region):
     ("damping", "dtype"),
     [
         (None, "default"),
+        (1e-12, "default"),
+        (1e-12, np.float32),
         pytest.param(
             None,
             np.float32,
@@ -118,8 +120,6 @@ def fixture_coordinates_9x9(region):
                 )
             ),
         ),
-        (1e-12, "default"),
-        (1e-12, np.float32),
     ],
 )
 def test_equivalent_sources_cartesian(
