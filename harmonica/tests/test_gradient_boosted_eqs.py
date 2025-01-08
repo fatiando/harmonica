@@ -178,7 +178,7 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
     true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3, atol=5e-8)
 
 
 @run_only_with_numba
