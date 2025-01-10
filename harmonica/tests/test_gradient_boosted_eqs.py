@@ -297,7 +297,7 @@ def test_dtype(
     dtype,
 ):
     """
-    Test dtype argument on EquivalentSources
+    Test if predictions have the default dtype.
     """
     # Define the points argument for EquivalentSources
     points = None
@@ -315,12 +315,14 @@ def test_dtype(
         dtype=dtype,
     )
     eqs.fit(coordinates, data, weights)
-    # Make some predictions
+    # Ensure predictions have the expected dtype
     prediction = eqs.predict(coordinates)
-    # Check data type of created objects
+    assert prediction.dtype == np.float64
+    # Locations of sources should be the same dtype as the coordinates
     for coord in eqs.points_:
-        assert coord.dtype == np.dtype(dtype)
-    assert prediction.dtype == np.dtype(dtype)
+        assert coord.dtype == coordinates[0].dtype
+    # Sources' coefficients should be the same dtype as the coordinates
+    assert eqs.coefs_.dtype == coordinates[0].dtype
 
 
 @run_only_with_numba

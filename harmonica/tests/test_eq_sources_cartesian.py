@@ -357,28 +357,29 @@ def test_dtype(
     dtype,
 ):
     """
-    Test dtype argument on EquivalentSources
+    Test if predictions have the default dtype.
     """
     # Define the points argument for EquivalentSources
-    points = None
-    if custom_points:
-        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
-    # Define the points argument for EquivalentSources.fit()
-    if weights_none:
-        weights = None
+    points = (
+        vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+        if custom_points
+        else None
+    )
+    # Define the weights argument for EquivalentSources.fit()
+    weights = weights if not weights_none else None
     # Initialize and fit the equivalent sources
     eqs = EquivalentSources(
         damping=damping, points=points, block_size=block_size, dtype=dtype
     )
     eqs.fit(coordinates, data, weights)
-    # Make some predictions
+    # Ensure predictions have the expected dtype
     prediction = eqs.predict(coordinates)
-    # Check data type of created objects
+    assert prediction.dtype == np.float64
+    # Locations of sources should be the same dtype as the coordinates
     for coord in eqs.points_:
-        assert coord.dtype == np.dtype(dtype)
-    assert prediction.dtype == np.dtype(dtype)
-    # Check the data type of the source coefficients
-    #  assert eqs.coefs_.dtype == np.dtype(dtype)
+        assert coord.dtype == coordinates[0].dtype
+    # Sources' coefficients should be the same dtype as the coordinates
+    assert eqs.coefs_.dtype == coordinates[0].dtype
 
 
 @pytest.mark.use_numba
@@ -395,8 +396,6 @@ def test_jacobian_dtype(region, dtype):
     points = tuple(
         p.ravel() for p in vd.grid_coordinates(region, shape=(6, 6), extra_coords=-2e3)
     )
-    # Ravel the coordinates
-    coordinates = tuple(c.ravel() for c in coordinates)
     # Initialize and fit the equivalent sources
     eqs = EquivalentSources(points=points, dtype=dtype)
     # Build jacobian matrix
