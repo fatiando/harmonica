@@ -171,6 +171,8 @@ jobs:
 
       - name: Push the built HTML to gh-pages
         run: |
+          # Exit if any command exits with a non-zero status
+          set -e
           # Detect if this is a release or from the main branch
           if [[ "${{ github.event_name }}" == "release" ]]; then
             # Get the tag name without the "refs/tags/" part
