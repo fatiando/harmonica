@@ -18,6 +18,8 @@ on:
     types:
       - published
 
+permissions: {}
+
 # Use bash by default in all jobs
 defaults:
   run:
