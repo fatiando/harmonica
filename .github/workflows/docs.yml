@@ -165,9 +165,9 @@ jobs:
           path: deploy
           # Download the entire history
           fetch-depth: 0
-          # The GitHub token is preserved by default but this job doesn't need
-          # to be able to push to GitHub.
-          persist-credentials: false
+          # We need to explicitly preserve the credentials for the GitHub token
+          # on this branch so we can push to it.
+          persist-credentials: true
 
       - name: Push the built HTML to gh-pages
         run: |
