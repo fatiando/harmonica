@@ -89,4 +89,4 @@ light = pv.Light(
 plotter.add_light(light)
 
 plotter.show_axes()
-plotter.show()
+# plotter.show()
