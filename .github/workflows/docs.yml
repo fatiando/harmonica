@@ -66,30 +66,30 @@ jobs:
           # https://github.com/conda-incubator/setup-miniconda/issues/267)
           use-only-tar-bz2: false
 
-      - name: Collect requirements
-        run: |
-          echo "Install Dependente to capture dependencies:"
-          conda install dependente==0.3.0 -c conda-forge
-          echo ""
-          echo "Capturing run-time dependencies:"
-          dependente --source install > requirements-full.txt
-          echo "Capturing dependencies from:"
-          for requirement in $REQUIREMENTS
-          do
-            echo "  $requirement"
-            cat $requirement >> requirements-full.txt
-          done
-          echo ""
-          echo "Collected dependencies:"
-          cat requirements-full.txt
-
-      - name: Rename conda-forge packages
-        run: |
-          echo "Rename conda-forge packages in requirements-full.txt"
-          # Replace "build" for "python-build"
-          sed -s --in-place 's/^build$/python-build/' requirements-full.txt
-          echo "Renamed dependencies:"
-          cat requirements-full.txt
+      # - name: Collect requirements
+      #   run: |
+      #     echo "Install Dependente to capture dependencies:"
+      #     conda install dependente==0.3.0 -c conda-forge
+      #     echo ""
+      #     echo "Capturing run-time dependencies:"
+      #     dependente --source install > requirements-full.txt
+      #     echo "Capturing dependencies from:"
+      #     for requirement in $REQUIREMENTS
+      #     do
+      #       echo "  $requirement"
+      #       cat $requirement >> requirements-full.txt
+      #     done
+      #     echo ""
+      #     echo "Collected dependencies:"
+      #     cat requirements-full.txt
+      #
+      # - name: Rename conda-forge packages
+      #   run: |
+      #     echo "Rename conda-forge packages in requirements-full.txt"
+      #     # Replace "build" for "python-build"
+      #     sed -s --in-place 's/^build$/python-build/' requirements-full.txt
+      #     echo "Renamed dependencies:"
+      #     cat requirements-full.txt
 
       - name: Setup caching for conda packages
         uses: actions/cache@v4
@@ -98,12 +98,7 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: conda install --quiet --file requirements-full.txt python=$PYTHON
-
-      - name: Manually install vtk-osmesa from pip
-        run: |
-          pip uninstall vtk vtk-base vtk-ffmpeg
-          pip install vtk-osmesa --extra-index-url https://gitlab.kitware.com/api/v4/projects/13/packages/pypi/simple
+        run: conda install --quiet --file env/conda-doc-packages.txt python=$PYTHON
 
       - name: List installed packages
         run: conda list
