@@ -67,7 +67,7 @@ def prism_to_pyvista(prisms, properties=None):
 
        Plot it using :mod:`pyvista`:
 
-       >>> pv_grid.plot() # doctest: +SKIP
+       # >>> pv_grid.plot() # doctest: +SKIP
 
     """
     # Check if pyvista are installed
