@@ -13,9 +13,7 @@ ensaio>=0.5.*
 netcdf4
 matplotlib
 pyvista
-vtk=9.3.1=qt_py312h71fb23e_214
-vtk-base=9.3.1=qt_py312h04237f5_214
-vtk-io-ffmpeg=9.3.1=qt_py312h71fb23e_214
+vtk>=9
 pygmt
 gmt
 gdal
