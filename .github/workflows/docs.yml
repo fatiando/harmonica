@@ -97,6 +97,10 @@ jobs:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
+      - name: Manually install vtk-osmesa from pip
+        run: |
+          pip install vtk-osmesa --extra-index-url https://gitlab.kitware.com/api/v4/projects/13/packages/pypi/simple
+
       - name: Install requirements
         run: conda install --quiet --file requirements-full.txt python=$PYTHON
 
