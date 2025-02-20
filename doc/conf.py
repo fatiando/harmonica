@@ -126,7 +126,6 @@ pyvista.OFF_SCREEN = True
 # Optional - set parameters like theme or window size
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = (1024 * 2, 768 * 2)
-pyvista.set_jupyter_backend(None)
 
 
 # HTML output configuration
