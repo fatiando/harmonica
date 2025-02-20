@@ -100,11 +100,6 @@ jobs:
       - name: Install requirements
         run: conda install --quiet --file requirements-full.txt python=$PYTHON
 
-      - name: Manually install vtk-osmesa from pip
-        run: |
-          pip uninstall vtk vtk-base vtk-ffmpeg
-          pip install vtk-osmesa --extra-index-url https://gitlab.kitware.com/api/v4/projects/13/packages/pypi/simple
-
       - name: List installed packages
         run: conda list
 
