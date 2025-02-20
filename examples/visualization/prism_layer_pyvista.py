@@ -62,8 +62,8 @@ prisms = hm.prism_layer(
 )
 
 # Create a pyvista UnstructuredGrid from the prism layer
-pv_grid = prisms.prism_layer.to_pyvista()
-pv_grid
+# pv_grid = prisms.prism_layer.to_pyvista()
+# pv_grid
 
 ###############################################################################
 
