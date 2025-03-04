@@ -13,7 +13,7 @@ import numpy as np
 import verde as vd
 import xarray as xr
 
-from ..visualization import prism_to_pyvista
+from ..visualization import prism_to_pyvista, prism_to_vedo
 from .prism_gravity import prism_gravity
 
 
@@ -482,7 +482,7 @@ class DatasetAccessorPrismLayer:
 
     def to_pyvista(self, drop_null_prisms=True):
         """
-        Return a pyvista UnstructuredGrid to plot the PrismLayer
+        Return a :class:`pyvista.UnstructuredGrid` to plot the prism layer.
 
         Parameters
         ----------
@@ -495,10 +495,58 @@ class DatasetAccessorPrismLayer:
 
         Returns
         -------
-        pv_grid : :class:`pyvista.UnstructuredGrid`
+        pyvista.UnstructuredGrid
             :class:`pyvista.UnstructuredGrid` containing each prism of the
             layer as a hexahedron along with their properties.
         """
+        return self._to_vtk_object(backend="pyvista", drop_null_prisms=drop_null_prisms)
+
+    def to_vedo(self, drop_null_prisms=True):
+        """
+        Return a :class:`vedo.UnstructuredGrid` to plot the prism layer.
+
+        Parameters
+        ----------
+        drop_null_prisms : bool (optional)
+            If True, prisms with zero volume or with any :class:`numpy.nan` as
+            their top or bottom boundaries won't be included in the
+            :class:`vedo.UnstructuredGrid`.
+            If False, every prism in the layer will be included.
+            Default True.
+
+        Returns
+        -------
+        vedo.UnstructuredGrid
+            :class:`vedo.UnstructuredGrid` containing each prism of the
+            layer as a hexahedron along with their properties.
+        """
+        return self._to_vtk_object(backend="vedo", drop_null_prisms=drop_null_prisms)
+
+    def _to_vtk_object(self, backend: str, drop_null_prisms=True):
+        """
+        Return a pyvista or vedo UnstructuredGrid to plot the prism layer.
+        Return a pyvista UnstructuredGrid to plot the PrismLayer
+
+        Parameters
+        ----------
+        backend : {"pyvista", "vedo"}
+            Choose which type of UnstructuredGrid to return.
+        drop_null_prisms : bool (optional)
+            If True, prisms with zero volume or with any :class:`numpy.nan` as
+            their top or bottom boundaries won't be included in the
+            ``UnstructuredGrid``.
+            If False, every prism in the layer will be included.
+            Default True.
+
+        Returns
+        -------
+        pyvista.UnstructuredGrid or vedo.UnstructuredGrid
+            ``UnstructuredGrid`` containing each prism of the layer as
+            a hexahedron along with their properties.
+        """
+        if backend not in ("vedo", "pyvista"):
+            msg = f"Invalid backend '{backend}'."
+            raise ValueError(msg)
         prisms = self._to_prisms()
         null_prisms = np.zeros_like(prisms[:, 0], dtype=bool)
         if drop_null_prisms:
@@ -514,7 +562,8 @@ class DatasetAccessorPrismLayer:
                 ]
                 for data_var in self._obj.data_vars
             }
-        return prism_to_pyvista(prisms, properties=properties)
+        func = prism_to_pyvista if backend == "pyvista" else prism_to_vedo
+        return func(prisms, properties=properties)
 
 
 def _discard_thin_prisms(

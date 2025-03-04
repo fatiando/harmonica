@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Functions for visualizing prisms through pyvista
+Functions for visualizing prisms in 3D.
 """
 import numpy as np
 
@@ -13,8 +13,98 @@ try:
     import pyvista
 except ImportError:
     pyvista = None
-else:
+
+try:
+    import vedo
+except ImportError:
+    vedo = None
+
+if pyvista is not None or vedo is not None:
     import vtk
+
+
+def prism_to_vedo(prisms, properties=None):
+    """
+    Create a :class:`vedo.UnstructuredGrid` out of prisms.
+
+    Builds a :class:`vedo.UnstructuredGrid` out of a set of prisms that
+    could be used to plot a 3D representation through :mod:`vedo`.
+
+    Parameters
+    ----------
+    prisms : list or 2d-array
+        List or 2d-array with the boundaries of the prisms.
+        Each row contains the boundaries of each prism in the following order:
+        ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``.
+    properties : dict or None (optional)
+        Dictionary with the physical properties of the prisms.
+        Each key should be a string and its corresponding value a 1D array.
+        If None, no celldata will be added to the
+        :class:`vedo.UnstructuredGrid`.
+        Default to None.
+
+    Returns
+    -------
+    vedo.UnstructuredGrid
+        :class:`vedo.UnstructuredGrid` that represents the prisms with their
+        properties (if any).
+
+    Examples
+    --------
+    Define a set of prisms and their densities:
+
+    >>> prisms = [
+    ...     [0, 4, 0, 5, -10, 0],
+    ...     [0, 4, 7, 9, -12, -3],
+    ...     [6, 9, 2, 6, -7, 3],
+    ... ]
+    >>> densities = [2900, 3000, 2670]
+
+    Generate a :class:`vedo.UnstructuredGrid` out of them:
+
+    >>> import harmonica as hm
+    >>> vedo_grid = hm.visualization.prism_to_vedo(
+    ...     prisms, properties={"density": densities}
+    ... )
+    >>> print(vedo_grid) # doctest: +SKIP
+    vedo.grids.UnstructuredGrid at (0x56070a0af5b0)
+    nr. of verts  : 24
+    nr. of cells  : 3
+    cell types    : ['HEXAHEDRON']
+    size          : average=6.64122, diagonal=19.6723
+    center of mass: (3.83333, 4.83333, -4.83333)
+    bounds        : x=(0, 9.00), y=(0, 9.00), z=(-12.0, 3.00)
+    celldata *    : "density" (int64), ndim=1, range=(2.67e+3, 3.00e+3)
+    """
+    # Check if vedo are installed
+    if vedo is None:
+        raise ImportError(
+            "Missing optional dependency 'vedo' required for building vedo grids."
+        )
+    # Get prisms and number of prisms
+    prisms = np.atleast_2d(prisms)
+    n_prisms = prisms.shape[0]
+    # Get the vertices of the prisms
+    vertices = _prisms_boundaries_to_vertices(prisms)
+    # Generate the cells for the hexahedrons
+    cells = np.arange(n_prisms * 8).reshape([n_prisms, 8])
+    # Define celltypes
+    celltypes = [vtk.VTK_HEXAHEDRON for _ in range(n_prisms)]
+    # Build the UnstructuredGrid
+    grid = vedo.UnstructuredGrid([vertices, cells, celltypes])
+    # Add properties to the grid
+    if properties is not None:
+        for name, prop in properties.items():
+            # Check if the property is given as 1d array
+            property = np.atleast_1d(prop)
+            if property.ndim > 1:
+                raise ValueError(
+                    f"Multidimensional array found in '{name}' property. "
+                    + "Please, pass prism properties as 1d arrays."
+                )
+            # Assign the property to the cell_data
+            grid.celldata[name] = property
+    return grid
 
 
 def prism_to_pyvista(prisms, properties=None):
