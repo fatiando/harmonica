@@ -62,31 +62,10 @@ prisms = hm.prism_layer(
 )
 
 # Create a pyvista UnstructuredGrid from the prism layer
-pv_grid = prisms.prism_layer.to_pyvista()
-pv_grid
+prism_grid = prisms.prism_layer.to_vedo()
+print(prism_grid)
 
 ###############################################################################
 
-# Plot with pyvista
-plotter = pv.Plotter(lighting="three_lights", window_size=(1000, 800))
-plotter.add_mesh(pv_grid, scalars="density")
-plotter.set_scale(zscale=75)  # exaggerate the vertical coordinate
-plotter.camera_position = "xz"
-plotter.camera.elevation = 20
-plotter.camera.azimuth = 35
-plotter.camera.zoom(1.2)
-
-# Add a ceiling light
-west, east, south, north = vd.get_region((prisms.easting, prisms.northing))
-easting_center, northing_center = (east + west) / 2, (north + south) / 2
-light = pv.Light(
-    position=(easting_center, northing_center, 10e3),
-    focal_point=(easting_center, northing_center, 0),
-    intensity=0.3,
-    light_type="scene light",  # the light doesn't move with the camera
-    positional=False,  # the light comes from infinity
-)
-plotter.add_light(light)
-
-plotter.show_axes()
-plotter.show()
+# Plot with vedo
+prism_grid.show()
