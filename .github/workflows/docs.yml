@@ -36,6 +36,7 @@ jobs:
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
       PYTHON: "3.12"
+      ENSAIO_DATA_FROM_GITHUB: true
 
     steps:
 
