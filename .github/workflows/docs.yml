@@ -18,13 +18,16 @@ on:
     types:
       - published
 
+permissions: {}
+
 # Use bash by default in all jobs
 defaults:
   run:
     # The -l {0} is necessary for conda environments to be activated
     # But this breaks on MacOS if using actions/setup-python:
     # https://github.com/actions/setup-python/issues/132
-    shell: bash -l {0}
+    # -e makes sure builds fail if any command fails
+    shell: bash -e -o pipefail -l {0}
 
 jobs:
   #############################################################################
@@ -141,6 +144,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: write
     if: github.event_name == 'release' || github.event_name == 'push'
 
     steps:
@@ -166,9 +171,9 @@ jobs:
           path: deploy
           # Download the entire history
           fetch-depth: 0
-          # The GitHub token is preserved by default but this job doesn't need
-          # to be able to push to GitHub.
-          persist-credentials: false
+          # We need to explicitly preserve the credentials for the GitHub token
+          # on this branch so we can push to it.
+          persist-credentials: true
 
       - name: Push the built HTML to gh-pages
         run: |
