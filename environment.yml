@@ -21,6 +21,7 @@ dependencies:
   - pyvista
   - vtk
   - numba-progress
+  - vedo
   # Testing requirements
   - pytest
   - pytest-cov

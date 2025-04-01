@@ -127,6 +127,7 @@ Visualization
    :toctree: generated/
 
     visualization.prism_to_pyvista
+    visualization.prism_to_vedo
 
 Utilities
 ---------
