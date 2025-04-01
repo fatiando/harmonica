@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -442,15 +442,15 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Function to read ICGEM .gdf file</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 
 <div class="viewcode-block" id="load_icgem_gdf">
 <a class="viewcode-back" href="../../../api/generated/harmonica.load_icgem_gdf.html#harmonica.load_icgem_gdf">[docs]</a>
-<span class="k">def</span> <span class="nf">load_icgem_gdf</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_icgem_gdf</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads data from an ICGEM .gdf file.</span>
 
@@ -523,7 +523,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_read_gdf_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_gdf_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read ICGEM gdf file and returns metadata dict and data in cols as np.array</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -572,7 +572,7 @@ document.write(`
     <span class="k">return</span> <span class="n">rawdata</span><span class="p">,</span> <span class="n">metadata</span>
 
 
-<span class="k">def</span> <span class="nf">_check_gdf_integrity</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_gdf_integrity</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="s2">&quot;Check the integrity of ICGEM gdf file metadata.&quot;</span>
     <span class="n">needed_args</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;latitude_parallels&quot;</span><span class="p">,</span>
@@ -647,7 +647,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Apr 01, 2025.
   <br/>
 </p>
   </div>
