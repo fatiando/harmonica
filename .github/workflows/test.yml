@@ -125,14 +125,14 @@ jobs:
         run: |
           python -m pip install --requirement requirements-full.txt
 
+      - name: List installed packages
+        run: python -m pip freeze
+
       - name: Install Harmonica in editable mode
         run: |
           # We need to install in editable mode for the HTML coverage report to
           # work.
           python -m pip install --no-deps -e .
-
-      - name: List installed packages
-        run: python -m pip freeze
 
       - name: Run the tests
         run: |
@@ -164,7 +164,7 @@ jobs:
   #
   # Inspired by: https://hynek.me/articles/ditch-codecov-python/
   coverage:
-      name: Combine & check coverage
+      name: test coverage is 100%
       if: always()
       needs: tests
       runs-on: ubuntu-latest
