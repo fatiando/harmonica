@@ -150,43 +150,76 @@ jobs:
               make test
           fi
 
-      - name: Convert coverage report to XML for codecov
-        run: coverage xml
+      - name: Rename the coverage artifact
+        run: |
+          mv .coverage .coverage.${{ matrix.os }}_${{ matrix.python }}_${{ matrix.dependencies }}
 
-      - name: Upload coverage report as an artifact
+      - name: Upload coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
-          path: ./coverage.xml
+          name: coverage_${{ matrix.os }}_${{ matrix.python }}_${{ matrix.dependencies }}
+          path: .coverage.*
+          include-hidden-files: true
+          if-no-files-found: ignore
 
 
   #############################################################################
-  # Upload coverage report to codecov
-  codecov-upload:
-    runs-on: ubuntu-latest
-    needs: test
+  # Check coverage and upload a report
+  #
+  # Inspired by: https://hynek.me/articles/ditch-codecov-python/
+  coverage:
+      name: Combine & check coverage
+      if: always()
+      needs: tests
+      runs-on: ubuntu-latest
 
-    steps:
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            # The GitHub token is preserved by default but this job doesn't need
+            # to be able to push to GitHub.
+            persist-credentials: false
 
-      - name: Download coverage report artifacts
-        # Download coverage reports from every runner.
-        # Maximum coverage is achieved by combining reports from every runner.
-        # Each coverage file will live in its own folder with the same name as
-        # the artifact.
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage_*
+        - uses: actions/setup-python@v5
+          with:
+            # Use latest Python, so it understands all syntax.
+            python-version: "3.13"
 
-      - name: List all downloaded artifacts
-        run: ls -l -R .
+        - name: Get the pip cache folder
+          id: pip-cache
+          run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          # Upload all coverage report files
-          files: ./coverage_*/coverage.xml
-          # Fail the job so we know coverage isn't being updated. Otherwise it
-          # can silently drop and we won't know.
-          fail_ci_if_error: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        - name: Setup caching for pip packages
+          uses: actions/cache@v4
+          with:
+            path: ${{ steps.pip-cache.outputs.dir }}
+            key: ${{ runner.os }}-pip-coverage
+
+        - uses: actions/download-artifact@v4
+          with:
+            pattern: coverage_*
+            # If true, the downloaded artifacts will be in the same directory
+            # specified by path.
+            merge-multiple: true
+
+        - name: Install coverage.py
+          run: python -m pip install --upgrade coverage[toml]
+
+        - name: Combine coverage
+          run: python -m coverage combine
+
+        - name: Make an HTML report
+          run: python -m coverage html --skip-empty
+
+        - name: Report coverage on the job summary
+          run: python -m coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+
+        - name: Fail if coverage is not 100%
+          run: python -m coverage report --fail-under=100
+
+        - name: Upload HTML report if check failed
+          uses: actions/upload-artifact@v4
+          with:
+            name: html-report
+            path: htmlcov
+          if: ${{ failure() }}
