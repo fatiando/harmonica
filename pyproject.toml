@@ -87,3 +87,6 @@ omit = [
 ]
 # Needed to combine coverage data from multiple OSs on CI
 relative_files = true
+
+[tool.coverage.report]
+show_missing = true
