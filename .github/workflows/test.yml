@@ -28,7 +28,7 @@ defaults:
 jobs:
   #############################################################################
   # Run tests
-  test:
+  tests:
     name: ${{ matrix.os }} python=${{ matrix.python }} dependencies=${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}
     strategy:
