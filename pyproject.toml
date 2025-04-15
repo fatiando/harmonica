@@ -78,3 +78,12 @@ notice = '''
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #'''
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
