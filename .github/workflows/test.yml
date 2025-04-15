@@ -128,11 +128,9 @@ jobs:
       - name: List installed packages
         run: python -m pip freeze
 
-      - name: Install Harmonica in editable mode
+      - name: Install Harmonica
         run: |
-          # We need to install in editable mode for the HTML coverage report to
-          # work.
-          python -m pip install --no-deps -e .
+          python -m pip install --no-deps .
 
       - name: Run the tests
         run: |
@@ -204,18 +202,8 @@ jobs:
         - name: Combine coverage
           run: python -m coverage combine
 
-        - name: Make an HTML report
-          run: python -m coverage html --skip-empty
-
         - name: Report coverage on the job summary
           run: python -m coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
 
         - name: Fail if coverage is not 100%
           run: python -m coverage report --fail-under=100
-
-        - name: Upload HTML report if check failed
-          uses: actions/upload-artifact@v4
-          with:
-            name: html-report
-            path: htmlcov
-          if: ${{ failure() }}
