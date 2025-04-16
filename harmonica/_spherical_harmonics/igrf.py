@@ -1,6 +1,13 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Calculation of the IGRF magnetic field.
 """
+
 import pathlib
 
 import boule
@@ -14,8 +21,7 @@ from . import legendre
 
 
 def fetch_igrf13():
-    """
-    """
+    """ """
     path = pooch.retrieve(
         url="doi:10.5281/zenodo.11269410/igrf13coeffs.txt",
         path=pooch.os_cache("harmonica"),
@@ -40,9 +46,9 @@ def interpolate_coefficients(date, g, h, years):
     return g_date, h_date
 
 
-class IGRF13():
+class IGRF14:
     """
-    13th generation of the International Geomagnetic Reference Field
+    14th generation of the International Geomagnetic Reference Field
     """
 
     def __init__(self, date, ellipsoid=boule.WGS84):
@@ -82,12 +88,16 @@ class IGRF13():
         b_north = np.zeros(n_data)
         b_up = np.zeros(n_data)
         g, h = self.coefficients
-        _evaluate_igrf(longitude, colatitude, radius, g, h, self.max_degree, b_east, b_north, b_up)
+        _evaluate_igrf(
+            longitude, colatitude, radius, g, h, self.max_degree, b_east, b_north, b_up
+        )
         return b_east, b_north, b_up
 
 
 @numba.jit(parallel=True, nopython=True)
-def _evaluate_igrf(longitude, colatitude, radius, g, h, max_degree, b_east, b_north, b_up):
+def _evaluate_igrf(
+    longitude, colatitude, radius, g, h, max_degree, b_east, b_north, b_up
+):
     n_data = longitude.size
     for i in numba.prange(n_data):
-        plm =
+        plm = 1
