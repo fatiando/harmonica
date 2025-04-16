@@ -33,6 +33,7 @@ Apply well known transformations regular gridded potential fields data.
     gaussian_highpass
     reduction_to_pole
     total_gradient_amplitude
+    tilt_angle
 
 Frequency domain filters
 ------------------------
@@ -101,6 +102,15 @@ Isostatic Moho
 
     isostatic_moho_airy
 
+Source position estimation
+--------------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    EulerDeconvolution
+
+
 Input and Output
 ----------------
 
@@ -126,3 +136,4 @@ Utilities
 
     magnetic_vec_to_angles
     magnetic_angles_to_vec
+    total_field_anomaly

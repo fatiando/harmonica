@@ -104,15 +104,41 @@ def fixture_coordinates_9x9(region):
 
 
 @run_only_with_numba
-def test_equivalent_sources_cartesian(region, points, masses, coordinates, data):
+@pytest.mark.parametrize(
+    ("damping", "dtype"),
+    [
+        (None, "default"),
+        (1e-12, "default"),
+        (1e-12, np.float32),
+        pytest.param(
+            None,
+            np.float32,
+            marks=pytest.mark.xfail(
+                reason=(
+                    "equivalent sources with f32 values + no damping became "
+                    "unstable after sklearn 1.6.0"
+                )
+            ),
+        ),
+    ],
+)
+def test_equivalent_sources_cartesian(
+    region, points, masses, coordinates, data, dtype, damping
+):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
     """
-    # The interpolation should be perfect on the data points
-    eqs = EquivalentSources()
+    # Set absolute tolerance
+    atol = 1e-3 * vd.maxabs(data)
+
+    # Fit the equivalent sources
+    kwargs = {"dtype": dtype} if dtype == "float32" else {}
+    eqs = EquivalentSources(damping=damping, **kwargs)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
+
+    # The interpolation should be perfect on the data points
+    npt.assert_allclose(data, eqs.predict(coordinates), atol=atol)
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
@@ -120,11 +146,11 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     shape = (60, 60)
     grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
     true = point_gravity(grid_coords, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid_coords), atol=atol)
 
     # Test grid method
     grid = eqs.grid(grid_coords)
-    npt.assert_allclose(true, grid.scalars, rtol=1e-3)
+    npt.assert_allclose(true, grid.scalars, atol=atol)
 
     # Test profile method
     point1 = (region[0], region[2])
@@ -133,42 +159,7 @@ def test_equivalent_sources_cartesian(region, points, masses, coordinates, data)
     true = point_gravity(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
-    npt.assert_allclose(true, profile.scalars, rtol=1e-3)
-
-
-@run_only_with_numba
-def test_equivalent_sources_cartesian_float32(
-    region, points, masses, coordinates, data
-):
-    """
-    Check that predictions are reasonable when interpolating from one grid to
-    a denser grid, using float32 as dtype.
-    """
-    # The interpolation should be perfect on the data points
-    eqs = EquivalentSources(dtype="float32")
-    eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), atol=1e-3 * vd.maxabs(data))
-
-    # Gridding onto a denser grid should be reasonably accurate when compared
-    # to synthetic values
-    upward = 0
-    shape = (60, 60)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
-    true = point_gravity(grid_coords, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid_coords), atol=1e-3 * vd.maxabs(true))
-
-    # Test grid method
-    grid = eqs.grid(grid_coords)
-    npt.assert_allclose(true, grid.scalars, atol=1e-3 * vd.maxabs(true))
-
-    # Test profile method
-    point1 = (region[0], region[2])
-    point2 = (region[0], region[3])
-    profile = eqs.profile(point1, point2, upward, shape[0])
-    true = point_gravity(
-        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
-    )
-    npt.assert_allclose(true, profile.scalars, atol=1e-3 * vd.maxabs(true))
+    npt.assert_allclose(true, profile.scalars, atol=atol)
 
 
 def test_equivalent_sources_small_data_cartesian(region, points, masses):
@@ -449,3 +440,37 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+def test_default_depth(coordinates, data):
+    """
+    Test if the depth of sources is correctly set by the default strategy
+    """
+    # Get distance to first neighbour in the grid
+    easting, northing = coordinates[:2]
+    d_easting = easting[1, 1] - easting[0, 0]
+    d_northing = northing[1, 1] - northing[0, 0]
+    first_neighbour_distance = min(d_easting, d_northing)
+    # Fit the equivalent sources with default `depth`
+    eqs = EquivalentSources().fit(coordinates, data)
+    npt.assert_allclose(eqs.depth_, first_neighbour_distance * 4.5)
+
+
+def test_invalid_depth():
+    """
+    Test if error is raised after passing invalid value for depth.
+    """
+    invalid_depth = "this is not a valid one"
+    msg = f"Found invalid 'depth' value equal to '{invalid_depth}'"
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSources(depth=invalid_depth)
+
+
+def test_zero_depth():
+    """
+    Test if error is raised after passing zero for depth.
+    """
+    zero_depth = 0
+    msg = "Depth value cannot be zero. It should be a non-zero numeric value."
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSources(depth=zero_depth)

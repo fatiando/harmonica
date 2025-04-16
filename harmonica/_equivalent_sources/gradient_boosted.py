@@ -7,6 +7,10 @@
 """
 Gradient-boosted equivalent sources in Cartesian coordinates
 """
+from __future__ import annotations
+
+import warnings
+
 import numpy as np
 import verde.base as vdb
 from sklearn import utils
@@ -43,15 +47,18 @@ class EquivalentSourcesGB(EquivalentSources):
         Coordinates are assumed to be in the following order:
         (``easting``, ``northing``, ``upward``).
         If None, will place one point source below each observation point at
-        a fixed relative depth below the observation point [Cooper2000]_.
+        a fixed relative depth below the observation point [Cordell1992]_.
         Defaults to None.
-    depth : float
+    depth : float or "default"
         Parameter used to control the depth at which the point sources will be
         located.
-        Each source is located beneath each data point (or block-averaged
-        location) at a depth equal to its elevation minus the ``depth`` value.
+        If a value is provided, each source is located beneath each data point
+        (or block-averaged location) at a depth equal to its elevation minus
+        the ``depth`` value.
+        If set to ``"default"``, the depth of the sources will be estimated as
+        4.5 times the mean distance between first neighboring sources.
         This parameter is ignored if *points* is specified.
-        Defaults to 500.
+        Defaults to ``"default"``.
     block_size: float, tuple = (s_north, s_east) or None
         Size of the blocks used on block-averaged equivalent sources.
         If a single value is passed, the blocks will have a square shape.
@@ -60,12 +67,13 @@ class EquivalentSourcesGB(EquivalentSources):
         If None, no block-averaging is applied.
         This parameter is ignored if *points* are specified.
         Default to None.
-    window_size : float
+    window_size : float or "default"
         Size of overlapping windows used during the gradient-boosting
         algorithm. Smaller windows reduce the memory requirements of the source
         coefficients fitting process. Very small windows may impact on the
         accuracy of the interpolations.
-        Defaults to 5000.
+        Defaults to estimating a window size such that approximately 5000 data
+        points are in each window.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
         parallel through Numba's ``jit.prange``, reducing the computation time.
@@ -84,6 +92,15 @@ class EquivalentSourcesGB(EquivalentSources):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~harmonica.EquivalentSources.grid` method.
+    depth_ : float or None
+        Estimated depth of the sources calculated as 4.5 times the mean
+        distance between first neighboring sources. This attribute is set to
+        None if ``points`` is passed.
+    window_size_ : float or None
+        Size of the overlapping windows used in gradient-boosting equivalent
+        point sources. It will be set to None if ``window_size = "default"``
+        and less than 5000 data points were used to fit the sources; a single
+        window will be used in such case.
 
     References
     ----------
@@ -97,13 +114,18 @@ class EquivalentSourcesGB(EquivalentSources):
         self,
         damping=None,
         points=None,
-        depth=500,
+        depth: float | str = "default",
         block_size=None,
-        window_size=5e3,
+        window_size="default",
         parallel=True,
         random_state=None,
         dtype="float64",
     ):
+        if isinstance(window_size, str) and window_size != "default":
+            raise ValueError(
+                f"Found invalid 'window_size' value equal to '{window_size}'."
+                "It should be 'default' or a numeric value."
+            )
         super().__init__(
             damping=damping,
             points=points,
@@ -129,7 +151,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Returns
         -------
-        memory_required : float
+        memory_required : int
             Amount of memory required to store the largest Jacobian matrix in
             bytes.
 
@@ -144,7 +166,8 @@ class EquivalentSourcesGB(EquivalentSources):
         ...     random_state=42,
         ... )
         >>> eqs = EquivalentSourcesGB(window_size=2e3)
-        >>> eqs.estimate_required_memory(coordinates)
+        >>> n_bytes = eqs.estimate_required_memory(coordinates)
+        >>> int(n_bytes)
         9800
         """
         # Build the sources and assign the points_ attribute
@@ -203,8 +226,11 @@ class EquivalentSourcesGB(EquivalentSources):
             weights = weights.ravel()
         # Build point sources
         if self.points is None:
-            self.points_ = self._build_points(coordinates)
+            self.points_ = tuple(
+                p.astype(self.dtype) for p in self._build_points(coordinates)
+            )
         else:
+            self.depth_ = None  # set depth_ to None so we don't leave it unset
             self.points_ = tuple(
                 p.astype(self.dtype) for p in vdb.n_1d_arrays(self.points, 3)
             )
@@ -274,7 +300,7 @@ class EquivalentSourcesGB(EquivalentSources):
         coordinates : tuple
             Arrays with the coordinates of each data point. Should be in the
             following order: (``easting``, ``northing``, ``upward``).
-        shuffle_windows : bool
+        shuffle : bool
             Enable or disable the random shuffling of windows order. It's is
             highly recommended to enable shuffling for better fitting results.
             This argument is mainly included for testing purposes. Default to
@@ -289,21 +315,42 @@ class EquivalentSourcesGB(EquivalentSources):
             the same as the one in ``data_windows_nonempty``.
         data_windows_nonempty : list
             List containing arrays with the indices of the data points that
-            under each window. The order of the windows is randomly shuffled if
-            ``shuffle_windows`` is True, although the order of the windows is
-            the same as the one in ``source_windows_nonempty``.
+            fall under each window. The order of the windows is randomly
+            shuffled if ``shuffle_windows`` is True, although the order of the
+            windows is the same as the one in ``source_windows_nonempty``.
         """
-        # Compute window spacing based on overlapping
-        window_spacing = self.window_size * (1 - self.overlapping)
+
         # Get the region that contains every data point and every source
         region = _get_region_data_sources(coordinates, self.points_)
+        # Calculate the window size such that there are approximately 5000 data
+        # points in each window. Otherwise use the given window size.
+        if self.window_size == "default":
+            area = (region[1] - region[0]) * (region[3] - region[2])
+            ndata = coordinates[0].size
+            if ndata <= 5e3:
+                warnings.warn(
+                    f"Found {ndata} number of coordinates (<= 5e3). "
+                    "Only one window will be used.",
+                    stacklevel=1,
+                )
+                source_windows_nonempty = [np.arange(self.points_[0].size)]
+                data_windows_nonempty = [np.arange(ndata)]
+                self.window_size_ = None
+                return source_windows_nonempty, data_windows_nonempty
+            points_per_m2 = ndata / area
+            window_area = 5e3 / points_per_m2
+            self.window_size_ = np.sqrt(window_area)
+        else:
+            self.window_size_ = self.window_size
+        # Compute window spacing based on overlapping
+        window_spacing = self.window_size_ * (1 - self.overlapping)
         # The windows for sources and data points are the same, but the
         # verde.rolling_window function creates indices for the given
         # coordinates. That's why we need to create two set of window indices:
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
-        kwargs = dict(region=region, size=self.window_size, spacing=window_spacing)
+        kwargs = dict(region=region, size=self.window_size_, spacing=window_spacing)
         _, source_windows = rolling_window(self.points_, **kwargs)
         _, data_windows = rolling_window(coordinates, **kwargs)
         # Ravel the indices

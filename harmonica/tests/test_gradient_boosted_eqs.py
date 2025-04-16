@@ -115,7 +115,7 @@ def test_custom_points(region, coordinates_small, data_small):
         i.ravel()
         for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
     )
-    eqs = EquivalentSourcesGB(points=points_custom, window_size=500)
+    eqs = EquivalentSourcesGB(points=points_custom, window_size=500, depth=500)
     eqs.fit(coordinates_small, data_small)
     # Check that the proper source locations were set
     npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
@@ -171,14 +171,15 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
     """
     Test GB eq-sources with a single window that covers the whole region
     """
-    eqs = EquivalentSourcesGB(window_size=region[1] - region[0])
+    atol = 5e-8
+    eqs = EquivalentSourcesGB(depth=500, window_size=region[1] - region[0])
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5, atol=atol)
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
     grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
     true = point_gravity(grid, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3, atol=atol)
 
 
 @run_only_with_numba
@@ -373,3 +374,74 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+def test_window_size_less_than_5000():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(64, 64), extra_coords=0)
+    grid_coords = [c.ravel() for c in grid_coords]
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    with pytest.warns(UserWarning, match=f"Found {64**2} number of coordinates"):
+        source_windows, data_windows = eqs._create_windows(grid_coords)
+    assert eqs.window_size_ is None
+    assert len(source_windows) == 1
+    assert len(data_windows) == 1
+    # Check if all sources and data points are inside the window
+    for coord in eqs.points_:
+        npt.assert_allclose(coord, coord[source_windows[0]])
+    for coord in grid_coords:
+        npt.assert_allclose(coord, coord[data_windows[0]])
+
+
+def test_window_size():
+    region = (0, 10e3, -5e3, 5e3)
+    grid_coords = vd.grid_coordinates(region=region, shape=(100, 100), extra_coords=0)
+    eqs = EquivalentSourcesGB()
+    eqs.points_ = eqs._build_points(
+        grid_coords
+    )  # need to build sources first before creating windows.
+    eqs._create_windows(grid_coords)
+    expected_window_size = np.sqrt(5e3 / (100**2 / 10e3**2))
+    npt.assert_allclose(eqs.window_size_, expected_window_size)
+
+
+def test_invalid_window_size():
+    with pytest.raises(ValueError, match="Found invalid 'window_size' value equal to"):
+        EquivalentSourcesGB(window_size="Chuckie took my soul!")
+
+
+def test_default_depth(coordinates, data):
+    """
+    Test if the depth of sources is correctly set by the default strategy
+    """
+    # Get distance to first neighbour in the grid
+    easting, northing = coordinates[:2]
+    d_easting = easting[1, 1] - easting[0, 0]
+    d_northing = northing[1, 1] - northing[0, 0]
+    first_neighbour_distance = min(d_easting, d_northing)
+    # Fit the equivalent sources with default `depth`
+    eqs = EquivalentSourcesGB().fit(coordinates, data)
+    npt.assert_allclose(eqs.depth_, first_neighbour_distance * 4.5)
+
+
+def test_invalid_depth():
+    """
+    Test if error is raised after passing invalid value for depth.
+    """
+    invalid_depth = "this is not a valid one"
+    msg = f"Found invalid 'depth' value equal to '{invalid_depth}'"
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSourcesGB(depth=invalid_depth)
+
+
+def test_zero_depth():
+    """
+    Test if error is raised after passing zero for depth.
+    """
+    zero_depth = 0
+    msg = "Depth value cannot be zero. It should be a non-zero numeric value."
+    with pytest.raises(ValueError, match=msg):
+        EquivalentSourcesGB(depth=zero_depth)

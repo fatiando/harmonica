@@ -9,6 +9,7 @@
 from ._equivalent_sources.cartesian import EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph
+from ._euler_deconvolution import EulerDeconvolution
 from ._forward.dipole import dipole_magnetic
 from ._forward.point import point_gravity
 from ._forward.prism_gravity import prism_gravity
@@ -27,10 +28,11 @@ from ._transformations import (
     gaussian_highpass,
     gaussian_lowpass,
     reduction_to_pole,
+    tilt_angle,
     total_gradient_amplitude,
     upward_continuation,
 )
-from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles
+from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles, total_field_anomaly
 from ._version import __version__
 
 # Append a leading "v" to the generated version by setuptools_scm

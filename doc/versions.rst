@@ -7,6 +7,7 @@ Use the links below to access documentation for specific versions
 * `Latest release <http://www.fatiando.org/harmonica/latest>`__
 * `Development <http://www.fatiando.org/harmonica/dev>`__
   (reflects the *main* branch on GitHub)
+* `v0.7.0 <http://www.fatiando.org/harmonica/v0.7.0>`__
 * `v0.6.0 <http://www.fatiando.org/harmonica/v0.6.0>`__
 * `v0.5.1 <http://www.fatiando.org/harmonica/v0.5.1>`__
 * `v0.5.0 <http://www.fatiando.org/harmonica/v0.5.0>`__

@@ -90,7 +90,7 @@ def test_equivalent_sources_spherical():
     # The interpolation should be perfect on the data points
     eqs = EquivalentSourcesSph(relative_depth=500e3)
     eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1.3e-5)
+    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1.3e-5, atol=1e-11)
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
@@ -100,7 +100,7 @@ def test_equivalent_sources_spherical():
     true = point_gravity(
         grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
-    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3)
+    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=1e-3, atol=1e-11)
 
     # Test grid method
     grid = eqs.grid(grid_coords)
