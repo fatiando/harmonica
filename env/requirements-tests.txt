@@ -2,7 +2,7 @@
 boule
 pytest
 pytest-cov
-coverage
+coverage[toml]
 pyvista
 vtk>=9
 numba_progress

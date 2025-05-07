@@ -78,3 +78,23 @@ notice = '''
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #'''
+
+[tool.coverage.run]
+source = ["harmonica"]
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+branch = true
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
+
+[tool.coverage.paths]
+source = [
+    "harmonica",
+    "*/harmonica",
+    "*\\harmonica",
+]
+
+[tool.coverage.report]
+show_missing = true
