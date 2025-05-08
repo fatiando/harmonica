@@ -45,7 +45,7 @@ points.
 
  .. code-block:: none
 
-    /home/runner/miniconda3/envs/test/lib/python3.12/site-packages/pygmt/clib/session.py:1498: RuntimeWarning: Grid may have irregular spacing in the 'northing' dimension, but GMT only supports regular spacing. Calculated regular spacing 22283.15174176384 is assumed in the 'northing' dimension.
+    /home/runner/miniconda3/envs/test/lib/python3.12/site-packages/pygmt/clib/session.py:1655: RuntimeWarning: Grid may have irregular spacing in the 'northing' dimension, but GMT only supports regular spacing. Calculated regular spacing 22283.15174176384 is assumed in the 'northing' dimension.
       matrix, region, inc = dataarray_to_matrix(grid)
 
 
@@ -141,7 +141,7 @@ points.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 32.442 seconds)
+   **Total running time of the script:** (0 minutes 29.602 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prisms_topo_gravity.py:

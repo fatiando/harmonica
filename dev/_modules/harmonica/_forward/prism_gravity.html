@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -442,10 +442,10 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Forward modelling for prisms</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">choclo.prism</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">choclo.prism</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">gravity_e</span><span class="p">,</span>
     <span class="n">gravity_ee</span><span class="p">,</span>
     <span class="n">gravity_en</span><span class="p">,</span>
@@ -457,14 +457,14 @@ document.write(`
     <span class="n">gravity_u</span><span class="p">,</span>
     <span class="n">gravity_uu</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">choclo.prism._utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">choclo.prism._utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">is_point_on_easting_edge</span><span class="p">,</span>
     <span class="n">is_point_on_northing_edge</span><span class="p">,</span>
     <span class="n">is_point_on_upward_edge</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">initialize_progressbar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize_progressbar</span>
 
 <span class="c1"># Define dictionary with available gravity fields for prisms</span>
 <span class="n">FIELDS</span> <span class="o">=</span> <span class="p">{</span>
@@ -483,7 +483,7 @@ document.write(`
 
 <div class="viewcode-block" id="prism_gravity">
 <a class="viewcode-back" href="../../../api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity">[docs]</a>
-<span class="k">def</span> <span class="nf">prism_gravity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prism_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">prisms</span><span class="p">,</span>
     <span class="n">density</span><span class="p">,</span>
@@ -672,7 +672,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_check_singular_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_singular_points</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if any observation point is a singular point for tensor components</span>
 
@@ -706,7 +706,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_ee</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_ee</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_ee</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -741,7 +741,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_nn</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_nn</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_nn</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -776,7 +776,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_zz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_zz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_zz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -811,7 +811,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_en</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_en</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_en</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -836,7 +836,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_ez</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_ez</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_ez</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -861,7 +861,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_any_singular_point_g_nz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_any_singular_point_g_nz</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check observation points as singular points of g_nz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -885,7 +885,7 @@ document.write(`
     <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if prisms boundaries are well defined</span>
 
@@ -919,7 +919,7 @@ document.write(`
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_discard_null_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_discard_null_prisms</span><span class="p">(</span><span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Discard prisms with zero volume or zero density</span>
 
@@ -956,7 +956,7 @@ document.write(`
     <span class="k">return</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span>
 
 
-<span class="k">def</span> <span class="nf">jit_prism_gravity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jit_prism_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">progress_proxy</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1049,7 +1049,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on May 08, 2025.
   <br/>
 </p>
   </div>

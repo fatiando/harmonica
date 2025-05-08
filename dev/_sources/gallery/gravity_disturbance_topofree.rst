@@ -143,7 +143,7 @@ correction.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.675 seconds)
+   **Total running time of the script:** (0 minutes 3.571 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:

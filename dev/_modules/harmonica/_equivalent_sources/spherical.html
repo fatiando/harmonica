@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -442,16 +442,16 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Equivalent sources for generic harmonic functions in spherical coordinates</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
-<span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde.base</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vdb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.._forward.utils</span> <span class="kn">import</span> <span class="n">distance_spherical</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.._forward.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">distance_spherical</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">jacobian_numba_parallel</span><span class="p">,</span>
     <span class="n">jacobian_numba_serial</span><span class="p">,</span>
     <span class="n">predict_numba_parallel</span><span class="p">,</span>
@@ -461,7 +461,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph">[docs]</a>
-<span class="k">class</span> <span class="nc">EquivalentSourcesSph</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EquivalentSourcesSph</span><span class="p">(</span><span class="n">vdb</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equivalent sources for generic harmonic functions in spherical coordinates</span>
 
@@ -549,7 +549,7 @@ document.write(`
     <span class="n">_predict_kernel</span> <span class="o">=</span> <span class="p">{</span><span class="kc">False</span><span class="p">:</span> <span class="n">predict_numba_serial</span><span class="p">,</span> <span class="kc">True</span><span class="p">:</span> <span class="n">predict_numba_parallel</span><span class="p">}</span>
     <span class="n">_jacobian_kernel</span> <span class="o">=</span> <span class="p">{</span><span class="kc">False</span><span class="p">:</span> <span class="n">jacobian_numba_serial</span><span class="p">,</span> <span class="kc">True</span><span class="p">:</span> <span class="n">jacobian_numba_parallel</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -565,7 +565,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.fit">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
@@ -611,7 +611,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.predict">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.predict">[docs]</a>
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the estimated equivalent sources on the given set of points.</span>
 
@@ -646,7 +646,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.jacobian">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.jacobian">[docs]</a>
-    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the Jacobian matrix for the equivalent sources.</span>
 
@@ -684,7 +684,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.grid">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.grid">[docs]</a>
-    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">coordinates</span><span class="p">,</span>
         <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -776,7 +776,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.scatter">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.scatter">[docs]</a>
-    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scatter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
@@ -798,7 +798,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesSph.profile">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.profile">[docs]</a>
-    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">profile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">point1</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
         <span class="n">point2</span><span class="p">,</span>  <span class="c1"># noqa: U100</span>
@@ -821,7 +821,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">greens_func_spherical</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">greens_func_spherical</span><span class="p">(</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">point_longitude</span><span class="p">,</span> <span class="n">point_latitude</span><span class="p">,</span> <span class="n">point_radius</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -869,7 +869,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on May 08, 2025.
   <br/>
 </p>
   </div>

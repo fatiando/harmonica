@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -446,11 +446,11 @@ document.write(`
 <span class="sd">Function to read Oasis Montaj© .grd file</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">array</span>
-<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="c1"># Define the valid element sizes (ES variable) for GRD files</span>
 <span class="c1"># (values &gt; 1024 correspond to compressed versions of the grid)</span>
@@ -470,7 +470,7 @@ document.write(`
 
 <div class="viewcode-block" id="load_oasis_montaj_grid">
 <a class="viewcode-back" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html#harmonica.load_oasis_montaj_grid">[docs]</a>
-<span class="k">def</span> <span class="nf">load_oasis_montaj_grid</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_oasis_montaj_grid</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads gridded data from an Oasis Montaj© .grd file.</span>
 
@@ -569,7 +569,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_read_header</span><span class="p">(</span><span class="n">header_bytes</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_header</span><span class="p">(</span><span class="n">header_bytes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read GRD file header</span>
 
@@ -655,7 +655,7 @@ document.write(`
     <span class="k">return</span> <span class="n">header</span>
 
 
-<span class="k">def</span> <span class="nf">_check_ordering</span><span class="p">(</span><span class="n">ordering</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_ordering</span><span class="p">(</span><span class="n">ordering</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if the ordering value is within the ones we are supporting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -666,7 +666,7 @@ document.write(`
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_check_sign_flag</span><span class="p">(</span><span class="n">sign_flag</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_sign_flag</span><span class="p">(</span><span class="n">sign_flag</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if sign_flag value is within the ones we are supporting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -676,7 +676,7 @@ document.write(`
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_data_type</span><span class="p">(</span><span class="n">n_bytes_per_element</span><span class="p">,</span> <span class="n">sign_flag</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_data_type</span><span class="p">(</span><span class="n">n_bytes_per_element</span><span class="p">,</span> <span class="n">sign_flag</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the data type for the grid values</span>
 
@@ -718,7 +718,7 @@ document.write(`
     <span class="k">return</span> <span class="n">data_type</span>
 
 
-<span class="k">def</span> <span class="nf">_remove_dummies</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_remove_dummies</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replace dummy values for NaNs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -730,7 +730,7 @@ document.write(`
     <span class="k">return</span> <span class="n">grid</span>
 
 
-<span class="k">def</span> <span class="nf">_decompress_grid</span><span class="p">(</span><span class="n">grid_compressed</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_decompress_grid</span><span class="p">(</span><span class="n">grid_compressed</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decompress the grid using gzip</span>
 
@@ -781,7 +781,7 @@ document.write(`
     <span class="k">return</span> <span class="n">grid</span>
 
 
-<span class="k">def</span> <span class="nf">_build_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create the coordinates for the grid</span>
 
@@ -814,7 +814,7 @@ document.write(`
     <span class="k">return</span> <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span>
 
 
-<span class="k">def</span> <span class="nf">_build_rotated_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">rotation_deg</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_rotated_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">rotation_deg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create the coordinates for a rotated grid</span>
 
@@ -896,7 +896,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on May 08, 2025.
   <br/>
 </p>
   </div>
