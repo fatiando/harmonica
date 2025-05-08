@@ -45,7 +45,7 @@ extensions = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://docs.scipy.org/doc/numpy/", None),
-    "numba": ("https://numba.pydata.org/numba-doc/latest/", None),
+    "numba": ("https://numba.readthedocs.io/en/stable/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
@@ -57,10 +57,6 @@ intersphinx_mapping = {
     "matplotlib": ("https://matplotlib.org/", None),
     "pyproj": ("https://pyproj4.github.io/pyproj/stable/", None),
     "pyvista": ("https://docs.pyvista.org", None),
-    "numba_progress": (
-        "https://pypi.org/project/numba-progress/",
-        None,
-    ),
     "pygmt": ("https://www.pygmt.org/latest/", None),
 }
 
@@ -93,7 +89,7 @@ add_function_parentheses = False
 # -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples"],
+    "examples_dirs": ["gallery_src"],
     # path where to save gallery generated examples
     "gallery_dirs": ["gallery"],
     "filename_pattern": r"\.py",
