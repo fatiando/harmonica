@@ -27,6 +27,7 @@ from .._transformations import (
     reduction_to_pole,
     tilt_angle,
     total_gradient_amplitude,
+    total_horizontal_gradient,
     upward_continuation,
 )
 from .utils import root_mean_square_error
@@ -600,6 +601,70 @@ class TestTotalGradientAmplitude:
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
             total_gradient_amplitude(sample_potential)
+
+
+class TestTotalHorizontalGradient:
+    """
+    Test total_horizontal_gradient function
+    """
+
+    def test_against_synthetic(
+        self, sample_potential, sample_g_n, sample_g_e
+    ):
+        """
+        Test total_horizontal_gradient function against the synthetic model
+        """
+        pad_width = {
+            "easting": sample_potential.easting.size // 3,
+            "northing": sample_potential.northing.size // 3,
+        }
+        potential_padded = xrft.pad(
+            sample_potential.drop_vars("upward"),
+            pad_width=pad_width,
+        )
+        thg = total_horizontal_gradient(potential_padded)
+        thg = xrft.unpad(thg, pad_width)
+
+        trim = 6
+        thg = thg[trim:-trim, trim:-trim]
+        g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI
+        g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5
+        g_thg = np.sqrt(g_e**2 + g_n**2)
+        rms = root_mean_square_error(thg, g_thg)
+        assert rms / np.abs(g_thg).max() < 0.1
+
+    def test_invalid_grid_single_dimension(self):
+        """
+        Check if total_horizontal_gradient raises error on grid with single
+        dimension
+        """
+        x = np.linspace(0, 10, 11)
+        y = x**2
+        grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+        with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+            total_horizontal_gradient(grid)
+
+    def test_invalid_grid_three_dimensions(self):
+        """
+        Check if total_horizontal_gradient raises error on grid with three
+        dimensions
+        """
+        x = np.linspace(0, 10, 11)
+        y = np.linspace(-4, 4, 9)
+        z = np.linspace(20, 30, 5)
+        xx, yy, zz = np.meshgrid(x, y, z)
+        data = xx + yy + zz
+        grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+        with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+            total_horizontal_gradient(grid)
+
+    def test_invalid_grid_with_nans(self, sample_potential):
+        """
+        Check if total_horizontal_gradient raises error if grid contains nans
+        """
+        sample_potential.values[0, 0] = np.nan
+        with pytest.raises(ValueError, match="Found nan"):
+            total_horizontal_gradient(sample_potential)
 
 
 class TestTilt:
