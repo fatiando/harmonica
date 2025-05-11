@@ -27,6 +27,7 @@ from .._transformations import (
     reduction_to_pole,
     tilt_angle,
     theta_map,
+    horizontal_tilt_angle,
     total_gradient_amplitude,
     total_horizontal_gradient,
     upward_continuation,
@@ -738,6 +739,7 @@ class TestTilt:
         with pytest.raises(ValueError, match="Found nan"):
             tilt_angle(sample_potential)
 
+
 class TestThetaMap:
     """
     Test theta_map function
@@ -801,6 +803,70 @@ class TestThetaMap:
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
             theta_map(sample_potential)
+
+class TestHorizontalTiltAngle:
+    """
+    Test horizontal_tilt_angle function
+    """
+
+    def test_against_synthetic(
+        self, sample_potential, sample_g_n, sample_g_e, sample_g_z
+    ):
+        """
+        Test horizontal_tilt_angle function against the synthetic model
+        """
+        pad_width = {
+            "easting": sample_potential.easting.size // 3,
+            "northing": sample_potential.northing.size // 3,
+        }
+        potential_padded = xrft.pad(
+            sample_potential.drop_vars("upward"),
+            pad_width=pad_width,
+        )
+        hta_grid = horizontal_tilt_angle(potential_padded)
+        hta_grid = xrft.unpad(hta_grid, pad_width)
+
+        trim = 6
+        hta_grid = hta_grid[trim:-trim, trim:-trim]
+        g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5
+        g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5
+        g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5
+        g_thdr = np.sqrt(g_e**2 + g_n**2)
+        g_hta = np.arctan2(g_thdr, np.abs(g_z))
+        rms = root_mean_square_error(hta_grid, g_hta)
+        assert rms / np.abs(g_hta).max() < 0.1
+
+    def test_invalid_grid_single_dimension(self):
+        """
+        Check if horizontal_tilt_angle raises error on grid with single dimension
+        """
+        x = np.linspace(0, 10, 11)
+        y = x**2
+        grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+        with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+            horizontal_tilt_angle(grid)
+
+    def test_invalid_grid_three_dimensions(self):
+        """
+        Check if horizontal_tilt_angle raises error on grid with three dimensions
+        """
+        x = np.linspace(0, 10, 11)
+        y = np.linspace(-4, 4, 9)
+        z = np.linspace(20, 30, 5)
+        xx, yy, zz = np.meshgrid(x, y, z)
+        data = xx + yy + zz
+        grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+        with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+            horizontal_tilt_angle(grid)
+
+    def test_invalid_grid_with_nans(self, sample_potential):
+        """
+        Check if horizontal_tilt_angle raises error if grid contains nans
+        """
+        sample_potential.values[0, 0] = np.nan
+        with pytest.raises(ValueError, match="Found nan"):
+            horizontal_tilt_angle(sample_potential)
+
 
 
 class Testfilter:
