@@ -572,6 +572,65 @@ def theta_map(grid):
     horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
     return np.arctan2(horiz_deriv, total_gradient)
 
+def horizontal_tilt_angle(grid):
+    r"""
+    Calculate the horizontal tilt angle of a potential field grid
+
+    Compute the horizontal tilt angle of a regularly gridded potential field
+    :math:`M`. This filter computing the arctangent of the ratio between the
+    horizontal gradient magnitude and the absolute value of the upward derivative.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two-dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. Its coordinates should be defined in the
+        same units.
+
+    Returns
+    -------
+    horiz_tilt_grid : :class:`xarray.DataArray`
+        A :class:`xarray.DataArray` with the calculated horizontal tilt angle
+        in radians.
+
+    Notes
+    -----
+    The horizontal tilt angle is calculated as:
+
+    .. math::
+
+        \text{HTA}(M) = \tan^{-1} \left(
+            \frac{
+                \sqrt{
+                    \left( \frac{\partial M}{\partial x} \right)^2 +
+                    \left( \frac{\partial M}{\partial y} \right)^2
+                }
+            }{
+                \left| \frac{\partial M}{\partial z} \right|
+            }
+        \right)
+
+    where :math:`M` is the regularly gridded potential field.
+
+    References
+    ----------
+    [Cooper & Cowan, 2006]_
+    """
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
+    # Calculate the gradients of the grid
+    gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1),
+        derivative_upward(grid, order=1),
+    )
+    # Calculate and return the horizontal tilt angle
+    horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
+    return np.arctan2(horiz_deriv, np.abs(gradient[2]))
+
+
+
 
 def _get_dataarray_coordinate(grid, dimension_index):
     """
