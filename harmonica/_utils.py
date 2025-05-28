@@ -68,7 +68,6 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
         Inclination is measured positive downward from the horizontal plane and
         declination is measured with respect to North and it is positive east.
 
-
     Parameters
     ----------
     magnetic_e : float or array
@@ -119,7 +118,7 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
 
     .. math::
 
-        D = \arcsin \frac{B_e}{\sqrt{B_e^2 + B_n^2}}
+        D = \arctan \frac{B_e}{B_n}
 
     Examples
     --------
@@ -130,23 +129,14 @@ def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     # Compute the intensity as a norm
     intensity = np.sqrt(magnetic_e**2 + magnetic_n**2 + magnetic_u**2)
     # Compute the horizontal component of the magnetic vector
-    horizontal_component = np.atleast_1d(np.sqrt(magnetic_e**2 + magnetic_n**2))
-    # Mask the values equal to zero in the horizontal component
-    horizontal_component = np.ma.masked_values(horizontal_component, 0.0)
-    # Calculate the inclination and declination using the mask
-    inclination = np.arctan(-magnetic_u / horizontal_component)
-    declination = np.arcsin(magnetic_e / horizontal_component)
-    # Fill the masked values
-    inclination = inclination.filled(-np.sign(magnetic_u) * np.pi / 2)
-    declination = declination.filled(0)
+    horizontal_component = np.sqrt(magnetic_e**2 + magnetic_n**2)
+    # Calculate the inclination and declination
+    inclination = np.arctan2(-magnetic_u, horizontal_component)
+    declination = np.arctan2(magnetic_e, magnetic_n)
     # Convert to degree if needed
     if degrees:
         inclination = np.degrees(inclination)
         declination = np.degrees(declination)
-    # Cast to floats if all components are floats
-    if intensity.ndim == 0:
-        (inclination,) = inclination
-        (declination,) = declination
     return intensity, inclination, declination
 
 
