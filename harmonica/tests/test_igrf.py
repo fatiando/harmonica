@@ -12,7 +12,8 @@ import os
 import pytest
 import xarray as xr
 
-from .._spherical_harmonics.igrf import load_igrf, fetch_igrf14,
+from .._spherical_harmonics.igrf import fetch_igrf14, load_igrf
+
 interpolate_coefficients, IGRF14
 
 

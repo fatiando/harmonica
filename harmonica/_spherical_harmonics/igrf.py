@@ -13,11 +13,22 @@ import pathlib
 import boule
 import numba
 import numpy as np
+import pandas as pd
 import pooch
 import xarray as xr
 
 from .._version import __version__
 from . import legendre
+
+
+def fetch_igrf14():
+    """ """
+    path = pooch.retrieve(
+        url="doi:10.5281/zenodo.14218973/igrf14coeffs.txt",
+        path=pooch.os_cache("harmonica"),
+        known_hash="md5:3606931c15c9234d9ba8e2e91b729cb0",
+    )
+    return pathlib.Path(path)
 
 
 def fetch_igrf13():
@@ -27,15 +38,51 @@ def fetch_igrf13():
         path=pooch.os_cache("harmonica"),
         known_hash="md5:e2e6e323086bde2dd910bb87d2db8532",
     )
-    return path
+    return pathlib.Path(path)
 
 
 def load_igrf(path):
     """
-    Load the IGRF Gauss coefficients from the given file
+    Load the IGRF Gauss coefficients from the classic text format.
+
+    Parameters
+    ----------
+    path : str or :class:`pathlib.Path`
+        The path to the ``.txt`` file with the Gauss coefficients.
+
+    Returns
+    -------
+    years : array
+        The years for the knot points of the time interpolation.
+
     """
-    g, h, years = None, None, None
-    return g, h, years
+    with open(path) as input_file:
+        # Get rid of the comments and the first header line
+        for line in input_file:
+            if not line.startswith("#"):
+                break
+        # Read the years
+        parts = input_file.readline().split()[3:-1]
+        years = np.fromiter(parts + [float(parts[-1]) + 5], dtype="float")
+        # Initialize the storage arrays
+        max_degree = 13
+        coeffs = {
+            "g": np.zeros((years.size, max_degree + 1, max_degree + 1)),
+            "h": np.zeros((years.size, max_degree + 1, max_degree + 1)),
+        }
+        # Read the coefficients
+        for line in input_file:
+            parts = line.split()
+            key = parts[0].strip()
+            degree, order = (int(i) for i in parts[1:3])
+            coeffs[key][: years.size - 1, degree, order] = np.fromiter(
+                parts[3:-1], dtype="float"
+            )
+            # Add the last year from the secular variation
+            coeffs[key][years.size - 1, degree, order] = (
+                float(parts[-1]) * 5 + coeffs[key][years.size - 2, degree, order]
+            )
+    return years, coeffs["g"], coeffs["h"]
 
 
 def interpolate_coefficients(date, g, h, years):
