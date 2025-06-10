@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -442,22 +442,22 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Gradient-boosted equivalent sources in Cartesian coordinates</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">rolling_window</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde.base</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vdb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">rolling_window</span>
 
-<span class="kn">from</span> <span class="nn">.cartesian</span> <span class="kn">import</span> <span class="n">EquivalentSources</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cast_fit_input</span><span class="p">,</span> <span class="n">predict_numba_parallel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cartesian</span><span class="w"> </span><span class="kn">import</span> <span class="n">EquivalentSources</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast_fit_input</span><span class="p">,</span> <span class="n">predict_numba_parallel</span>
 
 
 <div class="viewcode-block" id="EquivalentSourcesGB">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB">[docs]</a>
-<span class="k">class</span> <span class="nc">EquivalentSourcesGB</span><span class="p">(</span><span class="n">EquivalentSources</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EquivalentSourcesGB</span><span class="p">(</span><span class="n">EquivalentSources</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gradient-boosted equivalent sources for generic harmonic functions.</span>
 
@@ -547,7 +547,7 @@ document.write(`
     <span class="c1"># Define amount of overlapping between adjacent windows to 50%.</span>
     <span class="n">overlapping</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -576,7 +576,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesGB.estimate_required_memory">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">[docs]</a>
-    <span class="k">def</span> <span class="nf">estimate_required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Estimate the memory required for storing the largest Jacobian matrix</span>
 
@@ -626,7 +626,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesGB.fit">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
@@ -683,7 +683,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_gradient_boosting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gradient_boosting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit source coefficients through gradient boosting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -734,7 +734,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span><span class="p">[</span><span class="n">point_window</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coeffs_chunk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rmse_per_iteration_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_create_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create indices of sources and data points for each overlapping window</span>
 
@@ -815,7 +815,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the region that contains every observation and every source</span>
 
@@ -873,7 +873,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Jun 10, 2025.
   <br/>
 </p>
   </div>

@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -442,10 +442,10 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Forward modelling for tesseroids</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 
-<span class="kn">from</span> <span class="nn">._tesseroid_utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._tesseroid_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_adaptive_discretization</span><span class="p">,</span>
     <span class="n">_check_tesseroids</span><span class="p">,</span>
     <span class="n">_discard_null_tesseroids</span><span class="p">,</span>
@@ -453,12 +453,12 @@ document.write(`
     <span class="n">gauss_legendre_quadrature</span><span class="p">,</span>
     <span class="n">glq_nodes_weights</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._tesseroid_variable_density</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._tesseroid_variable_density</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">density_based_discretization</span><span class="p">,</span>
     <span class="n">gauss_legendre_quadrature_variable_density</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.point</span> <span class="kn">import</span> <span class="n">gravity_u_spherical</span><span class="p">,</span> <span class="n">potential_spherical</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">initialize_progressbar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.point</span><span class="w"> </span><span class="kn">import</span> <span class="n">gravity_u_spherical</span><span class="p">,</span> <span class="n">potential_spherical</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize_progressbar</span>
 
 <span class="n">STACK_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">MAX_DISCRETIZATIONS</span> <span class="o">=</span> <span class="mi">100000</span>
@@ -468,7 +468,7 @@ document.write(`
 
 <div class="viewcode-block" id="tesseroid_gravity">
 <a class="viewcode-back" href="../../../api/generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity">[docs]</a>
-<span class="k">def</span> <span class="nf">tesseroid_gravity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tesseroid_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">tesseroids</span><span class="p">,</span>
     <span class="n">density</span><span class="p">,</span>
@@ -650,7 +650,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="n">parallel</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dispatcher</span><span class="p">(</span><span class="n">parallel</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the jitted compiled forward modelling function</span>
 
@@ -670,7 +670,7 @@ document.write(`
     <span class="k">return</span> <span class="n">dispatchers</span><span class="p">[</span><span class="n">parallel</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">jit_tesseroid_gravity</span><span class="p">(</span>  <span class="c1"># noqa: CFQ002</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jit_tesseroid_gravity</span><span class="p">(</span>  <span class="c1"># noqa: CFQ002</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">tesseroids</span><span class="p">,</span>
     <span class="n">density</span><span class="p">,</span>
@@ -773,7 +773,7 @@ document.write(`
             <span class="n">progress_proxy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">jit_tesseroid_gravity_variable_density</span><span class="p">(</span>  <span class="c1"># noqa: CFQ002</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jit_tesseroid_gravity_variable_density</span><span class="p">(</span>  <span class="c1"># noqa: CFQ002</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">tesseroids</span><span class="p">,</span>
     <span class="n">density</span><span class="p">,</span>
@@ -923,7 +923,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Jun 10, 2025.
   <br/>
 </p>
   </div>
