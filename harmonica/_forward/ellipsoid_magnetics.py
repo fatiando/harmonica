@@ -48,9 +48,11 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
             - Orientation : yaw, pitch, roll**
             - Origin : centre point (x, y, z)
 
-    k : float or list of floats
-        Susceptibilty value. Assumes isotropy within the body. Should be of the
-        same length as the number of ellipsoids given.
+    k : list of floats or arrays
+        Susceptibilty value. A single value or list of single values assumes 
+        isotropy in the body/bodies. An array or list of arrays should be a 3x3 
+        matrix with the given susceptibilty components, suggesting an anisotropic
+        susceptibility.
 
     H0 : ndarray
         Three components of the uniform inducing field.
