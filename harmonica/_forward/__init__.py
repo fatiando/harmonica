@@ -1,9 +1,22 @@
-# Copyright (c) 2018 The Harmonica Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
-#
-# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
-#
-"""
-Forward modeling functions for gravity and magnetic fields of geometric shapes
-"""
+from .utils_ellipsoids import (
+    _calculate_lambda,
+    _get_V_as_Euler,
+    _global_to_local,
+    _generate_basic_ellipsoid,
+)
+
+from .ellipsoid_gravity import (
+    _get_ABC,
+    _get_gravity_oblate,
+    _get_gravity_triaxial,
+    _get_internal_g,
+    _get_gravity_prolate,
+    _get_gravity_array,
+    ellipsoid_gravity,
+)
+from .create_ellipsoid import (
+    OblateEllipsoid,
+    ProlateEllipsoid,
+    TriaxialEllipsoid,
+)
+from .ellipsoid_magnetics import ellipsoid_magnetics
