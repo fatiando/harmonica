@@ -4,14 +4,15 @@ from scipy.spatial.transform import Rotation as R
 
 def _calculate_lambda(x, y, z, a, b, c):
     """
-    Calculate the value of lambda, the parameter defining surfaces in a confocal family
-    of ellipsoids (i.e., the inflation/deflation parameter), for a given ellipsoid and
-    observation point.
+    Calculate the value of lambda, the parameter defining surfaces in a
+    confocal family of ellipsoids (i.e., the inflation/deflation parameter),
+    for a given ellipsoid and observation point.
 
     Parameters
     ----------
     x : float or array
-        X-coordinate(s) of the observation point(s) in the local coordinate system.
+        X-coordinate(s) of the observation point(s) in the local coordinate
+        system.
     y : float or array
         Y-coordinate(s) of the observation point(s).
     z : float or array
@@ -29,7 +30,8 @@ def _calculate_lambda(x, y, z, a, b, c):
         The computed value(s) of the lambda parameter.
 
     """
-    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b) or np.any(np.abs(z) >= c)):
+    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b)
+            or np.any(np.abs(z) >= c)):
         raise ValueError(
             "Arrays x, y, z should contain points which lie outside"
             " of the surface defined by a, b, c"
@@ -70,7 +72,8 @@ def _calculate_lambda(x, y, z, a, b, c):
 
 def _get_V_as_Euler(yaw, pitch, roll):
     """
-    Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch, and roll.
+    Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch,
+    and roll.
 
     Parameters
     ----------
@@ -86,7 +89,8 @@ def _get_V_as_Euler(yaw, pitch, roll):
     Returns
     -------
     V : ndarray of shape (3, 3)
-        Rotation matrix that transforms coordinates from the local ellipsoid-aligned
+        Rotation matrix that transforms coordinates from the local
+        ellipsoid-aligned
         frame to the global coordinate system.
 
     Notes
@@ -96,7 +100,8 @@ def _get_V_as_Euler(yaw, pitch, roll):
     """
 
     # using scipy rotation package
-    # this produces the local to global rotation matrix (or what would be defined
+    # this produces the local to global rotation matrix (or what would be
+    # defined
     # as R.T from global to local)
     r = R.from_euler("zyx", [yaw, -pitch, roll], degrees=True)
     V = r.as_matrix()
@@ -106,7 +111,8 @@ def _get_V_as_Euler(yaw, pitch, roll):
 
 def _global_to_local(northing, easting, extra_coords, depth, V):
     """
-    Convert observation points from global coordinates (Northing, Easting, Height)
+    Convert observation points from global coordinates (Northing, Easting,
+                                                        Height)
     to local ellipsoid-aligned coordinates (x, y, z).
 
     Parameters
@@ -118,7 +124,8 @@ def _global_to_local(northing, easting, extra_coords, depth, V):
         Easting (X) coordinates in the global system.
 
     extra_coords : array_like
-        Height or vertical offset above the surface (commonly from `vd.grid_coordinates`).
+        Height or vertical offset above the surface (commonly from
+                                                     `vd.grid_coordinates`).
 
     depth : float
         Depth of the ellipsoid’s center below the surface (positive downward).
@@ -129,7 +136,8 @@ def _global_to_local(northing, easting, extra_coords, depth, V):
     Returns
     -------
     x, y, z : ndarray
-        Coordinates of the observation points in the local ellipsoid-aligned frame.
+        Coordinates of the observation points in the local ellipsoid-aligned
+        frame.
 
     Notes
     -----
@@ -145,7 +153,8 @@ def _global_to_local(northing, easting, extra_coords, depth, V):
     # calculate local_coords for each x, y, z point
     for i in range(len(local_coords)):
         local_coords[i] = (
-            northing * V[i][0] + easting * V[i][1] - (depth - extra_coords) * V[i][2]
+            northing * V[i][0] + easting * V[i][1] -
+            (depth - extra_coords) * V[i][2]
         )
 
     return local_coords
@@ -153,19 +162,22 @@ def _global_to_local(northing, easting, extra_coords, depth, V):
 
 def _generate_basic_ellipsoid(a, b, c):
     """
-    Generate the surface of an ellipsoid using spherical angles for 3D plotting.
+    Generate the surface of an ellipsoid using spherical angles for 3D
+    plotting.
     This function is seperate from gravity calculations and is purely for
     visualisation of 3D ellipsoids.
 
     Parameters
     ----------
     a, b, c : float
-        Semiaxis lengths of the ellipsoid along the x, y, and z axes, respectively.
+        Semiaxis lengths of the ellipsoid along the x, y, and z axes,
+        respectively.
 
     Returns
     -------
     x1, y1, z1 : ndarray
-        Arrays representing the ellipsoid surface coordinates in 3D space, computed
+        Arrays representing the ellipsoid surface coordinates in 3D space,
+        computed
         from spherical angles. T
 
     """

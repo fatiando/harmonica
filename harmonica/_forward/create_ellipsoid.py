@@ -1,6 +1,4 @@
 # definitions of ellipsoid classes to pass into the functions
-import numpy as np
-
 
 class TriaxialEllipsoid:
     """
@@ -55,9 +53,9 @@ class TriaxialEllipsoid:
 class ProlateEllipsoid:
     """
     Class creates case of a prolate ellipsoid, storing geometric properties.
-    Prolate ellipsoids defined as a > b = c, for semiaxes lengths. Hence, values
-    'c' and 'roll' are not required as input as, by definition, c = b, and roll
-    has no effect due to symmetry, and this is set equal to zero.
+    Prolate ellipsoids defined as a > b = c, for semiaxes lengths. Hence,
+    values 'c' and 'roll' are not required as input as, by definition, c = b,
+    and roll has no effect due to symmetry, and this is set equal to zero.
 
     Parameters
     ----------

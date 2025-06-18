@@ -1,5 +1,6 @@
-import pytest
 import numpy as np
+import pytest
+
 from .._forward.utils_ellipsoids import _calculate_lambda
 
 
@@ -11,18 +12,19 @@ def test_lambda():
     a, b, c = 3, 2, 1
     lmbda = _calculate_lambda(x, y, z, a, b, c)
 
-    # test for lambda is within parameters for an ellipsoid, as suppposed to sh$
+    # test for lambda is within parameters for an ellipsoid
     assert lmbda > -(c**2)
 
     # check lambda fits the characteristic equation
     np.testing.assert_allclose(
-        x**2 / (a**2 + lmbda) + y**2 / (b**2 + lmbda) + z**2 / (c**2 + lmbda), 1.0
+        x**2 / (a**2 + lmbda) + y**2 / (b**2 + lmbda) + z**2 /
+        (c**2 + lmbda), 1.0
     )
 
 
 def test_zero_cases_for_lambda():
     """
-    Test that lambda calculation produces acceptbale values in cases which are 
+    Test that lambda calculation produces acceptbale values in cases which are
     may throw zero errors.
     """
     a = 3
@@ -56,8 +58,9 @@ def test_zero_cases_for_lambda():
 @pytest.mark.parametrize("zero_coord", ("x", "y", "z"))
 def test_second_order_equations(zero_coord):
     """
-    Test lambda calculation against the solutions for its second order characteristic
-    equations that take place when only one of the coordinates is zero.
+    Test lambda calculation against the solutions for its second order
+    characteristic equations that take place when only one of the coordinates
+    is zero.
     """
     a, b, c = 3.4, 2.1, 1.3
     if zero_coord == "z":

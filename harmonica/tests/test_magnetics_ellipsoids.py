@@ -1,24 +1,30 @@
-from .._forward.create_ellipsoid import TriaxialEllipsoid, OblateEllipsoid, ProlateEllipsoid
-from .._forward.ellipsoid_magnetics import ellipsoid_magnetics
-import verde as vd
 import numpy as np
+import verde as vd
 from scipy.constants import mu_0
+
+from .._forward.create_ellipsoid import (
+    OblateEllipsoid,
+    ProlateEllipsoid,
+    TriaxialEllipsoid,
+)
+from .._forward.ellipsoid_magnetics import ellipsoid_magnetics
 
 
 def test_magnetic_symmetry():
     """
-    Check the symmetry of magentic calculations at surfaces above and below the body.
+    Check the symmetry of magentic calculations at surfaces above and below
+    the body.
     """
     a, b, c = (4, 3, 2)  # triaxial ellipsoid
     yaw = 0
     pitch = 0
     roll = 0
-    n = [1, 2, 3]
     H0 = np.array([5, 5, 5])
     triaxial_example = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
     triaxial_example2 = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
 
-    # define observation points (2D grid) at surface height (z axis, 'Upward') = 5
+    # define observation points (2D grid) at surface height (z axis,
+    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
@@ -40,7 +46,8 @@ def test_magnetic_symmetry():
 
 def test_flipped_h0():
     """
-    Check that reversing the magentising field produces the same (reversed) field.
+    Check that reversing the magentising field produces the same (reversed)
+    field.
     """
 
     a, b = (2, 4)  # triaxial ellipsoid
@@ -50,7 +57,8 @@ def test_flipped_h0():
     H02 = np.array([-5, -5, -5])
     oblate_example = OblateEllipsoid(a, b, yaw, pitch, (0, 0, 0))
 
-    # define observation points (2D grid) at surface height (z axis, 'Upward') = 5
+    # define observation points (2D grid) at surface height (z axis,
+    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
@@ -111,7 +119,8 @@ def test_zero_field():
 
 def test_mag_ext_int_boundary():
     """
-    Check the boundary between internal and external field calculations is consistent.
+    Check the boundary between internal and external field calculations is
+    consistent.
     """
 
     # aribtrary parameters
@@ -138,7 +147,8 @@ def test_mag_ext_int_boundary():
 
 def test_mag_flipped_ellipsoid():
     """
-    Check that rotating the ellipsoid in various ways maintains expected results.
+    Check that rotating the ellipsoid in various ways maintains expected
+    results.
 
     """
     a, b, c = (4, 3, 2)
@@ -150,7 +160,8 @@ def test_mag_flipped_ellipsoid():
         a, b, c, yaw=180, pitch=180, roll=180, centre=(0, 0, 0)
     )
 
-    # define observation points (2D grid) at surface height (z axis, 'Upward') = 5
+    # define observation points (2D grid) at surface height (z axis,
+    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
@@ -169,9 +180,9 @@ def test_mag_flipped_ellipsoid():
 
 def test_mag_symmetry_across_N_axis():
     """
-    With no rotation of the ellipsoid and an external field aligned with the axis,
-    check that the symmetry of the returned magnetic field is reflected across
-    the y (northing) axis.
+    With no rotation of the ellipsoid and an external field aligned with the
+    axis, check that the symmetry of the returned magnetic field is reflected
+    across the y (northing) axis.
 
     """
 
@@ -181,7 +192,8 @@ def test_mag_symmetry_across_N_axis():
         a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
     )
 
-    # define observation points (2D grid) at surface height (z axis, 'Upward') = 5
+    # define observation points (2D grid) at surface height (z axis,
+    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=0
     )
@@ -192,7 +204,7 @@ def test_mag_symmetry_across_N_axis():
 
     # check symmetry across the easting axis (rows)
     left = be1[: be1.shape[1] // 2, :]
-    right = be1[-1 : -(be1.shape[1] // 2) - 1 : -1, :]  # reversed columns
+    right = be1[-1: -(be1.shape[1] // 2) - 1: -1, :]  # reversed columns
 
     np.testing.assert_allclose(left, right, rtol=1e-5, atol=1e-5)
 
@@ -221,11 +233,14 @@ def test_euler_rotation_symmetry_mag():
             np.testing.assert_allclose(bu, base_bu, rtol=1e-5, atol=1e-8)
 
     # triaxial cases
-    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
+    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0,
+                                 centre=(0, 0, 0))
     tri_rotated = [
         TriaxialEllipsoid(a, b, c, yaw=360, pitch=0, roll=0, centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=180, pitch=180, roll=0, centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360, centre=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=180, pitch=180, roll=0,
+                          centre=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360,
+                          centre=(0, 0, 0)),
     ]
     check_rotation_equivalence(base_tri, tri_rotated)
 

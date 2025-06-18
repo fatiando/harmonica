@@ -1,12 +1,13 @@
-
 """
 Forward modelling for the magnetic field anomaly produced by ellipsoidal bodies.
 """
-from .ellipsoid_gravity import _get_ABC
-from .utils_ellipsoids import _get_V_as_Euler, _calculate_lambda
+
 import numpy as np
-from scipy.special import ellipkinc, ellipeinc
 from scipy.constants import mu_0
+from scipy.special import ellipeinc, ellipkinc
+
+from .ellipsoid_gravity import _get_ABC
+from .utils_ellipsoids import _calculate_lambda, _get_V_as_Euler
 
 
 # internal field N matrix functions
@@ -49,8 +50,8 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
             - Origin : centre point (x, y, z)
 
     k : list of floats or arrays
-        Susceptibilty value. A single value or list of single values assumes 
-        isotropy in the body/bodies. An array or list of arrays should be a 3x3 
+        Susceptibilty value. A single value or list of single values assumes
+        isotropy in the body/bodies. An array or list of arrays should be a 3x3
         matrix with the given susceptibilty components, suggesting an anisotropic
         susceptibility.
 

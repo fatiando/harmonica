@@ -1,10 +1,12 @@
 """
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
-from .utils_ellipsoids import _calculate_lambda, _get_V_as_Euler
+
 import numpy as np
-from scipy.special import ellipkinc, ellipeinc
 from scipy.constants import gravitational_constant as G
+from scipy.special import ellipeinc, ellipkinc
+
+from .utils_ellipsoids import _calculate_lambda, _get_V_as_Euler
 
 
 def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
@@ -14,7 +16,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     - Unpacks ellipsoid instance parameters (a, b, c, yaw, pitch, roll, origin)
     - Constructs Euler rotation matrix
-    - Rotates observation points (e, n, u) into local ellipsoid system (x, y, z)
+    - Rotates observation points (e, n, u) into local ellipsoid system
+      (x, y, z)
     - Computes gravity components in local coordinate system
     - Projects these gravity components back into the original coordinate
       system (e, n, u)
@@ -46,8 +49,9 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
             - Origin : centre point (x, y, z)
 
     density***: float or list
-        The uniform density of the ellipsoid in kg/m^3, or an array of densities
-        for multiple ellipsoid cases, with the same size as 'ellipsoids'.
+        The uniform density of the ellipsoid in kg/m^3, or an array of
+        densities for multiple ellipsoid cases, with the same size as
+        'ellipsoids'.
 
     field : (optional) str, one of either "e", "n", "u".
         if no input is given, the function will return all three components of
@@ -120,7 +124,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
+        obs_points = np.vstack(((e - ox).ravel(),
+                                (n - oy).ravel(), (u - oz).ravel()))
 
         # create rotation matrix
         R = _get_V_as_Euler(yaw, pitch, roll)
@@ -133,7 +138,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         internal_mask = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
 
         # calculate gravity component for the rotated points
-        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z, density[index])
+        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c,
+                                        x, y, z, density[index])
         gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
 
         # project onto upward unit vector, axis U
@@ -163,16 +169,17 @@ def _get_ABC(a, b, c, lmbda):
     Parameters
     ----------
     x, y, z : array_like or float
-        Cartesian observation coordinates. Each can be a scalar, 1D array, or 2D array,
-        depending on the evaluation grid.
+        Cartesian observation coordinates. Each can be a scalar, 1D array, or
+        2D array, depending on the evaluation grid.
 
     a, b, c : float
-        Semiaxis lengths of the ellipsoid (a ≥ b ≥ c). These must conform to the type
-        of ellipsoid used (e.g., triaxial, prolate, oblate).
+        Semiaxis lengths of the ellipsoid (a ≥ b ≥ c). These must conform to
+        the type of ellipsoid used (e.g., triaxial, prolate, oblate).
 
     lmbda : array_like or float
-        The λ (lambda) parameter(s) associated with the confocal ellipsoidal coordinate
-        surfaces. Can be a scalar or an array matching the shape of the observation points.
+        The λ (lambda) parameter(s) associated with the confocal ellipsoidal
+        coordinate surfaces. Can be a scalar or an array matching the shape of
+        the observation points.
 
     Returns
     -------
@@ -229,7 +236,8 @@ def _get_internal_g(x, y, z, a, b, c, density):
         Observation coordinates. Can be scalars, 1D arrays, or 2D arrays.
 
     a, b, c : float
-        Semiaxis lengths of the ellipsoid. Must be consistent with the ellipsoid type used.
+        Semiaxis lengths of the ellipsoid. Must be consistent with the
+        ellipsoid type used.
 
     density : float
         Uniform density of the ellipsoid (kg/m³).
@@ -269,10 +277,11 @@ def _get_internal_g(x, y, z, a, b, c, density):
 
 def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
     """
-    Calculate the components of Δg₁, Δg₂, and Δg₃ for the oblate ellipsoid case (a < b = c).
+    Calculate the components of Δg₁, Δg₂, and Δg₃ for the oblate ellipsoid case
+    (a < b = c).
 
-    Δgᵢ represents the components of the gravitational field change along the local
-    principal axes of the ellipsoid.
+    Δgᵢ represents the components of the gravitational field change along the
+    local principal axes of the ellipsoid.
 
     Parameters
     ----------
@@ -289,8 +298,9 @@ def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
 
     lmbda : float or array
         λ values used in the internal potential field solution, i.e. for the
-        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and appropriate λ
-        values are computed internally based on the observation coordinates.
+        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and a
+        ppropriate λ values are computed internally based on the observation
+        coordinates.
 
 
     Returns
@@ -331,7 +341,8 @@ def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
         (((b**2 - a**2) * (a**2 + lmbda)) ** 0.5) / (b**2 + lmbda)
     ) - arc_tan_term
 
-    # compile constants, coefficients, bracket terms to calculate final value of the delta_g terms
+    # compile constants, coefficients, bracket terms to calculate final
+    # value of the delta_g terms
     g1 = 4 * co_eff1 * x * bracket_term_g1
     g2 = 2 * co_eff1 * y * bracket_term_g2g3
     g3 = 2 * co_eff1 * z * bracket_term_g2g3
@@ -342,11 +353,11 @@ def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
 def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
     """
 
-    Calculate the components of Δg₁, Δg₂, and Δg₃ for the prolate ellipsoid case
-    (a > b = c).
+    Calculate the components of Δg₁, Δg₂, and Δg₃ for the prolate ellipsoid
+    case (a > b = c).
 
-    Δgᵢ represents the components of the gravitational field change along the local
-    principal axes of the ellipsoid.
+    Δgᵢ represents the components of the gravitational field change along the
+    local principal axes of the ellipsoid.
 
     Parameters
     ----------
@@ -363,8 +374,9 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     lmbda : float or array
         λ values used in the internal potential field solution, i.e. for the
-        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and appropriate λ
-        values are computed internally based on the observation coordinates.
+        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and
+        appropriate λ values are computed internally based on the observation
+        coordinates.
 
 
     Returns
@@ -386,7 +398,8 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
     # check the function is used for the correct type of ellipsoid
     if not (a > b and b == c):
         raise ValueError(
-            f"Invalid ellipsoid axis lengths for prolate ellipsoid: expected a > b = c but got a = {a}, b = {b}, c = {c}"
+            "Invalid ellipsoid axis lengths for prolate ellipsoid: expected"
+            f" a > b = c but got a = {a}, b = {b}, c = {c}"
         )
 
     # compute the coefficient of the three delta_g equations
@@ -396,14 +409,16 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     # compute repeated log_e term
     log_term = np.log(
-        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / ((b**2 + lmbda) ** 0.5)
+        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) /
+        ((b**2 + lmbda) ** 0.5)
     )
 
     # compute repeated f_2 second term
     f_2_term_2 = (((a**2 - b**2) * (a**2 + lmbda)) ** 0.5) / (b**2 + lmbda)
 
     # compile terms
-    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda)) ** 0.5 - log_term)
+    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) /
+                              (a**2 + lmbda)) ** 0.5 - log_term)
     dg2 = 2 * co_eff1 * y * (log_term - f_2_term_2)
     dg3 = 2 * co_eff1 * z * (log_term - f_2_term_2)
 
@@ -414,10 +429,11 @@ def _get_gravity_triaxial(
     x, y, z, a, b, c, density, lmbda=None
 ):  # takes semiaxes, lambda value, density
     """
-    Calculate the components of Δg₁, Δg₂, and Δg₃ for the triaxial ellipsoid case (a > b > c).
+    Calculate the components of Δg₁, Δg₂, and Δg₃ for the triaxial ellipsoid
+    case (a > b > c).
 
-    Δgᵢ represents the components of the gravitational field change along the local
-    principal axes of the ellipsoid.
+    Δgᵢ represents the components of the gravitational field change along the
+    local principal axes of the ellipsoid.
 
     Parameters
     ----------
@@ -434,8 +450,9 @@ def _get_gravity_triaxial(
 
     lmbda : float or array
         λ values used in the internal potential field solution, i.e. for the
-        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and appropriate λ
-        values are computed internally based on the observation coordinates.
+        case where λ = 0 inside the ellipsoid. Otherwise is 'None' and
+        appropriate λ values are computed internally based on the observation
+        coordinates.
 
 
     Returns
@@ -476,7 +493,8 @@ def _get_gravity_triaxial(
 
 def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
     """ "
-    Compute the total gravitational effect of an ellipsoidal body at given observation points.
+    Compute the total gravitational effect of an ellipsoidal body at given
+    observation points.
 
     Combines of external and internal g calculations for a given ellipsoid.
 
@@ -487,14 +505,15 @@ def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
         Can be scalars, 1D arrays, or 2D arrays.
 
     a, b, c : float
-        Semiaxis lengths of the ellipsoid. Must conform to the constraints of the chosen ellipsoid type.
+        Semiaxis lengths of the ellipsoid. Must conform to the constraints of
+        the chosen ellipsoid type.
 
     density : float
         Density of the ellipsoidal body in kg/m³.
 
     internal_mask : array_like of bool
-        Boolean mask indicating which observation points lie inside the ellipsoid
-        (`True` for inside, `False` for outside).
+        Boolean mask indicating which observation points lie inside the
+        ellipsoid (`True` for inside, `False` for outside).
 
     Returns
     -------
@@ -524,7 +543,8 @@ def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
 
     # call functions to produce g values, external and internal
     g_ext_x, g_ext_y, g_ext_z = func(
-        x[~internal_mask], y[~internal_mask], z[~internal_mask], a, b, c, density
+        x[~internal_mask], y[~internal_mask],
+        z[~internal_mask], a, b, c, density
     )
     g_int_x, g_int_y, g_int_z = _get_internal_g(
         x[internal_mask], y[internal_mask], z[internal_mask], a, b, c, density

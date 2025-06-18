@@ -42,7 +42,5 @@ from ._transformations import (
 from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles, total_field_anomaly
 from ._version import __version__
 
-
 # Append a leading "v" to the generated version by setuptools_scm
 __version__ = f"v{__version__}"
-
