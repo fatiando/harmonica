@@ -17,8 +17,7 @@ def test_lambda():
 
     # check lambda fits the characteristic equation
     np.testing.assert_allclose(
-        x**2 / (a**2 + lmbda) + y**2 / (b**2 + lmbda) + z**2 /
-        (c**2 + lmbda), 1.0
+        x**2 / (a**2 + lmbda) + y**2 / (b**2 + lmbda) + z**2 / (c**2 + lmbda), 1.0
     )
 
 

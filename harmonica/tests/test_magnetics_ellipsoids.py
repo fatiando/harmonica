@@ -19,7 +19,7 @@ def test_magnetic_symmetry():
     yaw = 0
     pitch = 0
     roll = 0
-    H0 = np.array([5, 5, 5])
+    h0 = np.array([5, 5, 5])
     triaxial_example = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
     triaxial_example2 = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
 
@@ -33,10 +33,10 @@ def test_magnetic_symmetry():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates, triaxial_example, 0.1, H0, field="b"
+        coordinates, triaxial_example, 0.1, h0, field="b"
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates2, triaxial_example2, 0.1, H0, field="b"
+        coordinates2, triaxial_example2, 0.1, h0, field="b"
     )
 
     np.testing.assert_allclose(np.abs(be1), np.flip(np.abs(be2)))
@@ -53,8 +53,8 @@ def test_flipped_h0():
     a, b = (2, 4)  # triaxial ellipsoid
     yaw = 0
     pitch = 0
-    H01 = np.array([5, 5, 5])
-    H02 = np.array([-5, -5, -5])
+    h01 = np.array([5, 5, 5])
+    h02 = np.array([-5, -5, -5])
     oblate_example = OblateEllipsoid(a, b, yaw, pitch, (0, 0, 0))
 
     # define observation points (2D grid) at surface height (z axis,
@@ -64,10 +64,10 @@ def test_flipped_h0():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates, oblate_example, 0.1, H01, field="b"
+        coordinates, oblate_example, 0.1, h01, field="b"
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates, oblate_example, 0.1, H02, field="b"
+        coordinates, oblate_example, 0.1, h02, field="b"
     )
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
@@ -81,7 +81,7 @@ def test_zero_susceptability():
     """
 
     a, b = 1, 2
-    H0 = np.array([10, 0, 0])
+    h0 = np.array([10, 0, 0])
     k = 0
 
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
@@ -89,11 +89,11 @@ def test_zero_susceptability():
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
 
-    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, H0, field="b")
+    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, h0, field="b")
 
-    np.testing.assert_allclose(be[0], 1e9 * mu_0 * H0[0])
-    np.testing.assert_allclose(bn[0], 1e9 * mu_0 * H0[1])
-    np.testing.assert_allclose(bu[0], 1e9 * mu_0 * H0[2])
+    np.testing.assert_allclose(be[0], 1e9 * mu_0 * h0[0])
+    np.testing.assert_allclose(bn[0], 1e9 * mu_0 * h0[1])
+    np.testing.assert_allclose(bu[0], 1e9 * mu_0 * h0[2])
 
 
 def test_zero_field():
@@ -102,7 +102,7 @@ def test_zero_field():
     """
 
     a, b = 1, 2
-    H0 = np.array([0, 0, 0])
+    h0 = np.array([0, 0, 0])
     k = 0.1
 
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
@@ -110,7 +110,7 @@ def test_zero_field():
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
 
-    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, H0, field="b")
+    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, h0, field="b")
 
     np.testing.assert_allclose(be[0], 0)
     np.testing.assert_allclose(bn[0], 0)
@@ -125,10 +125,9 @@ def test_mag_ext_int_boundary():
 
     # aribtrary parameters
     a, b = 1, 2
-    H0 = np.array([10.0, 0.0, 0.0])
     k = 0.1
     a, b = 50, 60
-    H0 = np.array([0, 0, 10])
+    h0 = np.array([0, 0, 10])
     k = 0.1
 
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
@@ -138,7 +137,7 @@ def test_mag_ext_int_boundary():
     u = np.array([[0.0, 0.0]])
     coordinates = (e, n, u)
 
-    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, H0, field="b")
+    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, h0, field="b")
 
     # ideally the tolerances are lower for these - issue created
     np.testing.assert_allclose(be[0, 0], be[0, 1], rtol=5e-2, atol=5e-2)
@@ -153,7 +152,7 @@ def test_mag_flipped_ellipsoid():
 
     """
     a, b, c = (4, 3, 2)
-    H0 = np.array([5, 5, 5])
+    h0 = np.array([5, 5, 5])
     triaxial_example = TriaxialEllipsoid(
         a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
     )
@@ -168,10 +167,10 @@ def test_mag_flipped_ellipsoid():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates, triaxial_example, 0.1, H0, field="b"
+        coordinates, triaxial_example, 0.1, h0, field="b"
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates, triaxial_example2, 0.1, H0, field="b"
+        coordinates, triaxial_example2, 0.1, h0, field="b"
     )
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
@@ -188,7 +187,7 @@ def test_mag_symmetry_across_N_axis():
     """
 
     a, b, c = (4, 3, 2)
-    H0 = np.array([0, 0, 5])
+    h0 = np.array([0, 0, 5])
     triaxial_example = TriaxialEllipsoid(
         a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
     )
@@ -200,12 +199,12 @@ def test_mag_symmetry_across_N_axis():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates, triaxial_example, 0.1, H0, field="b"
+        coordinates, triaxial_example, 0.1, h0, field="b"
     )
 
     # check symmetry across the easting axis (rows)
     left = be1[: be1.shape[1] // 2, :]
-    right = be1[-1: -(be1.shape[1] // 2) - 1: -1, :]  # reversed columns
+    right = be1[-1 : -(be1.shape[1] // 2) - 1 : -1, :]  # reversed columns
 
     np.testing.assert_allclose(left, right, rtol=1e-5, atol=1e-5)
 
@@ -217,7 +216,7 @@ def test_euler_rotation_symmetry_mag():
     """
 
     a, b, c = 5, 4, 3
-    H0 = np.array([10.0, 0.0, 0.0])
+    h0 = np.array([10.0, 0.0, 0.0])
     k = 0.1
     coordinates = vd.grid_coordinates(
         region=(-5, 5, -5, 5), spacing=1.0, extra_coords=5
@@ -225,23 +224,20 @@ def test_euler_rotation_symmetry_mag():
 
     def check_rotation_equivalence(base_ellipsoid, rotated_ellipsoids):
         base_be, base_bn, base_bu = ellipsoid_magnetics(
-            coordinates, base_ellipsoid, k, H0
+            coordinates, base_ellipsoid, k, h0
         )
         for rotated in rotated_ellipsoids:
-            be, bn, bu = ellipsoid_magnetics(coordinates, rotated, k, H0)
+            be, bn, bu = ellipsoid_magnetics(coordinates, rotated, k, h0)
             np.testing.assert_allclose(be, base_be, rtol=1e-5, atol=1e-8)
             np.testing.assert_allclose(bn, base_bn, rtol=1e-5, atol=1e-8)
             np.testing.assert_allclose(bu, base_bu, rtol=1e-5, atol=1e-8)
 
     # triaxial cases
-    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0,
-                                 centre=(0, 0, 0))
+    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
     tri_rotated = [
         TriaxialEllipsoid(a, b, c, yaw=360, pitch=0, roll=0, centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=180, pitch=180, roll=0,
-                          centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360,
-                          centre=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=180, pitch=180, roll=0, centre=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360, centre=(0, 0, 0)),
     ]
     check_rotation_equivalence(base_tri, tri_rotated)
 

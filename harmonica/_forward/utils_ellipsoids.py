@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.spatial.transform import Rotation as R
+from scipy.spatial.transform import Rotation as r
 
 
 def _calculate_lambda(x, y, z, a, b, c):
@@ -30,8 +30,7 @@ def _calculate_lambda(x, y, z, a, b, c):
         The computed value(s) of the lambda parameter.
 
     """
-    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b)
-            or np.any(np.abs(z) >= c)):
+    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b) or np.any(np.abs(z) >= c)):
         raise ValueError(
             "Arrays x, y, z should contain points which lie outside"
             " of the surface defined by a, b, c"
@@ -70,7 +69,7 @@ def _calculate_lambda(x, y, z, a, b, c):
     return lmbda
 
 
-def _get_V_as_Euler(yaw, pitch, roll):
+def _get_v_as_Euler(yaw, pitch, roll):
     """
     Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch,
     and roll.
@@ -101,15 +100,14 @@ def _get_V_as_Euler(yaw, pitch, roll):
 
     # using scipy rotation package
     # this produces the local to global rotation matrix (or what would be
-    # defined
-    # as R.T from global to local)
-    r = R.from_euler("zyx", [yaw, -pitch, roll], degrees=True)
-    V = r.as_matrix()
+    # defined as r.T from global to local)
+    m = r.from_euler("zyx", [yaw, -pitch, roll], degrees=True)
+    v = m.as_matrix()
 
-    return V
+    return v
 
 
-def _global_to_local(northing, easting, extra_coords, depth, V):
+def _global_to_local(northing, easting, extra_coords, depth, v):
     """
     Convert observation points from global coordinates (Northing, Easting,
                                                         Height)
@@ -153,8 +151,7 @@ def _global_to_local(northing, easting, extra_coords, depth, V):
     # calculate local_coords for each x, y, z point
     for i in range(len(local_coords)):
         local_coords[i] = (
-            northing * V[i][0] + easting * V[i][1] -
-            (depth - extra_coords) * V[i][2]
+            northing * v[i][0] + easting * v[i][1] - (depth - extra_coords) * v[i][2]
         )
 
     return local_coords

@@ -59,8 +59,7 @@ def test_symmetry_at_surface():
     """
 
     _, _, dg3_tri_up = _get_gravity_triaxial(10, 0, 0, 3, 2, 1, density=1000)
-    _, _, dg3_tri_down = _get_gravity_triaxial(-10, 0, 0,
-                                               3, 2, 1, density=1000)
+    _, _, dg3_tri_down = _get_gravity_triaxial(-10, 0, 0, 3, 2, 1, density=1000)
 
     _, _, dg3_obl_up = _get_gravity_oblate(10, 0, 0, 1, 3, 3, density=1000)
     _, _, dg3_obl_down = _get_gravity_oblate(-10, 0, 0, 1, 3, 3, density=1000)
@@ -128,10 +127,8 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gu1 = ellipsoid_gravity(coordinates1, triaxial_example,
-                                  density, field="g")
-    _, _, gu2 = ellipsoid_gravity(coordinates2, triaxial_example,
-                                  density, field="g")
+    _, _, gu1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
+    _, _, gu2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
     np.testing.assert_allclose(gu1, -np.flip(gu2))
 
 
@@ -145,8 +142,7 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0,
-                                  roll=0, centre=(0, 0, 0))
+    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])

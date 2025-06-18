@@ -7,12 +7,12 @@ import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-from .ellipsoid_gravity import _get_ABC
-from .utils_ellipsoids import _calculate_lambda, _get_V_as_Euler
+from .ellipsoid_gravity import _get_abc
+from .utils_ellipsoids import _calculate_lambda, _get_v_as_Euler
 
 
 # internal field N matrix functions
-def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
+def ellipsoid_magnetics(coordinates, ellipsoids, k, h0, field="b"):
     """
     Produces the components for the magnetic field components (be, bn, bu):
 
@@ -106,7 +106,7 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
             f" {len(k)}."
         )
 
-    if type(H0) is not np.ndarray:
+    if type(h0) is not np.ndarray:
         raise ValueError("H0 values of the regional field  must be an array.")
 
     # loop over each given ellipsoid
@@ -119,12 +119,11 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(),
-                                (u - oz).ravel()))
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
 
         # get observation points, rotate them
-        R = _get_V_as_Euler(yaw, pitch, roll)
-        rotated_points = R.T @ obs_points
+        r = _get_v_as_Euler(yaw, pitch, roll)
+        rotated_points = r.T @ obs_points
         x, y, z = tuple(c.reshape(cast.shape) for c in rotated_points)
 
         # create boolean for internal vs external field points
@@ -134,9 +133,9 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
 
         # create K matrix
         if type(k[index]) is not np.ndarray:
-            K = k[index] * np.eye(3)
+            k_matrix = k[index] * np.eye(3)
         else:
-            K = K
+            k_matrix = k[index]
 
         # create N matricies for each given point
         for i, j in np.ndindex(lmbda.shape):
@@ -144,32 +143,25 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
             xi, yi, zi = x[i, j], y[i, j], z[i, j]
             is_internal = internal_mask[i, j]
 
-            N_cross = _construct_N_matrix_internal(a, b, c)
+            n_cross = _construct_n_matrix_internal(a, b, c)
 
             if is_internal:
-                N = N_cross
+                n = n_cross
             else:
-                N = _construct_N_matrix_external(xi, yi, zi, a, b, c, lam)
+                n = _construct_n_matrix_external(xi, yi, zi, a, b, c, lam)
 
             # compute rotation and final H() values
-            Nr = R.T @ N @ R
-            H_cross = np.linalg.inv(np.eye(3) + N_cross @ K) @ H0
-            Hr = H0 + (Nr @ K) @ H_cross
+            nr = r.T @ n @ r
+            h_cross = np.linalg.inv(np.eye(3) + n_cross @ k_matrix) @ h0
+            hr = h0 + (nr @ k_matrix) @ h_cross
 
             # sum across all components and ellipsoids
-            be[i, j] += 1e9 * mu_0 * Hr[0]
-            bn[i, j] += 1e9 * mu_0 * Hr[1]
-            bu[i, j] += 1e9 * mu_0 * Hr[2]
+            be[i, j] += 1e9 * mu_0 * hr[0]
+            bn[i, j] += 1e9 * mu_0 * hr[1]
+            bu[i, j] += 1e9 * mu_0 * hr[2]
 
     # return according to user
-    if field == "e":
-        return be
-    elif field == "n":
-        return bn
-    elif field == "u":
-        return bu
-
-    return be, bn, bu
+    return {"e": be, "n": bn, "u": bu}.get(field, (be, bn, bu))
 
 
 # construct components of the internal matrix
@@ -220,8 +212,7 @@ def _depol_prolate_int(a, b, c):
 
     """
     m = a / b
-    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1))
-                            * np.log(m + np.sqrt(m**2 - 1)) - 1)
+    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
 
     return nxx, nyy, nzz
@@ -250,7 +241,7 @@ def _depol_oblate_int(a, b, c):
     return nxx, nyy, nzz
 
 
-def _construct_N_matrix_internal(a, b, c):
+def _construct_n_matrix_internal(a, b, c):
     """
     Construct the N matrix for the internal field using the above functions.
 
@@ -276,12 +267,12 @@ def _construct_N_matrix_internal(a, b, c):
         func = _depol_oblate_int(a, b, c)
 
     # construct identity matrix
-    N = np.eye(3)
+    n = np.eye(3)
 
     for i in range(3):
-        N[i][i] *= func[i]
+        n[i][i] *= func[i]
 
-    return N
+    return n
 
 
 # construct components of the external matrix
@@ -311,9 +302,9 @@ def _get_h_values(a, b, c, lmbda):
     """
 
     axes = np.array([a, b, c])
-    R = np.sqrt(np.prod(axes**2 + lmbda))
+    r = np.sqrt(np.prod(axes**2 + lmbda))
 
-    return -1 / ((axes**2 + lmbda) * R)
+    return -1 / ((axes**2 + lmbda) * r)
 
 
 def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
@@ -383,7 +374,7 @@ def _get_g_values_magnetics(a, b, c, lmbda):
 
     # trixial case
     if a > b > c:
-        func = _get_ABC(a, b, c, lmbda)
+        func = _get_abc(a, b, c, lmbda)
         gvals_x, gvals_y, gvals_z = func[0], func[1], func[2]
 
     # prolate case
@@ -403,8 +394,7 @@ def _get_g_values_magnetics(a, b, c, lmbda):
             ((a**2 - b**2) * (a**2 + lmbda) ** 0.5) / (b**2 + lmbda)
         ) - (
             np.log(
-                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5)
-                / (b**2 + lmbda) ** 0.5
+                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / (b**2 + lmbda) ** 0.5
             )
         )
         gvals_x, gvals_y, gvals_z = g1, g2, g2
@@ -433,7 +423,7 @@ def _get_g_values_magnetics(a, b, c, lmbda):
     return gvals_x, gvals_y, gvals_z
 
 
-def _construct_N_matrix_external(x, y, z, a, b, c, lmbda):
+def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     """
     Construct the N matrix for the external field.
 
@@ -461,20 +451,19 @@ def _construct_N_matrix_external(x, y, z, a, b, c, lmbda):
     # g values here are equivalent to the A(lambda) etc values previously.
     # h values as above
     # lambda derivatives as above
-    N = np.eye(3)
+    n = np.eye(3)
     r = [x, y, z]
     gvals = _get_g_values_magnetics(a, b, c, lmbda)
     derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lmbda)
     h_vals = _get_h_values(a, b, c, lmbda)
 
-    for i in range(len(N)):
-        for j in range(len(N[0])):
+    for i in range(len(n)):
+        for j in range(len(n[0])):
             if i == j:
-                N[i][j] = (-a * b * c / 2) * (
+                n[i][j] = (-a * b * c / 2) * (
                     derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
                 )
             else:
-                N[i][j] = (-a * b * c / 2) * (derivs_lmbda[i]
-                                              * h_vals[j] * r[j])
+                n[i][j] = (-a * b * c / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
 
-    return N
+    return n
