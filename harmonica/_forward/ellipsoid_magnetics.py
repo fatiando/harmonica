@@ -1,5 +1,6 @@
 """
-Forward modelling for the magnetic field anomaly produced by ellipsoidal bodies.
+Forward modelling for the magnetic field anomaly produced by ellipsoidal
+bodies.
 """
 
 import numpy as np
@@ -15,10 +16,13 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
     """
     Produces the components for the magnetic field components (be, bn, bu):
 
-        - Unpacks ellipsoid instance parameters (a, b, c, yaw, pitch, roll, origin)
+        - Unpacks ellipsoid instance parameters (a, b, c, yaw, pitch, roll,
+          origin)
         - Constructs Euler rotation matrix
-        - Rotates observation points (e, n, u) into local ellipsoid system (x, y, z)
-        - constructs susceptability matrix and depolarisation matrix for internal
+        - Rotates observation points (e, n, u) into local ellipsoid system
+          (x, y, z)
+        - constructs susceptability matrix and depolarisation matrix for
+          internal
           and external points of observation
         - Calculates the magentic field due to the magnetised ellipsoid (H())
         - Converts this to magentic induction (B()) in nT.
@@ -52,8 +56,8 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
     k : list of floats or arrays
         Susceptibilty value. A single value or list of single values assumes
         isotropy in the body/bodies. An array or list of arrays should be a 3x3
-        matrix with the given susceptibilty components, suggesting an anisotropic
-        susceptibility.
+        matrix with the given susceptibilty components, suggesting an
+        anisotropic susceptibility.
 
     H0 : ndarray
         Three components of the uniform inducing field.
@@ -115,7 +119,8 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, H0, field="b"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(),
+                                (u - oz).ravel()))
 
         # get observation points, rotate them
         R = _get_V_as_Euler(yaw, pitch, roll)
@@ -215,7 +220,8 @@ def _depol_prolate_int(a, b, c):
 
     """
     m = a / b
-    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1)) - 1)
+    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1))
+                            * np.log(m + np.sqrt(m**2 - 1)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
 
     return nxx, nyy, nzz
@@ -293,7 +299,8 @@ def _get_h_values(a, b, c, lmbda):
         Semiaxis lengths of the given ellipsoid.
 
     lmbda : float
-        the given lmbda value for the point we are considering with this matrix.
+        the given lmbda value for the point we are considering with this
+        matrix.
 
     returns
     -------
@@ -322,7 +329,8 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
         Semiaxis lengths of the given ellipsoid.
 
     lmbda : float
-        the given lmbda value for the point we are considering with this matrix.
+        the given lmbda value for the point we are considering with this
+        matrix.
 
 
     returns
@@ -352,8 +360,8 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
 
 def _get_g_values_magnetics(a, b, c, lmbda):
     """
-    Compute the gravity values (g) for the three ellipsoid types. See ellipsoid_gravity
-    for the in depth production of gravity components.
+    Compute the gravity values (g) for the three ellipsoid types. See
+    ellipsoid_gravity for the in depth production of gravity components.
 
     parameters
     ----------
@@ -395,7 +403,8 @@ def _get_g_values_magnetics(a, b, c, lmbda):
             ((a**2 - b**2) * (a**2 + lmbda) ** 0.5) / (b**2 + lmbda)
         ) - (
             np.log(
-                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / (b**2 + lmbda) ** 0.5
+                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5)
+                / (b**2 + lmbda) ** 0.5
             )
         )
         gvals_x, gvals_y, gvals_z = g1, g2, g2
@@ -437,7 +446,8 @@ def _construct_N_matrix_external(x, y, z, a, b, c, lmbda):
         Semiaxis lengths of the given ellipsoid.
 
     lmbda : float
-        the given lmbda value for the point we are considering with this matrix.
+        the given lmbda value for the point we are considering with this
+        matrix.
 
 
     returns
@@ -464,6 +474,7 @@ def _construct_N_matrix_external(x, y, z, a, b, c, lmbda):
                     derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
                 )
             else:
-                N[i][j] = (-a * b * c / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
+                N[i][j] = (-a * b * c / 2) * (derivs_lmbda[i]
+                                              * h_vals[j] * r[j])
 
     return N
