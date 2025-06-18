@@ -6,7 +6,7 @@ import numpy as np
 from scipy.constants import gravitational_constant as g
 from scipy.special import ellipeinc, ellipkinc
 
-from .utils_ellipsoids import _calculate_lambda, _get_v_as_Euler
+from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
 
 
 def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
@@ -124,10 +124,11 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(),
+                                (u - oz).ravel()))
 
         # create rotation matrix
-        r = _get_v_as_Euler(yaw, pitch, roll)
+        r = _get_v_as_euler(yaw, pitch, roll)
 
         # rotate observation points
         rotated_points = r.T @ obs_points
@@ -137,7 +138,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         internal_mask = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
 
         # calculate gravity component for the rotated points
-        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z, density[index])
+        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z,
+                                        density[index])
         gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
 
         # project onto upward unit vector, axis U
@@ -400,14 +402,16 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     # compute repeated log_e term
     log_term = np.log(
-        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / ((b**2 + lmbda) ** 0.5)
+        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) /
+        ((b**2 + lmbda) ** 0.5)
     )
 
     # compute repeated f_2 second term
     f_2_term_2 = (((a**2 - b**2) * (a**2 + lmbda)) ** 0.5) / (b**2 + lmbda)
 
     # compile terms
-    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda)) ** 0.5 - log_term)
+    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda))
+                             ** 0.5 - log_term)
     dg2 = 2 * co_eff1 * y * (log_term - f_2_term_2)
     dg3 = 2 * co_eff1 * z * (log_term - f_2_term_2)
 
@@ -532,7 +536,8 @@ def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
 
     # call functions to produce g values, external and internal
     g_ext_x, g_ext_y, g_ext_z = func(
-        x[~internal_mask], y[~internal_mask], z[~internal_mask], a, b, c, density
+        x[~internal_mask], y[~internal_mask], z[~internal_mask],
+        a, b, c, density
     )
     g_int_x, g_int_y, g_int_z = _get_internal_g(
         x[internal_mask], y[internal_mask], z[internal_mask], a, b, c, density

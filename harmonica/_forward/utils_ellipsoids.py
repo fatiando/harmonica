@@ -30,7 +30,8 @@ def _calculate_lambda(x, y, z, a, b, c):
         The computed value(s) of the lambda parameter.
 
     """
-    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b) or np.any(np.abs(z) >= c)):
+    if not (np.any(np.abs(x) >= a) or np.any(np.abs(y) >= b) or
+            np.any(np.abs(z) >= c)):
         raise ValueError(
             "Arrays x, y, z should contain points which lie outside"
             " of the surface defined by a, b, c"
@@ -69,7 +70,7 @@ def _calculate_lambda(x, y, z, a, b, c):
     return lmbda
 
 
-def _get_v_as_Euler(yaw, pitch, roll):
+def _get_v_as_euler(yaw, pitch, roll):
     """
     Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch,
     and roll.
@@ -151,7 +152,8 @@ def _global_to_local(northing, easting, extra_coords, depth, v):
     # calculate local_coords for each x, y, z point
     for i in range(len(local_coords)):
         local_coords[i] = (
-            northing * v[i][0] + easting * v[i][1] - (depth - extra_coords) * v[i][2]
+            northing * v[i][0] + easting * v[i][1] - (depth -
+                                                      extra_coords) * v[i][2]
         )
 
     return local_coords

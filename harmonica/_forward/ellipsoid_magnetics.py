@@ -8,7 +8,7 @@ from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
 from .ellipsoid_gravity import _get_abc
-from .utils_ellipsoids import _calculate_lambda, _get_v_as_Euler
+from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
 
 
 # internal field N matrix functions
@@ -119,10 +119,11 @@ def ellipsoid_magnetics(coordinates, ellipsoids, k, h0, field="b"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(),
+                                (u - oz).ravel()))
 
         # get observation points, rotate them
-        r = _get_v_as_Euler(yaw, pitch, roll)
+        r = _get_v_as_euler(yaw, pitch, roll)
         rotated_points = r.T @ obs_points
         x, y, z = tuple(c.reshape(cast.shape) for c in rotated_points)
 
@@ -189,8 +190,10 @@ def _depol_triaxial_int(a, b, c):
     coeff = (a * b * c) / (np.sqrt(a**2 - c**2) * (a**2 - b**2))
 
     nxx = coeff * (ellipkinc(phi, k) - ellipeinc(phi, k))
-    nyy = -nxx + coeff * ellipeinc(phi, k) - c**2 / (b**2 - c**2)
-    nzz = -coeff * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
+    nyy = -nxx + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) \
+        * ellipeinc(phi, k) - c**2 / (b**2 - c**2)
+    nzz = -((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) \
+        * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
 
     return nxx, nyy, nzz
 
@@ -212,7 +215,8 @@ def _depol_prolate_int(a, b, c):
 
     """
     m = a / b
-    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1)) - 1)
+    nxx = 1 / (m**2 - 1) * ((m / np.sqrt(m**2 - 1)) *
+                            np.log(m + np.sqrt(m**2 - 1)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
 
     return nxx, nyy, nzz
@@ -394,7 +398,8 @@ def _get_g_values_magnetics(a, b, c, lmbda):
             ((a**2 - b**2) * (a**2 + lmbda) ** 0.5) / (b**2 + lmbda)
         ) - (
             np.log(
-                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / (b**2 + lmbda) ** 0.5
+                ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) /
+                (b**2 + lmbda) ** 0.5
             )
         )
         gvals_x, gvals_y, gvals_z = g1, g2, g2
@@ -464,6 +469,7 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
                     derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
                 )
             else:
-                n[i][j] = (-a * b * c / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
+                n[i][j] = (-a * b * c / 2) * (derivs_lmbda[i] *
+                                              h_vals[j] * r[j])
 
     return n
