@@ -39,6 +39,8 @@ from ._transformations import (
     total_gradient_amplitude,
     upward_continuation,
 )
+
+
 from ._utils import magnetic_angles_to_vec, magnetic_vec_to_angles, total_field_anomaly
 from ._version import __version__
 

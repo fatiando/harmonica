@@ -21,17 +21,18 @@ def test_degenerate_ellipsoid_cases():
     accepted values.
 
     """
+    # ellipsoids take (a, b, #c, yaw, pitch, #roll, centre)
     tri = TriaxialEllipsoid(5, 4.99999999, 4.99999998, 0, 0, 0, (0, 0, 0))
     pro = ProlateEllipsoid(5, 4.99999999, 0, 0, (0, 0, 0))
     obl = OblateEllipsoid(4.99999999, 5, 0, 0, (0, 0, 0))
-
+    density = 2000
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    _, _, gu1 = ellipsoid_gravity(coordinates, tri, 2000, field="g")
-    _, _, gu2 = ellipsoid_gravity(coordinates, pro, 2000, field="g")
-    _, _, gu3 = ellipsoid_gravity(coordinates, obl, 2000, field="g")
+    _, _, gu1 = ellipsoid_gravity(coordinates, tri, density, field="g")
+    _, _, gu2 = ellipsoid_gravity(coordinates, pro, density, field="g")
+    _, _, gu3 = ellipsoid_gravity(coordinates, obl, density, field="g")
 
 
 def test_ellipsoid_at_distance():
@@ -41,10 +42,13 @@ def test_ellipsoid_at_distance():
     result as the scipy point mass for spherical bodies at distance.
 
     """
+    x, y, z = 0, 0, 100
+    a, b, c = 3, 2, 1
+    density = 1000
 
-    dg1, dg2, dg3 = _get_gravity_triaxial(0, 0, 100, 3, 2, 1, density=1000)
-    mass = 1000 * 4 / 3 * np.pi * 3 * 2 * 1
-    point_grav = pointgrav(0, 0, 100, 0, 0, 0, mass)
+    dg1, dg2, dg3 = _get_gravity_triaxial(x, y, z, a, b, c, density)
+    mass = density * 4 / 3 * np.pi * 3 * 2 * 1
+    point_grav = pointgrav(x, y, z, 0, 0, 0, mass)
 
     assert np.allclose(dg3, point_grav)
 
@@ -57,15 +61,20 @@ def test_symmetry_at_surface():
     produce an equal but opposite anaomly at surface z=5 and surface z=-5.
 
     """
+    x_up = 10
+    x_down = -10
+    y = 0
+    z = 0
+    density = 2000
 
-    _, _, dg3_tri_up = _get_gravity_triaxial(10, 0, 0, 3, 2, 1, density=1000)
-    _, _, dg3_tri_down = _get_gravity_triaxial(-10, 0, 0, 3, 2, 1, density=1000)
+    _, _, dg3_tri_up = _get_gravity_triaxial(x_up, y, z, 3, 2, 1, density)
+    _, _, dg3_tri_down = _get_gravity_triaxial(x_down, y, z, 3, 2, 1, density)
 
-    _, _, dg3_obl_up = _get_gravity_oblate(10, 0, 0, 1, 3, 3, density=1000)
-    _, _, dg3_obl_down = _get_gravity_oblate(-10, 0, 0, 1, 3, 3, density=1000)
+    _, _, dg3_obl_up = _get_gravity_oblate(x_up, y, z, 1, 3, 3, density)
+    _, _, dg3_obl_down = _get_gravity_oblate(x_down, y, z, 1, 3, 3, density)
 
-    _, _, dg3_pro_up = _get_gravity_prolate(10, 0, 0, 3, 2, 2, density=1000)
-    _, _, dg3_pro_down = _get_gravity_prolate(-10, 0, 0, 3, 2, 2, density=1000)
+    _, _, dg3_pro_up = _get_gravity_prolate(x_up, y, z, 3, 2, 2, density)
+    _, _, dg3_pro_down = _get_gravity_prolate(x_down, y, z, 3, 2, 2, density)
 
     np.testing.assert_allclose(np.abs(dg3_tri_down), np.abs(dg3_tri_up))
     np.testing.assert_allclose(np.abs(dg3_pro_down), np.abs(dg3_pro_up))
@@ -127,8 +136,12 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gu1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
-    _, _, gu2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
+    _, _, gu1 = ellipsoid_gravity(
+        coordinates1, triaxial_example, density, field="g"
+    )
+    _, _, gu2 = ellipsoid_gravity(
+        coordinates2, triaxial_example, density, field="g"
+    )
     np.testing.assert_allclose(gu1, -np.flip(gu2))
 
 
@@ -142,7 +155,9 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
+    ellipsoid = TriaxialEllipsoid(
+        a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
+    )
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])

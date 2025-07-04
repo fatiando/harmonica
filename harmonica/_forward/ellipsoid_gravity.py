@@ -2,6 +2,8 @@
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
 
+from collections.abc import Iterable
+
 import numpy as np
 from scipy.constants import gravitational_constant as g
 from scipy.special import ellipeinc, ellipkinc
@@ -97,26 +99,14 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     ge, gn, gu = np.zeros(e.shape), np.zeros(e.shape), np.zeros(e.shape)
 
     # deal with the case of a single ellipsoid being passed
-    if type(ellipsoids) is not list:
+    if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
+
+    if not isinstance(density, Iterable):
         density = [density]
 
-    # case of multiple ellipsoids but only one density value
-    if type(ellipsoids) is list and type(density) is not list:
-        raise ValueError(
-            "Ellipsoids is a list, but density is not."
-            "Perhaps multiple arguments were given for ellipsoids"
-            " but only one value was given for density?"
-        )
-
-    # case of passing density as a list of differing size to ellipsoids
-    if len(ellipsoids) != len(density):
-        raise ValueError(
-            f"{len(ellipsoids)} arguments were given for ellipsoids"
-            f" but {len(density)} values were given for density."
-        )
-
-    for index, ellipsoid in enumerate(ellipsoids):
+    # for ellipsoid, density in zip (ellipsoids, density, strict=True):
+    for ellipsoid, density in zip(ellipsoids, density, strict=True):
         # unpack instances
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
@@ -124,8 +114,9 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(),
-                                (u - oz).ravel()))
+        obs_points = np.vstack(
+            ((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel())
+        )
 
         # create rotation matrix
         r = _get_v_as_euler(yaw, pitch, roll)
@@ -138,8 +129,9 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         internal_mask = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
 
         # calculate gravity component for the rotated points
-        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z,
-                                        density[index])
+        gx, gy, gz = _get_gravity_array(
+            internal_mask, a, b, c, x, y, z, density
+        )
         gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
 
         # project onto upward unit vector, axis U
@@ -187,7 +179,7 @@ def _get_abc(a, b, c, lmbda):
     """
 
     # compute the k and theta terms for the elliptic integrals
-    k = np.sqrt((a**2 - b**2) / (a**2 - c**2))
+    k = (a**2 - b**2) / (a**2 - c**2)
     theta_prime = np.arcsin(np.sqrt((a**2 - c**2) / (a**2 + lmbda)))
 
     # compute terms associated with A(lambda)
@@ -402,16 +394,17 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     # compute repeated log_e term
     log_term = np.log(
-        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) /
-        ((b**2 + lmbda) ** 0.5)
+        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5)
+        / ((b**2 + lmbda) ** 0.5)
     )
 
     # compute repeated f_2 second term
     f_2_term_2 = (((a**2 - b**2) * (a**2 + lmbda)) ** 0.5) / (b**2 + lmbda)
 
     # compile terms
-    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda))
-                             ** 0.5 - log_term)
+    dg1 = (
+        4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda)) ** 0.5 - log_term)
+    )
     dg2 = 2 * co_eff1 * y * (log_term - f_2_term_2)
     dg3 = 2 * co_eff1 * z * (log_term - f_2_term_2)
 
@@ -536,8 +529,13 @@ def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
 
     # call functions to produce g values, external and internal
     g_ext_x, g_ext_y, g_ext_z = func(
-        x[~internal_mask], y[~internal_mask], z[~internal_mask],
-        a, b, c, density
+        x[~internal_mask],
+        y[~internal_mask],
+        z[~internal_mask],
+        a,
+        b,
+        c,
+        density,
     )
     g_int_x, g_int_y, g_int_z = _get_internal_g(
         x[internal_mask], y[internal_mask], z[internal_mask], a, b, c, density
