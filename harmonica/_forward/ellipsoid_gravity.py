@@ -178,35 +178,77 @@ def _get_abc(a, b, c, lmbda):
         C(λ) function values at each observation point.
     """
 
-    # compute the k and theta terms for the elliptic integrals
-    k = (a**2 - b**2) / (a**2 - c**2)
-    theta_prime = np.arcsin(np.sqrt((a**2 - c**2) / (a**2 + lmbda)))
+    # trixial case
+    if a > b > c:
+        int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
+        phi = np.arcsin(int_arcsin)
 
-    # compute terms associated with A(lambda)
-    a_coeff = 2 / ((a**2 - b**2) * np.sqrt(a**2 - c**2))
-    a_elliptic_integral = ellipkinc(theta_prime, k) - ellipeinc(theta_prime, k)
-    a_lmbda = a_coeff * a_elliptic_integral
+        k = (a**2 - b**2) / (a**2 - c**2)
+        g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (
+            ellipkinc(phi, k) - ellipeinc(phi, k)
+        )
 
-    # compute terms associated with B(lambda)
-    b_coeff = (2 * np.sqrt(a**2 - c**2)) / ((a**2 - b**2) * (b**2 - c**2))
-    b_fk_coeff = (b**2 - c**2) / (a**2 - c**2)
-    b_fk_subtracted_term = (
-        k**2 * np.sin(theta_prime) * np.cos(theta_prime)
-    ) / np.sqrt(1 - k**2 * np.sin(theta_prime) ** 2)
-    b_lmbda = b_coeff * (
-        ellipeinc(theta_prime, k)
-        - b_fk_coeff * ellipkinc(theta_prime, k)
-        - b_fk_subtracted_term
-    )
+        g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / (
+            (a**2 - b**2) * (b**2 - c**2)
+        )
+        g2_elliptics = ellipeinc(phi, k) - (
+            (b**2 - c**2) / (a**2 - c**2)
+        ) * ellipkinc(phi, k)
+        g2_last_term = (
+            (a**2 - b**2) / np.sqrt(a**2 - c**2)
+        ) * np.sqrt((c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda)))
 
-    # compute terms associated with C(lambda)
-    c_coeff = 2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))
-    c_ek_subtracted_term = (
-        np.sin(theta_prime) * np.sqrt(1 - k**2 * np.sin(theta_prime) ** 2)
-    ) / np.cos(
-        theta_prime
-    )  # check the brackets here ??
-    c_lmbda = c_coeff * (c_ek_subtracted_term - ellipeinc(theta_prime, k))
+        g2 = g2_multiplier * (g2_elliptics - g2_last_term)
+
+        g3_term_1 = (
+            2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))
+        ) * ellipeinc(phi, k)
+        g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
+            (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
+        )
+        g3 = g3_term_1 + g3_term_2
+
+        a_lmbda, b_lmbda, c_lmbda = g1, g2, g3
+
+    # prolate case
+    if a > b and b == c:
+        e2 = a**2 - b**2
+        sqrt_e = np.sqrt(e2)
+        sqrt_l1 = np.sqrt(a**2 + lmbda)
+        sqrt_l2 = np.sqrt(b**2 + lmbda)
+
+        # Equation (38): g1
+        g1 = (2 / (e2 ** (3 / 2))) * (
+            np.log((sqrt_e + sqrt_l1) / sqrt_l2) - sqrt_e / sqrt_l1
+        )
+
+        # Equation (39): g2 = g3
+        g2 = (1 / (e2 ** (3 / 2))) * (
+            (e2 * sqrt_l1) / (b**2 + lmbda)
+            - np.log((sqrt_e + sqrt_l1) / sqrt_l2)
+        )
+        a_lmbda, b_lmbda, c_lmbda = g1, g2, g2
+
+    # oblate case
+    if a < b and b == c:
+        g1 = (
+            2
+            / ((b**2 - a**2) ** (3 / 2))
+            * (
+                (np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+                - np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+            )
+        )
+        g2 = (
+            1
+            / ((b**2 - a**2) ** (3 / 2))
+            * (
+                np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+                - (np.sqrt((b**2 - a**2) * (a**2 + lmbda))) / (b**2 + lmbda)
+            )
+        )
+
+        a_lmbda, b_lmbda, c_lmbda = g1, g2, g2
 
     return a_lmbda, b_lmbda, c_lmbda
 
