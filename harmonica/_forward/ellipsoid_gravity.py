@@ -106,7 +106,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         density = [density]
 
     # for ellipsoid, density in zip (ellipsoids, density, strict=True):
-    for ellipsoid, density in zip(ellipsoids, density, strict=True):
+    for ellipsoid, rho in zip(ellipsoids, density, strict=True):
         # unpack instances
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
@@ -130,7 +130,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         # calculate gravity component for the rotated points
         gx, gy, gz = _get_gravity_array(
-            internal_mask, a, b, c, x, y, z, density
+            internal_mask, a, b, c, x, y, z, rho
         )
         gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
 
@@ -143,7 +143,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         gn += gn_i
         gu += gu_i
 
-        return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
+    return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
 
 
 def _get_abc(a, b, c, lmbda):
