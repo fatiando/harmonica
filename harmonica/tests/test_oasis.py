@@ -107,3 +107,9 @@ class TestOasisMontajGrid:
         npt.assert_allclose(
             grid.rotation, np.degrees(np.arctan((north - south) / (east - west)))
         )
+
+
+def test_incomplete_grid_raises_error():
+    corrupted_file = "harmonica/tests/data/incomplete_grid.grd"
+    with pytest.raises(ValueError, match="Grid data size mismatch"):
+        load_oasis_montaj_grid(corrupted_file)
