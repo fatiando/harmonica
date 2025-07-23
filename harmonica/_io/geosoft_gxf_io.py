@@ -236,19 +236,20 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
         values = np.fromstring(line, sep=' ')
         data_1d = np.concatenate((data_1d, values))
     
-    # Get grid dimensions
-    nrows = int(headers['ROWS'])
-    ncols = int(headers['POINTS'])
+    # Get grid dimensions from already-parsed metadata
+    nrows = metadata['ROWS']
+    ncols = metadata['POINTS']
     
     # Reshape to 2D array
     grid_array = data_1d.reshape((nrows, ncols))
     
     # Handle dummy values
-    dummy_value = float(headers['DUMMY'])
-    grid_array[grid_array == dummy_value] = np.nan
+    if 'DUMMY' in metadata:
+        dummy_value = metadata['DUMMY']
+        grid_array[grid_array == dummy_value] = np.nan
     
     # Handle grid orientation based on SENSE parameter
-    sense = str(headers.get('SENSE', '1'))  # Default to '1' if not specified
+    sense = str(metadata.get('SENSE', 1))  # Default to 1 if not specified
     if sense == '1':  # First point at bottom left of grid
         grid_array = np.flipud(grid_array)
     
@@ -256,57 +257,31 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
     metadata.update({
         'nx': ncols,
         'ny': nrows,
-        'x_inc': float(headers.get('PTSEPARATION', headers.get('XSEP', 1.0))),
-        'y_inc': float(headers.get('RWSEPARATION', headers.get('YSEP', 1.0))),
-        'x_min': float(headers.get('XORIGIN', 0.0)),
-        'y_min': float(headers.get('YORIGIN', 0.0))
+        'x_inc': metadata.get('PTSEPARATION', metadata.get('XSEP', 1.0)),
+        'y_inc': metadata.get('RWSEPARATION', metadata.get('YSEP', 1.0)),
+        'x_min': metadata.get('XORIGIN', 0.0),
+        'y_min': metadata.get('YORIGIN', 0.0)
     })
     
     # Add projection information if available
-    if 'PRJTYPE' in headers:
+    if 'PRJTYPE' in metadata:
         metadata['projection'] = {
-            'type': headers['PRJTYPE'],
-            'units': headers.get('PRJUNIT', 'unknown'),
+            'type': metadata['PRJTYPE'],
+            'units': metadata.get('PRJUNIT', 'unknown'),
             'parameters': {
-                'semi_major_axis': float(headers['A_AXIS_RADIUS']) if 'A_AXIS_RADIUS' in headers else None,
-                'semi_minor_axis': float(headers['B_AXIS_RADIUS']) if 'B_AXIS_RADIUS' in headers else None,
-                'reference_longitude': float(headers['RFLONGITUDE']) if 'RFLONGITUDE' in headers else None,
-                'reference_latitude': float(headers['RFLATITUDE']) if 'RFLATITUDE' in headers else None,
-                'first_standard_parallel': float(headers['FIRST_STANDARD_PARALLEL']) if 'FIRST_STANDARD_PARALLEL' in headers else None,
-                'second_standard_parallel': float(headers['SECOND_STANDARD_PARALLEL']) if 'SECOND_STANDARD_PARALLEL' in headers else None,
-                'false_easting': float(headers['FLSEASTING']) if 'FLSEASTING' in headers else None,
-                'false_northing': float(headers['FLSNORTHING']) if 'FLSNORTHING' in headers else None
+                'semi_major_axis': metadata.get('A_AXIS_RADIUS'),
+                'semi_minor_axis': metadata.get('B_AXIS_RADIUS'),
+                'reference_longitude': metadata.get('RFLONGITUDE'),
+                'reference_latitude': metadata.get('RFLATITUDE'),
+                'first_standard_parallel': metadata.get('FIRST_STANDARD_PARALLEL'),
+                'second_standard_parallel': metadata.get('SECOND_STANDARD_PARALLEL'),
+                'false_easting': metadata.get('FLSEASTING'),
+                'false_northing': metadata.get('FLSNORTHING')
             }
         }
     
     return grid_array, metadata
 
-def get_grid_info(metadata: Dict[str, Any]) -> None:
-    """
-    Print comprehensive information about the GXF grid.
-    
-    Parameters:
-    metadata (dict): Metadata dictionary from read_gxf
-    """
-    print("=== Grid Information ===")
-    print(f"Title: {metadata.get('TITLE', 'Not specified')}")
-    print(f"Grid size: {metadata['nx']} x {metadata['ny']} points")
-    print(f"Cell size: {metadata['x_inc']} x {metadata['y_inc']}")
-    print(f"Origin: ({metadata['x_min']}, {metadata['y_min']})")
-    print(f"Rotation: {metadata.get('ROTATION', 0)}")
-    print(f"Dummy value: {metadata.get('DUMMY', 'Not specified')}")
-    
-    if 'projection' in metadata:
-        print("\n=== Projection Information ===")
-        print(f"Type: {metadata['projection']['type']}")
-        print(f"Units: {metadata['projection']['units']}")
-        
-        params = metadata['projection']['parameters']
-        if any(params.values()):
-            print("\nProjection Parameters:")
-            for key, value in params.items():
-                if value is not None:
-                    print(f"{key}: {value}")
 
 def read_gxf(infile: str) -> xr.DataArray:
     """
