@@ -17,9 +17,22 @@ VECTORS = [
     [0, 0, -1],  # Over -z axis
     [1, 0, 0],  # Over east (y) axis
     [0, 1, 0],  # Over north (x) axis
+    [0, 0, -1e-13],  # Over -z axis
+    [1e-13, 0, 0],  # Over east (y) axis
+    [0, 1e-13, 0],  # Over north (x) axis
 ]
 
-ANGLES = [[1, 45, 45], [1, -45, 45.0], [1, 45, -45], [1, 90, 0], [1, 0, 90], [1, 0, 0]]
+ANGLES = [
+    [1, 45, 45],
+    [1, -45, 45.0],
+    [1, 45, -45],
+    [1, 90, 0],
+    [1, 0, 90],
+    [1, 0, 0],
+    [1e-13, 90, 0],
+    [1e-13, 0, 90],
+    [1e-13, 0, 0],
+]
 
 
 @pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
