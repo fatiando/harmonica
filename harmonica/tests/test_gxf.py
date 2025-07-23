@@ -17,7 +17,8 @@ import pytest
 import xarray as xr
 import xarray.testing as xrt
 
-from .. import read_gxf, read_gxf_raw, gxf_to_xarray
+from .. import read_gxf
+from .._io.geosoft_gxf_io import read_gxf_raw, _read_gxf_data
 
 # Define the locations of test data
 MODULE_DIR = Path(__file__).parent
@@ -34,7 +35,7 @@ class TestGXFReader:
         """
         Test if basic grid dimensions are correct
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         assert grid.attrs["nx"] == 132
         assert grid.attrs["ny"] == 148
         assert grid.values.shape == (148, 132)
@@ -43,7 +44,7 @@ class TestGXFReader:
         """
         Test grid spacing parameters
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         npt.assert_almost_equal(grid.attrs["x_inc"], 150.0, decimal=3)
         npt.assert_almost_equal(grid.attrs["y_inc"], 150.0, decimal=3)
 
@@ -51,7 +52,7 @@ class TestGXFReader:
         """
         Test grid origin coordinates
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         npt.assert_almost_equal(grid.attrs["x_min"], 235000.0, decimal=2)
         npt.assert_almost_equal(grid.attrs["y_min"], 378000.0, decimal=2)
 
@@ -59,7 +60,7 @@ class TestGXFReader:
         """
         Test grid transformation parameters
         """
-        _, metadata = read_gxf(TEST_GXF)
+        _, metadata = _read_gxf_data(TEST_GXF)
         transform = metadata["TRANSFORM"].split()
         npt.assert_almost_equal(float(transform[0]), 1.0, decimal=10)
         npt.assert_almost_equal(float(transform[1]), 0.0, decimal=1)
@@ -68,14 +69,14 @@ class TestGXFReader:
         """
         Test dummy value specification
         """
-        _, metadata = read_gxf(TEST_GXF)
+        _, metadata = _read_gxf_data(TEST_GXF)
         npt.assert_almost_equal(float(metadata["DUMMY"]), 1.0e30)
 
     def test_projection_parameters(self):
         """
         Test projection information
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         
         # Test projection type and units
         assert grid.attrs["projection_type"].strip() == "lambert conformal conic"
@@ -97,7 +98,7 @@ class TestGXFReader:
         """
         Test grid orientation parameters
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         assert grid.attrs["ROTATION"] == 0.0
         assert grid.attrs["SENSE"] == 1
 
@@ -105,15 +106,15 @@ class TestGXFReader:
         """
         Test if coordinates are correctly generated
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         
         # Test X coordinates
         expected_x = np.arange(132) * 150.0 + 235000.0
-        npt.assert_array_almost_equal(grid.x.values, expected_x)
+        npt.assert_array_almost_equal(grid.easting.values, expected_x)
         
         # Test Y coordinates
         expected_y = np.arange(148) * 150.0 + 378000.0
-        npt.assert_array_almost_equal(grid.y.values, expected_y)
+        npt.assert_array_almost_equal(grid.northing.values, expected_y)
 
     def test_raw_headers(self):
         """
@@ -133,7 +134,7 @@ class TestGXFReader:
         """
         Test if USGS modified format comment is preserved
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         assert "COMMENT" in grid.attrs
         assert "USGS modified GXF format" in grid.attrs["COMMENT"]
 
@@ -141,13 +142,13 @@ class TestGXFReader:
         """
         Test if coordinate dimensions match the grid size
         """
-        grid = gxf_to_xarray(TEST_GXF)
-        assert len(grid.x) == 132
-        assert len(grid.y) == 148
+        grid = read_gxf(TEST_GXF)
+        assert len(grid.easting) == 132
+        assert len(grid.northing) == 148
 
     def test_data_type(self):
         """
         Test if the data is loaded as float values
         """
-        grid = gxf_to_xarray(TEST_GXF)
+        grid = read_gxf(TEST_GXF)
         assert np.issubdtype(grid.values.dtype, np.floating)

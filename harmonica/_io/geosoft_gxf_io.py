@@ -174,7 +174,7 @@ def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
     """
     # Read entire file
     with open(infile) as f:
-        lines = [line.strip() for line in f.readlines()]
+        lines = [line.rstrip('\n\r') for line in f.readlines()]
     
     # Create dictionary with headers and parameters
     headers: Dict[str, str] = {}
@@ -200,7 +200,7 @@ def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
             
     return data_list, headers
 
-def read_gxf(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
+def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
     """
     Read a GXF file and return the grid data and metadata.
     Following official GXF specifications from Geosoft.
@@ -308,38 +308,54 @@ def get_grid_info(metadata: Dict[str, Any]) -> None:
                 if value is not None:
                     print(f"{key}: {value}")
 
-def gxf_to_xarray(infile: str) -> xr.DataArray:
+def read_gxf(infile: str) -> xr.DataArray:
     """
     Read a GXF file and convert it to an xarray DataArray with proper coordinates.
     
-    Parameters:
-    infile (str): Path to the GXF file
+    The GXF format is an ASCII file format for gridded data developed by
+    Geosoft. This function reads the header information and grid data,
+    returning it as an xarray.DataArray for convenient analysis.
     
-    Returns:
-    xarray.DataArray: Georeferenced data array with coordinates and attributes
+    Parameters
+    ----------
+    infile : str
+        Path to the GXF file
+        
+    Returns
+    -------
+    grid : xarray.DataArray
+        An xarray.DataArray containing the grid data with appropriate
+        coordinates and metadata from the GXF header stored in attributes.
     """
-    # Read the GXF file
-    grid_array, metadata = read_gxf(infile)
+    # Read the GXF file using existing function
+    grid_array, metadata = _read_gxf_data(infile)
     
     # Create coordinate arrays
     x_coords = np.arange(metadata['nx']) * metadata['x_inc'] + metadata['x_min']
     y_coords = np.arange(metadata['ny']) * metadata['y_inc'] + metadata['y_min']
     
+    # Determine coordinate names based on rotation
+    rotation = float(metadata.get('ROTATION', 0.0))
+    if rotation == 0.0:
+        x_name, y_name = 'easting', 'northing'
+    else:
+        x_name, y_name = 'x', 'y'
+    
     # Create DataArray with coordinates
+    coords = {x_name: x_coords, y_name: y_coords}
+    dims = [y_name, x_name]
+    
     da = xr.DataArray(
         data=grid_array,
-        dims=['y', 'x'],
-        coords={
-            'x': x_coords,
-            'y': y_coords
-        },
+        dims=dims,
+        coords=coords,
         name=metadata.get('TITLE', 'GXF_Grid')
     )
     
     # Add all metadata as attributes
     attrs = metadata.copy()
     
-    # If projection exists, flatten its nested structure
+    # If projection exists, flatten its nested structure for DataArray attributes
     if 'projection' in attrs:
         proj_info = attrs.pop('projection')
         attrs['projection_type'] = proj_info['type']
