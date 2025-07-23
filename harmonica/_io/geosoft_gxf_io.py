@@ -5,10 +5,17 @@
 # Inspired by this gist: https://gist.github.com/jobar8/683483df605a906fb3da747b64627305
 # created by Joseph Barraud and made available under the BSD License.
 
-# Information about the GXF format found on a USGS Readme:
-
 """
-1. Grid eXchange Format (*.gxf)
+Functions for reading Geosoft GXF (Grid eXchange File) format files.
+
+The GXF format is an ASCII file format for gridded data developed by Geosoft.
+For detailed format specification, see:
+https://pubs.usgs.gov/of/1999/of99-514/grids/gxf.pdf
+
+Test data provided by USGS:
+Kucks, R.P., and Hill, P.L., 2000, Wyoming aeromagnetic and gravity maps and data—
+A web site for distribution of data: U.S. Geological Survey Open-File Report 00-0198,
+https://pubs.usgs.gov/of/2000/ofr-00-0198/html/wyoming.htm
 
 GXF (Grid eXchange File) is a standard ASCII file format for
 exchanging gridded data among different software systems. 
@@ -172,17 +179,19 @@ def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
         - data_list: list of raw data strings
         - headers: dictionary of GXF headers
     """
-    # Read entire file
+    # Read only header lines until #GRID
+    headers: Dict[str, str] = {}
+    data_list: List[str] = []
+    header_lines_count = 0
+    
     with open(infile) as f:
         lines = [line.rstrip('\n\r') for line in f.readlines()]
     
-    # Create dictionary with headers and parameters
-    headers: Dict[str, str] = {}
-    data_list: List[str] = []
     reading_data = False
-    
     for i, line in enumerate(lines):
         if not line:  # Skip empty lines
+            if not reading_data:
+                header_lines_count += 1
             continue
             
         if reading_data:
@@ -194,6 +203,9 @@ def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
                 if next_line and not next_line.startswith('#'):
                     headers[key] = next_line
                     break
+            header_lines_count += 1
+        else:
+            header_lines_count += 1
         
         if line == '#GRID':
             reading_data = True
@@ -213,8 +225,36 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
         - grid_array: numpy array containing the properly oriented grid
         - metadata: dictionary containing all GXF parameters
     """
-    # Get raw data and headers
-    data_list, headers = read_gxf_raw(infile)
+    # First, read header efficiently until #GRID
+    headers: Dict[str, str] = {}
+    grid_start_line = 0
+    
+    with open(infile, 'r') as f:
+        lines = f.readlines()
+    
+    # Parse headers until #GRID
+    i = 0
+    while i < len(lines):
+        line = lines[i].rstrip('\n\r')
+        grid_start_line = i + 1
+        
+        if not line:
+            i += 1
+            continue
+            
+        if line.startswith('#'):
+            key = line[1:]  # Remove the '#'
+            if key == 'GRID':
+                break  # Found start of data section
+            # Look for header value in next non-empty, non-# line
+            j = i + 1
+            while j < len(lines):
+                next_line = lines[j].rstrip('\n\r')
+                if next_line and not next_line.startswith('#'):
+                    headers[key] = next_line
+                    break
+                j += 1
+        i += 1
     
     # Parse metadata with proper type conversion
     metadata: Dict[str, Any] = {}
@@ -229,12 +269,23 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
             # If conversion fails, keep as string
             metadata[key] = value.strip()
     
-    # Convert data strings to numpy array
-    data_1d = np.array([])
-    for line in data_list:
-        # Handle both space and tab-delimited data
-        values = np.fromstring(line, sep=' ')
-        data_1d = np.concatenate((data_1d, values))
+    # Use np.loadtxt efficiently, but handle inconsistent columns by reading as 1D
+    try:
+        # Try to use np.loadtxt with skiprows for efficiency
+        data_1d = np.loadtxt(infile, skiprows=grid_start_line)
+        if data_1d.ndim > 1:
+            data_1d = data_1d.flatten()
+    except ValueError:
+        # Fallback: GXF data may have inconsistent columns per line
+        # Read the data section manually and flatten
+        data_lines = lines[grid_start_line:]
+        data_values = []
+        for line in data_lines:
+            line = line.strip()
+            if line:
+                values = line.split()
+                data_values.extend([float(val) for val in values])
+        data_1d = np.array(data_values)
     
     # Get grid dimensions from already-parsed metadata
     nrows = metadata['ROWS']
