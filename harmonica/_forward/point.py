@@ -385,16 +385,16 @@ def point_mass_cartesian(
         field on the computation points. It could be one of the forward
         modelling functions in :mod:`choclo.point`.
     """
-    for l in prange(easting.size):
-        for m in range(easting_p.size):
-            out[l] += forward_func(
-                easting[l],
-                northing[l],
-                upward[l],
-                easting_p[m],
-                northing_p[m],
-                upward_p[m],
-                masses[m],
+    for i in prange(easting.size):
+        for j in range(easting_p.size):
+            out[i] += forward_func(
+                easting[i],
+                northing[i],
+                upward[i],
+                easting_p[j],
+                northing_p[j],
+                upward_p[j],
+                masses[j],
             )
 
 
@@ -433,17 +433,17 @@ def point_mass_spherical(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravitational field
-    for l in prange(longitude.size):
-        for m in range(longitude_p.size):
-            out[l] += masses[m] * kernel(
-                longitude[l],
-                cosphi[l],
-                sinphi[l],
-                radius[l],
-                longitude_p[m],
-                cosphi_p[m],
-                sinphi_p[m],
-                radius_p[m],
+    for i in prange(longitude.size):
+        for j in range(longitude_p.size):
+            out[i] += masses[j] * kernel(
+                longitude[i],
+                cosphi[i],
+                sinphi[i],
+                radius[i],
+                longitude_p[j],
+                cosphi_p[j],
+                sinphi_p[j],
+                radius_p[j],
             )
 
 

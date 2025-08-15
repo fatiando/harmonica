@@ -302,16 +302,16 @@ def jit_tesseroid_gravity(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for l in prange(longitude.size):
+    for i in prange(longitude.size):
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for m in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                (longitude[l], latitude[l], radius[l]),
-                tesseroids[m, :],
+                (longitude[i], latitude[i], radius[i]),
+                tesseroids[j, :],
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
@@ -320,13 +320,13 @@ def jit_tesseroid_gravity(
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
-                result[l] += gauss_legendre_quadrature(
-                    longitude_rad[l],
-                    cosphi[l],
-                    sinphi[l],
-                    radius[l],
+                result[i] += gauss_legendre_quadrature(
+                    longitude_rad[i],
+                    cosphi[i],
+                    sinphi[i],
+                    radius[i],
                     tesseroid,
-                    density[m],
+                    density[j],
                     glq_nodes,
                     glq_weights,
                     kernel,
@@ -405,16 +405,16 @@ def jit_tesseroid_gravity_variable_density(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for l in prange(longitude.size):
+    for i in prange(longitude.size):
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for m in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                (longitude[l], latitude[l], radius[l]),
-                tesseroids[m, :],
+                (longitude[i], latitude[i], radius[i]),
+                tesseroids[j, :],
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
@@ -423,11 +423,11 @@ def jit_tesseroid_gravity_variable_density(
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
-                result[l] += gauss_legendre_quadrature_variable_density(
-                    longitude_rad[l],
-                    cosphi[l],
-                    sinphi[l],
-                    radius[l],
+                result[i] += gauss_legendre_quadrature_variable_density(
+                    longitude_rad[i],
+                    cosphi[i],
+                    sinphi[i],
+                    radius[i],
                     tesseroid,
                     density,
                     glq_nodes,

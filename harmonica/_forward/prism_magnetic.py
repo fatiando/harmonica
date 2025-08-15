@@ -314,25 +314,25 @@ def _jit_prism_magnetic_field(
     easting, northing, upward = coordinates
     mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for l in prange(easting.size):
-        for m in range(prisms.shape[0]):
+    for i in prange(easting.size):
+        for j in range(prisms.shape[0]):
             easting_comp, northing_comp, upward_comp = magnetic_field(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
-                mag_e[m],
-                mag_n[m],
-                mag_u[m],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
+                mag_e[j],
+                mag_n[j],
+                mag_u[j],
             )
-            b_e[l] += easting_comp
-            b_n[l] += northing_comp
-            b_u[l] += upward_comp
+            b_e[i] += easting_comp
+            b_n[i] += northing_comp
+            b_u[i] += upward_comp
         # Update progress bar if called
         if update_progressbar:
             progress_proxy.update(1)
@@ -379,21 +379,21 @@ def _jit_prism_magnetic_component(
     easting, northing, upward = coordinates
     mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for l in prange(easting.size):
-        for m in range(prisms.shape[0]):
-            result[l] += forward_function(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
-                mag_e[m],
-                mag_n[m],
-                mag_u[m],
+    for i in prange(easting.size):
+        for j in range(prisms.shape[0]):
+            result[i] += forward_function(
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
+                mag_e[j],
+                mag_n[j],
+                mag_u[j],
             )
         # Update progress bar if called
         if update_progressbar:

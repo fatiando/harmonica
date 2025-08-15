@@ -276,28 +276,28 @@ def _any_singular_point_g_ee(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_northing_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ) or is_point_on_upward_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -311,28 +311,28 @@ def _any_singular_point_g_nn(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ) or is_point_on_upward_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -346,28 +346,28 @@ def _any_singular_point_g_zz(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ) or is_point_on_northing_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -381,18 +381,18 @@ def _any_singular_point_g_en(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_upward_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -406,18 +406,18 @@ def _any_singular_point_g_ez(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_northing_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -431,18 +431,18 @@ def _any_singular_point_g_nz(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for l in range(n_coords):
-        for m in range(n_prisms):
+    for i in range(n_coords):
+        for j in range(n_prisms):
             if is_point_on_easting_edge(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
             ):
                 return True
     return False
@@ -554,19 +554,19 @@ def jit_prism_gravity(
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
-    for l in prange(easting.size):
-        for m in range(prisms.shape[0]):
-            out[l] += forward_func(
-                easting[l],
-                northing[l],
-                upward[l],
-                prisms[m, 0],
-                prisms[m, 1],
-                prisms[m, 2],
-                prisms[m, 3],
-                prisms[m, 4],
-                prisms[m, 5],
-                density[m],
+    for i in prange(easting.size):
+        for j in range(prisms.shape[0]):
+            out[i] += forward_func(
+                easting[i],
+                northing[i],
+                upward[i],
+                prisms[j, 0],
+                prisms[j, 1],
+                prisms[j, 2],
+                prisms[j, 3],
+                prisms[j, 4],
+                prisms[j, 5],
+                density[j],
             )
         # Update progress bar
         if update_progressbar:

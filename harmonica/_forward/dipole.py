@@ -326,22 +326,22 @@ def _jit_dipole_magnetic_field_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for l in prange(easting.size):
-        for m in range(easting_p.size):
+    for i in prange(easting.size):
+        for j in range(easting_p.size):
             easting_comp, northing_comp, upward_comp = magnetic_field(
-                easting[l],
-                northing[l],
-                upward[l],
-                easting_p[m],
-                northing_p[m],
-                upward_p[m],
-                mag_e[m],
-                mag_n[m],
-                mag_u[m],
+                easting[i],
+                northing[i],
+                upward[i],
+                easting_p[j],
+                northing_p[j],
+                upward_p[j],
+                mag_e[j],
+                mag_n[j],
+                mag_u[j],
             )
-            b_e[l] += easting_comp
-            b_n[l] += northing_comp
-            b_u[l] += upward_comp
+            b_e[i] += easting_comp
+            b_n[i] += northing_comp
+            b_u[i] += upward_comp
         # Update progress bar if called
         if update_progressbar:
             progress_proxy.update(1)
@@ -383,18 +383,18 @@ def _jit_dipole_magnetic_component_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for l in prange(easting.size):
-        for m in range(easting_p.size):
-            result[l] += forward_func(
-                easting[l],
-                northing[l],
-                upward[l],
-                easting_p[m],
-                northing_p[m],
-                upward_p[m],
-                mag_e[m],
-                mag_n[m],
-                mag_u[m],
+    for i in prange(easting.size):
+        for j in range(easting_p.size):
+            result[i] += forward_func(
+                easting[i],
+                northing[i],
+                upward[i],
+                easting_p[j],
+                northing_p[j],
+                upward_p[j],
+                mag_e[j],
+                mag_n[j],
+                mag_u[j],
             )
         # Update progress bar if called
         if update_progressbar:
