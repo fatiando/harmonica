@@ -7,7 +7,7 @@
 """
 Test forward modelling for prisms.
 """
-
+import re
 from unittest.mock import patch
 
 import numpy as np
@@ -42,8 +42,10 @@ def test_invalid_field():
     prism = [-100, 100, -100, 100, -200, -100]
     density = 1000
     coordinates = [0, 0, 0]
-    with pytest.raises(ValueError):
-        prism_gravity(coordinates, prism, density, field="Not a valid field")
+    invalid_field = "this-field-does-not-exist"
+    msg = re.escape(f"Gravitational field {invalid_field} not recognized")
+    with pytest.raises(ValueError, match=msg):
+        prism_gravity(coordinates, prism, density, field=invalid_field)
 
 
 def test_invalid_density_array():
@@ -58,7 +60,11 @@ def test_invalid_density_array():
     # Generate a two element density
     density = [1000, 2000]
     coordinates = [0, 0, 0]
-    with pytest.raises(ValueError):
+    msg = (
+        r"Number of elements in density \([0-9]+\)"
+        r" mismatch the number of prisms \([0-9]+\)"
+    )
+    with pytest.raises(ValueError, match=msg):
         prism_gravity(coordinates, prisms, density, field="potential")
 
 
@@ -72,11 +78,14 @@ def test_invalid_prisms():
     _check_prisms(np.atleast_2d([w, e, s, s, bottom, top]))
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
     # Test invalid boundaries
-    with pytest.raises(ValueError):
+    msg = "The west boundary can't be greater than the east one"
+    with pytest.raises(ValueError, match=msg):
         _check_prisms(np.atleast_2d([e, w, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    msg = "The south boundary can't be greater than the north one"
+    with pytest.raises(ValueError, match=msg):
         _check_prisms(np.atleast_2d([w, e, n, s, bottom, top]))
-    with pytest.raises(ValueError):
+    msg = "The bottom boundary can't be greater than the top one"
+    with pytest.raises(ValueError, match=msg):
         _check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
 
 
@@ -133,7 +142,8 @@ def test_disable_checks():
     density = 100
     coordinates = [0, 0, 0]
     # By default, an error should be raised for invalid input
-    with pytest.raises(ValueError):
+    msg = "The bottom boundary can't be greater than the top one"
+    with pytest.raises(ValueError, match=msg):
         prism_gravity(coordinates, invalid_prism, density, field="potential")
     # Check if an invalid prism doesn't raise an error with the disable_checks
     # flag set to True
