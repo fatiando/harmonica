@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:04.928** total execution time for 5 files **from gallery/transformations**:
+**00:03.044** total execution time for 5 files **from gallery/transformations**:
 
 .. container::
 
@@ -32,18 +32,18 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py` (``reduction_to_pole.py``)
-     - 00:02.623
-     - 0.0
    * - :ref:`sphx_glr_gallery_transformations_tilt.py` (``tilt.py``)
-     - 00:01.096
+     - 00:01.120
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py` (``reduction_to_pole.py``)
+     - 00:00.703
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transformations_upward_derivative.py` (``upward_derivative.py``)
+     - 00:00.415
      - 0.0
    * - :ref:`sphx_glr_gallery_transformations_tga.py` (``tga.py``)
      - 00:00.414
      - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_upward_derivative.py` (``upward_derivative.py``)
-     - 00:00.408
-     - 0.0
    * - :ref:`sphx_glr_gallery_transformations_upward_continuation.py` (``upward_continuation.py``)
-     - 00:00.386
+     - 00:00.392
      - 0.0

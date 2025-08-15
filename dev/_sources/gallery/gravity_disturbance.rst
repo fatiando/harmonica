@@ -43,14 +43,13 @@ data.
  .. code-block:: none
 
     <xarray.Dataset> Size: 28MB
-    Dimensions:    (longitude: 2161, latitude: 1081)
+    Dimensions:    (latitude: 1081, longitude: 2161)
     Coordinates:
       * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
       * latitude   (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
         height     (latitude, longitude) float32 9MB 1e+04 1e+04 ... 1e+04 1e+04
     Data variables:
         gravity    (latitude, longitude) float64 19MB 9.801e+05 ... 9.802e+05
-    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
 
 
 
@@ -102,7 +101,7 @@ data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.411 seconds)
+   **Total running time of the script:** (0 minutes 2.126 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance.py:

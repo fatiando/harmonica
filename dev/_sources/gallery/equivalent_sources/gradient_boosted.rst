@@ -58,7 +58,7 @@ to use them on a small example.
     Mean height of observations: 868.9293913591926
     Required memory for storing the largest Jacobian: 672792 bytes
     Number of sources: 6231
-    R² score: 0.980707030192003
+    R² score: 0.9807070301920021
     <xarray.Dataset> Size: 3MB
     Dimensions:              (northing: 416, easting: 431)
     Coordinates:
@@ -207,7 +207,7 @@ to use them on a small example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.885 seconds)
+   **Total running time of the script:** (0 minutes 4.635 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_gradient_boosted.py:

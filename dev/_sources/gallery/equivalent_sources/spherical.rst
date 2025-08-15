@@ -168,7 +168,7 @@ account the curvature of the Earth.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.532 seconds)
+   **Total running time of the script:** (0 minutes 2.530 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_spherical.py:
