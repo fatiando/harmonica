@@ -7,6 +7,7 @@
 """
 Utils functions for tesseroids with variable density
 """
+
 import numpy as np
 from numba import jit
 from scipy.optimize import minimize_scalar

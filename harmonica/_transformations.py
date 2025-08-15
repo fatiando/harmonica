@@ -7,6 +7,7 @@
 """
 Apply transformations to regular grids of potential fields
 """
+
 import numpy as np
 
 from .filters._filters import (
@@ -109,8 +110,7 @@ def derivative_easting(grid, order=1, method="finite-diff"):
         grid = apply_filter(grid, derivative_easting_kernel, order=order)
     else:
         raise ValueError(
-            f"Invalid method '{method}'. "
-            "Please select one from 'finite-diff' or 'fft'."
+            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         )
     return grid
 
@@ -168,8 +168,7 @@ def derivative_northing(grid, order=1, method="finite-diff"):
         return apply_filter(grid, derivative_northing_kernel, order=order)
     else:
         raise ValueError(
-            f"Invalid method '{method}'. "
-            "Please select one from 'finite-diff' or 'fft'."
+            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         )
     return grid
 

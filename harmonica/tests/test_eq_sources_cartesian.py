@@ -7,6 +7,7 @@
 """
 Test the EquivalentSources gridder
 """
+
 from collections.abc import Iterable
 
 import numpy as np

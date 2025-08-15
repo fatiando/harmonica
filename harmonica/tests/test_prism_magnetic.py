@@ -7,6 +7,7 @@
 """
 Test forward functions for magnetic field of prisms
 """
+
 import choclo
 import numpy as np
 import numpy.testing as npt

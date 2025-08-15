@@ -16,6 +16,7 @@ tesseroid on a computation grid through the :func:`harmonica.tesseroid_gravity`
 function.
 
 """  # noqa: RST399
+
 import boule as bl
 import pygmt
 import verde as vd

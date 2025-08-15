@@ -7,6 +7,7 @@
 """
 Equivalent sources for generic harmonic functions in Cartesian coordinates
 """
+
 from __future__ import annotations
 
 import warnings

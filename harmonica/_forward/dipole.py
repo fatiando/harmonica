@@ -7,6 +7,7 @@
 """
 Forward modelling for magnetic fields of dipoles
 """
+
 from math import prod
 
 import numpy as np

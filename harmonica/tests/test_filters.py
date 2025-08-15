@@ -7,6 +7,7 @@
 """
 Test functions from the filter module
 """
+
 import numpy as np
 import numpy.testing as npt
 import pytest

@@ -7,6 +7,7 @@
 """
 Testing ICGEM gdf files loading.
 """
+
 import os
 
 import numpy as np

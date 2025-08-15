@@ -7,6 +7,7 @@
 """
 Gravity corrections like Normal Gravity and Bouguer corrections.
 """
+
 import numpy as np
 
 from .constants import GRAVITATIONAL_CONST

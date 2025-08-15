@@ -7,6 +7,7 @@
 """
 Define a layer of prisms
 """
+
 import warnings
 
 import numpy as np

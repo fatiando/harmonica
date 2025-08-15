@@ -7,6 +7,7 @@
 """
 Frequency domain filters meant to be applied on regular grids
 """
+
 import numpy as np
 
 from .._utils import magnetic_angles_to_vec

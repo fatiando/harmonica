@@ -7,6 +7,7 @@
 """
 Test magnetic forward functions for dipoles
 """
+
 import choclo
 import numpy as np
 import numpy.testing as npt

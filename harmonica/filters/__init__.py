@@ -7,6 +7,7 @@
 """
 Frequency domain filters meant to be applied on regular grids
 """
+
 from ._filters import (
     derivative_easting_kernel,
     derivative_northing_kernel,

@@ -7,6 +7,7 @@
 """
 Test forward modelling for point masses.
 """
+
 import os
 from pathlib import Path
 
@@ -311,10 +312,7 @@ def test_acceleration_sign(field):
 @pytest.mark.parametrize(
     "field",
     # fmt: off
-    (
-        "potential", "g_z", "g_n", "g_e",
-        "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"
-    ),
+    ("potential", "g_z", "g_n", "g_e", "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"),
     # fmt: on
 )
 def test_point_mass_cartesian_parallel(field):

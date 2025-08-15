@@ -7,6 +7,7 @@
 """
 Classes for Euler Deconvolution of potential field data
 """
+
 import numpy as np
 import scipy as sp
 import verde.base as vdb

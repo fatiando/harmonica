@@ -7,6 +7,7 @@
 """
 Test functions from the visualization module.
 """
+
 from unittest.mock import patch
 
 import numpy as np

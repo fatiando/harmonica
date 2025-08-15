@@ -7,6 +7,7 @@
 """
 Function to read ICGEM .gdf file
 """
+
 import contextlib
 
 import numpy as np
@@ -79,8 +80,9 @@ def load_icgem_gdf(fname, **kwargs):
     )
     if not np.allclose(area, area_from_cols):
         raise IOError(
-            "Grid area read ({}) and calculated from attributes "
-            "({}) mismatch.".format(area, area_from_cols)
+            "Grid area read ({}) and calculated from attributes ({}) mismatch.".format(
+                area, area_from_cols
+            )
         )
     return grid
 

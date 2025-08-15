@@ -7,6 +7,7 @@
 """
 Utility functions for FFT filters
 """
+
 import numpy as np
 
 from ._fft import fft, ifft

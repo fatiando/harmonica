@@ -7,6 +7,7 @@
 """
 Equivalent sources for generic harmonic functions in spherical coordinates
 """
+
 import warnings
 
 import numpy as np

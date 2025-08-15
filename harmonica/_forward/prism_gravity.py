@@ -7,6 +7,7 @@
 """
 Forward modelling for prisms
 """
+
 import warnings
 
 import numpy as np

@@ -7,6 +7,7 @@
 """
 Utilities for forward modelling
 """
+
 import contextlib
 
 import numpy as np
@@ -386,7 +387,6 @@ def initialize_progressbar(total, use_progressbar):
     # Raise error if numba_progress is not installed
     if ProgressBar is None:
         raise ImportError(
-            "Missing optional dependency 'numba_progress' required "
-            "if progressbar=True"
+            "Missing optional dependency 'numba_progress' required if progressbar=True"
         )
     return ProgressBar(total=total)

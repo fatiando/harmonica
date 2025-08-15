@@ -7,6 +7,7 @@
 """
 Test equivalent sources utility functions
 """
+
 import warnings
 
 import numpy as np

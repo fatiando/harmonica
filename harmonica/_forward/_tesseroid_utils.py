@@ -7,6 +7,7 @@
 """
 Utils functions for tesseroid forward modelling
 """
+
 import numpy as np
 from numba import jit
 from numpy.polynomial.legendre import leggauss

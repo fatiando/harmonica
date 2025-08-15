@@ -7,6 +7,7 @@
 """
 Functions for visualizing prisms through pyvista
 """
+
 import numpy as np
 
 try:

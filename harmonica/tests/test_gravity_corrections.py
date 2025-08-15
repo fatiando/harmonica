@@ -7,6 +7,7 @@
 """
 Test the gravity correction functions (normal gravity, Bouguer, etc).
 """
+
 import numpy as np
 import numpy.testing as npt
 import xarray as xr

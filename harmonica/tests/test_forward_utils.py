@@ -7,6 +7,7 @@
 """
 Test utils functions for forward modelling
 """
+
 from unittest.mock import patch
 
 import boule as bl

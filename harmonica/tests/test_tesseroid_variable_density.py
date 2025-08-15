@@ -7,6 +7,7 @@
 """
 Test forward modelling for tesseroids with variable density
 """
+
 from unittest.mock import patch
 
 import numpy as np

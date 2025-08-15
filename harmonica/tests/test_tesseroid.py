@@ -7,6 +7,7 @@
 """
 Test forward modelling for tesseroids.
 """
+
 from unittest.mock import patch
 
 import boule
