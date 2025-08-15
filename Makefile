@@ -13,13 +13,13 @@ help:
 	@echo ""
 	@echo "  install   install in editable mode"
 	@echo "  test      run the test suite (including doctests) and report coverage"
-	@echo "  format    run isort and black to automatically format the code"
-	@echo "  check     run code style and quality checks (black, isort and flake8)"
+	@echo "  format    run ruff to automatically format the code"
+	@echo "  check     run code style and quality checks (ruff and burocrata)"
 	@echo "  build     build source and wheel distributions"
 	@echo "  clean     clean up build and generated files"
 	@echo ""
 
-.PHONY: build, install, test, test_coverage, test_numba, format, check, black, black-check, isort, isort-check, license, license-check, flake8, clean
+.PHONY: build, install, test, test_coverage, test_numba, format, check, check-format, check-style, check-actions, clean
 
 build:
 	python -m build .
@@ -43,19 +43,18 @@ test_numba:
 	rm -rvf $(TESTDIR)
 
 format:
-	isort $(STYLE_CHECK_FILES)
-	black $(STYLE_CHECK_FILES)
+	ruff check --select I --fix $(STYLE_CHECK_FILES) # fix isort errors
+	ruff format $(STYLE_CHECK_FILES)
 	burocrata --extension=py $(STYLE_CHECK_FILES)
 
-check: check-format check-style
+check: check-format check-style check-actions
 
 check-format:
-	isort --check $(STYLE_CHECK_FILES)
-	black --check $(STYLE_CHECK_FILES)
-	burocrata --check --extension=py $(STYLE_CHECK_FILES)
+	ruff format --check $(STYLE_CHECK_STYLE)
+	burocrata --check --extension=py $(STYLE_CHECK_STYLE)
 
 check-style:
-	flake8 $(STYLE_CHECK_FILES)
+	ruff check $(STYLE_CHECK_FILES)
 
 check-actions:
 	zizmor $(GITHUB_ACTIONS)
