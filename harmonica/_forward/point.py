@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Forward modelling for point masses
+Forward modelling for point masses.
 """
 
 import numpy as np
@@ -241,8 +241,8 @@ def point_gravity(
     # Sanity checks
     if masses.size != points[0].size:
         raise ValueError(
-            "Number of elements in masses ({}) ".format(masses.size)
-            + "mismatch the number of points ({})".format(points[0].size)
+            f"Number of elements in masses ({masses.size}) "
+            + f"mismatch the number of points ({points[0].size})"
         )
     # Compute gravitational field
     kernel = get_kernel(coordinate_system, field)
@@ -263,7 +263,7 @@ def point_gravity(
 
 def dispatcher(coordinate_system, parallel):
     """
-    Return the appropriate forward model function
+    Return the appropriate forward model function.
     """
     dispatchers = {
         "cartesian": {
@@ -280,7 +280,7 @@ def dispatcher(coordinate_system, parallel):
 
 def get_kernel(coordinate_system, field):
     """
-    Return the appropriate kernel
+    Return the appropriate kernel.
     """
     kernels = {
         "cartesian": {
@@ -308,7 +308,8 @@ def get_kernel(coordinate_system, field):
         },
     }
     if field not in kernels[coordinate_system]:
-        raise ValueError("Gravitational field '{}' not recognized".format(field))
+        msg = f"Gravitational field '{field}' not recognized"
+        raise ValueError(msg)
     kernel = kernels[coordinate_system][field]
     if kernel is None:
         raise NotImplementedError
@@ -325,7 +326,7 @@ def potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel function for potential gravitational field in spherical coordinates
+    Kernel function for potential gravitational field in spherical coordinates.
     """
     distance, _, _ = distance_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
@@ -342,7 +343,7 @@ def gravity_u_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel for upward component of gravitational acceleration
+    Kernel for upward component of gravitational acceleration.
 
     Use spherical coordinates
     """
@@ -365,7 +366,7 @@ def point_mass_cartesian(
     forward_func,
 ):
     """
-    Compute gravitational field of point masses in Cartesian coordinates
+    Compute gravitational field of point masses in Cartesian coordinates.
 
     Parameters
     ----------
@@ -384,16 +385,16 @@ def point_mass_cartesian(
         field on the computation points. It could be one of the forward
         modelling functions in :mod:`choclo.point`.
     """
-    for l in prange(easting.size):
-        for m in range(easting_p.size):
-            out[l] += forward_func(
-                easting[l],
-                northing[l],
-                upward[l],
-                easting_p[m],
-                northing_p[m],
-                upward_p[m],
-                masses[m],
+    for i in prange(easting.size):
+        for j in range(easting_p.size):
+            out[i] += forward_func(
+                easting[i],
+                northing[i],
+                upward[i],
+                easting_p[j],
+                northing_p[j],
+                upward_p[j],
+                masses[j],
             )
 
 
@@ -401,7 +402,7 @@ def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):
     """
-    Compute gravitational field of point masses in spherical coordinates
+    Compute gravitational field of point masses in spherical coordinates.
 
     Parameters
     ----------
@@ -432,17 +433,17 @@ def point_mass_spherical(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravitational field
-    for l in prange(longitude.size):
-        for m in range(longitude_p.size):
-            out[l] += masses[m] * kernel(
-                longitude[l],
-                cosphi[l],
-                sinphi[l],
-                radius[l],
-                longitude_p[m],
-                cosphi_p[m],
-                sinphi_p[m],
-                radius_p[m],
+    for i in prange(longitude.size):
+        for j in range(longitude_p.size):
+            out[i] += masses[j] * kernel(
+                longitude[i],
+                cosphi[i],
+                sinphi[i],
+                radius[i],
+                longitude_p[j],
+                cosphi_p[j],
+                sinphi_p[j],
+                radius_p[j],
             )
 
 

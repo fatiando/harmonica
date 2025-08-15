@@ -35,11 +35,13 @@ ANGLES = [
 ]
 
 
-@pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
+@pytest.mark.parametrize(
+    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS)]
+)
 def test_magnetic_ang_to_vec_float(angles, vector):
     """
     Check if the function returns the expected values for a given intensity
-    inclination and declination as float
+    inclination and declination as float.
     """
     intensity, inclination, declination = angles
     magnetic_e, magnetic_n, magnetic_u = vector
@@ -49,12 +51,14 @@ def test_magnetic_ang_to_vec_float(angles, vector):
     )
 
 
-@pytest.mark.parametrize("degrees", (False, True), ids=("radians", "degrees"))
-@pytest.mark.parametrize("angles, vector", [(a, v) for a, v in zip(ANGLES, VECTORS)])
+@pytest.mark.parametrize("degrees", [False, True], ids=("radians", "degrees"))
+@pytest.mark.parametrize(
+    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS)]
+)
 def test_magnetic_vec_to_angles_float(angles, vector, degrees):
     """
     Check if the function returns the expected values for a given magnetic
-    vector as float
+    vector as float.
     """
     intensity, inclination, declination = angles
     magnetic_e, magnetic_n, magnetic_u = vector
@@ -69,7 +73,7 @@ def test_magnetic_vec_to_angles_float(angles, vector, degrees):
 @pytest.fixture(name="arrays", params=["single-element", "multi-element"])
 def angles_vectors_as_arrays(request):
     """
-    Generate magnetic angles and vectors as arrays
+    Generate magnetic angles and vectors as arrays.
     """
     if request.param == "single-element":
         # Generate arrays with a single element
@@ -84,7 +88,7 @@ def angles_vectors_as_arrays(request):
 def test_magnetic_ang_to_vec_array(arrays):
     """
     Check if the function returns the expected values for a given intensity,
-    inclination and declination a array
+    inclination and declination a array.
     """
     intensity, inclination, declination = arrays[0]
     magnetic_e, magnetic_n, magnetic_u = arrays[1]
@@ -94,11 +98,11 @@ def test_magnetic_ang_to_vec_array(arrays):
     )
 
 
-@pytest.mark.parametrize("degrees", (False, True), ids=("radians", "degrees"))
+@pytest.mark.parametrize("degrees", [False, True], ids=("radians", "degrees"))
 def test_magnetic_vec_to_angles_array(arrays, degrees):
     """
     Check if the function returns the expected values for the given magnetic
-    vector as arrays
+    vector as arrays.
     """
     intensity, inclination, declination = arrays[0]
     magnetic_e, magnetic_n, magnetic_u = arrays[1]
@@ -110,10 +114,10 @@ def test_magnetic_vec_to_angles_array(arrays, degrees):
     )
 
 
-@pytest.mark.parametrize("start_with", ("angles", "vectors"))
+@pytest.mark.parametrize("start_with", ["angles", "vectors"])
 def test_identity(arrays, start_with):
     """
-    Check if applying both conversions return the original set of vectors
+    Check if applying both conversions return the original set of vectors.
     """
     if start_with == "angles":
         intensity, inclination, declination = arrays[0]
@@ -129,7 +133,7 @@ def test_identity(arrays, start_with):
         )
 
 
-@pytest.mark.parametrize("direction", ("easting", "northing", "upward"))
+@pytest.mark.parametrize("direction", ["easting", "northing", "upward"])
 def test_tfa(direction):
     b = [30.0, -40.0, 50.0]
     if direction == "easting":
@@ -145,7 +149,7 @@ def test_tfa(direction):
     npt.assert_allclose(tfa, expected_tfa)
 
 
-@pytest.mark.parametrize("direction", ("easting", "northing", "upward"))
+@pytest.mark.parametrize("direction", ["easting", "northing", "upward"])
 def test_tfa_b_as_array(direction):
     b = [[20, -30, -40, 50], [-60, 70, -80, 10], [21, -31, 41, -51]]
     if direction == "easting":

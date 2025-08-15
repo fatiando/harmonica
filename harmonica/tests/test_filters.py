@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test functions from the filter module
+Test functions from the filter module.
 """
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -30,7 +31,7 @@ from ..filters._utils import apply_filter
 @pytest.fixture(name="region")
 def fixture_region():
     """
-    Return a sample region
+    Return a sample region.
     """
     return (-4e3, 9e3, 10e3, 25e3)
 
@@ -38,7 +39,7 @@ def fixture_region():
 @pytest.fixture(name="sample_grid")
 def fixture_sample_grid(region):
     """
-    Return a sample grid as an :class:`xarray.DataArray`
+    Return a sample grid as an :class:`xarray.DataArray`.
     """
     easting, northing = grid_coordinates(region, spacing=500)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
@@ -48,7 +49,7 @@ def fixture_sample_grid(region):
 @pytest.fixture(name="sample_grid_upward")
 def fixture_sample_grid_upward(region):
     """
-    Return a sample grid as an :class:`xarray.DataArray` with upward coord
+    Return a sample grid as an :class:`xarray.DataArray` with upward coord.
     """
     easting, northing, upward = grid_coordinates(region, spacing=500, extra_coords=100)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
@@ -63,7 +64,7 @@ def fixture_sample_grid_upward(region):
 @pytest.fixture(name="sample_grid_multiple_coords")
 def fixture_sample_grid_multiple_coords(region):
     """
-    Return a sample grid as an :class:`xarray.DataArray` with multiple coords
+    Return a sample grid as an :class:`xarray.DataArray` with multiple coords.
     """
     easting, northing, upward = grid_coordinates(region, spacing=500, extra_coords=100)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
@@ -85,14 +86,14 @@ def fixture_sample_grid_multiple_coords(region):
 
 def test_fft_round_trip(sample_grid):
     """
-    Test if the wrapped fft and ifft functions satisfy a round trip
+    Test if the wrapped fft and ifft functions satisfy a round trip.
     """
     xrt.assert_allclose(sample_grid, ifft(fft(sample_grid)))
 
 
 def test_fft_round_trip_upward(sample_grid_upward):
     """
-    Test if the wrapped fft and ifft functions satisfy a round trip
+    Test if the wrapped fft and ifft functions satisfy a round trip.
     """
     round_trip = ifft(fft(sample_grid_upward))
     assert "upward" not in round_trip
@@ -104,26 +105,28 @@ def test_fft_round_trip_upward(sample_grid_upward):
 
 def test_fft_no_drop_bad_coords(sample_grid_upward):
     """
-    Check if no dropping bad coordinates raises ValueError on upward coord
+    Check if no dropping bad coordinates raises ValueError on upward coord.
 
     ``xrft`` complains when *bad coordinates* are present in the input array.
     This test, along with the ``drop_bad_coordinates`` argument, should be
     removed if ``xrft`` changes this behaviour
     """
-    with pytest.raises(ValueError):
+    msg = "Please drop these coordinates"
+    with pytest.raises(ValueError, match=msg):
         fft(sample_grid_upward, drop_bad_coords=False)
 
 
 def test_fft_no_drop_bad_coords_multi(sample_grid_multiple_coords):
     """
-    Check if no dropping bad coordinates raises ValueError on multiple coords
+    Check if no dropping bad coordinates raises ValueError on multiple coords.
 
     This test should fail because ``xrft`` complains when *bad coordinates* are
     present in the input array.
     This test, along with the ``drop_bad_coordinates`` argument, should be
     removed if ``xrft`` changes this behaviour
     """
-    with pytest.raises(ValueError):
+    msg = "Please drop these coordinates"
+    with pytest.raises(ValueError, match=msg):
         fft(sample_grid_multiple_coords, drop_bad_coords=False)
 
 
@@ -134,7 +137,7 @@ def test_fft_no_drop_bad_coords_multi(sample_grid_multiple_coords):
 
 def dummy_filter(fourier_transform):
     """
-    Implement a dummy filter in frequency domain for testing purposes
+    Implement a dummy filter in frequency domain for testing purposes.
 
     Return an array full of zeroes
     """
@@ -143,9 +146,8 @@ def dummy_filter(fourier_transform):
 
 def test_apply_filter(sample_grid):
     """
-    Test apply_filter function using the dummy_filter
+    Test apply_filter function using the dummy_filter.
     """
-    print(sample_grid)
     # Apply the dummy filter
     filtered_grid = apply_filter(sample_grid, dummy_filter)
     # Compare output with expected results
@@ -186,7 +188,7 @@ def fixture_invalid_grid_3_dims():
 
 def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
     """
-    Check if apply_filter raises error on grid with single dimension
+    Check if apply_filter raises error on grid with single dimension.
     """
     with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
         apply_filter(invalid_grid_single_dim, dummy_filter)
@@ -194,7 +196,7 @@ def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
 
 def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
     """
-    Check if apply_filter raises error on grid with three dimensions
+    Check if apply_filter raises error on grid with three dimensions.
     """
     with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
         apply_filter(invalid_grid_3_dims, dummy_filter)
@@ -214,7 +216,7 @@ def fixture_invalid_grid_with_nans(sample_grid):
 
 def test_apply_filter_grid_with_nans(invalid_grid_with_nans):
     """
-    Check if apply_filter raises error on grid with single dimension
+    Check if apply_filter raises error on grid with single dimension.
     """
     with pytest.raises(ValueError, match="Found nan"):
         apply_filter(invalid_grid_with_nans, dummy_filter)
@@ -240,7 +242,7 @@ def test_coordinate_rounding_fix(sample_grid):
 @pytest.fixture(name="sample_fft_grid")
 def fixture_sample_fft_grid():
     """
-    Returns a sample fft_grid to be used in test functions
+    Return a sample fft_grid to be used in test functions.
     """
     domain = (-9e-4, 9e-4, -8e-4, 8e-4)
     freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
@@ -254,10 +256,10 @@ def fixture_sample_fft_grid():
     return fft_grid.sample_fft
 
 
-@pytest.mark.parametrize("order", (1, 2, 3))
+@pytest.mark.parametrize("order", [1, 2, 3])
 def test_derivative_upward_kernel(sample_fft_grid, order):
     """
-    Check if derivative_upward_kernel works as expected
+    Check if derivative_upward_kernel works as expected.
     """
     # Load pre-computed outcome
     expected = (
@@ -275,10 +277,10 @@ def test_derivative_upward_kernel(sample_fft_grid, order):
     )
 
 
-@pytest.mark.parametrize("order", (1, 2, 3))
+@pytest.mark.parametrize("order", [1, 2, 3])
 def test_derivative_easting_kernel(sample_fft_grid, order):
     """
-    Check if derivative_easting_kernel works as expected
+    Check if derivative_easting_kernel works as expected.
     """
     # Load pre-computed outcome
     expected = np.array([-0.0 - 0.00565487j, 0.0 + 0.0j, 0.0 + 0.00565487j]) ** order
@@ -288,10 +290,10 @@ def test_derivative_easting_kernel(sample_fft_grid, order):
     )
 
 
-@pytest.mark.parametrize("order", (1, 2, 3))
+@pytest.mark.parametrize("order", [1, 2, 3])
 def test_derivative_northing_kernel(sample_fft_grid, order):
     """
-    Check if derivative_northing_kernel works as expected
+    Check if derivative_northing_kernel works as expected.
     """
     # Load pre-computed outcome
     expected = np.array([-0.0 - 0.00502655j, 0.0 + 0.0j, 0.0 + 0.00502655j]) ** order
@@ -301,10 +303,10 @@ def test_derivative_northing_kernel(sample_fft_grid, order):
     )
 
 
-@pytest.mark.parametrize("height_displacement", (10, 100, 1000))
+@pytest.mark.parametrize("height_displacement", [10, 100, 1000])
 def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     """
-    Check if upward_continuation_kernel works as expected
+    Check if upward_continuation_kernel works as expected.
     """
     # Load pre-computed outcome
     k = np.array(
@@ -325,10 +327,11 @@ def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     )
 
 
-def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
+def test_gaussian_lowpass_kernel(sample_fft_grid):
     """
-    Check if gaussian_lowpass_kernel works as expected
+    Check if gaussian_lowpass_kernel works as expected.
     """
+    wavelength = 10
     # Load pre-computed outcome
     expected = np.array(
         [
@@ -345,10 +348,13 @@ def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
     )
 
 
-def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
+def test_gaussian_highpass_kernel(
+    sample_fft_grid,
+):
     """
-    Check if gaussian_highpass_kernel works as expected
+    Check if gaussian_highpass_kernel works as expected.
     """
+    wavelength = 100
     # Load pre-computed outcome
     expected = np.array(
         [
@@ -367,14 +373,14 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
 
 def test_reduction_to_pole_kernel(
     sample_fft_grid,
-    inclination=60,
-    declination=45,
-    magnetization_inclination=45,
-    magnetization_declination=50,
 ):
     """
-    Check if reduction_to_pole_kernel works as same as the old Fatiando package
+    Check if reduction_to_pole_kernel works as same as the old Fatiando package.
     """
+    inclination = 60
+    declination = 45
+    magnetization_inclination = 45
+    magnetization_declination = 50
     # Transform degree to rad
     [inclination, declination] = np.deg2rad([inclination, declination])
     [magnetization_inclination, magnetization_declination] = np.deg2rad(
@@ -408,7 +414,7 @@ def test_reduction_to_pole_kernel(
         * np.sqrt(k_northing**2 + k_easting**2)
         * (b1 * k_easting + b2 * k_northing)
     )
-    expected.loc[dict(freq_northing=0, freq_easting=0)] = 0
+    expected.loc[{"freq_northing": 0, "freq_easting": 0}] = 0
     # Check if the filter returns the expected output
     xrt.assert_allclose(
         expected,
@@ -423,7 +429,7 @@ def test_reduction_to_pole_kernel(
 
 
 @pytest.mark.parametrize(
-    "magnetization_inclination, magnetization_declination", [(None, 1), (1, None)]
+    ("magnetization_inclination", "magnetization_declination"), [(None, 1), (1, None)]
 )
 def test_invalid_magnetization_angles(
     sample_fft_grid, magnetization_inclination, magnetization_declination

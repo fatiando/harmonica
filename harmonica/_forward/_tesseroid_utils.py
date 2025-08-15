@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utils functions for tesseroid forward modelling
+Utils functions for tesseroid forward modelling.
 """
+
 import numpy as np
 from numba import jit
 from numpy.polynomial.legendre import leggauss
@@ -27,7 +28,7 @@ def gauss_legendre_quadrature(
     kernel,
 ):
     r"""
-    Compute the effect of a tesseroid on a single observation point through GLQ
+    Compute the effect of a tesseroid on a single observation point through GLQ.
 
     The tesseroid is converted into a set of point masses located on the
     scaled nodes of the Gauss-Legendre Quadrature. The number of point masses
@@ -116,7 +117,7 @@ def gauss_legendre_quadrature(
 
 def glq_nodes_weights(glq_degrees):
     """
-    Calculate GLQ unscaled nodes and weights
+    Calculate GLQ unscaled nodes and weights.
 
     Parameters
     ----------
@@ -155,7 +156,7 @@ def _adaptive_discretization(
     radial_discretization=False,
 ):
     """
-    Perform the adaptive discretization algorithm on a tesseroid
+    Perform the adaptive discretization algorithm on a tesseroid.
 
     It apply the three or two dimensional adaptive discretization algorithm on
     a tesseroid after a single computation point.
@@ -218,7 +219,8 @@ def _adaptive_discretization(
             # Raise error if stack overflow
             # Number of tesseroids in stack = stack_top + 1
             if (stack_top + 1) + n_lon * n_lat * n_rad > stack.shape[0]:
-                raise OverflowError("Stack Overflow. Try to increase the stack size.")
+                msg = "Stack Overflow. Try to increase the stack size."
+                raise OverflowError(msg)
             stack_top = _split_tesseroid(
                 tesseroid, n_lon, n_lat, n_rad, stack, stack_top
             )
@@ -237,7 +239,7 @@ def _adaptive_discretization(
 @jit(nopython=True)
 def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     """
-    Split tesseroid along each dimension
+    Split tesseroid along each dimension.
     """
     w, e, s, n, bottom, top = tesseroid[:]
     # Compute differential distance
@@ -247,7 +249,7 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     for i in range(n_lon):
         for j in range(n_lat):
             for k in range(n_rad):
-                stack_top += 1  # noqa: SIM113, don't want to use enumerate here
+                stack_top += 1
                 stack[stack_top, 0] = w + d_lon * i
                 stack[stack_top, 1] = w + d_lon * (i + 1)
                 stack[stack_top, 2] = s + d_lat * j
@@ -276,7 +278,7 @@ def _tesseroid_dimensions(tesseroid):
 @jit(nopython=True)
 def _distance_tesseroid_point(coordinates, tesseroid):
     """
-    Distance between a computation point and the center of a tesseroid
+    Distance between a computation point and the center of a tesseroid.
     """
     # Get center of the tesseroid
     w, e, s, n, bottom, top = tesseroid[:]
@@ -290,7 +292,7 @@ def _distance_tesseroid_point(coordinates, tesseroid):
 
 def _check_tesseroids(tesseroids):
     """
-    Check if tesseroids boundaries are well defined
+    Check if tesseroids boundaries are well defined.
 
     A valid tesseroid should have:
         - latitudinal boundaries within the [-90, 90] degrees interval,
@@ -337,7 +339,7 @@ def _check_tesseroids(tesseroids):
             + "degrees interval.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if south boundary is not greater than the corresponding north
     # boundary
@@ -345,14 +347,14 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The south boundary can't be greater than the north one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if radial boundaries are positive or zero
     invalid = np.logical_or(bottom < 0, top < 0)
     if (invalid).any():
         err_msg += "The bottom and top radii should be positive or zero.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if top boundary is not greater than the corresponding bottom
     # boundary
@@ -360,7 +362,7 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if longitudinal boundaries are inside the [-180, 360] interval
     invalid = np.logical_or(
@@ -372,7 +374,7 @@ def _check_tesseroids(tesseroids):
             + "degrees interval.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Apply longitude continuity if w > e
     if (west > east).any():
@@ -386,7 +388,7 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The west boundary can't be greater than the east one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if the longitudinal interval is not grater than one turn around the
     # globe
@@ -397,14 +399,14 @@ def _check_tesseroids(tesseroids):
             + "one turn around the globe.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     return tesseroids
 
 
 def check_points_outside_tesseroids(coordinates, tesseroids):
     """
-    Check if computation points are not inside the tesseroids
+    Check if computation points are not inside the tesseroids.
 
     Parameters
     ----------
@@ -472,7 +474,7 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
 
 def _longitude_continuity(tesseroids):
     """
-    Modify longitudinal boundaries of tesseroids to ensure longitude continuity
+    Modify longitudinal boundaries of tesseroids to ensure longitude continuity.
 
     Longitudinal boundaries of the tesseroids are moved to the ``[-180, 180)``
     degrees interval in case the ``west`` boundary is numerically greater than
@@ -504,7 +506,7 @@ def _longitude_continuity(tesseroids):
 
 def _discard_null_tesseroids(tesseroids, density):
     """
-    Discard tesseroid with zero volume or zero density
+    Discard tesseroid with zero volume or zero density.
 
     Parameters
     ----------

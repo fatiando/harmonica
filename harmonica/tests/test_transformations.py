@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test functions for regular grid transformations
+Test functions for regular grid transformations.
 """
+
 from pathlib import Path
 
 import numpy as np
@@ -38,7 +39,7 @@ TEST_DATA_DIR = MODULE_DIR / "data"
 @pytest.fixture(name="sample_sources")
 def fixture_sample_sources():
     """
-    Define a pair of sample point sources used to build tests
+    Define a pair of sample point sources used to build tests.
     """
     points = [
         [-50e3, 50e3],
@@ -53,7 +54,7 @@ def fixture_sample_sources():
 @pytest.fixture(name="sample_grid_coords")
 def fixture_sample_grid_coords():
     """
-    Define sample grid coordinates
+    Define sample grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
         region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=0
@@ -64,7 +65,7 @@ def fixture_sample_grid_coords():
 @pytest.fixture(name="upward_grid_coords")
 def fixture_upward_grid_coords():
     """
-    Define upward grid coordinates
+    Define upward grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
         region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=10e3
@@ -75,7 +76,7 @@ def fixture_upward_grid_coords():
 @pytest.fixture(name="sample_potential")
 def fixture_sample_potential(sample_grid_coords, sample_sources):
     """
-    Return gravity potential field of sample sources on sample grid coords
+    Return gravity potential field of sample sources on sample grid coords.
     """
     points, masses = sample_sources
     potential = point_gravity(sample_grid_coords, points, masses, field="potential")
@@ -91,7 +92,7 @@ def fixture_sample_potential(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_z")
 def fixture_sample_g_z(sample_grid_coords, sample_sources):
     """
-    Return g_z field of sample points on sample grid coords
+    Return g_z field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_z = point_gravity(sample_grid_coords, points, masses, field="g_z")
@@ -107,7 +108,7 @@ def fixture_sample_g_z(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_z_upward")
 def fixture_sample_g_z_upward(upward_grid_coords, sample_sources):
     """
-    Return g_z field of sample points on sample grid coords
+    Return g_z field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_z = point_gravity(upward_grid_coords, points, masses, field="g_z")
@@ -123,7 +124,7 @@ def fixture_sample_g_z_upward(upward_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_n")
 def fixture_sample_g_n(sample_grid_coords, sample_sources):
     """
-    Return g_n field of sample points on sample grid coords
+    Return g_n field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_n = point_gravity(sample_grid_coords, points, masses, field="g_n")
@@ -139,7 +140,7 @@ def fixture_sample_g_n(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_e")
 def fixture_sample_g_e(sample_grid_coords, sample_sources):
     """
-    Return g_e field of sample points on sample grid coords
+    Return g_e field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_e = point_gravity(sample_grid_coords, points, masses, field="g_e")
@@ -155,7 +156,7 @@ def fixture_sample_g_e(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_zz")
 def fixture_sample_g_zz(sample_grid_coords, sample_sources):
     """
-    Return g_zz field of sample points on sample grid coords
+    Return g_zz field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_zz = point_gravity(sample_grid_coords, points, masses, field="g_zz")
@@ -171,7 +172,7 @@ def fixture_sample_g_zz(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_nn")
 def fixture_sample_g_nn(sample_grid_coords, sample_sources):
     """
-    Return g_nn field of sample points on sample grid coords
+    Return g_nn field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_nn = point_gravity(sample_grid_coords, points, masses, field="g_nn")
@@ -187,7 +188,7 @@ def fixture_sample_g_nn(sample_grid_coords, sample_sources):
 @pytest.fixture(name="sample_g_ee")
 def fixture_sample_g_ee(sample_grid_coords, sample_sources):
     """
-    Return g_ee field of sample points on sample grid coords
+    Return g_ee field of sample points on sample grid coords.
     """
     points, masses = sample_sources
     g_ee = point_gravity(sample_grid_coords, points, masses, field="g_ee")
@@ -200,20 +201,22 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
     return g_ee.g_ee
 
 
-@pytest.mark.parametrize("index, expected_dimension", ([1, "easting"], [0, "northing"]))
+@pytest.mark.parametrize(
+    ("index", "expected_dimension"), [(1, "easting"), (0, "northing")]
+)
 def test_get_dataarray_coordinate(index, expected_dimension, sample_potential):
     """
-    Test the _get_dataarray_coordinate private function
+    Test the _get_dataarray_coordinate private function.
     """
     dimension = _get_dataarray_coordinate(sample_potential, index)
     assert dimension == expected_dimension
 
 
-@pytest.mark.parametrize("index, dimension", ([1, "easting"], [0, "northing"]))
+@pytest.mark.parametrize(("index", "dimension"), [(1, "easting"), (0, "northing")])
 def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potential):
     """
     Test if _get_dataarray_coordinate raises error when grid have an additional
-    coordinate that share one of the horizontal dimensions
+    coordinate that share one of the horizontal dimensions.
     """
     # Add another horizontal coordinate that shares the same dimension
     extra_coord = np.ones_like(sample_potential[dimension])
@@ -225,8 +228,8 @@ def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potentia
 
 
 @pytest.mark.parametrize(
-    "dimension, derivative_func",
-    (["easting", derivative_easting], ["northing", derivative_northing]),
+    ("dimension", "derivative_func"),
+    [("easting", derivative_easting), ("northing", derivative_northing)],
 )
 def test_horizontal_derivative_with_invalid_grid(
     dimension, derivative_func, sample_potential
@@ -247,7 +250,7 @@ def test_horizontal_derivative_with_invalid_grid(
 
 def test_derivative_upward(sample_potential, sample_g_z):
     """
-    Test derivative_upward function against the synthetic model
+    Test derivative_upward function against the synthetic model.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -272,7 +275,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
 
 def test_derivative_upward_order2(sample_potential, sample_g_zz):
     """
-    Test higher order of derivative_upward function against the sample grid
+    Test higher order of derivative_upward function against the sample grid.
 
     Note: We omit the minus sign here because the second derivative is positive
     for both downward (negative) and upward (positive) derivatives.
@@ -305,7 +308,7 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
 )
 def test_invalid_method_horizontal_derivatives(sample_potential, derivative_func):
     """
-    Test if passing and invalid method to horizontal derivatives raise an error
+    Test if passing and invalid method to horizontal derivatives raise an error.
     """
     method = "bla"
     err_msg = f"Invalid method '{method}'."
@@ -316,7 +319,7 @@ def test_invalid_method_horizontal_derivatives(sample_potential, derivative_func
 def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
     """
     Test derivative_easting function against the synthetic model using finite
-    differences
+    differences.
     """
     # Calculate easting derivative
     derivative = derivative_easting(sample_potential)
@@ -329,7 +332,7 @@ def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
 def test_derivative_easting_finite_diff_order_2(sample_potential, sample_g_ee):
     """
     Test higher order of derivative_easting function against the sample grid
-    using finite differences
+    using finite differences.
     """
     # Calculate second easting derivative
     second_deriv = derivative_easting(sample_potential, order=2)
@@ -341,7 +344,7 @@ def test_derivative_easting_finite_diff_order_2(sample_potential, sample_g_ee):
 
 def test_derivative_easting_fft(sample_potential, sample_g_e):
     """
-    Test derivative_easting function against the synthetic model using FFTs
+    Test derivative_easting function against the synthetic model using FFTs.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -366,7 +369,7 @@ def test_derivative_easting_fft(sample_potential, sample_g_e):
 
 def test_derivative_easting_order2(sample_potential, sample_g_ee):
     """
-    Test higher order of derivative_easting function against the sample grid
+    Test higher order of derivative_easting function against the sample grid.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -392,7 +395,7 @@ def test_derivative_easting_order2(sample_potential, sample_g_ee):
 def test_derivative_northing_finite_diff(sample_potential, sample_g_n):
     """
     Test derivative_northing function against the synthetic model using finite
-    differences
+    differences.
     """
     # Calculate northing derivative
     derivative = derivative_northing(sample_potential)
@@ -405,7 +408,7 @@ def test_derivative_northing_finite_diff(sample_potential, sample_g_n):
 def test_derivative_northing_finite_diff_order_2(sample_potential, sample_g_nn):
     """
     Test higher order of derivative_northing function against the sample grid
-    using finite differences
+    using finite differences.
     """
     # Calculate second northing derivative
     second_deriv = derivative_northing(sample_potential, order=2)
@@ -417,7 +420,7 @@ def test_derivative_northing_finite_diff_order_2(sample_potential, sample_g_nn):
 
 def test_derivative_northing(sample_potential, sample_g_n):
     """
-    Test derivative_northing function against the synthetic model
+    Test derivative_northing function against the synthetic model.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -442,7 +445,7 @@ def test_derivative_northing(sample_potential, sample_g_n):
 
 def test_derivative_northing_order2(sample_potential, sample_g_nn):
     """
-    Test higher order of derivative_northing function against the sample grid
+    Test higher order of derivative_northing function against the sample grid.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -467,7 +470,7 @@ def test_derivative_northing_order2(sample_potential, sample_g_nn):
 
 def test_laplace_fft(sample_potential):
     """
-    Test if second order of derivatives fulfill Laplace equation
+    Test if second order of derivatives fulfill Laplace equation.
 
     We will use FFT computations only.
     """
@@ -500,7 +503,7 @@ def test_laplace_fft(sample_potential):
 
 def test_upward_continuation(sample_g_z, sample_g_z_upward):
     """
-    Test upward_continuation function against the synthetic model
+    Test upward_continuation function against the synthetic model.
     """
     # Pad the potential field grid to improve accuracy
     pad_width = {
@@ -526,7 +529,7 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
 
 def test_reduction_to_pole(sample_potential):
     """
-    Test reduction_to_pole function with non-typical dim names
+    Test reduction_to_pole function with non-typical dim names.
     """
     renamed_dims_grid = sample_potential.rename(
         {"easting": "name_one", "northing": "name_two"}
@@ -536,14 +539,14 @@ def test_reduction_to_pole(sample_potential):
 
 class TestTotalGradientAmplitude:
     """
-    Test total_gradient_amplitude function
+    Test total_gradient_amplitude function.
     """
 
     def test_against_synthetic(
         self, sample_potential, sample_g_n, sample_g_e, sample_g_z
     ):
         """
-        Test total_gradient_amplitude function against the synthetic model
+        Test total_gradient_amplitude function against the synthetic model.
         """
         # Pad the potential field grid to improve accuracy
         pad_width = {
@@ -571,7 +574,7 @@ class TestTotalGradientAmplitude:
     def test_invalid_grid_single_dimension(self):
         """
         Check if total_gradient_amplitude raises error on grid with single
-        dimension
+        dimension.
         """
         x = np.linspace(0, 10, 11)
         y = x**2
@@ -582,7 +585,7 @@ class TestTotalGradientAmplitude:
     def test_invalid_grid_three_dimensions(self):
         """
         Check if total_gradient_amplitude raises error on grid with three
-        dimensions
+        dimensions.
         """
         x = np.linspace(0, 10, 11)
         y = np.linspace(-4, 4, 9)
@@ -595,7 +598,7 @@ class TestTotalGradientAmplitude:
 
     def test_invalid_grid_with_nans(self, sample_potential):
         """
-        Check if total_gradient_amplitude raises error if grid contains nans
+        Check if total_gradient_amplitude raises error if grid contains nans.
         """
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
@@ -604,14 +607,14 @@ class TestTotalGradientAmplitude:
 
 class TestTilt:
     """
-    Test tilt function
+    Test tilt function.
     """
 
     def test_against_synthetic(
         self, sample_potential, sample_g_n, sample_g_e, sample_g_z
     ):
         """
-        Test tilt function against the synthetic model
+        Test tilt function against the synthetic model.
         """
         # Pad the potential field grid to improve accuracy
         pad_width = {
@@ -642,7 +645,7 @@ class TestTilt:
     def test_invalid_grid_single_dimension(self):
         """
         Check if tilt raises error on grid with single
-        dimension
+        dimension.
         """
         x = np.linspace(0, 10, 11)
         y = x**2
@@ -653,7 +656,7 @@ class TestTilt:
     def test_invalid_grid_three_dimensions(self):
         """
         Check if tilt raises error on grid with three
-        dimensions
+        dimensions.
         """
         x = np.linspace(0, 10, 11)
         y = np.linspace(-4, 4, 9)
@@ -666,7 +669,7 @@ class TestTilt:
 
     def test_invalid_grid_with_nans(self, sample_potential):
         """
-        Check if tilt raises error if grid contains nans
+        Check if tilt raises error if grid contains nans.
         """
         sample_potential.values[0, 0] = np.nan
         with pytest.raises(ValueError, match="Found nan"):
@@ -675,28 +678,28 @@ class TestTilt:
 
 class Testfilter:
     """
-    Test filter result against the output from oasis montaj
+    Test filter result against the output from oasis montaj.
     """
 
     expected_grid = xr.open_dataset(TEST_DATA_DIR / "filter.nc")
 
     def test_gaussian_lowpass_grid(self):
         """
-        Test gaussian_lowpass function against the output from oasis montaj
+        Test gaussian_lowpass function against the output from oasis montaj.
         """
         low_pass = gaussian_lowpass(self.expected_grid.filter_data, 10)
         xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-6)
 
     def test_gaussian_highpass_grid(self):
         """
-        Test gaussian_highpass function against the output from oasis montaj
+        Test gaussian_highpass function against the output from oasis montaj.
         """
         high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
         xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-6)
 
     def test_reduction_to_pole_grid(self):
         """
-        Test greduction_to_pole function against the output from oasis montaj
+        Test greduction_to_pole function against the output from oasis montaj.
         """
         rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
         # Remove mean value to match OM result

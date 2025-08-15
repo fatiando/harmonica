@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utilities for forward modelling
+Utilities for forward modelling.
 """
+
 import contextlib
 
 import numpy as np
@@ -21,7 +22,7 @@ except ImportError:
 
 def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
     """
-    Distance between two points in Cartesian, spherical or geodetic coordinates
+    Distance between two points in Cartesian, spherical or geodetic coordinates.
 
     Computes the Euclidean distance between two points given in Cartesian,
     spherical or geodetic coordinates.
@@ -87,15 +88,14 @@ def check_coordinate_system(
         Default (``cartesian``, ``spherical``).
     """
     if coordinate_system not in valid_coord_systems:
-        raise ValueError(
-            "Coordinate system {} not recognized.".format(coordinate_system)
-        )
+        msg = f"Coordinate system {coordinate_system} not recognized."
+        raise ValueError(msg)
 
 
 @jit(nopython=True)
 def distance_cartesian(point_p, point_q):
     """
-    Calculate the distance between two points given in Cartesian coordinates
+    Calculate the distance between two points given in Cartesian coordinates.
 
     Parameters
     ----------
@@ -126,7 +126,7 @@ def distance_cartesian(point_p, point_q):
 @jit(nopython=True)
 def distance_spherical(point_p, point_q):
     """
-    Calculate the distance between two points in spherical coordinates
+    Calculate the distance between two points in spherical coordinates.
 
     All angles must be in degrees and radii in meters.
 
@@ -170,7 +170,7 @@ def distance_spherical_core(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Core computation of distance between two points in spherical coordinates
+    Core computation of distance between two points in spherical coordinates.
 
     It computes the distance between two points in spherical coordinates given
     precomputed quantities related to the coordinates of both points: the
@@ -208,7 +208,7 @@ def distance_spherical_core(
 
 def distance_geodetic(point_p, point_q, ellipsoid):
     """
-    Calculate the distance between two points in geodetic coordinates
+    Calculate the distance between two points in geodetic coordinates.
 
     Computes the Euclidean distance between two points given in geodetic
     coordinates using the closed-form formula given by [Vajda2004]_.
@@ -290,7 +290,7 @@ def geodetic_distance_core(
     ecc_sq,
 ):
     """
-    Core computation of distance between two points in geodetic coordinates
+    Core computation of distance between two points in geodetic coordinates.
 
     Parameters
     ----------
@@ -337,7 +337,7 @@ def geodetic_distance_core(
 
 def initialize_progressbar(total, use_progressbar):
     """
-    Generate an instance of ``numba_progress.ProgressBar``
+    Generate an instance of ``numba_progress.ProgressBar``.
 
     This function is meant to be used within other forward modelling functions
     that have a ``progressbar`` optional argument.
@@ -363,7 +363,7 @@ def initialize_progressbar(total, use_progressbar):
     ImportError
         If ``numba_progress`` is missing and ``use_progress`` is set to True.
 
-    See also
+    See Also
     --------
     :func:`harmonica.prism_gravity`
 
@@ -385,8 +385,8 @@ def initialize_progressbar(total, use_progressbar):
         return contextlib.nullcontext()
     # Raise error if numba_progress is not installed
     if ProgressBar is None:
-        raise ImportError(
-            "Missing optional dependency 'numba_progress' required "
-            "if progressbar=True"
+        msg = (
+            "Missing optional dependency 'numba_progress' required if progressbar=True"
         )
+        raise ImportError(msg)
     return ProgressBar(total=total)

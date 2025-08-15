@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent sources for generic harmonic functions in spherical coordinates
+Equivalent sources for generic harmonic functions in spherical coordinates.
 """
+
 import warnings
 
 import numpy as np
@@ -26,7 +27,7 @@ from .utils import (
 
 class EquivalentSourcesSph(vdb.BaseGridder):
     r"""
-    Equivalent sources for generic harmonic functions in spherical coordinates
+    Equivalent sources for generic harmonic functions in spherical coordinates.
 
     These equivalent sources can be used for:
 
@@ -107,10 +108,6 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     # Overwrite the defalt name for the upward coordinate.
     extra_coords_name = "radius"
-
-    # Define dispatcher for Numba functions with or without parallelization
-    _predict_kernel = {False: predict_numba_serial, True: predict_numba_parallel}
-    _jacobian_kernel = {False: jacobian_numba_serial, True: jacobian_numba_parallel}
 
     def __init__(
         self,
@@ -196,9 +193,8 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         dtype = coordinates[0].dtype
         coordinates = tuple(np.atleast_1d(i).ravel() for i in coordinates[:3])
         data = np.zeros(size, dtype=dtype)
-        self._predict_kernel[self.parallel](
-            coordinates, self.points_, self.coefs_, data, self.greens_function
-        )
+        kernel = predict_numba_parallel if self.parallel else predict_numba_serial
+        kernel(coordinates, self.points_, self.coefs_, data, self.greens_function)
         return data.reshape(shape)
 
     def jacobian(self, coordinates, points, dtype="float64"):
@@ -231,9 +227,8 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=dtype)
-        self._jacobian_kernel[self.parallel](
-            coordinates, points, jac, self.greens_function
-        )
+        kernel = jacobian_numba_parallel if self.parallel else jacobian_numba_serial
+        kernel(coordinates, points, jac, self.greens_function)
         return jac
 
     def grid(
@@ -327,13 +322,13 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,  # noqa: U100
-        size=None,  # noqa: U100
-        random_state=None,  # noqa: U100
-        dims=None,  # noqa: U100
-        data_names=None,  # noqa: U100
-        projection=None,  # noqa: U100
-        **kwargs,  # noqa: U100
+        region=None,
+        size=None,
+        random_state=None,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs,
     ):
         """
         .. warning ::
@@ -341,18 +336,18 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             Not implemented method. The scatter method will be deprecated on
             Verde v2.0.0.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
     def profile(
         self,
-        point1,  # noqa: U100
-        point2,  # noqa: U100
-        size,  # noqa: U100
-        dims=None,  # noqa: U100
-        data_names=None,  # noqa: U100
-        projection=None,  # noqa: U100
-        **kwargs,  # noqa: U100
+        point1,
+        point2,
+        size,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs,
     ):
         """
         .. warning ::
@@ -360,7 +355,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             Not implemented method. The profile on spherical coordinates should
             be done using great-circle distances through the Haversine formula.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
 
@@ -369,7 +364,7 @@ def greens_func_spherical(
     longitude, latitude, radius, point_longitude, point_latitude, point_radius
 ):
     """
-    Green's function for the equivalent sources in spherical coordinates
+    Green's function for the equivalent sources in spherical coordinates.
 
     Uses Numba to speed up things.
     """

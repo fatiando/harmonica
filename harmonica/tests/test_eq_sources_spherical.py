@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test the EquivalentSourcesSph gridder
+Test the EquivalentSourcesSph gridder.
 """
 
 import numpy as np
@@ -20,7 +20,7 @@ from .utils import run_only_with_numba
 @pytest.fixture(name="region")
 def fixture_region():
     """
-    Return a sample region
+    Return a sample region.
     """
     return (-70, -60, -40, -30)
 
@@ -28,7 +28,7 @@ def fixture_region():
 @pytest.fixture(name="points")
 def fixture_points(region):
     """
-    Return the coordinates of some sample point masses
+    Return the coordinates of some sample point masses.
     """
     radius = 6400e3
     points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=radius - 1e3)
@@ -38,7 +38,7 @@ def fixture_points(region):
 @pytest.fixture(name="masses")
 def fixture_masses(region, points):
     """
-    Return the masses some sample point masses
+    Return the masses some sample point masses.
     """
     return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
@@ -46,7 +46,7 @@ def fixture_masses(region, points):
 @pytest.fixture(name="coordinates_small")
 def fixture_coordinates_small(region):
     """
-    Return a small set of 25 coordinates and variable elevation
+    Return a small set of 25 coordinates and variable elevation.
     """
     shape = (5, 5)
     longitude, latitude = vd.grid_coordinates(region=region, shape=shape)
@@ -58,7 +58,7 @@ def fixture_coordinates_small(region):
 @pytest.fixture(name="data_small")
 def fixture_data_small(points, masses, coordinates_small):
     """
-    Return some sample data for the small set of coordinates
+    Return some sample data for the small set of coordinates.
     """
     return point_gravity(
         coordinates_small, points, masses, field="g_z", coordinate_system="spherical"
@@ -186,7 +186,7 @@ def test_equivalent_sources_custom_points_spherical():
 
 def test_equivalent_sources_scatter_not_implemented():
     """
-    Check if scatter method raises a NotImplementedError
+    Check if scatter method raises a NotImplementedError.
     """
     eqs = EquivalentSourcesSph()
     with pytest.raises(NotImplementedError):
@@ -195,7 +195,7 @@ def test_equivalent_sources_scatter_not_implemented():
 
 def test_equivalent_sources_profile_not_implemented():
     """
-    Check if scatter method raises a NotImplementedError
+    Check if scatter method raises a NotImplementedError.
     """
     eqs = EquivalentSourcesSph()
     with pytest.raises(NotImplementedError):
@@ -204,7 +204,7 @@ def test_equivalent_sources_profile_not_implemented():
 
 def test_equivalent_sources_spherical_no_projection():
     """
-    Check if projection is not a valid argument of grid method
+    Check if projection is not a valid argument of grid method.
     """
     eqs = EquivalentSourcesSph()
     with pytest.raises(TypeError):
@@ -214,7 +214,7 @@ def test_equivalent_sources_spherical_no_projection():
 @run_only_with_numba
 def test_equivalent_sources_spherical_parallel():
     """
-    Check predictions when parallel is enabled and disabled
+    Check predictions when parallel is enabled and disabled.
     """
     region = (-70, -60, -40, -30)
     radius = 6400e3
@@ -249,16 +249,16 @@ def test_equivalent_sources_spherical_parallel():
 
 @pytest.mark.parametrize(
     "deprecated_args",
-    (
-        dict(upward=5e3, spacing=1),
-        dict(upward=5e3, shape=(6, 6)),
-        dict(upward=5e3, spacing=1, region=(-75, -55, -40, -30)),
-        dict(upward=5e3, shape=(6, 6), region=(-75, -55, -40, -30)),
-    ),
+    [
+        {"upward": 5e3, "spacing": 1},
+        {"upward": 5e3, "shape": (6, 6)},
+        {"upward": 5e3, "spacing": 1, "region": (-75, -55, -40, -30)},
+        {"upward": 5e3, "shape": (6, 6), "region": (-75, -55, -40, -30)},
+    ],
 )
 def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
     """
-    Test if EquivalentSourcesSph.grid raises error on deprecated arguments
+    Test if EquivalentSourcesSph.grid raises error on deprecated arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)
@@ -272,7 +272,7 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
 
 def test_error_ignored_args(coordinates_small, data_small, region):
     """
-    Test if EquivalentSourcesSph.grid raises warning on ignored arguments
+    Test if EquivalentSourcesSph.grid raises warning on ignored arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)

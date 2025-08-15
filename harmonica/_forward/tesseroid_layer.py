@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Define a layer of tesseroids
+Define a layer of tesseroids.
 """
+
 import warnings
 
 import numpy as np
@@ -18,7 +19,7 @@ from .tesseroid import tesseroid_gravity
 
 def tesseroid_layer(coordinates, surface, reference, properties=None):
     """
-    Create a layer of tesseroids of equal size
+    Create a layer of tesseroids of equal size.
 
     Parameters
     ----------
@@ -51,7 +52,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
         height of its top and bottom boundaries ans its corresponding physical
         properties.
 
-    See also
+    See Also
     --------
     harmonica.DatasetAccessorsTesseroidLayer
 
@@ -62,7 +63,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
     # If properties were passed, then replace data_names and data for its keys
     # and values, respectively
     if properties:
-        data_names = tuple(p for p in properties.keys())
+        data_names = tuple(p for p in properties)
         data = tuple(np.asarray(p) for p in properties.values())
     # Create xr.Dataset for tesseroids
     tesseroids = vd.make_xarray_grid(
@@ -86,7 +87,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
 
 def _check_regular_grid(longitude, latitude):
     """
-    Check if the longitude and latitude coordinates define a regular grid
+    Check if the longitude and latitude coordinates define a regular grid.
 
     .. note:
 
@@ -94,26 +95,30 @@ def _check_regular_grid(longitude, latitude):
 
     """
     if not np.allclose(longitude[1] - longitude[0], longitude[1:] - longitude[:-1]):
-        raise ValueError("Passed longitude coordinates are note evenly spaced.")
+        msg = "Passed longitude coordinates are not evenly spaced."
+        raise ValueError(msg)
     if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
-        raise ValueError("Passed latitude coordinates are note evenly spaced.")
+        msg = "Passed latitude coordinates are not evenly spaced."
+        raise ValueError(msg)
 
 
 def _check_overlap(longitude):
     """
-    Check if the prisms boundaries are overlapped
+    Check if the prisms boundaries are overlapped.
     """
     spacing = longitude[1] - longitude[0]
     if longitude.max() - longitude.min() >= 360 - spacing:
-        raise ValueError(
-            "Found invalid longitude coordinates that would create overlapping tesseroids around the globe."
+        msg = (
+            "Found invalid longitude coordinates that would create overlapping "
+            "tesseroids around the globe."
         )
+        raise ValueError(msg)
 
 
 @xr.register_dataset_accessor("tesseroid_layer")
 class DatasetAccessorTesseroidLayer:
     """
-    Define dataset accessor for layer of tesseroids
+    Define dataset accessor for layer of tesseroids.
 
     .. warning::
 
@@ -121,7 +126,7 @@ class DatasetAccessorTesseroidLayer:
         Use the `tesseroid_layer` accessor for accessing the methods and
         attributes of this class.
 
-    See also
+    See Also
     --------
     harmonica.tesseroid_layer
     """
@@ -132,7 +137,7 @@ class DatasetAccessorTesseroidLayer:
     @property
     def dims(self):
         """
-        Return the dims tuple of the prism layer
+        Return the dims tuple of the prism layer.
 
         The tuple follows the xarray order: ``"latitude"``, ``"longitude"``.
         """
@@ -141,7 +146,7 @@ class DatasetAccessorTesseroidLayer:
     @property
     def spacing(self):
         """
-        Spacing between center of tesseroids
+        Spacing between center of tesseroids.
 
         Returns
         -------
@@ -159,7 +164,7 @@ class DatasetAccessorTesseroidLayer:
     @property
     def size(self):
         """
-        Return the total number of tesseroids on the layer
+        Return the total number of tesseroids on the layer.
 
         Returns
         -------
@@ -171,7 +176,7 @@ class DatasetAccessorTesseroidLayer:
     @property
     def shape(self):
         """
-        Return the number of tesseroids on each directions
+        Return the number of tesseroids on each directions.
 
         Returns
         -------
@@ -185,7 +190,7 @@ class DatasetAccessorTesseroidLayer:
     @property
     def boundaries(self):
         """
-        Boundaries of the layer
+        Boundaries of the layer.
 
         Returns
         -------
@@ -202,7 +207,7 @@ class DatasetAccessorTesseroidLayer:
 
     def update_top_bottom(self, surface, reference):
         """
-        Update top and bottom boundaries of the layer
+        Update top and bottom boundaries of the layer.
 
         Change the values of the ``top`` and ``bottom`` coordinates based on
         the passed ``surface`` and ``reference``. The ``top`` and ``bottom``
@@ -254,7 +259,7 @@ class DatasetAccessorTesseroidLayer:
         self, coordinates, field, progressbar=False, density_name="density", **kwargs
     ):
         """
-        Computes the gravity generated by the layer of tesseroids
+        Compute the gravity generated by the layer of tesseroids.
 
         Parameters
         ----------
@@ -284,7 +289,7 @@ class DatasetAccessorTesseroidLayer:
             point. Gravitational potential will be returned in SI units, while
             acceleration components will be in mGal.
 
-        See also
+        See Also
         --------
         harmonica.tesseroid_gravity
         """
@@ -309,7 +314,7 @@ class DatasetAccessorTesseroidLayer:
 
     def _get_nonans_mask(self, property_name=None):
         """
-        Build a mask for tesseroid with no nans on top, bottom or a property
+        Build a mask for tesseroid with no nans on top, bottom or a property.
 
         Parameters
         ----------
@@ -339,7 +344,7 @@ class DatasetAccessorTesseroidLayer:
 
     def _to_tesseroids(self):
         """
-        Return the boundaries of each tesseroid of the layer
+        Return the boundaries of each tesseroid of the layer.
 
         Returns
         -------
@@ -369,7 +374,7 @@ class DatasetAccessorTesseroidLayer:
 
     def _get_tesseroid_horizontal_boundaries(self, longitude, latitude):
         """
-        Compute the horizontal boundaries of the tesseroid
+        Compute the horizontal boundaries of the tesseroid.
 
         Parameters
         ----------
@@ -387,7 +392,7 @@ class DatasetAccessorTesseroidLayer:
 
     def get_tesseroid(self, indices):
         """
-        Return the boundaries of the chosen tesseroid
+        Return the boundaries of the chosen tesseroid.
 
         Parameters
         ----------
