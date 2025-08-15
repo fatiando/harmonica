@@ -161,10 +161,6 @@ class EquivalentSources(vdb.BaseGridder):
     # Overwrite the defalt name for the upward coordinate.
     extra_coords_name = "upward"
 
-    # Define dispatcher for Numba functions with or without parallelization
-    _predict_kernel = {False: predict_numba_serial, True: predict_numba_parallel}
-    _jacobian_kernel = {False: jacobian_numba_serial, True: jacobian_numba_parallel}
-
     def __init__(
         self,
         damping=None,
@@ -336,9 +332,8 @@ class EquivalentSources(vdb.BaseGridder):
             np.atleast_1d(i.astype(self.dtype)).ravel() for i in coordinates[:3]
         )
         data = np.zeros(size, dtype=self.dtype)
-        self._predict_kernel[self.parallel](
-            coordinates, self.points_, self.coefs_, data, self.greens_function
-        )
+        kernel = predict_numba_parallel if self.parallel else predict_numba_serial
+        kernel(coordinates, self.points_, self.coefs_, data, self.greens_function)
         return data.reshape(shape)
 
     def jacobian(self, coordinates, points):
@@ -369,9 +364,8 @@ class EquivalentSources(vdb.BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=self.dtype)
-        self._jacobian_kernel[self.parallel](
-            coordinates, points, jac, self.greens_function
-        )
+        kernel = jacobian_numba_parallel if self.parallel else jacobian_numba_serial
+        kernel(coordinates, points, jac, self.greens_function)
         return jac
 
     def grid(
