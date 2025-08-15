@@ -7,7 +7,7 @@
 """
 Test functions from the visualization module.
 """
-
+import re
 from unittest.mock import patch
 
 import numpy as np
@@ -115,8 +115,14 @@ def test_prism_to_pyvista_error_2d_property(prisms, density):
     Test if prism_to_pyvista raises error on property as 2D array.
     """
     density_2d = np.array(density).reshape((2, 2))
-    with pytest.raises(ValueError):
-        prism_to_pyvista(prisms, properties={"density": density_2d})
+
+    name = "density"
+    msg = re.escape(
+        f"Multidimensional array found in '{name}' property. "
+        + "Please, pass prism properties as 1d arrays."
+    )
+    with pytest.raises(ValueError, match=msg):
+        prism_to_pyvista(prisms, properties={name: density_2d})
 
 
 @patch("harmonica.visualization._prism.pyvista", None)
