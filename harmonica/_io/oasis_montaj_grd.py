@@ -191,12 +191,8 @@ def _read_header(header_bytes):
     )
     # Read optional parameters
     # (ignore map LABEL and MAPNO)
-    PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array(
-        "i", header_bytes[140 : 140 + 5 * 4]
-    )
-    IZMIN, IZMAX, IZMED, IZMEA = array.array(
-        "f", header_bytes[160 : 160 + 4 * 4]
-    )
+    PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array("i", header_bytes[140 : 140 + 5 * 4])
+    IZMIN, IZMAX, IZMED, IZMEA = array.array("f", header_bytes[160 : 160 + 4 * 4])
     (ZVAR,) = array.array("d", header_bytes[176 : 176 + 8])
     (PRCS,) = array.array("i", header_bytes[184 : 184 + 4])
     header.update(

@@ -88,9 +88,7 @@ def check_coordinate_system(
         Default (``cartesian``, ``spherical``).
     """
     if coordinate_system not in valid_coord_systems:
-        raise ValueError(
-            f"Coordinate system {coordinate_system} not recognized."
-        )
+        raise ValueError(f"Coordinate system {coordinate_system} not recognized.")
 
 
 @jit(nopython=True)

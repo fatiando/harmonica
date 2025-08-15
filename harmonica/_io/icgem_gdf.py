@@ -97,9 +97,7 @@ def _read_gdf_file(fname, **kwargs):
             gdf_file = fname
         else:
             # It's a file path
-            gdf_file = stack.enter_context(
-                open(fname)
-            )
+            gdf_file = stack.enter_context(open(fname))
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
