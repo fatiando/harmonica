@@ -38,7 +38,7 @@ TEST_DATA_DIR = MODULE_DIR / "data"
 
 
 def test_invalid_coordinate_system():
-    "Check if invalid coordinate system is passed"
+    """Check if invalid coordinate system is passed"""
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
@@ -72,7 +72,7 @@ def test_not_implemented_field():
 
 
 def test_invalid_field():
-    "Check if an invalid gravitational field is passed as argument"
+    """Check if an invalid gravitational field is passed as argument"""
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
@@ -88,7 +88,7 @@ def test_invalid_field():
 
 
 def test_invalid_masses_array():
-    "Check if error is raised when masses shape does not match points shape"
+    """Check if error is raised when masses shape does not match points shape"""
     # Create a set of 3 point masses
     points = [[-10, 0, 10], [-10, 0, 10], [-100, 0, 100]]
     # Generate a two element masses
@@ -622,7 +622,7 @@ def test_tensor_finite_diff_cartesian(coordinates, point, mass, field):
 # ---------------------------
 @pytest.mark.use_numba
 def test_point_mass_on_origin():
-    "Check potential and g_z of point mass on origin in spherical coordinates"
+    """Check potential and g_z of point mass on origin in spherical coordinates"""
     point_mass = [0.0, 0.0, 0.0]
     mass = 2.0
     radius = np.logspace(1, 8, 5)
@@ -677,7 +677,7 @@ def test_point_mass_same_radial_direction(field):
 
 @pytest.mark.use_numba
 def test_point_mass_potential_on_equator():
-    "Check potential field on equator and same radial coordinate"
+    """Check potential field on equator and same radial coordinate"""
     radius = 3.0
     mass = 2.0
     latitude = 0.0
@@ -707,7 +707,7 @@ def test_point_mass_potential_on_equator():
 
 @pytest.mark.use_numba
 def test_point_mass_potential_on_same_meridian():
-    "Check potential field on same meridian and radial coordinate"
+    """Check potential field on same meridian and radial coordinate"""
     radius = 3.0
     mass = 2.0
     longitude = 0.0

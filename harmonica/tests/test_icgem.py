@@ -22,7 +22,7 @@ TEST_DATA_DIR = os.path.join(MODULE_DIR, "data")
 
 
 def test_load_icgem_gdf():
-    "Check if load_icgem_gdf reads an ICGEM file with sample data correctly"
+    """Check if load_icgem_gdf reads an ICGEM file with sample data correctly"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     icgem_grd = load_icgem_gdf(fname)
 
@@ -43,9 +43,9 @@ def test_load_icgem_gdf():
 
 
 def test_load_icgem_gdf_open_file():
-    "Check if load_icgem_gdf works if given an open file instead of string"
+    """Check if load_icgem_gdf works if given an open file instead of string"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
-    with open(fname, "r") as open_file:
+    with open(fname) as open_file:
         icgem_grd = load_icgem_gdf(open_file)
 
     s, n, w, e = 16, 28, 150, 164
@@ -65,7 +65,7 @@ def test_load_icgem_gdf_open_file():
 
 
 def test_load_icgem_gdf_with_height():
-    "Check if load_icgem_gdf reads an ICGEM file with height column"
+    """Check if load_icgem_gdf reads an ICGEM file with height column"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample-with-height.gdf")
     icgem_grd = load_icgem_gdf(fname)
 
@@ -86,7 +86,7 @@ def test_load_icgem_gdf_with_height():
 
 
 def test_load_icgem_gdf_usecols():
-    "Check if load_icgem_gdf loads ICGEM file reading only first two columns"
+    """Check if load_icgem_gdf loads ICGEM file reading only first two columns"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     icgem_grd = load_icgem_gdf(fname, usecols=[0, 1])
 
@@ -106,7 +106,7 @@ def test_load_icgem_gdf_usecols():
 
 
 def test_missing_shape(tmpdir):
-    "ICGEM file with missing shape"
+    """ICGEM file with missing shape"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
@@ -121,7 +121,7 @@ def test_missing_shape(tmpdir):
 
 
 def test_missing_size(tmpdir):
-    "ICGEM file with missing size"
+    """ICGEM file with missing size"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_size.gdf"))
     attribute = "number_of_gridpoints"
@@ -135,7 +135,7 @@ def test_missing_size(tmpdir):
 
 
 def test_corrupt_shape(tmpdir):
-    "ICGEM file with corrupt shape"
+    """ICGEM file with corrupt shape"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["latitude_parallels", "longitude_parallels"]
     for attribute in attributes:
@@ -153,7 +153,7 @@ def test_corrupt_shape(tmpdir):
 
 
 def test_missing_cols_names(tmpdir):
-    "ICGEM file with missing cols names"
+    """ICGEM file with missing cols names"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_cols_names.gdf"))
     with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
@@ -166,7 +166,7 @@ def test_missing_cols_names(tmpdir):
 
 
 def test_missing_units(tmpdir):
-    "ICGEM file with missing units"
+    """ICGEM file with missing units"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_units.gdf"))
     with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
@@ -179,7 +179,7 @@ def test_missing_units(tmpdir):
 
 
 def test_missing_empty_line(tmpdir):
-    "ICGEM file with missing empty line"
+    """ICGEM file with missing empty line"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_empty_line.gdf"))
     with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
@@ -192,7 +192,7 @@ def test_missing_empty_line(tmpdir):
 
 
 def test_missing_attribute(tmpdir):
-    "ICGEM file with one missing attribute (not missing unit)"
+    """ICGEM file with one missing attribute (not missing unit)"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("missing_attribute.gdf"))
     with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
@@ -207,7 +207,7 @@ def test_missing_attribute(tmpdir):
 
 
 def test_missing_lat_lon_attributes(tmpdir):
-    "ICGEM file with missing longitude or latitude attribute"
+    """ICGEM file with missing longitude or latitude attribute"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = ["longitude", "latitude"]
     for attribute in attributes:
@@ -224,7 +224,7 @@ def test_missing_lat_lon_attributes(tmpdir):
 
 
 def test_diff_attrs_vs_cols(tmpdir):
-    "ICGEM file with different number of cols vs number of attributes"
+    """ICGEM file with different number of cols vs number of attributes"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     corrupt = str(tmpdir.join("diff_attributes_vs_cols.gdf"))
     with open(fname) as gdf_file, open(corrupt, "w") as corrupt_gdf:
@@ -239,7 +239,7 @@ def test_diff_attrs_vs_cols(tmpdir):
 
 
 def test_missing_area(tmpdir):
-    "ICGEM file with missing area coordinates"
+    """ICGEM file with missing area coordinates"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = [
         "latlimit_north",
@@ -259,7 +259,7 @@ def test_missing_area(tmpdir):
 
 
 def test_corrupt_area(tmpdir):
-    "ICGEM file with area in header mismatch area from data"
+    """ICGEM file with area in header mismatch area from data"""
     fname = os.path.join(TEST_DATA_DIR, "icgem-sample.gdf")
     attributes = [
         "latlimit_north",
@@ -294,7 +294,7 @@ def fixture_empty_fname(tmpdir):
 
 
 def test_empty_file(empty_fname):
-    "Empty ICGEM file"
+    """Empty ICGEM file"""
     error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
     warn = warns(UserWarning, match=r"loadtxt")
     with error, warn:

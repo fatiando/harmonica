@@ -248,7 +248,7 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     for i in range(n_lon):
         for j in range(n_lat):
             for k in range(n_rad):
-                stack_top += 1  # noqa: SIM113, don't want to use enumerate here
+                stack_top += 1
                 stack[stack_top, 0] = w + d_lon * i
                 stack[stack_top, 1] = w + d_lon * (i + 1)
                 stack[stack_top, 2] = s + d_lat * j
@@ -338,7 +338,7 @@ def _check_tesseroids(tesseroids):
             + "degrees interval.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if south boundary is not greater than the corresponding north
     # boundary
@@ -346,14 +346,14 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The south boundary can't be greater than the north one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if radial boundaries are positive or zero
     invalid = np.logical_or(bottom < 0, top < 0)
     if (invalid).any():
         err_msg += "The bottom and top radii should be positive or zero.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if top boundary is not greater than the corresponding bottom
     # boundary
@@ -361,7 +361,7 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if longitudinal boundaries are inside the [-180, 360] interval
     invalid = np.logical_or(
@@ -373,7 +373,7 @@ def _check_tesseroids(tesseroids):
             + "degrees interval.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Apply longitude continuity if w > e
     if (west > east).any():
@@ -387,7 +387,7 @@ def _check_tesseroids(tesseroids):
     if (invalid).any():
         err_msg += "The west boundary can't be greater than the east one.\n"
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     # Check if the longitudinal interval is not grater than one turn around the
     # globe
@@ -398,7 +398,7 @@ def _check_tesseroids(tesseroids):
             + "one turn around the globe.\n"
         )
         for tess in tesseroids[invalid]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(tess)
+            err_msg += f"\tInvalid tesseroid: {tess}\n"
         raise ValueError(err_msg)
     return tesseroids
 

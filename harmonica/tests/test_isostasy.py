@@ -98,7 +98,7 @@ def fixture_sediments_array(request):
 
 
 def test_airy_no_layer(basement):
-    "Use no layer to check the calculations"
+    """Use no layer to check the calculations"""
     layers = None
     root = isostatic_moho_airy(
         basement,
@@ -112,7 +112,7 @@ def test_airy_no_layer(basement):
 
 
 def test_airy_single_layer(basement, water):
-    "Use a simple basement + water model to check the calculations"
+    """Use a simple basement + water model to check the calculations"""
     thickness_water, density_water = water
     layers = {"water": (thickness_water, density_water)}
     root = isostatic_moho_airy(
@@ -149,7 +149,7 @@ def test_airy_single_layer_array(basement, water_array):
 
 
 def test_airy_multiple_layers(basement, water, sediments):
-    "Check isostasy function against a model with multiple layers"
+    """Check isostasy function against a model with multiple layers"""
     thickness_water, density_water = water
     thickness_sediments, density_sediments = sediments
     layers = {

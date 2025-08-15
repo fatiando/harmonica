@@ -164,7 +164,6 @@ def prism_gravity(
 
     Examples
     --------
-
     Compute gravitational effect of a single a prism
 
     >>> # Define prisms boundaries, it must be beneath the surface
@@ -194,7 +193,7 @@ def prism_gravity(
 
     """
     if field not in FIELDS:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+        raise ValueError(f"Gravitational field {field} not recognized")
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -206,8 +205,8 @@ def prism_gravity(
     if not disable_checks:
         if density.size != prisms.shape[0]:
             raise ValueError(
-                "Number of elements in density ({}) ".format(density.size)
-                + "mismatch the number of prisms ({})".format(prisms.shape[0])
+                f"Number of elements in density ({density.size}) "
+                + f"mismatch the number of prisms ({prisms.shape[0]})"
             )
         _check_prisms(prisms)
         _check_singular_points(coordinates, prisms, field)
@@ -259,7 +258,7 @@ def _check_singular_points(coordinates, prisms, field):
         "g_nz": _any_singular_point_g_nz,
     }
     if field not in functions:
-        return None
+        return
     if functions[field](coordinates, prisms):
         warnings.warn(
             "Found observation point on singular point of a prism.",
@@ -468,17 +467,17 @@ def _check_prisms(prisms):
     if bad_we.any():
         err_msg += "The west boundary can't be greater than the east one.\n"
         for prism in prisms[bad_we]:
-            err_msg += "\tInvalid prism: {}\n".format(prism)
+            err_msg += f"\tInvalid prism: {prism}\n"
         raise ValueError(err_msg)
     if bad_sn.any():
         err_msg += "The south boundary can't be greater than the north one.\n"
         for prism in prisms[bad_sn]:
-            err_msg += "\tInvalid prism: {}\n".format(prism)
+            err_msg += f"\tInvalid prism: {prism}\n"
         raise ValueError(err_msg)
     if bad_bt.any():
         err_msg += "The bottom radius boundary can't be greater than the top one.\n"
         for prism in prisms[bad_bt]:
-            err_msg += "\tInvalid tesseroid: {}\n".format(prism)
+            err_msg += f"\tInvalid tesseroid: {prism}\n"
         raise ValueError(err_msg)
 
 

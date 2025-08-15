@@ -124,7 +124,6 @@ def tesseroid_gravity(
 
     Examples
     --------
-
     >>> # Get WGS84 ellipsoid from the Boule package
     >>> import boule
     >>> ellipsoid = boule.WGS84
@@ -162,7 +161,7 @@ def tesseroid_gravity(
         "g_z": gravity_u_spherical,
     }
     if field not in kernels:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+        raise ValueError(f"Gravitational field {field} not recognized")
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -181,8 +180,8 @@ def tesseroid_gravity(
         density = np.atleast_1d(density).ravel()
         if not disable_checks and density.size != tesseroids.shape[0]:
             raise ValueError(
-                "Number of elements in density ({}) ".format(density.size)
-                + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
+                f"Number of elements in density ({density.size}) "
+                + f"mismatch the number of tesseroids ({tesseroids.shape[0]})"
             )
         # Discard null tesseroids (zero density or zero volume)
         tesseroids, density = _discard_null_tesseroids(tesseroids, density)
@@ -233,7 +232,7 @@ def dispatcher(parallel, density):
     return dispatchers[parallel]
 
 
-def jit_tesseroid_gravity(  # noqa: CFQ002
+def jit_tesseroid_gravity(
     coordinates,
     tesseroids,
     density,
@@ -336,7 +335,7 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
             progress_proxy.update(1)
 
 
-def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
+def jit_tesseroid_gravity_variable_density(
     coordinates,
     tesseroids,
     density,

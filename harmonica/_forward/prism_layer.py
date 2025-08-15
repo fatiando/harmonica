@@ -74,13 +74,12 @@ def prism_layer(
         height of its top and bottom boundaries and its corresponding physical
         properties.
 
-    See also
+    See Also
     --------
     harmonica.DatasetAccessorPrismLayer
 
     Examples
     --------
-
     >>> # Create a synthetic relief
     >>> import numpy as np
     >>> easting = np.linspace(0, 10, 5)
@@ -115,7 +114,7 @@ def prism_layer(
     >>> prism = prisms.prism_layer.get_prism((0, 2))
     >>> list(float(b) for b in prism)
     [3.75, 6.25, 1.0, 3.0, 0.0, 2.0]
-    """  # noqa: W505
+    """
     dims = ("northing", "easting")
     # Initialize data and data_names as None
     data, data_names = None, None
@@ -162,7 +161,7 @@ class DatasetAccessorPrismLayer:
         Use the `prism_layer` accessor for accessing the methods and
         attributes of this class.
 
-    See also
+    See Also
     --------
     harmonica.prism_layer
     """
@@ -364,7 +363,7 @@ class DatasetAccessorPrismLayer:
             Gravitational potential is returned in :math:`\text{J}/\text{kg}`,
             acceleration components in mGal, and tensor components in Eotvos.
 
-        See also
+        See Also
         --------
         harmonica.prism_gravity
         """

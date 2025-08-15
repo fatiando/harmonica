@@ -8,7 +8,6 @@
 Test tesseroids layer
 """
 
-#
 import warnings
 
 import boule
@@ -194,7 +193,6 @@ def test_tesseroid_layer_no_regular_grid(
     """
     Check if error is raised if the latitude or longitude are not regular
     """
-
     (longitude, latitude), surface, reference, _ = dummy_layer
     # Longitude as not evenly spaced set of coordinates
     longitude_invalid = longitude.copy()

@@ -241,8 +241,8 @@ def point_gravity(
     # Sanity checks
     if masses.size != points[0].size:
         raise ValueError(
-            "Number of elements in masses ({}) ".format(masses.size)
-            + "mismatch the number of points ({})".format(points[0].size)
+            f"Number of elements in masses ({masses.size}) "
+            + f"mismatch the number of points ({points[0].size})"
         )
     # Compute gravitational field
     kernel = get_kernel(coordinate_system, field)
@@ -308,7 +308,7 @@ def get_kernel(coordinate_system, field):
         },
     }
     if field not in kernels[coordinate_system]:
-        raise ValueError("Gravitational field '{}' not recognized".format(field))
+        raise ValueError(f"Gravitational field '{field}' not recognized")
     kernel = kernels[coordinate_system][field]
     if kernel is None:
         raise NotImplementedError

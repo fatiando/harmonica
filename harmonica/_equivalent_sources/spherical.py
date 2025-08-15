@@ -328,13 +328,13 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,  # noqa: U100
-        size=None,  # noqa: U100
-        random_state=None,  # noqa: U100
-        dims=None,  # noqa: U100
-        data_names=None,  # noqa: U100
-        projection=None,  # noqa: U100
-        **kwargs,  # noqa: U100
+        region=None,
+        size=None,
+        random_state=None,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs,
     ):
         """
         .. warning ::
@@ -347,13 +347,13 @@ class EquivalentSourcesSph(vdb.BaseGridder):
 
     def profile(
         self,
-        point1,  # noqa: U100
-        point2,  # noqa: U100
-        size,  # noqa: U100
-        dims=None,  # noqa: U100
-        data_names=None,  # noqa: U100
-        projection=None,  # noqa: U100
-        **kwargs,  # noqa: U100
+        point1,
+        point2,
+        size,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs,
     ):
         """
         .. warning ::

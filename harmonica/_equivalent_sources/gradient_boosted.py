@@ -158,7 +158,6 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Examples
         --------
-
         >>> import verde as vd
         >>> coordinates = vd.scatter_points(
         ...     region=(-1e3, 3e3, 2e3, 5e3),
@@ -320,7 +319,6 @@ class EquivalentSourcesGB(EquivalentSources):
             shuffled if ``shuffle_windows`` is True, although the order of the
             windows is the same as the one in ``source_windows_nonempty``.
         """
-
         # Get the region that contains every data point and every source
         region = _get_region_data_sources(coordinates, self.points_)
         # Calculate the window size such that there are approximately 5000 data

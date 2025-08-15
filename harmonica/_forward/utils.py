@@ -89,7 +89,7 @@ def check_coordinate_system(
     """
     if coordinate_system not in valid_coord_systems:
         raise ValueError(
-            "Coordinate system {} not recognized.".format(coordinate_system)
+            f"Coordinate system {coordinate_system} not recognized."
         )
 
 
@@ -364,7 +364,7 @@ def initialize_progressbar(total, use_progressbar):
     ImportError
         If ``numba_progress`` is missing and ``use_progress`` is set to True.
 
-    See also
+    See Also
     --------
     :func:`harmonica.prism_gravity`
 

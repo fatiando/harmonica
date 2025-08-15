@@ -38,7 +38,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    "Check if passing an invalid field raises an error"
+    """Check if passing an invalid field raises an error"""
     prism = [-100, 100, -100, 100, -200, -100]
     density = 1000
     coordinates = [0, 0, 0]
@@ -47,7 +47,7 @@ def test_invalid_field():
 
 
 def test_invalid_density_array():
-    "Check if error is raised when density shape does not match prisms shape"
+    """Check if error is raised when density shape does not match prisms shape"""
     # Create a set of 4 prisms
     prisms = [
         [-100, 0, -100, 0, -200, -100],
@@ -63,7 +63,7 @@ def test_invalid_density_array():
 
 
 def test_invalid_prisms():
-    "Check if invalid prism boundaries are caught by _check_prisms"
+    """Check if invalid prism boundaries are caught by _check_prisms"""
     w, e, s, n, bottom, top = -100, 100, -100, 100, -200, -100
     # Check if it works properly on valid prisms
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
@@ -127,7 +127,7 @@ def test_forward_with_null_prisms():
 
 @pytest.mark.use_numba
 def test_disable_checks():
-    "Check if the disable_checks flag works properly"
+    """Check if the disable_checks flag works properly"""
     valid_prism = [0, 10, 0, 10, -10, 0]
     invalid_prism = [0, 10, 0, 10, 0, -10]
     density = 100

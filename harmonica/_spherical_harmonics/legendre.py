@@ -14,9 +14,9 @@ import numpy as np
 
 @numba.jit(nopython=True)
 def _rescale(u, max_degree, p):
-    "Rescale Legendre functions to their original range"
+    """Rescale Legendre functions to their original range"""
     rescale = 1e280
-    for m in range(0, max_degree + 1):
+    for m in range(max_degree + 1):
         if m > 0:
             rescale *= u
         for n in range(m, max_degree + 1):
@@ -53,7 +53,6 @@ def associated_legendre(x, max_degree, p):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
@@ -61,7 +60,7 @@ def associated_legendre(x, max_degree, p):
     u = np.sqrt((1 - x) * (1 + x))
     p[0, 0] = 1
     for n in range(1, max_degree + 1):
-        for m in range(0, n - 1):
+        for m in range(n - 1):
             a_nm = (2 * n - 1) / (n - m)
             b_nm = -(n + m - 1) / (n - m)
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
@@ -109,7 +108,6 @@ def associated_legendre_derivative(max_degree, p, dp):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
@@ -158,7 +156,6 @@ def associated_legendre_schmidt(x, max_degree, p):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
@@ -231,7 +228,6 @@ def associated_legendre_schmidt_derivative(max_degree, p, dp):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
@@ -283,7 +279,6 @@ def associated_legendre_full(x, max_degree, p):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
@@ -358,7 +353,6 @@ def associated_legendre_full_derivative(max_degree, p, dp):
 
     References
     ----------
-
     Alken, Patrick (2022). GSL Technical Report #1 - GSL-TR-001-20220827 -
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf

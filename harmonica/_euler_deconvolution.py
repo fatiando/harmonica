@@ -59,7 +59,6 @@ class EulerDeconvolution:
 
     Notes
     -----
-
     Works on any potential field that satisfies Euler's homogeneity equation
     (like gravity, magnetic, and their gradients caused by **simple sources**):
 

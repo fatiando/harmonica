@@ -50,7 +50,7 @@ def derivative_upward(grid, order=1):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.filters.derivative_upward_kernel
     """
@@ -98,7 +98,7 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.filters.derivative_easting_kernel
     """
@@ -156,7 +156,7 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.filters.derivative_northing_kernel
     """
@@ -202,7 +202,7 @@ def upward_continuation(grid, height_displacement):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.filters.upward_continuation_kernel
     """
@@ -239,7 +239,7 @@ def gaussian_lowpass(grid, wavelength):
     ----------
     [Geosoft1999]_
 
-    See also
+    See Also
     --------
     harmonica.filters.gaussian_lowpass_kernel
     """
@@ -274,7 +274,7 @@ def gaussian_highpass(grid, wavelength):
     ----------
     [Geosoft1999]_
 
-    See also
+    See Also
     --------
     harmonica.filters.gaussian_highpass_kernel
     """
@@ -326,7 +326,7 @@ def reduction_to_pole(
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.filters.reduction_to_pole_kernel
     """

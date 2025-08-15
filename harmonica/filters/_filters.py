@@ -50,7 +50,7 @@ def derivative_upward_kernel(fft_grid, order=1):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.derivative_upward
     """
@@ -106,7 +106,7 @@ def derivative_easting_kernel(fft_grid, order=1):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.derivative_easting
     """
@@ -160,7 +160,7 @@ def derivative_northing_kernel(fft_grid, order=1):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.derivative_northing
     """
@@ -215,7 +215,7 @@ def upward_continuation_kernel(fft_grid, height_displacement):
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.upward_continuation
     """
@@ -276,7 +276,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
     ----------
     [Geosoft1999]_
 
-    See also
+    See Also
     --------
     harmonica.gaussian_lowpass
     """
@@ -339,7 +339,7 @@ def gaussian_highpass_kernel(fft_grid, wavelength):
     ----------
     [Geosoft1999]_
 
-    See also
+    See Also
     --------
     harmonica.gaussian_highpass
     """
@@ -428,7 +428,7 @@ def reduction_to_pole_kernel(
     ----------
     [Blakely1995]_
 
-    See also
+    See Also
     --------
     harmonica.reduction_to_pole
     """

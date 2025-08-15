@@ -26,7 +26,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    "Check if passing an invalid field raises an error"
+    """Check if passing an invalid field raises an error"""
     prism = [-100, 100, -100, 100, -200, -100]
     magnetization = [1000, 1, 2]
     coordinates = [0, 0, 0]

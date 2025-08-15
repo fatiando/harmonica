@@ -52,7 +52,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
         height of its top and bottom boundaries ans its corresponding physical
         properties.
 
-    See also
+    See Also
     --------
     harmonica.DatasetAccessorsTesseroidLayer
 
@@ -122,7 +122,7 @@ class DatasetAccessorTesseroidLayer:
         Use the `tesseroid_layer` accessor for accessing the methods and
         attributes of this class.
 
-    See also
+    See Also
     --------
     harmonica.tesseroid_layer
     """
@@ -285,7 +285,7 @@ class DatasetAccessorTesseroidLayer:
             point. Gravitational potential will be returned in SI units, while
             acceleration components will be in mGal.
 
-        See also
+        See Also
         --------
         harmonica.tesseroid_gravity
         """

@@ -26,7 +26,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    "Check if passing an invalid field raises an error"
+    """Check if passing an invalid field raises an error"""
     coordinates = [0, 0, 0]
     dipoles = ([-100, 100], [-100, 100], [-200, -100])
     magnetic_moments = ([1, -1], [1, -2], [2, 3])
