@@ -101,10 +101,10 @@ def prism_magnetic(
     """
     # Check if field is valid
     if field not in VALID_FIELDS:
-        msg = f"Invalid field '{field}'. Please choose one of '{','.join(VALID_FIELDS)}'."
-        raise ValueError(
-            msg
+        msg = (
+            f"Invalid field '{field}'. Please choose one of '{','.join(VALID_FIELDS)}'."
         )
+        raise ValueError(msg)
     # Figure out the shape and size of the output array(s)
     cast = np.broadcast(*coordinates[:3])
     # Convert coordinates, prisms and magnetization to arrays with proper shape

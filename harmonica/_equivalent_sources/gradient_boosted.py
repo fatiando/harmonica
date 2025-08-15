@@ -127,9 +127,7 @@ class EquivalentSourcesGB(EquivalentSources):
                 f"Found invalid 'window_size' value equal to '{window_size}'."
                 "It should be 'default' or a numeric value."
             )
-            raise ValueError(
-                msg
-            )
+            raise ValueError(msg)
         super().__init__(
             damping=damping,
             points=points,
@@ -352,7 +350,11 @@ class EquivalentSourcesGB(EquivalentSources):
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
-        kwargs = {"region": region, "size": self.window_size_, "spacing": window_spacing}
+        kwargs = {
+            "region": region,
+            "size": self.window_size_,
+            "spacing": window_spacing,
+        }
         _, source_windows = rolling_window(self.points_, **kwargs)
         _, data_windows = rolling_window(coordinates, **kwargs)
         # Ravel the indices

@@ -101,9 +101,7 @@ def dipole_magnetic(
             f"Invalid field '{field}'. "
             f"Please choose one of '{', '.join(VALID_FIELDS)}'."
         )
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
     # Figure out the shape and size of the output array(s)
     cast = np.broadcast(*coordinates[:3])
     # Convert coordinates, dipoles and magnetic moments to arrays
@@ -282,17 +280,13 @@ def _check_dipoles_and_magnetic_moments(dipoles, magnetic_moments):
             f"Invalid magnetic moments with '{size}' elements."
             " Magnetic moments vectors should have 3 components."
         )
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
     if magnetic_moments[0].size != dipoles[0].size:
         msg = (
             f"Number of elements in magnetic_moments ({magnetic_moments[0].size})"
             f" mismatch the number of dipoles ({dipoles[0].size})."
         )
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
 
 
 def _jit_dipole_magnetic_field_cartesian(

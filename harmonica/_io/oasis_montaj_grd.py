@@ -230,9 +230,7 @@ def _check_sign_flag(sign_flag):
     """
     if sign_flag == 3:
         msg = "Reading .grd files with colour grids is not currenty supported."
-        raise NotImplementedError(
-            msg
-        )
+        raise NotImplementedError(msg)
 
 
 def _get_data_type(n_bytes_per_element, sign_flag):

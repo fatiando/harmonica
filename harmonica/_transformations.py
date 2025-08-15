@@ -109,10 +109,10 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     elif method == "fft":
         grid = apply_filter(grid, derivative_easting_kernel, order=order)
     else:
-        msg = f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
-        raise ValueError(
-            msg
+        msg = (
+            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         )
+        raise ValueError(msg)
     return grid
 
 
@@ -168,10 +168,10 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     elif method == "fft":
         return apply_filter(grid, derivative_northing_kernel, order=order)
     else:
-        msg = f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
-        raise ValueError(
-            msg
+        msg = (
+            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         )
+        raise ValueError(msg)
     return grid
 
 
@@ -479,7 +479,5 @@ def _get_dataarray_coordinate(grid, dimension_index):
             f"Grid contains more than one coordinate along the '{direction}' "
             f"direction: '{coords}'."
         )
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
     return coords[0]

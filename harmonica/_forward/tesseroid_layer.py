@@ -109,9 +109,7 @@ def _check_overlap(longitude):
     spacing = longitude[1] - longitude[0]
     if longitude.max() - longitude.min() >= 360 - spacing:
         msg = "Found invalid longitude coordinates that would create overlapping tesseroids around the globe."
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
 
 
 @xr.register_dataset_accessor("tesseroid_layer")

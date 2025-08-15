@@ -385,8 +385,8 @@ def initialize_progressbar(total, use_progressbar):
         return contextlib.nullcontext()
     # Raise error if numba_progress is not installed
     if ProgressBar is None:
-        msg = "Missing optional dependency 'numba_progress' required if progressbar=True"
-        raise ImportError(
-            msg
+        msg = (
+            "Missing optional dependency 'numba_progress' required if progressbar=True"
         )
+        raise ImportError(msg)
     return ProgressBar(total=total)

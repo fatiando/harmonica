@@ -179,14 +179,10 @@ class EquivalentSources(vdb.BaseGridder):
                 f"Found invalid 'depth' value equal to '{depth}'. "
                 "It should be 'default' or a numeric value."
             )
-            raise ValueError(
-                msg
-            )
+            raise ValueError(msg)
         if depth == 0:
             msg = "Depth value cannot be zero. It should be a non-zero numeric value."
-            raise ValueError(
-                msg
-            )
+            raise ValueError(msg)
 
         self.damping = damping
         self.points = points

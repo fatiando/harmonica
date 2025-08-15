@@ -44,7 +44,10 @@ def pop_extra_coords(kwargs):
     Remove extra_coords from kwargs.
     """
     if "extra_coords" in kwargs:
-        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]), stacklevel=2)
+        warn(
+            "EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]),
+            stacklevel=2,
+        )
         kwargs.pop("extra_coords")
 
 

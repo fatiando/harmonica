@@ -80,9 +80,7 @@ def load_icgem_gdf(fname, **kwargs):
     )
     if not np.allclose(area, area_from_cols):
         msg = f"Grid area read ({area}) and calculated from attributes ({area_from_cols}) mismatch."
-        raise OSError(
-            msg
-        )
+        raise OSError(msg)
     return grid
 
 
@@ -124,14 +122,10 @@ def _read_gdf_file(fname, **kwargs):
     if kwargs.get("usecols") is not None:
         metadata["attributes"] = [metadata["attributes"][i] for i in kwargs["usecols"]]
     if len(metadata["attributes"]) != rawdata.shape[0]:
-        msg = (
-            "Number of attributes ({}) and data columns ({}) mismatch".format(
-                len(metadata["attributes"]), rawdata.shape[0]
-            )
+        msg = "Number of attributes ({}) and data columns ({}) mismatch".format(
+            len(metadata["attributes"]), rawdata.shape[0]
         )
-        raise OSError(
-            msg
-        )
+        raise OSError(msg)
     return rawdata, metadata
 
 
@@ -160,14 +154,10 @@ def _check_gdf_integrity(metadata):
         raise OSError(msg)
     # Check cols names and units integrity
     if len(metadata["attributes"]) != len(metadata["attributes_units"]):
-        msg = (
-            "Number of attributes ({}) and units ({}) mismatch".format(
-                len(metadata["attributes"]), len(metadata["attributes_units"])
-            )
+        msg = "Number of attributes ({}) and units ({}) mismatch".format(
+            len(metadata["attributes"]), len(metadata["attributes_units"])
         )
-        raise OSError(
-            msg
-        )
+        raise OSError(msg)
     metadata["attributes_units"] = [
         attr.replace("[", "").replace("]", "").strip()
         for attr in metadata["attributes_units"]

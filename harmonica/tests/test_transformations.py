@@ -201,7 +201,9 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
     return g_ee.g_ee
 
 
-@pytest.mark.parametrize(("index", "expected_dimension"), [(1, "easting"), (0, "northing")])
+@pytest.mark.parametrize(
+    ("index", "expected_dimension"), [(1, "easting"), (0, "northing")]
+)
 def test_get_dataarray_coordinate(index, expected_dimension, sample_potential):
     """
     Test the _get_dataarray_coordinate private function.
