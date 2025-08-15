@@ -89,21 +89,21 @@ def prism_to_pyvista(prisms, properties=None):
     # Add properties to the grid
     if properties is not None:
         for name, prop in properties.items():
-            # Check if the property is given as 1d array
-            prop = np.atleast_1d(prop)
-            if prop.ndim > 1:
+            # Cast property as 1d array
+            prop_array = np.atleast_1d(prop)
+            if prop_array.ndim > 1:
                 raise ValueError(
                     f"Multidimensional array found in '{name}' property. "
                     + "Please, pass prism properties as 1d arrays."
                 )
             # Assign the property to the cell_data
-            pv_grid.cell_data[name] = prop
+            pv_grid.cell_data[name] = prop_array
     return pv_grid
 
 
 def _prisms_boundaries_to_vertices(prisms):
     """
-    Converts prisms boundaries to sets of vertices for each prism.
+    Convert prisms boundaries to sets of vertices for each prism.
 
     The vertices for each prism will be in the following order
 
