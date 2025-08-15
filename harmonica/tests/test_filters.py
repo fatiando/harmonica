@@ -111,7 +111,8 @@ def test_fft_no_drop_bad_coords(sample_grid_upward):
     This test, along with the ``drop_bad_coordinates`` argument, should be
     removed if ``xrft`` changes this behaviour
     """
-    with pytest.raises(ValueError):
+    msg = "Please drop these coordinates"
+    with pytest.raises(ValueError, match=msg):
         fft(sample_grid_upward, drop_bad_coords=False)
 
 
@@ -124,7 +125,8 @@ def test_fft_no_drop_bad_coords_multi(sample_grid_multiple_coords):
     This test, along with the ``drop_bad_coordinates`` argument, should be
     removed if ``xrft`` changes this behaviour
     """
-    with pytest.raises(ValueError):
+    msg = "Please drop these coordinates"
+    with pytest.raises(ValueError, match=msg):
         fft(sample_grid_multiple_coords, drop_bad_coords=False)
 
 
@@ -240,7 +242,7 @@ def test_coordinate_rounding_fix(sample_grid):
 @pytest.fixture(name="sample_fft_grid")
 def fixture_sample_fft_grid():
     """
-    Returns a sample fft_grid to be used in test functions.
+    Return a sample fft_grid to be used in test functions.
     """
     domain = (-9e-4, 9e-4, -8e-4, 8e-4)
     freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
@@ -325,10 +327,11 @@ def test_upward_continuation_kernel(sample_fft_grid, height_displacement):
     )
 
 
-def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
+def test_gaussian_lowpass_kernel(sample_fft_grid):
     """
     Check if gaussian_lowpass_kernel works as expected.
     """
+    wavelength = 10
     # Load pre-computed outcome
     expected = np.array(
         [
@@ -345,10 +348,13 @@ def test_gaussian_lowpass_kernel(sample_fft_grid, wavelength=10):
     )
 
 
-def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
+def test_gaussian_highpass_kernel(
+    sample_fft_grid,
+):
     """
     Check if gaussian_highpass_kernel works as expected.
     """
+    wavelength = 100
     # Load pre-computed outcome
     expected = np.array(
         [
@@ -367,14 +373,14 @@ def test_gaussian_highpass_kernel(sample_fft_grid, wavelength=100):
 
 def test_reduction_to_pole_kernel(
     sample_fft_grid,
-    inclination=60,
-    declination=45,
-    magnetization_inclination=45,
-    magnetization_declination=50,
 ):
     """
     Check if reduction_to_pole_kernel works as same as the old Fatiando package.
     """
+    inclination = 60
+    declination = 45
+    magnetization_inclination = 45
+    magnetization_declination = 50
     # Transform degree to rad
     [inclination, declination] = np.deg2rad([inclination, declination])
     [magnetization_inclination, magnetization_declination] = np.deg2rad(
