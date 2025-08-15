@@ -95,10 +95,10 @@ def _check_regular_grid(longitude, latitude):
 
     """
     if not np.allclose(longitude[1] - longitude[0], longitude[1:] - longitude[:-1]):
-        msg = "Passed longitude coordinates are note evenly spaced."
+        msg = "Passed longitude coordinates are not evenly spaced."
         raise ValueError(msg)
     if not np.allclose(latitude[1] - latitude[0], latitude[1:] - latitude[:-1]):
-        msg = "Passed latitude coordinates are note evenly spaced."
+        msg = "Passed latitude coordinates are not evenly spaced."
         raise ValueError(msg)
 
 
