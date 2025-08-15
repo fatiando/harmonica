@@ -8,13 +8,11 @@
 Testing ICGEM gdf files loading.
 """
 
-import os
 from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
 import pytest
-from pytest import raises, warns
 
 from .. import load_icgem_gdf
 
@@ -117,7 +115,8 @@ def test_missing_shape(tmp_path):
                 if attribute in line:
                     continue
                 corrupt_gdf.write(line)
-        with raises(IOError):
+        msg = f"Couldn't read {attribute} field from gdf file header"
+        with pytest.raises(IOError, match=msg):
             load_icgem_gdf(corrupt)
 
 
@@ -131,7 +130,8 @@ def test_missing_size(tmp_path):
             if attribute in line:
                 continue
             corrupt_gdf.write(line)
-    with raises(IOError):
+    msg = f"Couldn't read {attribute} field from gdf file header"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -149,7 +149,8 @@ def test_corrupt_shape(tmp_path):
                     corrupt_gdf.write(new_line)
                 else:
                     corrupt_gdf.write(line)
-        with raises(IOError):
+        msg = r"Grid shape '\([0-9]+,[ ]?[0-9]+\)' and size '[0-9]+' mismatch"
+        with pytest.raises(IOError, match=msg):
             load_icgem_gdf(corrupt)
 
 
@@ -162,7 +163,12 @@ def test_missing_cols_names(tmp_path):
             if "latitude" in line and "longitude" in line:
                 continue
             corrupt_gdf.write(line)
-    with raises(IOError):
+    # TODO: there might be a bug here with which error message is being raised.
+    # We expect the following one:
+    # msg = "Couldn't read column names."
+    # But we get:
+    msg = "Couldn't read column units"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -175,7 +181,8 @@ def test_missing_units(tmp_path):
             if "[mgal]" in line:
                 continue
             corrupt_gdf.write(line)
-    with raises(IOError):
+    msg = "Couldn't read column units"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -188,7 +195,8 @@ def test_missing_empty_line(tmp_path):
             if not line.strip():
                 continue
             corrupt_gdf.write(line)
-    with raises(IOError):
+    msg = "Couldn't read column names"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -203,7 +211,8 @@ def test_missing_attribute(tmp_path):
                 corrupt_gdf.write("\t".join(parts[:2]) + "\n")
             else:
                 corrupt_gdf.write(line)
-    with raises(IOError):
+    msg = r"Number of attributes \([0-9]+\) and units \([0-9]+\) mismatch"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -220,7 +229,8 @@ def test_missing_lat_lon_attributes(tmp_path):
                     corrupt_gdf.write(new_line)
                 else:
                     corrupt_gdf.write(line)
-        with raises(IOError):
+        msg = f"Couldn't find {attribute} column"
+        with pytest.raises(IOError, match=msg):
             load_icgem_gdf(corrupt)
 
 
@@ -235,7 +245,8 @@ def test_diff_attrs_vs_cols(tmp_path):
                 corrupt_gdf.write("\t".join(parts[:2]) + "\n")
             else:
                 corrupt_gdf.write(line)
-    with raises(IOError):
+    msg = r"Number of attributes \([0-9]+\) and data columns \([0-9]+\) mismatch"
+    with pytest.raises(IOError, match=msg):
         load_icgem_gdf(corrupt)
 
 
@@ -255,7 +266,8 @@ def test_missing_area(tmp_path):
                 if attribute in line:
                     continue
                 corrupt_gdf.write(line)
-        with raises(IOError):
+        msg = f"Couldn't read {attribute} field from gdf file header"
+        with pytest.raises(IOError, match=msg):
             load_icgem_gdf(corrupt)
 
 
@@ -279,7 +291,8 @@ def test_corrupt_area(tmp_path):
                     corrupt_gdf.write(newline)
                 else:
                     corrupt_gdf.write(line)
-        with raises(IOError):
+        # TODO: there might be a bug here regarding the error message we get.
+        with pytest.raises(IOError):  # noqa: PT011
             load_icgem_gdf(corrupt)
 
 
@@ -296,7 +309,9 @@ def fixture_empty_fname(tmp_path):
 
 def test_empty_file(empty_fname):
     """Empty ICGEM file."""
-    error = raises(IOError, match=r"Couldn't read \w+ field from gdf file header")
-    warn = warns(UserWarning, match=r"loadtxt")
+    error = pytest.raises(
+        IOError, match=r"Couldn't read \w+ field from gdf file header"
+    )
+    warn = pytest.warns(UserWarning, match=r"loadtxt")
     with error, warn:
         load_icgem_gdf(empty_fname)
