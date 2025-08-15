@@ -9,6 +9,7 @@ Function to read ICGEM .gdf file.
 """
 
 import contextlib
+import pathlib
 
 import numpy as np
 import xarray as xr
@@ -99,7 +100,7 @@ def _read_gdf_file(fname, **kwargs):
             gdf_file = fname
         else:
             # It's a file path
-            gdf_file = stack.enter_context(open(fname))
+            gdf_file = stack.enter_context(pathlib.Path(fname).open())
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
