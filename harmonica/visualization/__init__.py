@@ -7,4 +7,5 @@
 """
 Visualization of models.
 """
+
 from ._prism import prism_to_pyvista

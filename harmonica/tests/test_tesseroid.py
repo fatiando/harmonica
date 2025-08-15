@@ -7,6 +7,7 @@
 """
 Test forward modelling for tesseroids.
 """
+
 import re
 from unittest.mock import patch
 

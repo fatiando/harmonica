@@ -7,6 +7,7 @@
 """
 Test functions from the visualization module.
 """
+
 import re
 from unittest.mock import patch
 

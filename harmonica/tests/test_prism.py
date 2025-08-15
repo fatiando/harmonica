@@ -7,6 +7,7 @@
 """
 Test forward modelling for prisms.
 """
+
 import re
 from unittest.mock import patch
 

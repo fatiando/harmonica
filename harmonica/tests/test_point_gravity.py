@@ -7,6 +7,7 @@
 """
 Test forward modelling for point masses.
 """
+
 import re
 from pathlib import Path
 
