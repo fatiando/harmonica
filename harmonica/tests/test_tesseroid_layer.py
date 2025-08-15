@@ -197,7 +197,8 @@ def test_tesseroid_layer_no_regular_grid(
     # Longitude as not evenly spaced set of coordinates
     longitude_invalid = longitude.copy()
     longitude_invalid[3] = -22
-    with pytest.raises(ValueError):
+    msg = "Passed longitude coordinates are not evenly spaced."
+    with pytest.raises(ValueError, match=msg):
         tesseroid_layer(
             (longitude_invalid, latitude),
             surface,
@@ -206,7 +207,8 @@ def test_tesseroid_layer_no_regular_grid(
     # Latitude as not evenly spaced set of coordinates
     latitude_invalid = latitude.copy()
     latitude_invalid[3] = -22
-    with pytest.raises(ValueError):
+    msg = "Passed latitude coordinates are not evenly spaced."
+    with pytest.raises(ValueError, match=msg):
         tesseroid_layer(
             (longitude, latitude_invalid),
             surface,
