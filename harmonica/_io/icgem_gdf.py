@@ -16,7 +16,7 @@ import xarray as xr
 
 def load_icgem_gdf(fname, **kwargs):
     """
-    Reads data from an ICGEM .gdf file.
+    Read data from an ICGEM .gdf file.
 
     The `ICGEM Calculation Service <http://icgem.gfz-potsdam.de/>`__
     [BarthelmesKohler2016]_ generates gravity field grids from spherical
@@ -79,7 +79,10 @@ def load_icgem_gdf(fname, **kwargs):
         grid.longitude.values.max(),
     )
     if not np.allclose(area, area_from_cols):
-        msg = f"Grid area read ({area}) and calculated from attributes ({area_from_cols}) mismatch."
+        msg = (
+            f"Grid area read ({area}) and calculated from "
+            f"attributes ({area_from_cols}) mismatch."
+        )
         raise OSError(msg)
     return grid
 
