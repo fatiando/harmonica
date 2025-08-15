@@ -116,12 +116,22 @@ def test_prism_layer_invalid_surface_reference(
     coordinates, surface, reference, _ = dummy_layer
     # Surface with wrong shape
     surface_invalid = np.arange(20, dtype=float)
-    with pytest.raises(ValueError):
+    msg = (
+        r"Invalid surface array with shape '.+'\. "
+        "Its shape should be compatible with the coordinates "
+        r"of the layer of prisms\."
+    )
+    with pytest.raises(ValueError, match=msg):
         prism_layer(coordinates, surface_invalid, reference)
     # Reference with wrong shape
     reference_invalid = np.zeros(20)
     surface = np.arange(20, dtype=float).reshape(4, 5)
-    with pytest.raises(ValueError):
+    msg = (
+        r"Invalid reference array with shape '.+'\. "
+        "Its shape should be compatible with the coordinates "
+        r"of the layer of prisms\."
+    )
+    with pytest.raises(ValueError, match=msg):
         prism_layer(coordinates, surface, reference_invalid)
 
 
@@ -151,7 +161,8 @@ def test_prism_layer_no_regular_grid(
     # Easting as non evenly spaced set of coordinates
     easting_invalid = easting.copy()
     easting_invalid[3] = -22
-    with pytest.raises(ValueError):
+    msg = "Passed easting coordinates are not evenly spaced"
+    with pytest.raises(ValueError, match=msg):
         prism_layer(
             (easting_invalid, northing),
             surface,
@@ -161,7 +172,8 @@ def test_prism_layer_no_regular_grid(
     northing_invalid = northing.copy()
     northing_invalid[3] = -22
     northing[3] = 12.98
-    with pytest.raises(ValueError):
+    msg = "Passed northing coordinates are not evenly spaced"
+    with pytest.raises(ValueError, match=msg):
         prism_layer(
             (easting, northing_invalid),
             surface,
