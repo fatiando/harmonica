@@ -125,6 +125,11 @@ ignore = [
     "D",   # ignore pydocstyle warnings in tests
 ]
 "doc/conf.py" = ["D"]  # ignore pydocstyle warnings in Sphinx config
+"doc/**" = [
+    "D",     # ignore pydocstyle warnings in docs
+    "T20",  # allow print statements in docs
+    "B018",  # allow "useless expressions" in docs (display in notebooks)
+]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
