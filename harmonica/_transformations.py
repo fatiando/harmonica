@@ -344,7 +344,7 @@ def reduction_to_pole(
 
 def total_gradient_amplitude(grid):
     r"""
-    Calculates the total gradient amplitude of a potential field grid.
+    Calculate the total gradient amplitude of a potential field grid.
 
     Compute the total gradient amplitude of a regular gridded potential field
     `M`. The horizontal derivatives are calculated though finite-differences
@@ -396,7 +396,7 @@ def total_gradient_amplitude(grid):
 
 def tilt_angle(grid):
     r"""
-    Calculates the tilt angle of a potential field grid.
+    Calculate the tilt angle of a potential field grid.
 
     Compute the tilt of a regular gridded potential field
     :math:`M`. The horizontal derivatives are calculated

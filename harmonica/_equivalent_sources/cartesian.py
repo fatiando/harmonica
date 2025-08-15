@@ -490,7 +490,7 @@ class EquivalentSources(vdb.BaseGridder):
             Not implemented method. The scatter method will be deprecated on
             Verde v2.0.0.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
     def profile(

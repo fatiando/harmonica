@@ -73,7 +73,7 @@ def associated_legendre(x, max_degree, p):
 @numba.jit(nopython=True)
 def associated_legendre_derivative(max_degree, p, dp):
     r"""
-    Derivatives in theta of unnormalized associated Legendre functions.
+    Compute derivatives in theta of unnormalized associated Legendre functions.
 
     Calculates the derivative:
 
@@ -192,7 +192,7 @@ def associated_legendre_schmidt(x, max_degree, p):
 @numba.jit(nopython=True)
 def associated_legendre_schmidt_derivative(max_degree, p, dp):
     r"""
-    Derivatives in theta of Schmidt normalized associated Legendre functions.
+    Compute derivatives in theta of Schmidt normalized associated Legendre functions.
 
     Calculates the derivative:
 
@@ -283,7 +283,7 @@ def associated_legendre_full(x, max_degree, p):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr.
-      ed. 2006 edition ed.). Wien ; New York: Springer.
+      ed. 2006 edition ed.). Wien; New York: Springer.
     """
     u = np.sqrt((1 - x) * (1 + x))
     # Pre-compute square roots of integers used in the loops
@@ -322,7 +322,7 @@ def associated_legendre_full(x, max_degree, p):
 @numba.jit(nopython=True)
 def associated_legendre_full_derivative(max_degree, p, dp):
     r"""
-    Derivatives in theta of fully normalized associated Legendre functions.
+    Compute derivatives in theta of fully normalized associated Legendre functions.
 
     Calculates the derivative:
 
@@ -357,7 +357,7 @@ def associated_legendre_full_derivative(max_degree, p, dp):
       Implementation of associated Legendre functions in GSL.
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     Hofmann-Wellenhof, B., & Moritz, H. (2006). Physical Geodesy (2nd, corr.
-      ed. 2006 edition ed.). Wien ; New York: Springer.
+      ed. 2006 edition ed.). Wien; New York: Springer.
     """
     # Pre-compute square roots of integers used in the loops
     sqrt = np.sqrt(np.arange(2 * (max_degree + 1)))

@@ -147,7 +147,7 @@ def density_based_discretization(tesseroids, density):
 
 def _density_based_discretization(tesseroid, density):
     """
-    Applies density-based discretization to a single tesseroid.
+    Apply density-based discretization to a single tesseroid.
 
     Splits the tesseroid on the points of maximum density variance
 

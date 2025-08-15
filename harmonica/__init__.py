@@ -6,6 +6,9 @@
 #
 #
 # Import functions/classes to make the public API
+"""
+Harmonica: Processing and modelling gravity and magnetic data.
+"""
 from ._equivalent_sources.cartesian import EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph

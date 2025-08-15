@@ -5,8 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Function to calculate the thickness of the roots and antiroots assuming the
-Airy isostatic hypothesis.
+Calculation of roots and anti-roots assuming isostatic hypothesis.
 """
 
 import xarray as xr

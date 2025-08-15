@@ -342,7 +342,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             Not implemented method. The scatter method will be deprecated on
             Verde v2.0.0.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
     def profile(
@@ -361,7 +361,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
             Not implemented method. The profile on spherical coordinates should
             be done using great-circle distances through the Haversine formula.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
 
