@@ -120,7 +120,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # disable unused-imports errors on __init__.py
 "_kernels.py" = ["ARG001"]  # disable unused arguments in kernel files
-"test/**" = [
+"harmonica/tests/**" = [
     "T20", # allow print statements in tests
     "D",   # ignore pydocstyle warnings in tests
 ]
