@@ -33,7 +33,7 @@ from .._forward.utils import distance_cartesian
 from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
 
-MODULE_DIR = Path(os.path.dirname(__file__))
+MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
 
 

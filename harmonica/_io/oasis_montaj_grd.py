@@ -12,6 +12,7 @@ Function to read Oasis Montaj© .grd file.
 """
 
 import array
+import pathlib
 import zlib
 
 import numpy as np
@@ -35,7 +36,7 @@ DUMMIES = {
 
 def load_oasis_montaj_grid(fname):
     """
-    Reads gridded data from an Oasis Montaj© .grd file.
+    Read gridded data from an Oasis Montaj© .grd file.
 
     The version 2 of the Geosoft© Grid File Format (GRD) stores gridded
     products in binary data. This function can read those files and parse the
@@ -77,7 +78,7 @@ def load_oasis_montaj_grid(fname):
     https://github.com/Loop3D/geosoft_grid
     """
     # Read the header and the grid array
-    with open(fname, "rb") as grd_file:
+    with pathlib.Path(fname).open("rb") as grd_file:
         # Read the header (first 512 bytes)
         header = _read_header(grd_file.read(512))
         # Check for valid flags
