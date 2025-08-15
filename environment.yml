@@ -19,7 +19,7 @@ dependencies:
   - choclo>=0.1
   # Optional requirements
   - pyvista
-  - vtk==9.4.*
+  - vtk
   - numba-progress
   # Testing requirements
   - pytest
