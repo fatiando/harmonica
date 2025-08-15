@@ -7,7 +7,7 @@
 """
 Test forward modelling for point masses.
 """
-
+import re
 from pathlib import Path
 
 import numpy as np
@@ -41,13 +41,15 @@ def test_invalid_coordinate_system():
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
-    with pytest.raises(ValueError):
+    invalid_coord_system = "this-is-not-a-valid-coordinate-system"
+    msg = re.escape(f"Coordinate system {invalid_coord_system} not recognized")
+    with pytest.raises(ValueError, match=msg):
         point_gravity(
             coordinates,
             point_mass,
             mass,
             "potential",
-            "this-is-not-a-valid-coordinate-system",
+            invalid_coord_system,
         )
 
 
@@ -75,13 +77,15 @@ def test_invalid_field():
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
+    invalid_field = "this-field-does-not-exist"
+    msg = re.escape(f"Gravitational field '{invalid_field}' not recognized")
     for coordinate_system in ("spherical", "cartesian"):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=msg):
             point_gravity(
                 coordinates,
                 point_mass,
                 mass,
-                "this-field-does-not-exist",
+                invalid_field,
                 coordinate_system,
             )
 
@@ -93,7 +97,11 @@ def test_invalid_masses_array():
     # Generate a two element masses
     masses = [1000, 2000]
     coordinates = [0, 0, 250]
-    with pytest.raises(ValueError):
+    msg = (
+        r"Number of elements in masses \([0-9]+\)"
+        r" mismatch the number of points \([0-9]+\)"
+    )
+    with pytest.raises(ValueError, match=msg):
         point_gravity(
             coordinates,
             points,

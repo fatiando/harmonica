@@ -123,6 +123,7 @@ ignore = [
 "harmonica/tests/**" = [
     "T20", # allow print statements in tests
     "D",   # ignore pydocstyle warnings in tests
+    "RUF012", # ignore undecorated mutable class attributes
 ]
 "doc/conf.py" = ["D"]  # ignore pydocstyle warnings in Sphinx config
 "doc/**" = [
