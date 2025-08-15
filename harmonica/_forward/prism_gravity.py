@@ -476,7 +476,7 @@ def _check_prisms(prisms):
             err_msg += f"\tInvalid prism: {prism}\n"
         raise ValueError(err_msg)
     if bad_bt.any():
-        err_msg += "The bottom radius boundary can't be greater than the top one.\n"
+        err_msg += "The bottom boundary can't be greater than the top one.\n"
         for prism in prisms[bad_bt]:
             err_msg += f"\tInvalid tesseroid: {prism}\n"
         raise ValueError(err_msg)
