@@ -7,7 +7,7 @@
 """
 Test forward modelling for tesseroids.
 """
-
+import re
 from unittest.mock import patch
 
 import boule
@@ -81,19 +81,18 @@ def test_tesseroid_parallel(field, radial_discretization):
     ]
     densities = 1000.0 * np.ones(len(tesseroids))
     coordinates = [[-5.0, 0.0, 1.0], [-5.0, 0.0, 5.0], [top + 100] * 3]
-    npt.assert_allclose(
-        *tuple(
-            tesseroid_gravity(
-                coordinates,
-                tesseroids,
-                densities,
-                radial_adaptive_discretization=radial_discretization,
-                field=field,
-                parallel=parallel,
-            )
-            for parallel in (True, False)
+    result_serial, result_parallel = tuple(
+        tesseroid_gravity(
+            coordinates,
+            tesseroids,
+            densities,
+            radial_adaptive_discretization=radial_discretization,
+            field=field,
+            parallel=parallel,
         )
+        for parallel in (True, False)
     )
+    npt.assert_allclose(result_serial, result_parallel)
 
 
 # ------------------
@@ -104,8 +103,10 @@ def test_invalid_field():
     tesseroid = [-10, 10, -10, 10, 100, 200]
     density = 1000
     coordinates = [0, 0, 250]
-    with pytest.raises(ValueError):
-        tesseroid_gravity(coordinates, tesseroid, density, field="Not a valid field")
+    invalid_field = "this-field-does-not-exist"
+    msg = re.escape(f"Gravitational field {invalid_field} not recognized")
+    with pytest.raises(ValueError, match=msg):
+        tesseroid_gravity(coordinates, tesseroid, density, field=invalid_field)
 
 
 def test_invalid_density_array():
@@ -122,7 +123,11 @@ def test_invalid_density_array():
     # Generate a two element density
     density = [1000, 2000]
     coordinates = [0, 0, 250]
-    with pytest.raises(ValueError):
+    msg = (
+        r"Number of elements in density \([0-9]+\)"
+        r" mismatch the number of tesseroids \([0-9]+\)"
+    )
+    with pytest.raises(ValueError, match=msg):
         tesseroid_gravity(coordinates, tesseroids, density, field="potential")
 
 
@@ -151,45 +156,67 @@ def test_invalid_tesseroid():
     """Check if invalid tesseroid boundaries are caught by _check_tesseroids."""
     # Define some tesseroid boundaries
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
+
     # Test invalid latitudinal boundaries
-    with pytest.raises(ValueError):
+    msg = "The south boundary can't be greater than the north one"
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, n, s, bottom, top]))
-    with pytest.raises(ValueError):
+
+    # latitude outside the [-90, 90] interval
+    msg = re.escape(
+        "The latitudinal boundaries must be inside the [-90, 90] degrees interval"
+    )
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, s, -100, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, s, 100, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, -100, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, 100, n, bottom, top]))
+
     # Test invalid radial boundaries
-    with pytest.raises(ValueError):
+    msg = "The bottom radius boundary can't be greater than the top one"
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, s, n, top, bottom]))
-    with pytest.raises(ValueError):
+
+    msg = "The bottom and top radii should be positive or zero"
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, s, n, bottom, -1]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, e, s, n, -1, top]))
+
     # Test invalid longitudinal boundaries
     # longitudinal boundaries outside the [-180, 360] interval
-    with pytest.raises(ValueError):
+    msg = re.escape(
+        "The longitudinal boundaries must be inside the [-180, 360] degrees interval"
+    )
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([-200, e, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([400, e, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, -200, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([w, 400, s, n, bottom, top]))
+
     # west > east (even after longitude continuity)
-    with pytest.raises(ValueError):
+    msg = "The west boundary can't be greater than the east one"
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([30, 0, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([-60, -70, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([300, -150, s, n, bottom, top]))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([350, 340, s, n, bottom, top]))
+
     # more than one turn around the globe
-    with pytest.raises(ValueError):
+    msg = (
+        "The difference between east and west boundaries cannot be greater than "
+        "one turn around the globe"
+    )
+    with pytest.raises(ValueError, match=msg):
         _check_tesseroids(np.atleast_2d([-150, 300, s, n, bottom, top]))
 
 
@@ -201,7 +228,8 @@ def test_disable_checks():
     density = 100.0
     coordinates = [0.0, 0.0, 10.0]
     # By default, an error should be raised for invalid input
-    with pytest.raises(ValueError):
+    msg = "The bottom radius boundary can't be greater than the top one"
+    with pytest.raises(ValueError, match=msg):
         tesseroid_gravity(coordinates, invalid_tesseroid, density, field="potential")
     # Check if an invalid tesseroid doesn't raise an error with the
     # disable_checks flag set to True
@@ -244,7 +272,8 @@ class TestPointInsideTesseroid:
         """Check if error is raised when point fall inside the tesseroid."""
         points = np.atleast_2d(points).T
         tesseroid = np.atleast_2d([-10, 10, -10, 10, 100, 200])
-        with pytest.raises(ValueError):
+        msg = re.escape("Found computation point(s) inside tesseroid(s)")
+        with pytest.raises(ValueError, match=msg):
             check_points_outside_tesseroids(points, tesseroid)
 
     @pytest.mark.use_numba
@@ -259,7 +288,8 @@ class TestPointInsideTesseroid:
         """Test if error is raised when the longitude coords are phased."""
         point = np.atleast_2d(point).T
         tesseroid = np.atleast_2d(tesseroid)
-        with pytest.raises(ValueError):
+        msg = re.escape("Found computation point(s) inside tesseroid(s)")
+        with pytest.raises(ValueError, match=msg):
             check_points_outside_tesseroids(point, tesseroid)
 
     @pytest.mark.use_numba
@@ -279,7 +309,8 @@ class TestPointInsideTesseroid:
                 [10, 10, 450],
             ]
         ).T
-        with pytest.raises(ValueError):
+        msg = re.escape("Found computation point(s) inside tesseroid(s)")
+        with pytest.raises(ValueError, match=msg):
             check_points_outside_tesseroids(points, tesseroids)
 
 
