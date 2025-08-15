@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Function to read ICGEM .gdf file
+Function to read ICGEM .gdf file.
 """
 
 import contextlib
@@ -79,15 +79,16 @@ def load_icgem_gdf(fname, **kwargs):
         grid.longitude.values.max(),
     )
     if not np.allclose(area, area_from_cols):
+        msg = f"Grid area read ({area}) and calculated from attributes ({area_from_cols}) mismatch."
         raise OSError(
-            f"Grid area read ({area}) and calculated from attributes ({area_from_cols}) mismatch."
+            msg
         )
     return grid
 
 
 def _read_gdf_file(fname, **kwargs):
     """
-    Read ICGEM gdf file and returns metadata dict and data in cols as np.array
+    Read ICGEM gdf file and returns metadata dict and data in cols as np.array.
     """
     # If it's an open file, does nothing. Otherwise, open and add to the
     # context lib stack to make it close when exiting the with block.
@@ -123,10 +124,13 @@ def _read_gdf_file(fname, **kwargs):
     if kwargs.get("usecols") is not None:
         metadata["attributes"] = [metadata["attributes"][i] for i in kwargs["usecols"]]
     if len(metadata["attributes"]) != rawdata.shape[0]:
-        raise OSError(
+        msg = (
             "Number of attributes ({}) and data columns ({}) mismatch".format(
                 len(metadata["attributes"]), rawdata.shape[0]
             )
+        )
+        raise OSError(
+            msg
         )
     return rawdata, metadata
 
@@ -145,18 +149,24 @@ def _check_gdf_integrity(metadata):
     # Check for needed arguments in metadata dictionary
     for arg in needed_args:
         if arg not in metadata:
-            raise OSError(f"Couldn't read {arg} field from gdf file header")
+            msg = f"Couldn't read {arg} field from gdf file header"
+            raise OSError(msg)
         metadata[arg] = metadata[arg].split()[0]
     if "attributes" not in metadata:
-        raise OSError("Couldn't read column names.")
+        msg = "Couldn't read column names."
+        raise OSError(msg)
     if "attributes_units" not in metadata:
-        raise OSError("Couldn't read column units.")
+        msg = "Couldn't read column units."
+        raise OSError(msg)
     # Check cols names and units integrity
     if len(metadata["attributes"]) != len(metadata["attributes_units"]):
-        raise OSError(
+        msg = (
             "Number of attributes ({}) and units ({}) mismatch".format(
                 len(metadata["attributes"]), len(metadata["attributes_units"])
             )
+        )
+        raise OSError(
+            msg
         )
     metadata["attributes_units"] = [
         attr.replace("[", "").replace("]", "").strip()
@@ -164,9 +174,11 @@ def _check_gdf_integrity(metadata):
     ]
     for arg in ["latitude", "longitude"]:
         if arg not in metadata["attributes"]:
-            raise OSError(f"Couldn't find {arg} column.")
+            msg = f"Couldn't find {arg} column."
+            raise OSError(msg)
     # Check proper values for shape and size
     shape = (int(metadata["latitude_parallels"]), int(metadata["longitude_parallels"]))
     size = int(metadata["number_of_gridpoints"])
     if shape[0] * shape[1] != size:
-        raise OSError(f"Grid shape '{shape}' and size '{size}' mismatch.")
+        msg = f"Grid shape '{shape}' and size '{size}' mismatch."
+        raise OSError(msg)

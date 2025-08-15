@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test equivalent sources utility functions
+Test equivalent sources utility functions.
 """
 
 import warnings
@@ -19,7 +19,7 @@ from .._equivalent_sources.utils import cast_fit_input, pop_extra_coords
 
 def test_pop_extra_coords():
     """
-    Test pop_extra_coords private function
+    Test pop_extra_coords private function.
     """
     # Check if extra_coords is removed from kwargs
     kwargs = {"bla": 1, "blabla": 2, "extra_coords": 1400.0}
@@ -35,19 +35,16 @@ def test_pop_extra_coords():
     assert kwargs == {"bla": 1, "blabla": 2}
 
 
-@pytest.mark.parametrize("weights_none", (False, True))
-@pytest.mark.parametrize("dtype", ("float64", "float32", "int32", "int64"))
+@pytest.mark.parametrize("weights_none", [False, True])
+@pytest.mark.parametrize("dtype", ["float64", "float32", "int32", "int64"])
 def test_cast_fit_input(weights_none, dtype):
     """
-    Test cast_fit_input function
+    Test cast_fit_input function.
     """
     region = (-7e3, 4e3, 10e3, 25e3)
     coordinates = scatter_points(region=region, size=100, random_state=42)
     data = np.arange(coordinates[0].size, dtype="float64")
-    if weights_none:
-        weights = None
-    else:
-        weights = np.ones_like(data)
+    weights = None if weights_none else np.ones_like(data)
     coordinates, data, weights = cast_fit_input(coordinates, data, weights, dtype)
     # Check dtype of the outputs
     for coord in coordinates:

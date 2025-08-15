@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test function to read Oasis Montaj© .grd file
+Test function to read Oasis Montaj© .grd file.
 """
 
 from pathlib import Path
@@ -23,34 +23,34 @@ MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
 
 
-@pytest.mark.parametrize("ordering", (-1, 1))
+@pytest.mark.parametrize("ordering", [-1, 1])
 def test_check_ordering_valid(ordering):
     """
-    Test _check_ordering with valid values
+    Test _check_ordering with valid values.
     """
     _check_ordering(ordering)
 
 
-@pytest.mark.parametrize("ordering", (-2, 0, 2))
+@pytest.mark.parametrize("ordering", [-2, 0, 2])
 def test_check_ordering_invalid(ordering):
     """
-    Test _check_ordering with invalid values
+    Test _check_ordering with invalid values.
     """
     with pytest.raises(NotImplementedError, match="Found an ordering"):
         _check_ordering(ordering)
 
 
-@pytest.mark.parametrize("sign_flag", (0, 1, 2))
+@pytest.mark.parametrize("sign_flag", [0, 1, 2])
 def test_check_sign_flag_valid(sign_flag):
     """
-    Test _check_sign_flag with valid value
+    Test _check_sign_flag with valid value.
     """
     _check_sign_flag(sign_flag)
 
 
 def test_check_sign_flag_invalid():
     """
-    Test _check_sign_flag with invalid value
+    Test _check_sign_flag with invalid value.
     """
     with pytest.raises(NotImplementedError, match="colour grids is not"):
         _check_sign_flag(3)
@@ -58,7 +58,7 @@ def test_check_sign_flag_invalid():
 
 class TestOasisMontajGrid:
     """
-    Test if load_oasis_montaj_grid reads grid properly
+    Test if load_oasis_montaj_grid reads grid properly.
     """
 
     expected_grid = xr.load_dataarray(TEST_DATA_DIR / "om_expected.nc")
@@ -66,7 +66,7 @@ class TestOasisMontajGrid:
 
     @pytest.mark.parametrize(
         "grd_fname",
-        (
+        [
             "om_float.grd",
             "om_short.grd",
             "om_long.grd",
@@ -74,11 +74,11 @@ class TestOasisMontajGrid:
             "om_byte.grd",
             "om_order.grd",
             "om_compress.grd",
-        ),
+        ],
     )
     def test_simple_grid(self, grd_fname):
         """
-        Test a grid with floats
+        Test a grid with floats.
         """
         fname = TEST_DATA_DIR / grd_fname
         grid = load_oasis_montaj_grid(fname)
@@ -91,7 +91,7 @@ class TestOasisMontajGrid:
 
     def test_rotated_grid(self):
         """
-        Test loading a rotated grid
+        Test loading a rotated grid.
         """
         fname = TEST_DATA_DIR / "om_rotate.grd"
         grid = load_oasis_montaj_grid(fname)

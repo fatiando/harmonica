@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Forward modelling for point masses
+Forward modelling for point masses.
 """
 
 import numpy as np
@@ -263,7 +263,7 @@ def point_gravity(
 
 def dispatcher(coordinate_system, parallel):
     """
-    Return the appropriate forward model function
+    Return the appropriate forward model function.
     """
     dispatchers = {
         "cartesian": {
@@ -280,7 +280,7 @@ def dispatcher(coordinate_system, parallel):
 
 def get_kernel(coordinate_system, field):
     """
-    Return the appropriate kernel
+    Return the appropriate kernel.
     """
     kernels = {
         "cartesian": {
@@ -308,7 +308,8 @@ def get_kernel(coordinate_system, field):
         },
     }
     if field not in kernels[coordinate_system]:
-        raise ValueError(f"Gravitational field '{field}' not recognized")
+        msg = f"Gravitational field '{field}' not recognized"
+        raise ValueError(msg)
     kernel = kernels[coordinate_system][field]
     if kernel is None:
         raise NotImplementedError
@@ -325,7 +326,7 @@ def potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel function for potential gravitational field in spherical coordinates
+    Kernel function for potential gravitational field in spherical coordinates.
     """
     distance, _, _ = distance_spherical_core(
         longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
@@ -342,7 +343,7 @@ def gravity_u_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
     """
-    Kernel for upward component of gravitational acceleration
+    Kernel for upward component of gravitational acceleration.
 
     Use spherical coordinates
     """
@@ -365,7 +366,7 @@ def point_mass_cartesian(
     forward_func,
 ):
     """
-    Compute gravitational field of point masses in Cartesian coordinates
+    Compute gravitational field of point masses in Cartesian coordinates.
 
     Parameters
     ----------
@@ -401,7 +402,7 @@ def point_mass_spherical(
     longitude, latitude, radius, longitude_p, latitude_p, radius_p, masses, out, kernel
 ):
     """
-    Compute gravitational field of point masses in spherical coordinates
+    Compute gravitational field of point masses in spherical coordinates.
 
     Parameters
     ----------

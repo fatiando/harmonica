@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test prisms layer
+Test prisms layer.
 """
 
 import warnings
@@ -34,7 +34,7 @@ except ImportError:
 @pytest.fixture(params=("numpy", "xarray"))
 def dummy_layer(request):
     """
-    Generate dummy arrays for defining prism layers
+    Generate dummy arrays for defining prism layers.
     """
     easting = np.linspace(-1, 3, 5)
     northing = np.linspace(7, 13, 4)
@@ -53,7 +53,7 @@ def dummy_layer(request):
 @pytest.fixture
 def prism_layer_with_holes(dummy_layer):
     """
-    Return a set of prisms with some missing elements
+    Return a set of prisms with some missing elements.
 
     The prisms are returned as a tuple of boundaries, ready to be passed to
     ``hm.prism_gravity``. They would represent the same prisms that the
@@ -65,21 +65,21 @@ def prism_layer_with_holes(dummy_layer):
         (easting, northing), surface, reference, properties={"density": density}
     )
     indices = [(3, 3), (2, 1)]
-    prisms = list(
+    prisms = [
         layer.prism_layer.get_prism((i, j))
         for i in range(4)
         for j in range(5)
         if (i, j) not in indices
-    )
-    density = list(
+    ]
+    density = [
         density[i, j] for i in range(4) for j in range(5) if (i, j) not in indices
-    )
+    ]
     return prisms, density
 
 
 def test_prism_layer(dummy_layer):
     """
-    Check if a layer of prisms is property constructed
+    Check if a layer of prisms is property constructed.
     """
     (easting, northing), surface, reference, _ = dummy_layer
     layer = prism_layer((easting, northing), surface, reference)
@@ -111,7 +111,7 @@ def test_prism_layer_invalid_surface_reference(
     dummy_layer,
 ):
     """
-    Check if invalid surface and/or reference are caught
+    Check if invalid surface and/or reference are caught.
     """
     coordinates, surface, reference, _ = dummy_layer
     # Surface with wrong shape
@@ -127,7 +127,7 @@ def test_prism_layer_invalid_surface_reference(
 
 def test_prism_layer_properties(dummy_layer):
     """
-    Check passing physical properties to the prisms layer
+    Check passing physical properties to the prisms layer.
     """
     coordinates, surface, reference, density = dummy_layer
     suceptibility = 0 * density + 1e-3
@@ -145,7 +145,7 @@ def test_prism_layer_no_regular_grid(
     dummy_layer,
 ):
     """
-    Check if error is raised if easting and northing are not regular
+    Check if error is raised if easting and northing are not regular.
     """
     (easting, northing), surface, reference, _ = dummy_layer
     # Easting as non evenly spaced set of coordinates
@@ -171,7 +171,7 @@ def test_prism_layer_no_regular_grid(
 
 def test_prism_layer_attributes():
     """
-    Check attributes of the DatasetAccessorPrismLayer class
+    Check attributes of the DatasetAccessorPrismLayer class.
     """
     easting = np.linspace(1, 3, 5)
     northing = np.linspace(7, 10, 4)
@@ -192,7 +192,7 @@ def test_prism_layer_attributes():
 
 def test_prism_layer_to_prisms():
     """
-    Check the _to_prisms() method
+    Check the _to_prisms() method.
     """
     coordinates = (np.array([0, 1]), np.array([0, 1]))
     reference = np.arange(4).reshape(2, 2)
@@ -209,7 +209,7 @@ def test_prism_layer_to_prisms():
 
 def test_prism_layer_get_prism_by_index():
     """
-    Check if the right prism is returned after index
+    Check if the right prism is returned after index.
     """
     coordinates = (np.array([0, 1]), np.array([0, 1]))
     reference = np.arange(4).reshape(2, 2)
@@ -228,7 +228,7 @@ def test_prism_layer_get_prism_by_index():
 
 def test_nonans_prisms_mask(dummy_layer):
     """
-    Check if the mask for nonans prism is correctly created
+    Check if the mask for nonans prism is correctly created.
     """
     (easting, northing), surface, reference, _ = dummy_layer
     shape = (northing.size, easting.size)
@@ -278,7 +278,7 @@ def test_nonans_prisms_mask_property(
     dummy_layer,
 ):
     """
-    Check if the method masks the property and raises a warning
+    Check if the method masks the property and raises a warning.
     """
     (easting, northing), surface, reference, density = dummy_layer
     shape = (northing.size, easting.size)
@@ -331,7 +331,7 @@ def test_nonans_prisms_mask_property(
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_prism_layer_gravity(field, dummy_layer):
     """
-    Check if gravity method works as expected
+    Check if gravity method works as expected.
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
     (easting, northing), surface, reference, density = dummy_layer
@@ -353,7 +353,7 @@ def test_prism_layer_gravity(field, dummy_layer):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_holes):
     """
-    Check if gravity method works as expected when surface has nans
+    Check if gravity method works as expected when surface has nans.
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
     (easting, northing), surface, reference, density = dummy_layer
@@ -377,7 +377,7 @@ def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_h
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_holes):
     """
-    Check if prisms is ignored after a nan is found in density array
+    Check if prisms is ignored after a nan is found in density array.
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
     prisms_coords, surface, reference, density = dummy_layer
@@ -401,19 +401,16 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
 
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
-@pytest.mark.parametrize("properties", (False, True))
-@pytest.mark.parametrize("drop_null_prisms", (False, True))
+@pytest.mark.parametrize("properties", [False, True])
+@pytest.mark.parametrize("drop_null_prisms", [False, True])
 def test_to_pyvista(dummy_layer, properties, drop_null_prisms):
     """
-    Test the conversion of the prism layer to pyvista.UnstructuredGrid
+    Test the conversion of the prism layer to pyvista.UnstructuredGrid.
     """
     (easting, northing), surface, reference, density = dummy_layer
     reference -= 1  # lower the reference so we don't get prisms with zero volume
     # Build the layer with or without properties
-    if properties:
-        properties = {"density": density}
-    else:
-        properties = None
+    properties = {"density": density} if properties else None
     layer = prism_layer((easting, northing), surface, reference, properties=properties)
     # Convert the layer to pyvista UnstructuredGrid
     pv_grid = layer.prism_layer.to_pyvista(drop_null_prisms=drop_null_prisms)
@@ -435,11 +432,11 @@ def test_to_pyvista(dummy_layer, properties, drop_null_prisms):
 
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
-@pytest.mark.parametrize("drop_null_prisms", (False, True))
+@pytest.mark.parametrize("drop_null_prisms", [False, True])
 def test_to_pyvista_drop_null_prisms(dummy_layer, drop_null_prisms):
     """
     Test the conversion of the prism layer to pyvista.UnstructuredGrid when
-    some prisms have zero volume
+    some prisms have zero volume.
     """
     (easting, northing), surface, reference, density = dummy_layer
     reference -= 1  # lower the reference so we don't get prisms with zero volume
@@ -469,7 +466,7 @@ def test_to_pyvista_drop_null_prisms(dummy_layer, drop_null_prisms):
 @pytest.mark.use_numba
 def test_progress_bar(dummy_layer):
     """
-    Check if forward gravity results with and without progress bar match
+    Check if forward gravity results with and without progress bar match.
     """
     coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
     (easting, northing), surface, reference, density = dummy_layer

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Functions for visualizing prisms through pyvista
+Functions for visualizing prisms through pyvista.
 """
 
 import numpy as np
@@ -20,7 +20,7 @@ else:
 
 def prism_to_pyvista(prisms, properties=None):
     """
-    Create a :class:`pyvista.UnstructuredGrid` out of prisms
+    Create a :class:`pyvista.UnstructuredGrid` out of prisms.
 
     Builds a :class:`pyvista.UnstructuredGrid` out of a set of prisms that
     could be used to plot a 3D representation through :mod:`pyvista`.
@@ -73,8 +73,9 @@ def prism_to_pyvista(prisms, properties=None):
     """
     # Check if pyvista are installed
     if pyvista is None:
+        msg = "Missing optional dependency 'pyvista' required for building pyvista grids."
         raise ImportError(
-            "Missing optional dependency 'pyvista' required for building pyvista grids."
+            msg
         )
     # Get prisms and number of prisms
     prisms = np.atleast_2d(prisms)
@@ -102,7 +103,7 @@ def prism_to_pyvista(prisms, properties=None):
 
 def _prisms_boundaries_to_vertices(prisms):
     """
-    Converts prisms boundaries to sets of vertices for each prism
+    Converts prisms boundaries to sets of vertices for each prism.
 
     The vertices for each prism will be in the following order
 

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utils functions for tesseroids with variable density
+Utils functions for tesseroids with variable density.
 """
 
 import numpy as np
@@ -28,7 +28,7 @@ def gauss_legendre_quadrature_variable_density(
     kernel,
 ):
     r"""
-    Compute the effect of a tesseroid on a single observation point through GLQ
+    Compute the effect of a tesseroid on a single observation point through GLQ.
 
     The tesseroid is converted into a set of point masses located on the
     scaled nodes of the Gauss-Legendre Quadrature. The number of point masses
@@ -120,7 +120,7 @@ def gauss_legendre_quadrature_variable_density(
 # --------------------------------------
 def density_based_discretization(tesseroids, density):
     """
-    Apply density_based discretization to a collection of tesseroids
+    Apply density_based discretization to a collection of tesseroids.
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def density_based_discretization(tesseroids, density):
 
 def _density_based_discretization(tesseroid, density):
     """
-    Applies density-based discretization to a single tesseroid
+    Applies density-based discretization to a single tesseroid.
 
     Splits the tesseroid on the points of maximum density variance
 
@@ -198,12 +198,12 @@ def _density_based_discretization(tesseroid, density):
 
 def density_minmax(density, bottom, top):
     """
-    Compute the minimum and maximum value of a bounded density
+    Compute the minimum and maximum value of a bounded density.
     """
     # Calculate min and max density values at the top and bottom boundaries
     density_bounds_min, density_bounds_max = np.sort([density(bottom), density(top)])
     # Estimate the minimum value of the density function withing bounds
-    kwargs = dict(bounds=[bottom, top], method="bounded")
+    kwargs = {"bounds": [bottom, top], "method": "bounded"}
     minimum = np.min(
         (
             minimize_scalar(density, **kwargs).fun,
@@ -222,7 +222,7 @@ def density_minmax(density, bottom, top):
 
 def maximum_absolute_diff(normalized_density, bottom, top):
     """
-    Compute maximum abs difference between normalized density and straight line
+    Compute maximum abs difference between normalized density and straight line.
 
     The maximum difference is computed within the ``bottom`` and ``top``
     boundaries.
@@ -230,7 +230,7 @@ def maximum_absolute_diff(normalized_density, bottom, top):
 
     def neg_absolute_difference(radius):
         """
-        Define minus absolute diff between normalized density and straight line
+        Define minus absolute diff between normalized density and straight line.
         """
         return -np.abs(
             normalized_density(radius)
@@ -251,7 +251,7 @@ def maximum_absolute_diff(normalized_density, bottom, top):
 
 def straight_line(radius, normalized_density, bottom, top):
     """
-    Compute the reference straight line that joins points of normalized density
+    Compute the reference straight line that joins points of normalized density.
     """
     norm_density_bottom = normalized_density(bottom)
     norm_density_top = normalized_density(top)

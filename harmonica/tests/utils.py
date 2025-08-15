@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Decorators and useful functions for running tests
+Decorators and useful functions for running tests.
 """
 
 import os
@@ -16,7 +16,7 @@ import pytest
 
 def root_mean_square_error(x, y):
     """
-    Compute root mean square error between two arrays
+    Compute root mean square error between two arrays.
 
     Parameters
     ----------
@@ -35,7 +35,7 @@ def root_mean_square_error(x, y):
 
 def combine_decorators(*decorators):
     """
-    Combine several decorators into a single one
+    Combine several decorators into a single one.
     """
 
     def combination(func):

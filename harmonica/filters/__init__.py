@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Frequency domain filters meant to be applied on regular grids
+Frequency domain filters meant to be applied on regular grids.
 """
 
 from ._filters import (

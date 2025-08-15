@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Forward modelling for tesseroids
+Forward modelling for tesseroids.
 """
 
 import numpy as np
@@ -161,7 +161,8 @@ def tesseroid_gravity(
         "g_z": gravity_u_spherical,
     }
     if field not in kernels:
-        raise ValueError(f"Gravitational field {field} not recognized")
+        msg = f"Gravitational field {field} not recognized"
+        raise ValueError(msg)
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -214,7 +215,7 @@ def tesseroid_gravity(
 
 def dispatcher(parallel, density):
     """
-    Return the jitted compiled forward modelling function
+    Return the jitted compiled forward modelling function.
 
     The choice of the forward modelling function is based on whether the
     density is a function and if the model should be run in parallel.
@@ -246,7 +247,7 @@ def jit_tesseroid_gravity(
     progress_proxy,
 ):
     """
-    Compute gravitational field of tesseroids on computations points
+    Compute gravitational field of tesseroids on computations points.
 
     Perform adaptive discretization, convert each small tesseroid to equivalent
     point masses through GLQ and use point masses kernel functions to compute
@@ -349,7 +350,7 @@ def jit_tesseroid_gravity_variable_density(
     progress_proxy,
 ):
     """
-    Compute gravitational field of tesseroids on computations points
+    Compute gravitational field of tesseroids on computations points.
 
     Perform adaptive discretization, convert each small tesseroid to equivalent
     point masses through GLQ and use point masses kernel functions to compute

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent sources for generic harmonic functions in Cartesian coordinates
+Equivalent sources for generic harmonic functions in Cartesian coordinates.
 """
 
 from __future__ import annotations
@@ -175,13 +175,17 @@ class EquivalentSources(vdb.BaseGridder):
         dtype="float64",
     ):
         if isinstance(depth, str) and depth != "default":
-            raise ValueError(
+            msg = (
                 f"Found invalid 'depth' value equal to '{depth}'. "
                 "It should be 'default' or a numeric value."
             )
-        if depth == 0:
             raise ValueError(
-                "Depth value cannot be zero. It should be a non-zero numeric value."
+                msg
+            )
+        if depth == 0:
+            msg = "Depth value cannot be zero. It should be a non-zero numeric value."
+            raise ValueError(
+                msg
             )
 
         self.damping = damping
@@ -242,7 +246,7 @@ class EquivalentSources(vdb.BaseGridder):
 
     def _build_points(self, coordinates):
         """
-        Generate coordinates of point sources based on the data points
+        Generate coordinates of point sources based on the data points.
 
         Locate the point sources using a relative depth strategy
         and apply block-averaging if ``block_size`` is not None.
@@ -283,7 +287,7 @@ class EquivalentSources(vdb.BaseGridder):
 
     def _block_average_coordinates(self, coordinates):
         """
-        Run a block-averaging process on observation points
+        Run a block-averaging process on observation points.
 
         Apply a median as the reduction function. The blocks will have the size
         specified through the ``block_size`` argument on the constructor.
@@ -594,7 +598,7 @@ class EquivalentSources(vdb.BaseGridder):
 @jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
-    Green's function for the equivalent sources in Cartesian coordinates
+    Green's function for the equivalent sources in Cartesian coordinates.
 
     Uses Numba to speed up things.
     """

@@ -15,7 +15,7 @@ from .constants import GRAVITATIONAL_CONST
 
 def bouguer_correction(topography, density_crust=2670, density_water=1040):
     r"""
-    Gravitational effect of topography using a Bouguer plate approximation
+    Gravitational effect of topography using a Bouguer plate approximation.
 
     Used to remove the gravitational attraction of topography above the
     ellipsoid from the gravity disturbance. The infinite plate approximation is

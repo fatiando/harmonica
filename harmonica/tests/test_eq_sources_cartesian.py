@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test the EquivalentSources gridder
+Test the EquivalentSources gridder.
 """
 
 from collections.abc import Iterable
@@ -25,7 +25,7 @@ from .utils import run_only_with_numba
 @pytest.fixture(name="region")
 def fixture_region():
     """
-    Return a sample region
+    Return a sample region.
     """
     return (-3e3, -1e3, 5e3, 7e3)
 
@@ -33,7 +33,7 @@ def fixture_region():
 @pytest.fixture(name="coordinates")
 def fixture_coordinates(region):
     """
-    Return a set of sample coordinates at zero height
+    Return a set of sample coordinates at zero height.
     """
     shape = (40, 40)
     return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
@@ -42,7 +42,7 @@ def fixture_coordinates(region):
 @pytest.fixture(name="points")
 def fixture_points(region):
     """
-    Return the coordinates of some sample point masses
+    Return the coordinates of some sample point masses.
     """
     points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
     return points
@@ -51,7 +51,7 @@ def fixture_points(region):
 @pytest.fixture(name="masses")
 def fixture_masses(region, points):
     """
-    Return the masses some sample point masses
+    Return the masses some sample point masses.
     """
     return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
@@ -59,7 +59,7 @@ def fixture_masses(region, points):
 @pytest.fixture(name="data")
 def fixture_data(coordinates, points, masses):
     """
-    Return some sample data
+    Return some sample data.
     """
     return point_gravity(coordinates, points, masses, field="g_z")
 
@@ -67,7 +67,7 @@ def fixture_data(coordinates, points, masses):
 @pytest.fixture(name="weights")
 def fixture_weights(data):
     """
-    Return some sample data
+    Return some sample data.
     """
     return np.ones_like(data)
 
@@ -75,7 +75,7 @@ def fixture_weights(data):
 @pytest.fixture(name="coordinates_small")
 def fixture_coordinates_small(region):
     """
-    Return a small set of 25 coordinates and variable elevation
+    Return a small set of 25 coordinates and variable elevation.
     """
     shape = (5, 5)
     easting, northing = vd.grid_coordinates(region=region, shape=shape)
@@ -87,7 +87,7 @@ def fixture_coordinates_small(region):
 @pytest.fixture(name="data_small")
 def fixture_data_small(points, masses, coordinates_small):
     """
-    Return some sample data for the small set of coordinates
+    Return some sample data for the small set of coordinates.
     """
     return point_gravity(coordinates_small, points, masses, field="g_z")
 
@@ -95,7 +95,7 @@ def fixture_data_small(points, masses, coordinates_small):
 @pytest.fixture(name="coordinates_9x9")
 def fixture_coordinates_9x9(region):
     """
-    Return a small set of 81 coordinates and variable elevation
+    Return a small set of 81 coordinates and variable elevation.
     """
     shape = (9, 9)
     easting, northing = vd.grid_coordinates(region, shape=shape)
@@ -207,7 +207,7 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
 
 def test_equivalent_sources_build_points(coordinates):
     """
-    Check if build_points method works as expected
+    Check if build_points method works as expected.
 
     Test only with block-averaging disabled
     """
@@ -220,11 +220,11 @@ def test_equivalent_sources_build_points(coordinates):
 
 
 @pytest.mark.parametrize(
-    "block_size", (750, (750, 1e3)), ids=["block_size as float", "block_size as tuple"]
+    "block_size", [750, (750, 1e3)], ids=["block_size as float", "block_size as tuple"]
 )
 def test_block_averaging_coordinates(coordinates_9x9, block_size):
     """
-    Test the _block_averaging_coordinates method
+    Test the _block_averaging_coordinates method.
     """
     depth = 1.5e3
     eqs = EquivalentSources(depth=depth, block_size=block_size)
@@ -245,7 +245,7 @@ def test_block_averaging_coordinates(coordinates_9x9, block_size):
 
 def test_build_points_block_average(coordinates_9x9):
     """
-    Test the _build_points method with block-averaging
+    Test the _build_points method with block-averaging.
     """
     depth = 1.5e3
     block_size = 750
@@ -261,7 +261,7 @@ def test_build_points_block_average(coordinates_9x9):
 
 def test_equivalent_sources_points_depth(coordinates_small, data_small):
     """
-    Check if the points coordinates are properly defined by the fit method
+    Check if the points coordinates are properly defined by the fit method.
     """
     easting, northing, upward = coordinates_small[:]
 
@@ -289,7 +289,7 @@ def test_equivalent_sources_custom_points_cartesian(region, coordinates, data):
 
 def test_equivalent_sources_scatter_not_implemented():
     """
-    Check if scatter method raises a NotImplementedError
+    Check if scatter method raises a NotImplementedError.
     """
     eqs = EquivalentSources()
     with pytest.raises(NotImplementedError):
@@ -327,7 +327,7 @@ def test_equivalent_sources_jacobian_cartesian():
 @run_only_with_numba
 def test_equivalent_sources_cartesian_parallel(coordinates, data):
     """
-    Check predictions when parallel is enabled and disabled
+    Check predictions when parallel is enabled and disabled.
     """
     # The predictions should be equal whether are run in parallel or in serial
     eqs_serial = EquivalentSources(parallel=False)
@@ -341,11 +341,11 @@ def test_equivalent_sources_cartesian_parallel(coordinates, data):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("block_size", (None, 500), ids=["no_blocks", "blocks"])
-@pytest.mark.parametrize("custom_points", (False, True), ids=["no_points", "points"])
-@pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
-@pytest.mark.parametrize("damping", (None, 0.1), ids=["damping_none", "damping"])
-@pytest.mark.parametrize("dtype", ("float64", "float32"))
+@pytest.mark.parametrize("block_size", [None, 500], ids=["no_blocks", "blocks"])
+@pytest.mark.parametrize("custom_points", [False, True], ids=["no_points", "points"])
+@pytest.mark.parametrize("weights_none", [False, True], ids=["no_weights", "weights"])
+@pytest.mark.parametrize("damping", [None, 0.1], ids=["damping_none", "damping"])
+@pytest.mark.parametrize("dtype", ["float64", "float32"])
 def test_dtype(
     region,
     coordinates,
@@ -358,7 +358,7 @@ def test_dtype(
     dtype,
 ):
     """
-    Test dtype argument on EquivalentSources
+    Test dtype argument on EquivalentSources.
     """
     # Define the points argument for EquivalentSources
     points = None
@@ -383,10 +383,10 @@ def test_dtype(
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("dtype", ("float64", "float32"))
+@pytest.mark.parametrize("dtype", ["float64", "float32"])
 def test_jacobian_dtype(region, dtype):
     """
-    Test dtype of Jacobian when changing dtype argument on EquivalentSources
+    Test dtype of Jacobian when changing dtype argument on EquivalentSources.
     """
     # Build a set of custom coordinates
     coordinates = tuple(
@@ -408,16 +408,16 @@ def test_jacobian_dtype(region, dtype):
 
 @pytest.mark.parametrize(
     "deprecated_args",
-    (
-        dict(upward=5e3, spacing=1),
-        dict(upward=5e3, shape=(6, 6)),
-        dict(upward=5e3, spacing=1, region=(-4e3, 0, 5e3, 7e3)),
-        dict(upward=5e3, shape=(6, 6), region=(-4e3, 0, 5e3, 7e3)),
-    ),
+    [
+        {"upward": 5e3, "spacing": 1},
+        {"upward": 5e3, "shape": (6, 6)},
+        {"upward": 5e3, "spacing": 1, "region": (-4e3, 0, 5e3, 7e3)},
+        {"upward": 5e3, "shape": (6, 6), "region": (-4e3, 0, 5e3, 7e3)},
+    ],
 )
 def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
     """
-    Test if EquivalentSources.grid raises error on deprecated arguments
+    Test if EquivalentSources.grid raises error on deprecated arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSources().fit(coordinates_small, data_small)
@@ -431,7 +431,7 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
 
 def test_error_ignored_args(coordinates_small, data_small, region):
     """
-    Test if EquivalentSources.grid raises warning on ignored arguments
+    Test if EquivalentSources.grid raises warning on ignored arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSources().fit(coordinates_small, data_small)
@@ -445,7 +445,7 @@ def test_error_ignored_args(coordinates_small, data_small, region):
 
 def test_default_depth(coordinates, data):
     """
-    Test if the depth of sources is correctly set by the default strategy
+    Test if the depth of sources is correctly set by the default strategy.
     """
     # Get distance to first neighbour in the grid
     easting, northing = coordinates[:2]

@@ -49,7 +49,7 @@ ACCURACY_THRESHOLD = 1e-3
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_single_tesseroid(field, radial_discretization):
-    """Test single tesseroid for achieving coverage when Numba is disabled"""
+    """Test single tesseroid for achieving coverage when Numba is disabled."""
     ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
     bottom = top - 1e3
@@ -69,7 +69,7 @@ def test_single_tesseroid(field, radial_discretization):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_tesseroid_parallel(field, radial_discretization):
-    """Compare tesseroids in parallel with tesseroids in serial"""
+    """Compare tesseroids in parallel with tesseroids in serial."""
     ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
     bottom = top - 1e3
@@ -100,7 +100,7 @@ def test_tesseroid_parallel(field, radial_discretization):
 # Test error raising
 # ------------------
 def test_invalid_field():
-    """Check if passing an invalid field raises an error"""
+    """Check if passing an invalid field raises an error."""
     tesseroid = [-10, 10, -10, 10, 100, 200]
     density = 1000
     coordinates = [0, 0, 250]
@@ -110,7 +110,7 @@ def test_invalid_field():
 
 def test_invalid_density_array():
     """
-    Check if error is raised when density shape does not match tesseroids shape
+    Check if error is raised when density shape does not match tesseroids shape.
     """
     # Create a set of 4 tesseroids
     tesseroids = [
@@ -127,7 +127,7 @@ def test_invalid_density_array():
 
 
 def test_valid_tesseroid():
-    """Check if no valid tesseroid is caught as invalid by _check_tesseroids"""
+    """Check if no valid tesseroid is caught as invalid by _check_tesseroids."""
     # Define some tesseroid boundaries
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Check if some valid tesseroids are not caught
@@ -148,7 +148,7 @@ def test_valid_tesseroid():
 
 
 def test_invalid_tesseroid():
-    """Check if invalid tesseroid boundaries are caught by _check_tesseroids"""
+    """Check if invalid tesseroid boundaries are caught by _check_tesseroids."""
     # Define some tesseroid boundaries
     w, e, s, n, bottom, top = -10, 10, -10, 10, 100, 200
     # Test invalid latitudinal boundaries
@@ -195,7 +195,7 @@ def test_invalid_tesseroid():
 
 @pytest.mark.use_numba
 def test_disable_checks():
-    """Check if the disable_checks flag works properly"""
+    """Check if the disable_checks flag works properly."""
     valid_tesseroid = [0.0, 10.0, 0.0, 10.0, 10.0, 20.0]
     invalid_tesseroid = [0.0, 10.0, 0.0, 10.0, 20.0, 10.0]
     density = 100.0
@@ -249,7 +249,7 @@ class TestPointInsideTesseroid:
 
     @pytest.mark.use_numba
     @pytest.mark.parametrize(
-        "point, tesseroid",
+        ("point", "tesseroid"),
         [
             ([360, 0, 150], [-10, 10, -10, 10, 100, 200]),
             ([-90, 0, 150], [260, 280, -10, 10, 100, 200]),
@@ -285,7 +285,7 @@ class TestPointInsideTesseroid:
 
 @pytest.mark.use_numba
 def test_stack_overflow_on_adaptive_discretization():
-    """Test if _adaptive_discretization raises OverflowError on stack overflow"""
+    """Test if _adaptive_discretization raises OverflowError on stack overflow."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
     coordinates = np.array([0.0, 0.0, 1.0])
     distance_size_ratio = 10
@@ -307,7 +307,7 @@ def test_stack_overflow_on_adaptive_discretization():
 
 def test_discard_null_tesseroids():
     """
-    Test if discarding invalid tesseroid works as expected
+    Test if discarding invalid tesseroid works as expected.
     """
     # Define a set of sample tesseroids including invalid ones
     ellipsoid = boule.WGS84
@@ -345,7 +345,7 @@ def test_discard_null_tesseroids():
 # --------------------------------------
 @pytest.mark.use_numba
 def test_distance_tesseroid_point():
-    """Test distance between tesseroid and computation point"""
+    """Test distance between tesseroid and computation point."""
     ellipsoid = boule.WGS84
     longitude_p, latitude_p, radius_p = 0.0, 0.0, ellipsoid.mean_radius
     d_lon, d_lat, d_radius = 2.0, 2.0, 1.3
@@ -380,7 +380,7 @@ def test_distance_tesseroid_point():
 
 @pytest.mark.use_numba
 def test_tesseroid_dimensions():
-    """Test calculation of tesseroid dimensions"""
+    """Test calculation of tesseroid dimensions."""
     # Tesseroid on equator
     w, e, s, n, bottom, top = -1.0, 1.0, -1.0, 1.0, 0.5, 1.5
     tesseroid = np.array([w, e, s, n, bottom, top])
@@ -393,7 +393,7 @@ def test_tesseroid_dimensions():
 # Test longitude continuity
 # -------------------------
 def test_longitude_continuity():
-    """Check if longitude_continuity works as expected"""
+    """Check if longitude_continuity works as expected."""
     # Tesseroid on the [-180, 180) interval
     tesseroid = np.atleast_2d([-10, 10, -10, 10, 1, 2])
     tesseroid = _longitude_continuity(tesseroid)
@@ -412,7 +412,7 @@ def test_longitude_continuity():
 
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_longitude_continuity_equivalent_tesseroids(field):
-    """Check if two equivalent tesseroids generate the same gravity field"""
+    """Check if two equivalent tesseroids generate the same gravity field."""
     ellipsoid = boule.WGS84
     top = ellipsoid.mean_radius
     bottom = top - 1e4
@@ -433,7 +433,7 @@ def test_longitude_continuity_equivalent_tesseroids(field):
 # ---------------------
 @pytest.mark.use_numba
 def test_split_tesseroid():
-    """Test splitting of a tesseroid on every direction"""
+    """Test splitting of a tesseroid on every direction."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     # Split only on longitude
@@ -453,7 +453,7 @@ def test_split_tesseroid():
 
 @pytest.mark.use_numba
 def test_split_tesseroid_only_longitude():
-    """Test splitting of a tesseroid only on longitude"""
+    """Test splitting of a tesseroid only on longitude."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = np.array([w, e, s, n, bottom, top])
@@ -479,7 +479,7 @@ def test_split_tesseroid_only_longitude():
 
 @pytest.mark.use_numba
 def test_split_tesseroid_only_latitude():
-    """Test splitting of a tesseroid only on latitude"""
+    """Test splitting of a tesseroid only on latitude."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = np.array([w, e, s, n, bottom, top])
@@ -505,7 +505,7 @@ def test_split_tesseroid_only_latitude():
 
 @pytest.mark.use_numba
 def test_split_tesseroid_only_radius():
-    """Test splitting of a tesseroid only on radius"""
+    """Test splitting of a tesseroid only on radius."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
     w, e, s, n, bottom, top = -10.0, 10.0, -10.0, 10.0, 1.0, 10.0
     tesseroid = np.array([w, e, s, n, bottom, top])
@@ -531,7 +531,7 @@ def test_split_tesseroid_only_radius():
 
 @pytest.mark.use_numba
 def test_split_tesseroid_only_horizontal():
-    """Test splitting of a tesseroid on horizontal directions"""
+    """Test splitting of a tesseroid on horizontal directions."""
     radial_indexes = [4, 5]
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     # Split only on longitude
@@ -553,7 +553,7 @@ def test_split_tesseroid_only_horizontal():
 @run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_adaptive_discretization_on_radii(radial_discretization):
-    """Test if closer computation points increase the tesseroid discretization"""
+    """Test if closer computation points increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     distance_size_ratio = 10
     stack = np.empty((STACK_SIZE, 6))
@@ -584,7 +584,7 @@ def test_adaptive_discretization_on_radii(radial_discretization):
 @run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
-    """Test if higher distance-size-ratio increase the tesseroid discretization"""
+    """Test if higher distance-size-ratio increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     coordinates = np.array([0.0, 0.0, 10.2])
     distance_size_ratii = np.linspace(1, 10, 10)
@@ -608,7 +608,7 @@ def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
 @run_only_with_numba
 def test_two_dimensional_adaptive_discretization():
     """
-    Test if 2D adaptive discretization produces no splits on radial direction
+    Test if 2D adaptive discretization produces no splits on radial direction.
     """
     bottom, top = 1.0, 10.0
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
@@ -631,7 +631,7 @@ def test_two_dimensional_adaptive_discretization():
 def spherical_shell_analytical(top, bottom, density, radius):
     """
     Compute analytical solution of gravity fields for an
-    homogeneous spherical shell
+    homogeneous spherical shell.
     """
     potential = (
         4 / 3 * np.pi * GRAVITATIONAL_CONST * density * (top**3 - bottom**3) / radius
@@ -651,7 +651,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
 ):
     """
     Compare numerical result with analytical solution for
-    2D adaptive discretization
+    2D adaptive discretization.
     """
     # Define computation point located on the equator at the mean Earth radius
     ellipsoid = boule.WGS84
@@ -696,7 +696,7 @@ def test_spherical_shell_two_dim_adaptive_discret(
 def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
     """
     Compare numerical result with analytical solution for
-    3D adaptive discretization
+    3D adaptive discretization.
     """
     # Define computation point located on the equator at 1km above mean Earth
     # radius
@@ -735,7 +735,7 @@ def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
 class TestProgressBar:
     @pytest.fixture
     def tesseroids(self):
-        """Sample tesseroids"""
+        """Sample tesseroids."""
         tesseroids = [
             [30.3, 50.5, -72.2, -34.2, 6e4, 6.1e4],
             [30.3, 50.5, 20.1, 32.3, 6.1e4, 6.2e4],
@@ -745,12 +745,12 @@ class TestProgressBar:
 
     @pytest.fixture
     def densities(self):
-        """Sample densities"""
+        """Sample densities."""
         return [2000, 3000, 4000]
 
     @pytest.fixture
     def coordinates(self):
-        """Sample coordinates"""
+        """Sample coordinates."""
         coordinates = vd.grid_coordinates(
             region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
         )
@@ -761,7 +761,7 @@ class TestProgressBar:
     @pytest.mark.parametrize("field", ["potential", "g_z"])
     def test_progress_bar(self, coordinates, tesseroids, densities, field):
         """
-        Check if forward gravity results with and without progress bar match
+        Check if forward gravity results with and without progress bar match.
         """
         result_progress_true = tesseroid_gravity(
             coordinates, tesseroids, densities, field=field, progressbar=True

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test forward functions for magnetic field of prisms
+Test forward functions for magnetic field of prisms.
 """
 
 import choclo
@@ -26,7 +26,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    """Check if passing an invalid field raises an error"""
+    """Check if passing an invalid field raises an error."""
     prism = [-100, 100, -100, 100, -200, -100]
     magnetization = [1000, 1, 2]
     coordinates = [0, 0, 0]
@@ -39,7 +39,7 @@ def test_invalid_field():
 @pytest.mark.parametrize("field", VALID_FIELDS)
 def test_progress_bar(field):
     """
-    Check if forward modelling results with and without progress bar match
+    Check if forward modelling results with and without progress bar match.
     """
     prisms = [
         [-100, 0, -100, 0, -10, 0],
@@ -60,13 +60,13 @@ def test_progress_bar(field):
 
 class TestSerialVsParallel:
     """
-    Test serial vs parallel
+    Test serial vs parallel.
     """
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_prisms_parallel_vs_serial_no_numba(self, field):
         """
-        Check results of parallelized and serials runs
+        Check results of parallelized and serials runs.
 
         Run a small problem with Numba disable to count for test coverage.
         """
@@ -88,7 +88,7 @@ class TestSerialVsParallel:
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_prisms_parallel_vs_serial(self, field):
         """
-        Check results of parallelized and serials runs
+        Check results of parallelized and serials runs.
 
         Run a large problem only with Numba enabled.
         """
@@ -117,7 +117,7 @@ class TestSerialVsParallel:
 
 class TestInvalidPrisms:
     """
-    Test forward modelling functions against invalid prisms
+    Test forward modelling functions against invalid prisms.
     """
 
     boundaries = [
@@ -128,17 +128,17 @@ class TestInvalidPrisms:
 
     @pytest.fixture()
     def sample_coordinates(self):
-        """Return sample coordinates"""
+        """Return sample coordinates."""
         return [0, 0, 0]
 
     @pytest.fixture()
     def sample_magnetization(self):
-        """Return sample magnetization"""
+        """Return sample magnetization."""
         return [1.0, 1.0, 1.0]
 
     @pytest.fixture(params=boundaries)
     def invalid_prism(self, request):
-        """Return sample valid prism (with zero and non-zero volume)"""
+        """Return sample valid prism (with zero and non-zero volume)."""
         return np.atleast_2d(request.param)
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
@@ -146,7 +146,7 @@ class TestInvalidPrisms:
         self, sample_coordinates, invalid_prism, sample_magnetization, field
     ):
         """
-        Test forward modelling functions with invalid prisms
+        Test forward modelling functions with invalid prisms.
 
         It should raise any error
         """
@@ -158,7 +158,7 @@ class TestInvalidPrisms:
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_disable_checks(self, invalid_prism, field):
-        """Test if disabling checks doesn't raise errors on invalid prisms"""
+        """Test if disabling checks doesn't raise errors on invalid prisms."""
         magnetization = [100, 10, -10]
         coordinates = [0, 0, 0]
         prism_magnetic(
@@ -168,17 +168,17 @@ class TestInvalidPrisms:
 
 class TestInvalidMagnetization:
     """
-    Test errors after invalid magnetization arrays
+    Test errors after invalid magnetization arrays.
     """
 
     @pytest.fixture()
     def sample_coordinates(self):
-        """Return sample coordinates"""
+        """Return sample coordinates."""
         return [0, 0, 0]
 
     @pytest.fixture()
     def sample_prisms(self):
-        """Return sample prisms"""
+        """Return sample prisms."""
         prisms = [
             [-100, 0, -100, 0, -200, -100],
             [-100, 0, 0, 100, -200, -100],
@@ -189,7 +189,7 @@ class TestInvalidMagnetization:
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_invalid_number_of_vectors(self, sample_coordinates, sample_prisms, field):
-        """Check error when magnetization has invalid number of vectors"""
+        """Check error when magnetization has invalid number of vectors."""
         # Generate an array with only two magnetization vectors
         magnetizations = ([1.0, -2.0], [1.0, 3.0], [1.0, -5.0])
         msg = "Number of magnetization vectors"
@@ -198,7 +198,7 @@ class TestInvalidMagnetization:
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_invalid_number_of_elements(self, sample_coordinates, sample_prisms, field):
-        """Check error when magnetization has invalid number of elements"""
+        """Check error when magnetization has invalid number of elements."""
         magnetizations = (
             [1.0, 1.0, 1.0, 3.4, 1.3],
             [-2.0, 3.0, -5.0, 3.4, 1.3],
@@ -212,7 +212,7 @@ class TestInvalidMagnetization:
     def test_invalid_number_of_components(
         self, sample_coordinates, sample_prisms, field
     ):
-        """Check error when magnetization has invalid number of components"""
+        """Check error when magnetization has invalid number of components."""
         magnetizations = (
             [1.0, 1.0, 1.0, 3.4],
             [-2.0, 3.0, -5.0, 3.4],
@@ -226,13 +226,13 @@ class TestInvalidMagnetization:
 
 class TestAgainstChoclo:
     """
-    Test forward modelling functions against dumb Choclo runs
+    Test forward modelling functions against dumb Choclo runs.
     """
 
     @pytest.fixture()
     def sample_prisms(self):
         """
-        Return four sample prisms
+        Return four sample prisms.
         """
         prisms = np.array(
             [
@@ -248,7 +248,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_magnetizations(self):
         """
-        Return sample magnetization vectors for the prisms
+        Return sample magnetization vectors for the prisms.
         """
         magnetizations = (
             np.array([1.0, -1.0, 3.0, -1.5]),
@@ -260,7 +260,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_coordinates(self):
         """
-        Return four sample observation points
+        Return four sample observation points.
         """
         easting = np.array([-5, 10, 0, 15], dtype=float)
         northing = np.array([14, -4, 11, 0], dtype=float)
@@ -271,7 +271,7 @@ class TestAgainstChoclo:
         self, sample_coordinates, sample_prisms, sample_magnetizations
     ):
         """
-        Test prism_magnetic against raw Choclo runs
+        Test prism_magnetic against raw Choclo runs.
         """
         easting, northing, upward = sample_coordinates
         # Compute expected results with dumb Choclo runs
@@ -305,12 +305,12 @@ class TestAgainstChoclo:
         npt.assert_allclose(b_n, expected_magnetic_n)
         npt.assert_allclose(b_u, expected_magnetic_u)
 
-    @pytest.mark.parametrize("field", ("b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", ["b_e", "b_n", "b_u"])
     def test_component_against_choclo(
         self, sample_coordinates, sample_prisms, sample_magnetizations, field
     ):
         """
-        Test prism_magnetic against raw Choclo runs
+        Test prism_magnetic against raw Choclo runs.
         """
         easting, northing, upward = sample_coordinates
         # Compute expected results with dumb Choclo runs

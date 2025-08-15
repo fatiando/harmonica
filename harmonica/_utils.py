@@ -9,7 +9,7 @@ import numpy as np
 
 def magnetic_angles_to_vec(intensity, inclination, declination):
     """
-    Convert magnetic field angles to magnetic field vector
+    Convert magnetic field angles to magnetic field vector.
 
     Convert intensity, inclination and declination angles of the magnetic field
     to a 3-component magnetic vector.
@@ -58,7 +58,7 @@ def magnetic_angles_to_vec(intensity, inclination, declination):
 
 def magnetic_vec_to_angles(magnetic_e, magnetic_n, magnetic_u, degrees=True):
     r"""
-    Convert magnetic field vector to magnetic field angles
+    Convert magnetic field vector to magnetic field angles.
 
     Convert the 3-component magnetic vector to intensity, and inclination and
     declination angles.

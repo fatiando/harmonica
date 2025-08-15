@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utils functions for tesseroid forward modelling
+Utils functions for tesseroid forward modelling.
 """
 
 import numpy as np
@@ -28,7 +28,7 @@ def gauss_legendre_quadrature(
     kernel,
 ):
     r"""
-    Compute the effect of a tesseroid on a single observation point through GLQ
+    Compute the effect of a tesseroid on a single observation point through GLQ.
 
     The tesseroid is converted into a set of point masses located on the
     scaled nodes of the Gauss-Legendre Quadrature. The number of point masses
@@ -117,7 +117,7 @@ def gauss_legendre_quadrature(
 
 def glq_nodes_weights(glq_degrees):
     """
-    Calculate GLQ unscaled nodes and weights
+    Calculate GLQ unscaled nodes and weights.
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def _adaptive_discretization(
     radial_discretization=False,
 ):
     """
-    Perform the adaptive discretization algorithm on a tesseroid
+    Perform the adaptive discretization algorithm on a tesseroid.
 
     It apply the three or two dimensional adaptive discretization algorithm on
     a tesseroid after a single computation point.
@@ -219,7 +219,8 @@ def _adaptive_discretization(
             # Raise error if stack overflow
             # Number of tesseroids in stack = stack_top + 1
             if (stack_top + 1) + n_lon * n_lat * n_rad > stack.shape[0]:
-                raise OverflowError("Stack Overflow. Try to increase the stack size.")
+                msg = "Stack Overflow. Try to increase the stack size."
+                raise OverflowError(msg)
             stack_top = _split_tesseroid(
                 tesseroid, n_lon, n_lat, n_rad, stack, stack_top
             )
@@ -238,7 +239,7 @@ def _adaptive_discretization(
 @jit(nopython=True)
 def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     """
-    Split tesseroid along each dimension
+    Split tesseroid along each dimension.
     """
     w, e, s, n, bottom, top = tesseroid[:]
     # Compute differential distance
@@ -277,7 +278,7 @@ def _tesseroid_dimensions(tesseroid):
 @jit(nopython=True)
 def _distance_tesseroid_point(coordinates, tesseroid):
     """
-    Distance between a computation point and the center of a tesseroid
+    Distance between a computation point and the center of a tesseroid.
     """
     # Get center of the tesseroid
     w, e, s, n, bottom, top = tesseroid[:]
@@ -291,7 +292,7 @@ def _distance_tesseroid_point(coordinates, tesseroid):
 
 def _check_tesseroids(tesseroids):
     """
-    Check if tesseroids boundaries are well defined
+    Check if tesseroids boundaries are well defined.
 
     A valid tesseroid should have:
         - latitudinal boundaries within the [-90, 90] degrees interval,
@@ -405,7 +406,7 @@ def _check_tesseroids(tesseroids):
 
 def check_points_outside_tesseroids(coordinates, tesseroids):
     """
-    Check if computation points are not inside the tesseroids
+    Check if computation points are not inside the tesseroids.
 
     Parameters
     ----------
@@ -473,7 +474,7 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
 
 def _longitude_continuity(tesseroids):
     """
-    Modify longitudinal boundaries of tesseroids to ensure longitude continuity
+    Modify longitudinal boundaries of tesseroids to ensure longitude continuity.
 
     Longitudinal boundaries of the tesseroids are moved to the ``[-180, 180)``
     degrees interval in case the ``west`` boundary is numerically greater than
@@ -505,7 +506,7 @@ def _longitude_continuity(tesseroids):
 
 def _discard_null_tesseroids(tesseroids, density):
     """
-    Discard tesseroid with zero volume or zero density
+    Discard tesseroid with zero volume or zero density.
 
     Parameters
     ----------

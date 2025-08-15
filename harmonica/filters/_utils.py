@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utility functions for FFT filters
+Utility functions for FFT filters.
 """
 
 import numpy as np
@@ -15,7 +15,7 @@ from ._fft import fft, ifft
 
 def apply_filter(grid, fft_filter, **kwargs):
     """
-    Apply a filter to a grid and return the transformed grid in spatial domain
+    Apply a filter to a grid and return the transformed grid in spatial domain.
 
     Computes the Fourier transform of the given grid, builds the filter,
     applies it and returns the inverse Fourier transform of the filtered grid.
@@ -62,7 +62,7 @@ def apply_filter(grid, fft_filter, **kwargs):
 
 def grid_sanity_checks(grid):
     """
-    Run sanity checks on the grid
+    Run sanity checks on the grid.
 
     Parameters
     ----------

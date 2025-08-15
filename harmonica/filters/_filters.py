@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Frequency domain filters meant to be applied on regular grids
+Frequency domain filters meant to be applied on regular grids.
 """
 
 import numpy as np
@@ -15,7 +15,7 @@ from .._utils import magnetic_angles_to_vec
 
 def derivative_upward_kernel(fft_grid, order=1):
     r"""
-    Filter for upward derivative in frequency domain
+    Filter for upward derivative in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for computing the upward derivative. The filter is built upon the
@@ -69,7 +69,7 @@ def derivative_upward_kernel(fft_grid, order=1):
 
 def derivative_easting_kernel(fft_grid, order=1):
     r"""
-    Filter for easting derivative in frequency domain
+    Filter for easting derivative in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for computing the easting derivative. The filter is built upon the
@@ -123,7 +123,7 @@ def derivative_easting_kernel(fft_grid, order=1):
 
 def derivative_northing_kernel(fft_grid, order=1):
     r"""
-    Filter for northing derivative in frequency domain
+    Filter for northing derivative in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for computing the northing derivative. The filter is built upon the
@@ -177,7 +177,7 @@ def derivative_northing_kernel(fft_grid, order=1):
 
 def upward_continuation_kernel(fft_grid, height_displacement):
     r"""
-    Filter for upward continuation in frequency domain
+    Filter for upward continuation in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for computing the upward continuation. The filter is built upon the
@@ -234,7 +234,7 @@ def upward_continuation_kernel(fft_grid, height_displacement):
 
 def gaussian_lowpass_kernel(fft_grid, wavelength):
     r"""
-    Filter for Gaussian low-pass in frequency domain
+    Filter for Gaussian low-pass in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass
     filter the frequency domain. The filter is built upon the frequency
@@ -297,7 +297,7 @@ def gaussian_lowpass_kernel(fft_grid, wavelength):
 
 def gaussian_highpass_kernel(fft_grid, wavelength):
     r"""
-    Filter for Gaussian high-pass in frequency domain
+    Filter for Gaussian high-pass in frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of a Gaussian high-pass
     filter the frequency domain. The filter is built upon the frequency
@@ -366,7 +366,7 @@ def reduction_to_pole_kernel(
     magnetization_declination=None,
 ):
     r"""
-    Filter for reduction to the pole in the frequency domain
+    Filter for reduction to the pole in the frequency domain.
 
     Return a :class:`xarray.DataArray` with the values of the frequency domain
     filter for applying a reduction to the pole on magnetic data. The filter
@@ -471,7 +471,7 @@ def reduction_to_pole_kernel(
 
 def _check_magnetization_angles(magnetization_inclination, magnetization_declination):
     """
-    Check if magnetization angles are both None or both numbers
+    Check if magnetization angles are both None or both numbers.
 
     They could either be two Nones or two angles, but not one None and one
     angle.

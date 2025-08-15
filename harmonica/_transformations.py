@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Apply transformations to regular grids of potential fields
+Apply transformations to regular grids of potential fields.
 """
 
 import numpy as np
@@ -24,7 +24,7 @@ from .filters._utils import apply_filter, grid_sanity_checks
 
 def derivative_upward(grid, order=1):
     """
-    Calculate the derivative of a potential field grid in the upward direction
+    Calculate the derivative of a potential field grid in the upward direction.
 
     Compute the spatial derivative in the upward direction of regular gridded
     data using frequency domain calculations through Fast Fourier Transform.
@@ -59,7 +59,7 @@ def derivative_upward(grid, order=1):
 
 def derivative_easting(grid, order=1, method="finite-diff"):
     """
-    Calculate the derivative of a regular grid in the easting direction
+    Calculate the derivative of a regular grid in the easting direction.
 
     Compute the spatial derivative in the easting direction of regular gridded
     data. It can compute using accurate central differences using
@@ -109,15 +109,16 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     elif method == "fft":
         grid = apply_filter(grid, derivative_easting_kernel, order=order)
     else:
+        msg = f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         raise ValueError(
-            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
+            msg
         )
     return grid
 
 
 def derivative_northing(grid, order=1, method="finite-diff"):
     """
-    Calculate the derivative of a regular grid in the northing direction
+    Calculate the derivative of a regular grid in the northing direction.
 
     Compute the spatial derivative in the northing direction of regular gridded
     data. It can compute using accurate central differences using
@@ -167,15 +168,16 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     elif method == "fft":
         return apply_filter(grid, derivative_northing_kernel, order=order)
     else:
+        msg = f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
         raise ValueError(
-            f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
+            msg
         )
     return grid
 
 
 def upward_continuation(grid, height_displacement):
     """
-    Calculate the upward continuation of a potential field grid
+    Calculate the upward continuation of a potential field grid.
 
     Compute the upward continuation of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
@@ -213,7 +215,7 @@ def upward_continuation(grid, height_displacement):
 
 def gaussian_lowpass(grid, wavelength):
     """
-    Calculate the Gaussian low-pass of a potential field grid
+    Calculate the Gaussian low-pass of a potential field grid.
 
     Compute the Gaussian low-pass of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
@@ -248,7 +250,7 @@ def gaussian_lowpass(grid, wavelength):
 
 def gaussian_highpass(grid, wavelength):
     """
-    Calculate the Gaussian high-pass of a potential field grid
+    Calculate the Gaussian high-pass of a potential field grid.
 
     Compute the Gaussian high-pass of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
@@ -289,7 +291,7 @@ def reduction_to_pole(
     magnetization_declination=None,
 ):
     """
-    Calculate the reduction to the pole of a magnetic field grid
+    Calculate the reduction to the pole of a magnetic field grid.
 
     Compute the reduction to the pole of regular gridded magnetic data using
     frequency domain calculations through Fast Fourier Transform.
@@ -342,7 +344,7 @@ def reduction_to_pole(
 
 def total_gradient_amplitude(grid):
     r"""
-    Calculates the total gradient amplitude of a potential field grid
+    Calculates the total gradient amplitude of a potential field grid.
 
     Compute the total gradient amplitude of a regular gridded potential field
     `M`. The horizontal derivatives are calculated though finite-differences
@@ -394,7 +396,7 @@ def total_gradient_amplitude(grid):
 
 def tilt_angle(grid):
     r"""
-    Calculates the tilt angle of a potential field grid
+    Calculates the tilt angle of a potential field grid.
 
     Compute the tilt of a regular gridded potential field
     :math:`M`. The horizontal derivatives are calculated
@@ -456,7 +458,7 @@ def tilt_angle(grid):
 
 def _get_dataarray_coordinate(grid, dimension_index):
     """
-    Return the name of the easting or northing coordinate in the grid
+    Return the name of the easting or northing coordinate in the grid.
 
     Parameters
     ----------
@@ -471,13 +473,13 @@ def _get_dataarray_coordinate(grid, dimension_index):
     dim_name = grid.dims[dimension_index]
     coords = [c for c in grid.coords if grid[c].dims == (dim_name,)]
     if len(coords) > 1:
-        if dimension_index == 0:
-            direction = "northing"
-        else:
-            direction = "easting"
+        direction = "northing" if dimension_index == 0 else "easting"
         coords = "', '".join(coords)
-        raise ValueError(
+        msg = (
             f"Grid contains more than one coordinate along the '{direction}' "
             f"direction: '{coords}'."
+        )
+        raise ValueError(
+            msg
         )
     return coords[0]

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test forward modelling for tesseroids with variable density
+Test forward modelling for tesseroids with variable density.
 """
 
 from unittest.mock import patch
@@ -46,21 +46,21 @@ ACCURACY_THRESHOLD = 1e-3
 
 @pytest.fixture(name="bottom")
 def fixture_bottom():
-    """Return a bottom boundary"""
+    """Return a bottom boundary."""
     bottom = 2e3
     return bottom
 
 
 @pytest.fixture(name="top")
 def fixture_top():
-    """Return a top boundary"""
+    """Return a top boundary."""
     top = 5e3
     return top
 
 
 @pytest.fixture(name="quadratic_params")
 def fixture_quadratic_params():
-    """Return parameters for building a quadratic density function"""
+    """Return parameters for building a quadratic density function."""
     factor = 1e-3
     vertex_radius = 3e3
     vertex_density = 1900.0
@@ -70,7 +70,7 @@ def fixture_quadratic_params():
 @pytest.fixture(name="quadratic_density")
 def fixture_quadratic_density(quadratic_params):
     """
-    Return a quadratic density function
+    Return a quadratic density function.
 
     .. math::
 
@@ -106,7 +106,7 @@ def fixture_quadratic_density(quadratic_params):
 
     @jit(nopython=True)
     def density(radius):
-        """Quadratic density function"""
+        """Quadratic density function."""
         return factor * (radius - vertex_radius) ** 2 + vertex_density
 
     return density
@@ -115,7 +115,7 @@ def fixture_quadratic_density(quadratic_params):
 @pytest.fixture(name="straight_line_analytic")
 def fixture_straight_line_analytic(bottom, top, quadratic_density):
     """
-    Return the analytic solution for the straigh line of the quadratic density
+    Return the analytic solution for the straigh line of the quadratic density.
     """
     density_bottom, density_top = quadratic_density(bottom), quadratic_density(top)
     slope = (density_top - density_bottom) / (top - bottom)
@@ -133,7 +133,7 @@ def fixture_max_abs_diff_analytic(
 ):
     r"""
     Return analytic solution for maximum absolute difference between quadratic
-    density and the straight line
+    density and the straight line.
 
     .. math:
 
@@ -154,7 +154,7 @@ def fixture_max_abs_diff_analytic(
 def fixture_quadratic_density_minmax(top, quadratic_params, quadratic_density):
     """
     Return the analytic maximum and minimum value of the quadratic density
-    between top and bottom
+    between top and bottom.
     """
     _, _, vertex_density = quadratic_params
     minimum = vertex_density
@@ -164,7 +164,7 @@ def fixture_quadratic_density_minmax(top, quadratic_params, quadratic_density):
 
 def test_straight_line(bottom, top, quadratic_density, straight_line_analytic):
     """
-    Test the straight_line function
+    Test the straight_line function.
     """
     radii = np.linspace(bottom, top, 51)
     npt.assert_allclose(
@@ -175,7 +175,7 @@ def test_straight_line(bottom, top, quadratic_density, straight_line_analytic):
 
 def test_max_abs_diff(bottom, top, quadratic_density, max_abs_diff_analytic):
     """
-    Test the maximum absolute difference
+    Test the maximum absolute difference.
 
     Test against the sine density defined in density_sine_portion fixture.
     The solution is analytic.
@@ -188,7 +188,7 @@ def test_max_abs_diff(bottom, top, quadratic_density, max_abs_diff_analytic):
 
 def test_density_minmax(bottom, top, quadratic_density, quadratic_density_minmax):
     """
-    Test the density_minmax function
+    Test the density_minmax function.
     """
     density_min, density_max = density_minmax(quadratic_density, bottom, top)
     expected_min, expected_max = quadratic_density_minmax
@@ -198,7 +198,7 @@ def test_density_minmax(bottom, top, quadratic_density, quadratic_density_minmax
 
 def test_density_minmax_exponential_function(bottom, top):
     """
-    Test density_minmax with an extreme function
+    Test density_minmax with an extreme function.
 
     A previous implementation of density_minmax failed this test
     """
@@ -209,7 +209,7 @@ def test_density_minmax_exponential_function(bottom, top):
     @jit(nopython=True)
     def exponential_density(radius):
         """
-        Create a dummy exponential density
+        Create a dummy exponential density.
         """
         density_outer, density_inner = 2500.0, 3300.0
         a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
@@ -227,7 +227,7 @@ def test_single_density_based_discretization(
     bottom, top, quadratic_density, max_abs_diff_analytic
 ):
     """
-    Test the density-based discretization algorithm
+    Test the density-based discretization algorithm.
     """
     # Define some dummy horizontal coordinates for the tesseroid
     w, e, s, n = -3, 2, -4, 5
@@ -258,7 +258,7 @@ def test_density_based_discret_with_delta(
     quadratic_density,
 ):
     """
-    Test the density-based discretization algorithm against values of DELTA
+    Test the density-based discretization algorithm against values of DELTA.
     """
     # Define some dummy horizontal coordinates for the tesseroid
     w, e, s, n = -3, 2, -4, 5
@@ -280,14 +280,14 @@ def test_density_based_discret_with_delta(
 def test_density_based_discret_linear_density():
     """
     Test if density-based discretization generates no splits when linear
-    density is passed
+    density is passed.
     """
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
     @jit(nopython=True)
     def linear_density(radius):
-        """Define a dummy linear density"""
+        """Define a dummy linear density."""
         return 3 * radius + 2
 
     tesseroids = _density_based_discretization(tesseroid, linear_density)
@@ -299,7 +299,7 @@ def test_density_based_discret_constant_density():
     """
     Test if density-based discretization generates no splits when a constant
     density function is passed (this should not be done IRL, pass an array of
-    floats as density instead)
+    floats as density instead).
     """
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
@@ -307,7 +307,7 @@ def test_density_based_discret_constant_density():
     def stupid_constant_density(
         radius,  # the radius argument is needed for the density function
     ):
-        """Define a dummy constant density function"""
+        """Define a dummy constant density function."""
         return 3
 
     tesseroids = _density_based_discretization(tesseroid, stupid_constant_density)
@@ -321,10 +321,10 @@ def test_density_based_discret_constant_density():
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("potential", "g_z"))
+@pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_single_tesseroid_against_constant_density(field):
     """
-    Test the output of a single tesseroid against one with constant density
+    Test the output of a single tesseroid against one with constant density.
     """
     # Define a single tesseroid with constant density
     bottom, top = 5400e3, 6300e3
@@ -357,7 +357,7 @@ def test_single_tesseroid_against_constant_density(field):
 
 def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term):
     """
-    Analytical solutions of a spherical shell with linear density
+    Analytical solutions of a spherical shell with linear density.
     """
     constant = np.pi * GRAVITATIONAL_CONST * slope * (
         top**4 - bottom**4
@@ -374,7 +374,7 @@ def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
 ):
     r"""
-    Analytical solutions of a spherical shell with exponential density
+    Analytical solutions of a spherical shell with exponential density.
 
     .. math :
         \rho(r') = a e^{- b * (r' - R_1) / T} + c
@@ -409,7 +409,7 @@ def analytical_spherical_shell_exponential(
 
 def build_spherical_shell(bottom, top, shape=(6, 12)):
     """
-    Return a set of tesseroids modelling a spherical shell
+    Return a set of tesseroids modelling a spherical shell.
 
     Parameters
     ----------
@@ -434,11 +434,11 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("field", ("potential", "g_z"))
-@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
 def test_spherical_shell_linear_density(field, thickness):
     """
-    Test numerical results against analytical solution for linear density
+    Test numerical results against analytical solution for linear density.
     """
     # Define a spherical shell made out of tesseroids
     top = 6371e3
@@ -452,7 +452,7 @@ def test_spherical_shell_linear_density(field, thickness):
     @jit(nopython=True)
     def linear_density(radius):
         """
-        Create a dummy linear density
+        Create a dummy linear density.
         """
         return slope * radius + constant_term
 
@@ -473,12 +473,12 @@ def test_spherical_shell_linear_density(field, thickness):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("field", ("potential", "g_z"))
-@pytest.mark.parametrize("thickness", (1e2, 1e3, 1e6))
-@pytest.mark.parametrize("b_factor", (5, 100))
+@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
+@pytest.mark.parametrize("b_factor", [5, 100])
 def test_spherical_shell_exponential_density(field, thickness, b_factor):
     """
-    Test numerical results against analytical solution for exponential density
+    Test numerical results against analytical solution for exponential density.
     """
     # Define a spherical shell made out of tesseroids
     top = 6371e3
@@ -492,7 +492,7 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
     @jit(nopython=True)
     def exponential_density(radius):
         """
-        Create a dummy exponential density
+        Create a dummy exponential density.
         """
         return (
             a_factor * np.exp(-b_factor * (radius - bottom) / thickness) + constant_term
@@ -517,7 +517,7 @@ def test_spherical_shell_exponential_density(field, thickness, b_factor):
 class TestProgressBar:
     @pytest.fixture
     def tesseroids(self):
-        """Sample tesseroids"""
+        """Sample tesseroids."""
         tesseroids = [
             [30.3, 50.5, -72.2, -34.2, 6e4, 6.1e4],
             [30.3, 50.5, 20.1, 32.3, 6.1e4, 6.2e4],
@@ -527,7 +527,7 @@ class TestProgressBar:
 
     @pytest.fixture
     def densities(self):
-        """Sample variable density densities"""
+        """Sample variable density densities."""
 
         @jit(nopython=True)
         def density(r):
@@ -537,7 +537,7 @@ class TestProgressBar:
 
     @pytest.fixture
     def coordinates(self):
-        """Sample coordinates"""
+        """Sample coordinates."""
         coordinates = vd.grid_coordinates(
             region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
         )
@@ -548,7 +548,7 @@ class TestProgressBar:
     @pytest.mark.parametrize("field", ["potential", "g_z"])
     def test_progress_bar(self, coordinates, tesseroids, densities, field):
         """
-        Check if forward gravity results with and without progress bar match
+        Check if forward gravity results with and without progress bar match.
         """
         result_progress_true = tesseroid_gravity(
             coordinates, tesseroids, densities, field=field, progressbar=True

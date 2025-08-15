@@ -8,7 +8,7 @@
 # https://github.com/Loop3D/geosoft_grid copyrighted by Loop3D and released
 # under the MIT License.
 """
-Function to read Oasis Montaj© .grd file
+Function to read Oasis Montaj© .grd file.
 """
 
 import array
@@ -133,7 +133,7 @@ def load_oasis_montaj_grid(fname):
 
 def _read_header(header_bytes):
     """
-    Read GRD file header
+    Read GRD file header.
 
     Parameters
     ----------
@@ -215,7 +215,7 @@ def _read_header(header_bytes):
 
 def _check_ordering(ordering):
     """
-    Check if the ordering value is within the ones we are supporting
+    Check if the ordering value is within the ones we are supporting.
     """
     if ordering not in (-1, 1):
         raise NotImplementedError(
@@ -226,17 +226,18 @@ def _check_ordering(ordering):
 
 def _check_sign_flag(sign_flag):
     """
-    Check if sign_flag value is within the ones we are supporting
+    Check if sign_flag value is within the ones we are supporting.
     """
     if sign_flag == 3:
+        msg = "Reading .grd files with colour grids is not currenty supported."
         raise NotImplementedError(
-            "Reading .grd files with colour grids is not currenty supported."
+            msg
         )
 
 
 def _get_data_type(n_bytes_per_element, sign_flag):
     """
-    Return the data type for the grid values
+    Return the data type for the grid values.
 
     References
     ----------
@@ -278,7 +279,7 @@ def _get_data_type(n_bytes_per_element, sign_flag):
 
 def _remove_dummies(grid, data_type):
     """
-    Replace dummy values for NaNs
+    Replace dummy values for NaNs.
     """
     # Create dictionary with dummy value for each data type
     if data_type in ("f", "d"):
@@ -290,7 +291,7 @@ def _remove_dummies(grid, data_type):
 
 def _decompress_grid(grid_compressed):
     """
-    Decompress the grid using gzip
+    Decompress the grid using gzip.
 
     Even if the header specifies that the grid is compressed using a LZRW1
     algorithm, it's using gzip instead. The first two 4 bytes sequences
@@ -341,7 +342,7 @@ def _decompress_grid(grid_compressed):
 
 def _build_coordinates(west, south, shape, spacing):
     """
-    Create the coordinates for the grid
+    Create the coordinates for the grid.
 
     Generates 1d arrays for the easting and northing coordinates of the grid.
     Assumes unrotated grids.
@@ -374,7 +375,7 @@ def _build_coordinates(west, south, shape, spacing):
 
 def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
     """
-    Create the coordinates for a rotated grid
+    Create the coordinates for a rotated grid.
 
     Generates 2d arrays for the easting and northing coordinates of the grid.
 

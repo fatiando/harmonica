@@ -38,7 +38,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    """Check if passing an invalid field raises an error"""
+    """Check if passing an invalid field raises an error."""
     prism = [-100, 100, -100, 100, -200, -100]
     density = 1000
     coordinates = [0, 0, 0]
@@ -47,7 +47,7 @@ def test_invalid_field():
 
 
 def test_invalid_density_array():
-    """Check if error is raised when density shape does not match prisms shape"""
+    """Check if error is raised when density shape does not match prisms shape."""
     # Create a set of 4 prisms
     prisms = [
         [-100, 0, -100, 0, -200, -100],
@@ -63,7 +63,7 @@ def test_invalid_density_array():
 
 
 def test_invalid_prisms():
-    """Check if invalid prism boundaries are caught by _check_prisms"""
+    """Check if invalid prism boundaries are caught by _check_prisms."""
     w, e, s, n, bottom, top = -100, 100, -100, 100, -200, -100
     # Check if it works properly on valid prisms
     _check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
@@ -82,7 +82,7 @@ def test_invalid_prisms():
 
 def test_discard_null_prisms():
     """
-    Test if discarding invalid prisms works as expected
+    Test if discarding invalid prisms works as expected.
     """
     # Define a set of sample prisms, including invalid ones
     prisms = np.array(
@@ -104,7 +104,7 @@ def test_discard_null_prisms():
 @pytest.mark.use_numba
 def test_forward_with_null_prisms():
     """
-    Test if the forward model with null prisms gives sensible results
+    Test if the forward model with null prisms gives sensible results.
     """
     # Create a set of observation points
     coordinates = vd.grid_coordinates(
@@ -127,7 +127,7 @@ def test_forward_with_null_prisms():
 
 @pytest.mark.use_numba
 def test_disable_checks():
-    """Check if the disable_checks flag works properly"""
+    """Check if the disable_checks flag works properly."""
     valid_prism = [0, 10, 0, 10, -10, 0]
     invalid_prism = [0, 10, 0, 10, 0, -10]
     density = 100
@@ -148,13 +148,13 @@ def test_disable_checks():
 
 class TestAgainstChoclo:
     """
-    Test forward modelling functions against dumb Choclo runs
+    Test forward modelling functions against dumb Choclo runs.
     """
 
     @pytest.fixture()
     def sample_prisms(self):
         """
-        Return three sample prisms
+        Return three sample prisms.
         """
         prisms = np.array(
             [
@@ -170,7 +170,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_coordinates(self):
         """
-        Return four sample observation points
+        Return four sample observation points.
         """
         easting = np.array([-5, 10, 0, 15], dtype=float)
         northing = np.array([14, -4, 11, 0], dtype=float)
@@ -179,7 +179,7 @@ class TestAgainstChoclo:
 
     @pytest.mark.use_numba
     @pytest.mark.parametrize(
-        "field, choclo_func",
+        ("field", "choclo_func"),
         [
             ("potential", gravity_pot),
             ("g_e", gravity_e),
@@ -201,7 +201,7 @@ class TestAgainstChoclo:
         sample_prisms,
     ):
         """
-        Tests forward functions against dumb runs on Choclo
+        Tests forward functions against dumb runs on Choclo.
         """
         easting, northing, upward = sample_coordinates
         prisms, densities = sample_prisms
@@ -235,7 +235,7 @@ class TestAgainstChoclo:
 @run_only_with_numba
 def test_laplace():
     """
-    Test if the diagonal components satisfy Laplace equation
+    Test if the diagonal components satisfy Laplace equation.
     """
     region = (-10e3, 10e3, -10e3, 10e3)
     coords = vd.grid_coordinates(region, shape=(10, 10), extra_coords=300)
@@ -257,7 +257,7 @@ def test_laplace():
 @pytest.mark.use_numba
 def test_prism_against_infinite_slab():
     """
-    Test if g_z of a large prism matches the solution for an infinite slab
+    Test if g_z of a large prism matches the solution for an infinite slab.
     """
     # Define an observation point at 1.5m above zero
     height = 1.5
@@ -288,7 +288,7 @@ def test_prism_against_infinite_slab():
 @pytest.mark.use_numba
 def test_prisms_parallel_vs_serial():
     """
-    Check if the parallelized run returns the same results as the serial one
+    Check if the parallelized run returns the same results as the serial one.
     """
     prisms = [
         [-100, 0, -100, 0, -10, 0],
@@ -313,7 +313,7 @@ def test_prisms_parallel_vs_serial():
 class TestProgressBar:
     @pytest.fixture
     def prisms(self):
-        """Sample prisms"""
+        """Sample prisms."""
         prisms = [
             [-100, 0, -100, 0, -10, 0],
             [0, 100, -100, 0, -10, 0],
@@ -324,12 +324,12 @@ class TestProgressBar:
 
     @pytest.fixture
     def densities(self):
-        """Sample densities"""
+        """Sample densities."""
         return [2000, 3000, 4000, 5000]
 
     @pytest.fixture
     def coordinates(self):
-        """Sample coordinates"""
+        """Sample coordinates."""
         coordinates = vd.grid_coordinates(
             region=(-100, 100, -100, 100), spacing=20, extra_coords=10
         )
@@ -354,7 +354,7 @@ class TestProgressBar:
     )
     def test_progress_bar(self, coordinates, prisms, densities, field):
         """
-        Check if forward gravity results with and without progress bar match
+        Check if forward gravity results with and without progress bar match.
         """
         result_progress_true = prism_gravity(
             coordinates, prisms, densities, field=field, progressbar=True
@@ -379,22 +379,22 @@ class TestProgressBar:
 
 class TestSingularPoints:
     """
-    Tests tensor components on singular points of the prism
+    Tests tensor components on singular points of the prism.
     """
 
     @pytest.fixture
     def sample_prism(self):
-        """Return a sample prism"""
+        """Return a sample prism."""
         return np.array([-10.3, 5.4, 8.6, 14.3, -30.3, 2.4])
 
     @pytest.fixture
     def sample_density(self):
-        """Return a sample density for the sample prism"""
+        """Return a sample density for the sample prism."""
         return np.array([2900.0])
 
     def get_vertices(self, prism):
         """
-        Return the vertices of the prism as points
+        Return the vertices of the prism as points.
         """
         easting, northing, upward = tuple(
             c.ravel() for c in np.meshgrid(prism[:2], prism[2:4], prism[4:6])
@@ -403,7 +403,7 @@ class TestSingularPoints:
 
     def get_easting_edges_center(self, prism):
         """
-        Return points on the center of prism edges parallel to easting
+        Return points on the center of prism edges parallel to easting.
         """
         easting_c = (prism[0] + prism[1]) / 2
         northing, upward = tuple(c.ravel() for c in np.meshgrid(prism[2:4], prism[4:6]))
@@ -412,7 +412,7 @@ class TestSingularPoints:
 
     def get_northing_edges_center(self, prism):
         """
-        Return points on the center of prism edges parallel to northing
+        Return points on the center of prism edges parallel to northing.
         """
         northing_c = (prism[2] + prism[3]) / 2
         easting, upward = tuple(c.ravel() for c in np.meshgrid(prism[0:2], prism[4:6]))
@@ -421,7 +421,7 @@ class TestSingularPoints:
 
     def get_upward_edges_center(self, prism):
         """
-        Return points on the center of prism edges parallel to upward
+        Return points on the center of prism edges parallel to upward.
         """
         upward_c = (prism[4] + prism[5]) / 2
         easting, northing = tuple(
@@ -431,10 +431,10 @@ class TestSingularPoints:
         return easting, northing, upward
 
     @pytest.mark.use_numba
-    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"))
+    @pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"])
     def test_on_vertices(self, sample_prism, sample_density, field):
         """
-        Test tensor components when observation points fall on prism vertices
+        Test tensor components when observation points fall on prism vertices.
         """
         easting, northing, upward = self.get_vertices(sample_prism)
         for i in range(easting.size):
@@ -448,11 +448,11 @@ class TestSingularPoints:
                 )
 
     @pytest.mark.use_numba
-    @pytest.mark.parametrize("field", ("g_nn", "g_zz", "g_nz"))
+    @pytest.mark.parametrize("field", ["g_nn", "g_zz", "g_nz"])
     def test_on_easting_edges(self, sample_prism, sample_density, field):
         """
         Test tensor components that have singular points on edges parallel to
-        easting direction
+        easting direction.
         """
         easting, northing, upward = self.get_easting_edges_center(sample_prism)
         for i in range(easting.size):
@@ -466,11 +466,11 @@ class TestSingularPoints:
                 )
 
     @pytest.mark.use_numba
-    @pytest.mark.parametrize("field", ("g_ee", "g_zz", "g_ez"))
+    @pytest.mark.parametrize("field", ["g_ee", "g_zz", "g_ez"])
     def test_on_northing_edges(self, sample_prism, sample_density, field):
         """
         Test tensor components that have singular points on edges parallel to
-        easting direction
+        easting direction.
         """
         easting, northing, upward = self.get_northing_edges_center(sample_prism)
         for i in range(easting.size):
@@ -484,11 +484,11 @@ class TestSingularPoints:
                 )
 
     @pytest.mark.use_numba
-    @pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_en"))
+    @pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_en"])
     def test_on_upward_edges(self, sample_prism, sample_density, field):
         """
         Test tensor components that have singular points on edges parallel to
-        easting direction
+        easting direction.
         """
         easting, northing, upward = self.get_upward_edges_center(sample_prism)
         for i in range(easting.size):

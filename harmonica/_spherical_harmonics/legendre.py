@@ -14,7 +14,7 @@ import numpy as np
 
 @numba.jit(nopython=True)
 def _rescale(u, max_degree, p):
-    """Rescale Legendre functions to their original range"""
+    """Rescale Legendre functions to their original range."""
     rescale = 1e280
     for m in range(max_degree + 1):
         if m > 0:
@@ -72,7 +72,7 @@ def associated_legendre(x, max_degree, p):
 
 @numba.jit(nopython=True)
 def associated_legendre_derivative(max_degree, p, dp):
-    """
+    r"""
     Derivatives in theta of unnormalized associated Legendre functions.
 
     Calculates the derivative:
@@ -191,7 +191,7 @@ def associated_legendre_schmidt(x, max_degree, p):
 
 @numba.jit(nopython=True)
 def associated_legendre_schmidt_derivative(max_degree, p, dp):
-    """
+    r"""
     Derivatives in theta of Schmidt normalized associated Legendre functions.
 
     Calculates the derivative:
@@ -321,7 +321,7 @@ def associated_legendre_full(x, max_degree, p):
 
 @numba.jit(nopython=True)
 def associated_legendre_full_derivative(max_degree, p, dp):
-    """
+    r"""
     Derivatives in theta of fully normalized associated Legendre functions.
 
     Calculates the derivative:

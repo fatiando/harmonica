@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent sources for generic harmonic functions in spherical coordinates
+Equivalent sources for generic harmonic functions in spherical coordinates.
 """
 
 import warnings
@@ -27,7 +27,7 @@ from .utils import (
 
 class EquivalentSourcesSph(vdb.BaseGridder):
     r"""
-    Equivalent sources for generic harmonic functions in spherical coordinates
+    Equivalent sources for generic harmonic functions in spherical coordinates.
 
     These equivalent sources can be used for:
 
@@ -370,7 +370,7 @@ def greens_func_spherical(
     longitude, latitude, radius, point_longitude, point_latitude, point_radius
 ):
     """
-    Green's function for the equivalent sources in spherical coordinates
+    Green's function for the equivalent sources in spherical coordinates.
 
     Uses Numba to speed up things.
     """
