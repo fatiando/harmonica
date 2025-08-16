@@ -88,7 +88,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     ----------
     Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a trixial
     ellipsoid"
-    Takenhasi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
+    Takahashi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
 
     For derivations of the equations, and methods used in this code.
     """
@@ -145,71 +145,64 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
 
-
-def _get_abc(a, b, c, lmbda):
+def _get_g_values(a, b, c, lmbda):
     """
-    Compute the A(λ), B(λ), and C(λ) functions using elliptic integrals, as
-    required for potiential field calculations of ellipsoidal bodies.
+    Compute the gravity values (g) for the three ellipsoid types. 
 
-    Parameters
+    parameters
     ----------
-    x, y, z : array_like or float
-        Cartesian observation coordinates. Each can be a scalar, 1D array, or
-        2D array, depending on the evaluation grid.
 
-    a, b, c : float
-        Semiaxis lengths of the ellipsoid (a ≥ b ≥ c). These must conform to
-        the type of ellipsoid used (e.g., triaxial, prolate, oblate).
+    a, b, c : floats
+        Semiaxis lengths of the given ellipsoid.
 
-    lmbda : array_like or float
-        The λ (lambda) parameter(s) associated with the confocal ellipsoidal
-        coordinate surfaces. Can be a scalar or an array matching the shape of
-        the observation points.
+    lmbda : float
+        the given lmbda value for the point we are considering.
 
-    Returns
+    returns
     -------
-    A_lmbda : ndarray
-        A(λ) function values at each observation point.
 
-    B_lmbda : ndarray
-        B(λ) function values at each observation point.
+    gvals (x, y, z) : floats
+        the g values for the given ellipsoid type, and given observation point.
 
-    C_lmbda : ndarray
-        C(λ) function values at each observation point.
+
     """
-
+    
     # trixial case
     if a > b > c:
         int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
         phi = np.arcsin(int_arcsin)
-
         k = (a**2 - b**2) / (a**2 - c**2)
+        
+        ellipk = ellipkinc(phi, k)
+        ellipe = ellipeinc(phi, k)
+        
         g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (
-            ellipkinc(phi, k) - ellipeinc(phi, k)
+            ellipk - ellipe
         )
 
         g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / (
             (a**2 - b**2) * (b**2 - c**2)
         )
-        g2_elliptics = ellipeinc(phi, k) - (
+        g2_elliptics = ellipe - (
             (b**2 - c**2) / (a**2 - c**2)
-        ) * ellipkinc(phi, k)
+        ) * ellipk
         g2_last_term = (
             (a**2 - b**2) / np.sqrt(a**2 - c**2)
         ) * np.sqrt((c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda)))
 
         g2 = g2_multiplier * (g2_elliptics - g2_last_term)
 
-        g3_term_1 = (
+        # Term with the E(k, theta) must have a minus sign 
+        # (the minus sign is missing in Takahashi (2018)).
+        g3_term_1 = -(
             2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))
-        ) * ellipeinc(phi, k)
+        ) * ellipe
         g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
             (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
         )
         g3 = g3_term_1 + g3_term_2
 
-        a_lmbda, b_lmbda, c_lmbda = g1, g2, g3
-
+        gvals_x, gvals_y, gvals_z = g1, g2, g3
     # prolate case
     if a > b and b == c:
         e2 = a**2 - b**2
@@ -224,10 +217,10 @@ def _get_abc(a, b, c, lmbda):
 
         # Equation (39): g2 = g3
         g2 = (1 / (e2 ** (3 / 2))) * (
-            (e2 * sqrt_l1) / (b**2 + lmbda)
+            (sqrt_e * sqrt_l1) / (b**2 + lmbda)
             - np.log((sqrt_e + sqrt_l1) / sqrt_l2)
         )
-        a_lmbda, b_lmbda, c_lmbda = g1, g2, g2
+        gvals_x, gvals_y, gvals_z = g1, g2, g2
 
     # oblate case
     if a < b and b == c:
@@ -248,9 +241,9 @@ def _get_abc(a, b, c, lmbda):
             )
         )
 
-        a_lmbda, b_lmbda, c_lmbda = g1, g2, g2
+        gvals_x, gvals_y, gvals_z = g1, g2, g2
 
-    return a_lmbda, b_lmbda, c_lmbda
+    return gvals_x, gvals_y, gvals_z
 
 
 def _get_internal_g(x, y, z, a, b, c, density):
@@ -499,7 +492,7 @@ def _get_gravity_triaxial(
     if lmbda is None:
         lmbda = _calculate_lambda(x, y, z, a, b, c)
 
-    a_lmbda, b_lmbda, c_lmbda = _get_abc(a, b, c, lmbda)
+    a_lmbda, b_lmbda, c_lmbda = _get_g_values(a, b, c, lmbda)
 
     # check the function is used for the correct type of ellipsoid
     if not (a > b > c):

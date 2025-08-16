@@ -10,8 +10,9 @@ import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-
+from .ellipsoid_gravity import _get_g_values
 from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
+
 
 
 # internal field N matrix functions
@@ -66,11 +67,12 @@ def ellipsoid_magnetics(
         anisotropic susceptibility.
 
     external_field : ndarray
-        The uniform magnetic field as and array with values of
-        (magnitude, inclination, declination).
+        The uniform magnetic field (B) as and array with values of
+        (magnitude, inclination, declination). The magnitude should be in nT, and the
+        angles in degrees.
 
     remnant_mag:  (optional) array
-        Remanent magnetisation vector of the body. Default is None.
+        Remnent magnetisation vector of the body. Default is None.
 
     field : (optional) str, one of either "e", "n", "u".
         if no input is given, the function will return all three components of
@@ -92,7 +94,7 @@ def ellipsoid_magnetics(
     ----------
     Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a trixial
     ellipsoid"
-    Takenhasi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
+    Takahashi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
 
     For derivations of the equations and methods used in this code.
     """
@@ -165,7 +167,7 @@ def ellipsoid_magnetics(
 
         h0_rot = r.T @ h0
 
-        m = _get_magnetisation_with_rem(a, b, c, k_matrix, h0_rot, m_r, r)
+        m = _get_magnetisation_with_rem(a, b, c, k_matrix, h0_rot, m_r)
 
         n_cross = _construct_n_matrix_internal(a, b, c)
 
@@ -203,67 +205,48 @@ def ellipsoid_magnetics(
     # return according to user
     return {"e": be, "n": bn, "u": bu}.get(field, (be, bn, bu))
 
-
-def _get_magnetisation(a, b, c, k, h0, r):
-    """
-    Get the magnetization vector from the ellipsoid parameters and the rotated
-    external field, excluding remnant mag.
-
-    parameters
-    ----------
-    a, b, c : floats
-        Semiaxis lengths of the ellipsoid.
-
-    k: float, matrix
-        Susceptabiity value/s (float for isotropic or matrix for anisotropic)
-
-    h0: array
-        the rotated background field (local coordinates).
-
-    returns
-    -------
-    m (magentisation): array
-        the magnetisation vector for the define body.
-
-    """
-
-    n_cross = _construct_n_matrix_internal(a, b, c)
-    inv = np.linalg.inv(np.identity(3) - (n_cross @ k))
-    m_local = k @ inv @ h0
-    m = r @ m_local
-
-    return m
-
-
-def _get_magnetisation_with_rem(a, b, c, k, h0, mr, r):
-    """
+def _get_magnetisation_with_rem(a, b, c, k, h0, mr):
+    r"""
     Get the magnetization vector from the ellipsoid parameters and the rotated
     external field.
 
-    parameters
+    Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the ellipsoid.
-
-    k: float, matrix
-        Susceptabiity value/s (float for isotropic or matrix for anisotropic)
-
+        Semi-axes lengths of the ellipsoid.
+    k : (3, 3) array
+        Susceptibility tensor.
     h0: array
-        the rotated background field (local coordinates).
+        The rotated background field (in local coordinates).
 
-    mr: array
-        remanent magnetisation vector.
-
-    returns
+    Returns
     -------
     m (magentisation): array
-        the magnetisation vector for the define body.
+        The magnetisation vector for the defined body.
 
+    Notes
+    -----
+    Considering an ellipsoid with susceptibility :math:`\chi` (scalar or tensor) in
+    a uniform background field :math:`\mathbf{H}_0`, compute the magnetization vector
+    :math:`\mathbf{M}` of the ellipsoid accounting for demagnetization effects as:
+
+    .. math::
+
+        \mathbf{M} =
+        \chi \[left \mathbf{I} + \mathbf{N}^\text{int} \chi \right]^{-1} \mathbf{H}_0,
+
+    where :math:`\mathbf{N}^\text{int}` is the internal demagnetization tensor, defined
+    as:
+
+    .. math::
+
+        \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r}) \mathbf{M}.
     """
     n_cross = _construct_n_matrix_internal(a, b, c)
-    inv = np.linalg.inv(np.identity(3) - (k @ n_cross))
-    u = r @ inv
-    m = u @ (k @ h0 + mr)
+    I = np.identity(3)
+    A = I + n_cross @ k
+    rhs = mr + k @ h0
+    m = np.linalg.solve(A, rhs)
     return m
 
 
@@ -512,103 +495,6 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
     return np.stack([dλ_dx, dλ_dy, dλ_dz], axis=-1)
 
 
-def _get_g_values_magnetics(a, b, c, lmbda):
-    """
-    Compute the gravity values (g) for the three ellipsoid types. See
-    ellipsoid_gravity for the in depth production of gravity components.
-
-    parameters
-    ----------
-
-    a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
-
-    lmbda : float
-        the given lmbda value for the point we are considering.
-
-    returns
-    -------
-
-    gvals (x, y, z) : floats
-        the g values for the given ellipsoid type, and given observation point.
-
-
-    """
-
-    # trixial case
-    if a > b > c:
-        int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
-        phi = np.arcsin(int_arcsin)
-
-        k = (a**2 - b**2) / (a**2 - c**2)
-        g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (
-            ellipkinc(phi, k) - ellipeinc(phi, k)
-        )
-
-        g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / (
-            (a**2 - b**2) * (b**2 - c**2)
-        )
-        g2_elliptics = ellipeinc(phi, k) - (
-            (b**2 - c**2) / (a**2 - c**2)
-        ) * ellipkinc(phi, k)
-        g2_last_term = (
-            (a**2 - b**2) / np.sqrt(a**2 - c**2)
-        ) * np.sqrt((c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda)))
-
-        g2 = g2_multiplier * (g2_elliptics - g2_last_term)
-
-        g3_term_1 = (
-            2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))
-        ) * ellipeinc(phi, k)
-        g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
-            (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
-        )
-        g3 = g3_term_1 + g3_term_2
-
-        gvals_x, gvals_y, gvals_z = g1, g2, g3
-    # prolate case
-    if a > b and b == c:
-        e2 = a**2 - b**2
-        sqrt_e = np.sqrt(e2)
-        sqrt_l1 = np.sqrt(a**2 + lmbda)
-        sqrt_l2 = np.sqrt(b**2 + lmbda)
-
-        # Equation (38): g1
-        g1 = (2 / (e2 ** (3 / 2))) * (
-            np.log((sqrt_e + sqrt_l1) / sqrt_l2) - sqrt_e / sqrt_l1
-        )
-
-        # Equation (39): g2 = g3
-        g2 = (1 / (e2 ** (3 / 2))) * (
-            (e2 * sqrt_l1) / (b**2 + lmbda)
-            - np.log((sqrt_e + sqrt_l1) / sqrt_l2)
-        )
-        gvals_x, gvals_y, gvals_z = g1, g2, g2
-
-    # oblate case
-    if a < b and b == c:
-        g1 = (
-            2
-            / ((b**2 - a**2) ** (3 / 2))
-            * (
-                (np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
-                - np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
-            )
-        )
-        g2 = (
-            1
-            / ((b**2 - a**2) ** (3 / 2))
-            * (
-                np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
-                - (np.sqrt((b**2 - a**2) * (a**2 + lmbda))) / (b**2 + lmbda)
-            )
-        )
-
-        gvals_x, gvals_y, gvals_z = g1, g2, g2
-
-    return gvals_x, gvals_y, gvals_z
-
-
 def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     """
     Construct the N matrix for the external field.
@@ -639,7 +525,7 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     # lambda derivatives as above
     n = np.empty((3, 3))
     r = [x, y, z]
-    gvals = _get_g_values_magnetics(a, b, c, lmbda)
+    gvals = _get_g_values(a, b, c, lmbda)
     derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lmbda)
     h_vals = _get_h_values(a, b, c, lmbda)
 

@@ -1,6 +1,5 @@
 # definitions of ellipsoid classes to pass into the functions
-
-
+    
 class TriaxialEllipsoid:
     """
     Class creates case of a trixial ellipsoid, storing geometric properties.
