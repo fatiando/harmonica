@@ -7,6 +7,8 @@
 """
 Test functions from the visualization module.
 """
+
+import re
 from unittest.mock import patch
 
 import numpy as np
@@ -25,7 +27,7 @@ except ImportError:
 @pytest.mark.skipif(pyvista is not None, reason="pyvista must be missing")
 def test_prism_to_pyvista_missing_pyvista():
     """
-    Check error raise after calling prism_to_pyvista when pyvista is missing
+    Check error raise after calling prism_to_pyvista when pyvista is missing.
     """
     prism = [0, 1, 0, 1, 0, 1]
     with pytest.raises(ImportError) as exception:
@@ -36,7 +38,7 @@ def test_prism_to_pyvista_missing_pyvista():
 @pytest.fixture(name="prisms")
 def fixture_prisms():
     """
-    Define a set of sample prisms
+    Define a set of sample prisms.
     """
     return [
         [1e3, 5e3, -2e3, 4e3, -10e3, -7e3],
@@ -49,7 +51,7 @@ def fixture_prisms():
 @pytest.fixture(name="density", params=("numpy", "xarray"))
 def fixture_density(request):
     """
-    Return a density array for the sample prisms
+    Return a density array for the sample prisms.
     """
     density = [2670.0, 2900.0, 3300.0, 3200.0]
     if request.param == "xarray":
@@ -60,7 +62,7 @@ def fixture_density(request):
 @pytest.fixture(name="susceptibility", params=("numpy", "xarray"))
 def fixture_susceptibility(request):
     """
-    Return a susceptibility array for the sample prisms
+    Return a susceptibility array for the sample prisms.
     """
     susceptibility = [2e-4, 2.5e-4, 5e-4, 1e-3]
     if request.param == "xarray":
@@ -71,7 +73,7 @@ def fixture_susceptibility(request):
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 def test_prism_to_pyvista(prisms, density):
     """
-    Test output of prism_to_pyvista
+    Test output of prism_to_pyvista.
     """
     pv_grid = prism_to_pyvista(prisms, properties={"density": density})
     assert pv_grid.n_cells == 4
@@ -89,7 +91,7 @@ def test_prism_to_pyvista(prisms, density):
 @pytest.mark.parametrize("n_props", [0, 1, 2])
 def test_prism_to_pyvista_properties(n_props, prisms, density, susceptibility):
     """
-    Test prism_to_pyvista for different number of properties
+    Test prism_to_pyvista for different number of properties.
     """
     properties = None
     if n_props == 1:
@@ -111,17 +113,23 @@ def test_prism_to_pyvista_properties(n_props, prisms, density, susceptibility):
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 def test_prism_to_pyvista_error_2d_property(prisms, density):
     """
-    Test if prism_to_pyvista raises error on property as 2D array
+    Test if prism_to_pyvista raises error on property as 2D array.
     """
     density_2d = np.array(density).reshape((2, 2))
-    with pytest.raises(ValueError):
-        prism_to_pyvista(prisms, properties={"density": density_2d})
+
+    name = "density"
+    msg = re.escape(
+        f"Multidimensional array found in '{name}' property. "
+        + "Please, pass prism properties as 1d arrays."
+    )
+    with pytest.raises(ValueError, match=msg):
+        prism_to_pyvista(prisms, properties={name: density_2d})
 
 
 @patch("harmonica.visualization._prism.pyvista", None)
 def test_prisms_pyvista_missing_error(prisms, density):
     """
-    Check if prism_to_pyvista raises error if pyvista is missing
+    Check if prism_to_pyvista raises error if pyvista is missing.
     """
     # Check if error is raised
     with pytest.raises(ImportError):

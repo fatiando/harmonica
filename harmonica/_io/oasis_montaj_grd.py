@@ -8,10 +8,11 @@
 # https://github.com/Loop3D/geosoft_grid copyrighted by Loop3D and released
 # under the MIT License.
 """
-Function to read Oasis Montaj© .grd file
+Function to read Oasis Montaj© .grd file.
 """
 
 import array
+import pathlib
 import zlib
 
 import numpy as np
@@ -35,7 +36,7 @@ DUMMIES = {
 
 def load_oasis_montaj_grid(fname):
     """
-    Reads gridded data from an Oasis Montaj© .grd file.
+    Read gridded data from an Oasis Montaj© .grd file.
 
     The version 2 of the Geosoft© Grid File Format (GRD) stores gridded
     products in binary data. This function can read those files and parse the
@@ -77,7 +78,7 @@ def load_oasis_montaj_grid(fname):
     https://github.com/Loop3D/geosoft_grid
     """
     # Read the header and the grid array
-    with open(fname, "rb") as grd_file:
+    with pathlib.Path(fname).open("rb") as grd_file:
         # Read the header (first 512 bytes)
         header = _read_header(grd_file.read(512))
         # Check for valid flags
@@ -133,7 +134,7 @@ def load_oasis_montaj_grid(fname):
 
 def _read_header(header_bytes):
     """
-    Read GRD file header
+    Read GRD file header.
 
     Parameters
     ----------
@@ -160,7 +161,7 @@ def _read_header(header_bytes):
     """
     header = {}
     # Read data storage
-    ES, SF, NE, NV, KX = array.array("i", header_bytes[0 : 5 * 4])  # noqa: N806
+    ES, SF, NE, NV, KX = array.array("i", header_bytes[0 : 5 * 4])
     header.update(
         {
             "n_bytes_per_element": ES,
@@ -171,7 +172,7 @@ def _read_header(header_bytes):
         }
     )
     # Read geographic info
-    DE, DV, X0, Y0, ROT = array.array("d", header_bytes[20 : 20 + 5 * 8])  # noqa: N806
+    DE, DV, X0, Y0, ROT = array.array("d", header_bytes[20 : 20 + 5 * 8])
     header.update(
         {
             "spacing_e": DE,
@@ -182,7 +183,7 @@ def _read_header(header_bytes):
         }
     )
     # Read data scaling
-    ZBASE, ZMULT = array.array("d", header_bytes[60 : 60 + 2 * 8])  # noqa: N806
+    ZBASE, ZMULT = array.array("d", header_bytes[60 : 60 + 2 * 8])
     header.update(
         {
             "base_value": ZBASE,
@@ -191,14 +192,10 @@ def _read_header(header_bytes):
     )
     # Read optional parameters
     # (ignore map LABEL and MAPNO)
-    PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array(  # noqa: N806
-        "i", header_bytes[140 : 140 + 5 * 4]
-    )
-    IZMIN, IZMAX, IZMED, IZMEA = array.array(  # noqa: N806
-        "f", header_bytes[160 : 160 + 4 * 4]
-    )
-    (ZVAR,) = array.array("d", header_bytes[176 : 176 + 8])  # noqa: N806
-    (PRCS,) = array.array("i", header_bytes[184 : 184 + 4])  # noqa: N806
+    PROJ, UNITX, UNITY, UNITZ, NVPTS = array.array("i", header_bytes[140 : 140 + 5 * 4])
+    IZMIN, IZMAX, IZMED, IZMEA = array.array("f", header_bytes[160 : 160 + 4 * 4])
+    (ZVAR,) = array.array("d", header_bytes[176 : 176 + 8])
+    (PRCS,) = array.array("i", header_bytes[184 : 184 + 4])
     header.update(
         {
             "map_projection": PROJ,
@@ -219,7 +216,7 @@ def _read_header(header_bytes):
 
 def _check_ordering(ordering):
     """
-    Check if the ordering value is within the ones we are supporting
+    Check if the ordering value is within the ones we are supporting.
     """
     if ordering not in (-1, 1):
         raise NotImplementedError(
@@ -230,17 +227,16 @@ def _check_ordering(ordering):
 
 def _check_sign_flag(sign_flag):
     """
-    Check if sign_flag value is within the ones we are supporting
+    Check if sign_flag value is within the ones we are supporting.
     """
     if sign_flag == 3:
-        raise NotImplementedError(
-            "Reading .grd files with colour grids is not currenty supported."
-        )
+        msg = "Reading .grd files with colour grids is not currenty supported."
+        raise NotImplementedError(msg)
 
 
 def _get_data_type(n_bytes_per_element, sign_flag):
     """
-    Return the data type for the grid values
+    Return the data type for the grid values.
 
     References
     ----------
@@ -282,7 +278,7 @@ def _get_data_type(n_bytes_per_element, sign_flag):
 
 def _remove_dummies(grid, data_type):
     """
-    Replace dummy values for NaNs
+    Replace dummy values for NaNs.
     """
     # Create dictionary with dummy value for each data type
     if data_type in ("f", "d"):
@@ -294,7 +290,7 @@ def _remove_dummies(grid, data_type):
 
 def _decompress_grid(grid_compressed):
     """
-    Decompress the grid using gzip
+    Decompress the grid using gzip.
 
     Even if the header specifies that the grid is compressed using a LZRW1
     algorithm, it's using gzip instead. The first two 4 bytes sequences
@@ -345,7 +341,7 @@ def _decompress_grid(grid_compressed):
 
 def _build_coordinates(west, south, shape, spacing):
     """
-    Create the coordinates for the grid
+    Create the coordinates for the grid.
 
     Generates 1d arrays for the easting and northing coordinates of the grid.
     Assumes unrotated grids.
@@ -378,7 +374,7 @@ def _build_coordinates(west, south, shape, spacing):
 
 def _build_rotated_coordinates(west, south, shape, spacing, rotation_deg):
     """
-    Create the coordinates for a rotated grid
+    Create the coordinates for a rotated grid.
 
     Generates 2d arrays for the easting and northing coordinates of the grid.
 

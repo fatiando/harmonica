@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test magnetic forward functions for dipoles
+Test magnetic forward functions for dipoles.
 """
+
 import choclo
 import numpy as np
 import numpy.testing as npt
@@ -25,7 +26,7 @@ from .utils import run_only_with_numba
 
 
 def test_invalid_field():
-    "Check if passing an invalid field raises an error"
+    """Check if passing an invalid field raises an error."""
     coordinates = [0, 0, 0]
     dipoles = ([-100, 100], [-100, 100], [-200, -100])
     magnetic_moments = ([1, -1], [1, -2], [2, 3])
@@ -37,7 +38,7 @@ def test_invalid_field():
 
 @pytest.mark.parametrize("field", VALID_FIELDS)
 def test_disable_checks(field):
-    """Test if disabling checks works as expected"""
+    """Test if disabling checks works as expected."""
     coordinates = [0, 0, 0]
     dipoles = ([1, 1, 2], [-1, 0, 2], [-10, -2, -4])
     magnetic_moments = (
@@ -55,7 +56,7 @@ def test_disable_checks(field):
 @pytest.mark.parametrize("field", VALID_FIELDS)
 def test_progress_bar(field):
     """
-    Check if forward modelling results with and without progress bar match
+    Check if forward modelling results with and without progress bar match.
     """
     dipoles = ([1, 1], [-1, 0], [-10, -2])
     magnetic_moments = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
@@ -72,10 +73,10 @@ def test_progress_bar(field):
 
 
 class TestInvalidMagneticMoments:
-    @pytest.mark.parametrize("field", ("b", "b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", ["b", "b_e", "b_n", "b_u"])
     def test_magnetic_moments_and_dipoles(self, field):
         """
-        Test error when dipoles and magnetic moments mismatch
+        Test error when dipoles and magnetic moments mismatch.
         """
         coordinates = [0, 0, 0]
         dipoles = ([1, 1], [-1, 0], [-10, -2])
@@ -92,7 +93,7 @@ class TestInvalidMagneticMoments:
     @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_magnetic_moments_field(self, field):
         """
-        Test if error is raised when magnetic moments have != 3 elements
+        Test if error is raised when magnetic moments have != 3 elements.
         """
         coordinates = [0, 0, 0]
         dipoles = ([1, 1], [-1, 0], [-10, -2])
@@ -105,7 +106,7 @@ class TestInvalidMagneticMoments:
 
 class TestSerialVsParallel:
     """
-    Test serial vs parallel
+    Test serial vs parallel.
     """
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
@@ -156,13 +157,13 @@ class TestSerialVsParallel:
 
 class TestAgainstChoclo:
     """
-    Test forward modelling functions against dumb Choclo runs
+    Test forward modelling functions against dumb Choclo runs.
     """
 
     @pytest.fixture()
     def sample_dipoles(self):
         """
-        Return four sample dipoles
+        Return four sample dipoles.
         """
         dipoles = (
             np.array([-10.0, 0.0, 10.0, 5.0]),
@@ -174,7 +175,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_magnetic_moments(self):
         """
-        Return sample magnetic moment vectors for the dipoles
+        Return sample magnetic moment vectors for the dipoles.
         """
         magnetic_moments = (
             np.array([1.0, -1.0, 3.0, -1.5]),
@@ -186,7 +187,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_coordinates(self):
         """
-        Return four sample observation points
+        Return four sample observation points.
         """
         easting = np.array([-5, 10, 0, 15], dtype=float)
         northing = np.array([14, -4, 11, 0], dtype=float)
@@ -197,7 +198,7 @@ class TestAgainstChoclo:
         self, sample_coordinates, sample_dipoles, sample_magnetic_moments
     ):
         """
-        Test dipole_magnetic against raw Choclo runs
+        Test dipole_magnetic against raw Choclo runs.
         """
         easting, northing, upward = sample_coordinates
         easting_p, northing_p, upward_p = sample_dipoles
@@ -235,12 +236,12 @@ class TestAgainstChoclo:
         npt.assert_allclose(b_n, expected_magnetic_n)
         npt.assert_allclose(b_u, expected_magnetic_u)
 
-    @pytest.mark.parametrize("field", ("b_e", "b_n", "b_u"))
+    @pytest.mark.parametrize("field", ["b_e", "b_n", "b_u"])
     def test_component_against_choclo(
         self, sample_coordinates, sample_dipoles, sample_magnetic_moments, field
     ):
         """
-        Test dipole_magnetic_component against raw Choclo runs
+        Test dipole_magnetic_component against raw Choclo runs.
         """
         easting, northing, upward = sample_coordinates
         easting_p, northing_p, upward_p = sample_dipoles

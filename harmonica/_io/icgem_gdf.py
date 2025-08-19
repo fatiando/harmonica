@@ -5,9 +5,11 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Function to read ICGEM .gdf file
+Function to read ICGEM .gdf file.
 """
+
 import contextlib
+import pathlib
 
 import numpy as np
 import xarray as xr
@@ -15,7 +17,7 @@ import xarray as xr
 
 def load_icgem_gdf(fname, **kwargs):
     """
-    Reads data from an ICGEM .gdf file.
+    Read data from an ICGEM .gdf file.
 
     The `ICGEM Calculation Service <http://icgem.gfz-potsdam.de/>`__
     [BarthelmesKohler2016]_ generates gravity field grids from spherical
@@ -78,16 +80,17 @@ def load_icgem_gdf(fname, **kwargs):
         grid.longitude.values.max(),
     )
     if not np.allclose(area, area_from_cols):
-        raise IOError(
-            "Grid area read ({}) and calculated from attributes "
-            "({}) mismatch.".format(area, area_from_cols)
+        msg = (
+            f"Grid area read ({area}) and calculated from "
+            f"attributes ({area_from_cols}) mismatch."
         )
+        raise OSError(msg)
     return grid
 
 
 def _read_gdf_file(fname, **kwargs):
     """
-    Read ICGEM gdf file and returns metadata dict and data in cols as np.array
+    Read ICGEM gdf file and returns metadata dict and data in cols as np.array.
     """
     # If it's an open file, does nothing. Otherwise, open and add to the
     # context lib stack to make it close when exiting the with block.
@@ -97,9 +100,7 @@ def _read_gdf_file(fname, **kwargs):
             gdf_file = fname
         else:
             # It's a file path
-            gdf_file = stack.enter_context(
-                open(fname)  # noqa: SIM115, the open file is closed by contextlib
-            )
+            gdf_file = stack.enter_context(pathlib.Path(fname).open())
         # Read the header and extract metadata
         metadata = {}
         metadata_line = True
@@ -113,12 +114,11 @@ def _read_gdf_file(fname, **kwargs):
             if metadata_line:
                 parts = line.strip().split()
                 metadata[parts[0]] = " ".join(parts[1:])
+            elif not attributes_units_line:
+                metadata["attributes"] = line.strip().split()
+                attributes_units_line = True
             else:
-                if not attributes_units_line:
-                    metadata["attributes"] = line.strip().split()
-                    attributes_units_line = True
-                else:
-                    metadata["attributes_units"] = line.strip().split()
+                metadata["attributes_units"] = line.strip().split()
         # Read the numerical values
         rawdata = np.loadtxt(gdf_file, ndmin=2, unpack=True, **kwargs)
     _check_gdf_integrity(metadata)
@@ -126,16 +126,15 @@ def _read_gdf_file(fname, **kwargs):
     if kwargs.get("usecols") is not None:
         metadata["attributes"] = [metadata["attributes"][i] for i in kwargs["usecols"]]
     if len(metadata["attributes"]) != rawdata.shape[0]:
-        raise IOError(
-            "Number of attributes ({}) and data columns ({}) mismatch".format(
-                len(metadata["attributes"]), rawdata.shape[0]
-            )
+        msg = "Number of attributes ({}) and data columns ({}) mismatch".format(
+            len(metadata["attributes"]), rawdata.shape[0]
         )
+        raise OSError(msg)
     return rawdata, metadata
 
 
 def _check_gdf_integrity(metadata):
-    "Check the integrity of ICGEM gdf file metadata."
+    """Check the integrity of ICGEM gdf file metadata."""
     needed_args = [
         "latitude_parallels",
         "longitude_parallels",
@@ -148,28 +147,32 @@ def _check_gdf_integrity(metadata):
     # Check for needed arguments in metadata dictionary
     for arg in needed_args:
         if arg not in metadata:
-            raise IOError("Couldn't read {} field from gdf file header".format(arg))
+            msg = f"Couldn't read {arg} field from gdf file header"
+            raise OSError(msg)
         metadata[arg] = metadata[arg].split()[0]
     if "attributes" not in metadata:
-        raise IOError("Couldn't read column names.")
+        msg = "Couldn't read column names."
+        raise OSError(msg)
     if "attributes_units" not in metadata:
-        raise IOError("Couldn't read column units.")
+        msg = "Couldn't read column units."
+        raise OSError(msg)
     # Check cols names and units integrity
     if len(metadata["attributes"]) != len(metadata["attributes_units"]):
-        raise IOError(
-            "Number of attributes ({}) and units ({}) mismatch".format(
-                len(metadata["attributes"]), len(metadata["attributes_units"])
-            )
+        msg = "Number of attributes ({}) and units ({}) mismatch".format(
+            len(metadata["attributes"]), len(metadata["attributes_units"])
         )
+        raise OSError(msg)
     metadata["attributes_units"] = [
         attr.replace("[", "").replace("]", "").strip()
         for attr in metadata["attributes_units"]
     ]
     for arg in ["latitude", "longitude"]:
         if arg not in metadata["attributes"]:
-            raise IOError("Couldn't find {} column.".format(arg))
+            msg = f"Couldn't find {arg} column."
+            raise OSError(msg)
     # Check proper values for shape and size
     shape = (int(metadata["latitude_parallels"]), int(metadata["longitude_parallels"]))
     size = int(metadata["number_of_gridpoints"])
     if shape[0] * shape[1] != size:
-        raise IOError("Grid shape '{}' and size '{}' mismatch.".format(shape, size))
+        msg = f"Grid shape '{shape}' and size '{size}' mismatch."
+        raise OSError(msg)

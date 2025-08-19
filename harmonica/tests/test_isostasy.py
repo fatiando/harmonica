@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Testing isostasy calculation
+Testing isostasy calculation.
 """
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -15,10 +16,10 @@ import xarray as xr
 from .. import isostatic_moho_airy
 
 
-@pytest.mark.parametrize("reference_depth", (0, 30e3))
+@pytest.mark.parametrize("reference_depth", [0, 30e3])
 def test_airy_without_load(reference_depth):
     """
-    Root should be zero for no equivalent topography (zero basement, no layers)
+    Root should be zero for no equivalent topography (zero basement, no layers).
     """
     basement = np.zeros(20, dtype=np.float64)
     npt.assert_equal(
@@ -26,10 +27,10 @@ def test_airy_without_load(reference_depth):
     )
 
 
-@pytest.mark.parametrize("shape", (20, (20, 31), (20, 31, 2)))
+@pytest.mark.parametrize("shape", [20, (20, 31), (20, 31, 2)])
 def test_airy_array_shape_preserved(shape):
     """
-    Check that the shape of the topography is preserved
+    Check that the shape of the topography is preserved.
     """
     basement = np.zeros(shape, dtype=np.float64)
     assert isostatic_moho_airy(basement).shape == basement.shape
@@ -38,7 +39,7 @@ def test_airy_array_shape_preserved(shape):
 @pytest.fixture(name="basement", params=("numpy", "xarray"))
 def fixture_basement(request):
     """
-    Return a basement array
+    Return a basement array.
     """
     basement = np.array([-2, -1, 0, 1, 2, 3], dtype=float)
     if request.param == "xarray":
@@ -49,7 +50,7 @@ def fixture_basement(request):
 @pytest.fixture(name="water", params=("numpy", "xarray"))
 def fixture_water(request):
     """
-    Return thickness and density for a water layer
+    Return thickness and density for a water layer.
     """
     thickness = np.array([2, 1, 0, 0, 0, 0], dtype=float)
     density = 0.5
@@ -61,7 +62,7 @@ def fixture_water(request):
 @pytest.fixture(name="water_array", params=("xarray", "xarray"))
 def fixture_water_array(request):
     """
-    Return thickness and density for a water layer as array
+    Return thickness and density for a water layer as array.
     """
     thickness = np.array([2, 1, 0, 0, 0, 0], dtype=float)
     density = np.array([0.5, 0.4, 0.5, 0.4, 0.5, 0.5], dtype=float)
@@ -74,7 +75,7 @@ def fixture_water_array(request):
 @pytest.fixture(name="sediments", params=("numpy", "xarray"))
 def fixture_sediments(request):
     """
-    Return thickness and density for a sediments layer
+    Return thickness and density for a sediments layer.
     """
     thickness = np.array([1, 2, 1, 0, 1.5, 0], dtype=float)
     density = 0.75
@@ -86,7 +87,7 @@ def fixture_sediments(request):
 @pytest.fixture(name="sediments_array", params=("xarray", "xarray"))
 def fixture_sediments_array(request):
     """
-    Return thickness and density for a sediments layer
+    Return thickness and density for a sediments layer.
     """
     thickness = np.array([1, 2, 1, 0, 1.5, 0], dtype=float)
     density = np.array([0.76, 0.75, 0.76, 0.75, 0.76, 0.75], dtype=float)
@@ -97,7 +98,7 @@ def fixture_sediments_array(request):
 
 
 def test_airy_no_layer(basement):
-    "Use no layer to check the calculations"
+    """Use no layer to check the calculations."""
     layers = None
     root = isostatic_moho_airy(
         basement,
@@ -111,7 +112,7 @@ def test_airy_no_layer(basement):
 
 
 def test_airy_single_layer(basement, water):
-    "Use a simple basement + water model to check the calculations"
+    """Use a simple basement + water model to check the calculations."""
     thickness_water, density_water = water
     layers = {"water": (thickness_water, density_water)}
     root = isostatic_moho_airy(
@@ -130,7 +131,7 @@ def test_airy_single_layer(basement, water):
 def test_airy_single_layer_array(basement, water_array):
     """
     Use a simple basement + water model with density as array to check
-    the calculations
+    the calculations.
     """
     thickness_water, density_water = water_array
     layers = {"water": (thickness_water, density_water)}
@@ -148,7 +149,7 @@ def test_airy_single_layer_array(basement, water_array):
 
 
 def test_airy_multiple_layers(basement, water, sediments):
-    "Check isostasy function against a model with multiple layers"
+    """Check isostasy function against a model with multiple layers."""
     thickness_water, density_water = water
     thickness_sediments, density_sediments = sediments
     layers = {
@@ -172,7 +173,7 @@ def test_airy_multiple_layers(basement, water, sediments):
 def test_airy_multiple_layers_array(basement, water_array, sediments_array):
     """
     Check isostasy function against a model with multiple layers with density
-    as array
+    as array.
     """
     thickness_water, density_water = water_array
     thickness_sediments, density_sediments = sediments_array

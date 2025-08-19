@@ -4,4 +4,8 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+"""
+Visualization of models.
+"""
+
 from ._prism import prism_to_pyvista

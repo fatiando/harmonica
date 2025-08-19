@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Gradient-boosted equivalent sources in Cartesian coordinates
+Gradient-boosted equivalent sources in Cartesian coordinates.
 """
+
 from __future__ import annotations
 
 import warnings
@@ -122,10 +123,11 @@ class EquivalentSourcesGB(EquivalentSources):
         dtype="float64",
     ):
         if isinstance(window_size, str) and window_size != "default":
-            raise ValueError(
+            msg = (
                 f"Found invalid 'window_size' value equal to '{window_size}'."
                 "It should be 'default' or a numeric value."
             )
+            raise ValueError(msg)
         super().__init__(
             damping=damping,
             points=points,
@@ -139,7 +141,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
     def estimate_required_memory(self, coordinates):
         """
-        Estimate the memory required for storing the largest Jacobian matrix
+        Estimate the memory required for storing the largest Jacobian matrix.
 
         Parameters
         ----------
@@ -157,7 +159,6 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Examples
         --------
-
         >>> import verde as vd
         >>> coordinates = vd.scatter_points(
         ...     region=(-1e3, 3e3, 2e3, 5e3),
@@ -242,7 +243,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
     def _gradient_boosting(self, coordinates, data, weights):
         """
-        Fit source coefficients through gradient boosting
+        Fit source coefficients through gradient boosting.
         """
         # Create rolling windows
         point_windows, data_windows = self._create_windows(coordinates)
@@ -293,7 +294,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
     def _create_windows(self, coordinates, shuffle=True):
         """
-        Create indices of sources and data points for each overlapping window
+        Create indices of sources and data points for each overlapping window.
 
         Parameters
         ----------
@@ -319,7 +320,6 @@ class EquivalentSourcesGB(EquivalentSources):
             shuffled if ``shuffle_windows`` is True, although the order of the
             windows is the same as the one in ``source_windows_nonempty``.
         """
-
         # Get the region that contains every data point and every source
         region = _get_region_data_sources(coordinates, self.points_)
         # Calculate the window size such that there are approximately 5000 data
@@ -350,7 +350,11 @@ class EquivalentSourcesGB(EquivalentSources):
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
-        kwargs = dict(region=region, size=self.window_size_, spacing=window_spacing)
+        kwargs = {
+            "region": region,
+            "size": self.window_size_,
+            "spacing": window_spacing,
+        }
         _, source_windows = rolling_window(self.points_, **kwargs)
         _, data_windows = rolling_window(coordinates, **kwargs)
         # Ravel the indices
@@ -373,7 +377,7 @@ class EquivalentSourcesGB(EquivalentSources):
 
 def _get_region_data_sources(coordinates, points):
     """
-    Return the region that contains every observation and every source
+    Return the region that contains every observation and every source.
 
     Parameters
     ----------

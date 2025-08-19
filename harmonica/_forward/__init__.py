@@ -5,5 +5,5 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Forward modeling functions for gravity and magnetic fields of geometric shapes
+Forward modeling functions for gravity and magnetic fields of geometric shapes.
 """

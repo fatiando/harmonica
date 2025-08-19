@@ -39,6 +39,7 @@ depth) or a ``relative`` depth (where each source is located at a constant
 shift beneath the median location obtained during the block-averaging process).
 The depth of the sources can be set through the ``depth`` parameter.
 """
+
 import ensaio
 import pandas as pd
 import pygmt

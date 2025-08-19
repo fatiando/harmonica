@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Classes for Euler Deconvolution of potential field data
+Classes for Euler Deconvolution of potential field data.
 """
+
 import numpy as np
 import scipy as sp
 import verde.base as vdb
@@ -14,7 +15,7 @@ import verde.base as vdb
 
 class EulerDeconvolution:
     r"""
-    Estimate source location and base level using Euler Deconvolution
+    Estimate source location and base level using Euler Deconvolution.
 
     Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source
     location and a base level constant from potential field data and their
@@ -58,7 +59,6 @@ class EulerDeconvolution:
 
     Notes
     -----
-
     Works on any potential field that satisfies Euler's homogeneity equation
     (like gravity, magnetic, and their gradients caused by **simple sources**):
 

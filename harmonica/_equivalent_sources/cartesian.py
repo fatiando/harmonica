@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Equivalent sources for generic harmonic functions in Cartesian coordinates
+Equivalent sources for generic harmonic functions in Cartesian coordinates.
 """
+
 from __future__ import annotations
 
 import warnings
@@ -160,10 +161,6 @@ class EquivalentSources(vdb.BaseGridder):
     # Overwrite the defalt name for the upward coordinate.
     extra_coords_name = "upward"
 
-    # Define dispatcher for Numba functions with or without parallelization
-    _predict_kernel = {False: predict_numba_serial, True: predict_numba_parallel}
-    _jacobian_kernel = {False: jacobian_numba_serial, True: jacobian_numba_parallel}
-
     def __init__(
         self,
         damping=None,
@@ -174,14 +171,14 @@ class EquivalentSources(vdb.BaseGridder):
         dtype="float64",
     ):
         if isinstance(depth, str) and depth != "default":
-            raise ValueError(
+            msg = (
                 f"Found invalid 'depth' value equal to '{depth}'. "
                 "It should be 'default' or a numeric value."
             )
+            raise ValueError(msg)
         if depth == 0:
-            raise ValueError(
-                "Depth value cannot be zero. It should be a non-zero numeric value."
-            )
+            msg = "Depth value cannot be zero. It should be a non-zero numeric value."
+            raise ValueError(msg)
 
         self.damping = damping
         self.points = points
@@ -241,7 +238,7 @@ class EquivalentSources(vdb.BaseGridder):
 
     def _build_points(self, coordinates):
         """
-        Generate coordinates of point sources based on the data points
+        Generate coordinates of point sources based on the data points.
 
         Locate the point sources using a relative depth strategy
         and apply block-averaging if ``block_size`` is not None.
@@ -282,7 +279,7 @@ class EquivalentSources(vdb.BaseGridder):
 
     def _block_average_coordinates(self, coordinates):
         """
-        Run a block-averaging process on observation points
+        Run a block-averaging process on observation points.
 
         Apply a median as the reduction function. The blocks will have the size
         specified through the ``block_size`` argument on the constructor.
@@ -335,9 +332,8 @@ class EquivalentSources(vdb.BaseGridder):
             np.atleast_1d(i.astype(self.dtype)).ravel() for i in coordinates[:3]
         )
         data = np.zeros(size, dtype=self.dtype)
-        self._predict_kernel[self.parallel](
-            coordinates, self.points_, self.coefs_, data, self.greens_function
-        )
+        kernel = predict_numba_parallel if self.parallel else predict_numba_serial
+        kernel(coordinates, self.points_, self.coefs_, data, self.greens_function)
         return data.reshape(shape)
 
     def jacobian(self, coordinates, points):
@@ -368,9 +364,8 @@ class EquivalentSources(vdb.BaseGridder):
         n_data = coordinates[0].size
         n_points = points[0].size
         jac = np.zeros((n_data, n_points), dtype=self.dtype)
-        self._jacobian_kernel[self.parallel](
-            coordinates, points, jac, self.greens_function
-        )
+        kernel = jacobian_numba_parallel if self.parallel else jacobian_numba_serial
+        kernel(coordinates, points, jac, self.greens_function)
         return jac
 
     def grid(
@@ -430,7 +425,7 @@ class EquivalentSources(vdb.BaseGridder):
             The interpolated grid. Metadata about the interpolator is written
             to the ``attrs`` attribute.
 
-        See also
+        See Also
         --------
         :func:`verde.grid_coordinates`
 
@@ -475,13 +470,13 @@ class EquivalentSources(vdb.BaseGridder):
 
     def scatter(
         self,
-        region=None,  # noqa: U100
-        size=300,  # noqa: U100
-        random_state=0,  # noqa: U100
-        dims=None,  # noqa: U100
-        data_names=None,  # noqa: U100
-        projection=None,  # noqa: U100
-        **kwargs,  # noqa: U100
+        region=None,
+        size=300,
+        random_state=0,
+        dims=None,
+        data_names=None,
+        projection=None,
+        **kwargs,
     ):
         """
         .. warning ::
@@ -489,7 +484,7 @@ class EquivalentSources(vdb.BaseGridder):
             Not implemented method. The scatter method will be deprecated on
             Verde v2.0.0.
 
-        """
+        """  # noqa: D400
         raise NotImplementedError
 
     def profile(
@@ -593,7 +588,7 @@ class EquivalentSources(vdb.BaseGridder):
 @jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
-    Green's function for the equivalent sources in Cartesian coordinates
+    Green's function for the equivalent sources in Cartesian coordinates.
 
     Uses Numba to speed up things.
     """

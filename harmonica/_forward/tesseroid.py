@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Forward modelling for tesseroids
+Forward modelling for tesseroids.
 """
+
 import numpy as np
 from numba import jit, prange
 
@@ -123,7 +124,6 @@ def tesseroid_gravity(
 
     Examples
     --------
-
     >>> # Get WGS84 ellipsoid from the Boule package
     >>> import boule
     >>> ellipsoid = boule.WGS84
@@ -161,7 +161,8 @@ def tesseroid_gravity(
         "g_z": gravity_u_spherical,
     }
     if field not in kernels:
-        raise ValueError("Gravitational field {} not recognized".format(field))
+        msg = f"Gravitational field {field} not recognized"
+        raise ValueError(msg)
     # Figure out the shape and size of the output array
     cast = np.broadcast(*coordinates[:3])
     result = np.zeros(cast.size, dtype=dtype)
@@ -180,8 +181,8 @@ def tesseroid_gravity(
         density = np.atleast_1d(density).ravel()
         if not disable_checks and density.size != tesseroids.shape[0]:
             raise ValueError(
-                "Number of elements in density ({}) ".format(density.size)
-                + "mismatch the number of tesseroids ({})".format(tesseroids.shape[0])
+                f"Number of elements in density ({density.size}) "
+                + f"mismatch the number of tesseroids ({tesseroids.shape[0]})"
             )
         # Discard null tesseroids (zero density or zero volume)
         tesseroids, density = _discard_null_tesseroids(tesseroids, density)
@@ -214,7 +215,7 @@ def tesseroid_gravity(
 
 def dispatcher(parallel, density):
     """
-    Return the jitted compiled forward modelling function
+    Return the jitted compiled forward modelling function.
 
     The choice of the forward modelling function is based on whether the
     density is a function and if the model should be run in parallel.
@@ -232,7 +233,7 @@ def dispatcher(parallel, density):
     return dispatchers[parallel]
 
 
-def jit_tesseroid_gravity(  # noqa: CFQ002
+def jit_tesseroid_gravity(
     coordinates,
     tesseroids,
     density,
@@ -246,7 +247,7 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
     progress_proxy,
 ):
     """
-    Compute gravitational field of tesseroids on computations points
+    Compute gravitational field of tesseroids on computations points.
 
     Perform adaptive discretization, convert each small tesseroid to equivalent
     point masses through GLQ and use point masses kernel functions to compute
@@ -301,16 +302,16 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for l in prange(longitude.size):
+    for i in prange(longitude.size):
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for m in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                (longitude[l], latitude[l], radius[l]),
-                tesseroids[m, :],
+                (longitude[i], latitude[i], radius[i]),
+                tesseroids[j, :],
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
@@ -319,13 +320,13 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
-                result[l] += gauss_legendre_quadrature(
-                    longitude_rad[l],
-                    cosphi[l],
-                    sinphi[l],
-                    radius[l],
+                result[i] += gauss_legendre_quadrature(
+                    longitude_rad[i],
+                    cosphi[i],
+                    sinphi[i],
+                    radius[i],
                     tesseroid,
-                    density[m],
+                    density[j],
                     glq_nodes,
                     glq_weights,
                     kernel,
@@ -335,7 +336,7 @@ def jit_tesseroid_gravity(  # noqa: CFQ002
             progress_proxy.update(1)
 
 
-def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
+def jit_tesseroid_gravity_variable_density(
     coordinates,
     tesseroids,
     density,
@@ -349,7 +350,7 @@ def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
     progress_proxy,
 ):
     """
-    Compute gravitational field of tesseroids on computations points
+    Compute gravitational field of tesseroids on computations points.
 
     Perform adaptive discretization, convert each small tesseroid to equivalent
     point masses through GLQ and use point masses kernel functions to compute
@@ -404,16 +405,16 @@ def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for l in prange(longitude.size):
+    for i in prange(longitude.size):
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for m in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
-                (longitude[l], latitude[l], radius[l]),
-                tesseroids[m, :],
+                (longitude[i], latitude[i], radius[i]),
+                tesseroids[j, :],
                 distance_size_ratio,
                 stack,
                 small_tesseroids,
@@ -422,11 +423,11 @@ def jit_tesseroid_gravity_variable_density(  # noqa: CFQ002
             # Compute effect of the tesseroid through GLQ
             for tess_index in range(n_splits):
                 tesseroid = small_tesseroids[tess_index, :]
-                result[l] += gauss_legendre_quadrature_variable_density(
-                    longitude_rad[l],
-                    cosphi[l],
-                    sinphi[l],
-                    radius[l],
+                result[i] += gauss_legendre_quadrature_variable_density(
+                    longitude_rad[i],
+                    cosphi[i],
+                    sinphi[i],
+                    radius[i],
                     tesseroid,
                     density,
                     glq_nodes,
