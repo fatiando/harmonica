@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -523,13 +523,13 @@ Mohorovicic discontinuity (crust-mantle interface).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>basement</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Height of the crystalline basement in meters.
+<dt><strong>basement</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Height of the crystalline basement in meters.
 It usually refer to topography and bathymetry height without sediment
 cover.
 When considering sedimentary basins, it refers to crystalline basement
 (topography/bathymetry minus sediment thickness).</p>
 </dd>
-<dt><strong>layers</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Dictionary that contains information about the thickness and density of
+<dt><strong>layers</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Dictionary that contains information about the thickness and density of
 the layers located above the <code class="docutils literal notranslate"><span class="pre">basement</span></code>.
 For each layer, a single item should be created: its key will be the
 layer name as a <code class="docutils literal notranslate"><span class="pre">str</span></code> and its values must be tuples containing the
@@ -539,17 +539,17 @@ Thicknesses and densities can be floats or arrays.
 If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no layers will be considered.
 Default as <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
-<dt><strong>density_crust</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
+<dt><strong>density_crust</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
 </dd>
-<dt><strong>density_mantle</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Mantle density in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
+<dt><strong>density_mantle</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Mantle density in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
 </dd>
-<dt><strong>reference_depth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>The reference Moho depth (<span class="math notranslate nohighlight">\(H\)</span>) in meters.</p>
+<dt><strong>reference_depth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>The reference Moho depth (<span class="math notranslate nohighlight">\(H\)</span>) in meters.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>moho_depth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>The isostatic Moho depth in meters.</p>
+<dt><strong>moho_depth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>The isostatic Moho depth in meters.</p>
 </dd>
 </dl>
 </dd>
@@ -699,7 +699,7 @@ instead.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Aug 19, 2025.
   <br/>
 </p>
   </div>

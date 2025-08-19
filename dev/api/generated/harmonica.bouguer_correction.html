@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -539,20 +539,20 @@ requires a thickness value (positive).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>topography</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Topography height and bathymetry depth in meters.
+<dt><strong>topography</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.8.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Topography height and bathymetry depth in meters.
 Should be referenced to the ellipsoid (ie, geometric heights).</p>
 </dd>
-<dt><strong>density_crust</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
+<dt><strong>density_crust</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Density of the crust in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.
 Used as the density of topography on land and the density of the normal
 Earth’s crust in the oceans.</p>
 </dd>
-<dt><strong>density_water</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
+<dt><strong>density_water</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Density of water in <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>grav_bouguer</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>The gravitational effect of topography and residual bathymetry in mGal.</p>
+<dt><strong>grav_bouguer</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.8.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>The gravitational effect of topography and residual bathymetry in mGal.</p>
 </dd>
 </dl>
 </dd>
@@ -636,7 +636,7 @@ Earth’s crust in the oceans.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Aug 19, 2025.
   <br/>
 </p>
   </div>

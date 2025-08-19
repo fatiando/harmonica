@@ -74,7 +74,6 @@ correction.
         units:           mGal
         actual_range:    [974748.6 980201.9]
         icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
-    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
 
 
 
@@ -143,7 +142,7 @@ correction.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.675 seconds)
+   **Total running time of the script:** (0 minutes 2.487 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:
