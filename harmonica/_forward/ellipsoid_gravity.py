@@ -129,9 +129,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         internal_mask = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
 
         # calculate gravity component for the rotated points
-        gx, gy, gz = _get_gravity_array(
-            internal_mask, a, b, c, x, y, z, rho
-        )
+        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z, rho)
         gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
 
         # project onto upward unit vector, axis U
@@ -145,9 +143,10 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
 
+
 def _get_g_values(a, b, c, lmbda):
     """
-    Compute the gravity values (g) for the three ellipsoid types. 
+    Compute the gravity values (g) for the three ellipsoid types.
 
     parameters
     ----------
@@ -166,37 +165,31 @@ def _get_g_values(a, b, c, lmbda):
 
 
     """
-    
+
     # trixial case
     if a > b > c:
         int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
         phi = np.arcsin(int_arcsin)
         k = (a**2 - b**2) / (a**2 - c**2)
-        
+
         ellipk = ellipkinc(phi, k)
         ellipe = ellipeinc(phi, k)
-        
-        g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (
-            ellipk - ellipe
-        )
+
+        g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (ellipk - ellipe)
 
         g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / (
             (a**2 - b**2) * (b**2 - c**2)
         )
-        g2_elliptics = ellipe - (
-            (b**2 - c**2) / (a**2 - c**2)
-        ) * ellipk
+        g2_elliptics = ellipe - ((b**2 - c**2) / (a**2 - c**2)) * ellipk
         g2_last_term = (
             (a**2 - b**2) / np.sqrt(a**2 - c**2)
         ) * np.sqrt((c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda)))
 
         g2 = g2_multiplier * (g2_elliptics - g2_last_term)
 
-        # Term with the E(k, theta) must have a minus sign 
+        # Term with the E(k, theta) must have a minus sign
         # (the minus sign is missing in Takahashi (2018)).
-        g3_term_1 = -(
-            2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))
-        ) * ellipe
+        g3_term_1 = -(2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))) * ellipe
         g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
             (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
         )

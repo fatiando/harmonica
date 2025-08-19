@@ -5,20 +5,24 @@ bodies.
 
 from collections.abc import Iterable
 
-import harmonica as hm
 import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
+
+import harmonica as hm
 
 from .ellipsoid_gravity import _get_g_values
 from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
 
 
-
 # internal field N matrix functions
 def ellipsoid_magnetics(
-    coordinates, ellipsoids, susceptibility, external_field,
-    remnant_mag=None, field="b"
+    coordinates,
+    ellipsoids,
+    susceptibility,
+    external_field,
+    remnant_mag=None,
+    field="b",
 ):
     """
     Produces the components for the magnetic field components (be, bn, bu):
@@ -36,7 +40,6 @@ def ellipsoid_magnetics(
 
     Parameters
     ----------
-
     coordinates: tuple of easting (e), northing (n), upward (u) points
         e : ndarray
             Easting coordinates, in the form:
@@ -50,7 +53,6 @@ def ellipsoid_magnetics(
         u : ndarray
             Upward coordinates, e.g. the surface height desired to compute the
             gravity value. Same shape and rules as 'e'.
-
 
     ellipsoid* : value, or list of values
         instance(s) of TriaxialEllipsoid, ProlateEllipsoid,
@@ -68,8 +70,8 @@ def ellipsoid_magnetics(
 
     external_field : ndarray
         The uniform magnetic field (B) as and array with values of
-        (magnitude, inclination, declination). The magnitude should be in nT, and the
-        angles in degrees.
+        (magnitude, inclination, declination). The magnitude should be in nT,
+        and the angles in degrees.
 
     remnant_mag:  (optional) array
         Remnent magnetisation vector of the body. Default is None.
@@ -80,7 +82,6 @@ def ellipsoid_magnetics(
 
     Returns
     -------
-
     be: ndarray
         Easting component of the magnetic field.
 
@@ -95,7 +96,6 @@ def ellipsoid_magnetics(
     Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a trixial
     ellipsoid"
     Takahashi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
-
     For derivations of the equations and methods used in this code.
     """
 
@@ -113,8 +113,10 @@ def ellipsoid_magnetics(
             mr = np.tile(mr, (len(ellipsoids), 1))
 
         if mr.shape != (len(ellipsoids), 3):
-            raise ValueError(f"Remanent magnetisation must have shape "
-                             f"({len(ellipsoids)}, 3); got {mr.shape}.")
+            raise ValueError(
+                f"Remanent magnetisation must have shape "
+                f"({len(ellipsoids)}, 3); got {mr.shape}."
+            )
     if remnant_mag is None:
         mr = np.zeros((len(ellipsoids), 3))
 
@@ -201,9 +203,9 @@ def ellipsoid_magnetics(
     be = be.reshape(broadcast)
     bn = bn.reshape(broadcast)
     bu = bu.reshape(broadcast)
-
     # return according to user
     return {"e": be, "n": bn, "u": bu}.get(field, (be, bn, bu))
+
 
 def _get_magnetisation_with_rem(a, b, c, k, h0, mr):
     r"""
@@ -226,27 +228,32 @@ def _get_magnetisation_with_rem(a, b, c, k, h0, mr):
 
     Notes
     -----
-    Considering an ellipsoid with susceptibility :math:`\chi` (scalar or tensor) in
-    a uniform background field :math:`\mathbf{H}_0`, compute the magnetization vector
-    :math:`\mathbf{M}` of the ellipsoid accounting for demagnetization effects as:
-
-    .. math::
-
-        \mathbf{M} =
-        \chi \[left \mathbf{I} + \mathbf{N}^\text{int} \chi \right]^{-1} \mathbf{H}_0,
-
-    where :math:`\mathbf{N}^\text{int}` is the internal demagnetization tensor, defined
+    Considering an ellipsoid with susceptibility :math:`\chi` (scalar or
+                                                               tensor) in
+    a uniform background field :math:`\mathbf{H}_0`, compute the magnetization
+    vector
+    :math:`\mathbf{M}` of the ellipsoid accounting for demagnetization effects
     as:
 
     .. math::
 
-        \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r}) \mathbf{M}.
+        \mathbf{M} =
+        \chi \[left \mathbf{I} + \mathbf{N}^\text{int} \chi \right]^{-1}
+        \mathbf{H}_0,
+
+    where :math:`\mathbf{N}^\text{int}` is the internal demagnetization tensor,
+    defined as:
+
+    .. math::
+
+        \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})
+        \mathbf{M}.
     """
     n_cross = _construct_n_matrix_internal(a, b, c)
-    I = np.identity(3)
-    A = I + n_cross @ k
+    eye = np.identity(3)
+    lhs = eye + n_cross @ k
     rhs = mr + k @ h0
-    m = np.linalg.solve(A, rhs)
+    m = np.linalg.solve(lhs, rhs)
     return m
 
 
@@ -325,14 +332,14 @@ def _depol_triaxial_int(a, b, c):
     return nxx, nyy, nzz
 
 
-def _depol_prolate_int(a, b, c):
+def _depol_prolate_int(a, b):
     """
     Calcualte internal depolarisation factors for prolate case.
 
 
     parameters
     ----------
-    a, b, c : floats
+    a, b: floats
         Semiaxis lengths of the prolate ellipsoid (a > b = c).
 
     returns
@@ -345,7 +352,8 @@ def _depol_prolate_int(a, b, c):
     if not m > 1:
         raise ValueError(
             f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, "
-            f"a/b={m}")
+            f"a/b={m}"
+        )
 
     nxx = (1 / (m**2 - 1)) * (
         ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1))) - 1
@@ -361,13 +369,13 @@ def _depol_prolate_int(a, b, c):
     return nxx, nyy, nzz
 
 
-def _depol_oblate_int(a, b, c):
+def _depol_oblate_int(a, b):
     """
     Calcualte internal depolarisation factors for oblate case.
 
     parameters
     ----------
-    a, b, c : floats
+    a, b: floats
         Semiaxis lengths of the oblate ellipsoid (a < b = c).
 
     returns

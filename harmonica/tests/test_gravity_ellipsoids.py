@@ -91,12 +91,12 @@ def test_symmetry_at_constant_radius():
 
     a, b, c = (3, 2, 2)
     d, f, g = (2, 3, 3)
-    R = 5
+    r = 5
     e = 0
 
     theta = np.linspace(0, 2 * np.pi, 20)
-    n = R * np.cos(theta)
-    u = R * np.sin(theta)
+    n = r * np.cos(theta)
+    u = r * np.sin(theta)
 
     _, ogn, ogu = _get_gravity_oblate(e, n, u, d, f, g, density=1000)
 

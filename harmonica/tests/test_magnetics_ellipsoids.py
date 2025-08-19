@@ -1,7 +1,8 @@
-import harmonica as hm
 import numpy as np
 import verde as vd
 from scipy.constants import mu_0
+
+import harmonica as hm
 
 from .._forward.create_ellipsoid import (
     OblateEllipsoid,
@@ -26,8 +27,8 @@ def test_likeness_to_sphere():
     # create field
     k = [0.01, 0.001, 0.0001]
     b0 = np.array(hm.magnetic_angles_to_vec(55_000, 0.0, 90.0))
-    H0_Am = np.array(b0 * 1e-9 / mu_0)
-    M = [k * H0_Am for k in k]
+    h0_am = np.array(b0 * 1e-9 / mu_0)
+    m = [k * h0_am for k in k]
 
     # create coords
     easting = np.linspace(0, 2 * 60, 50)
@@ -63,7 +64,7 @@ def test_likeness_to_sphere():
 
         # sphere
         b_e, b_n, b_u = _sphere_magnetic(
-            coordinates, radius=60, center=(0, 0, 0), magnetization=M[indx]
+            coordinates, radius=60, center=(0, 0, 0), magnetization=m[indx]
         )
         b_e = b_e.ravel()
 
