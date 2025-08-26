@@ -107,6 +107,14 @@ def load_oasis_montaj_grid(fname):
         order = "F"
         shape = (header["shape_e"], header["shape_v"])
         spacing = (header["spacing_e"], header["spacing_v"])
+    # Check that the number of elements matches the expected shape
+    expected_size = shape[0] * shape[1]
+    actual_size = grid.size
+    if actual_size != expected_size:
+        raise ValueError(
+            f"Grid data size mismatch: found {actual_size} elements, expected {expected_size} (shape {shape}). "
+            "The file may be corrupted or incomplete."
+        )
     grid = grid.reshape(shape, order=order)
     # Build coords
     if header["rotation"] == 0:
