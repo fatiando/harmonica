@@ -134,27 +134,68 @@ class IGRF14:
         """
         Calculate the IGRF magnetic field at the given coordinates
         """
-        longitude, latitude, height = coordinates
+        longitude, latitude, height = (np.atleast_1d(c) for c in coordinates)
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
             longitude, latitude, height
         )
-        longitude = np.radians(longitude)
-        colatitude = np.radians(90 - latitude_sph)
-        n_data = colatitude.size
+        longitude_radians = np.radians(longitude)
+        colatitude_radians = np.radians(90 - latitude_sph)
+        n_data = longitude.size
         b_east = np.zeros(n_data)
-        b_north = np.zeros(n_data)
-        b_up = np.zeros(n_data)
+        b_north_sph = np.zeros(n_data)
+        b_radial = np.zeros(n_data)
         g, h = self.coefficients()
-        _evaluate_igrf(
-            longitude, colatitude, radius, g, h, self.max_degree, b_east, b_north, b_up
+        normalized_inv_radius = self.reference_radius / radius
+        _evaluate_igrf_spherical(
+            longitude_radians,
+            colatitude_radians,
+            normalized_inv_radius,
+            g,
+            h,
+            self.max_degree,
+            b_east,
+            b_north_sph,
+            b_radial,
         )
+        # Rotate the vector from geocentric spherical to geodetic
+        latitude_diff = -np.radians(latitude - latitude_sph)
+        cos = np.cos(latitude_diff)
+        sin = np.sin(latitude_diff)
+        b_north = cos * b_north_sph + sin * b_radial
+        b_up = -sin * b_north_sph + cos * b_radial
         return b_east, b_north, b_up
 
 
 @numba.jit(parallel=True, nopython=True)
-def _evaluate_igrf(
-    longitude, colatitude, radius, g, h, max_degree, b_east, b_north, b_up
+def _evaluate_igrf_spherical(
+    longitude,
+    colatitude,
+    normalized_inv_radius,
+    g,
+    h,
+    max_degree,
+    b_east,
+    b_north_sph,
+    b_radial,
 ):
     n_data = longitude.size
+    p = np.empty_like(g)
+    p_deriv = np.empty_like(g)
     for i in numba.prange(n_data):
-        plm = 1
+        legendre.associated_legendre_schmidt(np.cos(colatitude[i]), max_degree, p)
+        legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
+        for n in range(1, max_degree + 1):
+            r_frac = (normalized_inv_radius[i]) ** (n + 2)
+            for m in range(0, n + 1):
+                cos = np.cos(m * longitude[i])
+                sin = np.sin(m * longitude[i])
+                if m == 0:
+                    h[n][m] = 0
+                b_east[i] += r_frac * (-m * g[n, m] * sin + m * h[n, m] * cos) * p[n, m]
+                b_north_sph[i] += (
+                    r_frac * (g[n, m] * cos + h[n, m] * sin) * p_deriv[n, m]
+                )
+                b_radial[i] += (
+                    (n + 1) * r_frac * (g[n, m] * cos + h[n, m] * sin) * p[n, m]
+                )
+        b_east[i] *= -1 / np.sin(colatitude[i])

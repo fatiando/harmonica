@@ -15,6 +15,7 @@ import numpy.testing as npt
 import pytest
 
 from .._spherical_harmonics.igrf import (
+    IGRF14,
     fetch_igrf14,
     interpolate_coefficients,
     load_igrf,
@@ -162,3 +163,20 @@ def test_interpolate_coefficients():
             for m in range(n):
                 npt.assert_allclose(g_date[n, m], g[i, n, m], atol=0.001)
                 npt.assert_allclose(h_date[n, m], h[i, n, m], atol=0.001)
+
+
+@pytest.mark.parametrize(
+    ("data", "month", "coordinates"),
+    [
+        (IGRF_SAO_PAULO, 1, (-43.70000, -23.50000, 700)),
+        (IGRF_ULAANBAATAR, 6, (106.90000, 47.90000, 3000)),
+    ],
+    ids=["Sao Paulo", "Ulaanbaatar"],
+)
+def test_igrf_points(data, month, coordinates):
+    "Check against NOAA calculations on individual points"
+    years = data[:, 0].astype("int")
+    for i, year in enumerate(years):
+        date = datetime.datetime(year, month, day=1)
+        be, bn, bu = IGRF14(date).predict(coordinates)
+        npt.assert_allclose((be, bn, bu), (data[i, 1], data[i, 2], -data[i, 3]))
