@@ -7,13 +7,12 @@
 """
 Calculation of the IGRF magnetic field.
 """
-
+import datetime
 import pathlib
 
 import boule
 import numba
 import numpy as np
-import pandas as pd
 import pooch
 import xarray as xr
 
@@ -27,16 +26,6 @@ def fetch_igrf14():
         url="doi:10.5281/zenodo.14218973/igrf14coeffs.txt",
         path=pooch.os_cache("harmonica"),
         known_hash="md5:3606931c15c9234d9ba8e2e91b729cb0",
-    )
-    return pathlib.Path(path)
-
-
-def fetch_igrf13():
-    """ """
-    path = pooch.retrieve(
-        url="doi:10.5281/zenodo.11269410/igrf13coeffs.txt",
-        path=pooch.os_cache("harmonica"),
-        known_hash="md5:e2e6e323086bde2dd910bb87d2db8532",
     )
     return pathlib.Path(path)
 
@@ -62,8 +51,13 @@ def load_igrf(path):
             if not line.startswith("#"):
                 break
         # Read the years
-        parts = input_file.readline().split()[3:-1]
-        years = np.fromiter(parts + [float(parts[-1]) + 5], dtype="float")
+        years_str = input_file.readline().split()[3:-1]
+        #   The years all have .0 at the end and int doesn't like it.
+        years_int = [int(y.split(".")[0]) for y in years_str]
+        #   Add another 5 years so we don't have to deal with interpolating
+        #   differently when there is only the secular variation.
+        years_int.append(years_int[-1] + 5)
+        years = np.array(years_int, dtype="int")
         # Initialize the storage arrays
         max_degree = 13
         coeffs = {
@@ -85,40 +79,56 @@ def load_igrf(path):
     return years, coeffs["g"], coeffs["h"]
 
 
-def interpolate_coefficients(date, g, h, years):
+def interpolate_coefficients(date, years, g, h):
     """
     Interpolate the coefficients to the given date.
     """
-    g_date, h_date = None, None
+    index = int((date.year - years[0]) // 5)
+    seconds_since_epoch = (
+        date - datetime.datetime(year=years[index], month=1, day=1)
+    ).total_seconds()
+    epoch = (
+        datetime.datetime(year=years[index] + 5, month=1, day=1)
+        - datetime.datetime(year=years[index], month=1, day=1)
+    ).total_seconds()
+    g_date = np.zeros(g.shape[1:])
+    h_date = np.zeros(h.shape[1:])
+    max_n = g.shape[1]
+    for n in range(max_n):
+        for m in range(n):
+            g_date[n, m] = (
+                g[index, n, m]
+                + seconds_since_epoch * (g[index + 1, n, m] - g[index, n, m]) / epoch
+            )
+            h_date[n, m] = (
+                h[index, n, m]
+                + seconds_since_epoch * (h[index + 1, n, m] - h[index, n, m]) / epoch
+            )
     return g_date, h_date
 
 
 class IGRF14:
     """
-    14th generation of the International Geomagnetic Reference Field
+    International Geomagnetic Reference Field (14th generation).
     """
 
-    def __init__(self, date, ellipsoid=boule.WGS84):
+    def __init__(
+        self, date, reference_radius=6371.2e3, max_degree=13, ellipsoid=boule.WGS84
+    ):
         self.date = date
+        self.reference_radius = reference_radius
+        self.max_degree = max_degree
+        self.ellipsoid = ellipsoid
         self._g, self._h = None, None
-        self.reference_radius = 6371.2e3  # meters
-        self.max_degree = 13
 
-    @property
     def coefficients(self):
-        "The Gauss coefficients g and h, respectively"
+        """
+        Load and interpolate the Gauss coefficients g and h.
+        """
         if self._g is None or self._h is None:
-            path = fetch_igrf13()
-            g, h, years = load_igrf(path)
-            self._g, self._h = interpolate_coefficients(date, g, h, years)
+            years, g, h = load_igrf(fetch_igrf14())
+            self._g, self._h = interpolate_coefficients(self.date, years, g, h)
         return self._g, self._h
-
-    @property
-    def dipole_moment(self):
-        """
-        Dipole moment of the Earth on a geocentric Cartesian system
-        """
-        return mx, my, mz
 
     def predict(self, coordinates, field="b"):
         """
@@ -134,7 +144,7 @@ class IGRF14:
         b_east = np.zeros(n_data)
         b_north = np.zeros(n_data)
         b_up = np.zeros(n_data)
-        g, h = self.coefficients
+        g, h = self.coefficients()
         _evaluate_igrf(
             longitude, colatitude, radius, g, h, self.max_degree, b_east, b_north, b_up
         )
