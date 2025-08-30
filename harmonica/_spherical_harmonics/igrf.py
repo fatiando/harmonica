@@ -14,9 +14,7 @@ import boule
 import numba
 import numpy as np
 import pooch
-import xarray as xr
 
-from .._version import __version__
 from . import legendre
 
 
@@ -140,19 +138,20 @@ class IGRF14:
         )
         longitude_radians = np.radians(longitude)
         colatitude_radians = np.radians(90 - latitude_sph)
+
         n_data = longitude.size
         b_east = np.zeros(n_data)
         b_north_sph = np.zeros(n_data)
         b_radial = np.zeros(n_data)
         g, h = self.coefficients()
-        normalized_inv_radius = self.reference_radius / radius
         _evaluate_igrf_spherical(
             longitude_radians,
             colatitude_radians,
-            normalized_inv_radius,
+            radius,
             g,
             h,
             self.max_degree,
+            self.reference_radius,
             b_east,
             b_north_sph,
             b_radial,
@@ -166,14 +165,15 @@ class IGRF14:
         return b_east, b_north, b_up
 
 
-@numba.jit(parallel=True, nopython=True)
+# @numba.jit(nopython=True)
 def _evaluate_igrf_spherical(
     longitude,
     colatitude,
-    normalized_inv_radius,
+    radius,
     g,
     h,
     max_degree,
+    reference_radius,
     b_east,
     b_north_sph,
     b_radial,
@@ -181,16 +181,14 @@ def _evaluate_igrf_spherical(
     n_data = longitude.size
     p = np.empty_like(g)
     p_deriv = np.empty_like(g)
-    for i in numba.prange(n_data):
+    for i in range(n_data):
         legendre.associated_legendre_schmidt(np.cos(colatitude[i]), max_degree, p)
         legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
         for n in range(1, max_degree + 1):
-            r_frac = (normalized_inv_radius[i]) ** (n + 2)
+            r_frac = (reference_radius / radius[i]) ** (n + 2)
             for m in range(0, n + 1):
                 cos = np.cos(m * longitude[i])
                 sin = np.sin(m * longitude[i])
-                if m == 0:
-                    h[n][m] = 0
                 b_east[i] += r_frac * (-m * g[n, m] * sin + m * h[n, m] * cos) * p[n, m]
                 b_north_sph[i] += (
                     r_frac * (g[n, m] * cos + h[n, m] * sin) * p_deriv[n, m]
