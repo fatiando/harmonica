@@ -19,79 +19,41 @@ from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
 
 def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     """
-    Compute the three gravity components for an ellipsoidal body at specified o
-    bservation locations.
+    Forward model gravity fields of ellipsoids.
 
-    - Unpacks ellipsoid instance parameters (a, b, c, yaw, pitch, roll, origin)
-    - Constructs Euler rotation matrix
-    - Rotates observation points (e, n, u) into local ellipsoid system
-      (x, y, z)
-    - Computes gravity components in local coordinate system
-    - Projects these gravity components back into the original coordinate
-      system (e, n, u)
-    - Returns the gravity field components as arrays
+    Compute the gravity acceleration components for an ellipsoidal body at specified
+    observation points.
 
     Parameters
     ----------
-    Coordinates: tuple of easting (e), northing (n), upward (u) points
-        e : ndarray
-            Easting coordinates, in the form:
-                - A scalar value (float or int)
-                - A 1D array of shape (N,)
-                - A 2D array (meshgrid) of shape (M, N)
-
-        n : ndarray
-            Northing coordinates, same shape and rules as 'e'.
-
-        u : ndarray
-            Upward coordinates, e.g. the surface height desired to compute the
-            gravity value. Same shape and rules as 'e'.
-
-    ellipsoid* : value, or list of values
-        instance(s) of TriaxialEllipsoid, ProlateEllipsoid,
-                 OblateEllipsoid
-        Geometric description of the ellipsoid:
-            - Semiaxes : a, b, c**
-            - Orientation : yaw, pitch, roll**
-            - Origin : centre point (x, y, z)
-
-    density***: float or list
-        The uniform density of the ellipsoid in kg/m^3, or an array of
-        densities for multiple ellipsoid cases, with the same size as
-        'ellipsoids'.
-
-    field : (optional) str, one of either "e", "n", "u".
-        if no input is given, the function will return all three components of
-        gravity.
+    coordinates : list of arrays
+        List of arrays containing the ``easting``, ``northing`` and ``upward``
+        coordinates of the computation points defined on a Cartesian coordinate
+        system. All coordinates should be in meters.
+    ellipsoid : ellipsoid or list of ellipsoids
+        Ellipsoidal body represented by an instance of
+        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
+        :class:`harmonica.OblateEllipsoid`, or a list of them.
+    density : float or list
+        List or array containing the density of each ellipsoid in kg/m^3.
+    field : {"g", "e", "n", "u"}, optional
+        Desired field that want to be computed.
+        If "e", "n", or "u" the function will return the easting, northing or upward
+        gravity acceleration component, respectively.
+        If "g", the function will return a tuple with the three components.
+        Default to "g".
 
     Returns
     -------
-    ge: ndarray
-        Easting component of the gravity field.
-
-    gn ndarray
-        Northing component of the gravity field.
-
-    gu: ndarray
-        Upward component of the gravity field.
-
-    Notes
-    -----
-    * : ellipsoid may be defined using one of the three provided classes:
-        TriaxialEllipsoid where a > b > c, OblateEllipsoid where a < b = c,
-        and ProlateEllipsoid where a > b = c.
-    ** : the c value and roll angle are only explicitly defined for trixial
-        ellipsoids by definition of the ellipsoid. Otherwise, ProlateEllipsoid
-        and OblateEllipsoid take b = c and roll = 0.
-    ***: Must be an array even if multiple ellipsoids are passes, EVEN IF
-        the ellipsoids have the same desnity.
-    Input arrays must match in shape.
+    ge, gn, gu: ndarray
+        Easting, northing and upward component of the gravity acceleration.
+        Or a single one if ``field`` is "e", "n" or "u".
 
     References
     ----------
-    Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a trixial
+    Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a triaxial
     ellipsoid"
-    Takahashi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
+    Takahashi, Y., et al. (2018), "Magnetic modelling of ellipsoidal bodies"
 
     For derivations of the equations, and methods used in this code.
     """
@@ -152,18 +114,15 @@ def _get_g_values(a, b, c, lmbda):
     ----------
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
-
     lmbda : float
-        the given lmbda value for the point we are considering.
+        The given lmbda value for the point we are considering.
 
     Returns
     -------
     gvals (x, y, z) : floats
-        the g values for the given ellipsoid type, and given observation point.
-
-
+        The g values for the given ellipsoid type, and given observation point.
     """
-    # trixial case
+    # Triaxial
     if a > b > c:
         int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
         phi = np.arcsin(int_arcsin)
@@ -191,7 +150,8 @@ def _get_g_values(a, b, c, lmbda):
         g3 = g3_term_1 + g3_term_2
 
         gvals_x, gvals_y, gvals_z = g1, g2, g3
-    # prolate case
+
+    # Prolate
     if a > b and b == c:
         e2 = a**2 - b**2
         sqrt_e = np.sqrt(e2)
@@ -209,7 +169,7 @@ def _get_g_values(a, b, c, lmbda):
         )
         gvals_x, gvals_y, gvals_z = g1, g2, g2
 
-    # oblate case
+    # Oblate
     if a < b and b == c:
         g1 = (
             2
@@ -239,26 +199,18 @@ def _get_internal_g(x, y, z, a, b, c, density):
 
     Parameters
     ----------
-    x, y, z : array or float
+    x, y, z : arrays or floats
         Observation coordinates. Can be scalars, 1D arrays, or 2D arrays.
-
-    a, b, c : float
+    a, b, c : floats
         Semiaxis lengths of the ellipsoid. Must be consistent with the
         ellipsoid type used.
-
     density : float
         Uniform density of the ellipsoid (kg/m³).
 
     Returns
     -------
-    g_int_x : ndarray
-        x-component of the internal gravitational field.
-
-    g_int_y : ndarray
-        y-component of the internal gravitational field.
-
-    g_int_z : ndarray
-        z-component of the internal gravitational field.
+    g_int_x, g_int_y, g_int_y : arrays
+        x-, y-, and z-components of the internal gravitational field.
     """
     # calculate functions with lambda = 0
     # in the triaxial case
