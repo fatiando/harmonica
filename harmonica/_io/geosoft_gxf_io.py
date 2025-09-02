@@ -180,36 +180,40 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
         - grid_array: numpy array containing the properly oriented grid
         - metadata: dictionary containing all GXF parameters
     """
-    # First, read header efficiently until #GRID
+    # Parse GXF file line-by-line to avoid loading entire file into memory
+    # This is more memory efficient for large grid files
     headers: Dict[str, str] = {}
-    grid_start_line = 0
+    data_lines: List[str] = []
+    reading_data = False  # Flag to track when we've reached the #GRID section
+    pending_header_key = None  # Store header key waiting for its value on next line
     
+    # Process file line by line rather than loading all lines at once
+    # This approach minimizes memory usage for large GXF files
     with open(infile, "r") as f:
-        lines = [line for line in f]
-    
-    # Parse headers until #GRID
-    i = 0
-    while i < len(lines):
-        line = lines[i].rstrip('\n\r')
-        grid_start_line = i + 1
-        
-        if not line:
-            i += 1
-            continue
+        for line in f:
+            line = line.rstrip('\n\r')  # Remove line endings
             
-        if line.startswith('#'):
-            key = line[1:]  # Remove the '#'
-            if key == 'GRID':
-                break  # Found start of data section
-            # Look for header value in next non-empty, non-# line
-            j = i + 1
-            while j < len(lines):
-                next_line = lines[j].rstrip('\n\r')
-                if next_line and not next_line.startswith('#'):
-                    headers[key] = next_line
-                    break
-                j += 1
-        i += 1
+            # Skip empty lines throughout the file
+            if not line:
+                continue
+                
+            if reading_data:
+                # We're in the data section after #GRID - collect all data lines
+                data_lines.append(line)
+            elif line.startswith('#'):
+                # This is a header line - extract the key (remove '#' prefix)
+                key = line[1:]
+                if key == 'GRID':
+                    # Special case: #GRID marks start of data section
+                    reading_data = True
+                else:
+                    # Regular header - store key and wait for value on next line
+                    pending_header_key = key
+            elif pending_header_key:
+                # This line contains the value for the previously found header key
+                # GXF format: header key on one line, value on the next non-empty line
+                headers[pending_header_key] = line
+                pending_header_key = None  # Clear the pending key
     
     # Parse metadata with proper type conversion
     metadata: Dict[str, Any] = {}
@@ -224,23 +228,17 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
             # If conversion fails, keep as string
             metadata[key] = value.strip()
     
-    # Use np.loadtxt efficiently, but handle inconsistent columns by reading as 1D
-    try:
-        # Try to use np.loadtxt with skiprows for efficiency
-        data_1d = np.loadtxt(infile, skiprows=grid_start_line)
-        if data_1d.ndim > 1:
-            data_1d = data_1d.flatten()
-    except ValueError:
-        # Fallback: GXF data may have inconsistent columns per line
-        # Read the data section manually and flatten
-        data_lines = lines[grid_start_line:]
-        data_values = []
-        for line in data_lines:
-            line = line.strip()
-            if line:
-                values = line.split()
-                data_values.extend([float(val) for val in values])
-        data_1d = np.array(data_values)
+    # Process the collected data lines into a 1D numpy array
+    # GXF data may have inconsistent columns per line, so we parse manually
+    data_values = []
+    for line in data_lines:
+        # Split each data line into individual values and convert to float
+        # GXF format allows multiple values per line with variable spacing
+        values = line.split()
+        data_values.extend([float(val) for val in values])
+    
+    # Convert to numpy array - this is now our complete 1D data array
+    data_1d = np.array(data_values)
     
     # Get grid dimensions from already-parsed metadata
     nrows = metadata['ROWS']
