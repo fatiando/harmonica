@@ -31,10 +31,10 @@ def test_likeness_to_sphere():
     deviate."""
 
     # create field
-    k = [0.01, 0.001, 0.0001]
+    k_values = [0.01, 0.001, 0.0001]
     b0 = np.array(hm.magnetic_angles_to_vec(55_000, 0.0, 90.0))
     h0_am = np.array(b0 * 1e-9 / mu_0)
-    m = [k * h0_am for k in k]
+    m = [k * h0_am for k in k_values]
 
     # create coords
     easting = np.linspace(0, 2 * 60, 50)
@@ -48,7 +48,7 @@ def test_likeness_to_sphere():
     )
     obl_ellipsoid = OblateEllipsoid(a=59.99, b=60, yaw=0, pitch=0, centre=(0, 0, 0))
 
-    for indx, k in enumerate(k):
+    for indx, k in enumerate(k_values):
         # ellipsoids
         be_pro, _, _ = ellipsoid_magnetics(
             coordinates, pro_ellipsoid, k, (55_000, 0.0, 90.0), field="b"

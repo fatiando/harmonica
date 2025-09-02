@@ -25,7 +25,7 @@ from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
 def ellipsoid_magnetics(
     coordinates,
     ellipsoids,
-    susceptibility,
+    susceptibilities,
     external_field,
     remnant_mag=None,
     field="b",
@@ -108,8 +108,8 @@ def ellipsoid_magnetics(
     if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
 
-    if not isinstance(susceptibility, Iterable):
-        susceptibility = [susceptibility]
+    if not isinstance(susceptibilities, Iterable):
+        susceptibilities = [susceptibilities]
 
     if remnant_mag is not None:
         mr = np.asarray(remnant_mag, dtype=float)
@@ -150,7 +150,7 @@ def ellipsoid_magnetics(
 
     # loop over each given ellipsoid
     for ellipsoid, susceptibility, m_r in zip(
-        ellipsoids, susceptibility, mr, strict=True
+        ellipsoids, susceptibilities, mr, strict=True
     ):
         k_matrix = check_susceptibility(susceptibility)
 
