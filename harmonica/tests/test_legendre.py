@@ -7,6 +7,7 @@
 """
 Test the associated Legendre function calculations.
 """
+
 import math
 
 import numpy as np
@@ -24,7 +25,7 @@ from .utils import run_only_with_numba
 
 
 def legendre_analytical(x):
-    "Analytical expressions for unnormalized Legendre functions"
+    """Analytical expressions for unnormalized Legendre functions."""
     max_degree = 4
     p = np.full((max_degree + 1, max_degree + 1), np.nan)
     p[0, 0] = 1
@@ -49,7 +50,7 @@ def legendre_analytical(x):
 def legendre_derivative_analytical(x):
     """
     Analytical expressions for theta derivatives of unnormalized Legendre
-    functions
+    functions.
     """
     max_degree = 4
     dp = np.full((max_degree + 1, max_degree + 1), np.nan)
@@ -74,7 +75,7 @@ def legendre_derivative_analytical(x):
 
 
 def schmidt_normalization(p):
-    "Multiply by the Schmidt normalization factor"
+    """Multiply by the Schmidt normalization factor."""
     max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
@@ -83,7 +84,7 @@ def schmidt_normalization(p):
 
 
 def full_normalization(p):
-    "Multiply by the full normalization factor"
+    """Multiply by the full normalization factor."""
     max_degree = p.shape[0] - 1
     for n in range(max_degree + 1):
         for m in range(n + 1):
@@ -97,16 +98,16 @@ def full_normalization(p):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize(
-    "func,norm",
-    (
+    ("func", "norm"),
+    [
         (associated_legendre, None),
         (associated_legendre_schmidt, schmidt_normalization),
         (associated_legendre_full, full_normalization),
-    ),
+    ],
     ids=["unnormalized", "schmidt", "full"],
 )
 def test_associated_legendre_function_analytical(func, norm):
-    "Check if the first few degrees match analytical expressions"
+    """Check if the first few degrees match analytical expressions."""
     for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         # Analytical expression
@@ -124,8 +125,8 @@ def test_associated_legendre_function_analytical(func, norm):
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize(
-    "func,deriv,norm",
-    (
+    ("func", "deriv", "norm"),
+    [
         (associated_legendre, associated_legendre_derivative, None),
         (
             associated_legendre_schmidt,
@@ -137,11 +138,11 @@ def test_associated_legendre_function_analytical(func, norm):
             associated_legendre_full_derivative,
             full_normalization,
         ),
-    ),
+    ],
     ids=["unnormalized", "schmidt", "full"],
 )
 def test_associated_legendre_function_derivative_analytical(func, norm, deriv):
-    "Check if the first few degrees match analytical expressions"
+    """Check if the first few degrees match analytical expressions."""
     for angle in np.linspace(0, np.pi, 360):
         x = np.cos(angle)
         # Analytical expression
@@ -170,7 +171,7 @@ class BaseSchmidt:
     """
 
     def test_associated_legengre_function_schmidt_identity(self):
-        "Check Schmidt normalized functions against a known identity"
+        """Check Schmidt normalized functions against a known identity."""
         # The sum of the coefs squared for a degree should be 1
         true_value = np.ones(self.max_degree + 1)
         p = np.zeros((self.max_degree + 1, self.max_degree + 1))
@@ -183,15 +184,15 @@ class BaseSchmidt:
     # Not testing unnormalized ones because they only work until a very
     # low degree
     @pytest.mark.parametrize(
-        "func,deriv",
-        (
+        ("func", "deriv"),
+        [
             (associated_legendre_schmidt, associated_legendre_schmidt_derivative),
             (associated_legendre_full, associated_legendre_full_derivative),
-        ),
+        ],
         ids=["schmidt", "full"],
     )
     def test_associated_legengre_function_legendre_equation(self, func, deriv):
-        "Check functions and derivatives against the Legendre equation"
+        """Check functions and derivatives against the Legendre equation."""
         max_degree = self.max_degree
         # Legendre equation should result in 0
         true_value = np.zeros((max_degree + 1, max_degree + 1))

@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Utility functions for equivalent sources gridders
+Utility functions for equivalent sources gridders.
 """
+
 from warnings import warn
 
 from numba import jit, prange
@@ -14,7 +15,7 @@ from numba import jit, prange
 
 def cast_fit_input(coordinates, data, weights, dtype):
     """
-    Cast the inputs of the fit method to the given dtype
+    Cast the inputs of the fit method to the given dtype.
 
     Parameters
     ----------
@@ -40,16 +41,19 @@ def cast_fit_input(coordinates, data, weights, dtype):
 
 def pop_extra_coords(kwargs):
     """
-    Remove extra_coords from kwargs
+    Remove extra_coords from kwargs.
     """
     if "extra_coords" in kwargs:
-        warn("EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]))
+        warn(
+            "EQL gridder will ignore extra_coords: {}.".format(kwargs["extra_coords"]),
+            stacklevel=2,
+        )
         kwargs.pop("extra_coords")
 
 
 def jacobian(coordinates, points, jac, greens_function):
     """
-    Calculate the Jacobian matrix
+    Calculate the Jacobian matrix.
 
     It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.
@@ -72,7 +76,7 @@ def jacobian(coordinates, points, jac, greens_function):
 
 def predict(coordinates, points, coeffs, result, greens_function):
     """
-    Calculate the predicted data
+    Calculate the predicted data.
 
     It works both for Cartesian and spherical coordinates. We need to pass the
     corresponding Green's function through the ``greens_function`` argument.

@@ -5,9 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test tesseroids layer
+Test tesseroids layer.
 """
-#
+
 import warnings
 
 import boule
@@ -23,7 +23,7 @@ from .. import tesseroid_gravity, tesseroid_layer
 @pytest.fixture
 def mean_earth_radius():
     """
-    Return mean earth radius given by WGS84
+    Return mean earth radius given by WGS84.
     """
     return boule.WGS84.mean_radius
 
@@ -31,7 +31,7 @@ def mean_earth_radius():
 @pytest.fixture(params=("numpy", "reference-as-array", "xarray"))
 def dummy_layer(mean_earth_radius, request):
     """
-    Generate dummy array for defining tesseroid layers
+    Generate dummy array for defining tesseroid layers.
     """
     latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(-10, 10, 5)
@@ -52,7 +52,7 @@ def dummy_layer(mean_earth_radius, request):
 @pytest.fixture
 def tesseroid_layer_with_holes(dummy_layer):
     """
-    Return a set of tesseroids with some missing elements
+    Return a set of tesseroids with some missing elements.
 
     The tesseroids are returned as a tuple of boundaries, ready to be passed to
     ``hm.tesseroid_gravity``.
@@ -65,20 +65,20 @@ def tesseroid_layer_with_holes(dummy_layer):
         (longitude, latitude), surface, reference, properties={"density": density}
     )
     indices = [(3, 3), (2, 1)]
-    tesseroids = list(
+    tesseroids = [
         layer.tesseroid_layer.get_tesseroid((i, j))
         for i in range(6)
         for j in range(5)
         if (i, j) not in indices
-    )
-    density = list(
+    ]
+    density = [
         density[i, j] for i in range(6) for j in range(5) if (i, j) not in indices
-    )
+    ]
     return tesseroids, density
 
 
 @pytest.mark.parametrize(
-    "west, east",
+    ("west", "east"),
     [
         (0, 480),
         (0, 360),
@@ -89,7 +89,7 @@ def tesseroid_layer_with_holes(dummy_layer):
 def test_tesseroid_overlap_invalid_coords(west, east, mean_earth_radius):
     """
     Check if error is raised when longitude coordinates create overlapped
-    tesseroid
+    tesseroid.
     """
     latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(west, east, 21)
@@ -108,7 +108,7 @@ def test_tesseroid_overlap_invalid_coords(west, east, mean_earth_radius):
 
 
 @pytest.mark.parametrize(
-    "west, east",
+    ("west", "east"),
     [
         (0, 360 - 18),
         (-180, 180 - 18),
@@ -116,7 +116,7 @@ def test_tesseroid_overlap_invalid_coords(west, east, mean_earth_radius):
 )
 def test_tesseroid_overlap_valid_coords(west, east, mean_earth_radius):
     """
-    Check if tesseroid_layer works properly when tesseroids are not overlapped
+    Check if tesseroid_layer works properly when tesseroids are not overlapped.
     """
     latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(west, east, 21)
@@ -128,7 +128,7 @@ def test_tesseroid_overlap_valid_coords(west, east, mean_earth_radius):
 
 def test_tesseroid_layer(dummy_layer, mean_earth_radius):
     """
-    Check if the layer of tesseroids is property constructed
+    Check if the layer of tesseroids is property constructed.
     """
     (longitude, latitude), surface, reference, _ = dummy_layer
     layer = tesseroid_layer((longitude, latitude), surface, reference)
@@ -158,7 +158,7 @@ def test_tesseroid_layer(dummy_layer, mean_earth_radius):
 
 def test_tesseroid_layer_invalid_surface_reference(dummy_layer):
     """
-    Check if invalid surface and/or reference are caught
+    Check if invalid surface and/or reference are caught.
     """
     coordinates, surface, reference, _ = dummy_layer
     # Surface with wrong shape
@@ -173,7 +173,7 @@ def test_tesseroid_layer_invalid_surface_reference(dummy_layer):
 
 def test_tesseroid_layer_properties(dummy_layer):
     """
-    Check passing physical properties to the tesseroid layer
+    Check passing physical properties to the tesseroid layer.
     """
     coordinates, surface, reference, density = dummy_layer
     suceptibility = 0 * density + 1e-3
@@ -191,14 +191,14 @@ def test_tesseroid_layer_no_regular_grid(
     dummy_layer,
 ):
     """
-    Check if error is raised if the latitude or longitude are not regular
+    Check if error is raised if the latitude or longitude are not regular.
     """
-
     (longitude, latitude), surface, reference, _ = dummy_layer
     # Longitude as not evenly spaced set of coordinates
     longitude_invalid = longitude.copy()
     longitude_invalid[3] = -22
-    with pytest.raises(ValueError):
+    msg = "Passed longitude coordinates are not evenly spaced."
+    with pytest.raises(ValueError, match=msg):
         tesseroid_layer(
             (longitude_invalid, latitude),
             surface,
@@ -207,7 +207,8 @@ def test_tesseroid_layer_no_regular_grid(
     # Latitude as not evenly spaced set of coordinates
     latitude_invalid = latitude.copy()
     latitude_invalid[3] = -22
-    with pytest.raises(ValueError):
+    msg = "Passed latitude coordinates are not evenly spaced."
+    with pytest.raises(ValueError, match=msg):
         tesseroid_layer(
             (longitude, latitude_invalid),
             surface,
@@ -217,7 +218,7 @@ def test_tesseroid_layer_no_regular_grid(
 
 def test_tesseroi_layer_attibutes():
     """
-    Check attributes of the DatasetAccessorTesseroidLayer class
+    Check attributes of the DatasetAccessorTesseroidLayer class.
     """
     latitude = np.linspace(-10, 10, 6)
     longitude = np.linspace(-10, 10, 5)
@@ -240,7 +241,7 @@ def test_tesseroi_layer_attibutes():
 
 def test_tesseroid_layer_to_tesseroid():
     """
-    Check the _to_tesseroid() method
+    Check the _to_tesseroid() method.
     """
     latitude = np.linspace(-1, 1, 2)
     longitude = np.linspace(-2, 2, 2)
@@ -260,7 +261,7 @@ def test_tesseroid_layer_to_tesseroid():
 
 def test_tesseroid_layer_get_tesseroid_by_index():
     """
-    Check if the right tesseroid is returned after index
+    Check if the right tesseroid is returned after index.
     """
     latitude = np.linspace(-1, 1, 2)
     longitude = np.linspace(-2, 2, 2)
@@ -279,13 +280,8 @@ def test_tesseroid_layer_get_tesseroid_by_index():
             [0.0, 4.0, 0.0, 2.0, ellipsoid.mean_radius - 1e3, ellipsoid.mean_radius],
         ],
     ]
-    print(layer)
     for i in range(2):
         for j in range(2):
-            print(i, j)
-            print(
-                layer.tesseroid_layer.get_tesseroid((i, j)), expected_tesseroids[i][j]
-            )
             npt.assert_allclose(
                 layer.tesseroid_layer.get_tesseroid((i, j)), expected_tesseroids[i][j]
             )
@@ -293,7 +289,7 @@ def test_tesseroid_layer_get_tesseroid_by_index():
 
 def test_nonans_tesseroid_mask(dummy_layer):
     """
-    Check if the mask for nonans tesseroid is correctly created
+    Check if the mask for nonans tesseroid is correctly created.
     """
     (longitude, latitude), surface, reference, _ = dummy_layer
     shape = (latitude.size, longitude.size)
@@ -335,7 +331,7 @@ def test_nonans_tesseroid_mask_property(
     dummy_layer,
 ):
     """
-    Check if the method masks the property and raises a warning
+    Check if the method masks the property and raises a warning.
     """
     coordinates, surface, reference, density = dummy_layer
     shape = (coordinates[1].size, coordinates[0].size)
@@ -384,7 +380,7 @@ def test_nonans_tesseroid_mask_property(
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_tesseroid_layer_gravity(field, dummy_layer):
     """
-    Check if gravity method works as expected
+    Check if gravity method works as expected.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
     # Create a regular grid of computation points located at 10km above surface
@@ -411,7 +407,7 @@ def test_tesseroid_layer_gravity_surface_nans(
     field, dummy_layer, tesseroid_layer_with_holes
 ):
     """
-    Check if gravity method works as expected when surface has nans
+    Check if gravity method works as expected when surface has nans.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
     grid_coords = vd.grid_coordinates(
@@ -442,7 +438,7 @@ def test_tesseroid_layer_gravity_density_nans(
     field, dummy_layer, tesseroid_layer_with_holes
 ):
     """
-    Check if tesseroid is ignored after a nan is found in density array
+    Check if tesseroid is ignored after a nan is found in density array.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
     grid_coords = vd.grid_coordinates(
