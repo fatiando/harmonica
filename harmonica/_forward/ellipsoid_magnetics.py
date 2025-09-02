@@ -118,18 +118,20 @@ def ellipsoid_magnetics(
             mr = np.tile(mr, (len(ellipsoids), 1))
 
         if mr.shape != (len(ellipsoids), 3):
-            raise ValueError(
+            msg = (
                 f"Remanent magnetisation must have shape "
                 f"({len(ellipsoids)}, 3); got {mr.shape}."
             )
+            raise ValueError(msg)
     if remnant_mag is None:
         mr = np.zeros((len(ellipsoids), 3))
 
     if not isinstance(external_field, Iterable) and len(external_field) != 3:
-        raise ValueError(
+        msg = (
             "External field  must contain three values (M, I, D):"
             f" instead got {external_field}."
         )
+        raise ValueError(msg)
 
     # unpack coordinates, set up arrays to hold results
     e, n, u = [np.atleast_1d(np.asarray(coordinates[i])) for i in range(3)]
@@ -276,12 +278,12 @@ def check_susceptibility(susceptibility):
     elif isinstance(susceptibility, (list, tuple, np.ndarray)):
         k_array = np.asarray(susceptibility)
         if k_array.shape != (3, 3):
-            raise ValueError(
-                f"Susceptibility matrix must be 3x3, got shape {k_array.shape}"
-            )
+            msg = f"Susceptibility matrix must be 3x3, got shape {k_array.shape}"
+            raise ValueError(msg)
         k_matrix = k_array
     else:
-        raise ValueError(f"Unrecognized susceptibility type: {type(susceptibility)}")
+        msg = f"Unrecognized susceptibility type: {type(susceptibility)}"
+        raise ValueError(msg)
 
     return k_matrix
 
@@ -340,19 +342,19 @@ def _depol_prolate_int(a, b):
     """
     m = a / b
     if not m > 1:
-        raise ValueError(
-            f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
-        )
+        msg = f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
+        raise ValueError(msg)
 
     nxx = (1 / (m**2 - 1)) * (
         ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1))) - 1
     )
 
     if (m + np.sqrt(m**2 - 1)) < 0 or (m**2 - 1) < 0:
-        raise RuntimeWarning(
+        msg = (
             "Values in the internal N matrix calculation"
             " are less than 0 - errors may occur."
         )
+        raise RuntimeWarning(msg)
     nyy = nzz = 0.5 * (1 - nxx)
 
     return nxx, nyy, nzz
@@ -375,9 +377,8 @@ def _depol_oblate_int(a, b):
     """
     m = a / b
     if not 0 < m < 1:
-        raise ValueError(
-            f"Invalid aspect ratio for oblate ellipsoid: a={a}, b={b}, a/b={m}"
-        )
+        msg = f"Invalid aspect ratio for oblate ellipsoid: a={a}, b={b}, a/b={m}"
+        raise ValueError(msg)
 
     nxx = 1 / (1 - m**2) * (1 - (m / np.sqrt(1 - m**2)) * np.arccos(m))
     nyy = nzz = 0.5 * (1 - nxx)
@@ -409,7 +410,8 @@ def _construct_n_matrix_internal(a, b, c):
     elif a < b and b == c:
         func = _depol_oblate_int(a, b, c)
     else:
-        raise ValueError("Could not determine ellipsoid type for values given.")
+        msg = "Could not determine ellipsoid type for values given."
+        raise ValueError(msg)
     # construct identity matrix
     n = np.diag(func)
 

@@ -61,7 +61,7 @@ def test_zero_cases_for_lambda():
     np.testing.assert_allclose(lmbda2, lmbda_eqn2)
 
 
-@pytest.mark.parametrize("zero_coord", ("x", "y", "z"))
+@pytest.mark.parametrize("zero_coord", ["x", "y", "z"])
 def test_second_order_equations(zero_coord):
     """
     Test lambda calculation against the solutions for its second order

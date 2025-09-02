@@ -327,10 +327,11 @@ def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
 
     # check the function is used for the correct type of ellipsoid
     if not (a < b and b == c):
-        raise ValueError(
+        msg = (
             f"Invalid ellipsoid axis lengths for oblate ellipsoid:"
             f"expected a < b = c but got a = {a}, b = {b}, c = {c}"
         )
+        raise ValueError(msg)
 
     # compute the coefficient of the three delta_g equations
     numerator = np.pi * a * b**2 * g * density
@@ -402,10 +403,11 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     # check the function is used for the correct type of ellipsoid
     if not (a > b and b == c):
-        raise ValueError(
+        msg = (
             "Invalid ellipsoid axis lengths for prolate ellipsoid: expected"
             f" a > b = c but got a = {a}, b = {b}, c = {c}"
         )
+        raise ValueError(msg)
 
     # compute the coefficient of the three delta_g equations
     numerator = np.pi * a * b**2 * g * density
@@ -478,10 +480,11 @@ def _get_gravity_triaxial(
 
     # check the function is used for the correct type of ellipsoid
     if not (a > b > c):
-        raise ValueError(
+        msg = (
             f"Invalid ellipsoid axis lengths for triaxial ellipsoid:"
             f"expected a > b > c but got a = {a}, b = {b}, c = {c}"
         )
+        raise ValueError(msg)
 
     # compute the coefficient of the three delta_g equations
     co_eff = -2 * np.pi * a * b * c * g * density

@@ -46,10 +46,11 @@ class TriaxialEllipsoid:
 
     def __init__(self, a, b, c, yaw, pitch, roll, centre):
         if not (a > b > c):
-            raise ValueError(
+            msg = (
                 "Invalid ellipsoid axis lengths for triaxial ellipsoid:"
                 f"expected a > b > c but got a = {a}, b = {b}, c = {c}"
             )
+            raise ValueError(msg)
 
         # semiaxes
         self.a = a  # major_axis
@@ -110,10 +111,11 @@ class ProlateEllipsoid:
 
     def __init__(self, a, b, yaw, pitch, centre):
         if not (a > b):
-            raise ValueError(
+            msg = (
                 "Invalid ellipsoid axis lengths for prolate ellipsoid:"
                 f"expected a > b (= c ) but got a = {a}, b = {b}"
             )
+            raise ValueError(msg)
 
         # semiaxes
         self.a = a  # major_axis
@@ -180,10 +182,11 @@ class OblateEllipsoid:
 
     def __init__(self, a, b, yaw, pitch, centre):
         if not (a < b):
-            raise ValueError(
+            msg = (
                 "Invalid ellipsoid axis lengths for oblate ellipsoid:"
                 f"expected a < b (= c ) but got a = {a}, b = {b}"
             )
+            raise ValueError(msg)
 
         # semiaxes
         self.a = a  # minor ais
