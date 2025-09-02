@@ -21,6 +21,7 @@ from ._gravity_corrections import bouguer_correction
 from ._io.icgem_gdf import load_icgem_gdf
 from ._io.oasis_montaj_grd import load_oasis_montaj_grid
 from ._isostasy import isostatic_moho_airy
+from ._spherical_harmonics.igrf import IGRF14
 from ._transformations import (
     derivative_easting,
     derivative_northing,
