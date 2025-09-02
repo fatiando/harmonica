@@ -8,6 +8,7 @@
 Upward continuation of a regular grid
 =====================================
 """
+
 import ensaio
 import pygmt
 import xarray as xr

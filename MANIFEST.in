@@ -7,7 +7,6 @@ prune paper
 prune tutorials
 exclude .*.yml
 exclude .*rc
-exclude .flake8
 exclude license_notice.py
 exclude Makefile
 exclude .gitignore
