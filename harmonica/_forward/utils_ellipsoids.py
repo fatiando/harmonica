@@ -130,7 +130,7 @@ def _global_to_local(northing, easting, extra_coords, depth, v):
                                                      `vd.grid_coordinates`).
 
     depth : float
-        Depth of the ellipsoid’s center below the surface (positive downward).
+        Depth of the ellipsoid's center below the surface (positive downward).
 
     V : ndarray of shape (3, 3)
         Rotation matrix used to transform from global to local coordinates.
