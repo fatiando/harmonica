@@ -206,21 +206,29 @@ def _evaluate_igrf_spherical(
     """
     n_data = longitude.size
     for i in numba.prange(n_data):
+        cos_colat = np.cos(colatitude[i])
+        sin_colat = np.sin(colatitude[i])
         # Have to allocate here because of the parallel loop. These are small
         # for low degree so not a huge time sink.
         p = np.empty_like(g)
         p_deriv = np.empty_like(g)
-        legendre.associated_legendre_schmidt(np.cos(colatitude[i]), max_degree, p)
+        legendre.associated_legendre_schmidt(cos_colat, max_degree, p)
         legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
         # Pre-compute the sin and cos of longitude to avoid repeated
-        # computation for every value of n.
-        # Try this to calculate the cos and sin:
+        # computation for every value of n. Use the recursive Chebyshev method
+        # to calculate sin/cos(m lon) to save running trig functions. This
+        # method is about 20% faster than running the sin and cos several
+        # times. See:
         # https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Chebyshev_method
         cos_mlon = np.empty(max_degree + 1)
         sin_mlon = np.empty(max_degree + 1)
-        for m in range(max_degree + 1):
-            cos_mlon[m] = np.cos(m * longitude[i])
-            sin_mlon[m] = np.sin(m * longitude[i])
+        cos_mlon[0] = 1
+        sin_mlon[0] = 0
+        cos_mlon[1] = np.cos(longitude[i])
+        sin_mlon[1] = np.sin(longitude[i])
+        for m in range(2, max_degree + 1):
+            cos_mlon[m] = 2 * cos_mlon[1] * cos_mlon[m - 1] - cos_mlon[m - 2]
+            sin_mlon[m] = 2 * cos_mlon[1] * sin_mlon[m - 1] - sin_mlon[m - 2]
         for n in range(min_degree, max_degree + 1):
             r_frac = (reference_radius / radius[i]) ** (n + 2)
             for m in range(n + 1):
@@ -240,7 +248,6 @@ def _evaluate_igrf_spherical(
                     * (g[n, m] * cos_mlon[m] + h[n, m] * sin_mlon[m])
                     * p[n, m]
                 )
-        sin_colat = np.sin(colatitude[i])
         # The east component is singular at the poles. Set it to zero if close
         # to the poles to avoid this.
         if abs(sin_colat) < 1e-10:
