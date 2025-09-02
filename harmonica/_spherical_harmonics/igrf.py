@@ -156,6 +156,7 @@ class IGRF14:
         )
         longitude_radians = np.radians(longitude)
         colatitude_radians = np.radians(90 - latitude_sph)
+        normalized_radius = self.reference_radius / radius
         n_data = longitude.size
         b_east = np.zeros(n_data)
         b_north_sph = np.zeros(n_data)
@@ -164,12 +165,11 @@ class IGRF14:
         _evaluate_igrf_spherical(
             longitude_radians,
             colatitude_radians,
-            radius,
+            normalized_radius,
             g,
             h,
             self.min_degree,
             self.max_degree,
-            self.reference_radius,
             b_east,
             b_north_sph,
             b_radial,
@@ -191,12 +191,11 @@ class IGRF14:
 def _evaluate_igrf_spherical(
     longitude,
     colatitude,
-    radius,
+    normalized_radius,
     g,
     h,
     min_degree,
     max_degree,
-    reference_radius,
     b_east,
     b_north_sph,
     b_radial,
@@ -219,7 +218,7 @@ def _evaluate_igrf_spherical(
         # to calculate sin/cos(m lon) to save running trig functions. This
         # method is about 20% faster than running the sin and cos several
         # times. See:
-        # https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Chebyshev_method
+        # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
         cos_mlon = np.empty(max_degree + 1)
         sin_mlon = np.empty(max_degree + 1)
         cos_mlon[0] = 1
@@ -229,8 +228,11 @@ def _evaluate_igrf_spherical(
         for m in range(2, max_degree + 1):
             cos_mlon[m] = 2 * cos_mlon[1] * cos_mlon[m - 1] - cos_mlon[m - 2]
             sin_mlon[m] = 2 * cos_mlon[1] * sin_mlon[m - 1] - sin_mlon[m - 2]
+        # Calculating the power like this results in about an 8% performance
+        # boost. Not much but I'll take it.
+        r_frac = normalized_radius[i] ** (min_degree - 1 + 2)
         for n in range(min_degree, max_degree + 1):
-            r_frac = (reference_radius / radius[i]) ** (n + 2)
+            r_frac *= normalized_radius[i]
             for m in range(n + 1):
                 b_east[i] += (
                     r_frac
