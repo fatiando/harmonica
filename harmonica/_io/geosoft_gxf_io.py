@@ -166,51 +166,6 @@ import numpy as np
 import xarray as xr
 from typing import Tuple, List, Dict, Union, Any
 
-def read_gxf_raw(infile: str) -> Tuple[List[str], Dict[str, str]]:
-    """
-    Read a GXF file and return raw data list and headers.
-    Following official GXF specifications from Geosoft.
-    
-    Parameters:
-    infile (str): Path to the GXF file
-    
-    Returns:
-    tuple: (data_list, headers)
-        - data_list: list of raw data strings
-        - headers: dictionary of GXF headers
-    """
-    # Read only header lines until #GRID
-    headers: Dict[str, str] = {}
-    data_list: List[str] = []
-    header_lines_count = 0
-    
-    with open(infile) as f:
-        lines = [line.rstrip('\n\r') for line in f.readlines()]
-    
-    reading_data = False
-    for i, line in enumerate(lines):
-        if not line:  # Skip empty lines
-            if not reading_data:
-                header_lines_count += 1
-            continue
-            
-        if reading_data:
-            data_list.append(line)
-        elif line.startswith('#'):
-            # Store the next non-empty line as the header value
-            key = line[1:]  # Remove the '#'
-            for next_line in lines[i+1:]:
-                if next_line and not next_line.startswith('#'):
-                    headers[key] = next_line
-                    break
-            header_lines_count += 1
-        else:
-            header_lines_count += 1
-        
-        if line == '#GRID':
-            reading_data = True
-            
-    return data_list, headers
 
 def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
     """
@@ -229,8 +184,8 @@ def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:
     headers: Dict[str, str] = {}
     grid_start_line = 0
     
-    with open(infile, 'r') as f:
-        lines = f.readlines()
+    with open(infile, "r") as f:
+        lines = [line for line in f]
     
     # Parse headers until #GRID
     i = 0

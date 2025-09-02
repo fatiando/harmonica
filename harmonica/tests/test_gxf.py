@@ -18,7 +18,7 @@ import xarray as xr
 import xarray.testing as xrt
 
 from .. import read_gxf
-from .._io.geosoft_gxf_io import read_gxf_raw, _read_gxf_data
+from .._io.geosoft_gxf_io import _read_gxf_data
 
 # Define the locations of test data
 MODULE_DIR = Path(__file__).parent
@@ -116,19 +116,6 @@ class TestGXFReader:
         expected_y = np.arange(148) * 150.0 + 378000.0
         npt.assert_array_almost_equal(grid.northing.values, expected_y)
 
-    def test_raw_headers(self):
-        """
-        Test raw header reading
-        """
-        data_list, headers = read_gxf_raw(TEST_GXF)
-        
-        assert headers["POINTS"] == "   132"
-        assert headers["ROWS"] == "   148"
-        assert headers["PTSEPARATION"] == "    150.000"
-        assert headers["RWSEPARATION"] == "    150.000"
-        assert headers["XORIGIN"] == "     235000.00000000"
-        assert headers["YORIGIN"] == "     378000.00000000"
-        assert headers["PRJTYPE"].strip() == "lambert conformal conic"
 
     def test_comment_preservation(self):
         """
