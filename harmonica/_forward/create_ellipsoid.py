@@ -1,31 +1,40 @@
-# definitions of ellipsoid classes to pass into the functions
+"""
+Classes to define ellipsoids.
+"""
 
 
 class TriaxialEllipsoid:
     """
-    Class creates case of a trixial ellipsoid, storing geometric properties.
-    Trixial ellipsoids defined as a > b > c, for semiaxes lengths.
+    Triaxial ellipsoid with arbitrary orientation.
+
+    Define a triaxial ellipsoid whose semi-axes lengths are ``a > b > c``.
 
     Parameters
     ----------
-    a, b, c : float
-        Semiaxis lengths of the ellipsoid. Must satisfy the condition a > b > c
-        for the triaxial ellipsoid case.
-
+    a, b, c : floats
+        Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a > b > c``.
     yaw : float
-        Rotation about the vertical (z) axis, in degrees.
+        Rotation angle about the upward axis, in degrees.
     pitch : float
-        Rotation about the northing (y) axis, in degrees.
+        Rotation angle about the northing axis (after yaw rotation), in degrees.
+        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        direction.
     roll : float
-        Rotation about the easting (x) axis, in degrees.
+        Rotation angle about the easting axis (after yaw and pitch rotation), in
+        degrees.
+    centre : tuple of floats
+        Coordinates of the center of the ellipsoid in the following order: _easting_,
+        _northing_, _upward_.
 
-    origin : array
-        (ox, oy, oz) - origin position as an offset from some global
-        coordinate system.
+    Notes
+    -----
+    The three semi-axes ``a``, ``b``, and ``c`` are defined parallel to the ``easting``,
+    ``northing`` and ``upward`` directions, respectively, before applying any rotation.
 
-    Properties
-    ----------
-    None.
+    Rotations directed by ``yaw`` and ``roll`` are applied using the right-hand rule
+    across their respective axes. Pitch rotations are carried out in the opposite
+    direction, so a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the
+    easting direction.
 
     """
 
@@ -53,33 +62,45 @@ class TriaxialEllipsoid:
 
 class ProlateEllipsoid:
     """
-    Class creates case of a prolate ellipsoid, storing geometric properties.
-    Prolate ellipsoids defined as a > b = c, for semiaxes lengths. Hence,
-    values 'c' and 'roll' are not required as input as, by definition, c = b,
-    and roll has no effect due to symmetry, and this is set equal to zero.
+    Prolate ellipsoid with arbitrary orientation.
+
+    Define a prolate ellipsoid whose semi-axes lengths are ``a > b = c``.
 
     Parameters
     ----------
-    a, b: floats
-        Semiaxis lengths of the ellipsoid. Must satisfy the condition a > b = c
-        for the prolate ellipsoid case.
-
+    a, b : floats
+        Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a > b = c``.
     yaw : float
-        Rotation about the vertical (z) axis, in degrees.
+        Rotation angle about the upward axis, in degrees.
     pitch : float
-        Rotation about the northing (y) axis, in degrees.
-
-    origin : array
-        (ox, oy, oz) - origin position as an offset from some global
-        coordinate system.
+        Rotation angle about the northing axis (after yaw rotation), in degrees.
+        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        direction.
+    centre : tuple of floats
+        Coordinates of the center of the ellipsoid in the following order: _easting_,
+        _northing_, _upward_.
 
     Properties
     ----------
+    c : float
+        Equal to ``b`` by definition.
+    roll : float
+        Set always equal to zero. Roll rotations have no effect on ``ProlateEllipsoid``s
+        due to symmetry.
 
-    c : set equal to b
-        Due to the nature of prolate ellipsoids.
-    roll : set equal to 0
-        Due to the nature of prolate ellipsoids.
+    Notes
+    -----
+    The three semi-axes ``a``, ``b``, and ``c`` are defined parallel to the ``easting``,
+    ``northing`` and ``upward`` directions, respectively, before applying any rotation.
+
+    Rotations directed by ``yaw`` are applied using the right-hand rule across the
+    upward axis. Pitch rotations are carried out in the opposite direction, so
+    a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the easting
+    direction.
+
+    Roll rotations are not enabled in the prolate ellipsoid, since they don't have any
+    effect due to symmetry. Hence, ``roll`` is always equal to zero for the
+    ``ProlateEllipsoid``.
     """
 
     def __init__(self, a, b, yaw, pitch, centre):
@@ -112,33 +133,45 @@ class ProlateEllipsoid:
 
 class OblateEllipsoid:
     """
-    Class creates case of a oblate ellipsoid, storing geometric properties.
-    Oblate ellipsoids defined as a < b = c, for semiaxes lengths. Hence, values
-    'c' and 'roll' are not required as input as, by definition, c = b, and roll
-    has no effect due to symmetry, and this is set equal to zero.
+    Oblate ellipsoid with arbitrary orientation.
+
+    Define a prolate ellipsoid whose semi-axes lengths are ``a < b = c``.
 
     Parameters
     ----------
-    a, b: floats
-        Semiaxis lengths of the ellipsoid. Must satisfy the condition a > b > c
-        for the triaxial ellipsoid case.
-
+    a, b : floats
+        Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a < b = c``.
     yaw : float
-        Rotation about the vertical (z) axis, in degrees.
+        Rotation angle about the upward axis, in degrees.
     pitch : float
-        Rotation about the northing (y) axis, in degrees.
-
-    origin : array
-        (ox, oy, oz) - origin position as an offset from some global
-        coordinate system.
+        Rotation angle about the northing axis (after yaw rotation), in degrees.
+        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        direction.
+    centre : tuple of floats
+        Coordinates of the center of the ellipsoid in the following order: _easting_,
+        _northing_, _upward_.
 
     Properties
     ----------
+    c : float
+        Equal to ``b`` by definition.
+    roll : float
+        Set always equal to zero. Roll rotations have no effect on ``OblateEllipsoid``s
+        due to symmetry.
 
-    c : set equal to b
-        Due to the nature of oblate ellipsoids.
-    roll : set equal to 0
-        Due to the nature of oblate ellipsoids.
+    Notes
+    -----
+    The three semi-axes ``a``, ``b``, and ``c`` are defined parallel to the ``easting``,
+    ``northing`` and ``upward`` directions, respectively, before applying any rotation.
+
+    Rotations directed by ``yaw`` are applied using the right-hand rule across the
+    upward axis. Pitch rotations are carried out in the opposite direction, so
+    a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the easting
+    direction.
+
+    Roll rotations are not enabled in the prolate ellipsoid, since they don't have any
+    effect due to symmetry. Hence, ``roll`` is always equal to zero for the
+    ``OblateEllipsoid``.
     """
 
     def __init__(self, a, b, yaw, pitch, centre):
