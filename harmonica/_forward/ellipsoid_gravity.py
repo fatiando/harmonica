@@ -106,6 +106,11 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
 
 
+# TODO: Leave a single function for the g values, maybe move it to
+# `utils_ellipsoids.py`. These are going to be used also by the magnetic code. The
+# `_get_gravity_oblate`, `get_gravity_prolate` and `_get_gravity_triaxial` implement the
+# same code as this one. Optimize them by caching costly functions (arctan, ellipkinc,
+# etc).
 def _get_g_values(a, b, c, lmbda):
     """
     Compute the gravity values (g) for the three ellipsoid types.
