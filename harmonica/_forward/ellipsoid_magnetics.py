@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Forward modelling for the magnetic field anomaly produced by ellipsoidal
 bodies.
@@ -98,7 +104,6 @@ def ellipsoid_magnetics(
     Takahashi, Y., et al. (2018), "Magentic modelling of ellipsoidal bodies"
     For derivations of the equations and methods used in this code.
     """
-
     # check inputs are of the correct type
     if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
@@ -138,16 +143,13 @@ def ellipsoid_magnetics(
 
     # unpack external field, change to vector
     magnitude, inclination, declination = external_field
-    b0 = np.array(
-        hm.magnetic_angles_to_vec(magnitude, inclination, declination)
-    )
+    b0 = np.array(hm.magnetic_angles_to_vec(magnitude, inclination, declination))
     h0 = b0 * 1e-9 / mu_0
 
     # loop over each given ellipsoid
     for ellipsoid, susceptibility, m_r in zip(
         ellipsoids, susceptibility, mr, strict=True
     ):
-
         k_matrix = check_susceptibility(susceptibility)
 
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
@@ -155,17 +157,13 @@ def ellipsoid_magnetics(
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
 
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(
-            ((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel())
-        )
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
         r = _get_v_as_euler(yaw, pitch, roll)
         rotated = r.T @ obs_points
         x, y, z = [axis.reshape(cast.shape).ravel() for axis in rotated]
 
         lmbda = _calculate_lambda(x, y, z, a, b, c).ravel()
-        internal_mask = (
-            (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)
-        ) < 1
+        internal_mask = ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
 
         h0_rot = r.T @ h0
 
@@ -180,7 +178,6 @@ def ellipsoid_magnetics(
             is_internal = internal_mask[idx]
 
             if is_internal:
-
                 hr = (-n_cross + np.identity(3)) @ m
 
                 hr = r @ hr
@@ -189,7 +186,6 @@ def ellipsoid_magnetics(
                 bu[idx] += 1e9 * mu_0 * hr[2]
 
             else:
-
                 nr = _construct_n_matrix_external(xi, yi, zi, a, b, c, lam)
 
                 hr = nr @ m
@@ -261,16 +257,15 @@ def check_susceptibility(susceptibility):
     """
     Check whether user has input a k value with anisotropy.
 
-    parameters
+    Parameters
     ----------
-
     susceptibility : list of floats or arrays
         Susceptibilty value. A single value or list of single values assumes
         isotropy in the body/bodies. An array or list of arrays should be a 3x3
         matrix with the given susceptibilty components, suggesting an
         anisotropic susceptibility.
 
-    returns
+    Returns
     -------
     k_matrix: array
         the matrix for k (isotropic or anisotropic)
@@ -286,9 +281,7 @@ def check_susceptibility(susceptibility):
             )
         k_matrix = k_array
     else:
-        raise ValueError(
-            f"Unrecognized susceptibility type: {type(susceptibility)}"
-        )
+        raise ValueError(f"Unrecognized susceptibility type: {type(susceptibility)}")
 
     return k_matrix
 
@@ -297,19 +290,18 @@ def _depol_triaxial_int(a, b, c):
     """
     Calculate the internal depolarisation tensor (N(r)) for the triaxial case.
 
-    parameters
+    Parameters
     ----------
     a, b, c : floats
         Semiaxis lengths of the triaxial ellipsoid (a ≥ b ≥ c).
 
-    returns
+    Returns
     -------
     nxx, nyy, nzz : floats
         individual diagonal components of the x, y, z matrix.
 
 
     """
-
     phi = np.arccos(c / a)
     k = (a**2 - b**2) / (a**2 - c**2)
 
@@ -320,13 +312,12 @@ def _depol_triaxial_int(a, b, c):
     )
     nyy = (
         -1 * nxx
-        + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2)))
-        * ellipeinc(phi, k)
+        + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * (
-        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
-    ) * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
+    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
+        phi, k
+    ) + b**2 / (b**2 - c**2)
 
     np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz
@@ -336,13 +327,12 @@ def _depol_prolate_int(a, b):
     """
     Calcualte internal depolarisation factors for prolate case.
 
-
-    parameters
+    Parameters
     ----------
     a, b: floats
         Semiaxis lengths of the prolate ellipsoid (a > b = c).
 
-    returns
+    Returns
     -------
     nxx, nyy, nzz : floats
         individual diagonal components of the x, y, z matrix.
@@ -351,8 +341,7 @@ def _depol_prolate_int(a, b):
     m = a / b
     if not m > 1:
         raise ValueError(
-            f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, "
-            f"a/b={m}"
+            f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
         )
 
     nxx = (1 / (m**2 - 1)) * (
@@ -373,18 +362,17 @@ def _depol_oblate_int(a, b):
     """
     Calcualte internal depolarisation factors for oblate case.
 
-    parameters
+    Parameters
     ----------
     a, b: floats
         Semiaxis lengths of the oblate ellipsoid (a < b = c).
 
-    returns
+    Returns
     -------
     nxx, nyy, nzz : floats
         individual diagonal components of the x, y, z matrix.
 
     """
-
     m = a / b
     if not 0 < m < 1:
         raise ValueError(
@@ -401,30 +389,27 @@ def _construct_n_matrix_internal(a, b, c):
     """
     Construct the N matrix for the internal field using the above functions.
 
-    parameters
+    Parameters
     ----------
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
 
-    returns
+    Returns
     -------
     N : matrix
         depolarisation matrix (diagonal-only values) for the given ellipsoid.
 
     """
-
     # only diagonal elements
     # Nii corresponds to the above functions
-    if a > b and b > c:
+    if a > b > c:
         func = _depol_triaxial_int(a, b, c)
     elif a > b and b == c:
         func = _depol_prolate_int(a, b, c)
     elif a < b and b == c:
         func = _depol_oblate_int(a, b, c)
     else:
-        raise ValueError(
-            "Could not determine ellipsoid type for" " values given."
-        )
+        raise ValueError("Could not determine ellipsoid type for values given.")
     # construct identity matrix
     n = np.diag(func)
 
@@ -439,9 +424,8 @@ def _get_h_values(a, b, c, lmbda):
     Get the h values for the N matrix. Each point has its own h value and hence
     external N matrix.
 
-    parameters
+    Parameters
     ----------
-
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
 
@@ -449,14 +433,12 @@ def _get_h_values(a, b, c, lmbda):
         the given lmbda value for the point we are considering with this
         matrix.
 
-    returns
+    Returns
     -------
-
     h : float
         the h value for the given point.
 
     """
-
     axes = np.array([a, b, c])
     r = np.sqrt(np.prod(axes**2 + lmbda))
 
@@ -467,7 +449,7 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
     """
     Get the spatial derivative of lambda with respect to the x,y,z.
 
-    parameters
+    Parameters
     ----------
     x, y, z : floats
         A singular observation point in the local coordinate system.
@@ -480,14 +462,12 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
         matrix.
 
 
-    returns
+    Returns
     -------
-
     vals : array of x, y, z components
         The spatial derivative for the given point.
 
     """
-
     # explicitly state:
 
     denom = (
@@ -507,7 +487,7 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     """
     Construct the N matrix for the external field.
 
-    parameters
+    Parameters
     ----------
     x, y, z : floats
         A singular observation point in the local coordinate system.
@@ -520,14 +500,12 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
         matrix.
 
 
-    returns
+    Returns
     -------
-
     N : matrix
         External points' depolarisation matrix for the given point.
 
     """
-
     # g values here are equivalent to the A(lambda) etc values previously.
     # h values as above
     # lambda derivatives as above
@@ -546,11 +524,7 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
                     * (derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i])
                 )
             else:
-                n[i][j] = (
-                    -1
-                    * ((a * b * c) / 2)
-                    * (derivs_lmbda[i] * h_vals[j] * r[j])
-                )
+                n[i][j] = -1 * ((a * b * c) / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
 
     trace_terms = []
     for i in range(3):

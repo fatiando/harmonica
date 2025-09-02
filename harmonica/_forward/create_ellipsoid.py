@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Classes to define ellipsoids.
 """
@@ -39,7 +45,6 @@ class TriaxialEllipsoid:
     """
 
     def __init__(self, a, b, c, yaw, pitch, roll, centre):
-
         if not (a > b > c):
             raise ValueError(
                 "Invalid ellipsoid axis lengths for triaxial ellipsoid:"
@@ -104,7 +109,6 @@ class ProlateEllipsoid:
     """
 
     def __init__(self, a, b, yaw, pitch, centre):
-
         if not (a > b):
             raise ValueError(
                 "Invalid ellipsoid axis lengths for prolate ellipsoid:"
@@ -175,7 +179,6 @@ class OblateEllipsoid:
     """
 
     def __init__(self, a, b, yaw, pitch, centre):
-
         if not (a < b):
             raise ValueError(
                 "Invalid ellipsoid axis lengths for oblate ellipsoid:"

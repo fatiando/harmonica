@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 import numpy as np
 from scipy.constants import mu_0
 from scipy.spatial.transform import Rotation as rot
@@ -33,7 +39,6 @@ def _calculate_lambda(x, y, z, a, b, c):
         The computed value(s) of the lambda parameter.
 
     """
-
     # compute lambda
     p_0 = (
         a**2 * b**2 * c**2
@@ -62,7 +67,7 @@ def _calculate_lambda(x, y, z, a, b, c):
 
     theta = np.arccos(theta_internal_1)
 
-    lmbda = 2 * np.sqrt((-p / 3)) * np.cos(theta / 3) - p_2 / 3
+    lmbda = 2 * np.sqrt(-p / 3) * np.cos(theta / 3) - p_2 / 3
 
     # lmbda[inside_mask] = 0
 
@@ -97,7 +102,6 @@ def _get_v_as_euler(yaw, pitch, roll):
     All angles must be given in degrees.
 
     """
-
     # using scipy rotation package
     # this produces the local to global rotation matrix (or what would be
     # defined as r.T from global to local)
@@ -142,7 +146,6 @@ def _global_to_local(northing, easting, extra_coords, depth, v):
     Needs to handle translation component.
 
     """
-
     x = np.ones(northing.shape)
     y = np.ones(northing.shape)
     z = np.ones(northing.shape)
@@ -151,9 +154,7 @@ def _global_to_local(northing, easting, extra_coords, depth, v):
     # calculate local_coords for each x, y, z point
     for i in range(len(local_coords)):
         local_coords[i] = (
-            northing * v[i][0]
-            + easting * v[i][1]
-            - (depth - extra_coords) * v[i][2]
+            northing * v[i][0] + easting * v[i][1] - (depth - extra_coords) * v[i][2]
         )
 
     return local_coords
@@ -180,7 +181,6 @@ def _generate_basic_ellipsoid(a, b, c):
         from spherical angles. T
 
     """
-
     # Set of all spherical angles:
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
@@ -222,9 +222,7 @@ def _sphere_magnetic(coordinates, radius, center, magnetization):
     """
     # Ravel the coordinates into 1d arrays
     cast = np.broadcast(*coordinates)
-    easting, northing, upward = tuple(
-        np.asarray(c).ravel() for c in coordinates
-    )
+    easting, northing, upward = tuple(np.asarray(c).ravel() for c in coordinates)
 
     # Get the coordinates of the observation points in a coordinate system
     # located in the center of the sphere

@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
@@ -27,7 +33,6 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     Parameters
     ----------
-
     Coordinates: tuple of easting (e), northing (n), upward (u) points
         e : ndarray
             Easting coordinates, in the form:
@@ -61,7 +66,6 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     Returns
     -------
-
     ge: ndarray
         Easting component of the gravity field.
 
@@ -71,9 +75,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     gu: ndarray
         Upward component of the gravity field.
 
-    NOTES
+    Notes
     -----
-
     * : ellipsoid may be defined using one of the three provided classes:
         TriaxialEllipsoid where a > b > c, OblateEllipsoid where a < b = c,
         and ProlateEllipsoid where a > b = c.
@@ -92,7 +95,6 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     For derivations of the equations, and methods used in this code.
     """
-
     # unpack coordinates and create array to hold final g values
     e, n, u = coordinates[0], coordinates[1], coordinates[2]
     cast = np.broadcast(e, n, u)
@@ -114,9 +116,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         # preserve ellipsoid shape, translate origin of ellipsoid
         cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(
-            ((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel())
-        )
+        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
 
         # create rotation matrix
         r = _get_v_as_euler(yaw, pitch, roll)
@@ -148,24 +148,21 @@ def _get_g_values(a, b, c, lmbda):
     """
     Compute the gravity values (g) for the three ellipsoid types.
 
-    parameters
+    Parameters
     ----------
-
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
 
     lmbda : float
         the given lmbda value for the point we are considering.
 
-    returns
+    Returns
     -------
-
     gvals (x, y, z) : floats
         the g values for the given ellipsoid type, and given observation point.
 
 
     """
-
     # trixial case
     if a > b > c:
         int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
@@ -177,13 +174,11 @@ def _get_g_values(a, b, c, lmbda):
 
         g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (ellipk - ellipe)
 
-        g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / (
-            (a**2 - b**2) * (b**2 - c**2)
-        )
+        g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / ((a**2 - b**2) * (b**2 - c**2))
         g2_elliptics = ellipe - ((b**2 - c**2) / (a**2 - c**2)) * ellipk
-        g2_last_term = (
-            (a**2 - b**2) / np.sqrt(a**2 - c**2)
-        ) * np.sqrt((c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda)))
+        g2_last_term = ((a**2 - b**2) / np.sqrt(a**2 - c**2)) * np.sqrt(
+            (c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda))
+        )
 
         g2 = g2_multiplier * (g2_elliptics - g2_last_term)
 
@@ -210,8 +205,7 @@ def _get_g_values(a, b, c, lmbda):
 
         # Equation (39): g2 = g3
         g2 = (1 / (e2 ** (3 / 2))) * (
-            (sqrt_e * sqrt_l1) / (b**2 + lmbda)
-            - np.log((sqrt_e + sqrt_l1) / sqrt_l2)
+            (sqrt_e * sqrt_l1) / (b**2 + lmbda) - np.log((sqrt_e + sqrt_l1) / sqrt_l2)
         )
         gvals_x, gvals_y, gvals_z = g1, g2, g2
 
@@ -327,7 +321,6 @@ def _get_gravity_oblate(x, y, z, a, b, c, density, lmbda=None):
     g3 : ndarray
         Δg₃ component — change in gravity along the local z-axis.
     """
-
     # call and use lambda function
     if lmbda is None:
         lmbda = _calculate_lambda(x, y, z, a, b, c)
@@ -403,7 +396,6 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
     g3 : ndarray
         Δg₃ component — change in gravity along the local z-axis.
     """
-
     # call and use lambda function
     if lmbda is None:
         lmbda = _calculate_lambda(x, y, z, a, b, c)
@@ -422,17 +414,14 @@ def _get_gravity_prolate(x, y, z, a, b, c, density, lmbda=None):
 
     # compute repeated log_e term
     log_term = np.log(
-        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5)
-        / ((b**2 + lmbda) ** 0.5)
+        ((a**2 - b**2) ** 0.5 + (a**2 + lmbda) ** 0.5) / ((b**2 + lmbda) ** 0.5)
     )
 
     # compute repeated f_2 second term
     f_2_term_2 = (((a**2 - b**2) * (a**2 + lmbda)) ** 0.5) / (b**2 + lmbda)
 
     # compile terms
-    dg1 = (
-        4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda)) ** 0.5 - log_term)
-    )
+    dg1 = 4 * co_eff1 * x * (((a**2 - b**2) / (a**2 + lmbda)) ** 0.5 - log_term)
     dg2 = 2 * co_eff1 * y * (log_term - f_2_term_2)
     dg3 = 2 * co_eff1 * z * (log_term - f_2_term_2)
 
@@ -541,7 +530,6 @@ def _get_gravity_array(internal_mask, a, b, c, x, y, z, density):
         Gravitational field component in the local z-direction.
 
     """
-
     # select function to use based on ellipsoid parameters
     if a > b > c:
         func = _get_gravity_triaxial

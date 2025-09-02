@@ -1,3 +1,9 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 import numpy as np
 import verde as vd
 from choclo.point import gravity_u as pointgrav
@@ -136,12 +142,8 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gu1 = ellipsoid_gravity(
-        coordinates1, triaxial_example, density, field="g"
-    )
-    _, _, gu2 = ellipsoid_gravity(
-        coordinates2, triaxial_example, density, field="g"
-    )
+    _, _, gu1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
+    _, _, gu2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
     np.testing.assert_allclose(gu1, -np.flip(gu2))
 
 
@@ -155,9 +157,7 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(
-        a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
-    )
+    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])
