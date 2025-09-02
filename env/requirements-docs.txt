@@ -13,7 +13,7 @@ ensaio>=0.5.*
 netcdf4
 matplotlib
 pyvista
-vtk>=9
+vtk==9.4.*
 pygmt
 gmt
 gdal
