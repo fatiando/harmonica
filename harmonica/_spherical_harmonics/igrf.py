@@ -187,7 +187,7 @@ class IGRF14:
         )
 
 
-@numba.jit(nopython=True)
+@numba.jit(nopython=True, parallel=True)
 def _evaluate_igrf_spherical(
     longitude,
     colatitude,
@@ -205,24 +205,40 @@ def _evaluate_igrf_spherical(
     Calculate IGRF on discrete points using numba.
     """
     n_data = longitude.size
-    p = np.zeros_like(g)
-    p_deriv = np.zeros_like(g)
-    for i in range(n_data):
+    for i in numba.prange(n_data):
+        # Have to allocate here because of the parallel loop. These are small
+        # for low degree so not a huge time sink.
+        p = np.empty_like(g)
+        p_deriv = np.empty_like(g)
         legendre.associated_legendre_schmidt(np.cos(colatitude[i]), max_degree, p)
         legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
+        # Pre-compute the sin and cos of longitude to avoid repeated
+        # computation for every value of n.
+        # Try this to calculate the cos and sin:
+        # https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Chebyshev_method
+        cos_mlon = np.empty(max_degree + 1)
+        sin_mlon = np.empty(max_degree + 1)
+        for m in range(max_degree + 1):
+            cos_mlon[m] = np.cos(m * longitude[i])
+            sin_mlon[m] = np.sin(m * longitude[i])
         for n in range(min_degree, max_degree + 1):
             r_frac = (reference_radius / radius[i]) ** (n + 2)
             for m in range(n + 1):
-                # Try this to calculate the cos and sin:
-                # https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Chebyshev_method
-                cos = np.cos(m * longitude[i])
-                sin = np.sin(m * longitude[i])
-                b_east[i] += r_frac * (-m * g[n, m] * sin + m * h[n, m] * cos) * p[n, m]
+                b_east[i] += (
+                    r_frac
+                    * (-m * g[n, m] * sin_mlon[m] + m * h[n, m] * cos_mlon[m])
+                    * p[n, m]
+                )
                 b_north_sph[i] += (
-                    r_frac * (g[n, m] * cos + h[n, m] * sin) * p_deriv[n, m]
+                    r_frac
+                    * (g[n, m] * cos_mlon[m] + h[n, m] * sin_mlon[m])
+                    * p_deriv[n, m]
                 )
                 b_radial[i] += (
-                    (n + 1) * r_frac * (g[n, m] * cos + h[n, m] * sin) * p[n, m]
+                    (n + 1)
+                    * r_frac
+                    * (g[n, m] * cos_mlon[m] + h[n, m] * sin_mlon[m])
+                    * p[n, m]
                 )
         sin_colat = np.sin(colatitude[i])
         # The east component is singular at the poles. Set it to zero if close
