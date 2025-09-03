@@ -19,6 +19,7 @@ import verde as vd
 
 from .._utils import get_harmonica_cache
 from . import legendre
+from .._version import __version__
 
 
 def load_igrf(path):
@@ -110,21 +111,122 @@ def interpolate_coefficients(date, years, coeffs):
             h_date[n, m] = coeffs["h"][index, n, m] + seconds_since_epoch * variation_h
     return g_date, h_date
 
+def calculate_ideal_spacing(max_degree):
+    """
+    Driscoll, J. R., & Healy, D. M. (1994). Computing Fourier Transforms and Convolutions on the 2-Sphere. Advances in Applied Mathematics, 15(2), 202–250. https://doi.org/10.1006/aama.1994.1008
+    """
 
 class IGRF14:
-    """
+    r"""
     International Geomagnetic Reference Field (14th generation).
 
+    Calculate the three components of the magnetic field vector of the IGRF
+    model in a geodetic (longitude, latitude, geometric height) system. Model
+    coefficients are automatically downloaded and cached locally using
+    :mod:`pooch`.
+
+    .. note::
+
+        The code is automatically parallelized (multithreaded shared-memory)
+        with Numba. To evaluate the model on a regular grid, it's **at least 2x
+        faster** to use the :meth:`~harmonica.IGRF14.grid` method than the
+        :meth:`~harmonica.IGRF14.predict` method since the former is able to
+        avoid repeat computations.
+
+    Parameters
+    ----------
+    date : str or :class:`datetime.datetime`
+        The date and time at which to calculate the IGRF field. If it's
+        a string, should be an `ISO 8601 formatted date
+        <https://en.wikipedia.org/wiki/ISO_8601>`__ and it will be converted
+        into a Python :class:`datetime.datetime`.
+    min_degree : int
+        The minimum degree used in the expansion. Default is 1 (magnetic fields
+        don't have the 0 degree term).
+    max_degree : int
+        The maximum degree used in the expansion. Default is 13.
+    ellipsoid : :class:`boule.Ellipsoid`
+        The ellipsoid used to convert geodetic to geocentric spherical
+        coordinates and convert the magnetic field vector from a geocentric
+        spherical to a geodetic system. Default is ``boule.WGS84``.
+
+    Attributes
+    ----------
+    doi : str
+        The DOI used to download the coefficient file.
+    file_name : str
+        The name of the coefficient file in the online archive.
+    hash : str
+        The hash of the coefficient file, used to check download integrity.
+    reference_radius : float
+        The reference radius used in the spherical harmonic expansion in
+        meters.
+    coefficients : tuple = (g, h)
+        The g and h Gauss coefficients interpolated to the given date. Each
+        coefficient is a 2d-array with shape ``(max_degree + 1, max_degree
+        + 1)``. The degree n varies with rows and the order m varies with
+        columns. The values where m > n are set to zero.
+
+    References
+    ----------
+    [Alken2021]_
+
+    [IAGA2024]_
+
+    Notes
+    -----
+    The IGRF is a spherical harmonic model of the Earth's internal magnetic
+    field. Its time variation is represented by piecewise linear functions. In
+    practice, the model Gauss coefficients are provided in 5-year epochs and
+    can be linearly interpolated between two epochs. For years later than the
+    last epoch, the coefficients can be extrapolated linearly using the
+    provided estimates of secular variation for each Gauss coefficient.
+
+    The 3-component magnetic field vector in a geocentric spherical coordinate
+    system (longitude, spherical colatitude, radius) system can be expressed in
+    terms of spherical harmonics as:
+
+    .. math::
+        B_e(r, \theta, \lambda) = -\dfrac{1}{\sin\theta}
+        \sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n}
+        \left(\dfrac{R}{r}\right)^{n+2} [ -m g_n^m \sin m\lambda + m h_n^m \cos
+        m\lambda ] P_n^m(\cos\theta)
+
+    .. math::
+        B_n(r, \theta, \lambda) = \sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n}
+        \left(\dfrac{R}{r}\right)^{n+2} [ g_n^m \cos m\lambda + h_n^m \sin
+        m\lambda ] \dfrac{\partial P_n^m(\cos\theta)}{\partial \theta}
+
+    .. math::
+        B_r(r, \theta, \lambda) = \sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n} (n
+        + 1)\left(\dfrac{R}{r}\right)^{n+2} [ g_n^m \cos m\lambda + h_n^m \sin
+        m\lambda ] P_n^m(\cos\theta)
+
+    in which :math:`B_e` is the easting/longitudinal component, :math:`B_n` is
+    the northing/latitudinal component, :math:`B_r` is the radial component,
+    :math:`r` is the radius coordinate, :math:`\theta` is the colatitude,
+    :math:`\lambda` is the longitude, :math:`n` is the degree, :math:`m` is the
+    order, :math:`P_n^m` are `associated Legendre functions
+    <https://en.wikipedia.org/wiki/Associated_Legendre_polynomials>`__, and
+    :math:`g_n^m` and  :math:`h_n^m` are the Gauss coefficients.
+
+    The vector is converted to a geodetic system (longitude, latitude,
+    height/upward) using the following rotation:
+
+    .. math::
+        B_{n}^{geodetic} = \cos(\varphi - \phi) B_n + \sin(\varphi - \phi) B_r
+
+    .. math::
+        B_{u} = -\sin(\varphi - \phi) B_n + \cos(\varphi - \phi) B_r
+
+    in which :math:`\varphi` is the spherical latitude and :math:`\phi` is the
+    geodetic latitude.
     """
 
-    # The DOI used to download the coefficient file
     doi = "10.5281/zenodo.14218973"
-    # The name of the file in the online archive
     file_name = "igrf14coeffs.txt"
-    # The hash of the coefficient file
     hash = "md5:3606931c15c9234d9ba8e2e91b729cb0"
-    # The reference radius used in the spherical harmonic expansion in meters
-    reference_radius = (6371.2e3,)
+    reference_radius = 6371.2e3
 
     def __init__(
         self,
@@ -140,9 +242,11 @@ class IGRF14:
         self.max_degree = max_degree
         self.min_degree = min_degree
         self.ellipsoid = ellipsoid
-        self._g, self._h = None, None
+        self.coefficients = interpolate_coefficients(
+            self.date, *load_igrf(self._fetch_coefficient_file())
+        )
 
-    def fetch_coefficient_file(self):
+    def _fetch_coefficient_file(self):
         """
         Download the coefficient file and cache it locally.
 
@@ -161,17 +265,6 @@ class IGRF14:
             known_hash=self.hash,
         )
         return pathlib.Path(path)
-
-    @property
-    def coefficients(self):
-        """
-        The g and h Gauss coefficients, interpolated to the given date.
-        """
-        if self._g is None or self._h is None:
-            self._g, self._h = interpolate_coefficients(
-                self.date, *load_igrf(self.fetch_coefficient_file())
-            )
-        return self._g, self._h
 
     def predict(self, coordinates):
         """
@@ -202,19 +295,15 @@ class IGRF14:
             b_north_sph,
             b_radial,
         )
-        # Rotate the vector from geocentric spherical to geodetic
-        latitude_diff = -np.radians(latitude - latitude_sph)
-        cos = np.cos(latitude_diff)
-        sin = np.sin(latitude_diff)
-        b_north = cos * b_north_sph + sin * b_radial
-        b_up = -sin * b_north_sph + cos * b_radial
-        return (
-            b_east.reshape(cast.shape),
-            b_north.reshape(cast.shape),
-            b_up.reshape(cast.shape),
+        b_vector = tuple(
+            c.reshape(cast.shape)
+            for c in vector_spherical_to_geodetic(
+                latitude, latitude_sph, (b_east, b_north_sph, b_radial)
+            )
         )
+        return b_vector
 
-    def grid(self, height, region, spacing=None, shape=None):
+    def grid(self, region, height, spacing=None, shape=None):
         """
         Calculate the IGRF magnetic field at the given coordinates.
         """
@@ -244,12 +333,9 @@ class IGRF14:
             b_north_sph,
             b_radial,
         )
-        # Rotate the vector from geocentric spherical to geodetic
-        latitude_diff = -np.radians(latitude - latitude_sph)
-        cos = np.cos(latitude_diff)
-        sin = np.sin(latitude_diff)
-        b_north = cos * b_north_sph + sin * b_radial
-        b_up = -sin * b_north_sph + cos * b_radial
+        b_east, b_north, b_up = vector_spherical_to_geodetic(
+            latitude, latitude_sph, (b_east, b_north_sph, b_radial)
+        )
         grid = vd.make_xarray_grid(
             (longitude, latitude, height),
             (b_east, b_north, b_up),
@@ -257,7 +343,67 @@ class IGRF14:
             dims=("latitude", "longitude"),
             extra_coords_names="height",
         )
+        grid.attrs["Conventions"] = "CF-1.8"
+        grid.attrs["title"] = "IGRF14 magnetic field"
+        grid.attrs["crs"] = self.ellipsoid.name
+        grid.attrs["source"] = (
+            "Generated by spherical harmonic synthesis using library "
+            f"Harmonica version {__version__}."
+        )
+        grid.attrs["description"] = (
+            "Three components of the magnetic field vector in a geodetic coordinate "
+            "system."
+        )
+        grid.attrs["units"] = "nT"
+        grid.attrs["references"] = f"https://doi.org/{self.doi}"
+        grid.longitude.attrs["long_name"] = "longitude"
+        grid.longitude.attrs["standard_name"] = "longitude"
+        grid.longitude.attrs["units"] = "degrees_east"
+        grid.longitude.attrs["actual_range"] = (float(longitude.min()), float(longitude.max()))
+        grid.latitude.attrs["long_name"] = "latitude"
+        grid.latitude.attrs["standard_name"] = "latitude"
+        grid.latitude.attrs["units"] = "degrees_north"
+        grid.latitude.attrs["actual_range"] = (float(latitude.min()), float(latitude.max()))
+        grid.height.attrs["long_name"] = "geometric height"
+        grid.height.attrs["standard_name"] = "height_above_reference_ellipsoid"
+        grid.height.attrs["units"] = "m"
+        for component in ("b_east", "b_north", "b_up"):
+            grid[component].attrs["units"] = "nT"
+        grid.b_east.attrs["long_name"] = "Eastward component"
+        grid.b_north.attrs["long_name"] = "Northward component"
+        grid.b_up.attrs["long_name"] = "Upward component"
+        grid.b_east.attrs["description"] = "Eastward component of the magnetic field"
+        grid.b_north.attrs["description"] = "Northward component of the magnetic field"
+        grid.b_up.attrs["description"] = "Upward component of the magnetic field"
         return grid
+
+
+def vector_spherical_to_geodetic(latitude, latitude_spherical, vector):
+    """
+    Rotate a vector from a geocentric spherical to a geodetic system.
+
+    Parameters
+    ----------
+    latitude : float or array
+        The geodetic latitude of the vector in degrees.
+    latitude_spherical : float or array
+        The geocentric spherical latitude of the vector in degrees.
+    vector : tuple = (east, north, radial)
+        The 3 components of the vector along each of the spherical directions.
+
+    Returns
+    -------
+    vector : tuple = (east, north, up)
+        The 3 components of the rotated vector. The east component is
+        unchanged.
+    """
+    rotation_angle = np.radians(latitude_spherical - latitude)
+    cos = np.cos(rotation_angle)
+    sin = np.sin(rotation_angle)
+    east, north_sph, radial = vector
+    north = cos * north_sph + sin * radial
+    up = -sin * north_sph + cos * radial
+    return (east, north, up)
 
 
 @numba.jit(nopython=True, parallel=True)

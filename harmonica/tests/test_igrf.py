@@ -12,6 +12,7 @@ import pathlib
 import numpy as np
 import numpy.testing as npt
 import pytest
+import verde as vd
 
 from .._spherical_harmonics.igrf import (
     IGRF14,
@@ -124,14 +125,14 @@ IGRF_ADDIS_ABABA = [
 ]
 
 
-def test_igrf14_fetch_coefficients():
+def test_igrf14__fetch_coefficients():
     "Check that the coefficient file can be fetched from Zenodo"
-    assert IGRF14("2020-02-10").fetch_coefficient_file().exists()
+    assert IGRF14("2020-02-10")._fetch_coefficient_file().exists()
 
 
 def test_load_igrf():
     "Check if things read have the right shapes and sizes and some values"
-    years, coeffs = load_igrf(IGRF14("2020-02-10").fetch_coefficient_file())
+    years, coeffs = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     assert years.size == 26
     npt.assert_allclose(years, np.arange(1900, 2026, 5))
     assert coeffs["g"].shape == (26, 14, 14)
@@ -158,7 +159,7 @@ def test_load_igrf_file_not_found():
 
 def test_interpolate_coefficients():
     "Check that calculating on/close to epochs gives right coefficients"
-    years, coeffs = load_igrf(IGRF14("2020-02-10").fetch_coefficient_file())
+    years, coeffs = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
             datetime.datetime(year, month=1, day=1, hour=0, minute=1, second=0),
@@ -171,6 +172,7 @@ def test_interpolate_coefficients():
                 npt.assert_allclose(h_date[n, m], coeffs["h"][i, n, m], atol=0.001)
 
 
+@pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("data", "coordinates"),
     [
@@ -193,3 +195,19 @@ def test_igrf_points(data, coordinates):
             atol=0,
             rtol=0.005,  # 0.5% accuracy
         )
+
+
+def test_igrf_grid():
+    "Make sure the grid values are the same as the predict values"
+    region = (0, 360, -90, 90)
+    spacing = 20
+    height = 2043
+    coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=height)
+    igrf = IGRF14("2020-04-15")
+    predicted = igrf.predict(coordinates)
+    grid = igrf.grid(region, height, spacing=spacing)
+    assert grid.b_east.shape == coordinates[0].shape
+    assert tuple(grid.dims) == ("latitude", "longitude")
+    npt.assert_allclose(grid.b_east, predicted[0])
+    npt.assert_allclose(grid.b_north, predicted[1])
+    npt.assert_allclose(grid.b_up, predicted[2])
