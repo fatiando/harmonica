@@ -10,11 +10,16 @@ Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 
 from collections.abc import Iterable
 
+from choclo.constants import GRAVITATIONAL_CONST
 import numpy as np
 from scipy.constants import gravitational_constant as g
 from scipy.special import ellipeinc, ellipkinc
 
-from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
+from .utils_ellipsoids import (
+    _calculate_lambda,
+    _get_v_as_euler,
+    get_elliptical_integrals,
+)
 
 
 def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
@@ -57,53 +62,95 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     For derivations of the equations, and methods used in this code.
     """
-    # unpack coordinates and create array to hold final g values
-    e, n, u = coordinates[0], coordinates[1], coordinates[2]
-    cast = np.broadcast(e, n, u)
-    ge, gn, gu = np.zeros(e.shape), np.zeros(e.shape), np.zeros(e.shape)
+    # Cache broadcast of coordinates
+    cast = np.broadcast(*coordinates)
+
+    # Ravel coordinates into 1d arrays
+    easting, northing, upward = tuple(c.ravel() for c in coordinates)
+
+    # Allocate arrays
+    ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
 
     # deal with the case of a single ellipsoid being passed
     if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
-
     if not isinstance(density, Iterable):
         density = [density]
 
-    # for ellipsoid, density in zip (ellipsoids, density, strict=True):
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
-        # unpack instances
+
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
-        ox, oy, oz = ellipsoid.centre
+        origin_e, origin_n, origin_u = ellipsoid.centre
 
-        # preserve ellipsoid shape, translate origin of ellipsoid
-        cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
+        # Translate observation points to coordinate system in center of the ellipsoid
+        obs_points = np.vstack(
+            (easting - origin_e, northing - origin_n, upward - origin_u)
+        )
 
         # create rotation matrix
         r = _get_v_as_euler(yaw, pitch, roll)
 
         # rotate observation points
         rotated_points = r.T @ obs_points
-        x, y, z = tuple(c.reshape(cast.shape) for c in rotated_points)
-
-        # create boolean for internal vs external field points
-        internal_mask = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
+        x, y, z = tuple(c for c in rotated_points)
 
         # calculate gravity component for the rotated points
-        gx, gy, gz = _get_gravity_array(internal_mask, a, b, c, x, y, z, rho)
-        gravity = np.vstack((gx.ravel(), gy.ravel(), gz.ravel()))
+        gx, gy, gz = _compute_gravity_ellipsoid(x, y, z, a, b, c, rho)
+        gravity = np.vstack((gx, gy, gz))
 
         # project onto upward unit vector, axis U
         g_projected = r @ gravity
-        ge_i, gn_i, gu_i = tuple(c.reshape(cast.shape) for c in g_projected)
+        ge_i, gn_i, gu_i = tuple(c for c in g_projected)
 
         # sum contributions from each ellipsoid
         ge += ge_i
         gn += gn_i
         gu += gu_i
 
+    # Reshape gravity arrays
+    ge, gn, gu = tuple(g.reshape(cast.shape) for g in (ge, gn, gu))
+
     return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
+
+
+def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
+    """
+    Compute gravity acceleration for an ellipsoid on a set of observation points.
+
+    The observation points can either be internal or external.
+
+    Parameters
+    ----------
+    x, y, z : arrays
+        Observation coordinates in the local ellipsoid reference frame.
+    a, b, c : floats
+        Semiaxis lengths of the ellipsoid. Must conform to the constraints of
+        the chosen ellipsoid type.
+    density : float
+        Density of the ellipsoidal body in kg/m³.
+
+    Returns
+    -------
+    gx, gy, gz : arrays
+        Gravity acceleration components in the local coordinate system for the
+        ellipsoid. Accelerations are given in SI units (m/s^2).
+    """
+    # Compute lambda for all observation points
+    lmbda = _calculate_lambda(x, y, z, a, b, c)
+
+    # Clip lambda to zero for internal points
+    inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
+    lmbda[inside] = 0
+
+    # Compute gx, gy, gz
+    factor = -2 * np.pi * a * b * c * GRAVITATIONAL_CONST * density
+    g1, g2, g3 = get_elliptical_integrals(a, b, c, lmbda)
+    gx = factor * x * g1
+    gy = factor * y * g2
+    gz = factor * z * g3
+
+    return gx, gy, gz
 
 
 # TODO: Leave a single function for the g values, maybe move it to

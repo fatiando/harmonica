@@ -7,6 +7,7 @@
 import numpy as np
 from scipy.constants import mu_0
 from scipy.spatial.transform import Rotation as rot
+from scipy.special import ellipeinc, ellipkinc
 
 import harmonica as hm
 
@@ -74,6 +75,326 @@ def _calculate_lambda(x, y, z, a, b, c):
     # lmbda[inside_mask] = 0
 
     return lmbda
+
+
+def get_elliptical_integrals(a, b, c, lmbda):
+    r"""
+    Compute elliptical integrals used in gravity and magnetic forward modelling.
+
+    Compute the elliptical integrals :math:`A(\lambda)`, :math:`B(\lambda)`, and
+    :math:`C(\lambda)` (Clark et al., 1986) for a given ellipsoid.
+
+    .. note::
+
+        These integrals are also called :math:`g_1`, :math:`g_2`, and :math:`g_3` in
+        Takahashi et al. (2018).
+
+    Parameters
+    ----------
+    a, b, c : floats
+        Semiaxis lengths of the given ellipsoid.
+    lmbda : float
+        The given lmbda value for the point we are considering.
+
+    Returns
+    -------
+    floats
+        The elliptical integrals evaluated for the given ellipsoid and observation
+        point.
+
+    Notes
+    -----
+    The elliptical integrals :math:`A(\lambda)`, :math:`B(\lambda)`, and
+    :math:`C(\lambda)` are given by (Clark et al., 1986, Takahashi et al. 2018):
+
+    .. math::
+
+        A(\lambda) =
+            \int\limits_\lambda^\infty
+            \frac{ \text{d}u }{ (a^2 + u) R(u) },
+
+    .. math::
+
+        B(\lambda) =
+            \int\limits_\lambda^\infty
+            \frac{ \text{d}u }{ (b^2 + u) R(u) },
+
+    and
+
+    .. math::
+
+        C(\lambda) =
+            \int\limits_\lambda^\infty
+            \frac{ \text{d}u }{ (c^2 + u) R(u) },
+
+    where :math:`R(u) = \sqrt{(a^2 + u) (b^2 + u) (c^2 + u)}`.
+
+    The values of :math:`A(0)`, :math:`B(0)` and :math:`C(0)` are used to calculate
+    fields inside the ellipsoid (where :math:`\lambda = 0`).
+
+    Expressions of the elliptic integrals vary for each type of ellipsoid (triaxial,
+    oblate and prolate).
+    """
+    if a > b > c:
+        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lmbda)
+    elif a > b and b == c:
+        g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lmbda)
+    elif a < b and b == c:
+        g1, g2, g3 = _get_elliptical_integrals_oblate(a, b, lmbda)
+    else:
+        msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
+        raise ValueError(msg)
+    return g1, g2, g3
+
+
+def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
+    r"""
+    Compute elliptical integrals for a triaxial ellipsoid.
+
+    Parameters
+    ----------
+    a, b, c : floats
+        Semiaxis lengths of the given ellipsoid.
+    lmbda : float
+        The given lmbda value for the point we are considering.
+
+    Returns
+    -------
+    floats
+        The elliptical integrals evaluated for the given ellipsoid and observation
+        point.
+
+    Notes
+    -----
+    The elliptical integrals :math:`A(\lambda)`, :math:`B(\lambda)`, and
+    :math:`C(\lambda)` for a triaxial ellipsoid (a > b > c) are given by
+    (Clark et al., 1986, Takahashi et al. 2018):
+
+    .. math::
+
+        A(\lambda) =
+            \frac{ 2 }{ (a^2 - b^2) \sqrt{a^2 - c^2} }
+            \left[ F(\kappa, \phi) - E(\kappa, \phi) \right]
+
+    .. math::
+
+        B(\lambda) =
+            \frac{ 2 \sqrt{a^2 - c^2} }{ (a^2 - b^2) (b^2 - c^2) }
+            \left[
+                E(\kappa, \phi)
+                - \frac{b^2 - c^2}{a^2 - c^2} F(\kappa, \phi)
+                - \frac{a^2 - b^2}{\sqrt{a^2 - c^2}}
+                \sqrt{ \frac{c^2 + \lambda}{(a^2 + \lambda) (b^2 + \lambda)} }
+            \right]
+
+    and
+
+    .. math::
+
+        C(\lambda) =
+            \frac{ -2 }{ (b^2 - c^2) \sqrt{a^2 - c^2} } E(\kappa, \phi)
+            +
+            \frac{2}{b^2 - c^2}
+            \sqrt{ \frac{b^2 + \lambda}{(a^2 + \lambda) (c^2 + \lambda)} }
+
+    where
+
+    .. math::
+
+        \sin \phi = \sqrt{\frac{a^2 - c^2}{a^2 + \lambda}}
+        \quad
+        (0 \le \theta' \le \pi/2),
+
+    .. math::
+
+        \kappa = \sqrt{\frac{a^2 - b^2}{a^2 - c^2}},
+
+    and :math:`E(\kappa, \phi)` and :math:`F(\kappa, \phi)` are Legendre's normal
+    elliptic integrals of the first and second kind, respectively.
+
+    .. note::
+
+        Note that the equation for :math:`C(\lambda)` includes a minus sign in the term
+        that includes the :math:`E(\kappa, \phi)` integral that is missing in eq. 40
+        from Takahashi et al. (2018).
+
+    """
+    # Compute phi and kappa
+    int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
+    phi = np.arcsin(int_arcsin)
+    k = (a**2 - b**2) / (a**2 - c**2)
+
+    # Cache values of E(theta, k) and F(theta, k) so we compute them only once
+    ellipk = ellipkinc(phi, k)
+    ellipe = ellipeinc(phi, k)
+
+    # A(lambda)
+    g1 = (2 / ((a**2 - b**2) * (a**2 - c**2) ** 0.5)) * (ellipk - ellipe)
+
+    # B(lambda)
+    g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / ((a**2 - b**2) * (b**2 - c**2))
+    g2_elliptics = ellipe - ((b**2 - c**2) / (a**2 - c**2)) * ellipk
+    g2_last_term = ((a**2 - b**2) / np.sqrt(a**2 - c**2)) * np.sqrt(
+        (c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda))
+    )
+    g2 = g2_multiplier * (g2_elliptics - g2_last_term)
+
+    # C(lambda)
+    # Term with the E(k, theta) must have a minus sign
+    # (the minus sign is missing in Takahashi (2018)).
+    g3_term_1 = -(2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))) * ellipe
+    g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
+        (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
+    )
+    g3 = g3_term_1 + g3_term_2
+
+    return g1, g2, g3
+
+
+def _get_elliptical_integrals_prolate(a, b, lmbda):
+    r"""
+    Compute elliptical integrals for a prolate ellipsoid.
+
+    Parameters
+    ----------
+    a, b : floats
+        Semiaxis lengths of the given ellipsoid.
+    lmbda : float
+        The given lmbda value for the point we are considering.
+
+    Returns
+    -------
+    floats
+        The elliptical integrals evaluated for the given ellipsoid and observation
+        point.
+
+    Notes
+    -----
+    The elliptical integrals :math:`A(\lambda)`, :math:`B(\lambda)`, and
+    :math:`C(\lambda)` for a prolate ellipsoid (a > b = c) are given by
+    (Clark et al., 1986, Takahashi et al. 2018):
+
+    .. math::
+
+        A(\lambda) =
+            \frac{ 2 }{ (a^2 - b^2)^{\frac{3}{2}} }
+            \left\{
+                \ln
+                \left[
+                    \frac{
+                      \sqrt{a^2 - b^2} + \sqrt{a^2 + \lambda}
+                    }{
+                      \sqrt{b^2 + \lambda}
+                    }
+                \right]
+                - \sqrt{\frac{a^2 - b^2}{a^2 + \lambda}}
+            \right\}
+
+    .. math::
+
+        B(\lambda) =
+            \frac{ 1 }{ (a^2 - b^2)^{\frac{3}{2}} }
+            \left\{
+                \frac{
+                    \sqrt{(a^2 - b^2)(a^2 + \lambda)}
+                }{
+                    b^2 + \lambda
+                }
+                - \ln
+                \left[
+                    \frac{
+                      \sqrt{a^2 - b^2} + \sqrt{a^2 + \lambda}
+                    }{
+                      \sqrt{b^2 + \lambda}
+                    }
+                \right]
+            \right\}
+
+    and
+
+    .. math::
+
+        C(\lambda) = B(\lambda)
+
+    """
+    # Cache some reused variables
+    e2 = a**2 - b**2
+    sqrt_e = np.sqrt(e2)
+    sqrt_l1 = np.sqrt(a**2 + lmbda)
+    sqrt_l2 = np.sqrt(b**2 + lmbda)
+    log = np.log((sqrt_e + sqrt_l1) / sqrt_l2)
+
+    g1 = (2 / (e2 ** (3 / 2))) * (log - sqrt_e / sqrt_l1)
+    g2 = (1 / (e2 ** (3 / 2))) * ((sqrt_e * sqrt_l1) / (b**2 + lmbda) - log)
+    return g1, g2, g2
+
+
+def _get_elliptical_integrals_oblate(a, b, lmbda):
+    r"""
+    Compute elliptical integrals for a oblate ellipsoid.
+
+    Parameters
+    ----------
+    a, b : floats
+        Semiaxis lengths of the given ellipsoid.
+    lmbda : float
+        The given lmbda value for the point we are considering.
+
+    Returns
+    -------
+    floats
+        The elliptical integrals evaluated for the given ellipsoid and observation
+        point.
+
+    Notes
+    -----
+    The elliptical integrals :math:`A(\lambda)`, :math:`B(\lambda)`, and
+    :math:`C(\lambda)` for a prolate ellipsoid (a < b = c) are given by
+    (Clark et al., 1986, Takahashi et al. 2018):
+
+    .. math::
+
+        A(\lambda) =
+            \frac{ 2 }{ (b^2 - a^2)^{\frac{3}{2}} }
+            \left\{
+                \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} }
+                -
+                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
+            \right\}
+
+    .. math::
+
+        B(\lambda) =
+            \frac{ 1 }{ (b^2 - a^2)^{\frac{3}{2}} }
+            \left\{
+                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
+                -
+                \frac{
+                    \sqrt{ (b^2 - a^2) (a^2 + \lambda) }
+                }{
+                    b^2 + \lambda
+                }
+            \right\}
+
+    and
+
+    .. math::
+
+        C(\lambda) = B(\lambda)
+
+    """
+    arctan = np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+    g1 = (
+        2
+        / ((b**2 - a**2) ** (3 / 2))
+        * ((np.sqrt((b**2 - a**2) / (a**2 + lmbda))) - arctan)
+    )
+    g2 = (
+        1
+        / ((b**2 - a**2) ** (3 / 2))
+        * (arctan - (np.sqrt((b**2 - a**2) * (a**2 + lmbda))) / (b**2 + lmbda))
+    )
+    return g1, g2, g2
 
 
 def _get_v_as_euler(yaw, pitch, roll):
