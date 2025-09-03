@@ -15,6 +15,7 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
+
 import boule as bl
 import ensaio
 import pygmt

@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Wrap xrft functions to compute FFTs and inverse FFTs
+Wrap xrft functions to compute FFTs and inverse FFTs.
 """
 
 from xrft.xrft import fft as _fft
@@ -14,7 +14,7 @@ from xrft.xrft import ifft as _ifft
 
 def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwargs):
     """
-    Compute Fast Fourier Transform of a 2D regular grid
+    Compute Fast Fourier Transform of a 2D regular grid.
 
     Parameters
     ----------
@@ -51,7 +51,7 @@ def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwar
 
 def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
     """
-    Compute Inverse Fast Fourier Transform of a 2D regular grid
+    Compute Inverse Fast Fourier Transform of a 2D regular grid.
 
     Parameters
     ----------

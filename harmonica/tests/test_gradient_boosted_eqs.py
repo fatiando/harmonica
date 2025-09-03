@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test functions for gradient-boosted equivalent sources
+Test functions for gradient-boosted equivalent sources.
 """
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -20,7 +21,7 @@ from .utils import run_only_with_numba
 @pytest.fixture(name="region")
 def fixture_region():
     """
-    Return a sample region
+    Return a sample region.
     """
     return (-3e3, -1e3, 5e3, 7e3)
 
@@ -28,7 +29,7 @@ def fixture_region():
 @pytest.fixture(name="coordinates")
 def fixture_coordinates(region):
     """
-    Return a set of sample coordinates at zero height
+    Return a set of sample coordinates at zero height.
     """
     shape = (40, 40)
     return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
@@ -37,7 +38,7 @@ def fixture_coordinates(region):
 @pytest.fixture(name="points")
 def fixture_points(region):
     """
-    Return the coordinates of some sample point masses
+    Return the coordinates of some sample point masses.
     """
     points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
     return points
@@ -46,7 +47,7 @@ def fixture_points(region):
 @pytest.fixture(name="masses")
 def fixture_masses(region, points):
     """
-    Return the masses some sample point masses
+    Return the masses some sample point masses.
     """
     return vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
 
@@ -54,7 +55,7 @@ def fixture_masses(region, points):
 @pytest.fixture(name="data")
 def fixture_data(coordinates, points, masses):
     """
-    Return some sample data
+    Return some sample data.
     """
     return point_gravity(coordinates, points, masses, field="g_z")
 
@@ -62,7 +63,7 @@ def fixture_data(coordinates, points, masses):
 @pytest.fixture(name="weights")
 def fixture_weights(data):
     """
-    Return some sample data
+    Return some sample data.
     """
     return np.ones_like(data)
 
@@ -70,7 +71,7 @@ def fixture_weights(data):
 @pytest.fixture(name="coordinates_small")
 def fixture_coordinates_small(region):
     """
-    Return a small set of 25 coordinates and variable elevation
+    Return a small set of 25 coordinates and variable elevation.
     """
     shape = (8, 8)
     return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
@@ -79,25 +80,25 @@ def fixture_coordinates_small(region):
 @pytest.fixture(name="data_small")
 def fixture_data_small(points, masses, coordinates_small):
     """
-    Return some sample data for the small set of coordinates
+    Return some sample data for the small set of coordinates.
     """
     return point_gravity(coordinates_small, points, masses, field="g_z")
 
 
 @pytest.mark.parametrize(
-    "data_region, sources_region, expected_region",
-    (
-        [(-1, 1, -1, 1), (-2, 2, -2, 2), (-2, 2, -2, 2)],
-        [(-3, 3, -3, 3), (-3, 3, -3, 3), (-3, 3, -3, 3)],
-        [(-2, 2, -2, 2), (-2, 1, -2, 1), (-2, 2, -2, 2)],
-        [(-2, 2, -2, 2), (-2, 1, -1, 2), (-2, 2, -2, 2)],
-        [(-2, 2, -2, 2), (1, 2, 1, 2), (-2, 2, -2, 2)],
-        [(-2, 2, -2, 2), (1, 2, -2, 1), (-2, 2, -2, 2)],
-    ),
+    ("data_region", "sources_region", "expected_region"),
+    [
+        ((-1, 1, -1, 1), (-2, 2, -2, 2), (-2, 2, -2, 2)),
+        ((-3, 3, -3, 3), (-3, 3, -3, 3), (-3, 3, -3, 3)),
+        ((-2, 2, -2, 2), (-2, 1, -2, 1), (-2, 2, -2, 2)),
+        ((-2, 2, -2, 2), (-2, 1, -1, 2), (-2, 2, -2, 2)),
+        ((-2, 2, -2, 2), (1, 2, 1, 2), (-2, 2, -2, 2)),
+        ((-2, 2, -2, 2), (1, 2, -2, 1), (-2, 2, -2, 2)),
+    ],
 )
 def test_get_region_data_sources(data_region, sources_region, expected_region):
     """
-    Test the EquivalentSourcesGB._get_region_data_sources method
+    Test the EquivalentSourcesGB._get_region_data_sources method.
     """
     shape = (8, 10)
     coordinates = vd.grid_coordinates(data_region, shape=shape)
@@ -108,7 +109,7 @@ def test_get_region_data_sources(data_region, sources_region, expected_region):
 
 def test_custom_points(region, coordinates_small, data_small):
     """
-    Check that passing in custom points works and actually uses the points
+    Check that passing in custom points works and actually uses the points.
     """
     # Pass a custom set of point sources
     points_custom = tuple(
@@ -121,12 +122,12 @@ def test_custom_points(region, coordinates_small, data_small):
     npt.assert_allclose(points_custom, eqs.points_, rtol=1e-5)
 
 
-@pytest.mark.parametrize("spacing", (100, 500, 1e3))
-@pytest.mark.parametrize("window_size", (1e3, 2e3, 4e3))
-@pytest.mark.parametrize("dtype, itemsize", [("float32", 4), ("float64", 8)])
+@pytest.mark.parametrize("spacing", [100, 500, 1e3])
+@pytest.mark.parametrize("window_size", [1e3, 2e3, 4e3])
+@pytest.mark.parametrize(("dtype", "itemsize"), [("float32", 4), ("float64", 8)])
 def test_memory_estimation(spacing, window_size, dtype, itemsize):
     """
-    Test the estimate_required_memory class method
+    Test the estimate_required_memory class method.
     """
     region = (-1e3, 5e3, 2e3, 8e3)
     coordinates = vd.grid_coordinates(region=region, spacing=spacing, extra_coords=0)
@@ -149,7 +150,7 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
 @pytest.mark.parametrize("weights", [None, np.ones((8, 8))])
 def test_gb_eqs_small_data(coordinates_small, data_small, weights):
     """
-    Check predictions against synthetic data using few data points for speed
+    Check predictions against synthetic data using few data points for speed.
     """
     # The interpolation should be good enought on the data points
     # Gradient-boosted equivalent sources don't perform well on small data, so
@@ -169,7 +170,7 @@ def test_gb_eqs_small_data(coordinates_small, data_small, weights):
 @run_only_with_numba
 def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates, data):
     """
-    Test GB eq-sources with a single window that covers the whole region
+    Test GB eq-sources with a single window that covers the whole region.
     """
     atol = 5e-8
     eqs = EquivalentSourcesGB(depth=500, window_size=region[1] - region[0])
@@ -185,7 +186,7 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
 @run_only_with_numba
 def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, data):
     """
-    Test GB eq-sources predictions
+    Test GB eq-sources predictions.
     """
     # The interpolation should be sufficiently accurate on the data points
     eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
@@ -206,7 +207,7 @@ def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, d
 @run_only_with_numba
 def test_gradient_boosted_eqs_random_state(coordinates, data):
     """
-    Check if EquivalentSourcesGB produces same result by setting random_state
+    Check if EquivalentSourcesGB produces same result by setting random_state.
     """
     # Initialize two EquivalentSourcesGB with the same random_state
     eqs_a = EquivalentSourcesGB(window_size=500, random_state=0)
@@ -220,7 +221,7 @@ def test_gradient_boosted_eqs_random_state(coordinates, data):
 
 def test_same_number_of_windows_data_and_sources():
     """
-    Test if _create_windows generates the same num of windows for data and srcs
+    Test if _create_windows generates the same num of windows for data and srcs.
     """
     spacing = 1
     # Create data points on a large region
@@ -243,7 +244,7 @@ def test_same_number_of_windows_data_and_sources():
 
 def test_same_windows_data_and_sources():
     """
-    Test if _create_windows generates the same windows for data and sources
+    Test if _create_windows generates the same windows for data and sources.
     """
     spacing = 1
     # Create data points on a large region
@@ -280,11 +281,11 @@ def test_same_windows_data_and_sources():
 
 
 @run_only_with_numba
-@pytest.mark.parametrize("block_size", (None, 500), ids=["no_blocks", "blocks"])
-@pytest.mark.parametrize("custom_points", (False, True), ids=["no_points", "points"])
-@pytest.mark.parametrize("weights_none", (False, True), ids=["no_weights", "weights"])
-@pytest.mark.parametrize("damping", (None, 0.1), ids=["damping_none", "damping"])
-@pytest.mark.parametrize("dtype", ("float64", "float32"))
+@pytest.mark.parametrize("block_size", [None, 500], ids=["no_blocks", "blocks"])
+@pytest.mark.parametrize("custom_points", [False, True], ids=["no_points", "points"])
+@pytest.mark.parametrize("weights_none", [False, True], ids=["no_weights", "weights"])
+@pytest.mark.parametrize("damping", [None, 0.1], ids=["damping_none", "damping"])
+@pytest.mark.parametrize("dtype", ["float64", "float32"])
 def test_dtype(
     region,
     coordinates,
@@ -297,7 +298,7 @@ def test_dtype(
     dtype,
 ):
     """
-    Test dtype argument on EquivalentSources
+    Test dtype argument on EquivalentSources.
     """
     # Define the points argument for EquivalentSources
     points = None
@@ -341,16 +342,16 @@ def test_gradient_boosted_eqs_float32(coordinates, data):
 
 @pytest.mark.parametrize(
     "deprecated_args",
-    (
-        dict(upward=5e3, spacing=1),
-        dict(upward=5e3, shape=(6, 6)),
-        dict(upward=5e3, spacing=1, region=(-4e3, 0, 5e3, 7e3)),
-        dict(upward=5e3, shape=(6, 6), region=(-4e3, 0, 5e3, 7e3)),
-    ),
+    [
+        {"upward": 5e3, "spacing": 1},
+        {"upward": 5e3, "shape": (6, 6)},
+        {"upward": 5e3, "spacing": 1, "region": (-4e3, 0, 5e3, 7e3)},
+        {"upward": 5e3, "shape": (6, 6), "region": (-4e3, 0, 5e3, 7e3)},
+    ],
 )
 def test_error_deprecated_args(coordinates_small, data_small, region, deprecated_args):
     """
-    Test if EquivalentSourcesGB.grid raises error on deprecated arguments
+    Test if EquivalentSourcesGB.grid raises error on deprecated arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
@@ -364,7 +365,7 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
 
 def test_error_ignored_args(coordinates_small, data_small, region):
     """
-    Test if EquivalentSourcesGB.grid raises warning on ignored arguments
+    Test if EquivalentSourcesGB.grid raises warning on ignored arguments.
     """
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
@@ -415,7 +416,7 @@ def test_invalid_window_size():
 
 def test_default_depth(coordinates, data):
     """
-    Test if the depth of sources is correctly set by the default strategy
+    Test if the depth of sources is correctly set by the default strategy.
     """
     # Get distance to first neighbour in the grid
     easting, northing = coordinates[:2]

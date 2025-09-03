@@ -7,7 +7,8 @@
 """
 Test forward modelling for point masses.
 """
-import os
+
+import re
 from pathlib import Path
 
 import numpy as np
@@ -32,28 +33,30 @@ from .._forward.utils import distance_cartesian
 from ..constants import GRAVITATIONAL_CONST
 from .utils import run_only_with_numba
 
-MODULE_DIR = Path(os.path.dirname(__file__))
+MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
 
 
 def test_invalid_coordinate_system():
-    "Check if invalid coordinate system is passed"
+    """Check if invalid coordinate system is passed."""
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
-    with pytest.raises(ValueError):
+    invalid_coord_system = "this-is-not-a-valid-coordinate-system"
+    msg = re.escape(f"Coordinate system {invalid_coord_system} not recognized")
+    with pytest.raises(ValueError, match=msg):
         point_gravity(
             coordinates,
             point_mass,
             mass,
             "potential",
-            "this-is-not-a-valid-coordinate-system",
+            invalid_coord_system,
         )
 
 
 def test_not_implemented_field():
     """
-    Check if NotImplementedError is raised after asking a non-implemented field
+    Check if NotImplementedError is raised after asking a non-implemented field.
     """
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
@@ -71,29 +74,35 @@ def test_not_implemented_field():
 
 
 def test_invalid_field():
-    "Check if an invalid gravitational field is passed as argument"
+    """Check if an invalid gravitational field is passed as argument."""
     coordinates = [0.0, 0.0, 0.0]
     point_mass = [0.0, 0.0, 0.0]
     mass = 1.0
+    invalid_field = "this-field-does-not-exist"
+    msg = re.escape(f"Gravitational field '{invalid_field}' not recognized")
     for coordinate_system in ("spherical", "cartesian"):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=msg):
             point_gravity(
                 coordinates,
                 point_mass,
                 mass,
-                "this-field-does-not-exist",
+                invalid_field,
                 coordinate_system,
             )
 
 
 def test_invalid_masses_array():
-    "Check if error is raised when masses shape does not match points shape"
+    """Check if error is raised when masses shape does not match points shape."""
     # Create a set of 3 point masses
     points = [[-10, 0, 10], [-10, 0, 10], [-100, 0, 100]]
     # Generate a two element masses
     masses = [1000, 2000]
     coordinates = [0, 0, 250]
-    with pytest.raises(ValueError):
+    msg = (
+        r"Number of elements in masses \([0-9]+\)"
+        r" mismatch the number of points \([0-9]+\)"
+    )
+    with pytest.raises(ValueError, match=msg):
         point_gravity(
             coordinates,
             points,
@@ -111,7 +120,7 @@ def test_invalid_masses_array():
 @pytest.fixture(name="point_mass")
 def fixture_point_mass():
     """
-    Defines a point located in the origin with a mass of 500kg
+    Defines a point located in the origin with a mass of 500kg.
     """
     point = [0, 0, 0]
     mass = [5000]
@@ -134,7 +143,7 @@ def fixture_sample_coordinates_potential():
 @pytest.mark.use_numba
 def test_potential_cartesian_known_values(point_mass, sample_coordinates_potential):
     """
-    Compare the computed gravitational potential with reference values
+    Compare the computed gravitational potential with reference values.
     """
     point, mass = point_mass[:]
     coordinates = sample_coordinates_potential[:3]
@@ -147,7 +156,7 @@ def test_potential_cartesian_known_values(point_mass, sample_coordinates_potenti
 @pytest.mark.use_numba
 def test_potential_symmetry_cartesian():
     """
-    Test if potential field of a point mass has symmetry in Cartesian coords
+    Test if potential field of a point mass has symmetry in Cartesian coords.
     """
     # Define a single point mass
     point_mass = [1.1, 1.2, 1.3]
@@ -171,10 +180,10 @@ def test_potential_symmetry_cartesian():
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
+@pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 def test_acceleration_symmetry_cartesian(field):
     """
-    Test if the acceleration components verify the expected symmetry
+    Test if the acceleration components verify the expected symmetry.
 
     Use Cartesian coordinates
     """
@@ -204,7 +213,7 @@ def test_acceleration_symmetry_cartesian(field):
 
 def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05):
     """
-    Compute acceleration components through finite differences
+    Compute acceleration components through finite differences.
 
     Parameters
     ----------
@@ -259,18 +268,18 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
+@pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 @pytest.mark.parametrize(
-    "coordinates, point, mass",
-    (
-        [(0, -39, -13), (1, -67, -300.7), 250],
-        [(-3, 24, -10), (20, 54, -500.7), 200],
-    ),
+    ("coordinates", "point", "mass"),
+    [
+        ((0, -39, -13), (1, -67, -300.7), 250),
+        ((-3, 24, -10), (20, 54, -500.7), 200),
+    ],
     ids=["set1", "set2"],
 )
 def test_acceleration_finite_diff_cartesian(coordinates, point, mass, field):
     """
-    Test acceleration components against a finite difference of the potential
+    Test acceleration components against a finite difference of the potential.
     """
     # Compute the z component
     result = point_gravity(coordinates, point, mass, field, "cartesian")
@@ -283,10 +292,10 @@ def test_acceleration_finite_diff_cartesian(coordinates, point, mass, field):
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_n", "g_e", "g_z"))
+@pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 def test_acceleration_sign(field):
     """
-    Test if acceleration components have the correct sign
+    Test if acceleration components have the correct sign.
     """
     # Define a single point mass
     point_mass = [-10, 100.2, -300.7]
@@ -310,16 +319,11 @@ def test_acceleration_sign(field):
 @run_only_with_numba
 @pytest.mark.parametrize(
     "field",
-    # fmt: off
-    (
-        "potential", "g_z", "g_n", "g_e",
-        "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"
-    ),
-    # fmt: on
+    ["potential", "g_z", "g_n", "g_e", "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"],
 )
 def test_point_mass_cartesian_parallel(field):
     """
-    Check if parallel and serial runs return the same result
+    Check if parallel and serial runs return the same result.
     """
     region = (2e3, 10e3, -3e3, 5e3)
     points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
@@ -337,7 +341,7 @@ def test_point_mass_cartesian_parallel(field):
 @pytest.mark.use_numba
 def test_laplace_equation_cartesian():
     """
-    Check if the diagonal components of the tensor satisfy Laplace equation
+    Check if the diagonal components of the tensor satisfy Laplace equation.
 
     Use Cartesian coordinates.
     """
@@ -354,11 +358,11 @@ def test_laplace_equation_cartesian():
 
 @pytest.mark.use_numba
 @pytest.mark.parametrize(
-    "field, flipped_field", [("g_en", "g_ne"), ("g_ez", "g_ze"), ("g_nz", "g_zn")]
+    ("field", "flipped_field"), [("g_en", "g_ne"), ("g_ez", "g_ze"), ("g_nz", "g_zn")]
 )
 def test_tensor_non_diagonal_components(field, flipped_field):
     """
-    Check if function computes g_xy as the same as g_yx
+    Check if function computes g_xy as the same as g_yx.
     """
     region = (2e3, 10e3, -3e3, 5e3)
     points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
@@ -382,7 +386,7 @@ class TestTensorSymmetryCartesian:
 
     def mirrored_computation_points(self, directions):
         """
-        Create mirrored computation points to the point source
+        Create mirrored computation points to the point source.
 
         The mirrored computation points will be mirror images along one of the
         planes given by the tensor component.
@@ -442,7 +446,7 @@ class TestTensorSymmetryCartesian:
 
     def opposite_computation_points(self, directions):
         """
-        Create opposite computation points to the point source
+        Create opposite computation points to the point source.
 
         The opposite computation points will live in the diagonal given by the
         direction of the tensor component and be equidistant to the point
@@ -497,7 +501,7 @@ class TestTensorSymmetryCartesian:
     @pytest.mark.parametrize("field", tensor_fields)
     def test_opposite(self, field):
         """
-        Test tensor components symmetry on opposite computation points
+        Test tensor components symmetry on opposite computation points.
 
         The values of each tensor component should be the same on opposite
         points.
@@ -512,10 +516,10 @@ class TestTensorSymmetryCartesian:
 
     @pytest.mark.use_numba
     @pytest.mark.parametrize("field", nondiagonal_fields)
-    @pytest.mark.parametrize("swap_directions", (False, True), ids=["noswap", "swap"])
+    @pytest.mark.parametrize("swap_directions", [False, True], ids=["noswap", "swap"])
     def test_mirrored_nondiagonals(self, field, swap_directions):
         """
-        Test nondiagonal tensor components symmetry on mirrored points
+        Test nondiagonal tensor components symmetry on mirrored points.
 
         For non-diagonal tensor components, their values should be opposite on
         mirrored computation points.
@@ -534,7 +538,7 @@ class TestTensorSymmetryCartesian:
 
 def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
     """
-    Compute tensor components through finite differences
+    Compute tensor components through finite differences.
 
     Parameters
     ----------
@@ -596,18 +600,18 @@ def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"))
+@pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"])
 @pytest.mark.parametrize(
-    "coordinates, point, mass",
-    (
-        [(0, -39, -13), (1, -67, -300.7), 250],
-        [(-3, 24, -10), (20, 54, -500.7), 200],
-    ),
+    ("coordinates", "point", "mass"),
+    [
+        ((0, -39, -13), (1, -67, -300.7), 250),
+        ((-3, 24, -10), (20, 54, -500.7), 200),
+    ],
     ids=["set1", "set2"],
 )
 def test_tensor_finite_diff_cartesian(coordinates, point, mass, field):
     """
-    Test tensor components against a finite difference of the acceleration
+    Test tensor components against a finite difference of the acceleration.
     """
     # Compute the z component
     result = point_gravity(coordinates, point, mass, field, "cartesian")
@@ -624,7 +628,7 @@ def test_tensor_finite_diff_cartesian(coordinates, point, mass, field):
 # ---------------------------
 @pytest.mark.use_numba
 def test_point_mass_on_origin():
-    "Check potential and g_z of point mass on origin in spherical coordinates"
+    """Check potential and g_z of point mass on origin in spherical coordinates."""
     point_mass = [0.0, 0.0, 0.0]
     mass = 2.0
     radius = np.logspace(1, 8, 5)
@@ -648,10 +652,10 @@ def test_point_mass_on_origin():
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ("potential", "g_z"))
+@pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_point_mass_same_radial_direction(field):
     """
-    Check potential and g_z of point mass and computation point on same radius
+    Check potential and g_z of point mass and computation point on same radius.
     """
     sphere_radius = 3.0
     mass = 2.0
@@ -679,7 +683,7 @@ def test_point_mass_same_radial_direction(field):
 
 @pytest.mark.use_numba
 def test_point_mass_potential_on_equator():
-    "Check potential field on equator and same radial coordinate"
+    """Check potential field on equator and same radial coordinate."""
     radius = 3.0
     mass = 2.0
     latitude = 0.0
@@ -709,7 +713,7 @@ def test_point_mass_potential_on_equator():
 
 @pytest.mark.use_numba
 def test_point_mass_potential_on_same_meridian():
-    "Check potential field on same meridian and radial coordinate"
+    """Check potential field on same meridian and radial coordinate."""
     radius = 3.0
     mass = 2.0
     longitude = 0.0
@@ -740,7 +744,7 @@ def test_point_mass_potential_on_same_meridian():
 @run_only_with_numba
 def test_point_mass_spherical_parallel():
     """
-    Check if parallel and serial runs return the same result
+    Check if parallel and serial runs return the same result.
     """
     region = (2, 10, -3, 5)
     radius = 6400e3
@@ -771,13 +775,13 @@ def test_point_mass_spherical_parallel():
 
 class TestAgainstChoclo:
     """
-    Test forward modelling functions against dumb Choclo runs
+    Test forward modelling functions against dumb Choclo runs.
     """
 
     @pytest.fixture()
     def sample_points(self):
         """
-        Return three sample prisms
+        Return three sample prisms.
         """
         points = np.array(
             [
@@ -793,7 +797,7 @@ class TestAgainstChoclo:
     @pytest.fixture()
     def sample_coordinates(self):
         """
-        Return four sample observation points
+        Return four sample observation points.
         """
         easting = np.array([-5, 10, 0, 15], dtype=float)
         northing = np.array([14, -4, 11, 0], dtype=float)
@@ -802,7 +806,7 @@ class TestAgainstChoclo:
 
     @pytest.mark.use_numba
     @pytest.mark.parametrize(
-        "field, choclo_func",
+        ("field", "choclo_func"),
         [
             ("potential", gravity_pot),
             ("g_e", gravity_e),
@@ -824,7 +828,7 @@ class TestAgainstChoclo:
         sample_points,
     ):
         """
-        Tests forward functions against dumb runs on Choclo
+        Tests forward functions against dumb runs on Choclo.
         """
         easting, northing, upward = sample_coordinates
         points, masses = sample_points

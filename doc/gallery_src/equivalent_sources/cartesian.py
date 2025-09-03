@@ -29,6 +29,7 @@ data uncertainty to be taken into account and noise to be suppressed though the
 least-squares fitting process. The main disadvantage is the increased
 computational load (both in terms of time and memory).
 """
+
 import ensaio
 import pandas as pd
 import pygmt

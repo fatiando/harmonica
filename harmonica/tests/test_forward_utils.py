@@ -5,8 +5,9 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test utils functions for forward modelling
+Test utils functions for forward modelling.
 """
+
 from unittest.mock import patch
 
 import boule as bl
@@ -24,7 +25,7 @@ except ImportError:
 
 @pytest.mark.use_numba
 def test_distance():
-    "Test if computated is distance is right"
+    """Test if computed is distance is right."""
     # Cartesian coordinate system
     point_a = (1.1, 1.2, 1.3)
     point_b = (1.1, 1.2, 2.4)
@@ -44,22 +45,26 @@ def test_distance():
 
 
 def test_distance_invalid_coordinate_system():
-    "Check if invalid coordinate system is passed to distance function"
+    """Check if invalid coordinate system is passed to distance function."""
     point_a = (0, 0, 0)
     point_b = (1, 1, 1)
-    with pytest.raises(ValueError):
-        distance(point_a, point_b, "this-is-not-a-valid-coordinate-system")
+    invalid_coord_system = "this-is-not-a-valid-coordinate-system"
+    msg = f"Coordinate system {invalid_coord_system} not recognized"
+    with pytest.raises(ValueError, match=msg):
+        distance(point_a, point_b, invalid_coord_system)
 
 
 def test_check_coordinate_system():
-    "Check if invalid coordinate system is passed to _check_coordinate_system"
-    with pytest.raises(ValueError):
-        check_coordinate_system("this-is-not-a-valid-coordinate-system")
+    """Check if invalid coordinate system is passed to _check_coordinate_system."""
+    invalid_coord_system = "this-is-not-a-valid-coordinate-system"
+    msg = f"Coordinate system {invalid_coord_system} not recognized"
+    with pytest.raises(ValueError, match=msg):
+        check_coordinate_system(invalid_coord_system)
 
 
 def test_geodetic_distance_vs_spherical():
     """
-    Compare geodetic distance vs spherical distance after conversion
+    Compare geodetic distance vs spherical distance after conversion.
 
     Test if the closed-form formula for computing the Euclidean distance
     between two points given in geodetic coordinates is equal to the same
@@ -83,7 +88,7 @@ def test_geodetic_distance_vs_spherical():
 
 def test_geodetic_distance_equator_poles():
     """
-    Check geodetic distance between points in equator and the poles
+    Check geodetic distance between points in equator and the poles.
 
     The Euclidean distance between a point on the equator and a point on the
     pole, both located on the surface of the ellipsoid and with the same
@@ -114,7 +119,7 @@ def test_geodetic_distance_equator_poles():
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-@pytest.mark.parametrize("use_progressbar", (True, False))
+@pytest.mark.parametrize("use_progressbar", [True, False])
 def test_initialize_progressbar(use_progressbar):
     """Test initialize_progressbar."""
     with initialize_progressbar(3, use_progressbar) as progress_proxy:
@@ -125,7 +130,7 @@ def test_initialize_progressbar(use_progressbar):
 
 
 @patch("harmonica._forward.utils.ProgressBar", None)
-@pytest.mark.parametrize("use_progressbar", (True, False))
+@pytest.mark.parametrize("use_progressbar", [True, False])
 def test_initialize_progressbar_import_error(use_progressbar):
     """Test if it raises ImportError when numba_progress is missing."""
     if use_progressbar:

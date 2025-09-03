@@ -7,6 +7,7 @@
 """
 Test the gravity correction functions (normal gravity, Bouguer, etc).
 """
+
 import numpy as np
 import numpy.testing as npt
 import xarray as xr
@@ -16,7 +17,7 @@ from ..constants import GRAVITATIONAL_CONST
 
 
 def test_bouguer_correction():
-    "Test the Bouguer correction using easy to calculate values"
+    """Test the Bouguer correction using easy to calculate values."""
     topography = np.linspace(-10, 20, 100)
     # With these densities, the correction should be equal to the topography
     rhoc = 1 / (1e5 * 2 * np.pi * GRAVITATIONAL_CONST)
@@ -33,12 +34,12 @@ def test_bouguer_correction():
 
 
 def test_bouguer_correction_zero_topo():
-    "Bouguer correction for zero topography should be zero"
+    """Bouguer correction for zero topography should be zero."""
     npt.assert_allclose(bouguer_correction(np.zeros(20)), 0)
 
 
 def test_bouguer_correction_xarray():
-    "Should work the same for an xarray input"
+    """Should work the same for an xarray input."""
     topography = xr.DataArray(
         np.linspace(-10, 20, 100).reshape((10, 10)),
         coords=(np.arange(10), np.arange(10)),

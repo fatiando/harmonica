@@ -28,6 +28,7 @@ But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
 to use them on a small example.
 
 """
+
 import boule as bl
 import ensaio
 import pandas as pd
