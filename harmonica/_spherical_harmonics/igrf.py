@@ -7,6 +7,7 @@
 """
 Calculation of the IGRF magnetic field.
 """
+
 import datetime
 import pathlib
 
@@ -15,17 +16,8 @@ import numba
 import numpy as np
 import pooch
 
+from .._utils import get_harmonica_cache
 from . import legendre
-
-
-def fetch_igrf14():
-    """ """
-    path = pooch.retrieve(
-        url="doi:10.5281/zenodo.14218973/igrf14coeffs.txt",
-        path=pooch.os_cache("harmonica"),
-        known_hash="md5:3606931c15c9234d9ba8e2e91b729cb0",
-    )
-    return pathlib.Path(path)
 
 
 def load_igrf(path):
@@ -34,16 +26,20 @@ def load_igrf(path):
 
     Parameters
     ----------
-    path : str or :class:`pathlib.Path`
+    path : :class:`pathlib.Path`
         The path to the ``.txt`` file with the Gauss coefficients.
 
     Returns
     -------
-    years : array
+    years : 1d-array
         The years for the knot points of the time interpolation.
-
+    coeffs : dict
+        A dictionary with keys ``"g"`` and ``"h"`` which hold 3d-arrays that
+        contain the Gauss coefficients and ``"g_sv"`` and ``"h_sv"`` which hold
+        2d-arrays with the secular variation after the last year of the
+        coefficient series.
     """
-    with open(path) as input_file:
+    with path.open() as input_file:
         # Get rid of the comments and the first header line
         for line in input_file:
             if not line.startswith("#"):
@@ -75,7 +71,10 @@ def load_igrf(path):
 
 def interpolate_coefficients(date, years, coeffs):
     """
-    Interpolate the coefficients to the given date.
+    Interpolate the Gauss coefficients to the given date.
+
+    Assumes that the time variation is piece wise linear. After the last year
+    in the series, extrapolate using the estimated secular variation.
     """
     if date.year < 1900:
         message = f"Invalid date {date} for IGRF. The model isn't valid before 1900."
@@ -114,12 +113,21 @@ def interpolate_coefficients(date, years, coeffs):
 class IGRF14:
     """
     International Geomagnetic Reference Field (14th generation).
+
     """
+
+    # The DOI used to download the coefficient file
+    doi = "10.5281/zenodo.14218973"
+    # The name of the file in the online archive
+    file_name = "igrf14coeffs.txt"
+    # The hash of the coefficient file
+    hash = "md5:3606931c15c9234d9ba8e2e91b729cb0"
+    # The reference radius used in the spherical harmonic expansion in meters
+    reference_radius = (6371.2e3,)
 
     def __init__(
         self,
         date,
-        reference_radius=6371.2e3,
         min_degree=1,
         max_degree=13,
         ellipsoid=boule.WGS84,
@@ -128,20 +136,39 @@ class IGRF14:
             self.date = datetime.datetime.fromisoformat(date)
         else:
             self.date = date
-        self.reference_radius = reference_radius
         self.max_degree = max_degree
         self.min_degree = min_degree
         self.ellipsoid = ellipsoid
         self._g, self._h = None, None
 
+    def fetch_coefficient_file(self):
+        """
+        Download the coefficient file and cache it locally.
+
+        Fetch it from an online source specified by the ``doi`` attribute of
+        this class. If the file was already downloaded, it won't be downloaded
+        again.
+
+        Returns
+        -------
+        path : class:`pathlib.Path`
+            Path to the downloaded file on disk.
+        """
+        path = pooch.retrieve(
+            url=f"doi:{self.doi}/{self.file_name}",
+            path=get_harmonica_cache(),
+            known_hash=self.hash,
+        )
+        return pathlib.Path(path)
+
     @property
     def coefficients(self):
         """
-        Load and interpolate the Gauss coefficients g and h.
+        The g and h Gauss coefficients, interpolated to the given date.
         """
         if self._g is None or self._h is None:
             self._g, self._h = interpolate_coefficients(
-                self.date, *load_igrf(fetch_igrf14())
+                self.date, *load_igrf(self.fetch_coefficient_file())
             )
         return self._g, self._h
 
@@ -162,7 +189,7 @@ class IGRF14:
         b_north_sph = np.zeros(n_data)
         b_radial = np.zeros(n_data)
         g, h = self.coefficients
-        _evaluate_igrf_spherical(
+        spherical_harmonics_magnetic_field(
             longitude_radians,
             colatitude_radians,
             normalized_radius,
@@ -188,7 +215,7 @@ class IGRF14:
 
 
 @numba.jit(nopython=True, parallel=True)
-def _evaluate_igrf_spherical(
+def spherical_harmonics_magnetic_field(
     longitude,
     colatitude,
     normalized_radius,
@@ -201,7 +228,7 @@ def _evaluate_igrf_spherical(
     b_radial,
 ):
     """
-    Calculate IGRF on discrete points using numba.
+    Calculate a spherical harmonic expansion of a magnetic field.
     """
     n_data = longitude.size
     for i in numba.prange(n_data):

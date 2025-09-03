@@ -4,10 +4,10 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-""" Test the IGRF results against the ones calculated by the BGS.
-"""
+"""Test the IGRF results against the ones calculated by the BGS."""
+
 import datetime
-import os
+import pathlib
 
 import numpy as np
 import numpy.testing as npt
@@ -15,7 +15,6 @@ import pytest
 
 from .._spherical_harmonics.igrf import (
     IGRF14,
-    fetch_igrf14,
     interpolate_coefficients,
     load_igrf,
 )
@@ -125,15 +124,14 @@ IGRF_ADDIS_ABABA = [
 ]
 
 
-def test_fetch_igrf14():
+def test_igrf14_fetch_coefficients():
     "Check that the coefficient file can be fetched from Zenodo"
-    fname = fetch_igrf14()
-    assert os.path.exists(fname)
+    assert IGRF14("2020-02-10").fetch_coefficient_file().exists()
 
 
 def test_load_igrf():
     "Check if things read have the right shapes and sizes and some values"
-    years, coeffs = load_igrf(fetch_igrf14())
+    years, coeffs = load_igrf(IGRF14("2020-02-10").fetch_coefficient_file())
     assert years.size == 26
     npt.assert_allclose(years, np.arange(1900, 2026, 5))
     assert coeffs["g"].shape == (26, 14, 14)
@@ -153,13 +151,14 @@ def test_load_igrf():
 
 def test_load_igrf_file_not_found():
     "Check if it fails when given a bad file name"
-    with pytest.raises(IOError):
-        load_igrf("a-file-that-doesnt-exist.txt")
+    fname = "a-file-that-doesnt-exist.txt"
+    with pytest.raises(IOError, match=fname):
+        load_igrf(pathlib.Path(fname))
 
 
 def test_interpolate_coefficients():
     "Check that calculating on/close to epochs gives right coefficients"
-    years, coeffs = load_igrf(fetch_igrf14())
+    years, coeffs = load_igrf(IGRF14("2020-02-10").fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
             datetime.datetime(year, month=1, day=1, hour=0, minute=1, second=0),
