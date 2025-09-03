@@ -15,6 +15,7 @@ import boule
 import numba
 import numpy as np
 import pooch
+import verde as vd
 
 from .._utils import get_harmonica_cache
 from . import legendre
@@ -213,6 +214,51 @@ class IGRF14:
             b_up.reshape(cast.shape),
         )
 
+    def grid(self, height, region, spacing=None, shape=None):
+        """
+        Calculate the IGRF magnetic field at the given coordinates.
+        """
+        longitude, latitude, height = vd.grid_coordinates(
+            region, spacing=spacing, shape=shape, extra_coords=height
+        )
+        longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
+            longitude, latitude, height
+        )
+        longitude_radians = np.radians(longitude)
+        colatitude_radians = np.radians(90 - latitude_sph)
+        normalized_radius = self.reference_radius / radius
+        shape = longitude.shape
+        b_east = np.zeros(shape)
+        b_north_sph = np.zeros(shape)
+        b_radial = np.zeros(shape)
+        g, h = self.coefficients
+        spherical_harmonics_magnetic_field_grid(
+            longitude_radians[0, :],
+            colatitude_radians[:, 0],
+            normalized_radius,
+            g,
+            h,
+            self.min_degree,
+            self.max_degree,
+            b_east,
+            b_north_sph,
+            b_radial,
+        )
+        # Rotate the vector from geocentric spherical to geodetic
+        latitude_diff = -np.radians(latitude - latitude_sph)
+        cos = np.cos(latitude_diff)
+        sin = np.sin(latitude_diff)
+        b_north = cos * b_north_sph + sin * b_radial
+        b_up = -sin * b_north_sph + cos * b_radial
+        grid = vd.make_xarray_grid(
+            (longitude, latitude, height),
+            (b_east, b_north, b_up),
+            data_names=("b_east", "b_north", "b_up"),
+            dims=("latitude", "longitude"),
+            extra_coords_names="height",
+        )
+        return grid
+
 
 @numba.jit(nopython=True, parallel=True)
 def spherical_harmonics_magnetic_field(
@@ -283,3 +329,77 @@ def spherical_harmonics_magnetic_field(
             b_east[i] = 0
         else:
             b_east[i] *= -1 / sin_colat
+
+
+@numba.jit(nopython=True, parallel=True)
+def spherical_harmonics_magnetic_field_grid(
+    longitude,
+    colatitude,
+    normalized_radius,
+    g,
+    h,
+    min_degree,
+    max_degree,
+    b_east,
+    b_north_sph,
+    b_radial,
+):
+    """
+    Calculate a spherical harmonic expansion of a magnetic field.
+    """
+    n_lon = longitude.size
+    n_colat = colatitude.size
+    # Pre-compute the sin and cos of longitude to avoid repeated computation.
+    # Use the recursive Chebyshev method to calculate sin/cos(m lon) to save
+    # running trig functions. See:
+    # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
+    cos_mlon = np.empty((n_lon, max_degree + 1))
+    sin_mlon = np.empty((n_lon, max_degree + 1))
+    for j in numba.prange(n_lon):
+        cos_mlon[j, 0] = 1
+        sin_mlon[j, 0] = 0
+        cos_mlon[j, 1] = np.cos(longitude[j])
+        sin_mlon[j, 1] = np.sin(longitude[j])
+        for m in range(2, max_degree + 1):
+            cos_mlon[j, m] = (
+                2 * cos_mlon[j, 1] * cos_mlon[j, m - 1] - cos_mlon[j, m - 2]
+            )
+            sin_mlon[j, m] = (
+                2 * cos_mlon[j, 1] * sin_mlon[j, m - 1] - sin_mlon[j, m - 2]
+            )
+    for i in numba.prange(n_colat):
+        cos_colat = np.cos(colatitude[i])
+        sin_colat = np.sin(colatitude[i])
+        # Have to allocate here because of the parallel loop. These are small
+        # for low degree so not a huge time sink.
+        p = np.empty_like(g)
+        p_deriv = np.empty_like(g)
+        legendre.associated_legendre_schmidt(cos_colat, max_degree, p)
+        legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
+        for j in range(n_lon):
+            r_frac = normalized_radius[i, j] ** (min_degree - 1 + 2)
+            for n in range(min_degree, max_degree + 1):
+                r_frac *= normalized_radius[i, j]
+                for m in range(n + 1):
+                    b_east[i, j] += (
+                        r_frac
+                        * (-m * g[n, m] * sin_mlon[j, m] + m * h[n, m] * cos_mlon[j, m])
+                        * p[n, m]
+                    )
+                    b_north_sph[i, j] += (
+                        r_frac
+                        * (g[n, m] * cos_mlon[j, m] + h[n, m] * sin_mlon[j, m])
+                        * p_deriv[n, m]
+                    )
+                    b_radial[i, j] += (
+                        (n + 1)
+                        * r_frac
+                        * (g[n, m] * cos_mlon[j, m] + h[n, m] * sin_mlon[j, m])
+                        * p[n, m]
+                    )
+            # The east component is singular at the poles. Set it to zero if close
+            # to the poles to avoid this.
+            if abs(sin_colat) < 1e-10:
+                b_east[i, j] = 0
+            else:
+                b_east[i, j] *= -1 / sin_colat
