@@ -34,7 +34,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         Ellipsoidal body represented by an instance of
         :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
         :class:`harmonica.OblateEllipsoid`, or a list of them.
-    density : float or list
+    density : float, list of floats or array
         List or array containing the density of each ellipsoid in kg/m^3.
     field : {"g", "e", "n", "u"}, optional
         Desired field that want to be computed.
@@ -45,7 +45,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     Returns
     -------
-    ge, gn, gu: ndarray
+    ge, gn, gu: arrays
         Easting, northing and upward component of the gravity acceleration.
         Or a single one if ``field`` is "e", "n" or "u".
 
