@@ -7,6 +7,7 @@ References
 .. [Blakely1995] Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:`10.1017/CBO9780511549816 <https://doi.org/10.1017/CBO9780511549816>`__
 .. [Cordell1992] Lindrith Cordell (1992). A scattered equivalent‐source method for interpolation and gridding of potential‐field data in three dimensions. GEOPHYSICS 57: 629-636. doi:`10.1190/1.1443275 <https://doi.org/10.1190/1.1443275>`__
 .. [Dampney1969] Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:`10.1190/1.1439996 <https://doi.org/10.1190/1.1439996>`__
+.. [DriscollHealy1994] Driscoll, J. R., & Healy, D. M. (1994). Computing Fourier Transforms and Convolutions on the 2-Sphere. Advances in Applied Mathematics, 15(2), 202–250. `10.1006/aama.1994.1008 <https://doi.org/10.1006/aama.1994.1008>`__.
 .. [Fukushima2020] Fukushima, T. (2020). Speed and accuracy improvements in standard algorithm for prismatic gravitational field. Geophysical Journal International. doi:`10.1093/gji/ggaa240 <https://doi.org/10.1093/gji/ggaa240>`__
 .. [Geosoft1999] Geosoft Incorporated. (1999). Montaj MAGMAP filtering; 2–D frequency domain of potential field data extension for Oasis Montaj v. 6.1.
 .. [Grombein2013] Grombein, T., Seitz, K., Heck, B. (2013), Optimized formulas for the gravitational field of a tesseroid, Journal of Geodesy. doi:`10.1007/s00190-013-0636-1 <https://doi.org/10.1007/s00190-013-0636-1>`__

@@ -132,22 +132,22 @@ def test_igrf14__fetch_coefficients():
 
 def test_load_igrf():
     "Check if things read have the right shapes and sizes and some values"
-    years, coeffs = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
+    years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     assert years.size == 26
     npt.assert_allclose(years, np.arange(1900, 2026, 5))
-    assert coeffs["g"].shape == (26, 14, 14)
-    assert coeffs["h"].shape == (26, 14, 14)
+    assert g.shape == (26, 14, 14)
+    assert h.shape == (26, 14, 14)
     # Check that the 0,0 g is zero for all dates
-    npt.assert_allclose(coeffs["g"][:, 0, 0], 0)
+    npt.assert_allclose(g[:, 0, 0], 0)
     # Check that all h for m=0 is zero for all dates
-    npt.assert_allclose(coeffs["h"][:, :, 0], 0)
+    npt.assert_allclose(h[:, :, 0], 0)
     # Check a few values against values copied from the file
-    npt.assert_allclose(coeffs["g"][0, 1, 0], -31543)
-    npt.assert_allclose(coeffs["g"][0, 1, 1], -2298)
-    npt.assert_allclose(coeffs["g"][5, 5, 3], -28)
-    npt.assert_allclose(coeffs["g"][24, 13, 13], -0.40)
-    npt.assert_allclose(coeffs["h"][24, 13, 13], -0.60)
-    npt.assert_allclose(coeffs["h"][12, 7, 1], -55)
+    npt.assert_allclose(g[0, 1, 0], -31543)
+    npt.assert_allclose(g[0, 1, 1], -2298)
+    npt.assert_allclose(g[5, 5, 3], -28)
+    npt.assert_allclose(g[24, 13, 13], -0.40)
+    npt.assert_allclose(h[24, 13, 13], -0.60)
+    npt.assert_allclose(h[12, 7, 1], -55)
 
 
 def test_load_igrf_file_not_found():
@@ -159,17 +159,20 @@ def test_load_igrf_file_not_found():
 
 def test_interpolate_coefficients():
     "Check that calculating on/close to epochs gives right coefficients"
-    years, coeffs = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
+    years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
             datetime.datetime(year, month=1, day=1, hour=0, minute=1, second=0),
             years,
-            coeffs,
+            g,
+            h,
+            g_sv,
+            h_sv,
         )
-        for n in range(coeffs["g"].shape[1]):
+        for n in range(g.shape[1]):
             for m in range(n):
-                npt.assert_allclose(g_date[n, m], coeffs["g"][i, n, m], atol=0.001)
-                npt.assert_allclose(h_date[n, m], coeffs["h"][i, n, m], atol=0.001)
+                npt.assert_allclose(g_date[n, m], g[i, n, m], atol=0.001)
+                npt.assert_allclose(h_date[n, m], h[i, n, m], atol=0.001)
 
 
 @pytest.mark.use_numba
@@ -211,3 +214,13 @@ def test_igrf_grid():
     npt.assert_allclose(grid.b_east, predicted[0])
     npt.assert_allclose(grid.b_north, predicted[1])
     npt.assert_allclose(grid.b_up, predicted[2])
+
+
+def test_igrf_grid_default_spacing():
+    "Make sure the default spacing leads to the expected grid shape"
+    grid = IGRF14("2020-04-15").grid(region=(0, 360, -90, 90), height=0)
+    # For a global grid, SHTools generates a grid with this shape
+    assert grid.b_east.shape == (29, 57)
+    grid = IGRF14("2020-04-15").grid(region=(0, 180, 0, 90), height=0)
+    # Half of a global grid
+    assert grid.b_east.shape == (15, 29)
