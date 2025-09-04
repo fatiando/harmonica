@@ -14,7 +14,11 @@ import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
+from .utils_ellipsoids import (
+    _calculate_lambda,
+    _get_v_as_euler,
+    get_elliptical_integrals,
+)
 from .._utils import magnetic_angles_to_vec
 
 
@@ -475,7 +479,7 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     # lambda derivatives as above
     n = np.empty((3, 3))
     r = [x, y, z]
-    gvals = _get_g_values(a, b, c, lmbda)
+    gvals = get_elliptical_integrals(a, b, c, lmbda)
     derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lmbda)
     h_vals = _get_h_values(a, b, c, lmbda)
 
