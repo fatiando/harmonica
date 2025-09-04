@@ -14,10 +14,8 @@ import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-import harmonica as hm
-
-from .ellipsoid_gravity import _get_g_values
 from .utils_ellipsoids import _calculate_lambda, _get_v_as_euler
+from .._utils import magnetic_angles_to_vec
 
 
 # internal field N matrix functions
@@ -124,7 +122,7 @@ def ellipsoid_magnetics(
 
     # unpack external field, change to vector
     magnitude, inclination, declination = external_field
-    b0 = np.array(hm.magnetic_angles_to_vec(magnitude, inclination, declination))
+    b0 = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
     h0 = b0 * 1e-9 / mu_0
 
     # loop over each given ellipsoid
