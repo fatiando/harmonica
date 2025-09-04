@@ -447,11 +447,11 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
         + (z / (c**2 + lmbda)) ** 2
     )
 
-    dλ_dx = (2 * x) / (a**2 + lmbda) / denom
-    dλ_dy = (2 * y) / (b**2 + lmbda) / denom
-    dλ_dz = (2 * z) / (c**2 + lmbda) / denom
+    dlambda_dx = (2 * x) / (a**2 + lmbda) / denom
+    dlambda_dy = (2 * y) / (b**2 + lmbda) / denom
+    dlambda_dz = (2 * z) / (c**2 + lmbda) / denom
 
-    return np.stack([dλ_dx, dλ_dy, dλ_dz], axis=-1)
+    return np.stack([dlambda_dx, dlambda_dy, dlambda_dz], axis=-1)
 
 
 def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
