@@ -50,8 +50,8 @@ format:
 check: check-format check-style check-actions
 
 check-format:
-	ruff format --check $(STYLE_CHECK_STYLE)
-	burocrata --check --extension=py $(STYLE_CHECK_STYLE)
+	ruff format --check $(STYLE_CHECK_FILES)
+	burocrata --check --extension=py $(STYLE_CHECK_FILES)
 
 check-style:
 	ruff check $(STYLE_CHECK_FILES)
