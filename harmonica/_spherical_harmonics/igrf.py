@@ -49,9 +49,8 @@ def load_igrf(path):
     """
     with path.open() as input_file:
         # Get rid of the comments and the first header line
-        for line in input_file:
-            if not line.startswith("#"):
-                break
+        for _ in range(3):
+            input_file.readline()
         # Read the years
         years_str = input_file.readline().split()[3:-1]
         # The years all have .0 at the end and int doesn't like it.
@@ -109,13 +108,14 @@ def interpolate_coefficients(date, years, g, h, g_sv, h_sv):
         n and the second is the order m. At m > n, the coefficients are
         assigned zero. Units are nT.
     """
-    if date.year < 1900:
-        message = f"Invalid date {date} for IGRF. The model isn't valid before 1900."
+    if date.year < years[0] or date.year >= years[-1] + 5:
+        message = (
+            f"Invalid date {date} for IGRF. "
+            f"The model isn't valid before {years[0]} or on or after {years[-1] + 5}."
+        )
         raise ValueError(message)
     # Find out which epoch is the last compatible one.
     index = int((date.year - years[0]) // 5)
-    if index >= years.size:
-        index = years.size - 1
     seconds_since_epoch = (
         date - datetime.datetime(year=years[index], month=1, day=1)
     ).total_seconds()
@@ -166,9 +166,9 @@ class IGRF14:
     International Geomagnetic Reference Field (14th generation).
 
     Calculate the three components of the magnetic field vector of the IGRF
-    model in a geodetic (longitude, latitude, geometric height) system. Model
-    coefficients are automatically downloaded and cached locally using
-    :mod:`pooch`.
+    model in a geodetic (longitude, latitude, geometric height) system for any
+    date between 1900 and 2030. Model coefficients are automatically downloaded
+    and cached locally using :mod:`pooch`.
 
     .. note::
 
@@ -184,7 +184,8 @@ class IGRF14:
         The date and time at which to calculate the IGRF field. If it's
         a string, should be an `ISO 8601 formatted date
         <https://en.wikipedia.org/wiki/ISO_8601>`__ and it will be converted
-        into a Python :class:`datetime.datetime`.
+        into a Python :class:`datetime.datetime`. Must be on or after 1900 and
+        before 2030.
     min_degree : int
         The minimum degree used in the expansion. Default is 1 (magnetic fields
         don't have the 0 degree term).
@@ -287,9 +288,15 @@ class IGRF14:
         self.max_degree = max_degree
         self.min_degree = min_degree
         self.ellipsoid = ellipsoid
-        self.coefficients = interpolate_coefficients(
-            self.date, *load_igrf(self._fetch_coefficient_file())
-        )
+        self._coefficients = None
+
+    @property
+    def coefficients(self):
+        if self._coefficients is None:
+            self._coefficients = interpolate_coefficients(
+                self.date, *load_igrf(self._fetch_coefficient_file())
+            )
+        return self._coefficients
 
     def _fetch_coefficient_file(self):
         """

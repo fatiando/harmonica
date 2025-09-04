@@ -175,6 +175,23 @@ def test_interpolate_coefficients():
                 npt.assert_allclose(h_date[n, m], h[i, n, m], atol=0.001)
 
 
+@pytest.mark.parametrize(
+    "date",
+    [datetime.datetime(1800, month=1, day=1), datetime.datetime(2030, month=1, day=1)],
+)
+def test_interpolate_coefficients_invalid_date(date):
+    "Check that an exception is raised for invalid dates"
+    with pytest.raises(ValueError, match="Invalid date"):
+        g_date, h_date = interpolate_coefficients(
+            date,
+            list(range(1900, 2030, 5)),
+            None,
+            None,
+            None,
+            None,
+        )
+
+
 @pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("data", "coordinates"),
@@ -200,13 +217,17 @@ def test_igrf_points(data, coordinates):
         )
 
 
-def test_igrf_grid():
+@pytest.mark.parametrize(
+    "date",
+    ["2020-04-15", datetime.datetime(2029, month=1, day=1)],
+)
+def test_igrf_grid(date):
     "Make sure the grid values are the same as the predict values"
     region = (0, 360, -90, 90)
     spacing = 20
     height = 2043
     coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=height)
-    igrf = IGRF14("2020-04-15")
+    igrf = IGRF14(date)
     predicted = igrf.predict(coordinates)
     grid = igrf.grid(region, height, spacing=spacing)
     assert grid.b_east.shape == coordinates[0].shape
