@@ -8,8 +8,6 @@ import numpy as np
 from scipy.spatial.transform import Rotation as rot
 from scipy.special import ellipeinc, ellipkinc
 
-import harmonica as hm
-
 
 def _calculate_lambda(x, y, z, a, b, c):
     """
