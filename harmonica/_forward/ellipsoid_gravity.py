@@ -64,7 +64,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     cast = np.broadcast(*coordinates)
 
     # Ravel coordinates into 1d arrays
-    easting, northing, upward = tuple(c.ravel() for c in coordinates)
+    easting, northing, upward = tuple(np.atleast_1d(c).ravel() for c in coordinates)
 
     # Allocate arrays
     ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
