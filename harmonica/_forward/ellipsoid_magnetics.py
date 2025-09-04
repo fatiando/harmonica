@@ -14,12 +14,12 @@ import numpy as np
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
+from .._utils import magnetic_angles_to_vec
 from .utils_ellipsoids import (
     _calculate_lambda,
     _get_v_as_euler,
     get_elliptical_integrals,
 )
-from .._utils import magnetic_angles_to_vec
 
 
 # internal field N matrix functions
