@@ -5,8 +5,10 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import numpy as np
+import pytest
 import verde as vd
-from choclo.point import gravity_u as pointgrav
+
+from harmonica import point_gravity
 
 from .._forward.create_ellipsoid import (
     OblateEllipsoid,
@@ -14,9 +16,6 @@ from .._forward.create_ellipsoid import (
     TriaxialEllipsoid,
 )
 from .._forward.ellipsoid_gravity import (
-    _get_gravity_oblate,
-    _get_gravity_prolate,
-    _get_gravity_triaxial,
     ellipsoid_gravity,
 )
 
@@ -39,84 +38,6 @@ def test_degenerate_ellipsoid_cases():
     _, _, gu1 = ellipsoid_gravity(coordinates, tri, density, field="g")
     _, _, gu2 = ellipsoid_gravity(coordinates, pro, density, field="g")
     _, _, gu3 = ellipsoid_gravity(coordinates, obl, density, field="g")
-
-
-def test_ellipsoid_at_distance():
-    """
-
-    To test that the triaxial ellipsoid function produces the same
-    result as the scipy point mass for spherical bodies at distance.
-
-    """
-    x, y, z = 0, 0, 100
-    a, b, c = 3, 2, 1
-    density = 1000
-
-    dg1, dg2, dg3 = _get_gravity_triaxial(x, y, z, a, b, c, density)
-    mass = density * 4 / 3 * np.pi * 3 * 2 * 1
-    point_grav = pointgrav(x, y, z, 0, 0, 0, mass)
-
-    assert np.allclose(dg3, point_grav)
-
-
-def test_symmetry_at_surface():
-    """
-
-    Test that the gravity anomaly produced shows symmetry across the axes.
-    E.g., a surface of ellipsoid orientated to global coordinate system would
-    produce an equal but opposite anaomly at surface z=5 and surface z=-5.
-
-    """
-    x_up = 10
-    x_down = -10
-    y = 0
-    z = 0
-    density = 2000
-
-    _, _, dg3_tri_up = _get_gravity_triaxial(x_up, y, z, 3, 2, 1, density)
-    _, _, dg3_tri_down = _get_gravity_triaxial(x_down, y, z, 3, 2, 1, density)
-
-    _, _, dg3_obl_up = _get_gravity_oblate(x_up, y, z, 1, 3, 3, density)
-    _, _, dg3_obl_down = _get_gravity_oblate(x_down, y, z, 1, 3, 3, density)
-
-    _, _, dg3_pro_up = _get_gravity_prolate(x_up, y, z, 3, 2, 2, density)
-    _, _, dg3_pro_down = _get_gravity_prolate(x_down, y, z, 3, 2, 2, density)
-
-    np.testing.assert_allclose(np.abs(dg3_tri_down), np.abs(dg3_tri_up))
-    np.testing.assert_allclose(np.abs(dg3_pro_down), np.abs(dg3_pro_up))
-    np.testing.assert_allclose(np.abs(dg3_obl_down), np.abs(dg3_obl_up))
-
-
-def test_symmetry_at_constant_radius():
-    """
-
-    Testing the symmetry around the sperhical cross section of prolate and
-    oblate ellipsoids (axes where b=c).
-
-    """
-
-    a, b, c = (3, 2, 2)
-    d, f, g = (2, 3, 3)
-    r = 5
-    e = 0
-
-    theta = np.linspace(0, 2 * np.pi, 20)
-    n = r * np.cos(theta)
-    u = r * np.sin(theta)
-
-    _, ogn, ogu = _get_gravity_oblate(e, n, u, d, f, g, density=1000)
-
-    _, pgn, pgu = _get_gravity_prolate(e, n, u, a, b, c, density=1000)
-
-    for i in range(19):
-        np.testing.assert_allclose(
-            np.sqrt(ogn[i] ** 2 + ogu[i] ** 2),
-            np.sqrt(ogn[i + 1] ** 2 + ogu[i + 1] ** 2),
-        )
-        np.testing.assert_allclose(
-            np.sqrt(pgn[i] ** 2 + pgu[i] ** 2),
-            np.sqrt(pgn[i + 1] ** 2 + pgu[i + 1] ** 2),
-        )
 
 
 def test_opposite_planes():
@@ -169,3 +90,178 @@ def test_int_ext_boundary():
     np.testing.assert_allclose(ge[0, 0], ge[0, 1], rtol=1e-5, atol=1e-5)
     np.testing.assert_allclose(gn[0, 0], gn[0, 1], rtol=1e-5, atol=1e-5)
     np.testing.assert_allclose(gu[0, 0], gu[0, 1], rtol=1e-5, atol=1e-5)
+
+
+class TestSymmetry:
+    """
+    Test symmetry in gravity fields.
+    """
+
+    def build_ellipsoid(self, ellipsoid_type):
+        """
+        Build sample ellipsoid.
+
+        Use this function only to build a particular ellipsoid. Use the ``ellipsoid``
+        fixture instead.
+        """
+        centre = (0, 0, 0)
+        if ellipsoid_type == "triaxial":
+            a, b, c = 3.2, 2.1, 1.3
+            ellipsoid = TriaxialEllipsoid(
+                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+            )
+        elif ellipsoid_type == "prolate":
+            a, b = 3.2, 2.1
+            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        elif ellipsoid_type == "oblate":
+            a, b = 2.2, 3.1
+            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        else:
+            msg = f"Invalid ellipsoid type: {ellipsoid_type}"
+            raise ValueError(msg)
+        return ellipsoid
+
+    @pytest.fixture(params=["triaxial", "prolate", "oblate"])
+    def ellipsoid(self, request):
+        """
+        Sample ellipsoid.
+        """
+        ellipsoid_type = request.param
+        return self.build_ellipsoid(ellipsoid_type)
+
+    def test_vertical_symmetry_on_surface(self, ellipsoid):
+        """
+        Test symmetry of gz across a vertical axis that passes through the center of the
+        ellipsoid.
+        """
+        points = [(0, 0, ellipsoid.c), (0, 0, -ellipsoid.c)]
+        density = 200
+        gu_up, gu_down = tuple(
+            ellipsoid_gravity(p, ellipsoid, density, field="u") for p in points
+        )
+        np.testing.assert_allclose(gu_up, -gu_down)
+
+    @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate"])
+    @pytest.mark.parametrize("points", ["internal", "surface", "external"])
+    def test_symmetry_on_circle(self, points, ellipsoid_type):
+        """
+        Test symmetry of |g| on circle around center of a prolate and oblate ellipsoid.
+
+        Define a circle in the northing-upward plane, compute |g| on points along that
+        circle. All values of |g| should be equal.
+        """
+        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+
+        # Build coordinates along circle centered in the center of the ellipsoid
+        radius = ellipsoid.b
+        if points == "internal":
+            radius *= 0.5
+        elif points == "external":
+            radius *= 2
+        theta = np.linspace(0, 2 * np.pi, 61)
+
+        northing = radius * np.cos(theta)
+        upward = radius * np.sin(theta)
+        easting = np.zeros_like(northing)
+        coordinates = (easting, northing, upward)
+
+        # Compute gravity acceleration along the circle
+        density = 200
+        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        g = np.sqrt(ge**2 + gn**2 + gu**2)
+
+        # Check that |g| is constant in the circle
+        np.testing.assert_allclose(g[0], g)
+
+
+class TestEllipsoidVsPointSource:
+    """
+    Test if gravity field of ellipsoids approximates the one of a point source.
+
+    In the infinity limit, the gravity field of the ellipsoid should be the same as the
+    one for a point source.
+    """
+
+    @pytest.fixture(params=["triaxial", "prolate", "oblate"])
+    def ellipsoid(self, request):
+        """
+        Sample ellipsoid.
+        """
+        ellipsoid_type = request.param
+
+        centre = (0, 0, 0)
+        if ellipsoid_type == "triaxial":
+            a, b, c = 3.2, 2.1, 1.3
+            ellipsoid = TriaxialEllipsoid(
+                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+            )
+        elif ellipsoid_type == "prolate":
+            a, b = 3.2, 2.1
+            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        elif ellipsoid_type == "oblate":
+            a, b = 2.2, 3.1
+            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        else:
+            msg = f"Invalid ellipsoid type: {ellipsoid_type}"
+            raise ValueError(msg)
+        return ellipsoid
+
+    def test_approximation(self, ellipsoid):
+        """
+        Compare gravity field of ellipsoid with point source at large distance.
+
+        The two fields should be close enough at a sufficient large distance.
+        """
+        phi, theta = 48.9, 12.3
+        radius = max((ellipsoid.a, ellipsoid.b, ellipsoid.c)) * 1e3  # large radius
+        coordinates = (
+            radius * np.cos(phi) * np.cos(theta),
+            radius * np.sin(phi) * np.cos(theta),
+            radius * np.sin(theta),
+        )
+        density = 200
+        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+
+        ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
+        point_mass = density * ellipsoid_volume
+        ge_point, gn_point, gz_point = tuple(
+            point_gravity(coordinates, ellipsoid.centre, point_mass, field=f)
+            for f in ("g_e", "g_n", "g_z")
+        )
+
+        rtol = 1e-5
+        np.testing.assert_allclose(ge, ge_point, rtol=rtol)
+        np.testing.assert_allclose(gn, gn_point, rtol=rtol)
+        np.testing.assert_allclose(-gu, gz_point, rtol=rtol)
+
+    def test_convergence(self, ellipsoid):
+        """
+        Test if ellipsoid gravity fields converges to the one of a point source.
+        """
+        phi, theta = 48.9, 12.3
+        max_semiaxis = max((ellipsoid.a, ellipsoid.b, ellipsoid.c))
+        radii = np.linspace(max_semiaxis * 1e3, max_semiaxis * 1e4, 51)
+        coordinates = (
+            radii * np.cos(phi) * np.cos(theta),
+            radii * np.sin(phi) * np.cos(theta),
+            radii * np.sin(theta),
+        )
+        density = 200
+        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+
+        ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
+        point_mass = density * ellipsoid_volume
+        ge_point, gn_point, gz_point = tuple(
+            point_gravity(coordinates, ellipsoid.centre, point_mass, field=f)
+            for f in ("g_e", "g_n", "g_z")
+        )
+
+        # Test if difference between fields gets smaller with distance
+        ge_diff = np.abs(ge - ge_point)
+        assert np.all(ge_diff[:-1] > ge_diff[1:])
+
+        gn_diff = np.abs(gn - gn_point)
+        assert np.all(gn_diff[:-1] > gn_diff[1:])
+
+        gu_diff = np.abs(gu - -gz_point)
+        assert np.all(gu_diff[:-1] > gu_diff[1:])
