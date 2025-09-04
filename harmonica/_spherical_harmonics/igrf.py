@@ -649,7 +649,8 @@ def spherical_harmonics_magnetic_field_grid(
         cos_colat = np.cos(colatitude[i])
         sin_colat = np.sin(colatitude[i])
         # Have to allocate here because of the parallel loop. These are small
-        # for low degree so not a huge time sink.
+        # for low degree so not a huge time sink. Trying to allocate only once
+        # per thread caused a slow down as well.
         p = np.empty_like(g)
         p_deriv = np.empty_like(g)
         legendre.associated_legendre_schmidt(cos_colat, max_degree, p)
