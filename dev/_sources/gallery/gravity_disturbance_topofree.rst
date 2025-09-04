@@ -38,7 +38,7 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-82
+.. GENERATED FROM PYTHON SOURCE LINES 28-83
 
 
 
@@ -74,7 +74,6 @@ correction.
         units:           mGal
         actual_range:    [974748.6 980201.9]
         icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
-    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
 
 
 
@@ -84,6 +83,7 @@ correction.
 |
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -143,7 +143,7 @@ correction.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.675 seconds)
+   **Total running time of the script:** (0 minutes 2.976 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:

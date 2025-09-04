@@ -42,7 +42,7 @@ data uncertainty to be taken into account and noise to be suppressed though the
 least-squares fitting process. The main disadvantage is the increased
 computational load (both in terms of time and memory).
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-136
+.. GENERATED FROM PYTHON SOURCE LINES 32-137
 
 
 
@@ -58,7 +58,7 @@ computational load (both in terms of time and memory).
 
     Number of data points: 7054
     Mean height of observations: 481.34278423589456
-    R² score: 0.9988825635803776
+    R² score: 0.9988825635803779
 
     Generated grid:
      <xarray.Dataset> Size: 241kB
@@ -80,6 +80,7 @@ computational load (both in terms of time and memory).
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pandas as pd
@@ -189,7 +190,7 @@ computational load (both in terms of time and memory).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.180 seconds)
+   **Total running time of the script:** (0 minutes 7.188 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_cartesian.py:

@@ -31,7 +31,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-117
+.. GENERATED FROM PYTHON SOURCE LINES 21-118
 
 
 
@@ -67,6 +67,7 @@ account the curvature of the Earth.
 |
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -168,7 +169,7 @@ account the curvature of the Earth.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.532 seconds)
+   **Total running time of the script:** (0 minutes 2.487 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_spherical.py:
