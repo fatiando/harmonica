@@ -10,8 +10,8 @@ Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 
 from collections.abc import Iterable
 
-from choclo.constants import GRAVITATIONAL_CONST
 import numpy as np
+from choclo.constants import GRAVITATIONAL_CONST
 from scipy.constants import gravitational_constant as g
 from scipy.special import ellipeinc, ellipkinc
 
@@ -78,7 +78,6 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         density = [density]
 
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
-
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
         origin_e, origin_n, origin_u = ellipsoid.centre

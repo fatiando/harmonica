@@ -124,7 +124,7 @@ def test_likeness_to_sphere():
         be_obl = be_obl.ravel()
 
         # sphere
-        b_e, b_n, b_u = _sphere_magnetic(
+        b_e, b_n, b_u = sphere_magnetic(
             coordinates, radius=60, center=(0, 0, 0), magnetization=m[indx]
         )
         b_e = b_e.ravel()
