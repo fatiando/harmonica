@@ -4,6 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import re
 import numpy as np
 import pytest
 import verde as vd
@@ -18,6 +19,36 @@ from .._forward.create_ellipsoid import (
 from .._forward.ellipsoid_gravity import (
     ellipsoid_gravity,
 )
+
+
+def build_ellipsoid(ellipsoid_type):
+    """
+    Build a sample ellipsoid.
+
+    Parameters
+    ----------
+    ellipsoid_type : {"triaxial", "prolate", "oblate"}
+
+    Returns
+    -------
+    ellipsoid
+    """
+    centre = (0, 0, 0)
+    if ellipsoid_type == "triaxial":
+        a, b, c = 3.2, 2.1, 1.3
+        ellipsoid = TriaxialEllipsoid(
+            a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+        )
+    elif ellipsoid_type == "prolate":
+        a, b = 3.2, 2.1
+        ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+    elif ellipsoid_type == "oblate":
+        a, b = 2.2, 3.1
+        ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+    else:
+        msg = f"Invalid ellipsoid type: {ellipsoid_type}"
+        raise ValueError(msg)
+    return ellipsoid
 
 
 def test_degenerate_ellipsoid_cases():
@@ -97,37 +128,13 @@ class TestSymmetry:
     Test symmetry in gravity fields.
     """
 
-    def build_ellipsoid(self, ellipsoid_type):
-        """
-        Build sample ellipsoid.
-
-        Use this function only to build a particular ellipsoid. Use the ``ellipsoid``
-        fixture instead.
-        """
-        centre = (0, 0, 0)
-        if ellipsoid_type == "triaxial":
-            a, b, c = 3.2, 2.1, 1.3
-            ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
-            )
-        elif ellipsoid_type == "prolate":
-            a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-        elif ellipsoid_type == "oblate":
-            a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-        else:
-            msg = f"Invalid ellipsoid type: {ellipsoid_type}"
-            raise ValueError(msg)
-        return ellipsoid
-
     @pytest.fixture(params=["triaxial", "prolate", "oblate"])
     def ellipsoid(self, request):
         """
         Sample ellipsoid.
         """
         ellipsoid_type = request.param
-        return self.build_ellipsoid(ellipsoid_type)
+        return build_ellipsoid(ellipsoid_type)
 
     def test_vertical_symmetry_on_surface(self, ellipsoid):
         """
@@ -150,7 +157,7 @@ class TestSymmetry:
         Define a circle in the northing-upward plane, compute |g| on points along that
         circle. All values of |g| should be equal.
         """
-        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+        ellipsoid = build_ellipsoid(ellipsoid_type)
 
         # Build coordinates along circle centered in the center of the ellipsoid
         radius = ellipsoid.b
@@ -265,3 +272,15 @@ class TestEllipsoidVsPointSource:
 
         gu_diff = np.abs(gu - -gz_point)
         assert np.all(gu_diff[:-1] > gu_diff[1:])
+
+
+def test_invalid_field():
+    """
+    Test error after invalid field.
+    """
+    ellipsoid = build_ellipsoid("prolate")
+    coordinates = (1, 2, 3)
+    invalid_field = "blah"
+    msg = re.escape(f"Invalid field '{invalid_field}'")
+    with pytest.raises(ValueError, match=msg):
+        ellipsoid_gravity(coordinates, ellipsoid, density=1.0, field=invalid_field)

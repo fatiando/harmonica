@@ -60,6 +60,10 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     For derivations of the equations, and methods used in this code.
     """
+    if field not in ("g", "e", "n", "u"):
+        msg = f"Invalid field '{field}'. Choose from 'g', 'e', 'n', or 'u'."
+        raise ValueError(msg)
+
     # Cache broadcast of coordinates
     cast = np.broadcast(*coordinates)
 
@@ -108,7 +112,11 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     # Reshape gravity arrays
     ge, gn, gu = tuple(g.reshape(cast.shape) for g in (ge, gn, gu))
 
-    return {"e": ge, "n": gn, "u": gu}.get(field, (ge, gn, gu))
+    if field == "g":
+        return (ge, gn, gu)
+
+    fields = {"e": ge, "n": gn, "u": gu}
+    return fields[field]
 
 
 def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
