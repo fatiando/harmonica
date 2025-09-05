@@ -5,6 +5,10 @@
 # Inspired by this gist: https://gist.github.com/jobar8/683483df605a906fb3da747b64627305
 # created by Joseph Barraud and made available under the BSD License.
 
+import numpy as np
+import xarray as xr
+from typing import Tuple, List, Dict, Any
+
 """
 Functions for reading Geosoft GXF (Grid eXchange File) format files.
 
@@ -161,10 +165,6 @@ Kucks, R.P., and Hill, P.L., 2000, Wyoming aeromagnetic and gravity maps and dat
 """
 Function to read USGS GXF file
 """
-
-import numpy as np
-import xarray as xr
-from typing import Tuple, List, Dict, Union, Any
 
 
 def _read_gxf_data(infile: str) -> Tuple[np.ndarray, Dict[str, Any]]:

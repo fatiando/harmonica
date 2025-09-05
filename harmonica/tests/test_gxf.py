@@ -13,9 +13,6 @@ from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
-import pytest
-import xarray as xr
-import xarray.testing as xrt
 
 from .. import read_gxf
 from .._io.geosoft_gxf_io import _read_gxf_data
