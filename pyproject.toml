@@ -79,6 +79,7 @@ notice = '''
 line-length = 88
 exclude = [
     "doc/_build",
+    "doc/gallery",
     "src/choclo/_version.py",
 ]
 
