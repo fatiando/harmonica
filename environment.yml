@@ -17,6 +17,7 @@ dependencies:
   - xarray
   - xrft>=1.0
   - choclo>=0.1
+  - boule
   # Optional requirements
   - pyvista
   - vtk
