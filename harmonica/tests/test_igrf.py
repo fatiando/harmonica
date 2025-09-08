@@ -163,6 +163,7 @@ def test_interpolate_coefficients():
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
             datetime.datetime(year, month=1, day=1, hour=0, minute=1, second=0),
+            g.shape[1] - 1,
             years,
             g,
             h,
@@ -175,6 +176,23 @@ def test_interpolate_coefficients():
                 npt.assert_allclose(h_date[n, m], h[i, n, m], atol=0.001)
 
 
+def test_interpolate_coefficients_max_degree():
+    "Check that the returned coefficients stop at the max degree"
+    max_degree = 13
+    years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
+    g_date, h_date = interpolate_coefficients(
+        datetime.datetime(year=2023, month=1, day=20, hour=0, minute=1, second=0),
+        max_degree,
+        years,
+        g,
+        h,
+        g_sv,
+        h_sv,
+    )
+    assert g_date.shape == h_date.shape
+    assert g_date.shape == (max_degree + 1, max_degree + 1)
+
+
 @pytest.mark.parametrize(
     "date",
     [datetime.datetime(1800, month=1, day=1), datetime.datetime(2030, month=1, day=1)],
@@ -184,6 +202,7 @@ def test_interpolate_coefficients_invalid_date(date):
     with pytest.raises(ValueError, match="Invalid date"):
         g_date, h_date = interpolate_coefficients(
             date,
+            None,
             list(range(1900, 2030, 5)),
             None,
             None,

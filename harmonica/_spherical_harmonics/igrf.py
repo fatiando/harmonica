@@ -76,7 +76,7 @@ def load_igrf(path):
     return years, coeffs["g"], coeffs["h"], coeffs["g_sv"], coeffs["h_sv"]
 
 
-def interpolate_coefficients(date, years, g, h, g_sv, h_sv):
+def interpolate_coefficients(date, max_degree, years, g, h, g_sv, h_sv):
     """
     Interpolate the Gauss coefficients to the given date.
 
@@ -87,6 +87,8 @@ def interpolate_coefficients(date, years, g, h, g_sv, h_sv):
     ----------
     date : :class:`datetime.datetime`
         The date and time at which to interpolate the coefficients.
+    max_degree : int
+        The maximum degree that will be interpolated.
     years : 1d-array
         The years for the knot points (epochs) of the time interpolation.
     g, h : 3d-arrays
@@ -106,7 +108,8 @@ def interpolate_coefficients(date, years, g, h, g_sv, h_sv):
     g_date, h_date : 2d-arrays
         The interpolated Gauss coefficients. The first dimension is the degree
         n and the second is the order m. At m > n, the coefficients are
-        assigned zero. Units are nT.
+        assigned zero. The shape of the arrays will be ``(max_degree + 1,
+        max_degree + 1)``. Units are nT.
     """
     if date.year < years[0] or date.year >= years[-1] + 5:
         message = (
@@ -124,9 +127,9 @@ def interpolate_coefficients(date, years, g, h, g_sv, h_sv):
         - datetime.datetime(year=years[index], month=1, day=1)
     ).total_seconds()
     year_in_seconds = 365.25 * 24 * 60 * 60
-    g_date = np.zeros(g.shape[1:])
-    h_date = np.zeros(h.shape[1:])
-    for n in range(1, g.shape[1]):
+    g_date = np.zeros((max_degree + 1, max_degree + 1))
+    h_date = np.zeros((max_degree + 1, max_degree + 1))
+    for n in range(1, max_degree + 1):
         for m in range(n + 1):
             if index >= years.size - 1:
                 variation_g = g_sv[n, m] / year_in_seconds
@@ -294,7 +297,7 @@ class IGRF14:
     def coefficients(self):
         if self._coefficients is None:
             self._coefficients = interpolate_coefficients(
-                self.date, *load_igrf(self._fetch_coefficient_file())
+                self.date, self.max_degree, *load_igrf(self._fetch_coefficient_file())
             )
         return self._coefficients
 
