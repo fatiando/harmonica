@@ -66,9 +66,9 @@ def test_degenerate_ellipsoid_cases():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    _, _, gu1 = ellipsoid_gravity(coordinates, tri, density, field="g")
-    _, _, gu2 = ellipsoid_gravity(coordinates, pro, density, field="g")
-    _, _, gu3 = ellipsoid_gravity(coordinates, obl, density, field="g")
+    _, _, gz1 = ellipsoid_gravity(coordinates, tri, density, field="g")
+    _, _, gz2 = ellipsoid_gravity(coordinates, pro, density, field="g")
+    _, _, gz3 = ellipsoid_gravity(coordinates, obl, density, field="g")
 
 
 def test_opposite_planes():
@@ -94,9 +94,9 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gu1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
-    _, _, gu2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
-    np.testing.assert_allclose(gu1, -np.flip(gu2))
+    _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
+    _, _, gz2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
+    np.testing.assert_allclose(gz1, -np.flip(gz2))
 
 
 def test_int_ext_boundary():
@@ -116,11 +116,11 @@ def test_int_ext_boundary():
     u = np.array([[0.0, 0.0]])
     coordinates = (e, n, u)
 
-    ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, 2000, field="g")
+    ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, 2000, field="g")
 
     np.testing.assert_allclose(ge[0, 0], ge[0, 1], rtol=1e-5, atol=1e-5)
     np.testing.assert_allclose(gn[0, 0], gn[0, 1], rtol=1e-5, atol=1e-5)
-    np.testing.assert_allclose(gu[0, 0], gu[0, 1], rtol=1e-5, atol=1e-5)
+    np.testing.assert_allclose(gz[0, 0], gz[0, 1], rtol=1e-5, atol=1e-5)
 
 
 class TestSymmetry:
@@ -143,10 +143,10 @@ class TestSymmetry:
         """
         points = [(0, 0, ellipsoid.c), (0, 0, -ellipsoid.c)]
         density = 200
-        gu_up, gu_down = tuple(
-            ellipsoid_gravity(p, ellipsoid, density, field="u") for p in points
+        gz_up, gz_down = tuple(
+            ellipsoid_gravity(p, ellipsoid, density, field="g_z") for p in points
         )
-        np.testing.assert_allclose(gu_up, -gu_down)
+        np.testing.assert_allclose(gz_up, -gz_down)
 
     @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate"])
     @pytest.mark.parametrize("points", ["internal", "surface", "external"])
@@ -174,8 +174,8 @@ class TestSymmetry:
 
         # Compute gravity acceleration along the circle
         density = 200
-        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
-        g = np.sqrt(ge**2 + gn**2 + gu**2)
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        g = np.sqrt(ge**2 + gn**2 + gz**2)
 
         # Check that |g| is constant in the circle
         np.testing.assert_allclose(g[0], g)
@@ -227,7 +227,7 @@ class TestEllipsoidVsPointSource:
             radius * np.sin(theta),
         )
         density = 200
-        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
@@ -239,7 +239,7 @@ class TestEllipsoidVsPointSource:
         rtol = 1e-5
         np.testing.assert_allclose(ge, ge_point, rtol=rtol)
         np.testing.assert_allclose(gn, gn_point, rtol=rtol)
-        np.testing.assert_allclose(-gu, gz_point, rtol=rtol)
+        np.testing.assert_allclose(gz, gz_point, rtol=rtol)
 
     def test_convergence(self, ellipsoid):
         """
@@ -247,14 +247,14 @@ class TestEllipsoidVsPointSource:
         """
         phi, theta = 48.9, 12.3
         max_semiaxis = max((ellipsoid.a, ellipsoid.b, ellipsoid.c))
-        radii = np.linspace(max_semiaxis * 1e3, max_semiaxis * 1e4, 51)
+        radii = np.linspace(max_semiaxis * 10, max_semiaxis * 400, 51)
         coordinates = (
             radii * np.cos(phi) * np.cos(theta),
             radii * np.sin(phi) * np.cos(theta),
             radii * np.sin(theta),
         )
         density = 200
-        ge, gn, gu = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
@@ -270,8 +270,8 @@ class TestEllipsoidVsPointSource:
         gn_diff = np.abs(gn - gn_point)
         assert np.all(gn_diff[:-1] > gn_diff[1:])
 
-        gu_diff = np.abs(gu - -gz_point)
-        assert np.all(gu_diff[:-1] > gu_diff[1:])
+        gz_diff = np.abs(gz - gz_point)
+        assert np.all(gz_diff[:-1] > gz_diff[1:])
 
 
 def test_invalid_field():

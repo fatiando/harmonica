@@ -17,7 +17,7 @@ from scipy.special import ellipeinc, ellipkinc
 from .._utils import magnetic_angles_to_vec
 from .utils_ellipsoids import (
     _calculate_lambda,
-    _get_v_as_euler,
+    get_rotation_matrix,
     get_elliptical_integrals,
 )
 
@@ -141,7 +141,7 @@ def ellipsoid_magnetics(
 
         cast = np.broadcast(e, n, u)
         obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
-        r = _get_v_as_euler(yaw, pitch, roll)
+        r = get_rotation_matrix(yaw, pitch, roll)
         rotated = r.T @ obs_points
         x, y, z = [axis.reshape(cast.shape).ravel() for axis in rotated]
 
@@ -295,9 +295,9 @@ def _depol_triaxial_int(a, b, c):
         + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
-        phi, k
-    ) + b**2 / (b**2 - c**2)
+    nzz = -1 * (
+        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
+    ) * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
 
     np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz

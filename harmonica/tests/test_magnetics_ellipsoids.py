@@ -21,7 +21,7 @@ from .._forward.ellipsoid_magnetics import (
     _depol_triaxial_int,
     ellipsoid_magnetics,
 )
-from .._forward.utils_ellipsoids import _get_v_as_euler
+from .._forward.utils_ellipsoids import get_rotation_matrix
 
 
 def sphere_magnetic(coordinates, radius, center, magnetization):
@@ -139,8 +139,8 @@ def test_likeness_to_sphere():
 
 def test_euler_returns():
     """Check the euler returns are exact"""
-    r0 = _get_v_as_euler(0, 0, 0)
-    r360 = _get_v_as_euler(360, 0, 0)
+    r0 = get_rotation_matrix(0, 0, 0)
+    r360 = get_rotation_matrix(360, 0, 0)
     assert np.allclose(r0, r360)
 
 

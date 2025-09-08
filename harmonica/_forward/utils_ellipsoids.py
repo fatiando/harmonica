@@ -394,7 +394,7 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     return g1, g2, g2
 
 
-def _get_v_as_euler(yaw, pitch, roll):
+def get_rotation_matrix(yaw, pitch, roll):
     """
     Build rotation matrix from yaw, pitch and roll angles.
 
@@ -421,6 +421,9 @@ def _get_v_as_euler(yaw, pitch, roll):
     Yaw (Z) and roll (X) rotations are done using the right-hand rule. Rotations for the
     pitch (Ŷ) are carried out in the opposite direction, so positive pitch _lifts_ the
     easting axis.
+
+    This rotation matrix allows to apply rotations from the local coordinate system of
+    the ellipsoid into the global coordinate system (easting, northing, upward).
     """
     # using scipy rotation package
     # this produces the local to global rotation matrix (or what would be

@@ -15,17 +15,30 @@ from choclo.constants import GRAVITATIONAL_CONST
 
 from .utils_ellipsoids import (
     _calculate_lambda,
-    _get_v_as_euler,
+    get_rotation_matrix,
     get_elliptical_integrals,
 )
 
 
 def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
-    """
+    r"""
     Forward model gravity fields of ellipsoids.
 
     Compute the gravity acceleration components for an ellipsoidal body at specified
     observation points.
+
+    .. warning::
+
+        The **vertical direction points upwards**, i.e. positive and negative
+        values of ``upward`` represent points above and below the surface,
+        respectively. But ``g_z`` field returns the **downward component** of
+        the gravitational acceleration so that positive density contrasts
+        produce positive anomalies.
+
+    .. important::
+
+        The gravity acceleration components are returned in mGal
+        (:math:`\text{m}/\text{s}^2`).
 
     Parameters
     ----------
@@ -39,18 +52,18 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         :class:`harmonica.OblateEllipsoid`, or a list of them.
     density : float, list of floats or array
         List or array containing the density of each ellipsoid in kg/m^3.
-    field : {"g", "e", "n", "u"}, optional
+    field : {"g", "g_e", "g_n", "g_z"}, optional
         Desired field that want to be computed.
-        If "e", "n", or "u" the function will return the easting, northing or upward
-        gravity acceleration component, respectively.
+        If "g_e", "g_n", "g_z" the function will return the easting, northing
+        or downward gravity acceleration component, respectively.
         If "g", the function will return a tuple with the three components.
         Default to "g".
 
     Returns
     -------
-    ge, gn, gu: arrays
-        Easting, northing and upward component of the gravity acceleration.
-        Or a single one if ``field`` is "e", "n" or "u".
+    g_e, g_n, g_z: arrays
+        Easting, northing and downward component of the gravity acceleration.
+        Or a single one if ``field`` is "g_e", "g_n" or "g_z".
 
     References
     ----------
@@ -60,8 +73,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     For derivations of the equations, and methods used in this code.
     """
-    if field not in ("g", "e", "n", "u"):
-        msg = f"Invalid field '{field}'. Choose from 'g', 'e', 'n', or 'u'."
+    if field not in ("g", "g_e", "g_n", "g_z"):
+        msg = f"Invalid field '{field}'. Choose from 'g', 'g_e', 'g_n', or 'g_z'."
         raise ValueError(msg)
 
     # Cache broadcast of coordinates
@@ -90,7 +103,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         )
 
         # create rotation matrix
-        r = _get_v_as_euler(yaw, pitch, roll)
+        r = get_rotation_matrix(yaw, pitch, roll)
 
         # rotate observation points
         rotated_points = r.T @ obs_points
@@ -109,13 +122,16 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         gn += gn_i
         gu += gu_i
 
-    # Reshape gravity arrays
-    ge, gn, gu = tuple(g.reshape(cast.shape) for g in (ge, gn, gu))
+    # Get gz
+    gz = -gu
+
+    # Reshape gravity arrays and convert to mGal
+    ge, gn, gz = tuple(g.reshape(cast.shape) * 1e5 for g in (ge, gn, gz))
 
     if field == "g":
-        return (ge, gn, gu)
+        return (ge, gn, gz)
 
-    fields = {"e": ge, "n": gn, "u": gu}
+    fields = {"g_e": ge, "g_n": gn, "g_z": gz}
     return fields[field]
 
 
