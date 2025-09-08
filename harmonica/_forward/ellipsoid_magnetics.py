@@ -381,9 +381,9 @@ def _construct_n_matrix_internal(a, b, c):
     if a > b > c:
         func = _depol_triaxial_int(a, b, c)
     elif a > b and b == c:
-        func = _depol_prolate_int(a, b, c)
+        func = _depol_prolate_int(a, b)
     elif a < b and b == c:
-        func = _depol_oblate_int(a, b, c)
+        func = _depol_oblate_int(a, b)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)

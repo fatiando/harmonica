@@ -398,10 +398,10 @@ def test_euler_rotation_symmetry_mag():
 def test_internal_depol_equals_1():
     """Test that the internal depol tensor component sum equals 1"""
 
-    onxx, onyy, onzz = _depol_oblate_int(3, 5, 5)
+    onxx, onyy, onzz = _depol_oblate_int(3, 5)
     np.testing.assert_allclose((onxx + onyy + onzz), 1)
 
-    pnxx, pnyy, pnzz = _depol_prolate_int(5, 3, 3)
+    pnxx, pnyy, pnzz = _depol_prolate_int(5, 3)
     np.testing.assert_allclose((pnxx + pnyy + pnzz), 1)
 
     tnxx, tnyy, tnzz = _depol_triaxial_int(5, 4, 3)
