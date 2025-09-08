@@ -37,6 +37,14 @@ The date can be provided as an `ISO 8601 formatted date
    If the time is omited, the default is midnight. If a timezone is omited, the
    default is UTC.
 
+.. tip::
+
+    Typically, for a short survey (a few days to a week), using a single time for
+    calculating the IGRF is adequate, since IGRF secular variations on these time
+    scales are typically small. However, if the survey is longer, or high precision is
+    required, it may be best to separate the survey by days or flights and calculate
+    the IGRF using a more appropriate datetime for each section.
+
 Calculating at given points
 ---------------------------
 
@@ -62,9 +70,19 @@ We can print the results in a better way to view them:
 
 .. jupyter-execute::
 
-   print(" | ".join([f"B{c}={v:.1f} nT" for c, v in zip("enu", field)]))
+   print(f"Be={field[0]:.1f} nT | Bn={field[1]:.1f} nT | Bu={field[2]:.1f} nT")
 
-Multiple values can be given as numpy arrays or lists:
+We can convert this tuple of values into intensity (or amplitude), inclination and
+declination using
+:func:`harmonica.magnetic_vec_to_angles`.
+
+.. jupyter-execute::
+
+   intensity, inc, dec = hm.magnetic_vec_to_angles(*field)
+   print(f"{intensity=:.1f} nT | {inc=:.1f}\N{DEGREE SIGN} | {dec=:.1f}\N{DEGREE SIGN}")
+
+In addition to calculating the IGRF field at one location, multiple coordinates can be
+given as numpy arrays or lists:
 
 .. jupyter-execute::
 
