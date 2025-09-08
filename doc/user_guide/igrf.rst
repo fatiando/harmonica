@@ -32,18 +32,19 @@ The date can be provided as an `ISO 8601 formatted date
 
    igrf = hm.IGRF14(datetime.datetime(1954, 7, 29, hour=1, minute=20))
 
-.. tip::
+.. note::
 
    If the time is omited, the default is midnight. If a timezone is omited, the
    default is UTC.
 
 .. tip::
 
-    Typically, for a short survey (a few days to a week), using a single time for
-    calculating the IGRF is adequate, since IGRF secular variations on these time
-    scales are typically small. However, if the survey is longer, or high precision is
-    required, it may be best to separate the survey by days or flights and calculate
-    the IGRF using a more appropriate datetime for each section.
+   Typically, for a short magnetometry survey (a few days to a week), using
+   a single time for calculating the IGRF is adequate, since IGRF secular
+   variations on these time scales are typically small. However, if the survey
+   is longer, or high precision is required, it may be best to separate the
+   survey by days or flights and calculate the IGRF using a more appropriate
+   datetime for each section.
 
 Calculating at given points
 ---------------------------
@@ -79,10 +80,16 @@ declination using
 .. jupyter-execute::
 
    intensity, inc, dec = hm.magnetic_vec_to_angles(*field)
-   print(f"{intensity=:.1f} nT | {inc=:.1f}\N{DEGREE SIGN} | {dec=:.1f}\N{DEGREE SIGN}")
+   print(f"{intensity=:.1f} nT | {inc=:.1f}° | {dec=:.1f}°")
 
-In addition to calculating the IGRF field at one location, multiple coordinates can be
-given as numpy arrays or lists:
+.. note::
+
+   While the vertical component of the magnetic field (:math:`B_u`) is positive
+   upward, the inclination is positive downward as per international
+   convention. Hence why the value above is negative.
+
+In addition to calculating the IGRF field at one location, multiple coordinates
+can be given as numpy arrays or lists:
 
 .. jupyter-execute::
 
