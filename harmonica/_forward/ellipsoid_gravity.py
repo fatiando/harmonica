@@ -98,24 +98,19 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         origin_e, origin_n, origin_u = ellipsoid.centre
 
         # Translate observation points to coordinate system in center of the ellipsoid
-        obs_points = np.vstack(
-            (easting - origin_e, northing - origin_n, upward - origin_u)
-        )
+        coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
         # create rotation matrix
         r = get_rotation_matrix(yaw, pitch, roll)
 
         # rotate observation points
-        rotated_points = r.T @ obs_points
-        x, y, z = tuple(c for c in rotated_points)
+        x, y, z = r.T @ np.vstack(coords_shifted)
 
-        # calculate gravity component for the rotated points
-        gx, gy, gz = _compute_gravity_ellipsoid(x, y, z, a, b, c, rho)
-        gravity = np.vstack((gx, gy, gz))
+        # calculate gravity components on local coordinate system
+        gravity_ellipsoid = _compute_gravity_ellipsoid(x, y, z, a, b, c, rho)
 
         # project onto upward unit vector, axis U
-        g_projected = r @ gravity
-        ge_i, gn_i, gu_i = tuple(c for c in g_projected)
+        ge_i, gn_i, gu_i = r @ np.vstack(gravity_ellipsoid)
 
         # sum contributions from each ellipsoid
         ge += ge_i
