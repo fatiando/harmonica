@@ -8,7 +8,7 @@
 Forward modelling magnetic fields produced by ellipsoidal bodies.
 """
 
-from collections.abc import Iterable
+from collections.abc import Sequence
 
 import numpy as np
 from scipy.constants import mu_0
@@ -86,13 +86,15 @@ def ellipsoid_magnetics(
     For derivations of the equations and methods used in this code.
     """
     # check inputs are of the correct type
-    if not isinstance(ellipsoids, Iterable):
+    if not isinstance(ellipsoids, Sequence):
         ellipsoids = [ellipsoids]
 
-    if not isinstance(susceptibilities, Iterable):
+    if not isinstance(susceptibilities, Sequence):
         susceptibilities = [susceptibilities]
 
-    if remnant_mag is not None:
+    if remnant_mag is None:
+        mr = np.zeros((len(ellipsoids), 3))
+    else:
         mr = np.asarray(remnant_mag, dtype=float)
 
         if mr.ndim == 1 and mr.size == 3:
@@ -104,13 +106,12 @@ def ellipsoid_magnetics(
                 f"({len(ellipsoids)}, 3); got {mr.shape}."
             )
             raise ValueError(msg)
-    if remnant_mag is None:
-        mr = np.zeros((len(ellipsoids), 3))
 
-    if not isinstance(external_field, Iterable) and len(external_field) != 3:
+    if not isinstance(external_field, Sequence) and len(external_field) != 3:
         msg = (
-            "External field  must contain three values (M, I, D):"
-            f" instead got {external_field}."
+            "External field  must contain three values "
+            "(magnitude, inclination, declination):"
+            f" instead got '{external_field}'."
         )
         raise ValueError(msg)
 
@@ -127,7 +128,7 @@ def ellipsoid_magnetics(
     # unpack external field, change to vector
     magnitude, inclination, declination = external_field
     b0 = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
-    h0 = b0 * 1e-9 / mu_0
+    h0 = b0 * 1e-9 / mu_0  # convert to SI units
 
     # loop over each given ellipsoid
     for ellipsoid, susceptibility, m_r in zip(
@@ -150,11 +151,11 @@ def ellipsoid_magnetics(
 
         h0_rot = r.T @ h0
 
-        m = _get_magnetisation_with_rem(a, b, c, k_matrix, h0_rot, m_r)
+        m = get_magnetisation(a, b, c, k_matrix, h0_rot, m_r)
 
         n_cross = _construct_n_matrix_internal(a, b, c)
 
-        # create N matricies for each given point
+        # create N matrices for each given point
         for idx in range(len(lmbda)):
             lam = lmbda[idx]
             xi, yi, zi = x[idx], y[idx], z[idx]
@@ -162,22 +163,13 @@ def ellipsoid_magnetics(
 
             if is_internal:
                 hr = (-n_cross + np.identity(3)) @ m
-
                 hr = r @ hr
-                be[idx] += 1e9 * mu_0 * hr[0]
-                bn[idx] += 1e9 * mu_0 * hr[1]
-                bu[idx] += 1e9 * mu_0 * hr[2]
-
             else:
                 nr = _construct_n_matrix_external(xi, yi, zi, a, b, c, lam)
-
                 hr = nr @ m
-                # print('H_ext', hr)
-                # hr = r @ h_ext
-
-                be[idx] += 1e9 * mu_0 * hr[0]
-                bn[idx] += 1e9 * mu_0 * hr[1]
-                bu[idx] += 1e9 * mu_0 * hr[2]
+            be[idx] += 1e9 * mu_0 * hr[0]
+            bn[idx] += 1e9 * mu_0 * hr[1]
+            bu[idx] += 1e9 * mu_0 * hr[2]
 
     be = be.reshape(broadcast)
     bn = bn.reshape(broadcast)
@@ -186,21 +178,23 @@ def ellipsoid_magnetics(
     return {"e": be, "n": bn, "u": bu}.get(field, (be, bn, bu))
 
 
-def _get_magnetisation_with_rem(a, b, c, k, h0, mr):
+def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
     r"""
     Get magnetization vector for an ellipsoid.
 
-    Get the magnetization vector from the ellipsoid parameters and the rotated external
-    field.
+    Get the magnetization vector of and ellipsoid considering induced and remanent
+    magnetization. This function takes into account demagnetization effects.
 
     Parameters
     ----------
     a, b, c : floats
         Semi-axes lengths of the ellipsoid.
-    k : (3, 3) array
+    susceptibility : (3, 3) array
         Susceptibility tensor.
-    h0: array
+    h0_field: array
         The rotated background field (in local coordinates).
+    remnant_mag : (3) array
+        Remnant magnetisation vector.
 
     Returns
     -------
@@ -230,8 +224,8 @@ def _get_magnetisation_with_rem(a, b, c, k, h0, mr):
     """
     n_cross = _construct_n_matrix_internal(a, b, c)
     eye = np.identity(3)
-    lhs = eye + n_cross @ k
-    rhs = mr + k @ h0
+    lhs = eye + n_cross @ susceptibility
+    rhs = remnant_mag + susceptibility @ h0_field
     m = np.linalg.solve(lhs, rhs)
     return m
 
@@ -243,9 +237,9 @@ def check_susceptibility(susceptibility):
     Parameters
     ----------
     susceptibility : list of floats or arrays
-        Susceptibilty value. A single value or list of single values assumes
+        Susceptibility value. A single value or list of single values assumes
         isotropy in the body/bodies. An array or list of arrays should be a 3x3
-        matrix with the given susceptibilty components, suggesting an
+        matrix with the given susceptibility components, suggesting an
         anisotropic susceptibility.
 
     Returns
@@ -412,12 +406,12 @@ def _get_h_values(a, b, c, lmbda):
 
     Returns
     -------
-    h : float
-        The h value for the given point.
+    hx, hy, hz : tuple of floats
+        The h values for the given observation point.
     """
-    axes = np.array([a, b, c])
-    r = np.sqrt(np.prod(axes**2 + lmbda))
-    return -1 / ((axes**2 + lmbda) * r)
+    r = np.sqrt((a**2 + lmbda) * (b**2 + lmbda) * (c**2 + lmbda))
+    hx, hy, hz = tuple([-1 / (e**2 + lmbda) / r for e in (a, b, c)])
+    return hx, hy, hz
 
 
 def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
@@ -435,7 +429,7 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
 
     Returns
     -------
-    derivatives : array of x, y, z components
+    derivatives : tuple of floats
         The spatial derivatives of lambda for the given point.
 
     """
@@ -451,7 +445,7 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
     dlambda_dy = (2 * y) / (b**2 + lmbda) / denom
     dlambda_dz = (2 * z) / (c**2 + lmbda) / denom
 
-    return np.stack([dlambda_dx, dlambda_dy, dlambda_dz], axis=-1)
+    return dlambda_dx, dlambda_dy, dlambda_dz
 
 
 def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
@@ -494,11 +488,4 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
             else:
                 n[i][j] = -1 * ((a * b * c) / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
 
-    trace_terms = []
-    for i in range(3):
-        trace_component = derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
-        trace_terms.append(trace_component)
-
-    # print("external field N", n)
-    # np.testing.assert_allclose(n[0][0] + n[1][1] + n[2][2], 0)
     return n
