@@ -52,7 +52,7 @@ depth) or a ``relative`` depth (where each source is located at a constant
 shift beneath the median location obtained during the block-averaging process).
 The depth of the sources can be set through the ``depth`` parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-147
+.. GENERATED FROM PYTHON SOURCE LINES 42-148
 
 
 
@@ -68,7 +68,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 
     Number of data points: 7054
     Mean height of observations: 481.34278423589456
-    R² score: 0.9984014314880503
+    R² score: 0.9984014314880448
 
     Generated grid:
      <xarray.Dataset> Size: 241kB
@@ -90,6 +90,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pandas as pd
@@ -200,7 +201,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.428 seconds)
+   **Total running time of the script:** (0 minutes 3.500 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_block_averaged_sources.py:

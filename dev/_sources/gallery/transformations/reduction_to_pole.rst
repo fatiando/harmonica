@@ -21,7 +21,7 @@
 Reduction to the pole of a magnetic anomaly grid
 ================================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-78
+.. GENERATED FROM PYTHON SOURCE LINES 11-79
 
 
 
@@ -50,7 +50,7 @@ Reduction to the pole of a magnetic anomaly grid
            [  36.9104954 ,  -37.13717695,  -58.40650833, ...,  -34.55584156,
              -55.6561726 ,  -71.01718702],
            [-102.42450988, -155.67867833, -165.96638688, ...,  -36.95818214,
-             -35.0401052 ,  -40.15055123]])
+             -35.0401052 ,  -40.15055123]], shape=(370, 346))
     Coordinates:
       * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
@@ -63,6 +63,7 @@ Reduction to the pole of a magnetic anomaly grid
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -135,7 +136,7 @@ Reduction to the pole of a magnetic anomaly grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.623 seconds)
+   **Total running time of the script:** (0 minutes 0.602 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_reduction_to_pole.py:
