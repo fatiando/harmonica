@@ -189,6 +189,9 @@ def _single_ellipsoid_magnetic(
     # Get magnetization of the ellipsoid
     susceptibility_matrix = check_susceptibility(susceptibility)
     remnant_mag_rotated = r_matrix.T @ remnant_mag
+    n_tensor_internal = _construct_n_matrix_internal(
+        ellipsoid.a, ellipsoid.b, ellipsoid.c
+    )
     magnetization = get_magnetisation(
         ellipsoid.a,
         ellipsoid.b,
@@ -196,6 +199,7 @@ def _single_ellipsoid_magnetic(
         susceptibility_matrix,
         h0_field_rotated,
         remnant_mag_rotated,
+        n_tensor=n_tensor_internal,
     )
 
     # Compute magnetic field on observation points
@@ -203,16 +207,13 @@ def _single_ellipsoid_magnetic(
     for i, (x_i, y_i, z_i, lambda_i) in enumerate(zip(x, y, z, lambda_, strict=True)):
         internal = _is_internal(x_i, y_i, z_i, ellipsoid)
         if internal:
-            demag_matrix = _construct_n_matrix_internal(
-                ellipsoid.a, ellipsoid.b, ellipsoid.c
-            )
-            h_field = -demag_matrix @ magnetization
+            h_field = -n_tensor_internal @ magnetization
             b_field = mu_0 * (h_field + magnetization)
         else:
-            demag_matrix = _construct_n_matrix_external(
+            n_tensor = _construct_n_matrix_external(
                 x_i, y_i, z_i, ellipsoid.a, ellipsoid.b, ellipsoid.c, lmbda=lambda_i
             )
-            h_field = -demag_matrix @ magnetization
+            h_field = -n_tensor @ magnetization
             b_field = mu_0 * h_field
 
         # Rotate the B field back into the global coordinate system
@@ -230,7 +231,7 @@ def _is_internal(x, y, z, ellipsoid):
     return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
 
 
-def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
+def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag, n_tensor=None):
     r"""
     Get magnetization vector for an ellipsoid.
 
@@ -254,6 +255,11 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
         The rotated background field (in local coordinates).
     remnant_mag : (3) array
         Remnant magnetisation vector (in local coordinates).
+    n_tensor : (3, 3) array, optional
+        Demagnetization tensor inside the ellipsoid. If None, the demagnetization tensor
+        will be calculated by the function itself. Pass an array if it was already
+        precomputed, in order to save computation time.
+        Default to None.
 
     Returns
     -------
@@ -281,10 +287,10 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})
         \mathbf{M}.
     """
-    # TODO: we could ask for the n matrix as optional argument, to not recompute it.
-    n_cross = _construct_n_matrix_internal(a, b, c)
+    if n_tensor is None:
+        n_tensor = _construct_n_matrix_internal(a, b, c)
     eye = np.identity(3)
-    lhs = eye + n_cross @ susceptibility
+    lhs = eye + n_tensor @ susceptibility
     rhs = remnant_mag + susceptibility @ h0_field
     m = np.linalg.solve(lhs, rhs)
     return m
