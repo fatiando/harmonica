@@ -188,13 +188,14 @@ def _single_ellipsoid_magnetic(
 
     # Get magnetization of the ellipsoid
     susceptibility_matrix = check_susceptibility(susceptibility)
+    remnant_mag_rotated = r_matrix.T @ remnant_mag
     magnetization = get_magnetisation(
         ellipsoid.a,
         ellipsoid.b,
         ellipsoid.c,
         susceptibility_matrix,
         h0_field_rotated,
-        remnant_mag,  # TODO: I think I need to rotate this one too
+        remnant_mag_rotated,
     )
 
     # Compute magnetic field on observation points
