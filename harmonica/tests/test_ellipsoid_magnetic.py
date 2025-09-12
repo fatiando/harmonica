@@ -86,7 +86,7 @@ def sphere_magnetic(coordinates, radius, center, magnetization):
 
 def test_likeness_to_sphere():
     """Using a, b, c as almost equal, compare how the close the ellipsoids
-    match the dipole-sphere magnetic approximation for low susceptabilities.
+    match the dipole-sphere magnetic approximation for low susceptibilities.
     At higher susceptibilities, the self-demag will make the ellipsoid
     deviate."""
 
@@ -152,7 +152,7 @@ def test_magnetic_symmetry():
     a, b, c = (4, 3, 2)  # triaxial ellipsoid
     yaw, pitch, roll = (0, 0, 0)
     external_field = (10_000, 0, 0)
-    susceptabililty = 0.1
+    susceptibility = 0.1
     triaxial_example = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
     triaxial_example2 = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
 
@@ -168,14 +168,14 @@ def test_magnetic_symmetry():
     be1, bn1, bu1 = ellipsoid_magnetics(
         coordinates,
         triaxial_example,
-        susceptabililty,
+        susceptibility,
         external_field,
         field="b",
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
         coordinates2,
         triaxial_example2,
-        susceptabililty,
+        susceptibility,
         external_field,
         field="b",
     )
@@ -196,7 +196,7 @@ def test_flipped_h0():
 
     external_field1 = np.array((55_000, 0.0, 90.0))
     external_field2 = -external_field1
-    susceptabililty = 0.1
+    susceptibility = 0.1
     oblate_example = OblateEllipsoid(a, b, yaw, pitch, (0, 0, 0))
 
     # define observation points (2D grid) at surface height (z axis,
@@ -208,14 +208,14 @@ def test_flipped_h0():
     be1, bn1, bu1 = ellipsoid_magnetics(
         coordinates,
         oblate_example,
-        susceptabililty,
+        susceptibility,
         external_field1,
         field="b",
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
         coordinates,
         oblate_example,
-        susceptabililty,
+        susceptibility,
         external_field2,
         field="b",
     )
@@ -225,13 +225,13 @@ def test_flipped_h0():
     np.testing.assert_allclose(np.abs(bu1), np.abs(bu2))
 
 
-def test_zero_susceptability():
+def test_zero_susceptibility():
     """
-    Test for the case of 0 susceptabililty == inducing field.
+    Test for the case of 0 susceptibility == inducing field.
     """
 
     a, b = 1, 2
-    susceptabililty = 0
+    susceptibility = 0
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
@@ -239,7 +239,7 @@ def test_zero_susceptability():
     h0 = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
 
     be, bn, bu = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptabililty, h0, field="b"
+        coordinates, ellipsoid, susceptibility, h0, field="b"
     )
 
     np.testing.assert_allclose(be[0], 0)
@@ -254,7 +254,7 @@ def test_zero_field():
 
     a, b = 1, 2
     external_field = np.array([0, 0, 0])
-    susceptabililty = 0.01
+    susceptibility = 0.01
 
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
     coordinates = vd.grid_coordinates(
@@ -262,7 +262,7 @@ def test_zero_field():
     )
 
     be, bn, bu = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptabililty, external_field, field="b"
+        coordinates, ellipsoid, susceptibility, external_field, field="b"
     )
 
     np.testing.assert_allclose(be[0], 0)
@@ -278,7 +278,7 @@ def test_mag_ext_int_boundary():
 
     a, b = 50, 60
     external_field = (55_000, 0.0, 90.0)
-    susceptabililty = 0.01
+    susceptibility = 0.01
 
     ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
 
@@ -288,7 +288,7 @@ def test_mag_ext_int_boundary():
     coordinates = (e, n, u)
 
     be, bn, bu = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptabililty, external_field, field="b"
+        coordinates, ellipsoid, susceptibility, external_field, field="b"
     )
 
     # ideally the tolerances are lower for these - issue created
@@ -303,7 +303,7 @@ def test_mag_flipped_ellipsoid():
     """
     a, b, c = (4, 3, 2)
     external_field = (10_000, 0, 0)
-    susceptabililty = 0.01
+    susceptibility = 0.01
 
     triaxial_example = TriaxialEllipsoid(
         a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
@@ -325,14 +325,14 @@ def test_mag_flipped_ellipsoid():
     be1, bn1, bu1 = ellipsoid_magnetics(
         coordinates,
         triaxial_example,
-        susceptabililty,
+        susceptibility,
         external_field,
         field="b",
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
         coordinates,
         triaxial_example2,
-        susceptabililty,
+        susceptibility,
         external_field,
         field="b",
     )
@@ -350,7 +350,7 @@ def test_euler_rotation_symmetry_mag():
 
     a, b, c = 5, 4, 3
     external_field = (55_000, 0.0, 90.0)
-    susceptabililty = 0.01
+    susceptibility = 0.01
     coordinates = x, y, z = vd.grid_coordinates(
         region=(-5, 5, -5, 5), spacing=1.0, extra_coords=5
     )
@@ -359,11 +359,11 @@ def test_euler_rotation_symmetry_mag():
 
     def check_rotation_equivalence(base_ellipsoid, rotated_ellipsoids):
         base_be, base_bn, base_bu = ellipsoid_magnetics(
-            coordinates, base_ellipsoid, susceptabililty, external_field
+            coordinates, base_ellipsoid, susceptibility, external_field
         )
         for rotated in rotated_ellipsoids:
             be, bn, bu = ellipsoid_magnetics(
-                coordinates, rotated, susceptabililty, external_field
+                coordinates, rotated, susceptibility, external_field
             )
             np.testing.assert_allclose(np.abs(be), np.abs(base_be), rtol=1e-4)
             np.testing.assert_allclose(np.abs(bn), np.abs(base_bn), rtol=1e-4)
