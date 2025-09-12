@@ -4,6 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import pytest
 import numpy as np
 import verde as vd
 from scipy.constants import mu_0
@@ -20,6 +21,7 @@ from .._forward.ellipsoid_magnetics import (
     _depol_prolate_int,
     _depol_triaxial_int,
     ellipsoid_magnetics,
+    get_magnetisation,
 )
 from .._forward.utils_ellipsoids import get_rotation_matrix
 
@@ -82,6 +84,35 @@ def sphere_magnetic(coordinates, radius, center, magnetization):
 
     be, bn, bu = tuple(b.reshape(cast.shape) for b in (be, bn, bu))
     return be, bn, bu
+
+
+def get_sphere_magnetization(susceptibility, external_field):
+    """
+    Compute sphere's induced magnetization.
+
+    Parameters
+    ----------
+    susceptibility : float or (3, 3) array
+        Magnetic susceptibility of the sphere as a scalar or a tensor.
+    external_field : tuple
+        The uniform magnetic field B as a tuple with values of
+        (magnitude, inclination, declination). The magnitude should be in nT.
+
+    Returns
+    -------
+    magnetization : tuple
+        Tuple with components of the magnetization vector in A/m.
+    """
+    # Get external field components
+    b0_field = np.array(hm.magnetic_angles_to_vec(*external_field))
+    h0_field = b0_field / mu_0 * 1e-9  # convert to T
+
+    # Compute magnetization of the sphere accounting for demagnetization effect.
+    if not isinstance(susceptibility, np.ndarray):
+        susceptibility = susceptibility * np.identity(3)
+    inv = np.linalg.inv(np.identity(3) + 1 / 3 * susceptibility)
+    magnetization = susceptibility @ inv @ h0_field
+    return magnetization
 
 
 def test_likeness_to_sphere():
@@ -406,3 +437,244 @@ def test_internal_depol_equals_1():
 
     tnxx, tnyy, tnzz = _depol_triaxial_int(5, 4, 3)
     np.testing.assert_allclose((tnxx + tnyy + tnzz), 1)
+
+
+class TestDemagnetizationEffects:
+    """
+    Test the ``_get_magnetisation`` function.
+    """
+
+    @pytest.fixture(params=("oblate", "prolate", "triaxial"))
+    def ellipsoid_semiaxes(self, request):
+        ellipsoid_type = request.param
+        if ellipsoid_type == "oblate":
+            a, b = 50.0, 60.0
+            c = b
+        elif ellipsoid_type == "prolate":
+            a, b = 60.0, 50.0
+            c = b
+        elif ellipsoid_type == "triaxial":
+            a, b, c = 70.0, 60.0, 50.0
+        else:
+            raise ValueError()
+        return a, b, c
+
+    def test_demagnetization(self, ellipsoid_semiaxes):
+        """
+        Test demagnetization effects in ``get_magnetization``.
+
+        The magnetization accounting with demagnetization should have a smaller
+        magnitude than the magnetization without considering it.
+        """
+        h0_field = np.array([55_000.0, 10_000.0, -2_000.0])
+
+        a, b, c = ellipsoid_semiaxes
+        susceptibility = 0.5
+        susceptibility_tensor = susceptibility * np.identity(3)
+
+        # Compute magnetization considering demagnetization effect
+        rem_mag = (0, 0, 0)
+        magnetization = get_magnetisation(
+            a, b, c, susceptibility_tensor, h0_field, rem_mag
+        )
+
+        # Compute magnetization without considering demagnetization effect
+        magnetization_no_demag = susceptibility * h0_field
+
+        # Check that the former is smaller than the latter
+        assert (magnetization**2).sum() < (magnetization_no_demag**2).sum()
+
+
+@pytest.mark.parametrize(
+    ("ellipsoid_type", "a", "b", "c"),
+    [
+        ("oblate", 50.0, 60.0, 60.0),
+        ("prolate", 60.0, 50.0, 50.0),
+        ("triaxial", 70.0, 60.0, 50.0),
+    ],
+)
+def test_internal_demagnetization_components(ellipsoid_type, a, b, c):
+    r"""
+    Test if demagnetization tensors inside the ellipsoids have all positive values.
+
+    This guarantees that the code implements the appropriate sign convention for the
+    demagnetization tensor :math:`\mathbf{N}`, defined as:
+
+    .. math::
+
+        \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r}) \mathbf{M}
+    """
+    if ellipsoid_type == "oblate":
+        n_components = _depol_oblate_int(a, b)
+    elif ellipsoid_type == "prolate":
+        n_components = _depol_prolate_int(a, b)
+    elif ellipsoid_type == "triaxial":
+        n_components = _depol_triaxial_int(a, b, c)
+    else:
+        raise ValueError()
+
+    # check that all diagonal elements are positive
+    assert all(n > 0 for n in n_components)
+
+
+class TestMagnetizationVersusSphere:
+    """
+    Test if ellipsoid's magnetization approximates the one of the sphere.
+    """
+
+    @pytest.fixture
+    def radius(self):
+        """
+        Sphere radius.
+        """
+        return 50.0
+
+    @pytest.fixture(params=("oblate", "prolate", "triaxial"))
+    def ellipsoid_semiaxes(self, radius, request):
+        """
+        Ellipsoid's semiaxes that approximate a sphere.
+        """
+        a = radius
+        ellipsoid_type = request.param
+        if ellipsoid_type == "oblate":
+            b = c = a + 1e-2
+        elif ellipsoid_type == "prolate":
+            b = c = a - 1e-2
+        elif ellipsoid_type == "triaxial":
+            b = a - 1e-3
+            c = a - 1e-2
+        else:
+            raise ValueError()
+        return a, b, c
+
+    def test_magnetization_vs_sphere(self, ellipsoid_semiaxes):
+        """
+        Test if ellipsoid's magnetization approximates the one of the sphere.
+        """
+        # Define moderately high susceptibility to account for demagnetization effects
+        susceptibility = 0.5
+
+        # Define arbitrary external field
+        intensity, inclination, declination = 55_321, 70.2, -12.3
+        b0_field = np.array(
+            hm.magnetic_angles_to_vec(intensity, inclination, declination)
+        )
+        h0_field = b0_field / mu_0 * 1e-9  # convert to T
+
+        # Compute magnetizations
+        a, b, c = ellipsoid_semiaxes
+        k_matrix = susceptibility * np.identity(3)
+        rem_mag = (0, 0, 0)
+        magnetization_ellipsoid = get_magnetisation(
+            a, b, c, k_matrix, h0_field, rem_mag
+        )
+        magnetization_sphere = get_sphere_magnetization(
+            susceptibility, (intensity, inclination, declination)
+        )
+
+        # Compare magnetization of the sphere vs magnetization of the ellipsoid
+        rtol = 1e-4
+        np.testing.assert_allclose(
+            magnetization_ellipsoid, magnetization_sphere, rtol=rtol
+        )
+
+
+class TestMagneticFieldVersusSphere:
+    """
+    Test if magnetic field of ellipsoid approximates the one of the sphere.
+    """
+
+    # Sphere radius, center, and susceptibility.
+    radius = 50.0
+    center = (0, 0, 0)
+    susceptibility = 0.5
+
+    # Difference between ellipsoid's semiaxes.
+    # It should be small compared to the sphere radius, so the ellipsoid approximates
+    # a sphere.
+    delta = 0.001
+
+    # Define external field
+    external_field = (55_123.0, 32.0, -28.9)
+
+    @pytest.fixture(params=[0.0, 100.0], ids=["height=0", "height=100"])
+    def coordinates(self, request):
+        """Sample coordinates of observation points."""
+        region = (-200, 200, -200, 200)
+        shape = (151, 151)
+        height = request.param
+        coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+        return coordinates
+
+    @pytest.fixture
+    def sphere_magnetic_field(self, coordinates):
+        """Magnetic field of sphere on observation points."""
+        magnetization = get_sphere_magnetization(
+            self.susceptibility, self.external_field
+        )
+        b_sphere = sphere_magnetic(coordinates, self.radius, self.center, magnetization)
+        return b_sphere
+
+    def get_ellipsoid(self, ellipsoid_type: str):
+        """
+        Return ellipsoid that approximates a sphere.
+
+        Parameters
+        ----------
+        ellipsoid_type : {"oblate", "prolate", "triaxial"}
+            Type of ellipsoid.
+
+        Returns
+        -------
+        OblateEllipsoid, ProlateEllipsoid or TriaxialEllipsoid
+        """
+        yaw, pitch, roll = 0, 0, 0
+        a = self.radius
+        if ellipsoid_type == "oblate":
+            ellipsoid = OblateEllipsoid(
+                a=a,
+                b=a + self.delta,
+                yaw=yaw,
+                pitch=pitch,
+                centre=self.center,
+            )
+        elif ellipsoid_type == "prolate":
+            ellipsoid = ProlateEllipsoid(
+                a=a,
+                b=a - self.delta,
+                yaw=yaw,
+                pitch=pitch,
+                centre=self.center,
+            )
+        elif ellipsoid_type == "triaxial":
+            ellipsoid = TriaxialEllipsoid(
+                a=a,
+                b=a - self.delta,
+                c=a - 2 * self.delta,
+                yaw=yaw,
+                pitch=pitch,
+                roll=roll,
+                centre=self.center,
+            )
+        else:
+            raise ValueError()
+        return ellipsoid
+
+    @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate", "triaxial"])
+    def test_magnetic_field_vs_sphere(
+        self, coordinates, sphere_magnetic_field, ellipsoid_type
+    ):
+        """
+        Test magnetic field of ellipsoids against the one for a sphere.
+        """
+        b_e_sphere, b_n_sphere, b_u_sphere = sphere_magnetic_field
+        ellipsoid = self.get_ellipsoid(ellipsoid_type)
+        b_e, b_n, b_u = ellipsoid_magnetics(
+            coordinates, ellipsoid, self.susceptibility, self.external_field, field="b"
+        )
+        maxabs = np.max([np.abs(b_e_sphere), np.abs(b_n_sphere), np.abs(b_u_sphere)])
+        atol = maxabs * 0.01
+        rtol = 1e-4
+        np.testing.assert_allclose(b_e_sphere, b_e, atol=atol, rtol=rtol)
+        np.testing.assert_allclose(b_n_sphere, b_n, atol=atol, rtol=rtol)
+        np.testing.assert_allclose(b_u_sphere, b_u, atol=atol, rtol=rtol)
