@@ -398,16 +398,17 @@ def get_rotation_matrix(yaw, pitch, roll):
     """
     Build rotation matrix from yaw, pitch and roll angles.
 
-    Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch, and roll.
+    Generate a rotation matrix (V) from Tait-Bryan intrinsic angles:
+    yaw, pitch, and roll.
 
     Parameters
     ----------
     yaw : float
-        Rotation about the vertical (z) axis, in degrees.
+        Rotation about the vertical (Z) axis, in degrees.
     pitch : float
-        Rotation about the northing (y) axis, in degrees.
+        Rotation about the northing (Y) axis, in degrees.
     roll : float
-        Rotation about the easting (x) axis, in degrees.
+        Rotation about the easting (X) axis, in degrees.
 
     Returns
     -------
@@ -428,7 +429,8 @@ def get_rotation_matrix(yaw, pitch, roll):
     # using scipy rotation package
     # this produces the local to global rotation matrix (or what would be
     # defined as r.T from global to local)
-    m = rot.from_euler("zyx", [yaw, -pitch, roll], degrees=True)
+    # Use capitalized axes for intrinsic rotations.
+    m = rot.from_euler("ZYX", [yaw, -pitch, roll], degrees=True)
     v = m.as_matrix()
 
     return v
