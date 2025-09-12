@@ -700,23 +700,10 @@ class TestSymmetryOnRotations:
             ellipsoid.roll *= -1
         return ellipsoid
 
-    @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate", "triaxial"])
-    @pytest.mark.parametrize("magnetization_type", ["induced", "remanent", "both"])
-    def test_symmetry_when_flipping(self, ellipsoid_type, magnetization_type):
-        """
-        Test symmetry of magnetic field when flipping the ellipsoid.
-
-        Rotate the ellipsoid so the geometry is preserved. The magnetic field generated
-        by the ellipsoid should be the same as before the rotation.
-
-        Since the remanent magnetization vector is defined in the global coordinate
-        system, it won't rotate with the ellipsoid.
-        """
-        # Define observation points
-        coordinates = vd.grid_coordinates(
-            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
-        )
-
+    @pytest.fixture(params=["oblate", "prolate", "triaxial"])
+    def ellipsoid(self, request):
+        """Sample ellipsoid."""
+        ellipsoid_type = request.param
         # Generate original ellipsoid
         semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
         center = (0, 0, 0)
@@ -741,6 +728,23 @@ class TestSymmetryOnRotations:
             )
         else:
             raise ValueError()
+        return ellipsoid
+
+    @pytest.mark.parametrize("magnetization_type", ["induced", "remanent", "both"])
+    def test_symmetry_when_flipping(self, ellipsoid, magnetization_type):
+        """
+        Test symmetry of magnetic field when flipping the ellipsoid.
+
+        Rotate the ellipsoid so the geometry is preserved. The magnetic field generated
+        by the ellipsoid should be the same as before the rotation.
+
+        Since the remanent magnetization vector is defined in the global coordinate
+        system, it won't rotate with the ellipsoid.
+        """
+        # Define observation points
+        coordinates = vd.grid_coordinates(
+            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+        )
 
         # Generate a flipped ellipsoid
         ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
