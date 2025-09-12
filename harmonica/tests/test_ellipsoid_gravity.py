@@ -5,6 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import re
+
 import numpy as np
 import pytest
 import verde as vd

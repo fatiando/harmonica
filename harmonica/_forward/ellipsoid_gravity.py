@@ -15,8 +15,8 @@ from choclo.constants import GRAVITATIONAL_CONST
 
 from .utils_ellipsoids import (
     _calculate_lambda,
-    get_rotation_matrix,
     get_elliptical_integrals,
+    get_rotation_matrix,
 )
 
 

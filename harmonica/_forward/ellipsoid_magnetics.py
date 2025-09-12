@@ -17,8 +17,8 @@ from scipy.special import ellipeinc, ellipkinc
 from .._utils import magnetic_angles_to_vec
 from .utils_ellipsoids import (
     _calculate_lambda,
-    get_rotation_matrix,
     get_elliptical_integrals,
+    get_rotation_matrix,
 )
 
 
@@ -349,9 +349,9 @@ def _depol_triaxial_int(a, b, c):
         + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * (
-        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
-    ) * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
+    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
+        phi, k
+    ) + b**2 / (b**2 - c**2)
 
     np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz

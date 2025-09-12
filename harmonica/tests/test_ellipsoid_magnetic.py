@@ -4,8 +4,8 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import pytest
 import numpy as np
+import pytest
 import verde as vd
 from scipy.constants import mu_0
 
