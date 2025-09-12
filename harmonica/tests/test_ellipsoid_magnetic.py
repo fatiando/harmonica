@@ -4,6 +4,8 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+from copy import copy
+
 import numpy as np
 import pytest
 import verde as vd
@@ -441,7 +443,7 @@ def test_internal_depol_equals_1():
 
 class TestDemagnetizationEffects:
     """
-    Test the ``_get_magnetisation`` function.
+    Test the ``get_magnetisation`` function.
     """
 
     @pytest.fixture(params=("oblate", "prolate", "triaxial"))
@@ -678,3 +680,90 @@ class TestMagneticFieldVersusSphere:
         np.testing.assert_allclose(b_e_sphere, b_e, atol=atol, rtol=rtol)
         np.testing.assert_allclose(b_n_sphere, b_n, atol=atol, rtol=rtol)
         np.testing.assert_allclose(b_u_sphere, b_u, atol=atol, rtol=rtol)
+
+
+class TestSymmetryOnRotations:
+    """
+    Test symmetries in the magnetic field after rotations are applied.
+    """
+
+    def flip_ellipsoid(self, ellipsoid):
+        """
+        Flip ellipsoid 180 degrees keeping the same geometry.
+
+        The rotation will make the ellipsoid to turn 180 degrees, so its geometry is
+        preserved. The sign change in pitch and roll is required to ensure the symmetry.
+        """
+        ellipsoid.yaw += 180
+        ellipsoid.pitch *= -1
+        if isinstance(ellipsoid, TriaxialEllipsoid):
+            ellipsoid.roll *= -1
+        return ellipsoid
+
+    @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate", "triaxial"])
+    @pytest.mark.parametrize("magnetization_type", ["induced", "remanent", "both"])
+    def test_symmetry_when_flipping(self, ellipsoid_type, magnetization_type):
+        """
+        Test symmetry of magnetic field when flipping the ellipsoid.
+
+        Rotate the ellipsoid so the geometry is preserved. The magnetic field generated
+        by the ellipsoid should be the same as before the rotation.
+
+        Since the remanent magnetization vector is defined in the global coordinate
+        system, it won't rotate with the ellipsoid.
+        """
+        # Define observation points
+        coordinates = vd.grid_coordinates(
+            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+        )
+
+        # Generate original ellipsoid
+        semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
+        center = (0, 0, 0)
+        yaw, pitch, roll = 62.3, 48.2, 14.9
+        if ellipsoid_type == "oblate":
+            ellipsoid = OblateEllipsoid(
+                a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+            )
+        elif ellipsoid_type == "prolate":
+            ellipsoid = ProlateEllipsoid(
+                a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+            )
+        elif ellipsoid_type == "triaxial":
+            ellipsoid = TriaxialEllipsoid(
+                a=semimajor,
+                b=semimiddle,
+                c=semiminor,
+                yaw=yaw,
+                pitch=pitch,
+                roll=roll,
+                centre=center,
+            )
+        else:
+            raise ValueError()
+
+        # Generate a flipped ellipsoid
+        ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
+
+        # Define physical properties
+        external_field = (55_000, -71, 15)
+        magnetization = (
+            (400, 21, -8) if magnetization_type in ("remanent", "both") else (0, 0, 0)
+        )
+        susceptibility = 0.1 if magnetization_type in ("induced", "both") else 0.0
+
+        # Compute magnetic fields
+        b_field, b_field_flipped = tuple(
+            ellipsoid_magnetics(
+                coordinates,
+                ell,
+                susceptibilities=susceptibility,
+                external_field=external_field,
+                remnant_mag=magnetization,
+            )
+            for ell in (ellipsoid, ellipsoid_flipped)
+        )
+
+        # Check that the B field is the same for original and flipped ellipsoids
+        for i in range(3):
+            np.testing.assert_allclose(b_field[i], b_field_flipped[i])
