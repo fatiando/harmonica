@@ -22,7 +22,6 @@ from .utils_ellipsoids import (
 )
 
 
-# internal field N matrix functions
 def ellipsoid_magnetics(
     coordinates,
     ellipsoids,
@@ -93,17 +92,17 @@ def ellipsoid_magnetics(
         susceptibilities = [susceptibilities]
 
     if remnant_mag is None:
-        mr = np.zeros((len(ellipsoids), 3))
+        remnant_mag = np.zeros((len(ellipsoids), 3))
     else:
-        mr = np.asarray(remnant_mag, dtype=float)
+        remnant_mag = np.asarray(remnant_mag, dtype=float)
 
-        if mr.ndim == 1 and mr.size == 3:
-            mr = np.tile(mr, (len(ellipsoids), 1))
+        if remnant_mag.ndim == 1 and remnant_mag.size == 3:
+            remnant_mag = np.tile(remnant_mag, (len(ellipsoids), 1))
 
-        if mr.shape != (len(ellipsoids), 3):
+        if remnant_mag.shape != (len(ellipsoids), 3):
             msg = (
                 f"Remanent magnetisation must have shape "
-                f"({len(ellipsoids)}, 3); got {mr.shape}."
+                f"({len(ellipsoids)}, 3); got {remnant_mag.shape}."
             )
             raise ValueError(msg)
 
@@ -115,67 +114,119 @@ def ellipsoid_magnetics(
         )
         raise ValueError(msg)
 
-    # unpack coordinates, set up arrays to hold results
-    e, n, u = [np.atleast_1d(np.asarray(coordinates[i])) for i in range(3)]
+    cast = np.broadcast(*coordinates)
+    easting, northing, upward = tuple(np.atleast_1d(c).ravel() for c in coordinates)
+    be, bn, bu = tuple(np.zeros_like(easting) for _ in range(3))
 
-    broadcast = (np.broadcast(e, n, u)).shape
-    be, bn, bu = (
-        np.zeros(e.shape).ravel(),
-        np.zeros(e.shape).ravel(),
-        np.zeros(e.shape).ravel(),
+    magnitude, inclination, declination = external_field
+    b0_field = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
+    h0_field = b0_field * 1e-9 / mu_0  # convert to SI units
+
+    for ellipsoid, susceptibility, remanence in zip(
+        ellipsoids, susceptibilities, remnant_mag, strict=True
+    ):
+        b_field = _single_ellipsoid_magnetic(
+            (easting, northing, upward), ellipsoid, susceptibility, remanence, h0_field
+        )
+        be += 1e9 * b_field[0]
+        bn += 1e9 * b_field[1]
+        bu += 1e9 * b_field[2]
+
+    be, bn, bu = tuple(b.reshape(cast.shape) for b in (be, bn, bu))
+
+    if field == "b":
+        return (be, bn, bu)
+
+    fields = {"e": be, "n": bn, "z": bu}
+    return fields[field]
+
+
+def _single_ellipsoid_magnetic(
+    coordinates, ellipsoid, susceptibility, remnant_mag, h0_field
+):
+    """
+    Forward model the magnetic field of a single ellipsoid.
+
+    Parameters
+    ----------
+    coordinates : tuple of (n) arrays
+        Easting, northing and upward coordinates of the observation points. They should
+        be 1d arrays.
+    ellipsoid : object
+        Ellipsoid object for which the magnetic field will be computed.
+    susceptibility : float or (3, 3) array
+        Susceptibility scalar or tensor of the ellipsoid.
+    remnant_mag : (3) array
+        Remanent magnetization vector of the ellipsoid in SI units.
+        The components of the vector should be in the easting-northing-upward coordinate
+        system.
+    h0_field : (3) array
+        Array with the components of the external H field in SI units.
+        The components of the vector should be in the easting-northing-upward coordinate
+        system.
+
+    Returns
+    -------
+    be, bn, bu : (n) arrays
+        Arrays with the magnetic field components of the ellipsoid on the observation
+        points.
+    """
+    # Shift coordinates to the center of the ellipsoid
+    origin_e, origin_n, origin_u = ellipsoid.centre
+    easting, northing, upward = coordinates
+    coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
+
+    # Rotate observation points
+    r_matrix = get_rotation_matrix(ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll)
+    x, y, z = r_matrix.T @ np.vstack(coords_shifted)
+
+    # Calculate lambda for each observation point
+    lambda_ = _calculate_lambda(x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c)
+
+    # Rotate the background field into the local coordinate system
+    h0_field_rotated = r_matrix.T @ h0_field
+
+    # Get magnetization of the ellipsoid
+    susceptibility_matrix = check_susceptibility(susceptibility)
+    magnetization = get_magnetisation(
+        ellipsoid.a,
+        ellipsoid.b,
+        ellipsoid.c,
+        susceptibility_matrix,
+        h0_field_rotated,
+        remnant_mag,  # TODO: I think I need to rotate this one too
     )
 
-    # unpack external field, change to vector
-    magnitude, inclination, declination = external_field
-    b0 = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
-    h0 = b0 * 1e-9 / mu_0  # convert to SI units
+    # Compute magnetic field on observation points
+    be, bn, bu = tuple(np.zeros_like(easting) for _ in range(3))
+    for i, (x_i, y_i, z_i, lambda_i) in enumerate(zip(x, y, z, lambda_, strict=True)):
+        internal = _is_internal(x_i, y_i, z_i, ellipsoid)
+        if internal:
+            demag_matrix = _construct_n_matrix_internal(
+                ellipsoid.a, ellipsoid.b, ellipsoid.c
+            )
+            h_field = -demag_matrix @ magnetization
+            b_field = mu_0 * (h_field + magnetization)
+        else:
+            demag_matrix = _construct_n_matrix_external(
+                x_i, y_i, z_i, ellipsoid.a, ellipsoid.b, ellipsoid.c, lmbda=lambda_i
+            )
+            h_field = +demag_matrix @ magnetization  # TODO: change sign here
+            b_field = mu_0 * h_field
 
-    # loop over each given ellipsoid
-    for ellipsoid, susceptibility, m_r in zip(
-        ellipsoids, susceptibilities, mr, strict=True
-    ):
-        k_matrix = check_susceptibility(susceptibility)
+        # Rotate the B field back into the global coordinate system
+        b_field = r_matrix @ b_field
+        be[i], bn[i], bu[i] = b_field
 
-        a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
-        ox, oy, oz = ellipsoid.centre
-        yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
+    return be, bn, bu
 
-        cast = np.broadcast(e, n, u)
-        obs_points = np.vstack(((e - ox).ravel(), (n - oy).ravel(), (u - oz).ravel()))
-        r = get_rotation_matrix(yaw, pitch, roll)
-        rotated = r.T @ obs_points
-        x, y, z = [axis.reshape(cast.shape).ravel() for axis in rotated]
 
-        lmbda = _calculate_lambda(x, y, z, a, b, c).ravel()
-        internal_mask = ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
-
-        h0_rot = r.T @ h0
-
-        m = get_magnetisation(a, b, c, k_matrix, h0_rot, m_r)
-
-        n_cross = _construct_n_matrix_internal(a, b, c)
-
-        # create N matrices for each given point
-        for idx in range(len(lmbda)):
-            lam = lmbda[idx]
-            xi, yi, zi = x[idx], y[idx], z[idx]
-            is_internal = internal_mask[idx]
-
-            if is_internal:
-                hr = (-n_cross + np.identity(3)) @ m
-                hr = r @ hr
-            else:
-                nr = _construct_n_matrix_external(xi, yi, zi, a, b, c, lam)
-                hr = nr @ m
-            be[idx] += 1e9 * mu_0 * hr[0]
-            bn[idx] += 1e9 * mu_0 * hr[1]
-            bu[idx] += 1e9 * mu_0 * hr[2]
-
-    be = be.reshape(broadcast)
-    bn = bn.reshape(broadcast)
-    bu = bu.reshape(broadcast)
-    # return according to user
-    return {"e": be, "n": bn, "u": bu}.get(field, (be, bn, bu))
+def _is_internal(x, y, z, ellipsoid):
+    """
+    Check if a given point(s) is internal or external to the ellipsoid.
+    """
+    a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
+    return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
 
 
 def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
@@ -184,6 +235,13 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
 
     Get the magnetization vector of and ellipsoid considering induced and remanent
     magnetization. This function takes into account demagnetization effects.
+
+    .. important::
+
+        This function works in the local x, y, z coordinate system defined for the
+        ellipsoid. The external field and the remanent magnetization vector should be
+        provided in the x-y-z coordinate system. The generated magnetization vector will
+        be defined in the same coordinate system.
 
     Parameters
     ----------
@@ -194,12 +252,12 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
     h0_field: array
         The rotated background field (in local coordinates).
     remnant_mag : (3) array
-        Remnant magnetisation vector.
+        Remnant magnetisation vector (in local coordinates).
 
     Returns
     -------
     m (magentisation): (3) array
-        The magnetisation vector for the defined body.
+        The magnetisation vector for the defined body in local coordinates.
 
     Notes
     -----
@@ -222,6 +280,7 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag):
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})
         \mathbf{M}.
     """
+    # TODO: we could ask for the n matrix as optional argument, to not recompute it.
     n_cross = _construct_n_matrix_internal(a, b, c)
     eye = np.identity(3)
     lhs = eye + n_cross @ susceptibility
