@@ -212,7 +212,7 @@ def _single_ellipsoid_magnetic(
             demag_matrix = _construct_n_matrix_external(
                 x_i, y_i, z_i, ellipsoid.a, ellipsoid.b, ellipsoid.c, lmbda=lambda_i
             )
-            h_field = +demag_matrix @ magnetization  # TODO: change sign here
+            h_field = -demag_matrix @ magnetization
             b_field = mu_0 * h_field
 
         # Rotate the B field back into the global coordinate system
@@ -349,9 +349,9 @@ def _depol_triaxial_int(a, b, c):
         + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
-        phi, k
-    ) + b**2 / (b**2 - c**2)
+    nzz = -1 * (
+        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
+    ) * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
 
     np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz
@@ -417,7 +417,7 @@ def _depol_oblate_int(a, b):
 
 
 def _construct_n_matrix_internal(a, b, c):
-    """
+    r"""
     Construct the N matrix for the internal field using the above functions.
 
     Parameters
@@ -429,6 +429,19 @@ def _construct_n_matrix_internal(a, b, c):
     -------
     N : matrix
         depolarisation matrix (diagonal-only values) for the given ellipsoid.
+
+    Notes
+    -----
+    The elements of the demagnetization tensor are defined following the sign convention
+    of Clark et al. (1986), in which the internal demagnetization tensor
+    :math:`N_\text{int}` and the demagnetizing field :math:`\Delta \mathbf{H}` are
+    related as follows:
+
+    .. math::
+
+        \Delta \mathbf{H}(\mathbf{r}) = - N_\text{int} \mathbf{M}
+
+    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
     """
     # only diagonal elements
     # Nii corresponds to the above functions
@@ -509,7 +522,7 @@ def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
 
 
 def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
-    """
+    r"""
     Construct the N matrix for the external field.
 
     Parameters
@@ -527,6 +540,19 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     N : matrix
         External points' depolarisation matrix for the given point.
 
+    Notes
+    -----
+    The elements of the demagnetization tensor are defined following the sign convention
+    of Clark et al. (1986), in which the tensor :math:`N` and the
+    demagnetizing field :math:`\Delta \mathbf{H}` are related as follows:
+
+    .. math::
+
+        \Delta \mathbf{H}(\mathbf{r}) = - N(\mathbf{r}) \mathbf{M}
+
+    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
+
+
     """
     # g values here are equivalent to the A(lambda) etc values previously.
     # h values as above
@@ -540,12 +566,10 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     for i in range(len(n)):
         for j in range(len(n[0])):
             if i == j:
-                n[i][j] = (
-                    -1
-                    * ((a * b * c) / 2)
-                    * (derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i])
+                n[i][j] = ((a * b * c) / 2) * (
+                    derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
                 )
             else:
-                n[i][j] = -1 * ((a * b * c) / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
+                n[i][j] = ((a * b * c) / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
 
     return n
