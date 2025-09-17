@@ -111,6 +111,14 @@ Source position estimation
     EulerDeconvolution
 
 
+Spherical Harmonics
+-------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    IGRF14
+
 Input and Output
 ----------------
 
