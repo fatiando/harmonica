@@ -558,7 +558,39 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
 
     where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
 
+    The components of the demagnetization tensor for any ellipsoid are given by:
 
+    .. math::
+
+        n_{ii} =
+            \frac{abc}{2}
+            \left[
+                    \frac{\partial \lambda}{\partial r_i}
+                    \frac{\text{d} F_i}{\text{d} \lambda}
+                    r_i
+                    +
+                    F_i(\lambda)
+            \right],
+        \quad
+        \forall i \in \{x, y, z\}
+
+    and
+
+    .. math::
+
+        n_{ij} =
+            \frac{abc}{2}
+                \frac{\partial \lambda}{\partial r_i}
+                \frac{\text{d} F_j}{\text{d} \lambda}
+                r_j,
+        \quad
+        \forall i,j \in \{x, y, z\}, \, i \ne j
+
+    where :math:`F_x(\lambda) = A(\lambda)`, :math:`F_y(\lambda) = B(\lambda)`,
+    :math:`F_z(\lambda) = C(\lambda)`, and the :math:`r_i` are the :math:`x`, :math:`y`,
+    and :math:`z` coordinates.
+
+    Note the sign difference with Takahashi et al. (2018) equations 34 and 35.
     """
     # g values here are equivalent to the A(lambda) etc values previously.
     # h values as above
