@@ -91,7 +91,7 @@ def get_elliptical_integrals(a, b, c, lmbda):
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -153,7 +153,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     a, b, c : floats
         Semiaxis lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -257,7 +257,7 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     a, b : floats
         Semiaxis lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -335,7 +335,7 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     a, b : floats
         Semiaxis lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -434,3 +434,27 @@ def get_rotation_matrix(yaw, pitch, roll):
     v = m.as_matrix()
 
     return v
+
+
+def get_derivatives_of_elliptical_integrals(a, b, c, lmbda):
+    r"""
+    Compute derivatives of the elliptical integrals with respect to lambda.
+
+    Compute the derivatives of the elliptical integrals :math:`A(\lambda)`,
+    :math:`B(\lambda)`, and :math:`C(\lambda)` with respect to lambda.
+
+    Parameters
+    ----------
+    a, b, c : floats
+        Semi-axes lengths of the given ellipsoid.
+    lmbda : float
+        The given lambda value for the point we are considering.
+
+    Returns
+    -------
+    hx, hy, hz : tuple of floats
+        The h values for the given observation point.
+    """
+    r = np.sqrt((a**2 + lmbda) * (b**2 + lmbda) * (c**2 + lmbda))
+    hx, hy, hz = tuple(-1 / (e**2 + lmbda) / r for e in (a, b, c))
+    return hx, hy, hz

@@ -18,6 +18,7 @@ from .._utils import magnetic_angles_to_vec
 from .utils_ellipsoids import (
     _calculate_lambda,
     get_elliptical_integrals,
+    get_derivatives_of_elliptical_integrals,
     get_rotation_matrix,
 )
 
@@ -469,64 +470,6 @@ def _construct_n_matrix_internal(a, b, c):
 # construct components of the external matrix
 
 
-def _get_h_values(a, b, c, lmbda):
-    """
-    Get the h values for the N matrix.
-
-    Each point has its own h value and hence external N matrix.
-
-    Parameters
-    ----------
-    a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
-    lmbda : float
-        The given lmbda value for the point we are considering with this
-        matrix.
-
-    Returns
-    -------
-    hx, hy, hz : tuple of floats
-        The h values for the given observation point.
-    """
-    r = np.sqrt((a**2 + lmbda) * (b**2 + lmbda) * (c**2 + lmbda))
-    hx, hy, hz = tuple([-1 / (e**2 + lmbda) / r for e in (a, b, c)])
-    return hx, hy, hz
-
-
-def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
-    """
-    Get the spatial derivative of lambda with respect to x, y, and z.
-
-    Parameters
-    ----------
-    x, y, z : floats
-        A singular observation point in the local coordinate system.
-    a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
-    lmbda : float
-        The given lmbda value for the point we are considering with this matrix.
-
-    Returns
-    -------
-    derivatives : tuple of floats
-        The spatial derivatives of lambda for the given point.
-
-    """
-    # explicitly state:
-
-    denom = (
-        (x / (a**2 + lmbda)) ** 2
-        + (y / (b**2 + lmbda)) ** 2
-        + (z / (c**2 + lmbda)) ** 2
-    )
-
-    dlambda_dx = (2 * x) / (a**2 + lmbda) / denom
-    dlambda_dy = (2 * y) / (b**2 + lmbda) / denom
-    dlambda_dz = (2 * z) / (c**2 + lmbda) / denom
-
-    return dlambda_dx, dlambda_dy, dlambda_dz
-
-
 def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
     r"""
     Construct the N matrix for the external field.
@@ -592,22 +535,55 @@ def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
 
     Note the sign difference with Takahashi et al. (2018) equations 34 and 35.
     """
-    # g values here are equivalent to the A(lambda) etc values previously.
-    # h values as above
-    # lambda derivatives as above
-    n = np.empty((3, 3))
-    r = [x, y, z]
-    gvals = get_elliptical_integrals(a, b, c, lmbda)
+    n = np.empty((3, 3), dtype=np.float64)
+
+    coords = (x, y, z)
+    ellip_integrals = get_elliptical_integrals(a, b, c, lmbda)
+    deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(a, b, c, lmbda)
     derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lmbda)
-    h_vals = _get_h_values(a, b, c, lmbda)
 
     for i in range(len(n)):
         for j in range(len(n[0])):
             if i == j:
                 n[i][j] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * h_vals[i] * r[i] + gvals[i]
+                    derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
+                    + ellip_integrals[i]
                 )
             else:
-                n[i][j] = ((a * b * c) / 2) * (derivs_lmbda[i] * h_vals[j] * r[j])
+                n[i][j] = ((a * b * c) / 2) * (
+                    derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
+                )
 
     return n
+
+
+def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
+    """
+    Get the spatial derivatives of lambda with respect to x, y, and z.
+
+    Parameters
+    ----------
+    x, y, z : floats
+        Coordinates of the observation point in the local coordinate system.
+    a, b, c : floats
+        Semi-axes lengths of the given ellipsoid.
+    lmbda : float
+        The given lambda value for the point we are considering with this matrix.
+
+    Returns
+    -------
+    derivatives : tuple of floats
+        The spatial derivatives of lambda for the given observation point.
+
+    """
+    denom = (
+        (x / (a**2 + lmbda)) ** 2
+        + (y / (b**2 + lmbda)) ** 2
+        + (z / (c**2 + lmbda)) ** 2
+    )
+
+    dlambda_dx = (2 * x) / (a**2 + lmbda) / denom
+    dlambda_dy = (2 * y) / (b**2 + lmbda) / denom
+    dlambda_dz = (2 * z) / (c**2 + lmbda) / denom
+
+    return dlambda_dx, dlambda_dy, dlambda_dz
