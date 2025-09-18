@@ -19,9 +19,9 @@ from .._forward.create_ellipsoid import (
     TriaxialEllipsoid,
 )
 from .._forward.ellipsoid_magnetics import (
-    _depol_oblate_int,
-    _depol_prolate_int,
-    _depol_triaxial_int,
+    _demag_tensor_oblate_internal,
+    _demag_tensor_prolate_internal,
+    _demag_tensor_triaxial_internal,
     ellipsoid_magnetics,
     get_magnetisation,
 )
@@ -431,13 +431,13 @@ def test_euler_rotation_symmetry_mag():
 def test_internal_depol_equals_1():
     """Test that the internal depol tensor component sum equals 1"""
 
-    onxx, onyy, onzz = _depol_oblate_int(3, 5)
+    onxx, onyy, onzz = _demag_tensor_oblate_internal(3, 5)
     np.testing.assert_allclose((onxx + onyy + onzz), 1)
 
-    pnxx, pnyy, pnzz = _depol_prolate_int(5, 3)
+    pnxx, pnyy, pnzz = _demag_tensor_prolate_internal(5, 3)
     np.testing.assert_allclose((pnxx + pnyy + pnzz), 1)
 
-    tnxx, tnyy, tnzz = _depol_triaxial_int(5, 4, 3)
+    tnxx, tnyy, tnzz = _demag_tensor_triaxial_internal(5, 4, 3)
     np.testing.assert_allclose((tnxx + tnyy + tnzz), 1)
 
 
@@ -507,11 +507,11 @@ def test_internal_demagnetization_components(ellipsoid_type, a, b, c):
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r}) \mathbf{M}
     """
     if ellipsoid_type == "oblate":
-        n_components = _depol_oblate_int(a, b)
+        n_components = _demag_tensor_oblate_internal(a, b)
     elif ellipsoid_type == "prolate":
-        n_components = _depol_prolate_int(a, b)
+        n_components = _demag_tensor_prolate_internal(a, b)
     elif ellipsoid_type == "triaxial":
-        n_components = _depol_triaxial_int(a, b, c)
+        n_components = _demag_tensor_triaxial_internal(a, b, c)
     else:
         raise ValueError()
 

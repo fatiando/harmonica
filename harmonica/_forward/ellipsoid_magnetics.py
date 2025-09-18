@@ -357,11 +357,11 @@ def get_demagnetization_tensor_internal(a, b, c):
     where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
     """
     if a > b > c:
-        n_diagonal = _depol_triaxial_int(a, b, c)
+        n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
     elif a > b and b == c:
-        n_diagonal = _depol_prolate_int(a, b)
+        n_diagonal = _demag_tensor_prolate_internal(a, b)
     elif a < b and b == c:
-        n_diagonal = _depol_oblate_int(a, b)
+        n_diagonal = _demag_tensor_oblate_internal(a, b)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
@@ -370,7 +370,7 @@ def get_demagnetization_tensor_internal(a, b, c):
     return n
 
 
-def _depol_triaxial_int(a, b, c):
+def _demag_tensor_triaxial_internal(a, b, c):
     """
     Calculate the internal demagnetization tensor (N(r)) for the triaxial case.
 
@@ -384,28 +384,26 @@ def _depol_triaxial_int(a, b, c):
     nxx, nyy, nzz : floats
         individual diagonal components of the x, y, z matrix.
     """
+    # Cache values of E(theta, k) and F(theta, k) so we compute them only once
     phi = np.arccos(c / a)
     k = (a**2 - b**2) / (a**2 - c**2)
+    ellipk = ellipkinc(phi, k)
+    ellipe = ellipeinc(phi, k)
 
-    nxx = (
-        (a * b * c)
-        / (np.sqrt(a**2 - c**2) * (a**2 - b**2))
-        * (ellipkinc(phi, k) - ellipeinc(phi, k))
-    )
+    nxx = (a * b * c) / (np.sqrt(a**2 - c**2) * (a**2 - b**2)) * (ellipk - ellipe)
     nyy = (
         -1 * nxx
-        + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
+        + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipe
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
-        phi, k
-    ) + b**2 / (b**2 - c**2)
+    nzz = -1 * (
+        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
+    ) * ellipe + b**2 / (b**2 - c**2)
 
-    np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz
 
 
-def _depol_prolate_int(a, b):
+def _demag_tensor_prolate_internal(a, b):
     """
     Calculate internal demagnetization factors for prolate case.
 
@@ -423,23 +421,14 @@ def _depol_prolate_int(a, b):
     if not m > 1:
         msg = f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
         raise ValueError(msg)
-
     nxx = (1 / (m**2 - 1)) * (
         ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1))) - 1
     )
-
-    if (m + np.sqrt(m**2 - 1)) < 0 or (m**2 - 1) < 0:
-        msg = (
-            "Values in the internal N matrix calculation"
-            " are less than 0 - errors may occur."
-        )
-        raise RuntimeWarning(msg)
     nyy = nzz = 0.5 * (1 - nxx)
-
     return nxx, nyy, nzz
 
 
-def _depol_oblate_int(a, b):
+def _demag_tensor_oblate_internal(a, b):
     """
     Calculate internal demagnetization factors for oblate case.
 
@@ -457,10 +446,8 @@ def _depol_oblate_int(a, b):
     if not 0 < m < 1:
         msg = f"Invalid aspect ratio for oblate ellipsoid: a={a}, b={b}, a/b={m}"
         raise ValueError(msg)
-
     nxx = 1 / (1 - m**2) * (1 - (m / np.sqrt(1 - m**2)) * np.arccos(m))
     nyy = nzz = 0.5 * (1 - nxx)
-
     return nxx, nyy, nzz
 
 
