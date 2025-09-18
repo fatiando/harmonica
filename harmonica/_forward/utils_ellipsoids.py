@@ -89,7 +89,7 @@ def get_elliptical_integrals(a, b, c, lmbda):
     Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -151,7 +151,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -255,7 +255,7 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     Parameters
     ----------
     a, b : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -333,7 +333,7 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     Parameters
     ----------
     a, b : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
         The given lambda value for the point we are considering.
 

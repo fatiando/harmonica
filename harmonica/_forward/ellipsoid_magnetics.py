@@ -17,8 +17,8 @@ from scipy.special import ellipeinc, ellipkinc
 from .._utils import magnetic_angles_to_vec
 from .utils_ellipsoids import (
     _calculate_lambda,
-    get_elliptical_integrals,
     get_derivatives_of_elliptical_integrals,
+    get_elliptical_integrals,
     get_rotation_matrix,
 )
 
@@ -190,7 +190,7 @@ def _single_ellipsoid_magnetic(
     # Get magnetization of the ellipsoid
     susceptibility_matrix = check_susceptibility(susceptibility)
     remnant_mag_rotated = r_matrix.T @ remnant_mag
-    n_tensor_internal = _construct_n_matrix_internal(
+    n_tensor_internal = get_demagnetization_tensor_internal(
         ellipsoid.a, ellipsoid.b, ellipsoid.c
     )
     magnetization = get_magnetisation(
@@ -211,7 +211,7 @@ def _single_ellipsoid_magnetic(
             h_field = -n_tensor_internal @ magnetization
             b_field = mu_0 * (h_field + magnetization)
         else:
-            n_tensor = _construct_n_matrix_external(
+            n_tensor = get_demagnetization_tensor_external(
                 x_i, y_i, z_i, ellipsoid.a, ellipsoid.b, ellipsoid.c, lmbda=lambda_i
             )
             h_field = -n_tensor @ magnetization
@@ -289,7 +289,7 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag, n_tensor=N
         \mathbf{M}.
     """
     if n_tensor is None:
-        n_tensor = _construct_n_matrix_internal(a, b, c)
+        n_tensor = get_demagnetization_tensor_internal(a, b, c)
     eye = np.identity(3)
     lhs = eye + n_tensor @ susceptibility
     rhs = remnant_mag + susceptibility @ h0_field
@@ -329,14 +329,55 @@ def check_susceptibility(susceptibility):
     return k_matrix
 
 
-def _depol_triaxial_int(a, b, c):
-    """
-    Calculate the internal depolarisation tensor (N(r)) for the triaxial case.
+def get_demagnetization_tensor_internal(a, b, c):
+    r"""
+    Construct the demagnetization tensor N on external points.
 
     Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the triaxial ellipsoid (a ≥ b ≥ c).
+        Semi-axes lengths of the given ellipsoid.
+
+    Returns
+    -------
+    N : matrix
+        Demagnetization tensor for the given ellipsoid on internal points.
+
+    Notes
+    -----
+    The elements of the demagnetization tensor are defined following the sign convention
+    of Clark et al. (1986), in which the internal demagnetization tensor
+    :math:`N_\text{int}` and the demagnetizing field :math:`\Delta \mathbf{H}` are
+    related as follows:
+
+    .. math::
+
+        \Delta \mathbf{H}(\mathbf{r}) = - N_\text{int} \mathbf{M}
+
+    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
+    """
+    if a > b > c:
+        n_diagonal = _depol_triaxial_int(a, b, c)
+    elif a > b and b == c:
+        n_diagonal = _depol_prolate_int(a, b)
+    elif a < b and b == c:
+        n_diagonal = _depol_oblate_int(a, b)
+    else:
+        msg = "Could not determine ellipsoid type for values given."
+        raise ValueError(msg)
+
+    n = np.diag(n_diagonal)
+    return n
+
+
+def _depol_triaxial_int(a, b, c):
+    """
+    Calculate the internal demagnetization tensor (N(r)) for the triaxial case.
+
+    Parameters
+    ----------
+    a, b, c : floats
+        Semi-axes lengths of the triaxial ellipsoid (a ≥ b ≥ c).
 
     Returns
     -------
@@ -356,9 +397,9 @@ def _depol_triaxial_int(a, b, c):
         + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(phi, k)
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * (
-        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
-    ) * ellipeinc(phi, k) + b**2 / (b**2 - c**2)
+    nzz = -1 * ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipeinc(
+        phi, k
+    ) + b**2 / (b**2 - c**2)
 
     np.testing.assert_allclose((nxx + nyy + nzz), 1, rtol=1e-4)
     return nxx, nyy, nzz
@@ -366,12 +407,12 @@ def _depol_triaxial_int(a, b, c):
 
 def _depol_prolate_int(a, b):
     """
-    Calculate internal depolarisation factors for prolate case.
+    Calculate internal demagnetization factors for prolate case.
 
     Parameters
     ----------
     a, b: floats
-        Semiaxis lengths of the prolate ellipsoid (a > b = c).
+        Semi-axes lengths of the prolate ellipsoid (a > b = c).
 
     Returns
     -------
@@ -400,12 +441,12 @@ def _depol_prolate_int(a, b):
 
 def _depol_oblate_int(a, b):
     """
-    Calculate internal depolarisation factors for oblate case.
+    Calculate internal demagnetization factors for oblate case.
 
     Parameters
     ----------
     a, b: floats
-        Semiaxis lengths of the oblate ellipsoid (a < b = c).
+        Semi-axes lengths of the oblate ellipsoid (a < b = c).
 
     Returns
     -------
@@ -423,71 +464,23 @@ def _depol_oblate_int(a, b):
     return nxx, nyy, nzz
 
 
-def _construct_n_matrix_internal(a, b, c):
+def get_demagnetization_tensor_external(x, y, z, a, b, c, lmbda):
     r"""
-    Construct the N matrix for the internal field using the above functions.
-
-    Parameters
-    ----------
-    a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
-
-    Returns
-    -------
-    N : matrix
-        depolarisation matrix (diagonal-only values) for the given ellipsoid.
-
-    Notes
-    -----
-    The elements of the demagnetization tensor are defined following the sign convention
-    of Clark et al. (1986), in which the internal demagnetization tensor
-    :math:`N_\text{int}` and the demagnetizing field :math:`\Delta \mathbf{H}` are
-    related as follows:
-
-    .. math::
-
-        \Delta \mathbf{H}(\mathbf{r}) = - N_\text{int} \mathbf{M}
-
-    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
-    """
-    # only diagonal elements
-    # Nii corresponds to the above functions
-    if a > b > c:
-        func = _depol_triaxial_int(a, b, c)
-    elif a > b and b == c:
-        func = _depol_prolate_int(a, b)
-    elif a < b and b == c:
-        func = _depol_oblate_int(a, b)
-    else:
-        msg = "Could not determine ellipsoid type for values given."
-        raise ValueError(msg)
-    # construct identity matrix
-    n = np.diag(func)
-
-    return n
-
-
-# construct components of the external matrix
-
-
-def _construct_n_matrix_external(x, y, z, a, b, c, lmbda):
-    r"""
-    Construct the N matrix for the external field.
+    Construct the demagnetization tensor N on external points.
 
     Parameters
     ----------
     x, y, z : floats
-        A singular observation point in the local coordinate system.
+        Coordinates of the observation point in the local coordinate system.
     a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
-        the given lmbda value for the point we are considering with this
-        matrix.
+        The lambda value for the observation point.
 
     Returns
     -------
     N : matrix
-        External points' depolarisation matrix for the given point.
+        External points' demagnetization tensor for the given point.
 
     Notes
     -----
