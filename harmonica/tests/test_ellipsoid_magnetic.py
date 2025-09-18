@@ -774,6 +774,59 @@ class TestSymmetryOnRotations:
             np.testing.assert_allclose(b_field[i], b_field_flipped[i])
 
 
+class TestSusceptibilityTensor:
+    """Test forward when susceptibility is a tensor."""
+
+    def test_susceptibility_as_tensor(self):
+        """Test forward model using anisotropic susceptibility."""
+        coordinates = (0, 0, 0)
+        ellipsoid = ProlateEllipsoid(
+            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+        )
+        susceptibility = np.random.default_rng(seed=42).uniform(size=(3, 3))
+        external_field = (55_000, 12, 74)
+
+        # Check if no error is raised after using an anisotropic susceptibility
+        ellipsoid_magnetics(
+            coordinates, ellipsoid, susceptibility, external_field=external_field
+        )
+
+    def test_invalid_susceptibility_as_tensor(self):
+        """Test error after invalid susceptibility tensor."""
+        coordinates = (0, 0, 0)
+        ellipsoid = ProlateEllipsoid(
+            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+        )
+        external_field = (55_000, 12, 74)
+
+        invalid_shape = (3, 4)
+        susceptibility = np.random.default_rng(seed=42).uniform(size=invalid_shape)
+
+        msg = re.escape("Susceptibility matrix must be 3x3")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid_magnetics(
+                coordinates, ellipsoid, susceptibility, external_field=external_field
+            )
+
+    def test_invalid_susceptibility_type(self):
+        """Test error after invalid susceptibility type."""
+
+        class InvalidSus: ...
+
+        coordinates = (0, 0, 0)
+        ellipsoid = ProlateEllipsoid(
+            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+        )
+        external_field = (55_000, 12, 74)
+        susceptibility = InvalidSus()
+
+        msg = re.escape("Unrecognized susceptibility type")
+        with pytest.raises(TypeError, match=msg):
+            ellipsoid_magnetics(
+                coordinates, ellipsoid, susceptibility, external_field=external_field
+            )
+
+
 class TestMultipleEllipsoids:
     """
     Test forward function when passing multiple ellipsoids.
@@ -810,12 +863,16 @@ class TestMultipleEllipsoids:
         ]
         return ellipsoids
 
-    @pytest.fixture(params=["list", "array"])
+    @pytest.fixture(params=["list", "array", "anisotropic"])
     def susceptibilities(self, request):
         """Sample susceptibilities."""
         susceptibilities = [0.1, 0.01, 0.05]
         if request.param == "array":
             susceptibilities = np.array(susceptibilities)
+        elif request.param == "anisotropic":
+            # Replace one value with a tensor
+            sus_tensor = np.random.default_rng(seed=42).uniform(size=(3, 3))
+            susceptibilities[-1] = sus_tensor
         return susceptibilities
 
     @pytest.fixture(params=["list", "array"])

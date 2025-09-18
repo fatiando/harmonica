@@ -8,7 +8,7 @@
 Forward modelling magnetic fields produced by ellipsoidal bodies.
 """
 
-from collections.abc import Sequence
+from collections.abc import Sequence, Iterable
 from numbers import Real
 
 import numpy as np
@@ -89,8 +89,11 @@ def ellipsoid_magnetics(
         ellipsoids = [ellipsoids]
 
     # Sanity checks for susceptibilities
-    if not isinstance(susceptibilities, (Sequence, np.ndarray)):
-        susceptibilities = np.array([susceptibilities])
+    # Cast it into list if it's a single float or if it's a single tensor (2d array)
+    if not isinstance(susceptibilities, Iterable) or (
+        isinstance(susceptibilities, np.ndarray) and susceptibilities.ndim == 2
+    ):
+        susceptibilities = [susceptibilities]
     if len(susceptibilities) != len(ellipsoids):
         msg = (
             f"Invalid susceptibilities with '{len(susceptibilities)}' elements. "
@@ -335,14 +338,14 @@ def cast_susceptibility(susceptibility):
     """
     if isinstance(susceptibility, Real):
         susceptibility = susceptibility * np.identity(3)
-    elif isinstance(susceptibility, Sequence):
+    elif isinstance(susceptibility, Iterable):
         susceptibility = np.asarray(susceptibility)
         if susceptibility.shape != (3, 3):
             msg = f"Susceptibility matrix must be 3x3, got shape {susceptibility.shape}"
             raise ValueError(msg)
     else:
         msg = f"Unrecognized susceptibility type: {type(susceptibility)}"
-        raise ValueError(msg)
+        raise TypeError(msg)
     return susceptibility
 
 
