@@ -771,3 +771,68 @@ class TestSymmetryOnRotations:
         # Check that the B field is the same for original and flipped ellipsoids
         for i in range(3):
             np.testing.assert_allclose(b_field[i], b_field_flipped[i])
+
+
+class TestMultipleEllipsoids:
+    """
+    Test forward function when passing multiple ellipsoids.
+    """
+
+    def test_multiple_ellipsoids_susceptibilities(self):
+        """
+        Run forward function with multiple ellipsoids (only with susceptibilities).
+        """
+        # Observation points
+        region = (-30, 30, -30, 30)
+        coordinates = vd.grid_coordinates(
+            region=region, shape=(21, 21), extra_coords=10
+        )
+
+        # Ellipsoids
+        ellipsoids = [
+            OblateEllipsoid(
+                a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
+            ),
+            ProlateEllipsoid(
+                a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            ),
+            TriaxialEllipsoid(
+                a=60,
+                b=18,
+                c=15,
+                yaw=272.1,
+                pitch=43,
+                roll=98,
+                centre=(0.0, 20.0, -30.0),
+            ),
+        ]
+        susceptibilities = [0.1, 0.01, 0.05]
+        external_field = (55_000, -15, 65)
+
+        # Compute gravity acceleration
+        bx, by, bz = ellipsoid_magnetics(
+            coordinates,
+            ellipsoids,
+            susceptibilities=susceptibilities,
+            external_field=external_field,
+        )
+
+        # Compute expected arrays
+        bx_expected, by_expected, bz_expected = tuple(
+            np.zeros_like(coordinates[0]) for _ in range(3)
+        )
+        for ellipsoid, susceptibility in zip(ellipsoids, susceptibilities, strict=True):
+            bx_i, by_i, bz_i = ellipsoid_magnetics(
+                coordinates,
+                ellipsoid,
+                susceptibility,
+                external_field=external_field,
+            )
+            bx_expected += bx_i
+            by_expected += by_i
+            bz_expected += bz_i
+
+        # Check if fields are the same
+        np.testing.assert_allclose(bx, bx_expected)
+        np.testing.assert_allclose(by, by_expected)
+        np.testing.assert_allclose(bz, bz_expected)
