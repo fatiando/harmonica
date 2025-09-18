@@ -778,17 +778,18 @@ class TestMultipleEllipsoids:
     Test forward function when passing multiple ellipsoids.
     """
 
-    def test_multiple_ellipsoids_susceptibilities(self):
-        """
-        Run forward function with multiple ellipsoids (only with susceptibilities).
-        """
-        # Observation points
+    @pytest.fixture
+    def coordinates(self):
+        """Sample grid coordinates."""
         region = (-30, 30, -30, 30)
         coordinates = vd.grid_coordinates(
             region=region, shape=(21, 21), extra_coords=10
         )
+        return coordinates
 
-        # Ellipsoids
+    @pytest.fixture
+    def ellipsoids(self):
+        """Sample ellipsoids."""
         ellipsoids = [
             OblateEllipsoid(
                 a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
@@ -806,14 +807,21 @@ class TestMultipleEllipsoids:
                 centre=(0.0, 20.0, -30.0),
             ),
         ]
+        return ellipsoids
+
+    def test_multiple_ellipsoids_susceptibilities(self, coordinates, ellipsoids):
+        """
+        Run forward function with multiple ellipsoids (only with susceptibilities).
+        """
+        # Physical properties of ellipsoids
         susceptibilities = [0.1, 0.01, 0.05]
         external_field = (55_000, -15, 65)
 
-        # Compute gravity acceleration
+        # Compute magnetic field
         bx, by, bz = ellipsoid_magnetics(
             coordinates,
             ellipsoids,
-            susceptibilities=susceptibilities,
+            susceptibilities,
             external_field=external_field,
         )
 
@@ -827,6 +835,51 @@ class TestMultipleEllipsoids:
                 ellipsoid,
                 susceptibility,
                 external_field=external_field,
+            )
+            bx_expected += bx_i
+            by_expected += by_i
+            bz_expected += bz_i
+
+        # Check if fields are the same
+        np.testing.assert_allclose(bx, bx_expected)
+        np.testing.assert_allclose(by, by_expected)
+        np.testing.assert_allclose(bz, bz_expected)
+
+    def test_multiple_ellipsoids_remanence(self, coordinates, ellipsoids):
+        """
+        Run forward function with multiple ellipsoids with remanence.
+        """
+        # Physical properties of ellipsoids
+        susceptibilities = [0.1, 0.01, 0.05]
+        external_field = (55_000, -15, 65)
+        rem_magnetizations = [
+            [1.0, 2.0, 3.0],
+            [5.0, -1.0, -3.0],
+            None,
+        ]
+
+        # Compute magnetic field
+        bx, by, bz = ellipsoid_magnetics(
+            coordinates,
+            ellipsoids,
+            susceptibilities,
+            external_field=external_field,
+            remnant_mag=rem_magnetizations,
+        )
+
+        # Compute expected arrays
+        bx_expected, by_expected, bz_expected = tuple(
+            np.zeros_like(coordinates[0]) for _ in range(3)
+        )
+        for ellipsoid, susceptibility, rem in zip(
+            ellipsoids, susceptibilities, rem_magnetizations, strict=True
+        ):
+            bx_i, by_i, bz_i = ellipsoid_magnetics(
+                coordinates,
+                ellipsoid,
+                susceptibility,
+                external_field=external_field,
+                remnant_mag=rem,
             )
             bx_expected += bx_i
             by_expected += by_i

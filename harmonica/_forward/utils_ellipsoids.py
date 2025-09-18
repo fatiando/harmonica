@@ -9,7 +9,7 @@ from scipy.spatial.transform import Rotation as rot
 from scipy.special import ellipeinc, ellipkinc
 
 
-def _calculate_lambda(x, y, z, a, b, c):
+def calculate_lambda(x, y, z, a, b, c):
     """
     Get the lambda ellipsoidal coordinate for a given ellipsoid and observation points.
 

@@ -14,7 +14,7 @@ import numpy as np
 from choclo.constants import GRAVITATIONAL_CONST
 
 from .utils_ellipsoids import (
-    _calculate_lambda,
+    calculate_lambda,
     get_elliptical_integrals,
     get_rotation_matrix,
 )
@@ -153,7 +153,7 @@ def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
     # Compute lambda for all observation points
-    lmbda = _calculate_lambda(x, y, z, a, b, c)
+    lmbda = calculate_lambda(x, y, z, a, b, c)
 
     # Clip lambda to zero for internal points
     inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
