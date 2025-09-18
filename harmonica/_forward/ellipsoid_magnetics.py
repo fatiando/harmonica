@@ -89,37 +89,41 @@ def ellipsoid_magnetics(
         ellipsoids = [ellipsoids]
 
     # Sanity checks for susceptibilities
-    if not isinstance(susceptibilities, Sequence):
-        susceptibilities = [susceptibilities]
+    if not isinstance(susceptibilities, (Sequence, np.ndarray)):
+        susceptibilities = np.array([susceptibilities])
     if len(susceptibilities) != len(ellipsoids):
-        msg = ""
+        msg = (
+            f"Invalid susceptibilities with '{len(susceptibilities)}' elements. "
+            "It must have the same number of elements as "
+            f"ellipsoids ({len(ellipsoids)})."
+        )
         raise ValueError(msg)
 
     # Sanity checks for remanent magnetization
     if remnant_mag is None:
-        remnant_mag = [None for _ in range(len(ellipsoids))]
-    if not isinstance(remnant_mag, Sequence):
+        remnant_mag = np.atleast_2d([[0, 0, 0] for _ in range(len(ellipsoids))])
+    if not isinstance(remnant_mag, (Sequence, np.ndarray)):
         msg = (
             f"Invalid 'remnant_mag' '{remnant_mag}' of type {type(remnant_mag)}. "
             "It must be an array-like with three elements or a list of them."
         )
         raise TypeError(msg)
+
+    # Cast remnant magnetization into a 2d array
+    remnant_mag = np.atleast_2d(
+        [mr if mr is not None else [0, 0, 0] for mr in remnant_mag]
+    )
     if len(remnant_mag) != len(ellipsoids):
-        if len(remnant_mag) != 3:
-            msg = f"Invalid 'remnant_mag' with '{len(remnant_mag)}' elements. "
-            if len(ellipsoids) == 1:
-                msg += "It should be an array with 3 elements."
-            else:
-                msg += (
-                    "It should be a list of arrays with three elements, with equal "
-                    f"amount of arrays as number of ellipsoids ('{len(ellipsoids)}')."
-                )
-            raise ValueError(msg)
-        remnant_mag = [remnant_mag]
+        msg = (
+            f"Invalid 'remnant_mag' with '{len(remnant_mag)}' elements. "
+            "It should be a list of arrays with three elements, with equal "
+            f"amount of arrays as number of ellipsoids ('{len(ellipsoids)}')."
+        )
+        raise ValueError(msg)
 
     cast = np.broadcast(*coordinates)
     easting, northing, upward = tuple(np.atleast_1d(c).ravel() for c in coordinates)
-    be, bn, bu = tuple(np.zeros_like(easting) for _ in range(3))
+    be, bn, bu = tuple(np.zeros_like(easting, dtype=np.float64) for _ in range(3))
 
     magnitude, inclination, declination = external_field
     b0_field = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
