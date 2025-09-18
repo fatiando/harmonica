@@ -810,12 +810,36 @@ class TestMultipleEllipsoids:
         ]
         return ellipsoids
 
-    def test_multiple_ellipsoids_susceptibilities(self, coordinates, ellipsoids):
+    @pytest.fixture(params=["list", "array"])
+    def susceptibilities(self, request):
+        """Sample susceptibilities."""
+        susceptibilities = [0.1, 0.01, 0.05]
+        if request.param == "array":
+            susceptibilities = np.array(susceptibilities)
+        return susceptibilities
+
+    @pytest.fixture(params=["list", "array"])
+    def remnant_mag(self, request):
+        """Sample remanent magnetizations."""
+        rem_magnetizations = [
+            [1.0, 2.0, 3.0],
+            [5.0, -1.0, -3.0],
+            None,
+        ]
+        if request.param == "array":
+            rem_magnetizations = [
+                mr if mr is not None else [0, 0, 0] for mr in rem_magnetizations
+            ]
+            rem_magnetizations = np.array(rem_magnetizations)
+        return rem_magnetizations
+
+    def test_multiple_ellipsoids_susceptibilities(
+        self, coordinates, ellipsoids, susceptibilities
+    ):
         """
         Run forward function with multiple ellipsoids (only with susceptibilities).
         """
-        # Physical properties of ellipsoids
-        susceptibilities = [0.1, 0.01, 0.05]
+        # Define external field
         external_field = (55_000, -15, 65)
 
         # Compute magnetic field
@@ -846,18 +870,13 @@ class TestMultipleEllipsoids:
         np.testing.assert_allclose(by, by_expected)
         np.testing.assert_allclose(bz, bz_expected)
 
-    def test_multiple_ellipsoids_remanence(self, coordinates, ellipsoids):
+    def test_multiple_ellipsoids_remanence(self, coordinates, ellipsoids, remnant_mag):
         """
         Run forward function with multiple ellipsoids with remanence.
         """
         # Physical properties of ellipsoids
         susceptibilities = [0.1, 0.01, 0.05]
         external_field = (55_000, -15, 65)
-        rem_magnetizations = [
-            [1.0, 2.0, 3.0],
-            [5.0, -1.0, -3.0],
-            None,
-        ]
 
         # Compute magnetic field
         bx, by, bz = ellipsoid_magnetics(
@@ -865,7 +884,7 @@ class TestMultipleEllipsoids:
             ellipsoids,
             susceptibilities,
             external_field=external_field,
-            remnant_mag=rem_magnetizations,
+            remnant_mag=remnant_mag,
         )
 
         # Compute expected arrays
@@ -873,7 +892,7 @@ class TestMultipleEllipsoids:
             np.zeros_like(coordinates[0]) for _ in range(3)
         )
         for ellipsoid, susceptibility, rem in zip(
-            ellipsoids, susceptibilities, rem_magnetizations, strict=True
+            ellipsoids, susceptibilities, remnant_mag, strict=True
         ):
             bx_i, by_i, bz_i = ellipsoid_magnetics(
                 coordinates,
@@ -901,11 +920,6 @@ class TestInvalidInputs:
             a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
         )
         return ellipsoid
-
-    # @pytest.fixture
-    # def coordiantes(self):
-    #     """Sample coordinates."""
-    #     return (0, 0, 0)
 
     @pytest.mark.parametrize(
         "susceptibilities",
@@ -948,7 +962,12 @@ class TestInvalidInputs:
 
     @pytest.mark.parametrize(
         "remnant_mag",
-        [[1, 2, 3], [[1, 2, 3]], [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]], []],
+        [
+            [1, 2, 3],
+            [[1, 2, 3]],
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]],
+            [],
+        ],
         ids=["a vector", "1 element", "4 elements", "0 elements"],
     )
     def test_invalid_remnant_mag_wrong_elements(self, prolate_ellipsoid, remnant_mag):
@@ -961,6 +980,32 @@ class TestInvalidInputs:
             "Invalid \\'remnant_mag\\' with \\'[0-9]+\\' elements\\. "
             "It should be a list of arrays with three elements, with equal "
             f"amount of arrays as number of ellipsoids \\(\\'{len(ellipsoids)}\\'\\)."
+        )
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid_magnetics(
+                coordinates,
+                ellipsoids,
+                susceptibilities,
+                external_field=external_field,
+                remnant_mag=remnant_mag,
+            )
+
+    @pytest.mark.parametrize(
+        "remnant_mag",
+        [
+            [[1, 2], [1, 2]],
+            [[1, 2, 3, 4], [1, 2, 3, 4]],
+        ],
+    )
+    def test_invalid_remnant_mag_wrong_shape(self, prolate_ellipsoid, remnant_mag):
+        """Test error after remanent magnetization with wrong number of elements."""
+        ellipsoids = [prolate_ellipsoid for _ in range(2)]
+        susceptibilities = [0, 0]
+        external_field = (55_000.0, 12, 41)
+        coordinates = (0, 0, 0)
+        msg = (
+            r"Invalid remanent magnetizations with shape \'\([0-9]+, [0-9]+\)\'. "
+            + re.escape(f"It must have a shape of '({len(ellipsoids)}, 3)'.")
         )
         with pytest.raises(ValueError, match=msg):
             ellipsoid_magnetics(

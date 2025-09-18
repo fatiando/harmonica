@@ -113,11 +113,17 @@ def ellipsoid_magnetics(
     remnant_mag = np.atleast_2d(
         [mr if mr is not None else [0, 0, 0] for mr in remnant_mag]
     )
-    if len(remnant_mag) != len(ellipsoids):
+    if remnant_mag.shape[0] != len(ellipsoids):
         msg = (
             f"Invalid 'remnant_mag' with '{len(remnant_mag)}' elements. "
             "It should be a list of arrays with three elements, with equal "
             f"amount of arrays as number of ellipsoids ('{len(ellipsoids)}')."
+        )
+        raise ValueError(msg)
+    if remnant_mag.shape[1] != 3:
+        msg = (
+            f"Invalid remanent magnetizations with shape '{remnant_mag.shape}'. "
+            f"It must have a shape of '({len(ellipsoids)}, 3)'."
         )
         raise ValueError(msg)
 
@@ -363,8 +369,6 @@ def cast_remanent_magnetization(remnant_mag):
     ValueError
         If the passed array doesn't have the right shape and dimensions.
     """
-    if remnant_mag is None:
-        return np.zeros(3, dtype=np.float64)
     remnant_mag = np.asarray(remnant_mag)
     if remnant_mag.shape != (3,):
         msg = (
