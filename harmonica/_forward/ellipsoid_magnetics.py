@@ -8,7 +8,7 @@
 Forward modelling magnetic fields produced by ellipsoidal bodies.
 """
 
-from collections.abc import Sequence, Iterable
+from collections.abc import Iterable, Sequence
 from numbers import Real
 
 import numpy as np
