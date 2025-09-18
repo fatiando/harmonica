@@ -372,14 +372,18 @@ class TestMultipleEllipsoids:
     Test forward function when passing multiple ellipsoids.
     """
 
-    def test_multiple_ellipsoids(self):
-        # Observation points
+    @pytest.fixture
+    def coordinates(self):
+        """Sample grid coordinates."""
         region = (-30, 30, -30, 30)
         coordinates = vd.grid_coordinates(
             region=region, shape=(21, 21), extra_coords=10
         )
+        return coordinates
 
-        # Ellipsoids
+    @pytest.fixture
+    def ellipsoids(self):
+        """Sample ellipsoids."""
         ellipsoids = [
             OblateEllipsoid(
                 a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
@@ -397,8 +401,17 @@ class TestMultipleEllipsoids:
                 centre=(0.0, 20.0, -30.0),
             ),
         ]
-        densities = [200.0, -400.0, 700.0]
+        return ellipsoids
 
+    @pytest.fixture(params=["list", "array"])
+    def densities(self, request):
+        """Sample densities."""
+        densities = [200.0, -400.0, 700.0]
+        if request.param == "array":
+            densities = np.array(densities)
+        return densities
+
+    def test_multiple_ellipsoids(self, coordinates, ellipsoids, densities):
         # Compute gravity acceleration
         gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoids, densities)
 

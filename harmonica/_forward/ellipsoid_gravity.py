@@ -89,8 +89,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     # deal with the case of a single ellipsoid being passed
     if not isinstance(ellipsoids, Sequence):
         ellipsoids = [ellipsoids]
-    if not isinstance(density, Sequence):
-        density = [density]
+    if not isinstance(density, (Sequence, np.ndarray)):
+        density = np.asarray([density])
 
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
