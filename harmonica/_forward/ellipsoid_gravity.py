@@ -8,7 +8,7 @@
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
 
-from collections.abc import Iterable
+from collections.abc import Sequence
 
 import numpy as np
 from choclo.constants import GRAVITATIONAL_CONST
@@ -87,9 +87,9 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
 
     # deal with the case of a single ellipsoid being passed
-    if not isinstance(ellipsoids, Iterable):
+    if not isinstance(ellipsoids, Sequence):
         ellipsoids = [ellipsoids]
-    if not isinstance(density, Iterable):
+    if not isinstance(density, Sequence):
         density = [density]
 
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):

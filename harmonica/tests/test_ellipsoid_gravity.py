@@ -365,3 +365,54 @@ class TestSymmetryOnRotations:
         # Check that the gravity field is the same for original and flipped ellipsoids
         for i in range(3):
             np.testing.assert_allclose(g_field[i], g_field_flipped[i])
+
+
+class TestMultipleEllipsoids:
+    """
+    Test forward function when passing multiple ellipsoids.
+    """
+
+    def test_multiple_ellipsoids(self):
+        # Observation points
+        region = (-30, 30, -30, 30)
+        coordinates = vd.grid_coordinates(
+            region=region, shape=(21, 21), extra_coords=10
+        )
+
+        # Ellipsoids
+        ellipsoids = [
+            OblateEllipsoid(
+                a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
+            ),
+            ProlateEllipsoid(
+                a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            ),
+            TriaxialEllipsoid(
+                a=60,
+                b=18,
+                c=15,
+                yaw=272.1,
+                pitch=43,
+                roll=98,
+                centre=(0.0, 20.0, -30.0),
+            ),
+        ]
+        densities = [200.0, -400.0, 700.0]
+
+        # Compute gravity acceleration
+        gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoids, densities)
+
+        # Compute expected arrays
+        gx_expected, gy_expected, gz_expected = tuple(
+            np.zeros_like(coordinates[0]) for _ in range(3)
+        )
+        for ellipsoid, density in zip(ellipsoids, densities, strict=True):
+            gx_i, gy_i, gz_i = ellipsoid_gravity(coordinates, ellipsoid, density)
+            gx_expected += gx_i
+            gy_expected += gy_i
+            gz_expected += gz_i
+
+        # Check if fields are the same
+        np.testing.assert_allclose(gx, gx_expected)
+        np.testing.assert_allclose(gy, gy_expected)
+        np.testing.assert_allclose(gz, gz_expected)
