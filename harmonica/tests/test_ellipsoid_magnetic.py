@@ -118,7 +118,17 @@ def get_sphere_magnetization(susceptibility, external_field):
     return magnetization
 
 
-def test_likeness_to_sphere():
+@pytest.mark.parametrize(
+    "ellipsoid",
+    [
+        ProlateEllipsoid(a=60, b=59.99, yaw=0, pitch=0, centre=(0, 0, 0)),
+        TriaxialEllipsoid(
+            a=60, b=59.999, c=59.998, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
+        ),
+        OblateEllipsoid(a=59.99, b=60, yaw=0, pitch=0, centre=(0, 0, 0)),
+    ],
+)
+def test_likeness_to_sphere(ellipsoid):
     """Using a, b, c as almost equal, compare how the close the ellipsoids
     match the dipole-sphere magnetic approximation for low susceptibilities.
     At higher susceptibilities, the self-demag will make the ellipsoid
@@ -126,49 +136,29 @@ def test_likeness_to_sphere():
 
     # create field
     k_values = [0.01, 0.001, 0.0001]
-    b0 = np.array(hm.magnetic_angles_to_vec(55_000, 0.0, 90.0))
+    external_field = (55_000, 0.0, 90.0)
+    b0 = np.array(hm.magnetic_angles_to_vec(*external_field))
     h0_am = np.array(b0 * 1e-9 / mu_0)
-    m = [k * h0_am for k in k_values]
+    magnetizations = [k * h0_am for k in k_values]
 
     # create coords
     easting = np.linspace(0, 2 * 60, 50)
     northing, upward = np.zeros_like(easting), np.zeros_like(easting)
     coordinates = tuple(np.atleast_2d(c) for c in (easting, northing, upward))
 
-    # create ellipsoids
-    pro_ellipsoid = ProlateEllipsoid(a=60, b=59.99, yaw=0, pitch=0, centre=(0, 0, 0))
-    tri_ellipsoid = TriaxialEllipsoid(
-        a=60, b=59.999, c=59.998, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
-    )
-    obl_ellipsoid = OblateEllipsoid(a=59.99, b=60, yaw=0, pitch=0, centre=(0, 0, 0))
-
-    for indx, k in enumerate(k_values):
-        # ellipsoids
-        be_pro, _, _ = ellipsoid_magnetics(
-            coordinates, pro_ellipsoid, k, (55_000, 0.0, 90.0), field="b"
+    for k, magnetization in zip(k_values, magnetizations, strict=True):
+        be, bn, bu = ellipsoid_magnetics(
+            coordinates, ellipsoid, k, external_field, field="b"
         )
-        be_pro = be_pro.ravel()
-        be_tri, _, _ = ellipsoid_magnetics(
-            coordinates, tri_ellipsoid, k, (55_000, 0.0, 90.0), field="b"
+        be_sph, bn_sph, bu_sph = sphere_magnetic(
+            coordinates, radius=60, center=(0, 0, 0), magnetization=magnetization
         )
-        be_tri = be_tri.ravel()
-        be_obl, _, _ = ellipsoid_magnetics(
-            coordinates, obl_ellipsoid, k, (55_000, 0.0, 90.0), field="b"
-        )
-        be_obl = be_obl.ravel()
-
-        # sphere
-        b_e, b_n, b_u = sphere_magnetic(
-            coordinates, radius=60, center=(0, 0, 0), magnetization=m[indx]
-        )
-        b_e = b_e.ravel()
 
         # test similarity
-        np.testing.assert_allclose(be_pro, b_e, rtol=1e-2)
-
-        np.testing.assert_allclose(be_tri, b_e, rtol=1e-2)
-
-        np.testing.assert_allclose(be_obl, b_e, rtol=1e-2)
+        rtol = 1e-2
+        np.testing.assert_allclose(be_sph, be, rtol=rtol)
+        np.testing.assert_allclose(bn_sph, bn, rtol=rtol)
+        np.testing.assert_allclose(bu_sph, bu, rtol=rtol)
 
 
 def test_euler_returns():
@@ -321,12 +311,11 @@ def test_mag_ext_int_boundary():
     u = np.array([0.0, 0.0])
     coordinates = (e, n, u)
 
-    be, bn, bu = ellipsoid_magnetics(
+    be, _, _ = ellipsoid_magnetics(
         coordinates, ellipsoid, susceptibility, external_field, field="b"
     )
 
-    # ideally the tolerances are lower for these - issue created
-    np.testing.assert_allclose(be[0], be[1], rtol=1e-4)
+    np.testing.assert_allclose(be[0], be[1], rtol=1e-7)
 
 
 def test_mag_flipped_ellipsoid():

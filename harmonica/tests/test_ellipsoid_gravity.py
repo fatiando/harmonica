@@ -69,9 +69,9 @@ def test_degenerate_ellipsoid_cases():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    _, _, gz1 = ellipsoid_gravity(coordinates, tri, density, field="g")
-    _, _, gz2 = ellipsoid_gravity(coordinates, pro, density, field="g")
-    _, _, gz3 = ellipsoid_gravity(coordinates, obl, density, field="g")
+    _, _, _ = ellipsoid_gravity(coordinates, tri, density, field="g")
+    _, _, _ = ellipsoid_gravity(coordinates, pro, density, field="g")
+    _, _, _ = ellipsoid_gravity(coordinates, obl, density, field="g")
 
 
 def test_opposite_planes():
