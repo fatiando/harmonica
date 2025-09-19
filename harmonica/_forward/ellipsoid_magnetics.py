@@ -373,12 +373,6 @@ def cast_remanent_magnetization(remnant_mag):
         If the passed array doesn't have the right shape and dimensions.
     """
     remnant_mag = np.asarray(remnant_mag)
-    if remnant_mag.shape != (3,):
-        msg = (
-            f"Invalid remanent magnetization vector with shape '{remnant_mag.shape}'. "
-            "It must have a shape of '(3,)'."
-        )
-        raise ValueError(msg)
     return remnant_mag
 
 
