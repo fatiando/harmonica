@@ -8,6 +8,8 @@
 Test functions from the filter module.
 """
 
+import re
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -190,7 +192,8 @@ def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
     """
     Check if apply_filter raises error on grid with single dimension.
     """
-    with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+    msg = re.escape("Invalid grid with 1 dimensions.")
+    with pytest.raises(ValueError, match=msg):
         apply_filter(invalid_grid_single_dim, dummy_filter)
 
 
@@ -198,7 +201,8 @@ def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
     """
     Check if apply_filter raises error on grid with three dimensions.
     """
-    with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+    msg = re.escape("Invalid grid with 3 dimensions.")
+    with pytest.raises(ValueError, match=msg):
         apply_filter(invalid_grid_3_dims, dummy_filter)
 
 

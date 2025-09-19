@@ -368,7 +368,7 @@ class EquivalentSourcesGB(EquivalentSources):
         # Remove empty windows
         source_windows_nonempty = []
         data_windows_nonempty = []
-        for src, data in zip(source_windows, data_windows):
+        for src, data in zip(source_windows, data_windows, strict=True):
             if src.size > 0 and data.size > 0:
                 source_windows_nonempty.append(src)
                 data_windows_nonempty.append(data)

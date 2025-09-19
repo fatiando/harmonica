@@ -36,7 +36,7 @@ ANGLES = [
 
 
 @pytest.mark.parametrize(
-    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS)]
+    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS, strict=True)]
 )
 def test_magnetic_ang_to_vec_float(angles, vector):
     """
@@ -53,7 +53,7 @@ def test_magnetic_ang_to_vec_float(angles, vector):
 
 @pytest.mark.parametrize("degrees", [False, True], ids=("radians", "degrees"))
 @pytest.mark.parametrize(
-    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS)]
+    ("angles", "vector"), [(a, v) for a, v in zip(ANGLES, VECTORS, strict=False)]
 )
 def test_magnetic_vec_to_angles_float(angles, vector, degrees):
     """

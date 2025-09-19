@@ -79,7 +79,7 @@ def test_prism_to_pyvista(prisms, density):
     assert pv_grid.n_cells == 4
     assert pv_grid.n_points == 32
     # Check coordinates of prisms
-    for prism, cell in zip(prisms, pv_grid.cell):
+    for prism, cell in zip(prisms, pv_grid.cell, strict=True):
         npt.assert_allclose(prism, cell.bounds)
     # Check properties of the prisms
     assert pv_grid.n_arrays == 1

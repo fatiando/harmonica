@@ -312,7 +312,7 @@ def _decompress_grid(grid_compressed):
     # Number of blocks
     (n_blocks,) = array.array("i", grid_compressed[8 : 8 + 4])
     # Number of vectors per block
-    (vectors_per_block,) = array.array("i", grid_compressed[12 : 12 + 4])
+    (_vectors_per_block,) = array.array("i", grid_compressed[12 : 12 + 4])
     # File offset from start of every block
     block_offsets = array.array("q", grid_compressed[16 : 16 + n_blocks * 8])
     # Compressed size of every block
