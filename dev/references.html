@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
@@ -228,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
@@ -501,6 +503,10 @@ document.write(`
   <section id="references">
 <h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
 <div role="list" class="citation-list">
+<div class="citation" id="alken2021" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Alken2021<span class="fn-bracket">]</span></span>
+<p>Alken, P., Thébault, E., Beggan, C. D., Amit, H., Aubert, J., Baerenzung, J., et al. (2021). International Geomagnetic Reference Field: the thirteenth generation. Earth, Planets and Space, 73(1). doi:<a class="reference external" href="https://doi.org/10.1186/s40623-020-01288-x">10.1186/s40623-020-01288-x</a>.</p>
+</div>
 <div class="citation" id="balmino1973" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Balmino1973<span class="fn-bracket">]</span></span>
 <p>Balmino, G., Lambeck, K., &amp; Kaula, W. M. (1973). A spherical harmonic analysis of the Earth’s topography. Journal of Geophysical Research, 78(2), 478-481.</p>
@@ -521,6 +527,10 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>Dampney1969<span class="fn-bracket">]</span></span>
 <p>Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:<a class="reference external" href="https://doi.org/10.1190/1.1439996">10.1190/1.1439996</a></p>
 </div>
+<div class="citation" id="driscollhealy1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DriscollHealy1994<span class="fn-bracket">]</span></span>
+<p>Driscoll, J. R., &amp; Healy, D. M. (1994). Computing Fourier Transforms and Convolutions on the 2-Sphere. Advances in Applied Mathematics, 15(2), 202–250. <a class="reference external" href="https://doi.org/10.1006/aama.1994.1008">10.1006/aama.1994.1008</a>.</p>
+</div>
 <div class="citation" id="fukushima2020" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Fukushima2020<span class="fn-bracket">]</span></span>
 <p>Fukushima, T. (2020). Speed and accuracy improvements in standard algorithm for prismatic gravitational field. Geophysical Journal International. doi:<a class="reference external" href="https://doi.org/10.1093/gji/ggaa240">10.1093/gji/ggaa240</a></p>
@@ -536,6 +546,10 @@ document.write(`
 <div class="citation" id="hofmann-wellenhofmoritz2006" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Hofmann-WellenhofMoritz2006<span class="fn-bracket">]</span></span>
 <p>Hofmann-Wellenhof, B., &amp; Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien ; New York: Springer.</p>
+</div>
+<div class="citation" id="iaga2024" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IAGA2024<span class="fn-bracket">]</span></span>
+<p>International Association of Geomagnetism and Aeronomy. (2024). IGRF-14. Zenodo. doi:<a class="reference external" href="https://doi.org/10.5281/zenodo.14218973">10.5281/zenodo.14218973</a>.</p>
 </div>
 <div class="citation" id="ligotze2001" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LiGotze2001<span class="fn-bracket">]</span></span>
@@ -649,7 +663,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Sep 19, 2025.
   <br/>
 </p>
   </div>

@@ -21,7 +21,7 @@
 Upward continuation of a regular grid
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-70
+.. GENERATED FROM PYTHON SOURCE LINES 11-71
 
 
 
@@ -50,7 +50,7 @@ Upward continuation of a regular grid
            [ 47.56513259,  50.69950849,  53.74613485, ...,   4.6684348 ,
               3.44419849,   2.39520294],
            [ 44.63682346,  47.50470212,  50.29751413, ...,   5.03755398,
-              3.86191533,   2.84250143]])
+              3.86191533,   2.84250143]], shape=(370, 346))
     Coordinates:
       * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
@@ -63,6 +63,7 @@ Upward continuation of a regular grid
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -127,7 +128,7 @@ Upward continuation of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.386 seconds)
+   **Total running time of the script:** (0 minutes 0.388 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_upward_continuation.py:
