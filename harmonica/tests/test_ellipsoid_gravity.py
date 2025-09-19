@@ -36,20 +36,21 @@ def build_ellipsoid(ellipsoid_type):
     ellipsoid
     """
     centre = (0, 0, 0)
-    if ellipsoid_type == "triaxial":
-        a, b, c = 3.2, 2.1, 1.3
-        ellipsoid = TriaxialEllipsoid(
-            a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
-        )
-    elif ellipsoid_type == "prolate":
-        a, b = 3.2, 2.1
-        ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-    elif ellipsoid_type == "oblate":
-        a, b = 2.2, 3.1
-        ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-    else:
-        msg = f"Invalid ellipsoid type: {ellipsoid_type}"
-        raise ValueError(msg)
+    match ellipsoid_type:
+        case "triaxial":
+            a, b, c = 3.2, 2.1, 1.3
+            ellipsoid = TriaxialEllipsoid(
+                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+            )
+        case "prolate":
+            a, b = 3.2, 2.1
+            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        case "oblate":
+            a, b = 2.2, 3.1
+            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+        case _:
+            msg = f"Invalid ellipsoid type: {ellipsoid_type}"
+            raise ValueError(msg)
     return ellipsoid
 
 
@@ -199,20 +200,21 @@ class TestEllipsoidVsPointSource:
         ellipsoid_type = request.param
 
         centre = (0, 0, 0)
-        if ellipsoid_type == "triaxial":
-            a, b, c = 3.2, 2.1, 1.3
-            ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
-            )
-        elif ellipsoid_type == "prolate":
-            a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-        elif ellipsoid_type == "oblate":
-            a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
-        else:
-            msg = f"Invalid ellipsoid type: {ellipsoid_type}"
-            raise ValueError(msg)
+        match ellipsoid_type:
+            case "triaxial":
+                a, b, c = 3.2, 2.1, 1.3
+                ellipsoid = TriaxialEllipsoid(
+                    a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+                )
+            case "prolate":
+                a, b = 3.2, 2.1
+                ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+            case "oblate":
+                a, b = 2.2, 3.1
+                ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+            case _:
+                msg = f"Invalid ellipsoid type: {ellipsoid_type}"
+                raise ValueError(msg)
         return ellipsoid
 
     def test_approximation(self, ellipsoid):
@@ -314,26 +316,27 @@ class TestSymmetryOnRotations:
         semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
         center = (0, 0, 0)
         yaw, pitch, roll = 62.3, 48.2, 14.9
-        if ellipsoid_type == "oblate":
-            ellipsoid = OblateEllipsoid(
-                a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
-            )
-        elif ellipsoid_type == "prolate":
-            ellipsoid = ProlateEllipsoid(
-                a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
-            )
-        elif ellipsoid_type == "triaxial":
-            ellipsoid = TriaxialEllipsoid(
-                a=semimajor,
-                b=semimiddle,
-                c=semiminor,
-                yaw=yaw,
-                pitch=pitch,
-                roll=roll,
-                centre=center,
-            )
-        else:
-            raise ValueError()
+        match ellipsoid_type:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    a=semimajor,
+                    b=semimiddle,
+                    c=semiminor,
+                    yaw=yaw,
+                    pitch=pitch,
+                    roll=roll,
+                    centre=center,
+                )
+            case _:
+                raise ValueError()
         return ellipsoid
 
     def test_symmetry_when_flipping(self, ellipsoid):

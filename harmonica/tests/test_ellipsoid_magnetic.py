@@ -450,16 +450,17 @@ class TestDemagnetizationEffects:
     @pytest.fixture(params=("oblate", "prolate", "triaxial"))
     def ellipsoid_semiaxes(self, request):
         ellipsoid_type = request.param
-        if ellipsoid_type == "oblate":
-            a, b = 50.0, 60.0
-            c = b
-        elif ellipsoid_type == "prolate":
-            a, b = 60.0, 50.0
-            c = b
-        elif ellipsoid_type == "triaxial":
-            a, b, c = 70.0, 60.0, 50.0
-        else:
-            raise ValueError()
+        match ellipsoid_type:
+            case "oblate":
+                a, b = 50.0, 60.0
+                c = b
+            case "prolate":
+                a, b = 60.0, 50.0
+                c = b
+            case "triaxial":
+                a, b, c = 70.0, 60.0, 50.0
+            case _:
+                raise ValueError()
         return a, b, c
 
     def test_demagnetization(self, ellipsoid_semiaxes):
@@ -507,14 +508,15 @@ def test_internal_demagnetization_components(ellipsoid_type, a, b, c):
 
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r}) \mathbf{M}
     """
-    if ellipsoid_type == "oblate":
-        n_components = _demag_tensor_oblate_internal(a, b)
-    elif ellipsoid_type == "prolate":
-        n_components = _demag_tensor_prolate_internal(a, b)
-    elif ellipsoid_type == "triaxial":
-        n_components = _demag_tensor_triaxial_internal(a, b, c)
-    else:
-        raise ValueError()
+    match ellipsoid_type:
+        case "oblate":
+            n_components = _demag_tensor_oblate_internal(a, b)
+        case "prolate":
+            n_components = _demag_tensor_prolate_internal(a, b)
+        case "triaxial":
+            n_components = _demag_tensor_triaxial_internal(a, b, c)
+        case _:
+            raise ValueError()
 
     # check that all diagonal elements are positive
     assert all(n > 0 for n in n_components)
@@ -539,15 +541,16 @@ class TestMagnetizationVersusSphere:
         """
         a = radius
         ellipsoid_type = request.param
-        if ellipsoid_type == "oblate":
-            b = c = a + 1e-2
-        elif ellipsoid_type == "prolate":
-            b = c = a - 1e-2
-        elif ellipsoid_type == "triaxial":
-            b = a - 1e-3
-            c = a - 1e-2
-        else:
-            raise ValueError()
+        match ellipsoid_type:
+            case "oblate":
+                b = c = a + 1e-2
+            case "prolate":
+                b = c = a - 1e-2
+            case "triaxial":
+                b = a - 1e-3
+                c = a - 1e-2
+            case _:
+                raise ValueError()
         return a, b, c
 
     def test_magnetization_vs_sphere(self, ellipsoid_semiaxes):
@@ -633,34 +636,35 @@ class TestMagneticFieldVersusSphere:
         """
         yaw, pitch, roll = 0, 0, 0
         a = self.radius
-        if ellipsoid_type == "oblate":
-            ellipsoid = OblateEllipsoid(
-                a=a,
-                b=a + self.delta,
-                yaw=yaw,
-                pitch=pitch,
-                centre=self.center,
-            )
-        elif ellipsoid_type == "prolate":
-            ellipsoid = ProlateEllipsoid(
-                a=a,
-                b=a - self.delta,
-                yaw=yaw,
-                pitch=pitch,
-                centre=self.center,
-            )
-        elif ellipsoid_type == "triaxial":
-            ellipsoid = TriaxialEllipsoid(
-                a=a,
-                b=a - self.delta,
-                c=a - 2 * self.delta,
-                yaw=yaw,
-                pitch=pitch,
-                roll=roll,
-                centre=self.center,
-            )
-        else:
-            raise ValueError()
+        match ellipsoid_type:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    a=a,
+                    b=a + self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    centre=self.center,
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    centre=self.center,
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    c=a - 2 * self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    roll=roll,
+                    centre=self.center,
+                )
+            case _:
+                raise ValueError()
         return ellipsoid
 
     @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate", "triaxial"])
@@ -709,26 +713,27 @@ class TestSymmetryOnRotations:
         semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
         center = (0, 0, 0)
         yaw, pitch, roll = 62.3, 48.2, 14.9
-        if ellipsoid_type == "oblate":
-            ellipsoid = OblateEllipsoid(
-                a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
-            )
-        elif ellipsoid_type == "prolate":
-            ellipsoid = ProlateEllipsoid(
-                a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
-            )
-        elif ellipsoid_type == "triaxial":
-            ellipsoid = TriaxialEllipsoid(
-                a=semimajor,
-                b=semimiddle,
-                c=semiminor,
-                yaw=yaw,
-                pitch=pitch,
-                roll=roll,
-                centre=center,
-            )
-        else:
-            raise ValueError()
+        match ellipsoid_type:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    a=semimajor,
+                    b=semimiddle,
+                    c=semiminor,
+                    yaw=yaw,
+                    pitch=pitch,
+                    roll=roll,
+                    centre=center,
+                )
+            case _:
+                raise ValueError()
         return ellipsoid
 
     @pytest.mark.parametrize("magnetization_type", ["induced", "remanent", "both"])
