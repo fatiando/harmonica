@@ -8,6 +8,7 @@
 Test functions for regular grid transformations.
 """
 
+import re
 from pathlib import Path
 
 import numpy as np
@@ -579,7 +580,8 @@ class TestTotalGradientAmplitude:
         x = np.linspace(0, 10, 11)
         y = x**2
         grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
-        with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+        msg = re.escape("Invalid grid with 1 dimensions.")
+        with pytest.raises(ValueError, match=msg):
             total_gradient_amplitude(grid)
 
     def test_invalid_grid_three_dimensions(self):
@@ -593,7 +595,8 @@ class TestTotalGradientAmplitude:
         xx, yy, zz = np.meshgrid(x, y, z)
         data = xx + yy + zz
         grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
-        with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+        msg = re.escape("Invalid grid with 3 dimensions.")
+        with pytest.raises(ValueError, match=msg):
             total_gradient_amplitude(grid)
 
     def test_invalid_grid_with_nans(self, sample_potential):
@@ -650,7 +653,8 @@ class TestTilt:
         x = np.linspace(0, 10, 11)
         y = x**2
         grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
-        with pytest.raises(ValueError, match="Invalid grid with 1 dimensions."):
+        msg = re.escape("Invalid grid with 1 dimensions.")
+        with pytest.raises(ValueError, match=msg):
             tilt_angle(grid)
 
     def test_invalid_grid_three_dimensions(self):
@@ -664,7 +668,8 @@ class TestTilt:
         xx, yy, zz = np.meshgrid(x, y, z)
         data = xx + yy + zz
         grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
-        with pytest.raises(ValueError, match="Invalid grid with 3 dimensions."):
+        msg = re.escape("Invalid grid with 3 dimensions.")
+        with pytest.raises(ValueError, match=msg):
             tilt_angle(grid)
 
     def test_invalid_grid_with_nans(self, sample_potential):
@@ -699,7 +704,7 @@ class Testfilter:
 
     def test_reduction_to_pole_grid(self):
         """
-        Test greduction_to_pole function against the output from oasis montaj.
+        Test reduction_to_pole function against the output from oasis montaj.
         """
         rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
         # Remove mean value to match OM result
