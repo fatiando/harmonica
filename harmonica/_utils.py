@@ -4,7 +4,25 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import pathlib
+
 import numpy as np
+import pooch
+
+
+def get_harmonica_cache():
+    """
+    Return the Harmonica data cache folder for the current system.
+
+    Uses :func:`pooch.os_cache` to reliably get a cache folder dependant on the
+    underlying operating system.
+
+    Returns
+    -------
+    path : class:`pathlib.Path`
+        The path to the cache folder. It may or may not exist yet.
+    """
+    return pathlib.Path(pooch.os_cache("harmonica"))
 
 
 def magnetic_angles_to_vec(intensity, inclination, declination):
