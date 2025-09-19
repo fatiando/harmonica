@@ -704,7 +704,7 @@ class Testfilter:
 
     def test_reduction_to_pole_grid(self):
         """
-        Test greduction_to_pole function against the output from oasis montaj.
+        Test reduction_to_pole function against the output from oasis montaj.
         """
         rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
         # Remove mean value to match OM result
