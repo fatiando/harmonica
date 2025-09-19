@@ -105,7 +105,7 @@ def ellipsoid_magnetics(
     # Sanity checks for remanent magnetization
     if remnant_mag is None:
         remnant_mag = np.atleast_2d([[0, 0, 0] for _ in range(len(ellipsoids))])
-    if not isinstance(remnant_mag, (Sequence, np.ndarray)):
+    if not isinstance(remnant_mag, Iterable):
         msg = (
             f"Invalid 'remnant_mag' '{remnant_mag}' of type {type(remnant_mag)}. "
             "It must be an array-like with three elements or a list of them."
