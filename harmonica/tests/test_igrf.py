@@ -132,7 +132,9 @@ def test_igrf14__fetch_coefficients():
 
 def test_load_igrf():
     "Check if things read have the right shapes and sizes and some values"
-    years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
+    years, g, h, _g_sv, _h_sv = load_igrf(
+        IGRF14("2020-02-10")._fetch_coefficient_file()
+    )
     assert years.size == 26
     npt.assert_allclose(years, np.arange(1900, 2026, 5))
     assert g.shape == (26, 14, 14)
@@ -200,7 +202,7 @@ def test_interpolate_coefficients_max_degree():
 def test_interpolate_coefficients_invalid_date(date):
     "Check that an exception is raised for invalid dates"
     with pytest.raises(ValueError, match="Invalid date"):
-        g_date, h_date = interpolate_coefficients(
+        interpolate_coefficients(
             date,
             None,
             list(range(1900, 2030, 5)),
