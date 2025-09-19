@@ -5,6 +5,8 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import re
+from copy import copy
+
 import numpy as np
 import pytest
 import verde as vd
@@ -284,3 +286,146 @@ def test_invalid_field():
     msg = re.escape(f"Invalid field '{invalid_field}'")
     with pytest.raises(ValueError, match=msg):
         ellipsoid_gravity(coordinates, ellipsoid, density=1.0, field=invalid_field)
+
+
+class TestSymmetryOnRotations:
+    """
+    Test symmetries in the gravity field after rotations are applied.
+    """
+
+    def flip_ellipsoid(self, ellipsoid):
+        """
+        Flip ellipsoid 180 degrees keeping the same geometry.
+
+        The rotation will make the ellipsoid to turn 180 degrees, so its geometry is
+        preserved. The sign change in pitch and roll is required to ensure the symmetry.
+        """
+        ellipsoid.yaw += 180
+        ellipsoid.pitch *= -1
+        if isinstance(ellipsoid, TriaxialEllipsoid):
+            ellipsoid.roll *= -1
+        return ellipsoid
+
+    @pytest.fixture(params=["oblate", "prolate", "triaxial"])
+    def ellipsoid(self, request):
+        """Sample ellipsoid."""
+        ellipsoid_type = request.param
+        # Generate original ellipsoid
+        semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
+        center = (0, 0, 0)
+        yaw, pitch, roll = 62.3, 48.2, 14.9
+        if ellipsoid_type == "oblate":
+            ellipsoid = OblateEllipsoid(
+                a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+            )
+        elif ellipsoid_type == "prolate":
+            ellipsoid = ProlateEllipsoid(
+                a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+            )
+        elif ellipsoid_type == "triaxial":
+            ellipsoid = TriaxialEllipsoid(
+                a=semimajor,
+                b=semimiddle,
+                c=semiminor,
+                yaw=yaw,
+                pitch=pitch,
+                roll=roll,
+                centre=center,
+            )
+        else:
+            raise ValueError()
+        return ellipsoid
+
+    def test_symmetry_when_flipping(self, ellipsoid):
+        """
+        Test symmetry of magnetic field when flipping the ellipsoid.
+
+        Rotate the ellipsoid so the geometry is preserved. The gravity field generated
+        by the ellipsoid should be the same as before the rotation.
+        """
+        # Define observation points
+        coordinates = vd.grid_coordinates(
+            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+        )
+
+        # Generate a flipped ellipsoid
+        ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
+
+        # Compute magnetic fields
+        density = 238
+        g_field, g_field_flipped = tuple(
+            ellipsoid_gravity(
+                coordinates,
+                ell,
+                density,
+            )
+            for ell in (ellipsoid, ellipsoid_flipped)
+        )
+
+        # Check that the gravity field is the same for original and flipped ellipsoids
+        for i in range(3):
+            np.testing.assert_allclose(g_field[i], g_field_flipped[i])
+
+
+class TestMultipleEllipsoids:
+    """
+    Test forward function when passing multiple ellipsoids.
+    """
+
+    @pytest.fixture
+    def coordinates(self):
+        """Sample grid coordinates."""
+        region = (-30, 30, -30, 30)
+        coordinates = vd.grid_coordinates(
+            region=region, shape=(21, 21), extra_coords=10
+        )
+        return coordinates
+
+    @pytest.fixture
+    def ellipsoids(self):
+        """Sample ellipsoids."""
+        ellipsoids = [
+            OblateEllipsoid(
+                a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
+            ),
+            ProlateEllipsoid(
+                a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            ),
+            TriaxialEllipsoid(
+                a=60,
+                b=18,
+                c=15,
+                yaw=272.1,
+                pitch=43,
+                roll=98,
+                centre=(0.0, 20.0, -30.0),
+            ),
+        ]
+        return ellipsoids
+
+    @pytest.fixture(params=["list", "array"])
+    def densities(self, request):
+        """Sample densities."""
+        densities = [200.0, -400.0, 700.0]
+        if request.param == "array":
+            densities = np.array(densities)
+        return densities
+
+    def test_multiple_ellipsoids(self, coordinates, ellipsoids, densities):
+        # Compute gravity acceleration
+        gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoids, densities)
+
+        # Compute expected arrays
+        gx_expected, gy_expected, gz_expected = tuple(
+            np.zeros_like(coordinates[0]) for _ in range(3)
+        )
+        for ellipsoid, density in zip(ellipsoids, densities, strict=True):
+            gx_i, gy_i, gz_i = ellipsoid_gravity(coordinates, ellipsoid, density)
+            gx_expected += gx_i
+            gy_expected += gy_i
+            gz_expected += gz_i
+
+        # Check if fields are the same
+        np.testing.assert_allclose(gx, gx_expected)
+        np.testing.assert_allclose(gy, gy_expected)
+        np.testing.assert_allclose(gz, gz_expected)

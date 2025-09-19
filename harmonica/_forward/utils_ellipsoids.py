@@ -9,7 +9,7 @@ from scipy.spatial.transform import Rotation as rot
 from scipy.special import ellipeinc, ellipkinc
 
 
-def _calculate_lambda(x, y, z, a, b, c):
+def calculate_lambda(x, y, z, a, b, c):
     """
     Get the lambda ellipsoidal coordinate for a given ellipsoid and observation points.
 
@@ -89,9 +89,9 @@ def get_elliptical_integrals(a, b, c, lmbda):
     Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -151,9 +151,9 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     Parameters
     ----------
     a, b, c : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -255,9 +255,9 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     Parameters
     ----------
     a, b : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -333,9 +333,9 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     Parameters
     ----------
     a, b : floats
-        Semiaxis lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid.
     lmbda : float
-        The given lmbda value for the point we are considering.
+        The given lambda value for the point we are considering.
 
     Returns
     -------
@@ -398,16 +398,17 @@ def get_rotation_matrix(yaw, pitch, roll):
     """
     Build rotation matrix from yaw, pitch and roll angles.
 
-    Generate a rotation matrix (V) from Tait-Bryan angles: yaw, pitch, and roll.
+    Generate a rotation matrix (V) from Tait-Bryan intrinsic angles:
+    yaw, pitch, and roll.
 
     Parameters
     ----------
     yaw : float
-        Rotation about the vertical (z) axis, in degrees.
+        Rotation about the vertical (Z) axis, in degrees.
     pitch : float
-        Rotation about the northing (y) axis, in degrees.
+        Rotation about the northing (Y) axis, in degrees.
     roll : float
-        Rotation about the easting (x) axis, in degrees.
+        Rotation about the easting (X) axis, in degrees.
 
     Returns
     -------
@@ -428,7 +429,32 @@ def get_rotation_matrix(yaw, pitch, roll):
     # using scipy rotation package
     # this produces the local to global rotation matrix (or what would be
     # defined as r.T from global to local)
-    m = rot.from_euler("zyx", [yaw, -pitch, roll], degrees=True)
+    # Use capitalized axes for intrinsic rotations.
+    m = rot.from_euler("ZYX", [yaw, -pitch, roll], degrees=True)
     v = m.as_matrix()
 
     return v
+
+
+def get_derivatives_of_elliptical_integrals(a, b, c, lmbda):
+    r"""
+    Compute derivatives of the elliptical integrals with respect to lambda.
+
+    Compute the derivatives of the elliptical integrals :math:`A(\lambda)`,
+    :math:`B(\lambda)`, and :math:`C(\lambda)` with respect to lambda.
+
+    Parameters
+    ----------
+    a, b, c : floats
+        Semi-axes lengths of the given ellipsoid.
+    lmbda : float
+        The given lambda value for the point we are considering.
+
+    Returns
+    -------
+    hx, hy, hz : tuple of floats
+        The h values for the given observation point.
+    """
+    r = np.sqrt((a**2 + lmbda) * (b**2 + lmbda) * (c**2 + lmbda))
+    hx, hy, hz = tuple(-1 / (e**2 + lmbda) / r for e in (a, b, c))
+    return hx, hy, hz

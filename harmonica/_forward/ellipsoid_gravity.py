@@ -8,15 +8,15 @@
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
 
-from collections.abc import Iterable
+from collections.abc import Sequence
 
 import numpy as np
 from choclo.constants import GRAVITATIONAL_CONST
 
 from .utils_ellipsoids import (
-    _calculate_lambda,
-    get_rotation_matrix,
+    calculate_lambda,
     get_elliptical_integrals,
+    get_rotation_matrix,
 )
 
 
@@ -87,10 +87,10 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
     ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
 
     # deal with the case of a single ellipsoid being passed
-    if not isinstance(ellipsoids, Iterable):
+    if not isinstance(ellipsoids, Sequence):
         ellipsoids = [ellipsoids]
-    if not isinstance(density, Iterable):
-        density = [density]
+    if not isinstance(density, (Sequence, np.ndarray)):
+        density = np.asarray([density])
 
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
@@ -153,7 +153,7 @@ def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
     # Compute lambda for all observation points
-    lmbda = _calculate_lambda(x, y, z, a, b, c)
+    lmbda = calculate_lambda(x, y, z, a, b, c)
 
     # Clip lambda to zero for internal points
     inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
