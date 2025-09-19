@@ -237,8 +237,7 @@ def test_single_density_based_discretization(
     assert len(tesseroids) == 2
     # Check the horizontal coordinates of the tesseroids
     for tess in tesseroids:
-        for coord, original_coord in zip(tess[:4], tesseroid, strict=True):
-            npt.assert_allclose(coord, original_coord)
+        npt.assert_allclose(tess[:4], tesseroid[:4])
 
     # Check the radial coordinates
     # ----------------------------
