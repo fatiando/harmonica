@@ -706,8 +706,8 @@ def test_spherical_shell_two_dim_adaptive_discret(
         # Define boundary coordinates of each tesseroid
         top = ellipsoid.mean_radius
         bottom = top - thickness
-        for w, e in zip(west, east):
-            for s, n in zip(south, north):
+        for w, e in zip(west, east, strict=True):
+            for s, n in zip(south, north, strict=False):
                 tesseroids.append([w, e, s, n, bottom, top])
         # Get analytical solutions
         analytical = spherical_shell_analytical(top, bottom, density, radius)
@@ -748,8 +748,8 @@ def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
     latitude = np.linspace(-90, 90, shape[1] + 1)
     west, east = longitude[:-1], longitude[1:]
     south, north = latitude[:-1], latitude[1:]
-    for w, e in zip(west, east):
-        for s, n in zip(south, north):
+    for w, e in zip(west, east, strict=False):
+        for s, n in zip(south, north, strict=False):
             tesseroids.append([w, e, s, n, bottom, top])
     # Get analytical solutions
     analytical = spherical_shell_analytical(top, bottom, density, radius)

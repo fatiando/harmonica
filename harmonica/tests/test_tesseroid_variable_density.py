@@ -237,8 +237,7 @@ def test_single_density_based_discretization(
     assert len(tesseroids) == 2
     # Check the horizontal coordinates of the tesseroids
     for tess in tesseroids:
-        for coord, original_coord in zip(tess[:4], tesseroid):
-            npt.assert_allclose(coord, original_coord)
+        npt.assert_allclose(tess[:4], tesseroid[:4])
 
     # Check the radial coordinates
     # ----------------------------
@@ -429,8 +428,8 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
     west, east = longitude[:-1], longitude[1:]
     south, north = latitude[:-1], latitude[1:]
     tesseroids = []
-    for w, e in zip(west, east):
-        for s, n in zip(south, north):
+    for w, e in zip(west, east, strict=False):
+        for s, n in zip(south, north, strict=False):
             tesseroids.append([w, e, s, n, bottom, top])
     return tesseroids
 

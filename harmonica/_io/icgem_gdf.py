@@ -44,7 +44,7 @@ def load_icgem_gdf(fname, **kwargs):
     """
     rawdata, metadata = _read_gdf_file(fname, **kwargs)
     shape = (int(metadata["latitude_parallels"]), int(metadata["longitude_parallels"]))
-    data = dict(zip(metadata["attributes"], rawdata))
+    data = dict(zip(metadata["attributes"], rawdata, strict=True))
     coords = {
         "longitude": data["longitude"].reshape(shape)[0, :],
         "latitude": data["latitude"].reshape(shape)[:, 0][::-1],
