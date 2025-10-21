@@ -39,24 +39,23 @@ def apply_filter(grid, fft_filter, **kwargs):
         A :class:`xarray.DataArray` with the filtered version of the passed
         ``grid``. Defined are in the spatial domain.
     """
-    # Run sanity checks on the grid
     grid_sanity_checks(grid)
-    # Catch the dims of the grid
-    dims = grid.dims
-    # Compute Fourier Transform of the grid
     fft_grid = fft(grid)
-    # Build the filter
     da_filter = fft_filter(fft_grid, **kwargs)
-    # Apply the filter
+    # The filter convolution in the frequency domain is a multiplication
     filtered_fft_grid = fft_grid * da_filter
-    # Compute inverse FFT
+    # Keep only the real part since the inverse transform returns complex
+    # number by default
     filtered_grid = ifft(filtered_fft_grid).real
-
-    # use original coordinates on the filtered grid
+    # Restore the original coordinates to the grid because the inverse
+    # transform calculates coordinates from the frequencies, which can lead to
+    # rounding errors and coordinates that are slightly off. This causes errors
+    # when doing operations with the transformed grids. Restoring the original
+    # coordinates avoids these issues.
+    dims = grid.dims
     filtered_grid = filtered_grid.assign_coords(
         {dims[1]: grid[dims[1]].values, dims[0]: grid[dims[0]].values}
     )
-
     return filtered_grid
 
 
