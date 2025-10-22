@@ -54,7 +54,7 @@ def derivative_upward(grid, order=1):
     --------
     harmonica.filters.derivative_upward_kernel
     """
-    return apply_filter(grid, derivative_upward_kernel, order=order)
+    return apply_filter(grid, derivative_upward_kernel, filter_kwargs={"order": order})
 
 
 def derivative_easting(grid, order=1, method="finite-diff"):
@@ -107,7 +107,9 @@ def derivative_easting(grid, order=1, method="finite-diff"):
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
-        grid = apply_filter(grid, derivative_easting_kernel, order=order)
+        grid = apply_filter(
+            grid, derivative_easting_kernel, filter_kwargs={"order": order}
+        )
     else:
         msg = (
             f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
@@ -166,7 +168,9 @@ def derivative_northing(grid, order=1, method="finite-diff"):
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
-        return apply_filter(grid, derivative_northing_kernel, order=order)
+        return apply_filter(
+            grid, derivative_northing_kernel, filter_kwargs={"order": order}
+        )
     else:
         msg = (
             f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
@@ -209,7 +213,9 @@ def upward_continuation(grid, height_displacement):
     harmonica.filters.upward_continuation_kernel
     """
     return apply_filter(
-        grid, upward_continuation_kernel, height_displacement=height_displacement
+        grid,
+        upward_continuation_kernel,
+        filter_kwargs={"height_displacement": height_displacement},
     )
 
 
@@ -245,7 +251,9 @@ def gaussian_lowpass(grid, wavelength):
     --------
     harmonica.filters.gaussian_lowpass_kernel
     """
-    return apply_filter(grid, gaussian_lowpass_kernel, wavelength=wavelength)
+    return apply_filter(
+        grid, gaussian_lowpass_kernel, filter_kwargs={"wavelength": wavelength}
+    )
 
 
 def gaussian_highpass(grid, wavelength):
@@ -280,7 +288,9 @@ def gaussian_highpass(grid, wavelength):
     --------
     harmonica.filters.gaussian_highpass_kernel
     """
-    return apply_filter(grid, gaussian_highpass_kernel, wavelength=wavelength)
+    return apply_filter(
+        grid, gaussian_highpass_kernel, filter_kwargs={"wavelength": wavelength}
+    )
 
 
 def reduction_to_pole(
@@ -335,10 +345,12 @@ def reduction_to_pole(
     return apply_filter(
         grid,
         reduction_to_pole_kernel,
-        inclination=inclination,
-        declination=declination,
-        magnetization_inclination=magnetization_inclination,
-        magnetization_declination=magnetization_declination,
+        filter_kwargs={
+            "inclination": inclination,
+            "declination": declination,
+            "magnetization_inclination": magnetization_inclination,
+            "magnetization_declination": magnetization_declination,
+        },
     )
 
 
