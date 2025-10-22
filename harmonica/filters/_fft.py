@@ -79,5 +79,6 @@ def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
         fourier_transform,
         true_phase=true_phase,
         true_amplitude=true_amplitude,
+        lag=(None, None),  # Mutes an annoying FutureWarning from xrft
         **kwargs,
     )
