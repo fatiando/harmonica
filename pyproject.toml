@@ -117,6 +117,7 @@ ignore = [
   "RET504",   # allow variable assignment only for return
   "PT001",    # conventions for parenthesis on pytest.fixture
   "D200",     # allow single line docstrings in their own line
+  "C420",     # Replacing dict comprehension with `dict.fromkeys` is ugly
 ]
 
 [tool.ruff.lint.per-file-ignores]
