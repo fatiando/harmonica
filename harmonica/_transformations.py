@@ -252,7 +252,10 @@ def gaussian_lowpass(grid, wavelength):
     harmonica.filters.gaussian_lowpass_kernel
     """
     return apply_filter(
-        grid, gaussian_lowpass_kernel, filter_kwargs={"wavelength": wavelength}
+        grid,
+        gaussian_lowpass_kernel,
+        pad=False,
+        filter_kwargs={"wavelength": wavelength},
     )
 
 
@@ -289,7 +292,10 @@ def gaussian_highpass(grid, wavelength):
     harmonica.filters.gaussian_highpass_kernel
     """
     return apply_filter(
-        grid, gaussian_highpass_kernel, filter_kwargs={"wavelength": wavelength}
+        grid,
+        gaussian_highpass_kernel,
+        pad=False,
+        filter_kwargs={"wavelength": wavelength},
     )
 
 
@@ -373,8 +379,8 @@ def total_gradient_amplitude(grid):
     Returns
     -------
     total_gradient_amplitude_grid : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` after calculating the
-        total gradient amplitude of the passed ``grid``.
+        A :class:`xarray.DataArray` after calculating the total gradient
+        amplitude of the passed ``grid``.
 
     Notes
     -----
@@ -410,10 +416,9 @@ def tilt_angle(grid):
     r"""
     Calculate the tilt angle of a potential field grid.
 
-    Compute the tilt of a regular gridded potential field
-    :math:`M`. The horizontal derivatives are calculated
-    through finite-differences while the upward derivative
-    is calculated using FFT.
+    Compute the tilt of a regular gridded potential field :math:`M`. The
+    horizontal derivatives are calculated through finite-differences while the
+    upward derivative is calculated using FFT.
 
     Parameters
     ----------
@@ -454,17 +459,12 @@ def tilt_angle(grid):
     [Blakely1995]_
     [MillerSingh1994]_
     """
-    # Run sanity checks on the grid
     grid_sanity_checks(grid)
-    # Calculate the gradients of the grid
-    gradient = (
-        derivative_easting(grid, order=1),
-        derivative_northing(grid, order=1),
-        derivative_upward(grid, order=1),
-    )
-    # Calculate and return the tilt
-    horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
-    tilt = np.arctan2(gradient[2], horiz_deriv)
+    deriv_east = derivative_easting(grid, order=1)
+    deriv_north = derivative_northing(grid, order=1)
+    deriv_up = derivative_upward(grid, order=1)
+    horiz_deriv = np.hypot(deriv_east, deriv_north)
+    tilt = np.arctan2(deriv_up, horiz_deriv)
     return tilt
 
 

@@ -8,11 +8,10 @@
 Wrap xrft functions to compute FFTs and inverse FFTs.
 """
 
-from xrft.xrft import fft as _fft
-from xrft.xrft import ifft as _ifft
+import xrft
 
 
-def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwargs):
+def fft(grid, true_phase=True, true_amplitude=True, **kwargs):
     """
     Compute Fast Fourier Transform of a 2D regular grid.
 
@@ -32,21 +31,15 @@ def fft(grid, true_phase=True, true_amplitude=True, drop_bad_coords=True, **kwar
         If True, the FFT is multiplied by the spacing of the transformed
         variables to match theoretical FT amplitude.
         Defaults to True.
-    drop_bad_coords : bool (optional)
-        If True, only the indexes of the array will be kept before passing it
-        to :func:`xrft.fft`. Any extra coordinate should be drooped, otherwise
-        :func:`xrft.fft` raises an error after finding *bad coordinates*.
-        Defaults to True.
 
     Returns
     -------
     fourier_transform : :class:`xarray.DataArray`
         Array with the Fourier transform of the original grid.
     """
-    if drop_bad_coords:
-        bad_coords = tuple(c for c in grid.coords if c not in grid.indexes)
-        grid = grid.drop(bad_coords)
-    return _fft(grid, true_phase=true_phase, true_amplitude=true_amplitude, **kwargs)
+    return xrft.fft(
+        grid, true_phase=true_phase, true_amplitude=true_amplitude, **kwargs
+    )
 
 
 def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
@@ -75,10 +68,10 @@ def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
     grid : :class:`xarray.DataArray`
         Array with the inverse Fourier transform of the passed grid.
     """
-    return _ifft(
+    return xrft.ifft(
         fourier_transform,
         true_phase=true_phase,
         true_amplitude=true_amplitude,
-        lag=(None, None),  # Mutes an annoying FutureWarning from xrft
+        lag=(0, 0),  # Mutes an annoying FutureWarning from xrft
         **kwargs,
     )
