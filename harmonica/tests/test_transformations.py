@@ -16,9 +16,13 @@ import pytest
 import verde as vd
 import xarray as xr
 import xarray.testing as xrt
-import xrft
 
-from .. import point_gravity
+from .. import (
+    dipole_magnetic,
+    magnetic_angles_to_vec,
+    point_gravity,
+    total_field_anomaly,
+)
 from .._transformations import (
     _get_dataarray_coordinate,
     derivative_easting,
@@ -253,19 +257,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
     """
     Test derivative_upward function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate upward derivative and unpad it
-    derivative = derivative_upward(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_upward(sample_potential)
     # Compare against g_up (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -281,19 +273,8 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     Note: We omit the minus sign here because the second derivative is positive
     for both downward (negative) and upward (positive) derivatives.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
     # Calculate second upward derivative and unpad it
-    second_deriv = derivative_upward(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_upward(sample_potential, order=2)
     # Compare against g_zz (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -347,19 +328,7 @@ def test_derivative_easting_fft(sample_potential, sample_g_e):
     """
     Test derivative_easting function against the synthetic model using FFTs.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate easting derivative and unpad it
-    derivative = derivative_easting(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_easting(sample_potential)
     # Compare against g_e (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -372,19 +341,7 @@ def test_derivative_easting_order2(sample_potential, sample_g_ee):
     """
     Test higher order of derivative_easting function against the sample grid.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second easting derivative and unpad it
-    second_deriv = derivative_easting(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_easting(sample_potential, order=2)
     # Compare against g_ee (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -423,19 +380,7 @@ def test_derivative_northing(sample_potential, sample_g_n):
     """
     Test derivative_northing function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate northing derivative and unpad it
-    derivative = derivative_northing(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_northing(sample_potential)
     # Compare against g_n (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -448,19 +393,7 @@ def test_derivative_northing_order2(sample_potential, sample_g_nn):
     """
     Test higher order of derivative_northing function against the sample grid.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second northing derivative and unpad it
-    second_deriv = derivative_northing(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_northing(sample_potential, order=2)
     # Compare against g_nn (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -475,24 +408,10 @@ def test_laplace_fft(sample_potential):
 
     We will use FFT computations only.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second northing derivative and unpad it
     method = "fft"
-    second_deriv_ee = derivative_easting(potential_padded, order=2, method=method)
-    second_deriv_nn = derivative_northing(potential_padded, order=2, method=method)
-    second_deriv_zz = derivative_upward(potential_padded, order=2)
-    second_deriv_ee = xrft.unpad(second_deriv_ee, pad_width)
-    second_deriv_nn = xrft.unpad(second_deriv_nn, pad_width)
-    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
+    second_deriv_ee = derivative_easting(sample_potential, order=2, method=method)
+    second_deriv_nn = derivative_northing(sample_potential, order=2, method=method)
+    second_deriv_zz = derivative_upward(sample_potential, order=2)
     # Compare g_nn + g_ee against -g_zz (trim the borders to ignore boundary
     # effects)
     trim = 6
@@ -506,19 +425,7 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     """
     Test upward_continuation function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_g_z.easting.size // 3,
-        "northing": sample_g_z.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    gravity_padded = xrft.pad(
-        sample_g_z.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate upward continuation and unpad it
-    continuation = upward_continuation(gravity_padded, 10e3)
-    continuation = xrft.unpad(continuation, pad_width)
+    continuation = upward_continuation(sample_g_z, 10e3)
     # Compare against g_z_upward (trim the borders to ignore boundary effects)
     trim = 6
     continuation = continuation[trim:-trim, trim:-trim]
@@ -528,14 +435,44 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
-def test_reduction_to_pole(sample_potential):
+def test_reduction_to_pole():
+    """
+    Test reduction_to_pole function against an analytical solution.
+    """
+    coordinates = vd.grid_coordinates(
+        (-100e3, 100e3, -120e2, 120e2), spacing=1e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    minc, mdec = -14, -24
+    dipole = [-10e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, minc, mdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec, minc, mdec)
+    np.testing.assert_allclose(anomaly_reduced, anomaly_pole)
+
+
+def test_reduction_to_pole_dim_names(sample_potential):
     """
     Test reduction_to_pole function with non-typical dim names.
     """
     renamed_dims_grid = sample_potential.rename(
         {"easting": "name_one", "northing": "name_two"}
     )
-    reduction_to_pole(renamed_dims_grid, 60, 45)
+    reduction_to_pole(renamed_dims_grid, 60, 45, 60, 45)
 
 
 class TestTotalGradientAmplitude:
@@ -549,19 +486,7 @@ class TestTotalGradientAmplitude:
         """
         Test total_gradient_amplitude function against the synthetic model.
         """
-        # Pad the potential field grid to improve accuracy
-        pad_width = {
-            "easting": sample_potential.easting.size // 3,
-            "northing": sample_potential.northing.size // 3,
-        }
-        # need to drop upward coordinate (bug in xrft)
-        potential_padded = xrft.pad(
-            sample_potential.drop_vars("upward"),
-            pad_width=pad_width,
-        )
-        # Calculate total gradient amplitude and unpad it
-        tga = total_gradient_amplitude(potential_padded)
-        tga = xrft.unpad(tga, pad_width)
+        tga = total_gradient_amplitude(sample_potential)
         # Compare against g_tga (trim the borders to ignore boundary effects)
         trim = 6
         tga = tga[trim:-trim, trim:-trim]
@@ -619,31 +544,10 @@ class TestTilt:
         """
         Test tilt function against the synthetic model.
         """
-        # Pad the potential field grid to improve accuracy
-        pad_width = {
-            "easting": sample_potential.easting.size // 3,
-            "northing": sample_potential.northing.size // 3,
-        }
-        # need to drop upward coordinate (bug in xrft)
-        potential_padded = xrft.pad(
-            sample_potential.drop_vars("upward"),
-            pad_width=pad_width,
-        )
-        # Calculate the tilt and unpad it
-        tilt_grid = tilt_angle(potential_padded)
-        tilt_grid = xrft.unpad(tilt_grid, pad_width)
-        # Compare against g_tilt (trim the borders to ignore boundary effects)
-        trim = 6
-        tilt_grid = tilt_grid[trim:-trim, trim:-trim]
-        g_e = sample_g_e[trim:-trim, trim:-trim]
-        g_n = sample_g_n[trim:-trim, trim:-trim]
-        g_z = sample_g_z[trim:-trim, trim:-trim]
-        g_horiz_deriv = np.sqrt(g_e**2 + g_n**2)
-        g_tilt = np.arctan2(
-            -g_z, g_horiz_deriv
-        )  # use -g_z to use the _upward_ derivative
-        rms = root_mean_square_error(tilt_grid, g_tilt)
-        assert rms / np.abs(tilt_grid).max() < 0.1
+        numerical = tilt_angle(sample_potential)
+        # Use -g_z to use the upward derivative (g_z is downward)
+        analytical = np.arctan2(-sample_g_z, np.sqrt(sample_g_e**2 + sample_g_n**2))
+        np.testing.assert_allclose(numerical, analytical)
 
     def test_invalid_grid_single_dimension(self):
         """
@@ -681,7 +585,7 @@ class TestTilt:
             tilt_angle(sample_potential)
 
 
-class Testfilter:
+class TestAgainstOasisMontaj:
     """
     Test filter result against the output from oasis montaj.
     """
