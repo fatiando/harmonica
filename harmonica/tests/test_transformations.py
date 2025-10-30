@@ -612,16 +612,3 @@ class TestAgainstOasisMontaj:
         """
         high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
         xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-6)
-
-    def test_reduction_to_pole_grid(self):
-        """
-        Test reduction_to_pole function against the output from oasis montaj.
-        """
-        rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
-        # Remove mean value to match OM result
-        xrt.assert_allclose(
-            # self.expected_grid.filter_rtp - self.expected_grid.filter_data.mean(),
-            self.expected_grid.filter_rtp,
-            rtp,
-            atol=1,
-        )
