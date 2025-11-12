@@ -157,9 +157,7 @@ def test_likeness_to_sphere(ellipsoid):
     coordinates = tuple(np.atleast_2d(c) for c in (easting, northing, upward))
 
     for k, magnetization in zip(k_values, magnetizations, strict=True):
-        be, bn, bu = ellipsoid_magnetics(
-            coordinates, ellipsoid, k, external_field, field="b"
-        )
+        be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, external_field)
         be_sph, bn_sph, bu_sph = sphere_magnetic(
             coordinates, radius=60, center=(0, 0, 0), magnetization=magnetization
         )
@@ -200,18 +198,10 @@ def test_magnetic_symmetry():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates,
-        triaxial_example,
-        susceptibility,
-        external_field,
-        field="b",
+        coordinates, triaxial_example, susceptibility, external_field
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates2,
-        triaxial_example2,
-        susceptibility,
-        external_field,
-        field="b",
+        coordinates2, triaxial_example2, susceptibility, external_field
     )
 
     np.testing.assert_allclose(np.abs(be1), np.flip(np.abs(be2)))
@@ -240,18 +230,10 @@ def test_flipped_h0():
     )
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates,
-        oblate_example,
-        susceptibility,
-        external_field1,
-        field="b",
+        coordinates, oblate_example, susceptibility, external_field1
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates,
-        oblate_example,
-        susceptibility,
-        external_field2,
-        field="b",
+        coordinates, oblate_example, susceptibility, external_field2
     )
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
@@ -272,9 +254,7 @@ def test_zero_susceptibility():
     )
     h0 = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
 
-    be, bn, bu = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptibility, h0, field="b"
-    )
+    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, susceptibility, h0)
 
     np.testing.assert_allclose(be[0], 0)
     np.testing.assert_allclose(bn[0], 0)
@@ -296,7 +276,7 @@ def test_zero_field():
     )
 
     be, bn, bu = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptibility, external_field, field="b"
+        coordinates, ellipsoid, susceptibility, external_field
     )
 
     np.testing.assert_allclose(be[0], 0)
@@ -322,7 +302,7 @@ def test_mag_ext_int_boundary():
     coordinates = (e, n, u)
 
     be, _, _ = ellipsoid_magnetics(
-        coordinates, ellipsoid, susceptibility, external_field, field="b"
+        coordinates, ellipsoid, susceptibility, external_field
     )
 
     np.testing.assert_allclose(be[0], be[1], rtol=1e-7)
@@ -356,18 +336,10 @@ def test_mag_flipped_ellipsoid():
     coordinates = tuple(c[internal_mask] for c in (x, y, z))
 
     be1, bn1, bu1 = ellipsoid_magnetics(
-        coordinates,
-        triaxial_example,
-        susceptibility,
-        external_field,
-        field="b",
+        coordinates, triaxial_example, susceptibility, external_field
     )
     be2, bn2, bu2 = ellipsoid_magnetics(
-        coordinates,
-        triaxial_example2,
-        susceptibility,
-        external_field,
-        field="b",
+        coordinates, triaxial_example2, susceptibility, external_field
     )
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
@@ -676,7 +648,7 @@ class TestMagneticFieldVersusSphere:
         b_e_sphere, b_n_sphere, b_u_sphere = sphere_magnetic_field
         ellipsoid = self.get_ellipsoid(ellipsoid_type)
         b_e, b_n, b_u = ellipsoid_magnetics(
-            coordinates, ellipsoid, self.susceptibility, self.external_field, field="b"
+            coordinates, ellipsoid, self.susceptibility, self.external_field
         )
         maxabs = np.max([np.abs(b_e_sphere), np.abs(b_n_sphere), np.abs(b_u_sphere)])
         atol = maxabs * 0.01

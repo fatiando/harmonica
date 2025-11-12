@@ -30,7 +30,6 @@ def ellipsoid_magnetics(
     susceptibilities,
     external_field,
     remnant_mag=None,
-    field="b",
 ):
     """
     Forward model magnetic fields of ellipsoids.
@@ -63,19 +62,11 @@ def ellipsoid_magnetics(
         Pass a list of (3) arrays for multiple ellipsoids.
         If None, no remanent magnetization will be assigned to the ellipsoids.
         Default is None.
-    field : {"b", "e", "n", "u"}, optional
-        Desired field that want to be computed.
-        If "e", "n", or "u" the function will return the easting, northing or upward
-        magnetic component, respectively.
-        If "b", the function will return a tuple with the three magnetic field
-        components.
-        Default to "b".
 
     Returns
     -------
     be, bn, bu: arrays
         Easting, northing and upward magnetic field components.
-        Or a single one if ``field`` is "e", "n" or "u".
 
     References
     ----------
@@ -144,17 +135,13 @@ def ellipsoid_magnetics(
         b_field = _single_ellipsoid_magnetic(
             (easting, northing, upward), ellipsoid, susceptibility, remanence, h0_field
         )
-        be += 1e9 * b_field[0]
-        bn += 1e9 * b_field[1]
-        bu += 1e9 * b_field[2]
+        be += b_field[0]
+        bn += b_field[1]
+        bu += b_field[2]
 
-    be, bn, bu = tuple(b.reshape(cast.shape) for b in (be, bn, bu))
-
-    if field == "b":
-        return (be, bn, bu)
-
-    fields = {"e": be, "n": bn, "z": bu}
-    return fields[field]
+    # Reshape and convert to nT
+    be, bn, bu = tuple(1e9 * b.reshape(cast.shape) for b in (be, bn, bu))
+    return be, bn, bu
 
 
 def _single_ellipsoid_magnetic(
