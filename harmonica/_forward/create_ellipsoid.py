@@ -29,8 +29,8 @@ class TriaxialEllipsoid:
         Rotation angle about the easting axis (after yaw and pitch rotation), in
         degrees.
     center : tuple of float
-        Coordinates of the center of the ellipsoid in the following order: _easting_,
-        _northing_, _upward_.
+        Coordinates of the center of the ellipsoid in the following order: `easting`,
+        `northing`, `upward`.
 
     Notes
     -----
@@ -83,8 +83,8 @@ class ProlateEllipsoid:
         A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
     center : tuple of float
-        Coordinates of the center of the ellipsoid in the following order: _easting_,
-        _northing_, _upward_.
+        Coordinates of the center of the ellipsoid in the following order: `easting`,
+        `northing`, `upward`.
 
     Attributes
     ----------
@@ -156,8 +156,8 @@ class OblateEllipsoid:
         A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
     center : tuple of float
-        Coordinates of the center of the ellipsoid in the following order: _easting_,
-        _northing_, _upward_.
+        Coordinates of the center of the ellipsoid in the following order: `easting`,
+        `northing`, `upward`.
 
     Attributes
     ----------
