@@ -60,9 +60,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
 
     References
     ----------
-    Clark, S. A., et al. (1986), "Magnetic and gravity anomalies of a triaxial
-    ellipsoid"
-    Takahashi, Y., et al. (2018), "Magnetic modelling of ellipsoidal bodies"
+    [Clark1986]_
+    [Takahashi2018]_
 
     For derivations of the equations, and methods used in this code.
     """
