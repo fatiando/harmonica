@@ -80,7 +80,7 @@ line-length = 88
 exclude = [
     "doc/_build",
     "doc/gallery",
-    "src/harmonica/_version.py",
+    "harmonica/_version.py",
 ]
 
 [tool.ruff.lint]
