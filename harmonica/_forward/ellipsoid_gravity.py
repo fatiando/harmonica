@@ -42,7 +42,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
 
     Parameters
     ----------
-    coordinates : list of arrays
+    coordinates : list of array
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
@@ -50,12 +50,12 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
         Ellipsoidal body represented by an instance of
         :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
         :class:`harmonica.OblateEllipsoid`, or a list of them.
-    density : float, list of floats or array
+    density : float, list of float or array
         List or array containing the density of each ellipsoid in :math:`kg/m^3`.
 
     Returns
     -------
-    g_e, g_n, g_z: arrays
+    g_e, g_n, g_z : array
         Easting, northing and downward component of the gravity acceleration in mGal.
 
     References

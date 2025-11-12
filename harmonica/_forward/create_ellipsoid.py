@@ -17,7 +17,7 @@ class TriaxialEllipsoid:
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a > b > c``.
     yaw : float
         Rotation angle about the upward axis, in degrees.
@@ -28,7 +28,7 @@ class TriaxialEllipsoid:
     roll : float
         Rotation angle about the easting axis (after yaw and pitch rotation), in
         degrees.
-    center : tuple of floats
+    center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
@@ -74,7 +74,7 @@ class ProlateEllipsoid:
 
     Parameters
     ----------
-    a, b : floats
+    a, b : float
         Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a > b = c``.
     yaw : float
         Rotation angle about the upward axis, in degrees.
@@ -82,17 +82,17 @@ class ProlateEllipsoid:
         Rotation angle about the northing axis (after yaw rotation), in degrees.
         A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
         direction.
-    center : tuple of floats
+    center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
-    Properties
+    Attributes
     ----------
     c : float
         Equal to ``b`` by definition.
     roll : float
-        Set always equal to zero. Roll rotations have no effect on ``ProlateEllipsoid``s
-        due to symmetry.
+        Set always equal to zero. Roll rotations have no effect on
+        :class:`harmonica.ProlateEllipsoid``s due to symmetry.
 
     Notes
     -----
@@ -106,7 +106,7 @@ class ProlateEllipsoid:
 
     Roll rotations are not enabled in the prolate ellipsoid, since they don't have any
     effect due to symmetry. Hence, ``roll`` is always equal to zero for the
-    ``ProlateEllipsoid``.
+    :class:`harmonica.ProlateEllipsoid`.
     """
 
     def __init__(self, a, b, yaw, pitch, center):
@@ -130,10 +130,12 @@ class ProlateEllipsoid:
 
     @property
     def c(self):
+        """Length of the third semiaxis, equal to ``b`` by definition."""
         return self.b
 
     @property
     def roll(self):
+        """Roll angle, equal to zero."""
         return 0.0
 
 
@@ -145,7 +147,7 @@ class OblateEllipsoid:
 
     Parameters
     ----------
-    a, b : floats
+    a, b : float
         Semi-axis lengths of the ellipsoid. Must satisfy the condition: ``a < b = c``.
     yaw : float
         Rotation angle about the upward axis, in degrees.
@@ -153,17 +155,17 @@ class OblateEllipsoid:
         Rotation angle about the northing axis (after yaw rotation), in degrees.
         A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
         direction.
-    center : tuple of floats
+    center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
-    Properties
+    Attributes
     ----------
     c : float
         Equal to ``b`` by definition.
     roll : float
-        Set always equal to zero. Roll rotations have no effect on ``OblateEllipsoid``s
-        due to symmetry.
+        Set always equal to zero. Roll rotations have no effect on
+        :class:`harmonica.OblateEllipsoid``s due to symmetry.
 
     Notes
     -----
@@ -177,7 +179,7 @@ class OblateEllipsoid:
 
     Roll rotations are not enabled in the prolate ellipsoid, since they don't have any
     effect due to symmetry. Hence, ``roll`` is always equal to zero for the
-    ``OblateEllipsoid``.
+    :class:`harmonica.OblateEllipsoid`.
     """
 
     def __init__(self, a, b, yaw, pitch, center):
@@ -201,8 +203,10 @@ class OblateEllipsoid:
 
     @property
     def c(self):
+        """Length of the third semiaxis, equal to ``b`` by definition."""
         return self.b
 
     @property
     def roll(self):
+        """Roll angle, equal to zero."""
         return 0.0
