@@ -23,7 +23,7 @@ class TriaxialEllipsoid:
         Rotation angle about the upward axis, in degrees.
     pitch : float
         Rotation angle about the northing axis (after yaw rotation), in degrees.
-        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
     roll : float
         Rotation angle about the easting axis (after yaw and pitch rotation), in
@@ -39,7 +39,7 @@ class TriaxialEllipsoid:
 
     Rotations directed by ``yaw`` and ``roll`` are applied using the right-hand rule
     across their respective axes. Pitch rotations are carried out in the opposite
-    direction, so a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the
+    direction, so a positive ``pitch`` *lifts* the side of the ellipsoid pointing in the
     easting direction.
 
     """
@@ -80,7 +80,7 @@ class ProlateEllipsoid:
         Rotation angle about the upward axis, in degrees.
     pitch : float
         Rotation angle about the northing axis (after yaw rotation), in degrees.
-        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
     center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: _easting_,
@@ -101,7 +101,7 @@ class ProlateEllipsoid:
 
     Rotations directed by ``yaw`` are applied using the right-hand rule across the
     upward axis. Pitch rotations are carried out in the opposite direction, so
-    a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the easting
+    a positive ``pitch`` *lifts* the side of the ellipsoid pointing in the easting
     direction.
 
     Roll rotations are not enabled in the prolate ellipsoid, since they don't have any
@@ -153,7 +153,7 @@ class OblateEllipsoid:
         Rotation angle about the upward axis, in degrees.
     pitch : float
         Rotation angle about the northing axis (after yaw rotation), in degrees.
-        A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
+        A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
     center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: _easting_,
@@ -174,7 +174,7 @@ class OblateEllipsoid:
 
     Rotations directed by ``yaw`` are applied using the right-hand rule across the
     upward axis. Pitch rotations are carried out in the opposite direction, so
-    a positive ``pitch`` _lifts_ the side of the ellipsoid pointing in the easting
+    a positive ``pitch`` *lifts* the side of the ellipsoid pointing in the easting
     direction.
 
     Roll rotations are not enabled in the prolate ellipsoid, since they don't have any

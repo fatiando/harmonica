@@ -420,7 +420,7 @@ def get_rotation_matrix(yaw, pitch, roll):
     -----
     The rotations are applied in the following order: (ZŶX).
     Yaw (Z) and roll (X) rotations are done using the right-hand rule. Rotations for the
-    pitch (Ŷ) are carried out in the opposite direction, so positive pitch _lifts_ the
+    pitch (Ŷ) are carried out in the opposite direction, so positive pitch *lifts* the
     easting axis.
 
     This rotation matrix allows to apply rotations from the local coordinate system of
