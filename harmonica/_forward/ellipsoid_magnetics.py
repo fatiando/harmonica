@@ -37,6 +37,10 @@ def ellipsoid_magnetic(
     Compute the magnetic field components for an ellipsoidal body at specified
     observation points.
 
+    .. important::
+
+        The magnetic field components are returned in nT.
+
     Parameters
     ----------
     coordinates : list of arrays
@@ -48,7 +52,7 @@ def ellipsoid_magnetic(
         :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
         :class:`harmonica.OblateEllipsoid`, or a list of them.
     susceptibilities : float, (3, 3) array, or list, optional
-        Magnetic susceptibilities of the ellipsoids.
+        Magnetic susceptibilities of the ellipsoids in SI units.
         Pass a float for isotropic magnetic susceptibility, or a (3, 3) array for
         anisotropic susceptibilities.
         Pass a list of floats and/or (3, 3) arrays for multiple ellipsoids.
@@ -57,8 +61,8 @@ def ellipsoid_magnetic(
         (magnitude, inclination, declination). The magnitude should be in nT,
         and the angles in degrees.
     remnant_mag : (3) array or list of (3) arrays, optional
-        Remnent magnetisation vector of the ellipsoid, whose components must be in the
-        following order: `magnetizatio_e`, `magnetization_n`, `magnetization_u`.
+        Remanent magnetization vector of the ellipsoid in A/m, whose components must be
+        in the following order: `magnetization_e`, `magnetization_n`, `magnetization_u`.
         Pass a list of (3) arrays for multiple ellipsoids.
         If None, no remanent magnetization will be assigned to the ellipsoids.
         Default is None.
@@ -66,7 +70,7 @@ def ellipsoid_magnetic(
     Returns
     -------
     be, bn, bu: arrays
-        Easting, northing and upward magnetic field components.
+        Easting, northing and upward magnetic field components in nT.
 
     References
     ----------

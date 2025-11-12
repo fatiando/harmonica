@@ -51,12 +51,12 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
         :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
         :class:`harmonica.OblateEllipsoid`, or a list of them.
     density : float, list of floats or array
-        List or array containing the density of each ellipsoid in kg/m^3.
+        List or array containing the density of each ellipsoid in :math:`kg/m^3`.
 
     Returns
     -------
     g_e, g_n, g_z: arrays
-        Easting, northing and downward component of the gravity acceleration.
+        Easting, northing and downward component of the gravity acceleration in mGal.
 
     References
     ----------
