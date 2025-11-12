@@ -33,7 +33,7 @@ from .._forward.ellipsoid_magnetics import (
     _demag_tensor_oblate_internal,
     _demag_tensor_prolate_internal,
     _demag_tensor_triaxial_internal,
-    ellipsoid_magnetics,
+    ellipsoid_magnetic,
     get_magnetisation,
 )
 from .._forward.utils_ellipsoids import get_rotation_matrix
@@ -157,7 +157,7 @@ def test_likeness_to_sphere(ellipsoid):
     coordinates = tuple(np.atleast_2d(c) for c in (easting, northing, upward))
 
     for k, magnetization in zip(k_values, magnetizations, strict=True):
-        be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, k, external_field)
+        be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, k, external_field)
         be_sph, bn_sph, bu_sph = sphere_magnetic(
             coordinates, radius=60, center=(0, 0, 0), magnetization=magnetization
         )
@@ -197,10 +197,10 @@ def test_magnetic_symmetry():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    be1, bn1, bu1 = ellipsoid_magnetics(
+    be1, bn1, bu1 = ellipsoid_magnetic(
         coordinates, triaxial_example, susceptibility, external_field
     )
-    be2, bn2, bu2 = ellipsoid_magnetics(
+    be2, bn2, bu2 = ellipsoid_magnetic(
         coordinates2, triaxial_example2, susceptibility, external_field
     )
 
@@ -229,10 +229,10 @@ def test_flipped_h0():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    be1, bn1, bu1 = ellipsoid_magnetics(
+    be1, bn1, bu1 = ellipsoid_magnetic(
         coordinates, oblate_example, susceptibility, external_field1
     )
-    be2, bn2, bu2 = ellipsoid_magnetics(
+    be2, bn2, bu2 = ellipsoid_magnetic(
         coordinates, oblate_example, susceptibility, external_field2
     )
 
@@ -254,7 +254,7 @@ def test_zero_susceptibility():
     )
     h0 = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
 
-    be, bn, bu = ellipsoid_magnetics(coordinates, ellipsoid, susceptibility, h0)
+    be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, susceptibility, h0)
 
     np.testing.assert_allclose(be[0], 0)
     np.testing.assert_allclose(bn[0], 0)
@@ -275,7 +275,7 @@ def test_zero_field():
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
 
-    be, bn, bu = ellipsoid_magnetics(
+    be, bn, bu = ellipsoid_magnetic(
         coordinates, ellipsoid, susceptibility, external_field
     )
 
@@ -301,7 +301,7 @@ def test_mag_ext_int_boundary():
     u = np.array([0.0, 0.0])
     coordinates = (e, n, u)
 
-    be, _, _ = ellipsoid_magnetics(
+    be, _, _ = ellipsoid_magnetic(
         coordinates, ellipsoid, susceptibility, external_field
     )
 
@@ -335,10 +335,10 @@ def test_mag_flipped_ellipsoid():
     internal_mask = ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
     coordinates = tuple(c[internal_mask] for c in (x, y, z))
 
-    be1, bn1, bu1 = ellipsoid_magnetics(
+    be1, bn1, bu1 = ellipsoid_magnetic(
         coordinates, triaxial_example, susceptibility, external_field
     )
-    be2, bn2, bu2 = ellipsoid_magnetics(
+    be2, bn2, bu2 = ellipsoid_magnetic(
         coordinates, triaxial_example2, susceptibility, external_field
     )
 
@@ -363,11 +363,11 @@ def test_euler_rotation_symmetry_mag():
     coordinates = tuple(c[internal_mask] for c in (x, y, z))
 
     def check_rotation_equivalence(base_ellipsoid, rotated_ellipsoids):
-        base_be, base_bn, base_bu = ellipsoid_magnetics(
+        base_be, base_bn, base_bu = ellipsoid_magnetic(
             coordinates, base_ellipsoid, susceptibility, external_field
         )
         for rotated in rotated_ellipsoids:
-            be, bn, bu = ellipsoid_magnetics(
+            be, bn, bu = ellipsoid_magnetic(
                 coordinates, rotated, susceptibility, external_field
             )
             np.testing.assert_allclose(np.abs(be), np.abs(base_be), rtol=1e-4)
@@ -647,7 +647,7 @@ class TestMagneticFieldVersusSphere:
         """
         b_e_sphere, b_n_sphere, b_u_sphere = sphere_magnetic_field
         ellipsoid = self.get_ellipsoid(ellipsoid_type)
-        b_e, b_n, b_u = ellipsoid_magnetics(
+        b_e, b_n, b_u = ellipsoid_magnetic(
             coordinates, ellipsoid, self.susceptibility, self.external_field
         )
         maxabs = np.max([np.abs(b_e_sphere), np.abs(b_n_sphere), np.abs(b_u_sphere)])
@@ -735,7 +735,7 @@ class TestSymmetryOnRotations:
 
         # Compute magnetic fields
         b_field, b_field_flipped = tuple(
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates,
                 ell,
                 susceptibilities=susceptibility,
@@ -763,7 +763,7 @@ class TestSusceptibilityTensor:
         external_field = (55_000, 12, 74)
 
         # Check if no error is raised after using an anisotropic susceptibility
-        ellipsoid_magnetics(
+        ellipsoid_magnetic(
             coordinates, ellipsoid, susceptibility, external_field=external_field
         )
 
@@ -780,7 +780,7 @@ class TestSusceptibilityTensor:
 
         msg = re.escape("Susceptibility matrix must be 3x3")
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates, ellipsoid, susceptibility, external_field=external_field
             )
 
@@ -798,7 +798,7 @@ class TestSusceptibilityTensor:
 
         msg = re.escape("Unrecognized susceptibility type")
         with pytest.raises(TypeError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates, ellipsoid, susceptibility, external_field=external_field
             )
 
@@ -876,7 +876,7 @@ class TestMultipleEllipsoids:
         external_field = (55_000, -15, 65)
 
         # Compute magnetic field
-        bx, by, bz = ellipsoid_magnetics(
+        bx, by, bz = ellipsoid_magnetic(
             coordinates,
             ellipsoids,
             susceptibilities,
@@ -888,7 +888,7 @@ class TestMultipleEllipsoids:
             np.zeros_like(coordinates[0]) for _ in range(3)
         )
         for ellipsoid, susceptibility in zip(ellipsoids, susceptibilities, strict=True):
-            bx_i, by_i, bz_i = ellipsoid_magnetics(
+            bx_i, by_i, bz_i = ellipsoid_magnetic(
                 coordinates,
                 ellipsoid,
                 susceptibility,
@@ -912,7 +912,7 @@ class TestMultipleEllipsoids:
         external_field = (55_000, -15, 65)
 
         # Compute magnetic field
-        bx, by, bz = ellipsoid_magnetics(
+        bx, by, bz = ellipsoid_magnetic(
             coordinates,
             ellipsoids,
             susceptibilities,
@@ -927,7 +927,7 @@ class TestMultipleEllipsoids:
         for ellipsoid, susceptibility, rem in zip(
             ellipsoids, susceptibilities, remnant_mag, strict=True
         ):
-            bx_i, by_i, bz_i = ellipsoid_magnetics(
+            bx_i, by_i, bz_i = ellipsoid_magnetic(
                 coordinates,
                 ellipsoid,
                 susceptibility,
@@ -969,7 +969,7 @@ class TestInvalidInputs:
             "It must have the same number of elements as ellipsoids (3)."
         )
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates, ellipsoids, susceptibilities, external_field=external_field
             )
 
@@ -985,7 +985,7 @@ class TestInvalidInputs:
             f"type {type(invalid_remnant_mag)}."
         )
         with pytest.raises(TypeError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates,
                 ellipsoids,
                 susceptibilities,
@@ -1015,7 +1015,7 @@ class TestInvalidInputs:
             f"amount of arrays as number of ellipsoids \\(\\'{len(ellipsoids)}\\'\\)."
         )
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates,
                 ellipsoids,
                 susceptibilities,
@@ -1041,7 +1041,7 @@ class TestInvalidInputs:
             + re.escape(f"It must have a shape of '({len(ellipsoids)}, 3)'.")
         )
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_magnetics(
+            ellipsoid_magnetic(
                 coordinates,
                 ellipsoids,
                 susceptibilities,

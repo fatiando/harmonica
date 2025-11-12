@@ -21,7 +21,7 @@ from ._forward.create_ellipsoid import (
 )
 from ._forward.dipole import dipole_magnetic
 from ._forward.ellipsoid_gravity import ellipsoid_gravity
-from ._forward.ellipsoid_magnetics import ellipsoid_magnetics
+from ._forward.ellipsoid_magnetics import ellipsoid_magnetic
 from ._forward.point import point_gravity
 from ._forward.prism_gravity import prism_gravity
 from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer

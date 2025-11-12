@@ -24,7 +24,7 @@ from .utils_ellipsoids import (
 )
 
 
-def ellipsoid_magnetics(
+def ellipsoid_magnetic(
     coordinates,
     ellipsoids,
     susceptibilities,
