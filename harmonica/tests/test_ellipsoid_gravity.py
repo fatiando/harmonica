@@ -22,7 +22,7 @@ import verde as vd
 
 from harmonica import point_gravity
 
-from .._forward.create_ellipsoid import (
+from .._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     TriaxialEllipsoid,

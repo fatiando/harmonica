@@ -16,7 +16,6 @@ from choclo.constants import GRAVITATIONAL_CONST
 from .utils_ellipsoids import (
     calculate_lambda,
     get_elliptical_integrals,
-    get_rotation_matrix,
 )
 
 
@@ -82,14 +81,13 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
 
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
-        yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
         origin_e, origin_n, origin_u = ellipsoid.center
 
         # Translate observation points to coordinate system in center of the ellipsoid
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
         # create rotation matrix
-        r = get_rotation_matrix(yaw, pitch, roll)
+        r = ellipsoid.rotation_matrix
 
         # rotate observation points
         x, y, z = r.T @ np.vstack(coords_shifted)

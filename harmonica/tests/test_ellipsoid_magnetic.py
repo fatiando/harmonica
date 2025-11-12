@@ -24,7 +24,7 @@ from scipy.constants import mu_0
 
 import harmonica as hm
 
-from .._forward.create_ellipsoid import (
+from .._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     TriaxialEllipsoid,
@@ -36,7 +36,7 @@ from .._forward.ellipsoid_magnetics import (
     ellipsoid_magnetic,
     get_magnetisation,
 )
-from .._forward.utils_ellipsoids import get_rotation_matrix
+from .._forward.utils import get_rotation_matrix
 
 
 def sphere_magnetic(coordinates, radius, center, magnetization):

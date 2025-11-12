@@ -7,9 +7,79 @@
 """
 Classes to define ellipsoids.
 """
+from abc import ABC, abstractmethod
+
+import numpy.typing as npt
+
+from .utils import get_rotation_matrix
 
 
-class TriaxialEllipsoid:
+class BaseEllipsoid(ABC):
+    """
+    Base class for ellipsoids.
+
+    .. important::
+
+        This class is not meant to be instantiated.
+    """
+
+    @property
+    @abstractmethod
+    def a(self) -> float:
+        """First semiaxes length."""
+
+    @property
+    @abstractmethod
+    def b(self) -> float:
+        """Second semiaxes length."""
+
+    @property
+    @abstractmethod
+    def c(self) -> float:
+        """Third semiaxes length."""
+
+    @property
+    @abstractmethod
+    def pitch(self) -> float:
+        """Pitch angle in degrees."""
+
+    @property
+    @abstractmethod
+    def roll(self) -> float:
+        """Roll angle in degrees."""
+
+    @property
+    @abstractmethod
+    def yaw(self) -> float:
+        """Yaw angle in degrees."""
+
+    @property
+    def rotation_matrix(self) -> npt.NDArray:
+        """
+        Create a rotation matrix for the ellipsoid.
+
+        Use this matrix to rotate from the local coordinate system (centered in the
+        ellipsoid center) in to the global coordinate system
+        (easting, northing, upward).
+
+        Returns
+        -------
+        rotation_matrix : (3, 3) array
+            Rotation matrix that transforms coordinates from the local ellipsoid-aligned
+            coordinate system to the global coordinate system.
+
+        Notes
+        -----
+        Generate the rotation matrix from Tait-Bryan intrinsic angles: yaw, pitch, and
+        roll. The rotations are applied in the following order: (ZŶX). Yaw (Z) and roll
+        (X) rotations are done using the right-hand rule. Rotations for the pitch (Ŷ)
+        are carried out in the opposite direction, so positive pitch *lifts* the easting
+        axis.
+        """
+        return get_rotation_matrix(self.yaw, self.pitch, self.roll)
+
+
+class TriaxialEllipsoid(BaseEllipsoid):
     """
     Triaxial ellipsoid with arbitrary orientation.
 
@@ -45,6 +115,22 @@ class TriaxialEllipsoid:
     """
 
     def __init__(self, a, b, c, yaw, pitch, roll, center):
+        self._check_semiaxes_lenghts(a, b, c)
+
+        # semiaxes
+        self._a = a  # major_axis
+        self._b = b  # intermediate_axis
+        self._c = c  # minor_axis
+
+        # euler angles
+        self._yaw = yaw
+        self._pitch = pitch
+        self._roll = roll
+
+        # Center of ellipsoid
+        self.center = center
+
+    def _check_semiaxes_lenghts(self, a, b, c):
         if not (a > b > c):
             msg = (
                 "Invalid ellipsoid axis lengths for triaxial ellipsoid: "
@@ -52,21 +138,65 @@ class TriaxialEllipsoid:
             )
             raise ValueError(msg)
 
-        # semiaxes
-        self.a = a  # major_axis
-        self.b = b  # intermediate_axis
-        self.c = c  # minor_axis
+    @property
+    def a(self) -> float:
+        """First semiaxes length."""
+        return self._a
 
-        # euler angles
-        self.yaw = yaw
-        self.pitch = pitch
-        self.roll = roll
+    @a.setter
+    def a(self, value: float):
+        self._check_semiaxes_lenghts(value, self.b, self.c)
+        self._a = value
 
-        # Center of ellipsoid
-        self.center = center
+    @property
+    def b(self) -> float:
+        """Second semiaxes length."""
+        return self._b
+
+    @b.setter
+    def b(self, value: float):
+        self._check_semiaxes_lenghts(self.a, value, self.c)
+        self._b = value
+
+    @property
+    def c(self) -> float:
+        """Third semiaxes length."""
+        return self._c
+
+    @c.setter
+    def c(self, value: float):
+        self._check_semiaxes_lenghts(self.a, self.b, value)
+        self._c = value
+
+    @property
+    def pitch(self) -> float:
+        """Pitch angle in degrees."""
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value: float):
+        self._pitch = value
+
+    @property
+    def roll(self) -> float:
+        """Roll angle in degrees."""
+        return self._roll
+
+    @roll.setter
+    def roll(self, value: float):
+        self._roll = value
+
+    @property
+    def yaw(self) -> float:
+        """Yaw angle in degrees."""
+        return self._yaw
+
+    @yaw.setter
+    def yaw(self, value: float):
+        self._yaw = value
 
 
-class ProlateEllipsoid:
+class ProlateEllipsoid(BaseEllipsoid):
     """
     Prolate ellipsoid with arbitrary orientation.
 
@@ -110,16 +240,11 @@ class ProlateEllipsoid:
     """
 
     def __init__(self, a, b, yaw, pitch, center):
-        if not (a > b):
-            msg = (
-                "Invalid ellipsoid axis lengths for prolate ellipsoid: "
-                f"expected a > b (= c ) but got a = {a}, b = {b}"
-            )
-            raise ValueError(msg)
+        self._check_semiaxes_lenghts(a, b)
 
         # semiaxes
-        self.a = a  # major_axis
-        self.b = b  # minor axis
+        self._a = a  # major_axis
+        self._b = b  # minor axis
 
         # euler angles
         self.yaw = yaw
@@ -128,18 +253,64 @@ class ProlateEllipsoid:
         # center of ellipsoid
         self.center = center
 
+    def _check_semiaxes_lenghts(self, a, b):
+        if not (a > b):
+            msg = (
+                "Invalid ellipsoid axis lengths for prolate ellipsoid: "
+                f"expected a > b (= c ) but got a = {a}, b = {b}"
+            )
+            raise ValueError(msg)
+
+    @property
+    def a(self) -> float:
+        """First semiaxes length."""
+        return self._a
+
+    @a.setter
+    def a(self, value: float):
+        self._check_semiaxes_lenghts(value, self.b)
+        self._a = value
+
+    @property
+    def b(self) -> float:
+        """Second semiaxes length."""
+        return self._b
+
+    @b.setter
+    def b(self, value: float):
+        self._check_semiaxes_lenghts(self.a, value)
+        self._b = value
+
     @property
     def c(self):
         """Length of the third semiaxis, equal to ``b`` by definition."""
         return self.b
 
     @property
+    def pitch(self) -> float:
+        """Pitch angle in degrees."""
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value: float):
+        self._pitch = value
+
+    @property
     def roll(self):
         """Roll angle, equal to zero."""
         return 0.0
 
+    @property
+    def yaw(self) -> float:
+        """Yaw angle in degrees."""
+        return self._yaw
 
-class OblateEllipsoid:
+    @yaw.setter
+    def yaw(self, value: float):
+        self._yaw = value
+
+
+class OblateEllipsoid(BaseEllipsoid):
     """
     Oblate ellipsoid with arbitrary orientation.
 
@@ -183,6 +354,20 @@ class OblateEllipsoid:
     """
 
     def __init__(self, a, b, yaw, pitch, center):
+        self._check_semiaxes_lenghts(a, b)
+
+        # semiaxes
+        self._a = a  # minor ais
+        self._b = b  # major axis
+
+        # euler angles
+        self._yaw = yaw
+        self._pitch = pitch
+
+        # center of ellipsoid
+        self.center = center
+
+    def _check_semiaxes_lenghts(self, a, b):
         if not (a < b):
             msg = (
                 "Invalid ellipsoid axis lengths for oblate ellipsoid: "
@@ -190,16 +375,25 @@ class OblateEllipsoid:
             )
             raise ValueError(msg)
 
-        # semiaxes
-        self.a = a  # minor ais
-        self.b = b  # major axis
+    @property
+    def a(self) -> float:
+        """First semiaxes length."""
+        return self._a
 
-        # euler angles
-        self.yaw = yaw
-        self.pitch = pitch
+    @a.setter
+    def a(self, value: float):
+        self._check_semiaxes_lenghts(value, self.b)
+        self._a = value
 
-        # center of ellipsoid
-        self.center = center
+    @property
+    def b(self) -> float:
+        """Second semiaxes length."""
+        return self._b
+
+    @b.setter
+    def b(self, value: float):
+        self._check_semiaxes_lenghts(self.a, value)
+        self._b = value
 
     @property
     def c(self):
@@ -207,6 +401,24 @@ class OblateEllipsoid:
         return self.b
 
     @property
+    def pitch(self) -> float:
+        """Pitch angle in degrees."""
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value: float):
+        self._pitch = value
+
+    @property
     def roll(self):
         """Roll angle, equal to zero."""
         return 0.0
+
+    @property
+    def yaw(self) -> float:
+        """Yaw angle in degrees."""
+        return self._yaw
+
+    @yaw.setter
+    def yaw(self, value: float):
+        self._yaw = value

@@ -20,7 +20,6 @@ from .utils_ellipsoids import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
-    get_rotation_matrix,
 )
 
 
@@ -183,7 +182,7 @@ def _single_ellipsoid_magnetic(
     coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
     # Rotate observation points
-    r_matrix = get_rotation_matrix(ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll)
+    r_matrix = ellipsoid.rotation_matrix
     x, y, z = r_matrix.T @ np.vstack(coords_shifted)
 
     # Calculate lambda for each observation point

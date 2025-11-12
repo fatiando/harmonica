@@ -14,7 +14,7 @@ from ._equivalent_sources.cartesian import EquivalentSources
 from ._equivalent_sources.gradient_boosted import EquivalentSourcesGB
 from ._equivalent_sources.spherical import EquivalentSourcesSph
 from ._euler_deconvolution import EulerDeconvolution
-from ._forward.create_ellipsoid import (
+from ._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     TriaxialEllipsoid,
