@@ -72,6 +72,7 @@ Gravity fields:
 .. autosummary::
     :toctree: generated/
 
+    ellipsoid_gravity
     point_gravity
     prism_gravity
     tesseroid_gravity
@@ -82,7 +83,17 @@ Magnetic fields:
     :toctree: generated/
 
     dipole_magnetic
+    ellipsoid_magnetic
     prism_magnetic
+
+Ellipsoids:
+
+.. autosummary::
+    :toctree: generated/
+
+    OblateEllipsoid
+    ProlateEllipsoid
+    TriaxialEllipsoid
 
 Layers and meshes:
 
