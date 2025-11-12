@@ -14,7 +14,6 @@ Test gravity forward modelling of ellipsoids.
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import re
 from copy import copy
 
 import numpy as np
@@ -79,9 +78,9 @@ def test_degenerate_ellipsoid_cases():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    _, _, _ = ellipsoid_gravity(coordinates, tri, density, field="g")
-    _, _, _ = ellipsoid_gravity(coordinates, pro, density, field="g")
-    _, _, _ = ellipsoid_gravity(coordinates, obl, density, field="g")
+    _, _, _ = ellipsoid_gravity(coordinates, tri, density)
+    _, _, _ = ellipsoid_gravity(coordinates, pro, density)
+    _, _, _ = ellipsoid_gravity(coordinates, obl, density)
 
 
 def test_opposite_planes():
@@ -107,8 +106,8 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example, density, field="g")
-    _, _, gz2 = ellipsoid_gravity(coordinates2, triaxial_example, density, field="g")
+    _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example, density)
+    _, _, gz2 = ellipsoid_gravity(coordinates2, triaxial_example, density)
     np.testing.assert_allclose(gz1, -np.flip(gz2))
 
 
@@ -129,7 +128,7 @@ def test_int_ext_boundary():
     u = np.array([[0.0, 0.0]])
     coordinates = (e, n, u)
 
-    ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, 2000, field="g")
+    ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, 2000)
 
     np.testing.assert_allclose(ge[0, 0], ge[0, 1], rtol=1e-5, atol=1e-5)
     np.testing.assert_allclose(gn[0, 0], gn[0, 1], rtol=1e-5, atol=1e-5)
@@ -156,8 +155,8 @@ class TestSymmetry:
         """
         points = [(0, 0, ellipsoid.c), (0, 0, -ellipsoid.c)]
         density = 200
-        gz_up, gz_down = tuple(
-            ellipsoid_gravity(p, ellipsoid, density, field="g_z") for p in points
+        (_, _, gz_up), (_, _, gz_down) = tuple(
+            ellipsoid_gravity(p, ellipsoid, density) for p in points
         )
         np.testing.assert_allclose(gz_up, -gz_down)
 
@@ -187,7 +186,7 @@ class TestSymmetry:
 
         # Compute gravity acceleration along the circle
         density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
         g = np.sqrt(ge**2 + gn**2 + gz**2)
 
         # Check that |g| is constant in the circle
@@ -241,7 +240,7 @@ class TestEllipsoidVsPointSource:
             radius * np.sin(theta),
         )
         density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
@@ -268,7 +267,7 @@ class TestEllipsoidVsPointSource:
             radii * np.sin(theta),
         )
         density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density, field="g")
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
@@ -286,18 +285,6 @@ class TestEllipsoidVsPointSource:
 
         gz_diff = np.abs(gz - gz_point)
         assert np.all(gz_diff[:-1] > gz_diff[1:])
-
-
-def test_invalid_field():
-    """
-    Test error after invalid field.
-    """
-    ellipsoid = build_ellipsoid("prolate")
-    coordinates = (1, 2, 3)
-    invalid_field = "blah"
-    msg = re.escape(f"Invalid field '{invalid_field}'")
-    with pytest.raises(ValueError, match=msg):
-        ellipsoid_gravity(coordinates, ellipsoid, density=1.0, field=invalid_field)
 
 
 class TestSymmetryOnRotations:

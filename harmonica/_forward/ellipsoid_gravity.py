@@ -20,7 +20,7 @@ from .utils_ellipsoids import (
 )
 
 
-def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
+def ellipsoid_gravity(coordinates, ellipsoids, density):
     r"""
     Forward model gravity fields of ellipsoids.
 
@@ -31,7 +31,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
         The **vertical direction points upwards**, i.e. positive and negative
         values of ``upward`` represent points above and below the surface,
-        respectively. But ``g_z`` field returns the **downward component** of
+        respectively. But, ``g_z`` is the **downward component** of
         the gravitational acceleration so that positive density contrasts
         produce positive anomalies.
 
@@ -52,18 +52,11 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         :class:`harmonica.OblateEllipsoid`, or a list of them.
     density : float, list of floats or array
         List or array containing the density of each ellipsoid in kg/m^3.
-    field : {"g", "g_e", "g_n", "g_z"}, optional
-        Desired field that want to be computed.
-        If "g_e", "g_n", "g_z" the function will return the easting, northing
-        or downward gravity acceleration component, respectively.
-        If "g", the function will return a tuple with the three components.
-        Default to "g".
 
     Returns
     -------
     g_e, g_n, g_z: arrays
         Easting, northing and downward component of the gravity acceleration.
-        Or a single one if ``field`` is "g_e", "g_n" or "g_z".
 
     References
     ----------
@@ -73,10 +66,6 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
 
     For derivations of the equations, and methods used in this code.
     """
-    if field not in ("g", "g_e", "g_n", "g_z"):
-        msg = f"Invalid field '{field}'. Choose from 'g', 'g_e', 'g_n', or 'g_z'."
-        raise ValueError(msg)
-
     # Cache broadcast of coordinates
     cast = np.broadcast(*coordinates)
 
@@ -117,17 +106,12 @@ def ellipsoid_gravity(coordinates, ellipsoids, density, field="g"):
         gn += gn_i
         gu += gu_i
 
-    # Get gz
+    # Get g_z as the opposite of g_u
     gz = -gu
 
     # Reshape gravity arrays and convert to mGal
     ge, gn, gz = tuple(g.reshape(cast.shape) * 1e5 for g in (ge, gn, gz))
-
-    if field == "g":
-        return (ge, gn, gz)
-
-    fields = {"g_e": ge, "g_n": gn, "g_z": gz}
-    return fields[field]
+    return ge, gn, gz
 
 
 def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
