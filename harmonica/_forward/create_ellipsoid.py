@@ -47,7 +47,7 @@ class TriaxialEllipsoid:
     def __init__(self, a, b, c, yaw, pitch, roll, centre):
         if not (a > b > c):
             msg = (
-                "Invalid ellipsoid axis lengths for triaxial ellipsoid:"
+                "Invalid ellipsoid axis lengths for triaxial ellipsoid: "
                 f"expected a > b > c but got a = {a}, b = {b}, c = {c}"
             )
             raise ValueError(msg)
@@ -112,7 +112,7 @@ class ProlateEllipsoid:
     def __init__(self, a, b, yaw, pitch, centre):
         if not (a > b):
             msg = (
-                "Invalid ellipsoid axis lengths for prolate ellipsoid:"
+                "Invalid ellipsoid axis lengths for prolate ellipsoid: "
                 f"expected a > b (= c ) but got a = {a}, b = {b}"
             )
             raise ValueError(msg)
@@ -183,7 +183,7 @@ class OblateEllipsoid:
     def __init__(self, a, b, yaw, pitch, centre):
         if not (a < b):
             msg = (
-                "Invalid ellipsoid axis lengths for oblate ellipsoid:"
+                "Invalid ellipsoid axis lengths for oblate ellipsoid: "
                 f"expected a < b (= c ) but got a = {a}, b = {b}"
             )
             raise ValueError(msg)
