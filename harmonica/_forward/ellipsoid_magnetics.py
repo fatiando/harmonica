@@ -127,7 +127,8 @@ def ellipsoid_magnetics(
 
     magnitude, inclination, declination = external_field
     b0_field = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
-    h0_field = b0_field * 1e-9 / mu_0  # convert to SI units
+    b0_field *= 1e-9  # convert to SI units
+    h0_field = b0_field / mu_0
 
     for ellipsoid, susceptibility, remanence in zip(
         ellipsoids, susceptibilities, remnant_mag, strict=True
