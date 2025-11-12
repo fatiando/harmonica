@@ -131,11 +131,11 @@ def get_sphere_magnetization(susceptibility, external_field):
 @pytest.mark.parametrize(
     "ellipsoid",
     [
-        ProlateEllipsoid(a=60, b=59.99, yaw=0, pitch=0, centre=(0, 0, 0)),
+        ProlateEllipsoid(a=60, b=59.99, yaw=0, pitch=0, center=(0, 0, 0)),
         TriaxialEllipsoid(
-            a=60, b=59.999, c=59.998, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
+            a=60, b=59.999, c=59.998, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
         ),
-        OblateEllipsoid(a=59.99, b=60, yaw=0, pitch=0, centre=(0, 0, 0)),
+        OblateEllipsoid(a=59.99, b=60, yaw=0, pitch=0, center=(0, 0, 0)),
     ],
 )
 def test_likeness_to_sphere(ellipsoid):
@@ -248,7 +248,7 @@ def test_zero_susceptibility():
 
     a, b = 1, 2
     susceptibility = 0
-    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
+    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
@@ -270,7 +270,7 @@ def test_zero_field():
     external_field = np.array([0, 0, 0])
     susceptibility = 0.01
 
-    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
+    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
@@ -294,7 +294,7 @@ def test_mag_ext_int_boundary():
     external_field = (55_000, 0.0, 90.0)
     susceptibility = 0.01
 
-    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
+    ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
 
     e = np.array([49.99, 50.00])
     n = np.array([0.0, 0.0])
@@ -319,10 +319,10 @@ def test_mag_flipped_ellipsoid():
     susceptibility = 0.01
 
     triaxial_example = TriaxialEllipsoid(
-        a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0)
+        a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
     )
     triaxial_example2 = TriaxialEllipsoid(
-        a, b, c, yaw=180, pitch=180, roll=180, centre=(0, 0, 0)
+        a, b, c, yaw=180, pitch=180, roll=180, center=(0, 0, 0)
     )
 
     # define observation points (2D grid) at surface height (z axis,
@@ -375,27 +375,27 @@ def test_euler_rotation_symmetry_mag():
             np.testing.assert_allclose(np.abs(bu), np.abs(base_bu), rtol=1e-4)
 
     # triaxial cases
-    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
+    base_tri = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
     tri_rotated = [
-        TriaxialEllipsoid(a, b, c, yaw=360, pitch=0, roll=0, centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=0, pitch=180, roll=0, centre=(0, 0, 0)),
-        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360, centre=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=360, pitch=0, roll=0, center=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=0, pitch=180, roll=0, center=(0, 0, 0)),
+        TriaxialEllipsoid(a, b, c, yaw=0, pitch=360, roll=360, center=(0, 0, 0)),
     ]
     check_rotation_equivalence(base_tri, tri_rotated)
 
     # prolate cases
-    base_pro = ProlateEllipsoid(a, b, yaw=0, pitch=0, centre=(0, 0, 0))
+    base_pro = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
     pro_rotated = [
-        ProlateEllipsoid(a, b, yaw=360, pitch=0, centre=(0, 0, 0)),
-        ProlateEllipsoid(a, b, yaw=0, pitch=180, centre=(0, 0, 0)),
+        ProlateEllipsoid(a, b, yaw=360, pitch=0, center=(0, 0, 0)),
+        ProlateEllipsoid(a, b, yaw=0, pitch=180, center=(0, 0, 0)),
     ]
     check_rotation_equivalence(base_pro, pro_rotated)
 
     # oblate cases
-    base_obl = OblateEllipsoid(b, a, yaw=0, pitch=0, centre=(0, 0, 0))
+    base_obl = OblateEllipsoid(b, a, yaw=0, pitch=0, center=(0, 0, 0))
     obl_rotated = [
-        OblateEllipsoid(b, a, yaw=360, pitch=0, centre=(0, 0, 0)),
-        OblateEllipsoid(b, a, yaw=0, pitch=180, centre=(0, 0, 0)),
+        OblateEllipsoid(b, a, yaw=360, pitch=0, center=(0, 0, 0)),
+        OblateEllipsoid(b, a, yaw=0, pitch=180, center=(0, 0, 0)),
     ]
     check_rotation_equivalence(base_obl, obl_rotated)
 
@@ -614,7 +614,7 @@ class TestMagneticFieldVersusSphere:
                     b=a + self.delta,
                     yaw=yaw,
                     pitch=pitch,
-                    centre=self.center,
+                    center=self.center,
                 )
             case "prolate":
                 ellipsoid = ProlateEllipsoid(
@@ -622,7 +622,7 @@ class TestMagneticFieldVersusSphere:
                     b=a - self.delta,
                     yaw=yaw,
                     pitch=pitch,
-                    centre=self.center,
+                    center=self.center,
                 )
             case "triaxial":
                 ellipsoid = TriaxialEllipsoid(
@@ -632,7 +632,7 @@ class TestMagneticFieldVersusSphere:
                     yaw=yaw,
                     pitch=pitch,
                     roll=roll,
-                    centre=self.center,
+                    center=self.center,
                 )
             case _:
                 raise ValueError()
@@ -687,11 +687,11 @@ class TestSymmetryOnRotations:
         match ellipsoid_type:
             case "oblate":
                 ellipsoid = OblateEllipsoid(
-                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, center=center
                 )
             case "prolate":
                 ellipsoid = ProlateEllipsoid(
-                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, center=center
                 )
             case "triaxial":
                 ellipsoid = TriaxialEllipsoid(
@@ -701,7 +701,7 @@ class TestSymmetryOnRotations:
                     yaw=yaw,
                     pitch=pitch,
                     roll=roll,
-                    centre=center,
+                    center=center,
                 )
             case _:
                 raise ValueError()
@@ -757,7 +757,7 @@ class TestSusceptibilityTensor:
         """Test forward model using anisotropic susceptibility."""
         coordinates = (0, 0, 0)
         ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
         )
         susceptibility = np.random.default_rng(seed=42).uniform(size=(3, 3))
         external_field = (55_000, 12, 74)
@@ -771,7 +771,7 @@ class TestSusceptibilityTensor:
         """Test error after invalid susceptibility tensor."""
         coordinates = (0, 0, 0)
         ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
         )
         external_field = (55_000, 12, 74)
 
@@ -791,7 +791,7 @@ class TestSusceptibilityTensor:
 
         coordinates = (0, 0, 0)
         ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
         )
         external_field = (55_000, 12, 74)
         susceptibility = InvalidSus()
@@ -822,10 +822,10 @@ class TestMultipleEllipsoids:
         """Sample ellipsoids."""
         ellipsoids = [
             OblateEllipsoid(
-                a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
+                a=20, b=60, yaw=30.2, pitch=-23, center=(-10.0, 20.0, -10.0)
             ),
             ProlateEllipsoid(
-                a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+                a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
             ),
             TriaxialEllipsoid(
                 a=60,
@@ -834,7 +834,7 @@ class TestMultipleEllipsoids:
                 yaw=272.1,
                 pitch=43,
                 roll=98,
-                centre=(0.0, 20.0, -30.0),
+                center=(0.0, 20.0, -30.0),
             ),
         ]
         return ellipsoids
@@ -950,7 +950,7 @@ class TestInvalidInputs:
     @pytest.fixture
     def prolate_ellipsoid(self):
         ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
         )
         return ellipsoid
 

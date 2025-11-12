@@ -44,19 +44,19 @@ def build_ellipsoid(ellipsoid_type):
     -------
     ellipsoid
     """
-    centre = (0, 0, 0)
+    center = (0, 0, 0)
     match ellipsoid_type:
         case "triaxial":
             a, b, c = 3.2, 2.1, 1.3
             ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center
             )
         case "prolate":
             a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
         case "oblate":
             a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
         case _:
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
@@ -69,7 +69,7 @@ def test_degenerate_ellipsoid_cases():
     accepted values.
 
     """
-    # ellipsoids take (a, b, #c, yaw, pitch, #roll, centre)
+    # ellipsoids take (a, b, #c, yaw, pitch, #roll, center)
     tri = TriaxialEllipsoid(5, 4.99999999, 4.99999998, 0, 0, 0, (0, 0, 0))
     pro = ProlateEllipsoid(5, 4.99999999, 0, 0, (0, 0, 0))
     obl = OblateEllipsoid(4.99999999, 5, 0, 0, (0, 0, 0))
@@ -121,7 +121,7 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, centre=(0, 0, 0))
+    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])
@@ -208,19 +208,19 @@ class TestEllipsoidVsPointSource:
         """
         ellipsoid_type = request.param
 
-        centre = (0, 0, 0)
+        center = (0, 0, 0)
         match ellipsoid_type:
             case "triaxial":
                 a, b, c = 3.2, 2.1, 1.3
                 ellipsoid = TriaxialEllipsoid(
-                    a=a, b=b, c=c, yaw=0, pitch=0, roll=0, centre=centre
+                    a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center
                 )
             case "prolate":
                 a, b = 3.2, 2.1
-                ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+                ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
             case "oblate":
                 a, b = 2.2, 3.1
-                ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, centre=centre)
+                ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
             case _:
                 msg = f"Invalid ellipsoid type: {ellipsoid_type}"
                 raise ValueError(msg)
@@ -245,7 +245,7 @@ class TestEllipsoidVsPointSource:
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
         ge_point, gn_point, gz_point = tuple(
-            point_gravity(coordinates, ellipsoid.centre, point_mass, field=f)
+            point_gravity(coordinates, ellipsoid.center, point_mass, field=f)
             for f in ("g_e", "g_n", "g_z")
         )
 
@@ -272,7 +272,7 @@ class TestEllipsoidVsPointSource:
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
         point_mass = density * ellipsoid_volume
         ge_point, gn_point, gz_point = tuple(
-            point_gravity(coordinates, ellipsoid.centre, point_mass, field=f)
+            point_gravity(coordinates, ellipsoid.center, point_mass, field=f)
             for f in ("g_e", "g_n", "g_z")
         )
 
@@ -316,11 +316,11 @@ class TestSymmetryOnRotations:
         match ellipsoid_type:
             case "oblate":
                 ellipsoid = OblateEllipsoid(
-                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, centre=center
+                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, center=center
                 )
             case "prolate":
                 ellipsoid = ProlateEllipsoid(
-                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, centre=center
+                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, center=center
                 )
             case "triaxial":
                 ellipsoid = TriaxialEllipsoid(
@@ -330,7 +330,7 @@ class TestSymmetryOnRotations:
                     yaw=yaw,
                     pitch=pitch,
                     roll=roll,
-                    centre=center,
+                    center=center,
                 )
             case _:
                 raise ValueError()
@@ -386,10 +386,10 @@ class TestMultipleEllipsoids:
         """Sample ellipsoids."""
         ellipsoids = [
             OblateEllipsoid(
-                a=20, b=60, yaw=30.2, pitch=-23, centre=(-10.0, 20.0, -10.0)
+                a=20, b=60, yaw=30.2, pitch=-23, center=(-10.0, 20.0, -10.0)
             ),
             ProlateEllipsoid(
-                a=40, b=15, yaw=170.2, pitch=71, centre=(15.0, 0.0, -40.0)
+                a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
             ),
             TriaxialEllipsoid(
                 a=60,
@@ -398,7 +398,7 @@ class TestMultipleEllipsoids:
                 yaw=272.1,
                 pitch=43,
                 roll=98,
-                centre=(0.0, 20.0, -30.0),
+                center=(0.0, 20.0, -30.0),
             ),
         ]
         return ellipsoids

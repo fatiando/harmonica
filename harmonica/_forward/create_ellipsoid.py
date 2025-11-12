@@ -28,7 +28,7 @@ class TriaxialEllipsoid:
     roll : float
         Rotation angle about the easting axis (after yaw and pitch rotation), in
         degrees.
-    centre : tuple of floats
+    center : tuple of floats
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
@@ -44,7 +44,7 @@ class TriaxialEllipsoid:
 
     """
 
-    def __init__(self, a, b, c, yaw, pitch, roll, centre):
+    def __init__(self, a, b, c, yaw, pitch, roll, center):
         if not (a > b > c):
             msg = (
                 "Invalid ellipsoid axis lengths for triaxial ellipsoid: "
@@ -62,8 +62,8 @@ class TriaxialEllipsoid:
         self.pitch = pitch
         self.roll = roll
 
-        # centre of ellipsoid
-        self.centre = centre
+        # Center of ellipsoid
+        self.center = center
 
 
 class ProlateEllipsoid:
@@ -82,7 +82,7 @@ class ProlateEllipsoid:
         Rotation angle about the northing axis (after yaw rotation), in degrees.
         A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
         direction.
-    centre : tuple of floats
+    center : tuple of floats
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
@@ -109,7 +109,7 @@ class ProlateEllipsoid:
     ``ProlateEllipsoid``.
     """
 
-    def __init__(self, a, b, yaw, pitch, centre):
+    def __init__(self, a, b, yaw, pitch, center):
         if not (a > b):
             msg = (
                 "Invalid ellipsoid axis lengths for prolate ellipsoid: "
@@ -125,8 +125,8 @@ class ProlateEllipsoid:
         self.yaw = yaw
         self.pitch = pitch
 
-        # centre of ellipsoid
-        self.centre = centre
+        # center of ellipsoid
+        self.center = center
 
     @property
     def c(self):
@@ -153,7 +153,7 @@ class OblateEllipsoid:
         Rotation angle about the northing axis (after yaw rotation), in degrees.
         A positive pitch angle _lifts_ the side of the ellipsoid pointing in easting
         direction.
-    centre : tuple of floats
+    center : tuple of floats
         Coordinates of the center of the ellipsoid in the following order: _easting_,
         _northing_, _upward_.
 
@@ -180,7 +180,7 @@ class OblateEllipsoid:
     ``OblateEllipsoid``.
     """
 
-    def __init__(self, a, b, yaw, pitch, centre):
+    def __init__(self, a, b, yaw, pitch, center):
         if not (a < b):
             msg = (
                 "Invalid ellipsoid axis lengths for oblate ellipsoid: "
@@ -196,8 +196,8 @@ class OblateEllipsoid:
         self.yaw = yaw
         self.pitch = pitch
 
-        # centre of ellipsoid
-        self.centre = centre
+        # center of ellipsoid
+        self.center = center
 
     @property
     def c(self):

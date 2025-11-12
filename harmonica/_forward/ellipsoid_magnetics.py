@@ -176,7 +176,7 @@ def _single_ellipsoid_magnetic(
         points.
     """
     # Shift coordinates to the center of the ellipsoid
-    origin_e, origin_n, origin_u = ellipsoid.centre
+    origin_e, origin_n, origin_u = ellipsoid.center
     easting, northing, upward = coordinates
     coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 

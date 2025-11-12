@@ -84,7 +84,7 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
     for ellipsoid, rho in zip(ellipsoids, density, strict=True):
         a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
-        origin_e, origin_n, origin_u = ellipsoid.centre
+        origin_e, origin_n, origin_u = ellipsoid.center
 
         # Translate observation points to coordinate system in center of the ellipsoid
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
