@@ -15,12 +15,14 @@ import numpy as np
 import numpy.typing as npt
 from choclo.constants import GRAVITATIONAL_CONST
 
+from ..errors import NoPhysicalPropertyWarning
 from ..typing import Ellipsoid
 from .utils_ellipsoids import calculate_lambda, get_elliptical_integrals
 
 
 def ellipsoid_gravity(
-    coordinates: Sequence[npt.NDArray], ellipsoids: Iterable[Ellipsoid] | Ellipsoid
+    coordinates: Sequence[npt.NDArray] | Sequence[float],
+    ellipsoids: Iterable[Ellipsoid] | Ellipsoid,
 ):
     r"""
     Forward model gravity fields of ellipsoids.
@@ -84,7 +86,7 @@ def ellipsoid_gravity(
                 f"Ellipsoid {ellipsoid} doesn't have a density value. "
                 "It will be skipped."
             )
-            warnings.warn(msg, UserWarning, stacklevel=2)
+            warnings.warn(msg, NoPhysicalPropertyWarning, stacklevel=2)
             continue
 
         # Translate observation points to coordinate system in center of the ellipsoid

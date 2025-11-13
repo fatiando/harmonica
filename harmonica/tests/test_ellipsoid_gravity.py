@@ -22,6 +22,7 @@ import pytest
 import verde as vd
 
 from harmonica import point_gravity
+from harmonica.errors import NoPhysicalPropertyWarning
 
 from .._forward.ellipsoid_gravity import (
     ellipsoid_gravity,
@@ -478,7 +479,7 @@ class TestNoneDensity:
         msg = re.escape(
             f"Ellipsoid {ellipsoid} doesn't have a density value. It will be skipped."
         )
-        with pytest.warns(UserWarning, match=msg):
+        with pytest.warns(NoPhysicalPropertyWarning, match=msg):
             gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoid)
 
         # Check the gravity acceleration components are zero

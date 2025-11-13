@@ -23,6 +23,7 @@ import verde as vd
 from scipy.constants import mu_0
 
 import harmonica as hm
+from harmonica.errors import NoPhysicalPropertyWarning
 
 from .._forward.ellipsoid_magnetics import (
     _demag_tensor_oblate_internal,
@@ -969,7 +970,7 @@ class TestNoMagnetic:
             f"Ellipsoid {ellipsoid} doesn't have a susceptibility nor a "
             "remanent_mag value. It will be skipped."
         )
-        with pytest.warns(UserWarning, match=msg):
+        with pytest.warns(NoPhysicalPropertyWarning, match=msg):
             bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
 
         # Check the gravity acceleration components are zero

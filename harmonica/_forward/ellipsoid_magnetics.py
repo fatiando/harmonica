@@ -17,6 +17,7 @@ from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
 from .._utils import magnetic_angles_to_vec
+from ..errors import NoPhysicalPropertyWarning
 from .utils_ellipsoids import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
@@ -89,7 +90,7 @@ def ellipsoid_magnetic(
                 f"Ellipsoid {ellipsoid} doesn't have a susceptibility nor a "
                 "remanent_mag value. It will be skipped."
             )
-            warnings.warn(msg, UserWarning, stacklevel=2)
+            warnings.warn(msg, NoPhysicalPropertyWarning, stacklevel=2)
             continue
 
         b_field = _single_ellipsoid_magnetic(
