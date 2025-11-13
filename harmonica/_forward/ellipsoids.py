@@ -39,9 +39,10 @@ class BaseEllipsoid:
     def density(self, value) -> None:
         if not isinstance(value, Real) and value is not None:
             msg = (
-                f"Invalid 'density' of type {type(value)}. It must be a float or None."
+                f"Invalid 'density' of type '{type(value).__name__}'. "
+                "It must be a float or None."
             )
-            raise ValueError(msg)
+            raise TypeError(msg)
         if isinstance(value, Real):
             value = float(value)
         self._density = value
@@ -56,13 +57,13 @@ class BaseEllipsoid:
         if isinstance(value, np.ndarray):
             if value.shape != (3, 3):
                 msg = (
-                    f"Invalid 'susceptibility' as an array with shape {value.shape}. "
+                    f"Invalid 'susceptibility' as an array with shape '{value.shape}'. "
                     "It must be a (3, 3) array, a single float or None."
                 )
                 raise ValueError(msg)
         elif not isinstance(value, Real) and value is not None:
             msg = (
-                f"Invalid 'susceptibility' of type {type(value)}. "
+                f"Invalid 'susceptibility' of type '{type(value).__name__}'. "
                 "It must be a (3, 3) array, a single float or None."
             )
             raise TypeError(msg)
@@ -82,13 +83,13 @@ class BaseEllipsoid:
         if isinstance(value, np.ndarray):
             if value.shape != (3,):
                 msg = (
-                    f"Invalid shape of 'remanent_mag': {value.shape}. "
+                    f"Invalid 'remanent_mag' with shape '{value.shape}'. "
                     "It must be a (3,) array or None."
                 )
                 raise ValueError(msg)
         elif value is not None:
             msg = (
-                f"Invalid 'remanent_mag' of type {type(value)}. "
+                f"Invalid 'remanent_mag' of type '{type(value).__name__}'. "
                 "It must be a (3,) array or None."
             )
             raise TypeError(msg)

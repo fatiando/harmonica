@@ -14,7 +14,6 @@ Test magnetic forward modelling of ellipsoids.
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import re
 from copy import copy
 
 import numpy as np
@@ -789,56 +788,6 @@ class TestSymmetryOnRotations:
         # Check that the B field is the same for original and flipped ellipsoids
         for i in range(3):
             np.testing.assert_allclose(b_field[i], b_field_flipped[i])
-
-
-class TestSusceptibilityTensor:
-    """Test forward when susceptibility is a tensor."""
-
-    def test_susceptibility_as_tensor(self):
-        """Test forward model using anisotropic susceptibility."""
-        coordinates = (0, 0, 0)
-        ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
-        )
-        susceptibility = np.random.default_rng(seed=42).uniform(size=(3, 3))
-        external_field = (55_000, 12, 74)
-
-        ellipsoid.susceptibility = susceptibility
-
-        # Check if no error is raised after using an anisotropic susceptibility
-        ellipsoid_magnetic(coordinates, ellipsoid, external_field)
-
-    def test_invalid_susceptibility_as_tensor(self):
-        """Test error after invalid susceptibility tensor."""
-        coordinates = (0, 0, 0)
-        ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
-        )
-        external_field = (55_000, 12, 74)
-
-        invalid_shape = (3, 4)
-        susceptibility = np.random.default_rng(seed=42).uniform(size=invalid_shape)
-        ellipsoid.susceptibility = susceptibility
-
-        msg = re.escape("Susceptibility matrix must be 3x3")
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid_magnetic(coordinates, ellipsoid, external_field)
-
-    def test_invalid_susceptibility_type(self):
-        """Test error after invalid susceptibility type."""
-
-        class InvalidSus: ...
-
-        coordinates = (0, 0, 0)
-        ellipsoid = ProlateEllipsoid(
-            a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
-        )
-        external_field = (55_000, 12, 74)
-        ellipsoid.susceptibility = InvalidSus()
-
-        msg = re.escape("Unrecognized susceptibility type")
-        with pytest.raises(TypeError, match=msg):
-            ellipsoid_magnetic(coordinates, ellipsoid, external_field)
 
 
 class TestMultipleEllipsoids:

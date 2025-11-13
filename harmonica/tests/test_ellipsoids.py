@@ -10,6 +10,7 @@ Test ellipsoid classes.
 
 import re
 
+import numpy as np
 import pytest
 
 from harmonica import OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid
@@ -78,3 +79,150 @@ class TestTriaxialEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
         with pytest.raises(ValueError, match=msg):
             TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+
+
+@pytest.mark.parametrize(
+    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid]
+)
+class TestPhysicalProperties:
+    @pytest.fixture
+    def ellipsoid_args(self, ellipsoid_class):
+        if ellipsoid_class is OblateEllipsoid:
+            args = {
+                "a": 20.0,
+                "b": 50.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "center": (0, 0, 0),
+            }
+        elif ellipsoid_class is ProlateEllipsoid:
+            args = {
+                "a": 50.0,
+                "b": 20.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "center": (0, 0, 0),
+            }
+        elif ellipsoid_class is TriaxialEllipsoid:
+            args = {
+                "a": 50.0,
+                "b": 20.0,
+                "c": 10.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "roll": 0.0,
+                "center": (0, 0, 0),
+            }
+        else:
+            raise TypeError()
+        return args
+
+    def test_density(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test assigning density to the ellipsoid.
+        """
+        density = 3.0
+        ellipsoid = ellipsoid_class(**ellipsoid_args, density=density)
+        assert ellipsoid.density == density
+        # Check overwriting it
+        new_density = -4.0
+        ellipsoid.density = new_density
+        assert ellipsoid.density == new_density
+        # Check density as None
+        ellipsoid = ellipsoid_class(**ellipsoid_args, density=None)
+        assert ellipsoid.density is None
+
+    def test_invalid_density(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test errors after invalid density.
+        """
+        density = [1.0, 3.0]
+        msg = re.escape("Invalid 'density' of type 'list'")
+        with pytest.raises(TypeError, match=msg):
+            ellipsoid_class(**ellipsoid_args, density=density)
+
+    @pytest.mark.parametrize("susceptibility", [0.1, "tensor", None])
+    def test_susceptibility(self, ellipsoid_class, ellipsoid_args, susceptibility):
+        """
+        Test assigning susceptibility to the ellipsoid.
+        """
+        if susceptibility == "tensor":
+            susceptibility = np.random.default_rng(seed=42).uniform(size=(3, 3))
+        ellipsoid = ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+
+        # Check if it was correctly assigned
+        if susceptibility is None:
+            assert ellipsoid.susceptibility is None
+        elif isinstance(susceptibility, float):
+            assert ellipsoid.susceptibility == susceptibility
+        else:
+            np.testing.assert_almost_equal(ellipsoid.susceptibility, susceptibility)
+
+        # Check overwriting it
+        new_sus = -4.0
+        ellipsoid.susceptibility = new_sus
+        assert ellipsoid.susceptibility == new_sus
+
+    def test_invalid_susceptibility_type(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test errors after invalid susceptibility type.
+        """
+        susceptibility = [1.0, 3.0]
+        msg = re.escape("Invalid 'susceptibility' of type 'list'")
+        with pytest.raises(TypeError, match=msg):
+            ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+
+    def test_invalid_susceptibility_shape(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test errors after invalid susceptibility shape.
+        """
+        susceptibility = np.array([[1, 2, 3], [4, 5, 6]])
+        msg = re.escape("Invalid 'susceptibility' as an array with shape '(2, 3)'")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+
+    @pytest.mark.parametrize("remanent_mag_type", ["array", "list", None])
+    def test_remanent_mag(self, ellipsoid_class, ellipsoid_args, remanent_mag_type):
+        """
+        Test assigning susceptibility to the ellipsoid.
+        """
+        if remanent_mag_type == "array":
+            remanent_mag = np.array([1.0, 2.0, 3.0])
+        elif remanent_mag_type == "list":
+            remanent_mag = [1.0, 2.0, 3.0]
+        else:
+            remanent_mag = None
+
+        ellipsoid = ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
+
+        # Check if it was correctly assigned
+        if remanent_mag is None:
+            assert ellipsoid.remanent_mag is None
+        else:
+            np.testing.assert_almost_equal(ellipsoid.remanent_mag, remanent_mag)
+
+        # Check overwriting it
+        new_remanent_mag = np.array([-4.0, -5.0, 3.0])
+        ellipsoid.remanent_mag = new_remanent_mag
+        np.testing.assert_almost_equal(ellipsoid.remanent_mag, new_remanent_mag)
+
+    def test_invalid_remanent_mag_type(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test errors after invalid remanent_mag type.
+        """
+
+        class Dummy: ...
+
+        remanent_mag = Dummy()
+        msg = re.escape("Invalid 'remanent_mag' of type 'Dummy'")
+        with pytest.raises(TypeError, match=msg):
+            ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
+
+    def test_invalid_remanent_mag_shape(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test errors after invalid remanent_mag shape.
+        """
+        remanent_mag = np.array([1.0, 2.0])
+        msg = re.escape("Invalid 'remanent_mag' with shape '(2,)'")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
