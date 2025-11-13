@@ -91,6 +91,7 @@ extend-select = [
   "D",        # pydocstyle
   "EM",       # flake8-errmsg
   "EXE",      # flake8-executable
+  "FIX",      # flake8-fixme
   "FURB",     # refurb
   "G",        # flake8-logging-format
   "I",        # isort
