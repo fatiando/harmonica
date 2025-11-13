@@ -278,7 +278,7 @@ def cast_susceptibility(susceptibility):
 
     Parameters
     ----------
-    susceptibility : float or (3) array or (3, 3) array or None
+    susceptibility : float or (3,) array or (3, 3) array or None
         Susceptibility value. A single value or list of single values assumes
         isotropy in the body/bodies. An array or list of arrays should be a 3x3
         matrix with the given susceptibility components, suggesting an
