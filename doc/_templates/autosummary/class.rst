@@ -14,6 +14,19 @@
 
 {% endif %}
 
+{% if attributes %}
+
+Attributes
+----------
+
+{% for item in attributes %}
+
+.. autoattribute:: {{ objname }}.{{ item }}
+
+{% endfor %}
+
+{% endif %}
+
 ----
 
 .. include:: backreferences/{{ fullname }}.examples
