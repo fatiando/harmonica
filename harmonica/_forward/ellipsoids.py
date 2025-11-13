@@ -32,6 +32,7 @@ class BaseEllipsoid:
 
     @property
     def density(self) -> float | None:
+        """Density of the ellipsoid in :math:`kg/m^3`."""
         return self._density
 
     @density.setter
@@ -47,6 +48,7 @@ class BaseEllipsoid:
 
     @property
     def susceptibility(self) -> float | npt.NDArray | None:
+        """Magnetic susceptibility of the ellipsoid in SI units."""
         return self._susceptibility
 
     @susceptibility.setter
@@ -70,6 +72,7 @@ class BaseEllipsoid:
 
     @property
     def remanent_mag(self) -> npt.NDArray | None:
+        """Remanent magnetization of the ellipsoid in A/m."""
         return self._remanent_mag
 
     @remanent_mag.setter
@@ -143,7 +146,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
         Density of the ellipsoid in :math:`kg/m^3`.
     susceptibility : float, (3, 3) array or None, optional
         Magnetic susceptibility of the ellipsoid in SI units.
-    remanent_mag : (3) array or None, optional
+    remanent_mag : (3,) array or None, optional
         Remanent magnetization vector of the ellipsoid in A/m units. Its components
         are defined in the easting-northing-upward coordinate system and should be
         passed in that order.
@@ -186,7 +189,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @property
     def a(self) -> float:
-        """First semiaxes length."""
+        """Length of the first semiaxis."""
         return self._a
 
     @a.setter
@@ -196,7 +199,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @property
     def b(self) -> float:
-        """Second semiaxes length."""
+        """Length of the second semiaxis."""
         return self._b
 
     @b.setter
@@ -206,7 +209,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @property
     def c(self) -> float:
-        """Third semiaxes length."""
+        """Length of the third semiaxis."""
         return self._c
 
     @c.setter
@@ -246,18 +249,10 @@ class ProlateEllipsoid(BaseEllipsoid):
         Density of the ellipsoid in :math:`kg/m^3`.
     susceptibility : float or None, optional
         Magnetic susceptibility of the ellipsoid in SI units.
-    remanent_mag : (3) array or None, optional
+    remanent_mag : (3,) array or None, optional
         Remanent magnetization vector of the ellipsoid in A/m units. Its components
         are defined in the easting-northing-upward coordinate system and should be
         passed in that order.
-
-    Attributes
-    ----------
-    c : float
-        Equal to ``b`` by definition.
-    roll : float
-        Set always equal to zero. Roll rotations have no effect on
-        :class:`harmonica.ProlateEllipsoid``s due to symmetry.
 
     Notes
     -----
@@ -298,7 +293,7 @@ class ProlateEllipsoid(BaseEllipsoid):
 
     @property
     def a(self) -> float:
-        """First semiaxes length."""
+        """Length of the first semiaxis."""
         return self._a
 
     @a.setter
@@ -308,7 +303,7 @@ class ProlateEllipsoid(BaseEllipsoid):
 
     @property
     def b(self) -> float:
-        """Second semiaxes length."""
+        """Length of the second semiaxis."""
         return self._b
 
     @b.setter
@@ -358,18 +353,10 @@ class OblateEllipsoid(BaseEllipsoid):
         Density of the ellipsoid in :math:`kg/m^3`.
     susceptibility : float or None, optional
         Magnetic susceptibility of the ellipsoid in SI units.
-    remanent_mag : (3) array or None, optional
+    remanent_mag : (3,) array or None, optional
         Remanent magnetization vector of the ellipsoid in A/m units. Its components
         are defined in the easting-northing-upward coordinate system and should be
         passed in that order.
-
-    Attributes
-    ----------
-    c : float
-        Equal to ``b`` by definition.
-    roll : float
-        Set always equal to zero. Roll rotations have no effect on
-        :class:`harmonica.OblateEllipsoid``s due to symmetry.
 
     Notes
     -----
@@ -410,7 +397,7 @@ class OblateEllipsoid(BaseEllipsoid):
 
     @property
     def a(self) -> float:
-        """First semiaxes length."""
+        """Length of the first semiaxis."""
         return self._a
 
     @a.setter
@@ -420,7 +407,7 @@ class OblateEllipsoid(BaseEllipsoid):
 
     @property
     def b(self) -> float:
-        """Second semiaxes length."""
+        """Length of the second semiaxis."""
         return self._b
 
     @b.setter
