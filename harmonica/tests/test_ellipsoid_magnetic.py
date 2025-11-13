@@ -14,6 +14,7 @@ Test magnetic forward modelling of ellipsoids.
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import re
 from copy import copy
 
 import numpy as np
@@ -916,3 +917,61 @@ class TestMultipleEllipsoids:
         np.testing.assert_allclose(bx, bx_expected)
         np.testing.assert_allclose(by, by_expected)
         np.testing.assert_allclose(bz, bz_expected)
+
+
+@pytest.mark.parametrize(
+    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid]
+)
+class TestNoMagnetic:
+    """Test warning when ellipsoid has no susceptibility nor remanent magnetization."""
+
+    @pytest.fixture
+    def ellipsoid_args(self, ellipsoid_class):
+        if ellipsoid_class is OblateEllipsoid:
+            args = {
+                "a": 20.0,
+                "b": 50.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "center": (0, 0, 0),
+            }
+        elif ellipsoid_class is ProlateEllipsoid:
+            args = {
+                "a": 50.0,
+                "b": 20.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "center": (0, 0, 0),
+            }
+        elif ellipsoid_class is TriaxialEllipsoid:
+            args = {
+                "a": 50.0,
+                "b": 20.0,
+                "c": 10.0,
+                "pitch": 0.0,
+                "yaw": 0.0,
+                "roll": 0.0,
+                "center": (0, 0, 0),
+            }
+        else:
+            raise TypeError()
+        return args
+
+    def test_warning(self, ellipsoid_class, ellipsoid_args):
+        """
+        Test warning about ellipsoid with no susceptibility nor remanence being skipped.
+        """
+        coordinates = (0.0, 0.0, 0.0)
+        ellipsoid = ellipsoid_class(**ellipsoid_args)
+        external_field = (55_000.0, 13, 71)
+
+        msg = re.escape(
+            f"Ellipsoid {ellipsoid} doesn't have a susceptibility nor a "
+            "remanent_mag value. It will be skipped."
+        )
+        with pytest.warns(UserWarning, match=msg):
+            bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+
+        # Check the gravity acceleration components are zero
+        for b_component in (bx, by, bz):
+            assert b_component == 0.0
