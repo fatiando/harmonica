@@ -104,7 +104,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
         `northing`, `upward`.
     density : float or None, optional
         Density of the ellipsoid in :math:`kg/m^3`.
-    susceptibility : float or None, optional
+    susceptibility : float, (3, 3) array or None, optional
         Magnetic susceptibility of the ellipsoid in SI units.
     remanent_mag : (3) array or None, optional
         Remanent magnetization vector of the ellipsoid in A/m units. Its components
@@ -133,9 +133,9 @@ class TriaxialEllipsoid(BaseEllipsoid):
         roll: float,
         center: tuple[float, float, float],
         *,
-        density=None,
-        susceptibility=None,
-        remanent_mag=None,
+        density: float | None = None,
+        susceptibility: float | npt.NDArray | None = None,
+        remanent_mag: npt.NDArray | None = None,
     ):
         self._check_semiaxes_lenghts(a, b, c)
         self._a, self._b, self._c = a, b, c
@@ -146,6 +146,9 @@ class TriaxialEllipsoid(BaseEllipsoid):
         self.density = density
         self.susceptibility = susceptibility
         self.remanent_mag = remanent_mag
+
+        # TODO: add checks for physical properties. Maybe in the abstract class, as
+        # properties?
 
     @property
     def a(self) -> float:
@@ -272,9 +275,9 @@ class ProlateEllipsoid(BaseEllipsoid):
         pitch: float,
         center: tuple[float, float, float],
         *,
-        density=None,
-        susceptibility=None,
-        remanent_mag=None,
+        density: float | None = None,
+        susceptibility: float | npt.NDArray | None = None,
+        remanent_mag: npt.NDArray | None = None,
     ):
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b
@@ -402,9 +405,9 @@ class OblateEllipsoid(BaseEllipsoid):
         pitch: float,
         center: tuple[float, float, float],
         *,
-        density=None,
-        susceptibility=None,
-        remanent_mag=None,
+        density: float | None = None,
+        susceptibility: float | npt.NDArray | None = None,
+        remanent_mag: npt.NDArray | None = None,
     ):
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b

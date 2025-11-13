@@ -23,7 +23,7 @@ class Ellipsoid(Protocol):
     roll: float
     center: tuple[float, float, float]
     density: float | None
-    susceptibility: float | None
+    susceptibility: float | npt.NDArray | None
     remanent_mag: npt.NDArray | None
 
     @property
