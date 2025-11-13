@@ -26,6 +26,19 @@ class TestProlateEllipsoid:
         with pytest.raises(ValueError, match=msg):
             ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
 
+    def test_semiaxes_setter(self):
+        """Test setters for semiaxes."""
+        a, b = 50.0, 35.0
+        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        # Test setter of a
+        new_a = a + 1
+        ellipsoid.a = new_a
+        assert ellipsoid.a == new_a
+        # Test setter of b
+        new_b = b + 1
+        ellipsoid.b = new_b
+        assert ellipsoid.b == new_b
+
     def test_invalid_semiaxes_setter(self):
         """Test error if not a > b when using the setter."""
         a, b = 50.0, 35.0
@@ -61,6 +74,19 @@ class TestOblateEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
         with pytest.raises(ValueError, match=msg):
             OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+
+    def test_semiaxes_setter(self):
+        """Test setters for semiaxes."""
+        a, b = 35.0, 50.0
+        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        # Test setter of a
+        new_a = a + 1
+        ellipsoid.a = new_a
+        assert ellipsoid.a == new_a
+        # Test setter of b
+        new_b = b + 1
+        ellipsoid.b = new_b
+        assert ellipsoid.b == new_b
 
     def test_invalid_semiaxes_setter(self):
         """Test error if not a < b when using the setter."""
@@ -99,6 +125,23 @@ class TestTriaxialEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
         with pytest.raises(ValueError, match=msg):
             TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+
+    def test_semiaxes_setter(self):
+        """Test setters for semiaxes."""
+        a, b, c = 50.0, 40.0, 35.0
+        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+        # Test setter of a
+        new_a = a + 1
+        ellipsoid.a = new_a
+        assert ellipsoid.a == new_a
+        # Test setter of b
+        new_b = b + 1
+        ellipsoid.b = new_b
+        assert ellipsoid.b == new_b
+        # Test setter of c
+        new_c = c + 1
+        ellipsoid.c = new_c
+        assert ellipsoid.c == new_c
 
     def test_invalid_semiaxes_setter(self):
         """Test error if not a > b > c when using the setter."""
