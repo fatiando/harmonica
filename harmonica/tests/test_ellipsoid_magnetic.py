@@ -24,17 +24,17 @@ from scipy.constants import mu_0
 
 import harmonica as hm
 
-from .._forward.ellipsoids import (
-    OblateEllipsoid,
-    ProlateEllipsoid,
-    TriaxialEllipsoid,
-)
 from .._forward.ellipsoid_magnetics import (
     _demag_tensor_oblate_internal,
     _demag_tensor_prolate_internal,
     _demag_tensor_triaxial_internal,
     ellipsoid_magnetic,
     get_magnetisation,
+)
+from .._forward.ellipsoids import (
+    OblateEllipsoid,
+    ProlateEllipsoid,
+    TriaxialEllipsoid,
 )
 from .._forward.utils import get_rotation_matrix
 

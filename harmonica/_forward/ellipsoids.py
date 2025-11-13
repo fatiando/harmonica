@@ -7,6 +7,7 @@
 """
 Classes to define ellipsoids.
 """
+
 from abc import ABC, abstractmethod
 
 import numpy.typing as npt
@@ -101,6 +102,14 @@ class TriaxialEllipsoid(BaseEllipsoid):
     center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: `easting`,
         `northing`, `upward`.
+    density : float or None, optional
+        Density of the ellipsoid in :math:`kg/m^3`.
+    susceptibility : float or None, optional
+        Magnetic susceptibility of the ellipsoid in SI units.
+    remanent_mag : (3) array or None, optional
+        Remanent magnetization vector of the ellipsoid in A/m units. Its components
+        are defined in the easting-northing-upward coordinate system and should be
+        passed in that order.
 
     Notes
     -----
@@ -114,29 +123,29 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     """
 
-    def __init__(self, a, b, c, yaw, pitch, roll, center):
+    def __init__(
+        self,
+        a,
+        b,
+        c,
+        yaw,
+        pitch,
+        roll,
+        center,
+        *,
+        density=None,
+        susceptibility=None,
+        remanent_mag=None,
+    ):
         self._check_semiaxes_lenghts(a, b, c)
-
-        # semiaxes
-        self._a = a  # major_axis
-        self._b = b  # intermediate_axis
-        self._c = c  # minor_axis
-
-        # euler angles
-        self._yaw = yaw
-        self._pitch = pitch
-        self._roll = roll
-
-        # Center of ellipsoid
+        self._a, self._b, self._c = a, b, c
+        self._yaw, self._pitch, self._roll = yaw, pitch, roll
         self.center = center
 
-    def _check_semiaxes_lenghts(self, a, b, c):
-        if not (a > b > c):
-            msg = (
-                "Invalid ellipsoid axis lengths for triaxial ellipsoid: "
-                f"expected a > b > c but got a = {a}, b = {b}, c = {c}"
-            )
-            raise ValueError(msg)
+        # Physical properties of the ellipsoid
+        self.density = density
+        self.susceptibility = susceptibility
+        self.remanent_mag = remanent_mag
 
     @property
     def a(self) -> float:
@@ -195,6 +204,14 @@ class TriaxialEllipsoid(BaseEllipsoid):
     def yaw(self, value: float):
         self._yaw = value
 
+    def _check_semiaxes_lenghts(self, a, b, c):
+        if not (a > b > c):
+            msg = (
+                "Invalid ellipsoid axis lengths for triaxial ellipsoid: "
+                f"expected a > b > c but got a = {a}, b = {b}, c = {c}"
+            )
+            raise ValueError(msg)
+
 
 class ProlateEllipsoid(BaseEllipsoid):
     """
@@ -215,6 +232,14 @@ class ProlateEllipsoid(BaseEllipsoid):
     center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: `easting`,
         `northing`, `upward`.
+    density : float or None, optional
+        Density of the ellipsoid in :math:`kg/m^3`.
+    susceptibility : float or None, optional
+        Magnetic susceptibility of the ellipsoid in SI units.
+    remanent_mag : (3) array or None, optional
+        Remanent magnetization vector of the ellipsoid in A/m units. Its components
+        are defined in the easting-northing-upward coordinate system and should be
+        passed in that order.
 
     Attributes
     ----------
@@ -239,27 +264,27 @@ class ProlateEllipsoid(BaseEllipsoid):
     :class:`harmonica.ProlateEllipsoid`.
     """
 
-    def __init__(self, a, b, yaw, pitch, center):
+    def __init__(
+        self,
+        a,
+        b,
+        yaw,
+        pitch,
+        center,
+        *,
+        density=None,
+        susceptibility=None,
+        remanent_mag=None,
+    ):
         self._check_semiaxes_lenghts(a, b)
-
-        # semiaxes
-        self._a = a  # major_axis
-        self._b = b  # minor axis
-
-        # euler angles
-        self.yaw = yaw
-        self.pitch = pitch
-
-        # center of ellipsoid
+        self._a, self._b = a, b
+        self._yaw, self._pitch = yaw, pitch
         self.center = center
 
-    def _check_semiaxes_lenghts(self, a, b):
-        if not (a > b):
-            msg = (
-                "Invalid ellipsoid axis lengths for prolate ellipsoid: "
-                f"expected a > b (= c ) but got a = {a}, b = {b}"
-            )
-            raise ValueError(msg)
+        # Physical properties of the ellipsoid
+        self.density = density
+        self.susceptibility = susceptibility
+        self.remanent_mag = remanent_mag
 
     @property
     def a(self) -> float:
@@ -309,6 +334,14 @@ class ProlateEllipsoid(BaseEllipsoid):
     def yaw(self, value: float):
         self._yaw = value
 
+    def _check_semiaxes_lenghts(self, a, b):
+        if not (a > b):
+            msg = (
+                "Invalid ellipsoid axis lengths for prolate ellipsoid: "
+                f"expected a > b (= c ) but got a = {a}, b = {b}"
+            )
+            raise ValueError(msg)
+
 
 class OblateEllipsoid(BaseEllipsoid):
     """
@@ -329,6 +362,14 @@ class OblateEllipsoid(BaseEllipsoid):
     center : tuple of float
         Coordinates of the center of the ellipsoid in the following order: `easting`,
         `northing`, `upward`.
+    density : float or None, optional
+        Density of the ellipsoid in :math:`kg/m^3`.
+    susceptibility : float or None, optional
+        Magnetic susceptibility of the ellipsoid in SI units.
+    remanent_mag : (3) array or None, optional
+        Remanent magnetization vector of the ellipsoid in A/m units. Its components
+        are defined in the easting-northing-upward coordinate system and should be
+        passed in that order.
 
     Attributes
     ----------
@@ -353,27 +394,27 @@ class OblateEllipsoid(BaseEllipsoid):
     :class:`harmonica.OblateEllipsoid`.
     """
 
-    def __init__(self, a, b, yaw, pitch, center):
+    def __init__(
+        self,
+        a,
+        b,
+        yaw,
+        pitch,
+        center,
+        *,
+        density=None,
+        susceptibility=None,
+        remanent_mag=None,
+    ):
         self._check_semiaxes_lenghts(a, b)
-
-        # semiaxes
-        self._a = a  # minor ais
-        self._b = b  # major axis
-
-        # euler angles
-        self._yaw = yaw
-        self._pitch = pitch
-
-        # center of ellipsoid
+        self._a, self._b = a, b
+        self._yaw, self._pitch = yaw, pitch
         self.center = center
 
-    def _check_semiaxes_lenghts(self, a, b):
-        if not (a < b):
-            msg = (
-                "Invalid ellipsoid axis lengths for oblate ellipsoid: "
-                f"expected a < b (= c ) but got a = {a}, b = {b}"
-            )
-            raise ValueError(msg)
+        # Physical properties of the ellipsoid
+        self.density = density
+        self.susceptibility = susceptibility
+        self.remanent_mag = remanent_mag
 
     @property
     def a(self) -> float:
@@ -422,3 +463,11 @@ class OblateEllipsoid(BaseEllipsoid):
     @yaw.setter
     def yaw(self, value: float):
         self._yaw = value
+
+    def _check_semiaxes_lenghts(self, a, b):
+        if not (a < b):
+            msg = (
+                "Invalid ellipsoid axis lengths for oblate ellipsoid: "
+                f"expected a < b (= c ) but got a = {a}, b = {b}"
+            )
+            raise ValueError(msg)

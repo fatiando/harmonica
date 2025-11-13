@@ -22,17 +22,17 @@ import verde as vd
 
 from harmonica import point_gravity
 
+from .._forward.ellipsoid_gravity import (
+    ellipsoid_gravity,
+)
 from .._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     TriaxialEllipsoid,
 )
-from .._forward.ellipsoid_gravity import (
-    ellipsoid_gravity,
-)
 
 
-def build_ellipsoid(ellipsoid_type):
+def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
     """
     Build a sample ellipsoid.
 
@@ -44,19 +44,22 @@ def build_ellipsoid(ellipsoid_type):
     -------
     ellipsoid
     """
-    center = (0, 0, 0)
     match ellipsoid_type:
         case "triaxial":
             a, b, c = 3.2, 2.1, 1.3
             ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center
+                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center, density=density
             )
         case "prolate":
             a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
+            ellipsoid = ProlateEllipsoid(
+                a=a, b=b, yaw=0, pitch=0, center=center, density=density
+            )
         case "oblate":
             a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
+            ellipsoid = OblateEllipsoid(
+                a=a, b=b, yaw=0, pitch=0, center=center, density=density
+            )
         case _:
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
@@ -70,17 +73,20 @@ def test_degenerate_ellipsoid_cases():
 
     """
     # ellipsoids take (a, b, #c, yaw, pitch, #roll, center)
-    tri = TriaxialEllipsoid(5, 4.99999999, 4.99999998, 0, 0, 0, (0, 0, 0))
-    pro = ProlateEllipsoid(5, 4.99999999, 0, 0, (0, 0, 0))
-    obl = OblateEllipsoid(4.99999999, 5, 0, 0, (0, 0, 0))
+    a, b, c = 5, 4.99999999, 4.99999998
+    yaw, pitch, roll = 0, 0, 0
+    center = (0, 0, 0)
     density = 2000
+    tri = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, center, density=density)
+    pro = ProlateEllipsoid(a, b, yaw, pitch, center, density=density)
+    obl = OblateEllipsoid(b, a, yaw, pitch, center, density=density)
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    _, _, _ = ellipsoid_gravity(coordinates, tri, density)
-    _, _, _ = ellipsoid_gravity(coordinates, pro, density)
-    _, _, _ = ellipsoid_gravity(coordinates, obl, density)
+    _, _, _ = ellipsoid_gravity(coordinates, tri)
+    _, _, _ = ellipsoid_gravity(coordinates, pro)
+    _, _, _ = ellipsoid_gravity(coordinates, obl)
 
 
 def test_opposite_planes():
@@ -91,11 +97,12 @@ def test_opposite_planes():
 
     """
     a, b, c = (4, 3, 2)  # triaxial ellipsoid
-    yaw = 90
-    pitch = 0
-    roll = 0
-    triaxial_example = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, (0, 0, 0))
+    yaw, pitch, roll = 90, 0, 0
+    center = (0, 0, 0)
     density = 2000
+    triaxial_example = TriaxialEllipsoid(
+        a, b, c, yaw, pitch, roll, center, density=density
+    )
 
     # define observation points (2D grid) at surface height (z axis,
     # 'Upward') = 5
@@ -106,8 +113,8 @@ def test_opposite_planes():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example, density)
-    _, _, gz2 = ellipsoid_gravity(coordinates2, triaxial_example, density)
+    _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example)
+    _, _, gz2 = ellipsoid_gravity(coordinates2, triaxial_example)
     np.testing.assert_allclose(gz1, -np.flip(gz2))
 
 
@@ -121,14 +128,16 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+    ellipsoid = TriaxialEllipsoid(
+        a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0), density=2000
+    )
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])
     u = np.array([[0.0, 0.0]])
     coordinates = (e, n, u)
 
-    ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, 2000)
+    ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid)
 
     np.testing.assert_allclose(ge[0, 0], ge[0, 1], rtol=1e-5, atol=1e-5)
     np.testing.assert_allclose(gn[0, 0], gn[0, 1], rtol=1e-5, atol=1e-5)
@@ -146,7 +155,7 @@ class TestSymmetry:
         Sample ellipsoid.
         """
         ellipsoid_type = request.param
-        return build_ellipsoid(ellipsoid_type)
+        return build_ellipsoid(ellipsoid_type, density=200)
 
     def test_vertical_symmetry_on_surface(self, ellipsoid):
         """
@@ -154,9 +163,8 @@ class TestSymmetry:
         ellipsoid.
         """
         points = [(0, 0, ellipsoid.c), (0, 0, -ellipsoid.c)]
-        density = 200
         (_, _, gz_up), (_, _, gz_down) = tuple(
-            ellipsoid_gravity(p, ellipsoid, density) for p in points
+            ellipsoid_gravity(p, ellipsoid) for p in points
         )
         np.testing.assert_allclose(gz_up, -gz_down)
 
@@ -167,9 +175,9 @@ class TestSymmetry:
         Test symmetry of |g| on circle around center of a prolate and oblate ellipsoid.
 
         Define a circle in the northing-upward plane, compute |g| on points along that
-        circle. All values of |g| should be equal.
+        circle. All values of |g| should be equal for prolate and oblate ellipsoids.
         """
-        ellipsoid = build_ellipsoid(ellipsoid_type)
+        ellipsoid = build_ellipsoid(ellipsoid_type, density=200)
 
         # Build coordinates along circle centered in the center of the ellipsoid
         radius = ellipsoid.b
@@ -185,8 +193,7 @@ class TestSymmetry:
         coordinates = (easting, northing, upward)
 
         # Compute gravity acceleration along the circle
-        density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid)
         g = np.sqrt(ge**2 + gn**2 + gz**2)
 
         # Check that |g| is constant in the circle
@@ -207,24 +214,7 @@ class TestEllipsoidVsPointSource:
         Sample ellipsoid.
         """
         ellipsoid_type = request.param
-
-        center = (0, 0, 0)
-        match ellipsoid_type:
-            case "triaxial":
-                a, b, c = 3.2, 2.1, 1.3
-                ellipsoid = TriaxialEllipsoid(
-                    a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center
-                )
-            case "prolate":
-                a, b = 3.2, 2.1
-                ellipsoid = ProlateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
-            case "oblate":
-                a, b = 2.2, 3.1
-                ellipsoid = OblateEllipsoid(a=a, b=b, yaw=0, pitch=0, center=center)
-            case _:
-                msg = f"Invalid ellipsoid type: {ellipsoid_type}"
-                raise ValueError(msg)
-        return ellipsoid
+        return build_ellipsoid(ellipsoid_type, density=200)
 
     def test_approximation(self, ellipsoid):
         """
@@ -239,11 +229,10 @@ class TestEllipsoidVsPointSource:
             radius * np.sin(phi) * np.cos(theta),
             radius * np.sin(theta),
         )
-        density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid)
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
-        point_mass = density * ellipsoid_volume
+        point_mass = ellipsoid.density * ellipsoid_volume
         ge_point, gn_point, gz_point = tuple(
             point_gravity(coordinates, ellipsoid.center, point_mass, field=f)
             for f in ("g_e", "g_n", "g_z")
@@ -266,11 +255,10 @@ class TestEllipsoidVsPointSource:
             radii * np.sin(phi) * np.cos(theta),
             radii * np.sin(theta),
         )
-        density = 200
-        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid, density)
+        ge, gn, gz = ellipsoid_gravity(coordinates, ellipsoid)
 
         ellipsoid_volume = 4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c
-        point_mass = density * ellipsoid_volume
+        point_mass = ellipsoid.density * ellipsoid_volume
         ge_point, gn_point, gz_point = tuple(
             point_gravity(coordinates, ellipsoid.center, point_mass, field=f)
             for f in ("g_e", "g_n", "g_z")
@@ -313,14 +301,25 @@ class TestSymmetryOnRotations:
         semimajor, semimiddle, semiminor = 57.2, 42.0, 21.2
         center = (0, 0, 0)
         yaw, pitch, roll = 62.3, 48.2, 14.9
+        density = 238
         match ellipsoid_type:
             case "oblate":
                 ellipsoid = OblateEllipsoid(
-                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, center=center
+                    a=semiminor,
+                    b=semimajor,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=center,
+                    density=density,
                 )
             case "prolate":
                 ellipsoid = ProlateEllipsoid(
-                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, center=center
+                    a=semimajor,
+                    b=semiminor,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=center,
+                    density=density,
                 )
             case "triaxial":
                 ellipsoid = TriaxialEllipsoid(
@@ -331,6 +330,7 @@ class TestSymmetryOnRotations:
                     pitch=pitch,
                     roll=roll,
                     center=center,
+                    density=density,
                 )
             case _:
                 raise ValueError()
@@ -352,13 +352,8 @@ class TestSymmetryOnRotations:
         ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
 
         # Compute magnetic fields
-        density = 238
         g_field, g_field_flipped = tuple(
-            ellipsoid_gravity(
-                coordinates,
-                ell,
-                density,
-            )
+            ellipsoid_gravity(coordinates, ell)
             for ell in (ellipsoid, ellipsoid_flipped)
         )
 
@@ -386,10 +381,20 @@ class TestMultipleEllipsoids:
         """Sample ellipsoids."""
         ellipsoids = [
             OblateEllipsoid(
-                a=20, b=60, yaw=30.2, pitch=-23, center=(-10.0, 20.0, -10.0)
+                a=20,
+                b=60,
+                yaw=30.2,
+                pitch=-23,
+                center=(-10.0, 20.0, -10.0),
+                density=200.0,
             ),
             ProlateEllipsoid(
-                a=40, b=15, yaw=170.2, pitch=71, center=(15.0, 0.0, -40.0)
+                a=40,
+                b=15,
+                yaw=170.2,
+                pitch=71,
+                center=(15.0, 0.0, -40.0),
+                density=-400.0,
             ),
             TriaxialEllipsoid(
                 a=60,
@@ -399,28 +404,21 @@ class TestMultipleEllipsoids:
                 pitch=43,
                 roll=98,
                 center=(0.0, 20.0, -30.0),
+                density=700.0,
             ),
         ]
         return ellipsoids
 
-    @pytest.fixture(params=["list", "array"])
-    def densities(self, request):
-        """Sample densities."""
-        densities = [200.0, -400.0, 700.0]
-        if request.param == "array":
-            densities = np.array(densities)
-        return densities
-
-    def test_multiple_ellipsoids(self, coordinates, ellipsoids, densities):
+    def test_multiple_ellipsoids(self, coordinates, ellipsoids):
         # Compute gravity acceleration
-        gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoids, densities)
+        gx, gy, gz = ellipsoid_gravity(coordinates, ellipsoids)
 
         # Compute expected arrays
         gx_expected, gy_expected, gz_expected = tuple(
             np.zeros_like(coordinates[0]) for _ in range(3)
         )
-        for ellipsoid, density in zip(ellipsoids, densities, strict=True):
-            gx_i, gy_i, gz_i = ellipsoid_gravity(coordinates, ellipsoid, density)
+        for ellipsoid in ellipsoids:
+            gx_i, gy_i, gz_i = ellipsoid_gravity(coordinates, ellipsoid)
             gx_expected += gx_i
             gy_expected += gy_i
             gz_expected += gz_i
