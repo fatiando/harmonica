@@ -9,19 +9,19 @@ Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 
 import numpy as np
 import numpy.typing as npt
 from choclo.constants import GRAVITATIONAL_CONST
 
-from .utils_ellipsoids import (
-    calculate_lambda,
-    get_elliptical_integrals,
-)
+from ..typing import Ellipsoid
+from .utils_ellipsoids import calculate_lambda, get_elliptical_integrals
 
 
-def ellipsoid_gravity(coordinates: Sequence[npt.NDArray], ellipsoids):
+def ellipsoid_gravity(
+    coordinates: Sequence[npt.NDArray], ellipsoids: Iterable[Ellipsoid] | Ellipsoid
+):
     r"""
     Forward model gravity fields of ellipsoids.
 
@@ -74,7 +74,7 @@ def ellipsoid_gravity(coordinates: Sequence[npt.NDArray], ellipsoids):
     ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
 
     # Deal with the case of a single ellipsoid being passed
-    if not isinstance(ellipsoids, Sequence):
+    if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
 
     for ellipsoid in ellipsoids:
