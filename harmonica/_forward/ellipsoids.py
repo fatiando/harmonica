@@ -8,14 +8,16 @@
 Classes to define ellipsoids.
 """
 
-from abc import ABC, abstractmethod
+from collections.abc import Sequence
+from numbers import Real
 
+import numpy as np
 import numpy.typing as npt
 
 from .utils import get_rotation_matrix
 
 
-class BaseEllipsoid(ABC):
+class BaseEllipsoid:
     """
     Base class for ellipsoids.
 
@@ -24,35 +26,70 @@ class BaseEllipsoid(ABC):
         This class is not meant to be instantiated.
     """
 
-    @property
-    @abstractmethod
-    def a(self) -> float:
-        """First semiaxes length."""
+    yaw: float
+    pitch: float
+    roll: float
 
     @property
-    @abstractmethod
-    def b(self) -> float:
-        """Second semiaxes length."""
+    def density(self) -> float | None:
+        return self._density
+
+    @density.setter
+    def density(self, value) -> None:
+        if not isinstance(value, Real) and value is not None:
+            msg = (
+                f"Invalid 'density' of type {type(value)}. It must be a float or None."
+            )
+            raise ValueError(msg)
+        if isinstance(value, Real):
+            value = float(value)
+        self._density = value
 
     @property
-    @abstractmethod
-    def c(self) -> float:
-        """Third semiaxes length."""
+    def susceptibility(self) -> float | npt.NDArray | None:
+        return self._susceptibility
+
+    @susceptibility.setter
+    def susceptibility(self, value) -> None:
+        if isinstance(value, np.ndarray):
+            if value.shape != (3, 3):
+                msg = (
+                    f"Invalid 'susceptibility' as an array with shape {value.shape}. "
+                    "It must be a (3, 3) array, a single float or None."
+                )
+                raise ValueError(msg)
+        elif not isinstance(value, Real) and value is not None:
+            msg = (
+                f"Invalid 'susceptibility' of type {type(value)}. "
+                "It must be a (3, 3) array, a single float or None."
+            )
+            raise TypeError(msg)
+        if isinstance(value, Real):
+            value = float(value)
+        self._susceptibility = value
 
     @property
-    @abstractmethod
-    def pitch(self) -> float:
-        """Pitch angle in degrees."""
+    def remanent_mag(self) -> npt.NDArray | None:
+        return self._remanent_mag
 
-    @property
-    @abstractmethod
-    def roll(self) -> float:
-        """Roll angle in degrees."""
-
-    @property
-    @abstractmethod
-    def yaw(self) -> float:
-        """Yaw angle in degrees."""
+    @remanent_mag.setter
+    def remanent_mag(self, value) -> None:
+        if isinstance(value, Sequence):
+            value = np.asarray(value)
+        if isinstance(value, np.ndarray):
+            if value.shape != (3,):
+                msg = (
+                    f"Invalid shape of 'remanent_mag': {value.shape}. "
+                    "It must be a (3,) array or None."
+                )
+                raise ValueError(msg)
+        elif value is not None:
+            msg = (
+                f"Invalid 'remanent_mag' of type {type(value)}. "
+                "It must be a (3,) array or None."
+            )
+            raise TypeError(msg)
+        self._remanent_mag = value
 
     @property
     def rotation_matrix(self) -> npt.NDArray:
@@ -139,7 +176,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
     ):
         self._check_semiaxes_lenghts(a, b, c)
         self._a, self._b, self._c = a, b, c
-        self._yaw, self._pitch, self._roll = yaw, pitch, roll
+        self.yaw, self.pitch, self.roll = yaw, pitch, roll
         self.center = center
 
         # Physical properties of the ellipsoid
@@ -147,16 +184,13 @@ class TriaxialEllipsoid(BaseEllipsoid):
         self.susceptibility = susceptibility
         self.remanent_mag = remanent_mag
 
-        # TODO: add checks for physical properties. Maybe in the abstract class, as
-        # properties?
-
     @property
     def a(self) -> float:
         """First semiaxes length."""
         return self._a
 
     @a.setter
-    def a(self, value: float):
+    def a(self, value: float) -> None:
         self._check_semiaxes_lenghts(value, self.b, self.c)
         self._a = value
 
@@ -179,33 +213,6 @@ class TriaxialEllipsoid(BaseEllipsoid):
     def c(self, value: float):
         self._check_semiaxes_lenghts(self.a, self.b, value)
         self._c = value
-
-    @property
-    def pitch(self) -> float:
-        """Pitch angle in degrees."""
-        return self._pitch
-
-    @pitch.setter
-    def pitch(self, value: float):
-        self._pitch = value
-
-    @property
-    def roll(self) -> float:
-        """Roll angle in degrees."""
-        return self._roll
-
-    @roll.setter
-    def roll(self, value: float):
-        self._roll = value
-
-    @property
-    def yaw(self) -> float:
-        """Yaw angle in degrees."""
-        return self._yaw
-
-    @yaw.setter
-    def yaw(self, value: float):
-        self._yaw = value
 
     def _check_semiaxes_lenghts(self, a, b, c):
         if not (a > b > c):
@@ -281,7 +288,7 @@ class ProlateEllipsoid(BaseEllipsoid):
     ):
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b
-        self._yaw, self._pitch = yaw, pitch
+        self.yaw, self.pitch = yaw, pitch
         self.center = center
 
         # Physical properties of the ellipsoid
@@ -315,27 +322,9 @@ class ProlateEllipsoid(BaseEllipsoid):
         return self.b
 
     @property
-    def pitch(self) -> float:
-        """Pitch angle in degrees."""
-        return self._pitch
-
-    @pitch.setter
-    def pitch(self, value: float):
-        self._pitch = value
-
-    @property
     def roll(self):
         """Roll angle, equal to zero."""
         return 0.0
-
-    @property
-    def yaw(self) -> float:
-        """Yaw angle in degrees."""
-        return self._yaw
-
-    @yaw.setter
-    def yaw(self, value: float):
-        self._yaw = value
 
     def _check_semiaxes_lenghts(self, a, b):
         if not (a > b):
@@ -411,7 +400,7 @@ class OblateEllipsoid(BaseEllipsoid):
     ):
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b
-        self._yaw, self._pitch = yaw, pitch
+        self.yaw, self.pitch = yaw, pitch
         self.center = center
 
         # Physical properties of the ellipsoid
@@ -445,27 +434,9 @@ class OblateEllipsoid(BaseEllipsoid):
         return self.b
 
     @property
-    def pitch(self) -> float:
-        """Pitch angle in degrees."""
-        return self._pitch
-
-    @pitch.setter
-    def pitch(self, value: float):
-        self._pitch = value
-
-    @property
     def roll(self):
         """Roll angle, equal to zero."""
         return 0.0
-
-    @property
-    def yaw(self) -> float:
-        """Yaw angle in degrees."""
-        return self._yaw
-
-    @yaw.setter
-    def yaw(self, value: float):
-        self._yaw = value
 
     def _check_semiaxes_lenghts(self, a, b):
         if not (a < b):
