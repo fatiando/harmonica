@@ -26,6 +26,16 @@ class TestProlateEllipsoid:
         with pytest.raises(ValueError, match=msg):
             ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
 
+    def test_invalid_semiaxes_setter(self):
+        """Test error if not a > b when using the setter."""
+        a, b = 50.0, 35.0
+        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        msg = re.escape("Invalid ellipsoid axis lengths for prolate ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.a = 20.0
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.b = 70.0
+
     def test_value_of_c(self):
         """Test if c is always equal to b."""
         a, b = 50.0, 35.0
@@ -51,6 +61,16 @@ class TestOblateEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
         with pytest.raises(ValueError, match=msg):
             OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+
+    def test_invalid_semiaxes_setter(self):
+        """Test error if not a < b when using the setter."""
+        a, b = 35.0, 50.0
+        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.a = 70.0
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.b = 20.0
 
     def test_value_of_c(self):
         """Test if c is always equal to b."""
@@ -79,6 +99,18 @@ class TestTriaxialEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
         with pytest.raises(ValueError, match=msg):
             TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+
+    def test_invalid_semiaxes_setter(self):
+        """Test error if not a > b > c when using the setter."""
+        a, b, c = 50.0, 40.0, 30.0
+        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+        msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.a = 30.0
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.b = 20.0
+        with pytest.raises(ValueError, match=msg):
+            ellipsoid.c = 70.0
 
 
 @pytest.mark.parametrize(
