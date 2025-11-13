@@ -8,8 +8,17 @@
 Custom type hints for harmonica.
 """
 
+from collections.abc import Sequence
+from typing import TypeAlias
+
+import numpy as np
 import numpy.typing as npt
 from typing_extensions import Protocol
+
+Coordinates: TypeAlias = Sequence[npt.NDArray[np.float64]] | Sequence[float]
+"""
+Type alias to represent 3D coordinates.
+"""
 
 
 class Ellipsoid(Protocol):

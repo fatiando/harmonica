@@ -9,7 +9,7 @@ Forward modelling magnetic fields produced by ellipsoidal bodies.
 """
 
 import warnings
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from numbers import Real
 
 import numpy as np
@@ -18,6 +18,7 @@ from scipy.special import ellipeinc, ellipkinc
 
 from .._utils import magnetic_angles_to_vec
 from ..errors import NoPhysicalPropertyWarning
+from ..typing import Coordinates, Ellipsoid
 from .utils_ellipsoids import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
@@ -26,9 +27,9 @@ from .utils_ellipsoids import (
 
 
 def ellipsoid_magnetic(
-    coordinates,
-    ellipsoids,
-    external_field,
+    coordinates: Coordinates,
+    ellipsoids: Iterable[Ellipsoid] | Ellipsoid,
+    external_field: tuple[float, float, float],
 ):
     """
     Forward model magnetic fields of ellipsoids.
@@ -66,7 +67,7 @@ def ellipsoid_magnetic(
     [Takahashi2018]_
     """
     # Sanity checks for ellipsoids
-    if not isinstance(ellipsoids, Sequence):
+    if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
 
     # Flatten coordinates
