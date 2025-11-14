@@ -21,6 +21,7 @@ from ._forward.ellipsoid_magnetics import ellipsoid_magnetic
 from ._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
+    Sphere,
     TriaxialEllipsoid,
 )
 from ._forward.point import point_gravity
