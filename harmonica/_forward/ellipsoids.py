@@ -522,7 +522,7 @@ class Sphere(BaseEllipsoid):
         susceptibility: float | npt.NDArray | None = None,
         remanent_mag: npt.NDArray | None = None,
     ):
-        self._check_radius(a)
+        self._check_positive_semiaxis(a, "a")
         self._a = a
         self.center = center
 
@@ -531,14 +531,6 @@ class Sphere(BaseEllipsoid):
         self.susceptibility = susceptibility
         self.remanent_mag = remanent_mag
 
-    def _check_radius(self, radius):
-        if radius <= 0:
-            msg = (
-                f"Invalid semiaxis lenght 'a' equal to '{radius}'. "
-                "It must be a positive number."
-            )
-            raise ValueError(msg)
-
     @property
     def a(self) -> float:
         """Length of the first semiaxis."""
@@ -546,7 +538,7 @@ class Sphere(BaseEllipsoid):
 
     @a.setter
     def a(self, value: float) -> None:
-        self._check_radius(value)
+        self._check_positive_semiaxis(value, "a")
         self._a = value
 
     @property
