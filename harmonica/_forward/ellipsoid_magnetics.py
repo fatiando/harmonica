@@ -8,6 +8,7 @@
 Forward modelling magnetic fields produced by ellipsoidal bodies.
 """
 
+import itertools
 import warnings
 from collections.abc import Iterable
 from numbers import Real
@@ -112,7 +113,7 @@ def ellipsoid_magnetic(
 
 
 def _single_ellipsoid_magnetic(
-    coordinates: Coordinates,
+    coordinates: tuple[npt.NDArray, npt.NDArray, npt.NDArray],
     ellipsoid: Ellipsoid,
     susceptibility: float | npt.NDArray | None,
     remanent_mag: npt.NDArray | None,
@@ -154,9 +155,6 @@ def _single_ellipsoid_magnetic(
     r_matrix = ellipsoid.rotation_matrix
     x, y, z = r_matrix.T @ np.vstack(coords_shifted)
 
-    # Calculate lambda for each observation point
-    lambda_ = calculate_lambda(x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c)
-
     # Build internal demagnetization tensor
     n_tensor_internal = get_demagnetization_tensor_internal(
         ellipsoid.a, ellipsoid.b, ellipsoid.c
@@ -182,22 +180,28 @@ def _single_ellipsoid_magnetic(
     )
 
     # Compute magnetic field on observation points
-    be, bn, bu = tuple(np.zeros_like(easting) for _ in range(3))
-    for i, (x_i, y_i, z_i, lambda_i) in enumerate(zip(x, y, z, lambda_, strict=True)):
-        internal = _is_internal(x_i, y_i, z_i, ellipsoid)
-        if internal:
-            h_field = -n_tensor_internal @ magnetization
-            b_field = mu_0 * (h_field + magnetization)
-        else:
-            n_tensor = get_demagnetization_tensor_external(
-                x_i, y_i, z_i, ellipsoid.a, ellipsoid.b, ellipsoid.c, lmbda=lambda_i
-            )
-            h_field = -n_tensor @ magnetization
-            b_field = mu_0 * h_field
+    # --------------------------------------------
+    # Allocate an array for the b_field
+    b_field = np.zeros((easting.size, 3), dtype=np.float64)
 
-        # Rotate the B field back into the global coordinate system
-        b_field = r_matrix @ b_field
-        be[i], bn[i], bu[i] = b_field
+    # Mask internal observation points
+    internal = _is_internal(x, y, z, ellipsoid)
+
+    # Compute b_field on internal points
+    b_field[internal, :] = mu_0 * (-n_tensor_internal @ magnetization + magnetization)
+
+    # Compute b_field on external points
+    x_ext, y_ext, z_ext = (x[~internal], y[~internal], z[~internal])
+    lambda_ = calculate_lambda(
+        x_ext, y_ext, z_ext, ellipsoid.a, ellipsoid.b, ellipsoid.c
+    )
+    n_tensors = get_demagnetization_tensor_external(
+        x_ext, y_ext, z_ext, lambda_, ellipsoid.a, ellipsoid.b, ellipsoid.c
+    )
+    b_field[~internal, :] = mu_0 * (-n_tensors @ magnetization)
+
+    # Rotate the b fields
+    be, bn, bu = r_matrix @ b_field.T
 
     return be, bn, bu
 
@@ -462,23 +466,29 @@ def _demag_tensor_oblate_internal(a: float, b: float):
 
 
 def get_demagnetization_tensor_external(
-    x: float, y: float, z: float, a: float, b: float, c: float, lmbda: float
-):
+    x: npt.NDArray,
+    y: npt.NDArray,
+    z: npt.NDArray,
+    lambda_: npt.NDArray,
+    a: float,
+    b: float,
+    c: float,
+) -> npt.NDArray:
     r"""
     Construct the demagnetization tensor N on external points.
 
     Parameters
     ----------
-    x, y, z : floats
-        Coordinates of the observation point in the local coordinate system.
+    x, y, z : (n,) array
+        Coordinates of the observation points in the local coordinate system.
+    lambda_ : (n,) array
+        The lambda values for each observation point.
     a, b, c : floats
         Semi-axes lengths of the given ellipsoid.
-    lmbda : float
-        The lambda value for the observation point.
 
     Returns
     -------
-    N : (3, 3) array
+    N : (n, 3, 3) array
         External points' demagnetization tensor for the given point.
 
     Notes
@@ -527,57 +537,62 @@ def get_demagnetization_tensor_external(
 
     Note the sign difference with Takahashi et al. (2018) equations 34 and 35.
     """
-    n = np.empty((3, 3), dtype=np.float64)
+    n_tensors = np.empty((x.size, 3, 3), dtype=np.float64)
 
     coords = (x, y, z)
-    ellip_integrals = get_elliptical_integrals(a, b, c, lmbda)
-    deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(a, b, c, lmbda)
-    derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lmbda)
+    ellip_integrals = get_elliptical_integrals(a, b, c, lambda_)
+    deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(a, b, c, lambda_)
+    derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
 
-    for i in range(len(n)):
-        for j in range(len(n[0])):
-            if i == j:
-                n[i][j] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
-                    + ellip_integrals[i]
-                )
-            else:
-                n[i][j] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
-                )
+    for i, j in itertools.product(range(3), range(3)):
+        if i == j:
+            n_tensors[:, i, i] = ((a * b * c) / 2) * (
+                derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
+                + ellip_integrals[i]
+            )
+        else:
+            n_tensors[:, i, j] = ((a * b * c) / 2) * (
+                derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
+            )
 
-    return n
+    return n_tensors
 
 
 def _spatial_deriv_lambda(
-    x: float, y: float, z: float, a: float, b: float, c: float, lmbda: float
-):
+    x: npt.NDArray,
+    y: npt.NDArray,
+    z: npt.NDArray,
+    a: float,
+    b: float,
+    c: float,
+    lambda_: npt.NDArray,
+) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
     """
     Get the spatial derivatives of lambda with respect to x, y, and z.
 
     Parameters
     ----------
-    x, y, z : floats
-        Coordinates of the observation point in the local coordinate system.
+    x, y, z : floats or (n,) arrays
+        Coordinates of the observation points in the local coordinate system.
     a, b, c : floats
         Semi-axes lengths of the given ellipsoid.
-    lmbda : float
-        The given lambda value for the point we are considering with this matrix.
+    lambda_ : float or (n,) arrays
+        The given lambda value for each point we are considering with this matrix.
 
     Returns
     -------
-    derivatives : tuple of floats
-        The spatial derivatives of lambda for the given observation point.
+    derivatives : tuple of floats or tuple of (n,) arrays
+        The spatial derivatives of lambda for each observation point.
 
     """
     denom = (
-        (x / (a**2 + lmbda)) ** 2
-        + (y / (b**2 + lmbda)) ** 2
-        + (z / (c**2 + lmbda)) ** 2
+        (x / (a**2 + lambda_)) ** 2
+        + (y / (b**2 + lambda_)) ** 2
+        + (z / (c**2 + lambda_)) ** 2
     )
 
-    dlambda_dx = (2 * x) / (a**2 + lmbda) / denom
-    dlambda_dy = (2 * y) / (b**2 + lmbda) / denom
-    dlambda_dz = (2 * z) / (c**2 + lmbda) / denom
+    dlambda_dx = (2 * x) / (a**2 + lambda_) / denom
+    dlambda_dy = (2 * y) / (b**2 + lambda_) / denom
+    dlambda_dz = (2 * z) / (c**2 + lambda_) / denom
 
     return dlambda_dx, dlambda_dy, dlambda_dz
