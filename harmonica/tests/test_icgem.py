@@ -163,7 +163,8 @@ def test_missing_cols_names(tmp_path):
             if "latitude" in line and "longitude" in line:
                 continue
             corrupt_gdf.write(line)
-    # TODO: there might be a bug here with which error message is being raised.
+    # TODO: # noqa: FIX002
+    # there might be a bug here with which error message is being raised.
     # We expect the following one:
     # msg = "Couldn't read column names."
     # But we get:
@@ -291,7 +292,8 @@ def test_corrupt_area(tmp_path):
                     corrupt_gdf.write(newline)
                 else:
                     corrupt_gdf.write(line)
-        # TODO: there might be a bug here regarding the error message we get.
+        # TODO: # noqa: FIX002
+        # there might be a bug here regarding the error message we get.
         with pytest.raises(IOError):  # noqa: PT011
             load_icgem_gdf(corrupt)
 
