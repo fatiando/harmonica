@@ -112,25 +112,29 @@ def ellipsoid_magnetic(
 
 
 def _single_ellipsoid_magnetic(
-    coordinates, ellipsoid, susceptibility, remanent_mag, h0_field
+    coordinates: Coordinates,
+    ellipsoid: Ellipsoid,
+    susceptibility: float | npt.NDArray | None,
+    remanent_mag: npt.NDArray | None,
+    h0_field: npt.NDArray,
 ):
     """
     Forward model the magnetic field of a single ellipsoid.
 
     Parameters
     ----------
-    coordinates : tuple of (n) arrays
+    coordinates : tuple of (n,) arrays
         Easting, northing and upward coordinates of the observation points. They should
         be 1d arrays.
-    ellipsoid : object
+    ellipsoid : harmonica.typing.Ellipsoid
         Ellipsoid object for which the magnetic field will be computed.
-    susceptibility : float or (3, 3) array
+    susceptibility : float, (3, 3) array or None
         Susceptibility scalar or tensor of the ellipsoid.
-    remanent_mag : (3) array
+    remanent_mag : (3,) array or None
         Remanent magnetization vector of the ellipsoid in SI units.
         The components of the vector should be in the easting-northing-upward coordinate
         system.
-    h0_field : (3) array
+    h0_field : (3,) array
         Array with the components of the external H field in SI units.
         The components of the vector should be in the easting-northing-upward coordinate
         system.
@@ -198,7 +202,7 @@ def _single_ellipsoid_magnetic(
     return be, bn, bu
 
 
-def _is_internal(x, y, z, ellipsoid):
+def _is_internal(x: npt.NDArray, y: npt.NDArray, z: npt.NDArray, ellipsoid: Ellipsoid):
     """
     Check if a given point(s) is internal or external to the ellipsoid.
     """
@@ -206,7 +210,15 @@ def _is_internal(x, y, z, ellipsoid):
     return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
 
 
-def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag, n_tensor=None):
+def get_magnetisation(
+    a: float,
+    b: float,
+    c: float,
+    susceptibility: npt.NDArray,
+    h0_field: npt.NDArray,
+    remnant_mag: npt.NDArray,
+    n_tensor=None,
+):
     r"""
     Get magnetization vector for an ellipsoid.
 
@@ -226,9 +238,9 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag, n_tensor=N
         Semi-axes lengths of the ellipsoid.
     susceptibility : (3, 3) array
         Susceptibility tensor.
-    h0_field: array
+    h0_field : (3,) array
         The rotated background field (in local coordinates).
-    remnant_mag : (3) array
+    remnant_mag : (3,) array
         Remnant magnetisation vector (in local coordinates).
     n_tensor : (3, 3) array, optional
         Demagnetization tensor inside the ellipsoid. If None, the demagnetization tensor
@@ -327,7 +339,7 @@ def cast_remanent_magnetization(remnant_mag: npt.NDArray | None):
     return remnant_mag
 
 
-def get_demagnetization_tensor_internal(a, b, c):
+def get_demagnetization_tensor_internal(a: float, b: float, c: float):
     r"""
     Construct the demagnetization tensor N on external points.
 
@@ -368,7 +380,7 @@ def get_demagnetization_tensor_internal(a, b, c):
     return n
 
 
-def _demag_tensor_triaxial_internal(a, b, c):
+def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
     """
     Calculate the internal demagnetization tensor (N(r)) for the triaxial case.
 
@@ -401,7 +413,7 @@ def _demag_tensor_triaxial_internal(a, b, c):
     return nxx, nyy, nzz
 
 
-def _demag_tensor_prolate_internal(a, b):
+def _demag_tensor_prolate_internal(a: float, b: float):
     """
     Calculate internal demagnetization factors for prolate case.
 
@@ -426,7 +438,7 @@ def _demag_tensor_prolate_internal(a, b):
     return nxx, nyy, nzz
 
 
-def _demag_tensor_oblate_internal(a, b):
+def _demag_tensor_oblate_internal(a: float, b: float):
     """
     Calculate internal demagnetization factors for oblate case.
 
@@ -449,7 +461,9 @@ def _demag_tensor_oblate_internal(a, b):
     return nxx, nyy, nzz
 
 
-def get_demagnetization_tensor_external(x, y, z, a, b, c, lmbda):
+def get_demagnetization_tensor_external(
+    x: float, y: float, z: float, a: float, b: float, c: float, lmbda: float
+):
     r"""
     Construct the demagnetization tensor N on external points.
 
@@ -535,7 +549,9 @@ def get_demagnetization_tensor_external(x, y, z, a, b, c, lmbda):
     return n
 
 
-def _spatial_deriv_lambda(x, y, z, a, b, c, lmbda):
+def _spatial_deriv_lambda(
+    x: float, y: float, z: float, a: float, b: float, c: float, lmbda: float
+):
     """
     Get the spatial derivatives of lambda with respect to x, y, and z.
 
