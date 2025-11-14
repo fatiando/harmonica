@@ -8,19 +8,21 @@
 Forward modelling of a gravity anomaly produced due to an ellipsoidal body.
 """
 
-from collections.abc import Sequence
+import warnings
+from collections.abc import Iterable
 
 import numpy as np
+import numpy.typing as npt
 from choclo.constants import GRAVITATIONAL_CONST
 
-from .utils_ellipsoids import (
-    calculate_lambda,
-    get_elliptical_integrals,
-    get_rotation_matrix,
-)
+from ..errors import NoPhysicalPropertyWarning
+from ..typing import Coordinates, Ellipsoid
+from .utils_ellipsoids import calculate_lambda, get_elliptical_integrals
 
 
-def ellipsoid_gravity(coordinates, ellipsoids, density):
+def ellipsoid_gravity(
+    coordinates: Coordinates, ellipsoids: Iterable[Ellipsoid] | Ellipsoid
+):
     r"""
     Forward model gravity fields of ellipsoids.
 
@@ -48,10 +50,8 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
         system. All coordinates should be in meters.
     ellipsoid : ellipsoid or list of ellipsoids
         Ellipsoidal body represented by an instance of
-        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
-        :class:`harmonica.OblateEllipsoid`, or a list of them.
-    density : float, list of float or array
-        List or array containing the density of each ellipsoid in :math:`kg/m^3`.
+        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`,
+        or :class:`harmonica.OblateEllipsoid`, or a list of them.
 
     Returns
     -------
@@ -74,28 +74,34 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
     # Allocate arrays
     ge, gn, gu = tuple(np.zeros(easting.size) for _ in range(3))
 
-    # deal with the case of a single ellipsoid being passed
-    if not isinstance(ellipsoids, Sequence):
+    # Deal with the case of a single ellipsoid being passed
+    if not isinstance(ellipsoids, Iterable):
         ellipsoids = [ellipsoids]
-    if not isinstance(density, (Sequence, np.ndarray)):
-        density = np.asarray([density])
 
-    for ellipsoid, rho in zip(ellipsoids, density, strict=True):
-        a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
-        yaw, pitch, roll = ellipsoid.yaw, ellipsoid.pitch, ellipsoid.roll
-        origin_e, origin_n, origin_u = ellipsoid.center
+    for ellipsoid in ellipsoids:
+        # Skip ellipsoid without density
+        if ellipsoid.density is None:
+            msg = (
+                f"Ellipsoid {ellipsoid} doesn't have a density value. "
+                "It will be skipped."
+            )
+            warnings.warn(msg, NoPhysicalPropertyWarning, stacklevel=2)
+            continue
 
         # Translate observation points to coordinate system in center of the ellipsoid
+        origin_e, origin_n, origin_u = ellipsoid.center
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
-        # create rotation matrix
-        r = get_rotation_matrix(yaw, pitch, roll)
+        # Create rotation matrix
+        r = ellipsoid.rotation_matrix
 
-        # rotate observation points
+        # Rotate observation points
         x, y, z = r.T @ np.vstack(coords_shifted)
 
-        # calculate gravity components on local coordinate system
-        gravity_ellipsoid = _compute_gravity_ellipsoid(x, y, z, a, b, c, rho)
+        # Calculate gravity components on local coordinate system
+        gravity_ellipsoid = _compute_gravity_ellipsoid(
+            x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c, ellipsoid.density
+        )
 
         # project onto upward unit vector, axis U
         ge_i, gn_i, gu_i = r @ np.vstack(gravity_ellipsoid)
@@ -113,7 +119,15 @@ def ellipsoid_gravity(coordinates, ellipsoids, density):
     return ge, gn, gz
 
 
-def _compute_gravity_ellipsoid(x, y, z, a, b, c, density):
+def _compute_gravity_ellipsoid(
+    x: npt.NDArray,
+    y: npt.NDArray,
+    z: npt.NDArray,
+    a: float,
+    b: float,
+    c: float,
+    density: float,
+):
     """
     Compute gravity acceleration for an ellipsoid on a set of observation points.
 
