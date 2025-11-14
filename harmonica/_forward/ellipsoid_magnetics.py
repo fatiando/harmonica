@@ -13,6 +13,7 @@ from collections.abc import Iterable
 from numbers import Real
 
 import numpy as np
+import numpy.typing as npt
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
@@ -270,26 +271,25 @@ def get_magnetisation(a, b, c, susceptibility, h0_field, remnant_mag, n_tensor=N
     return m
 
 
-def cast_susceptibility(susceptibility):
+def cast_susceptibility(susceptibility: float | npt.NDArray | None) -> npt.NDArray:
     """
     Cast susceptibility into a susceptibility tensor.
 
-    Check whether user has input a k value with anisotropy.
+    Converts any valid susceptibility of ellipsoids into a susceptibility tensor.
 
     Parameters
     ----------
-    susceptibility : float or (3,) array or (3, 3) array or None
-        Susceptibility value. A single value or list of single values assumes
-        isotropy in the body/bodies. An array or list of arrays should be a 3x3
-        matrix with the given susceptibility components, suggesting an
-        anisotropic susceptibility.
+    susceptibility : float, (3, 3) array or None
+        Magnetic susceptibility value.
+        A single float represents isotropic susceptibility in the body.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        If None, a susceptibility of zero is assumed.
 
     Returns
     -------
     susceptibility: (3, 3) array
         Susceptibility tensor.
     """
-    # TODO: update the docstrings
     if susceptibility is None:
         return np.zeros((3, 3), dtype=np.float64)
     if isinstance(susceptibility, Real):
@@ -305,30 +305,22 @@ def cast_susceptibility(susceptibility):
     return susceptibility
 
 
-def cast_remanent_magnetization(remnant_mag):
+def cast_remanent_magnetization(remnant_mag: npt.NDArray | None):
     """
     Cast remanent magnetization to an array of three elements.
 
-    Check if remanent magnetization has the right shape. If ``remnant_mag`` is None,
-    then an array full of zeros will be returned.
+    Converts any valid remanent magnetization of ellipsoids into a three elements array.
 
     Parameters
     ----------
-    remnant_mag : array-like or None
-        Remanent magnetization. Pass an array, a list, or tuple of three elements, or
-        pass None.
+    remnant_mag : (3,) array or None
+        Remanent magnetization. Can be an array with three elements or None.
 
     Returns
     -------
-    remnant_mag : (3) array
+    remnant_mag : (3,) array
         Remanent magnetization as an array with 3 elements.
-
-    Raises
-    ------
-    ValueError
-        If the passed array doesn't have the right shape and dimensions.
     """
-    # TODO: update docstring
     if remnant_mag is None:
         return np.zeros(3, dtype=np.float64)
     remnant_mag = np.asarray(remnant_mag)
@@ -346,7 +338,7 @@ def get_demagnetization_tensor_internal(a, b, c):
 
     Returns
     -------
-    N : matrix
+    N : (3, 3) array
         Demagnetization tensor for the given ellipsoid on internal points.
 
     Notes
@@ -472,7 +464,7 @@ def get_demagnetization_tensor_external(x, y, z, a, b, c, lmbda):
 
     Returns
     -------
-    N : matrix
+    N : (3, 3) array
         External points' demagnetization tensor for the given point.
 
     Notes
