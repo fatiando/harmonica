@@ -150,21 +150,22 @@ def _compute_gravity_ellipsoid(
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
     # Mask internal points
+    # TODO: use the function we have in ellipsoid_magnetic. Move that to shared utils?
     inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
 
     if a == b == c:
         # Fallback to sphere equations which are simpler
-        volume = 4 / 3 * np.pi * a**3
+        factor = -4 / 3 * np.pi * a**3 * GRAVITATIONAL_CONST * density
         gx, gy, gz = tuple(np.zeros_like(x) for _ in range(3))
 
-        gx[inside] = volume * density * x[inside]
-        gy[inside] = volume * density * y[inside]
-        gz[inside] = -volume * density * z[inside]
+        gx[inside] = factor * x[inside] / a**3
+        gy[inside] = factor * y[inside] / a**3
+        gz[inside] = factor * z[inside] / a**3
 
         r = np.sqrt(x[~inside] ** 2 + y[~inside] ** 2 + z[~inside] ** 2)
-        gx[~inside] = volume * density * x[~inside] / r**3
-        gy[~inside] = volume * density * y[~inside] / r**3
-        gz[~inside] = -volume * density * z[~inside] / r**3
+        gx[~inside] = factor * x[~inside] / r**3
+        gy[~inside] = factor * y[~inside] / r**3
+        gz[~inside] = factor * z[~inside] / r**3
 
         return gx, gy, gz
 
