@@ -497,14 +497,14 @@ class Sphere(BaseEllipsoid):
         Density of the sphere in :math:`kg/m^3`.
     susceptibility : float, (3, 3) array or None, optional
         Magnetic susceptibility of the sphere in SI units.
-        It can be a single float for isotropic magnetic susceptibility, or a (3, 3)
-        array that represents the susceptibility tensor (to account for anisotropy), or
-        ``None`` for a non-susceptible sphere.
+        A single float represents isotropic susceptibility in the body.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        If None, zero susceptibility will be assigned to the sphere.
     remanent_mag : (3,) array or None, optional
-        Remanent magnetization vector of the sphere in A/m units. It can be an array,
-        with components defined in the easting-northing-upward coordinate
-        system, and passed in that order. Or it can be ``None``, for no remanent
-        magnetization.
+        Remanent magnetization vector of the sphere in A/m units. Its components
+        are defined in the easting-northing-upward coordinate system and should be
+        passed in that order.
+        If None, no remanent magnetization will be assigned to the sphere.
 
     Notes
     -----
