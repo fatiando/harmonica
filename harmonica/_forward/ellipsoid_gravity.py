@@ -149,11 +149,29 @@ def _compute_gravity_ellipsoid(
         Gravity acceleration components in the local coordinate system for the
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
+    # Mask internal points
+    inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
+
+    if a == b == c:
+        # Fallback to sphere equations which are simpler
+        volume = 4 / 3 * np.pi * a**3
+        gx, gy, gz = tuple(np.zeros_like(x) for _ in range(3))
+
+        gx[inside] = volume * density * x[inside]
+        gy[inside] = volume * density * y[inside]
+        gz[inside] = -volume * density * z[inside]
+
+        r = np.sqrt(x[~inside] ** 2 + y[~inside] ** 2 + z[~inside] ** 2)
+        gx[~inside] = volume * density * x[~inside] / r**3
+        gy[~inside] = volume * density * y[~inside] / r**3
+        gz[~inside] = -volume * density * z[~inside] / r**3
+
+        return gx, gy, gz
+
     # Compute lambda for all observation points
     lmbda = calculate_lambda(x, y, z, a, b, c)
 
     # Clip lambda to zero for internal points
-    inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
     lmbda[inside] = 0
 
     # Compute gx, gy, gz
