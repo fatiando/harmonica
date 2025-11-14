@@ -26,6 +26,29 @@ class TestProlateEllipsoid:
         with pytest.raises(ValueError, match=msg):
             ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
 
+    @pytest.mark.parametrize("semiaxis", ["a", "b"])
+    def test_non_positive_semiaxis(self, semiaxis):
+        """Test error after non-positive semiaxis."""
+        match semiaxis:
+            case "a":
+                a, b = -1.0, 40.0
+            case "b":
+                a, b = 50.0, -1.0
+            case _:
+                raise ValueError()
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+
+    @pytest.mark.parametrize("semiaxis", ["a", "b"])
+    def test_non_positive_semiaxis_setter(self, semiaxis):
+        """Test error after non-positive semiaxis when using the setter."""
+        a, b = 50.0, 35.0
+        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            setattr(ellipsoid, semiaxis, -1.0)
+
     def test_semiaxes_setter(self):
         """Test setters for semiaxes."""
         a, b = 50.0, 35.0
@@ -74,6 +97,29 @@ class TestOblateEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
         with pytest.raises(ValueError, match=msg):
             OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+
+    @pytest.mark.parametrize("semiaxis", ["a", "b"])
+    def test_non_positive_semiaxis(self, semiaxis):
+        """Test error after non-positive semiaxis."""
+        match semiaxis:
+            case "a":
+                a, b = -1.0, 40.0
+            case "b":
+                a, b = 50.0, -1.0
+            case _:
+                raise ValueError()
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+
+    @pytest.mark.parametrize("semiaxis", ["a", "b"])
+    def test_non_positive_semiaxis_setter(self, semiaxis):
+        """Test error after non-positive semiaxis when using the setter."""
+        a, b = 35.0, 50.0
+        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            setattr(ellipsoid, semiaxis, -1.0)
 
     def test_semiaxes_setter(self):
         """Test setters for semiaxes."""
@@ -125,6 +171,31 @@ class TestTriaxialEllipsoid:
         msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
         with pytest.raises(ValueError, match=msg):
             TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+
+    @pytest.mark.parametrize("semiaxis", ["a", "b", "c"])
+    def test_non_positive_semiaxis(self, semiaxis):
+        """Test error after non-positive semiaxis."""
+        match semiaxis:
+            case "a":
+                a, b, c = -1.0, 40.0, 35.0
+            case "b":
+                a, b, c = 50.0, -1.0, 35.0
+            case "c":
+                a, b, c = 50.0, 40.0, -1.0
+            case _:
+                raise ValueError()
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+
+    @pytest.mark.parametrize("semiaxis", ["a", "b", "c"])
+    def test_non_positive_semiaxis_setter(self, semiaxis):
+        """Test error after non-positive semiaxis when using the setter."""
+        a, b, c = 50.0, 40.0, 35.0
+        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
+        with pytest.raises(ValueError, match=msg):
+            setattr(ellipsoid, semiaxis, -1.0)
 
     def test_semiaxes_setter(self):
         """Test setters for semiaxes."""

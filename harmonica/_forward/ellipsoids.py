@@ -120,6 +120,21 @@ class BaseEllipsoid:
         """
         return get_rotation_matrix(self.yaw, self.pitch, self.roll)
 
+    def _check_positive_semiaxis(self, value: float, semiaxis: str):
+        """
+        Raise error if passed semiaxis length value is not positive.
+
+        Parameters
+        ----------
+        value : float
+            Value of the semiaxis length.
+        semiaxis : {"a", "b", "c"}
+            Semiaxis name. Used to generate the error message.
+        """
+        if value <= 0:
+            msg = f"Invalid value of '{semiaxis}' equal to '{value}'. It must be positive."
+            raise ValueError(msg)
+
 
 class TriaxialEllipsoid(BaseEllipsoid):
     """
@@ -182,8 +197,13 @@ class TriaxialEllipsoid(BaseEllipsoid):
         susceptibility: float | npt.NDArray | None = None,
         remanent_mag: npt.NDArray | None = None,
     ):
+        # Sanity checks on semiaxes
+        for value, semiaxis in zip((a, b, c), ("a", "b", "c"), strict=True):
+            self._check_positive_semiaxis(value, semiaxis)
         self._check_semiaxes_lenghts(a, b, c)
         self._a, self._b, self._c = a, b, c
+
+        # Angles and center
         self.yaw, self.pitch, self.roll = yaw, pitch, roll
         self.center = center
 
@@ -199,6 +219,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @a.setter
     def a(self, value: float) -> None:
+        self._check_positive_semiaxis(value, "a")
         self._check_semiaxes_lenghts(value, self.b, self.c)
         self._a = value
 
@@ -209,6 +230,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @b.setter
     def b(self, value: float):
+        self._check_positive_semiaxis(value, "b")
         self._check_semiaxes_lenghts(self.a, value, self.c)
         self._b = value
 
@@ -219,6 +241,7 @@ class TriaxialEllipsoid(BaseEllipsoid):
 
     @c.setter
     def c(self, value: float):
+        self._check_positive_semiaxis(value, "c")
         self._check_semiaxes_lenghts(self.a, self.b, value)
         self._c = value
 
@@ -290,8 +313,13 @@ class ProlateEllipsoid(BaseEllipsoid):
         susceptibility: float | npt.NDArray | None = None,
         remanent_mag: npt.NDArray | None = None,
     ):
+        # Sanity checks on semiaxes
+        for value, semiaxis in zip((a, b), ("a", "b"), strict=True):
+            self._check_positive_semiaxis(value, semiaxis)
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b
+
+        # Angles and center
         self.yaw, self.pitch = yaw, pitch
         self.center = center
 
@@ -307,6 +335,7 @@ class ProlateEllipsoid(BaseEllipsoid):
 
     @a.setter
     def a(self, value: float):
+        self._check_positive_semiaxis(value, "a")
         self._check_semiaxes_lenghts(value, self.b)
         self._a = value
 
@@ -317,6 +346,7 @@ class ProlateEllipsoid(BaseEllipsoid):
 
     @b.setter
     def b(self, value: float):
+        self._check_positive_semiaxis(value, "b")
         self._check_semiaxes_lenghts(self.a, value)
         self._b = value
 
@@ -398,8 +428,13 @@ class OblateEllipsoid(BaseEllipsoid):
         susceptibility: float | npt.NDArray | None = None,
         remanent_mag: npt.NDArray | None = None,
     ):
+        # Sanity checks on semiaxes
+        for value, semiaxis in zip((a, b), ("a", "b"), strict=True):
+            self._check_positive_semiaxis(value, semiaxis)
         self._check_semiaxes_lenghts(a, b)
         self._a, self._b = a, b
+
+        # Angles and center
         self.yaw, self.pitch = yaw, pitch
         self.center = center
 
@@ -415,6 +450,7 @@ class OblateEllipsoid(BaseEllipsoid):
 
     @a.setter
     def a(self, value: float):
+        self._check_positive_semiaxis(value, "a")
         self._check_semiaxes_lenghts(value, self.b)
         self._a = value
 
@@ -425,6 +461,7 @@ class OblateEllipsoid(BaseEllipsoid):
 
     @b.setter
     def b(self, value: float):
+        self._check_positive_semiaxis(value, "b")
         self._check_semiaxes_lenghts(self.a, value)
         self._b = value
 
