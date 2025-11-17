@@ -25,6 +25,7 @@ from .utils_ellipsoids import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
+    is_internal,
 )
 
 
@@ -185,18 +186,14 @@ def _single_ellipsoid_magnetic(
     b_field = np.zeros((easting.size, 3), dtype=np.float64)
 
     # Mask internal observation points
-    internal = _is_internal(x, y, z, ellipsoid)
+    internal = is_internal(x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c)
 
     # Compute b_field on internal points
     b_field[internal, :] = mu_0 * (-n_tensor_internal @ magnetization + magnetization)
 
     # Compute b_field on external points
-    x_ext, y_ext, z_ext = (x[~internal], y[~internal], z[~internal])
-    lambda_ = calculate_lambda(
-        x_ext, y_ext, z_ext, ellipsoid.a, ellipsoid.b, ellipsoid.c
-    )
     n_tensors = get_demagnetization_tensor_external(
-        x_ext, y_ext, z_ext, lambda_, ellipsoid.a, ellipsoid.b, ellipsoid.c
+        x[~internal], y[~internal], z[~internal], ellipsoid.a, ellipsoid.b, ellipsoid.c
     )
     b_field[~internal, :] = mu_0 * (-n_tensors @ magnetization)
 
@@ -204,14 +201,6 @@ def _single_ellipsoid_magnetic(
     be, bn, bu = r_matrix @ b_field.T
 
     return be, bn, bu
-
-
-def _is_internal(x: npt.NDArray, y: npt.NDArray, z: npt.NDArray, ellipsoid: Ellipsoid):
-    """
-    Check if a given point(s) is internal or external to the ellipsoid.
-    """
-    a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
-    return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
 
 
 def get_magnetisation(
@@ -469,7 +458,6 @@ def get_demagnetization_tensor_external(
     x: npt.NDArray,
     y: npt.NDArray,
     z: npt.NDArray,
-    lambda_: npt.NDArray,
     a: float,
     b: float,
     c: float,
@@ -483,8 +471,6 @@ def get_demagnetization_tensor_external(
     ----------
     x, y, z : (n,) array
         Coordinates of the observation points in the local coordinate system.
-    lambda_ : (n,) array
-        The lambda values for each observation point.
     a, b, c : floats
         Semi-axes lengths of the given ellipsoid.
 
@@ -542,11 +528,13 @@ def get_demagnetization_tensor_external(
     # Allocate array for all demagnetization tensors (one for each observation point)
     demag_tensors = np.empty((x.size, 3, 3), dtype=np.float64)
 
-    coords = (x, y, z)
+    # Calculate lambda and other quantities needed to build the tensors
+    lambda_ = calculate_lambda(x, y, z, a, b, c)
     ellip_integrals = get_elliptical_integrals(a, b, c, lambda_)
     deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(a, b, c, lambda_)
     derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
 
+    coords = (x, y, z)
     for i, j in itertools.product(range(3), range(3)):
         if i == j:
             demag_tensors[:, i, i] = ((a * b * c) / 2) * (

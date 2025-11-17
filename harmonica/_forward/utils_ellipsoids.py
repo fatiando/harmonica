@@ -9,6 +9,24 @@ import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
 
+def is_internal(x, y, z, a, b, c):
+    """
+    Check if a given point(s) is internal or external to the ellipsoid.
+
+    Parameters
+    ----------
+    x, y, z : (n,) arrays or floats
+        Coordinates of the observation point(s) in the local coordinate system.
+    a, b, c : floats
+        Ellipsoid's semiaxes lengths.
+
+    Returns
+    -------
+    bool or (n,) array
+    """
+    return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
+
+
 def calculate_lambda(x, y, z, a, b, c):
     """
     Get the lambda ellipsoidal coordinate for a given ellipsoid and observation points.
@@ -35,43 +53,49 @@ def calculate_lambda(x, y, z, a, b, c):
 
     Returns
     -------
-    lmbda : float or array-like
+    lambda_ : float or array-like
         The computed value(s) of the lambda parameter.
 
     """
-    # compute lambda
-    p_0 = (
-        a**2 * b**2 * c**2
-        - b**2 * c**2 * x**2
-        - c**2 * a**2 * y**2
-        - a**2 * b**2 * z**2
-    )
-    p_1 = (
-        a**2 * b**2
-        + b**2 * c**2
-        + c**2 * a**2
-        - (b**2 + c**2) * x**2
-        - (c**2 + a**2) * y**2
-        - (a**2 + b**2) * z**2
-    )
-    p_2 = a**2 + b**2 + c**2 - x**2 - y**2 - z**2
+    # Solve lambda for prolate and oblate ellipsoids
+    if b == c:
+        p0 = a**2 * b**2 - b**2 * x**2 - a**2 * (y**2 + z**2)
+        p1 = a**2 + b**2 - x**2 - y**2 - z**2
+        lambda_ = 0.5 * (np.sqrt(p1**2 - 4 * p0) - p1)
 
-    p = p_1 - (p_2**2) / 3
+    # Solve lambda for triaxial ellipsoids
+    else:
+        p0 = (
+            a**2 * b**2 * c**2
+            - b**2 * c**2 * x**2
+            - c**2 * a**2 * y**2
+            - a**2 * b**2 * z**2
+        )
+        p1 = (
+            a**2 * b**2
+            + b**2 * c**2
+            + c**2 * a**2
+            - (b**2 + c**2) * x**2
+            - (c**2 + a**2) * y**2
+            - (a**2 + b**2) * z**2
+        )
+        p2 = a**2 + b**2 + c**2 - x**2 - y**2 - z**2
+        p = p1 - (p2**2) / 3
+        q = p0 - ((p1 * p2) / 3) + 2 * (p2 / 3) ** 3
+        cos_theta = -q / (2 * np.sqrt((-p / 3) ** 3))
 
-    q = p_0 - ((p_1 * p_2) / 3) + 2 * (p_2 / 3) ** 3
+        # Clip the cos_theta to [-1, 1]. Due to floating point errors its value
+        # could be slightly above 1 or slightly below -1.
+        if isinstance(cos_theta, np.ndarray):
+            # Run inplace to avoid allocating a new array.
+            np.clip(cos_theta, -1.0, 1.0, out=cos_theta)
+        else:
+            cos_theta = np.clip(cos_theta, -1.0, 1.0)
 
-    theta_internal = -q / (2 * np.sqrt((-p / 3) ** 3))
+        theta = np.arccos(cos_theta)
+        lambda_ = 2 * np.sqrt(-p / 3) * np.cos(theta / 3) - p2 / 3
 
-    # clip to remove floating point precision errors (as per testing)
-    theta_internal_1 = np.clip(theta_internal, -1.0, 1.0)
-
-    theta = np.arccos(theta_internal_1)
-
-    lmbda = 2 * np.sqrt(-p / 3) * np.cos(theta / 3) - p_2 / 3
-
-    # lmbda[inside_mask] = 0
-
-    return lmbda
+    return lambda_
 
 
 def get_elliptical_integrals(
