@@ -17,7 +17,7 @@ from choclo.constants import GRAVITATIONAL_CONST
 
 from ..errors import NoPhysicalPropertyWarning
 from ..typing import Coordinates, Ellipsoid
-from .utils_ellipsoids import calculate_lambda, get_elliptical_integrals
+from .utils_ellipsoids import calculate_lambda, get_elliptical_integrals, is_internal
 
 
 def ellipsoid_gravity(
@@ -149,16 +149,19 @@ def _compute_gravity_ellipsoid(
         Gravity acceleration components in the local coordinate system for the
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
-    # Compute lambda for all observation points
-    lmbda = calculate_lambda(x, y, z, a, b, c)
+    # Mask internal points
+    internal = is_internal(x, y, z, a, b, c)
 
-    # Clip lambda to zero for internal points
-    inside = (x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2) < 1
-    lmbda[inside] = 0
+    # Compute lambda on all observation points:
+    # Make it zero on internal points, calculate it for external points.
+    lambda_ = np.zeros_like(x, dtype=np.float64)
+    lambda_[~internal] = calculate_lambda(
+        x[~internal], y[~internal], z[~internal], a, b, c
+    )
 
     # Compute gx, gy, gz
     factor = -2 * np.pi * a * b * c * GRAVITATIONAL_CONST * density
-    g1, g2, g3 = get_elliptical_integrals(a, b, c, lmbda)
+    g1, g2, g3 = get_elliptical_integrals(a, b, c, lambda_)
     gx = factor * x * g1
     gy = factor * y * g2
     gz = factor * z * g3

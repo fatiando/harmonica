@@ -9,6 +9,24 @@ import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
 
+def is_internal(x, y, z, a, b, c):
+    """
+    Check if a given point(s) is internal or external to the ellipsoid.
+
+    Parameters
+    ----------
+    x, y, z : (n,) arrays or floats
+        Coordinates of the observation point(s) in the local coordinate system.
+    a, b, c : floats
+        Ellipsoid's semiaxes lengths.
+
+    Returns
+    -------
+    bool or (n,) array
+    """
+    return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
+
+
 def calculate_lambda(x, y, z, a, b, c):
     """
     Get the lambda ellipsoidal coordinate for a given ellipsoid and observation points.
