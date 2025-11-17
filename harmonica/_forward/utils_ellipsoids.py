@@ -5,6 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import numpy as np
+import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
 
@@ -73,7 +74,9 @@ def calculate_lambda(x, y, z, a, b, c):
     return lmbda
 
 
-def get_elliptical_integrals(a, b, c, lmbda):
+def get_elliptical_integrals(
+    a: float, b: float, c: float, lambda_: float | npt.NDArray
+) -> tuple[float, float, float] | tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
     r"""
     Compute elliptical integrals used in gravity and magnetic forward modelling.
 
@@ -89,12 +92,12 @@ def get_elliptical_integrals(a, b, c, lmbda):
     ----------
     a, b, c : floats
         Semi-axes lengths of the given ellipsoid.
-    lmbda : float
+    lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    floats
+    A, B, C : floats or tuple of (n,) arrays
         The elliptical integrals evaluated for the given ellipsoid and observation
         point.
 
@@ -132,11 +135,11 @@ def get_elliptical_integrals(a, b, c, lmbda):
     oblate and prolate).
     """
     if a > b > c:
-        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lmbda)
+        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     elif a > b and b == c:
-        g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lmbda)
+        g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lambda_)
     elif a < b and b == c:
-        g1, g2, g3 = _get_elliptical_integrals_oblate(a, b, lmbda)
+        g1, g2, g3 = _get_elliptical_integrals_oblate(a, b, lambda_)
     else:
         msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
         raise ValueError(msg)
@@ -393,7 +396,9 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     return g1, g2, g2
 
 
-def get_derivatives_of_elliptical_integrals(a, b, c, lmbda):
+def get_derivatives_of_elliptical_integrals(
+    a: float, b: float, c: float, lambda_: float | npt.NDArray
+):
     r"""
     Compute derivatives of the elliptical integrals with respect to lambda.
 
@@ -404,7 +409,7 @@ def get_derivatives_of_elliptical_integrals(a, b, c, lmbda):
     ----------
     a, b, c : floats
         Semi-axes lengths of the given ellipsoid.
-    lmbda : float
+    lambda_ : float
         The given lambda value for the point we are considering.
 
     Returns
@@ -412,6 +417,6 @@ def get_derivatives_of_elliptical_integrals(a, b, c, lmbda):
     hx, hy, hz : tuple of floats
         The h values for the given observation point.
     """
-    r = np.sqrt((a**2 + lmbda) * (b**2 + lmbda) * (c**2 + lmbda))
-    hx, hy, hz = tuple(-1 / (e**2 + lmbda) / r for e in (a, b, c))
+    r = np.sqrt((a**2 + lambda_) * (b**2 + lambda_) * (c**2 + lambda_))
+    hx, hy, hz = tuple(-1 / (e**2 + lambda_) / r for e in (a, b, c))
     return hx, hy, hz
