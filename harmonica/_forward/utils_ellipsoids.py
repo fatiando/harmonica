@@ -35,43 +35,48 @@ def calculate_lambda(x, y, z, a, b, c):
 
     Returns
     -------
-    lmbda : float or array-like
+    lambda_ : float or array-like
         The computed value(s) of the lambda parameter.
 
     """
-    # compute lambda
-    p_0 = (
-        a**2 * b**2 * c**2
-        - b**2 * c**2 * x**2
-        - c**2 * a**2 * y**2
-        - a**2 * b**2 * z**2
-    )
-    p_1 = (
-        a**2 * b**2
-        + b**2 * c**2
-        + c**2 * a**2
-        - (b**2 + c**2) * x**2
-        - (c**2 + a**2) * y**2
-        - (a**2 + b**2) * z**2
-    )
-    p_2 = a**2 + b**2 + c**2 - x**2 - y**2 - z**2
+    cast = np.broadcast(x, y, z)
+    x, y, z = tuple(np.atleast_1d(v) for v in (x, y, z))
 
-    p = p_1 - (p_2**2) / 3
+    # Solve lambda for prolate and oblate ellipsoids
+    if b == c:
+        p0 = a**2 * b**2 - b**2 * x**2 - a**2 * (y**2 + z**2)
+        p1 = a**2 + b**2 - x**2 - y**2 - z**2
+        lambda_ = 0.5 * (np.sqrt(p1**2 - 4 * p0) - p1)
 
-    q = p_0 - ((p_1 * p_2) / 3) + 2 * (p_2 / 3) ** 3
+    # Solve lambda for triaxial ellipsoids
+    else:
+        p0 = (
+            a**2 * b**2 * c**2
+            - b**2 * c**2 * x**2
+            - c**2 * a**2 * y**2
+            - a**2 * b**2 * z**2
+        )
+        p1 = (
+            a**2 * b**2
+            + b**2 * c**2
+            + c**2 * a**2
+            - (b**2 + c**2) * x**2
+            - (c**2 + a**2) * y**2
+            - (a**2 + b**2) * z**2
+        )
+        p2 = a**2 + b**2 + c**2 - x**2 - y**2 - z**2
+        p = p1 - (p2**2) / 3
+        q = p0 - ((p1 * p2) / 3) + 2 * (p2 / 3) ** 3
+        cos_theta = -q / (2 * np.sqrt((-p / 3) ** 3))
 
-    theta_internal = -q / (2 * np.sqrt((-p / 3) ** 3))
+        # Clip the cos_theta to [-1, 1]. Due to floating point errors its value
+        # could be slightly above 1 or slightly below -1.
+        np.clip(cos_theta, -1.0, 1.0, out=cos_theta)
 
-    # clip to remove floating point precision errors (as per testing)
-    theta_internal_1 = np.clip(theta_internal, -1.0, 1.0)
+        theta = np.arccos(cos_theta)
+        lambda_ = 2 * np.sqrt(-p / 3) * np.cos(theta / 3) - p2 / 3
 
-    theta = np.arccos(theta_internal_1)
-
-    lmbda = 2 * np.sqrt(-p / 3) * np.cos(theta / 3) - p_2 / 3
-
-    # lmbda[inside_mask] = 0
-
-    return lmbda
+    return lambda_.reshape(cast.shape)
 
 
 def get_elliptical_integrals(
