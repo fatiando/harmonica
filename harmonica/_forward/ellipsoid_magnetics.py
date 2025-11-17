@@ -23,9 +23,9 @@ from ..errors import NoPhysicalPropertyWarning
 from ..typing import Coordinates, Ellipsoid
 from .utils_ellipsoids import (
     calculate_lambda,
-    is_internal,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
+    is_internal,
 )
 
 
