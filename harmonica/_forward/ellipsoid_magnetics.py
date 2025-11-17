@@ -475,7 +475,9 @@ def get_demagnetization_tensor_external(
     c: float,
 ) -> npt.NDArray:
     r"""
-    Construct the demagnetization tensor N on external points.
+    Construct the demagnetization tensor(s) N on external observation points.
+
+    Computes multiple demagnetization tensors, one for each external observation point.
 
     Parameters
     ----------
@@ -488,8 +490,8 @@ def get_demagnetization_tensor_external(
 
     Returns
     -------
-    N : (n, 3, 3) array
-        External points' demagnetization tensor for the given point.
+    demag_tensors : (n, 3, 3) array
+        Demagnetization tensors for each observation point.
 
     Notes
     -----
@@ -537,7 +539,8 @@ def get_demagnetization_tensor_external(
 
     Note the sign difference with Takahashi et al. (2018) equations 34 and 35.
     """
-    n_tensors = np.empty((x.size, 3, 3), dtype=np.float64)
+    # Allocate array for all demagnetization tensors (one for each observation point)
+    demag_tensors = np.empty((x.size, 3, 3), dtype=np.float64)
 
     coords = (x, y, z)
     ellip_integrals = get_elliptical_integrals(a, b, c, lambda_)
@@ -546,16 +549,16 @@ def get_demagnetization_tensor_external(
 
     for i, j in itertools.product(range(3), range(3)):
         if i == j:
-            n_tensors[:, i, i] = ((a * b * c) / 2) * (
+            demag_tensors[:, i, i] = ((a * b * c) / 2) * (
                 derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
                 + ellip_integrals[i]
             )
         else:
-            n_tensors[:, i, j] = ((a * b * c) / 2) * (
+            demag_tensors[:, i, j] = ((a * b * c) / 2) * (
                 derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
             )
 
-    return n_tensors
+    return demag_tensors
 
 
 def _spatial_deriv_lambda(
