@@ -510,7 +510,7 @@ class Sphere(BaseEllipsoid):
     -----
     All semiaxes (``a``, ``b`` and ``c``) are equal to each other.
     All rotation angles (``yaw``, ``pitch`` and ``roll``) are equal to zero for the
-    sphere, since rotations don't produce any change due to symmetry.
+    sphere, since sphere is invariant to rotations.
     """
 
     def __init__(
