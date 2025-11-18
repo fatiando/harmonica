@@ -51,14 +51,10 @@ jobs:
             python: "3.13"
           - dependencies: optional
             python: "3.13"
-          # test on macos-13 (x86) using oldest dependencies and python 3.8
-          - os: macos-13
+          # Include tests on macos (x86) with oldest dependencies
+          - os: macos-15-intel
             dependencies: oldest
             python: "3.10"
-        exclude:
-          # don't test on macos-latest (arm64) with oldest dependencies
-          - os: macos-latest
-            dependencies: oldest
 
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
