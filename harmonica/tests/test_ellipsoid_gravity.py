@@ -645,6 +645,8 @@ class TestNoneDensity:
                 "roll": 0.0,
                 "center": (0, 0, 0),
             }
+        elif ellipsoid_class is Sphere:
+            args = {"a": 50.0, "center": (0, 0, 0)}
         else:
             raise TypeError()
         return args
