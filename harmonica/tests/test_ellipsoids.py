@@ -282,7 +282,9 @@ class TestSphere:
     def test_rotation_matrix(self):
         """Make sure the rotation matrix of a sphere is always the identity."""
         sphere = Sphere(10.0, center=(0, 0, 0))
-        assert (sphere.rotation_matrix == np.eye(3, dtype=np.float64)).all()
+        np.testing.assert_array_equal(
+            sphere.rotation_matrix, np.eye(3, dtype=np.float64)
+        )
 
 
 @pytest.mark.parametrize(
