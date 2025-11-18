@@ -35,6 +35,7 @@ from .._forward.ellipsoid_magnetics import (
 from .._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
+    Sphere,
     TriaxialEllipsoid,
 )
 from .._forward.utils import get_rotation_matrix
@@ -700,6 +701,121 @@ class TestMagneticFieldVersusSphere:
         np.testing.assert_allclose(b_e_sphere, b_e, atol=atol, rtol=rtol)
         np.testing.assert_allclose(b_n_sphere, b_n, atol=atol, rtol=rtol)
         np.testing.assert_allclose(b_u_sphere, b_u, atol=atol, rtol=rtol)
+
+
+class TestMagneticFieldVersusDipole:
+    """
+    Test if magnetic field of ellipsoid approximates the one of a dipole.
+    """
+
+    # Sphere radius, center, and susceptibility.
+    radius = 50.0
+    center = (0, 0, 0)
+    susceptibility = 0.001  # use small sus to reduce demag effects
+
+    # Difference between ellipsoid's semiaxes.
+    # It should be small compared to the sphere radius, so the ellipsoid approximates
+    # a sphere.
+    delta = 0.001
+
+    # Define external field
+    external_field = (55_123.0, 32.0, -28.9)
+
+    @pytest.fixture
+    def coordinates(self):
+        """Sample coordinates of observation points."""
+        easting = np.hstack(
+            (np.linspace(-200, -self.radius, 21), np.linspace(self.radius, 200, 21))
+        )
+        coordinates = np.meshgrid(easting, easting, easting)
+        return coordinates
+
+    def get_ellipsoid(self, ellipsoid_type: str):
+        """
+        Return ellipsoid that approximates a sphere.
+
+        Parameters
+        ----------
+        ellipsoid_type : {"oblate", "prolate", "triaxial"}
+            Type of ellipsoid.
+
+        Returns
+        -------
+        OblateEllipsoid, ProlateEllipsoid, Sphere or TriaxialEllipsoid
+        """
+        yaw, pitch, roll = 0, 0, 0
+        a = self.radius
+        match ellipsoid_type:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    a=a,
+                    b=a + self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=self.center,
+                    susceptibility=self.susceptibility,
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=self.center,
+                    susceptibility=self.susceptibility,
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    c=a - 2 * self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    roll=roll,
+                    center=self.center,
+                    susceptibility=self.susceptibility,
+                )
+            case "sphere":
+                ellipsoid = Sphere(
+                    a=a, center=self.center, susceptibility=self.susceptibility
+                )
+            case _:
+                raise ValueError()
+        return ellipsoid
+
+    def get_dipole_moment(self, ellipsoid):
+        """
+        Convert the magnetization of an ellipsoid to the dipole magnetic moment.
+
+        Assume the ellipsoid is close enough to a sphere for the conversion to be
+        valid. Don't consider demagnetization effects.
+        """
+        b0_field = hm.magnetic_angles_to_vec(*self.external_field)
+        h0_field = np.array(b0_field) * 1e-9 / mu_0  # convert to SI units
+        return 4 / 3 * np.pi * ellipsoid.a**3 * ellipsoid.susceptibility * h0_field
+
+    @pytest.mark.parametrize(
+        "ellipsoid_type", ["oblate", "prolate", "triaxial", "sphere"]
+    )
+    def test_magnetic_field_vs_dipole(self, coordinates, ellipsoid_type):
+        """
+        Test magnetic field of ellipsoids against the one of a dipole.
+        """
+        # Forward model the magnetic field of the ellipsoid
+        ellipsoid = self.get_ellipsoid(ellipsoid_type)
+        b_ellipsoid = ellipsoid_magnetic(coordinates, ellipsoid, self.external_field)
+
+        # Forward model the magnetic field of the dipole
+        dipole_moment = self.get_dipole_moment(ellipsoid)
+        b_dipole = hm.dipole_magnetic(
+            coordinates, ellipsoid.center, dipole_moment, field="b"
+        )
+
+        rtol = 5e-4
+        for bi_dipole, bi_ellipsoid in zip(b_dipole, b_ellipsoid, strict=True):
+            maxabs = vd.maxabs(bi_dipole, bi_ellipsoid)
+            atol = maxabs * 1e-4
+            np.testing.assert_allclose(bi_dipole, bi_ellipsoid, atol=atol, rtol=rtol)
 
 
 class TestSymmetryOnRotations:
