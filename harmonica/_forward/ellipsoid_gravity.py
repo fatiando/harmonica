@@ -152,6 +152,22 @@ def _compute_gravity_ellipsoid(
     # Mask internal points
     internal = is_internal(x, y, z, a, b, c)
 
+    if a == b == c:
+        # Fallback to sphere equations which are simpler
+        factor = -4 / 3 * np.pi * a**3 * GRAVITATIONAL_CONST * density
+        gx, gy, gz = tuple(np.zeros_like(x) for _ in range(3))
+
+        gx[internal] = factor * x[internal] / a**3
+        gy[internal] = factor * y[internal] / a**3
+        gz[internal] = factor * z[internal] / a**3
+
+        r = np.sqrt(x[~internal] ** 2 + y[~internal] ** 2 + z[~internal] ** 2)
+        gx[~internal] = factor * x[~internal] / r**3
+        gy[~internal] = factor * y[~internal] / r**3
+        gz[~internal] = factor * z[~internal] / r**3
+
+        return gx, gy, gz
+
     # Compute lambda on all observation points:
     # Make it zero on internal points, calculate it for external points.
     lambda_ = np.zeros_like(x, dtype=np.float64)

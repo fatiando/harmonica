@@ -365,6 +365,8 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
         n_diagonal = _demag_tensor_prolate_internal(a, b)
     elif a < b and b == c:
         n_diagonal = _demag_tensor_oblate_internal(a, b)
+    elif a == b == c:
+        n_diagonal = 1 / 3 * np.ones(3)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
@@ -528,23 +530,38 @@ def get_demagnetization_tensor_external(
     # Allocate array for all demagnetization tensors (one for each observation point)
     demag_tensors = np.empty((x.size, 3, 3), dtype=np.float64)
 
-    # Calculate lambda and other quantities needed to build the tensors
-    lambda_ = calculate_lambda(x, y, z, a, b, c)
-    ellip_integrals = get_elliptical_integrals(a, b, c, lambda_)
-    deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(a, b, c, lambda_)
-    derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
-
     coords = (x, y, z)
-    for i, j in itertools.product(range(3), range(3)):
-        if i == j:
-            demag_tensors[:, i, i] = ((a * b * c) / 2) * (
-                derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
-                + ellip_integrals[i]
-            )
-        else:
-            demag_tensors[:, i, j] = ((a * b * c) / 2) * (
-                derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
-            )
+
+    if a == b == c:
+        r = np.sqrt(x**2 + y**2 + z**2)
+        r5, r3 = r**5, r**3
+        factor = -(a**3 / 3)
+
+        for i, j in itertools.product(range(3), range(3)):
+            if i == j:
+                demag_tensors[:, i, i] = factor * (3 * coords[i] ** 2 / r5 - 1 / r3)
+            else:
+                demag_tensors[:, i, j] = factor * (3 * coords[i] * coords[j] / r5)
+
+    else:
+        # Calculate lambda and other quantities needed to build the tensors
+        lambda_ = calculate_lambda(x, y, z, a, b, c)
+        ellip_integrals = get_elliptical_integrals(a, b, c, lambda_)
+        deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(
+            a, b, c, lambda_
+        )
+        derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
+
+        for i, j in itertools.product(range(3), range(3)):
+            if i == j:
+                demag_tensors[:, i, i] = ((a * b * c) / 2) * (
+                    derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
+                    + ellip_integrals[i]
+                )
+            else:
+                demag_tensors[:, i, j] = ((a * b * c) / 2) * (
+                    derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
+                )
 
     return demag_tensors
 

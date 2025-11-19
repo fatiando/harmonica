@@ -93,6 +93,7 @@ Ellipsoids:
 
     OblateEllipsoid
     ProlateEllipsoid
+    Sphere
     TriaxialEllipsoid
 
 Layers and meshes:
