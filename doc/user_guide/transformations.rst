@@ -25,15 +25,39 @@ We can load the data file using :mod:`xarray`:
 And plot it:
 
 .. jupyter-execute::
+   :hide-code:
 
-    import matplotlib.pyplot as plt
+    import pygmt
 
-    tmp = magnetic_grid.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly grid")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
+.. jupyter-execute::
+
+    import pygmt
+    import verde as vd
+
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(magnetic_grid) * .6
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        magnetic_grid,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tMagnetic anomaly"]
+    )
+    fig.colorbar(
+        position="JCB+e",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 .. seealso::
 
@@ -68,12 +92,23 @@ needed by the :func:`xrft.pad` function):
 
 .. jupyter-execute::
 
-    tmp = magnetic_grid_padded.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Padded magnetic anomaly grid")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(magnetic_grid_padded) * .6
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        magnetic_grid_padded,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tPadded magnetic anomaly"]
+    )
+    fig.colorbar(
+        position="JCB+e",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 Now that we have the padded grid, we can apply any grid transformation.
 
@@ -103,12 +138,23 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = deriv_upward.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Upward derivative of the magnetic anomaly")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
-    plt.show()
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(deriv_upward) * .5
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        deriv_upward,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tUpward derivative of the magnetic anomaly"]
+    )
+    fig.colorbar(
+        position="JCB+e",
+        frame=["af", 'x+lnT/m'],
+    )
+
+    fig.show()
 
 
 Horizontal derivatives
@@ -132,24 +178,35 @@ And plot them:
 
 .. jupyter-execute::
 
-    fig, (ax1, ax2) = plt.subplots(
-        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(deriv_easting, deriv_northing) * .4
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        deriv_easting,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tEasting derivative of the magnetic anomaly"]
     )
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    fig.shift_origin(xshift="16c")
+
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        deriv_northing,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "wESn+tNorthing derivative of the magnetic anomaly"]
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    fig.colorbar(
+        position="JBC+h+e+o-8c/1c+w15c/.8c",
+        frame=["af", 'x+lnT/m'],
+    )
 
-    ax1.set_title("Easting derivative of the magnetic anomaly")
-    ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.show()
+    fig.show()
 
 By default, these two functions compute the horizontal derivatives using
 central finite differences methods. We can choose to use either the finite
@@ -172,25 +229,35 @@ frequency domain:
 
 .. jupyter-execute::
 
-    fig, (ax1, ax2) = plt.subplots(
-        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(deriv_easting, deriv_northing) * .4
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        deriv_easting,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tEasting derivative of the magnetic anomaly"]
     )
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    fig.shift_origin(xshift="16c")
+
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        deriv_northing,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "wESn+tNorthing derivative of the magnetic anomaly"]
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    fig.colorbar(
+        position="JBC+h+e+o-8c/1c+w15c/.8c",
+        frame=["af", 'x+lnT/m'],
+    )
 
-    ax1.set_title("Easting derivative of the magnetic anomaly")
-    ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.show()
-
+    fig.show()
 
 .. important::
 
@@ -228,12 +295,23 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = upward_continued.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Upward continued magnetic anomaly to 1000m")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(upward_continued)
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        upward_continued,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tUpward continued magnetic anomaly at 1000m"]
+    )
+    fig.colorbar(
+        position="JCB",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 
 Reduction to the pole
@@ -280,12 +358,23 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly reduced to the pole")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(rtp_grid) * .8
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        rtp_grid,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tReduced to the pole magnetic anomaly"]
+    )
+    fig.colorbar(
+        position="JCB+e",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 If on the other hand we have any knowledge about the orientation of the
 magnetization vector of the sources, we can specify the
@@ -309,12 +398,23 @@ magnetization vector of the sources, we can specify the
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Reduced to the pole with remanence")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
+    fig = pygmt.Figure()
+
+    maxabs = vd.maxabs(rtp_grid) * .8
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        rtp_grid,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tReduced to the pole with remanence"]
+    )
+    fig.colorbar(
+        position="JCB+e",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 
 Gaussian filters
@@ -367,34 +467,35 @@ Let's plot the results side by side:
 
 .. jupyter-execute::
 
-    import verde as vd
+    fig = pygmt.Figure()
 
-    fig, (ax1, ax2) = plt.subplots(
-        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    maxabs = vd.maxabs(magnetic_low_freqs, magnetic_high_freqs) * .6
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+    fig.grdimage(
+        magnetic_low_freqs,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tLow-pass filtered magnetic anomaly"]
     )
 
-    maxabs = vd.maxabs(magnetic_low_freqs, magnetic_high_freqs)
-    kwargs = dict(cmap="seismic", vmin=-maxabs, vmax=maxabs, add_colorbar=False)
+    fig.shift_origin(xshift="16c")
 
-    tmp = magnetic_low_freqs.plot(ax=ax1, **kwargs)
-    tmp = magnetic_high_freqs.plot(ax=ax2, **kwargs)
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
-    ax1.set_title("Magnetic anomaly after low-pass filter")
-    ax2.set_title("Magnetic anomaly after high-pass filter")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-
-    plt.colorbar(
-        tmp,
-        ax=[ax1, ax2],
-        label="nT",
-        orientation="horizontal",
-        aspect=42,
-        shrink=0.8,
-        pad=0.08,
+    fig.grdimage(
+        magnetic_high_freqs,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "wESn+tHigh-pass filtered magnetic anomaly"]
     )
-    plt.show()
+
+    fig.colorbar(
+        position="JBC+h+e+o-8c/1c+w15c/.8c",
+        frame=["af", 'x+lnT'],
+    )
+
+    fig.show()
 
 
 Total gradient amplitude
@@ -433,14 +534,23 @@ And plot it:
 
 .. jupyter-execute::
 
-    import verde as vd
+    fig = pygmt.Figure()
 
-    tmp = tga_grid.plot(cmap="viridis", add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Total gradient amplitude of the magnetic anomaly")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
-    plt.show()
+    maxabs = vd.maxabs(tga_grid)
+    pygmt.makecpt(cmap="viridis", series=[0, maxabs], background=True)
+
+    fig.grdimage(
+        tga_grid,
+        projection="X15c",
+        cmap=True,
+        frame=["af", "WeSn+tTotal gradient amplitude of the magnetic anomaly"]
+    )
+    fig.colorbar(
+        position="JCB",
+        frame=["af", 'x+lnT/m'],
+    )
+
+    fig.show()
 
 ----
 
