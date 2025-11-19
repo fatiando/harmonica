@@ -13,7 +13,7 @@ import re
 import numpy as np
 import pytest
 
-from harmonica import OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid
+from harmonica import OblateEllipsoid, ProlateEllipsoid, Sphere, TriaxialEllipsoid
 
 
 class TestProlateEllipsoid:
@@ -227,8 +227,68 @@ class TestTriaxialEllipsoid:
             ellipsoid.c = 70.0
 
 
+class TestSphere:
+    """Test the Sphere class."""
+
+    def test_non_positive_semiaxis(self):
+        """Test error after non-positive a semiaxis."""
+        a = -1.0
+        msg = re.escape(f"Invalid value of 'a' equal to '{a}'")
+        with pytest.raises(ValueError, match=msg):
+            Sphere(a=a, center=(0, 0, 0))
+
+    def test_non_positive_semiaxis_setter(self):
+        """Test error after non-positive semiaxis when using the setter."""
+        sphere = Sphere(a=10.0, center=(0, 0, 0))
+        new_value = -1.0
+        msg = re.escape(f"Invalid value of 'a' equal to '{new_value}'")
+        with pytest.raises(ValueError, match=msg):
+            sphere.a = new_value
+
+    def test_semiaxes_setter(self):
+        """Test setters for semiaxes."""
+        a = 10.0
+        sphere = Sphere(a, center=(0, 0, 0))
+        new_a = a + 1
+        sphere.a = new_a
+        assert sphere.a == new_a
+
+    @pytest.mark.parametrize("semiaxis", ["b", "c"])
+    def test_value_of_b_and_c(self, semiaxis):
+        """Test if b and c are always equal to a."""
+        a = 10.0
+        sphere = Sphere(a, center=(0, 0, 0))
+        assert sphere.a == getattr(sphere, semiaxis)
+        # Update the value of the semiaxis and check again
+        sphere.a = 45.0
+        assert sphere.a == getattr(sphere, semiaxis)
+
+    def test_radius(self):
+        """Test that the radius is always equal to a."""
+        a = 10.0
+        sphere = Sphere(a, center=(0, 0, 0))
+        assert sphere.a == sphere.radius
+        # Update the value of the semiaxis and check again
+        sphere.a = 45.0
+        assert sphere.a == sphere.radius
+
+    def test_angles_equal_to_zero(self):
+        """Test if all angles are always equal to zero."""
+        sphere = Sphere(10.0, center=(0, 0, 0))
+        assert sphere.yaw == 0.0
+        assert sphere.pitch == 0.0
+        assert sphere.roll == 0.0
+
+    def test_rotation_matrix(self):
+        """Make sure the rotation matrix of a sphere is always the identity."""
+        sphere = Sphere(10.0, center=(0, 0, 0))
+        np.testing.assert_array_equal(
+            sphere.rotation_matrix, np.eye(3, dtype=np.float64)
+        )
+
+
 @pytest.mark.parametrize(
-    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid]
+    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid, Sphere]
 )
 class TestPhysicalProperties:
     @pytest.fixture
@@ -259,6 +319,8 @@ class TestPhysicalProperties:
                 "roll": 0.0,
                 "center": (0, 0, 0),
             }
+        elif ellipsoid_class is Sphere:
+            args = {"a": 50.0, "center": (0, 0, 0)}
         else:
             raise TypeError()
         return args

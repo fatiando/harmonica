@@ -10,65 +10,73 @@ import pytest
 from .._forward.utils_ellipsoids import calculate_lambda
 
 
-def test_lambda():
+@pytest.mark.parametrize(
+    ("a", "b", "c"),
+    [(6.0, 5.0, 5.0), (4.0, 5.0, 5.0), (6.0, 5.0, 4.0)],
+    ids=["prolate", "oblate", "triaxial"],
+)
+def test_lambda(a, b, c):
     """
-    Test that lambda fits characteristic equation.
+    Test that lambda fits characteristic equation on external points.
     """
-    x, y, z = 6, 5, 4
-    a, b, c = 3, 2, 1
-    lmbda = calculate_lambda(x, y, z, a, b, c)
+    # Build a 3D grid of observation points
+    x, y, z = np.meshgrid(*[np.linspace(-10, 10, 41) for _ in range(3)])
 
-    # test for lambda is within parameters for an ellipsoid
-    assert lmbda > -(c**2)
+    # Filter out only the external points to the ellipsoid
+    internal = x**2 / a**2 + y**2 / b**2 + z**2 / c**2 < 1
+    x, y, z = x[~internal], y[~internal], z[~internal]
 
-    # check lambda fits the characteristic equation
+    # Calculate lambda
+    lambda_ = calculate_lambda(x, y, z, a, b, c)
+
+    # Check if all lambda parameters are greater than -c**2
+    assert (lambda_ > -(c**2)).all()
+
+    # Check lambda fits the characteristic equation
     np.testing.assert_allclose(
-        x**2 / (a**2 + lmbda) + y**2 / (b**2 + lmbda) + z**2 / (c**2 + lmbda),
+        x**2 / (a**2 + lambda_) + y**2 / (b**2 + lambda_) + z**2 / (c**2 + lambda_),
         1.0,
     )
 
 
-def test_zero_cases_for_lambda():
+@pytest.mark.parametrize(
+    ("a", "b", "c"),
+    [(3.0, 2.0, 2.0), (1.0, 2.0, 2.0), (3.0, 2.0, 1.0)],
+    ids=["prolate", "oblate", "triaxial"],
+)
+def test_zero_cases_for_lambda(a, b, c):
     """
-    Test that lambda calculation produces acceptbale values in cases which are
+    Test that lambda calculation produces acceptable values in cases which are
     may throw zero errors.
     """
-    a = 3
-    b = 2
-    c = 1
-
-    #######
-
-    x = 0
-    y = 0
-    z = 5
+    x, y, z = 0, 0, 5
     lmbda = calculate_lambda(x, y, z, a, b, c)
     lmbda_eqn = z**2 - c**2
     np.testing.assert_allclose(lmbda, lmbda_eqn)
 
-    x = 0
-    y = 5
-    z = 0
-    lmbda1 = calculate_lambda(x, y, z, a, b, c)
-    lmbda_eqn1 = y**2 - b**2
-    np.testing.assert_allclose(lmbda1, lmbda_eqn1)
+    x, y, z = 0, 5, 0
+    lmbda = calculate_lambda(x, y, z, a, b, c)
+    lmbda_eqn = y**2 - b**2
+    np.testing.assert_allclose(lmbda, lmbda_eqn)
 
-    x = 5
-    y = 0
-    z = 0
-    lmbda2 = calculate_lambda(x, y, z, a, b, c)
-    lmbda_eqn2 = x**2 - a**2
-    np.testing.assert_allclose(lmbda2, lmbda_eqn2)
+    x, y, z = 5, 0, 0
+    lmbda = calculate_lambda(x, y, z, a, b, c)
+    lmbda_eqn = x**2 - a**2
+    np.testing.assert_allclose(lmbda, lmbda_eqn)
 
 
 @pytest.mark.parametrize("zero_coord", ["x", "y", "z"])
-def test_second_order_equations(zero_coord):
+@pytest.mark.parametrize(
+    ("a", "b", "c"),
+    [(3.4, 2.2, 2.2), (1.1, 2.8, 2.8), (3.4, 2.2, 1.1)],
+    ids=["prolate", "oblate", "triaxial"],
+)
+def test_second_order_equations(a, b, c, zero_coord):
     """
     Test lambda calculation against the solutions for its second order
     characteristic equations that take place when only one of the coordinates
     is zero.
     """
-    a, b, c = 3.4, 2.1, 1.3
     if zero_coord == "z":
         x, y, z = 5.4, 8.1, 0.0
         lambda_ = calculate_lambda(x, y, z, a, b, c)

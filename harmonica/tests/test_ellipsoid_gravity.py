@@ -30,6 +30,7 @@ from .._forward.ellipsoid_gravity import (
 from .._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
+    Sphere,
     TriaxialEllipsoid,
 )
 
@@ -40,7 +41,7 @@ def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
 
     Parameters
     ----------
-    ellipsoid_type : {"triaxial", "prolate", "oblate"}
+    ellipsoid_type : {"triaxial", "prolate", "oblate", "sphere"}
 
     Returns
     -------
@@ -62,6 +63,9 @@ def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
             ellipsoid = OblateEllipsoid(
                 a=a, b=b, yaw=0, pitch=0, center=center, density=density
             )
+        case "sphere":
+            a = 3.2
+            ellipsoid = Sphere(a=a, center=center, density=density)
         case _:
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
@@ -151,7 +155,7 @@ class TestSymmetry:
     Test symmetry in gravity fields.
     """
 
-    @pytest.fixture(params=["triaxial", "prolate", "oblate"])
+    @pytest.fixture(params=["triaxial", "prolate", "oblate", "sphere"])
     def ellipsoid(self, request):
         """
         Sample ellipsoid.
@@ -199,6 +203,43 @@ class TestSymmetry:
         g = np.sqrt(ge**2 + gn**2 + gz**2)
 
         # Check that |g| is constant in the circle
+        np.testing.assert_allclose(g[0], g)
+
+    @pytest.mark.parametrize("points", ["internal", "surface", "external"])
+    def test_symmetry_on_sphere(self, points):
+        """
+        Test symmetry of |g| on sphere around center of a sphere.
+
+        Define a sphere around the sphere, compute |g| on the sphere.
+        All values of |g| should be equal for spherical ellipsoids.
+        """
+        sphere = build_ellipsoid("sphere", density=200)
+
+        # Build coordinates along sphere centered in the center of the ellipsoid
+        phi = np.linspace(0, 2 * np.pi, 61)
+        theta = np.linspace(-np.pi / 2, np.pi / 2, 19)
+        phi, theta = np.meshgrid(phi, theta)
+
+        match points:
+            case "surface":
+                radius = sphere.a
+            case "internal":
+                radius = sphere.a * 0.5
+            case "external":
+                radius = sphere.a * 1.5
+            case _:
+                raise ValueError()
+
+        easting = radius * np.cos(phi) * np.cos(theta)
+        northing = radius * np.sin(phi) * np.cos(theta)
+        upward = radius * np.sin(theta)
+        coordinates = (easting, northing, upward)
+
+        # Compute gravity acceleration
+        ge, gn, gz = ellipsoid_gravity(coordinates, sphere)
+        g = np.sqrt(ge**2 + gn**2 + gz**2).ravel()
+
+        # Check that |g| is constant in the sphere
         np.testing.assert_allclose(g[0], g)
 
 
@@ -275,6 +316,145 @@ class TestEllipsoidVsPointSource:
 
         gz_diff = np.abs(gz - gz_point)
         assert np.all(gz_diff[:-1] > gz_diff[1:])
+
+
+class TestSphereVsPointSource:
+    """
+    Test if gravity field of sphere is equal to the one of a point source.
+
+    For any external point, the gravity field of the sphere should be the same as the
+    one of a point source located in the center of the sphere.
+    """
+
+    def test_sphere_vs_point_source(self):
+        """
+        Compare gravity acceleration of sphere on external points with the point source.
+        """
+        # Define sphere
+        radius = 50.0
+        center = (10, -29, 105)
+        density = 200.0
+        sphere = Sphere(radius, center=center, density=density)
+
+        # Build a 3d grid of observation points centered in (0, 0, 0)
+        n = 51
+        extent = 3 * radius
+        easting, northing, upward = np.meshgrid(
+            *[np.linspace(-extent, extent, n) for _ in range(3)]
+        )
+
+        # Remove the observation points that lie inside the sphere
+        inside = easting**2 + northing**2 + upward**2 < radius**2
+        easting = easting[~inside]
+        northing = northing[~inside]
+        upward = upward[~inside]
+
+        # Shift the coordinates, so they are centered around the sphere
+        coordinates = (easting + center[0], northing + center[1], upward + center[2])
+
+        # Forward model the sphere
+        g_sphere = ellipsoid_gravity(coordinates, sphere)
+
+        # Forward model a point source located in the center of the sphere
+        volume = 4 / 3 * np.pi * radius**3
+        g_point = tuple(
+            point_gravity(coordinates, center, masses=volume * density, field=field)
+            for field in ("g_e", "g_n", "g_z")
+        )
+
+        np.testing.assert_allclose(g_sphere, g_point)
+
+
+class TestEllipsoidVsSphere:
+    """
+    Compare gravity field of ellipsoids with the one of a sphere.
+
+    If the ellipsoids semiaxes are close enough to each other, their fields should be
+    close enough to the ones of a sphere, both inside and outside the bodies.
+    """
+
+    # Sphere radius, center, and susceptibility.
+    radius = 50.0
+    center = (28, 19, -50)
+    density = 200.0
+
+    # Difference between ellipsoid's semiaxes.
+    # It should be small compared to the sphere radius, so the ellipsoid approximates
+    # a sphere.
+    delta = 1e-4
+
+    @pytest.fixture
+    def sphere(self):
+        """Sphere used to compare gravity fields."""
+        return Sphere(self.radius, self.center, density=self.density)
+
+    @pytest.fixture(params=["oblate", "prolate", "triaxial"])
+    def ellipsoid(self, request):
+        """
+        Ellipsoid that approximates a sphere.
+        """
+        yaw, pitch, roll = 0, 0, 0
+        a = self.radius
+        match request.param:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    a=a,
+                    b=a + self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=self.center,
+                    density=self.density,
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    center=self.center,
+                    density=self.density,
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    a=a,
+                    b=a - self.delta,
+                    c=a - 2 * self.delta,
+                    yaw=yaw,
+                    pitch=pitch,
+                    roll=roll,
+                    center=self.center,
+                    density=self.density,
+                )
+            case _:
+                raise ValueError()
+        return ellipsoid
+
+    @pytest.fixture
+    def coordinates(self):
+        """3D grid of observation points around the sphere."""
+        n, extent = 51, 2 * self.radius
+        easting, northing, upward = np.meshgrid(
+            *[np.linspace(-extent, extent, n) for _ in range(3)]
+        )
+        coordinates = (
+            easting + self.center[0],
+            northing + self.center[1],
+            upward + self.center[2],
+        )
+        return coordinates
+
+    def test_ellipsoid_vs_sphere(self, coordinates, ellipsoid, sphere):
+        """
+        Compare gravity field of ellipsoids against the one for a sphere.
+        """
+        # Forward model the gravity acceleration for sphere and ellipsoid
+        g_sphere = ellipsoid_gravity(coordinates, sphere)
+        g_ellipsoid = ellipsoid_gravity(coordinates, ellipsoid)
+
+        # Compare the two fields
+        maxabs = vd.maxabs(*g_sphere, *g_ellipsoid)
+        atol = maxabs * 1e-5
+        np.testing.assert_allclose(g_sphere, g_ellipsoid, atol=atol)
 
 
 class TestSymmetryOnRotations:
@@ -465,6 +645,8 @@ class TestNoneDensity:
                 "roll": 0.0,
                 "center": (0, 0, 0),
             }
+        elif ellipsoid_class is Sphere:
+            args = {"a": 50.0, "center": (0, 0, 0)}
         else:
             raise TypeError()
         return args

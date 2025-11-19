@@ -26,10 +26,6 @@ class BaseEllipsoid:
         This class is not meant to be instantiated.
     """
 
-    yaw: float
-    pitch: float
-    roll: float
-
     @property
     def density(self) -> float | None:
         """Density of the ellipsoid in :math:`kg/m^3`."""
@@ -482,3 +478,111 @@ class OblateEllipsoid(BaseEllipsoid):
                 f"expected a < b (= c ) but got a = {a}, b = {b}"
             )
             raise ValueError(msg)
+
+
+class Sphere(BaseEllipsoid):
+    """
+    Homogeneous sphere.
+
+    Represent a sphere as a particular type of ellipsoid where ``a == b == c``.
+
+    Parameters
+    ----------
+    a : float
+        Radius or semiaxes lengths in meters.
+    center : tuple of float
+        Coordinates of the center of the sphere in the following order: `easting`,
+        `northing`, `upward`. All must be in meters.
+    density : float or None, optional
+        Density of the sphere in :math:`kg/m^3`.
+    susceptibility : float, (3, 3) array or None, optional
+        Magnetic susceptibility of the sphere in SI units.
+        A single float represents isotropic susceptibility in the body.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        If None, zero susceptibility will be assigned to the sphere.
+    remanent_mag : (3,) array or None, optional
+        Remanent magnetization vector of the sphere in A/m units. Its components
+        are defined in the easting-northing-upward coordinate system and should be
+        passed in that order.
+        If None, no remanent magnetization will be assigned to the sphere.
+
+    Notes
+    -----
+    All semiaxes (``a``, ``b`` and ``c``) are equal to each other.
+    All rotation angles (``yaw``, ``pitch`` and ``roll``) are equal to zero for the
+    sphere, since sphere is invariant to rotations.
+    """
+
+    def __init__(
+        self,
+        a: float,
+        center: tuple[float, float, float],
+        *,
+        density: float | None = None,
+        susceptibility: float | npt.NDArray | None = None,
+        remanent_mag: npt.NDArray | None = None,
+    ):
+        self._check_positive_semiaxis(a, "a")
+        self._a = a
+        self.center = center
+
+        # Physical properties of the sphere
+        self.density = density
+        self.susceptibility = susceptibility
+        self.remanent_mag = remanent_mag
+
+    @property
+    def a(self) -> float:
+        """Length of the first semiaxis."""
+        return self._a
+
+    @a.setter
+    def a(self, value: float) -> None:
+        self._check_positive_semiaxis(value, "a")
+        self._a = value
+
+    @property
+    def b(self) -> float:
+        """Length of the second semiaxis."""
+        return self._a
+
+    @property
+    def c(self) -> float:
+        """Length of the third semiaxis."""
+        return self._a
+
+    @property
+    def radius(self) -> float:
+        """Sphere radius."""
+        return self._a
+
+    @property
+    def yaw(self):
+        """Yaw angle, equal to zero."""
+        return 0.0
+
+    @property
+    def pitch(self):
+        """Pitch angle, equal to zero."""
+        return 0.0
+
+    @property
+    def roll(self):
+        """Roll angle, equal to zero."""
+        return 0.0
+
+    @property
+    def rotation_matrix(self) -> npt.NDArray:
+        """
+        Create a rotation matrix for the sphere.
+
+        .. important:
+
+            The rotation matrix for the sphere is always the identity matrix.
+
+        Returns
+        -------
+        rotation_matrix : (3, 3) array
+            Identity matrix.
+        """
+        return np.eye(3, dtype=np.float64)
