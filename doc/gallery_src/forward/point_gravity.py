@@ -68,7 +68,14 @@ with pygmt.config(FONT_TITLE="16p"):
         cmap=True,
     )
 
-fig.plot(x=easting, y=northing, style="c0.2c", fill="grey")
+fig.plot(
+    x=easting,
+    y=northing,
+    style="c0.15c",
+    fill="white",
+    pen="1p,black",
+    label="Point masses",
+)
 
 fig.colorbar(cmap=True, position="JMR+e", frame=["x+lmGal"])
 
