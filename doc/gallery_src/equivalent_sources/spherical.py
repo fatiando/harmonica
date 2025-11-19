@@ -114,6 +114,7 @@ fig.grdimage(
     frame=[f"ESnw+t{title}", "xa5", "ya4"],
     grid=grid.gravity_disturbance,
     cmap=True,
+    nan_transparent=True,
 )
 
 fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
