@@ -101,9 +101,8 @@ with fig.subplot(
             frame=["a", "+tReduced to the pole (RTP)"],
         )
         # Add colorbar
-        label = "nT"
         fig.colorbar(
-            frame=f"af+l{label}",
+            frame="af+lnT",
             position="JMR+o1/-0.25c+ef",
         )
 
@@ -129,9 +128,8 @@ with fig.subplot(
             frame=["a", "+tTilt of RTP grid"],
         )
         # Add colorbar
-        label = "rad"
         fig.colorbar(
-            frame=f"af+l{label}",
+            frame="af+lradians",
             position="JMR+o1/-0.25c",
         )
 fig.show()

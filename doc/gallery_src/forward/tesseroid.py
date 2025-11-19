@@ -50,7 +50,7 @@ grid = vd.make_xarray_grid(
 # Plot the gravitational field
 fig = pygmt.Figure()
 
-title = "Downward component of gravitational acceleration"
+title = "Gravitational acceleration of a tesseroid"
 
 with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(

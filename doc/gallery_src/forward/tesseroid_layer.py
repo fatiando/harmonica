@@ -61,14 +61,18 @@ cpt_lims = vd.maxabs(gravity.g_z)
 
 # Make colormap of data
 pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims])
+
+title = "Gravitational acceleration of topography with tesseroids"
+
 fig.grdimage(
     gravity.g_z,
+    frame=f"+t{title}",
     projection="M15c",
     nan_transparent=True,
     cmap=True,
 )
 
 fig.basemap(frame=True)
-fig.colorbar(frame='af+l"Gravity [mGal]"', position="JCR")
+fig.colorbar(frame="af+lmGal", position="JCR")
 fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
 fig.show()

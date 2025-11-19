@@ -54,18 +54,24 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             grid=magnetic_grid,
             projection="X?",
             cmap=True,
+            frame="+tMagnetic Anomaly at 500m",
         )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Magnetic anomaly at 500m [nT]"',
+            frame="af+lnT",
             position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
         # Plot upward continued grid
-        fig.grdimage(grid=upward_continued, projection="X?", cmap=True)
+        fig.grdimage(
+            grid=upward_continued,
+            projection="X?",
+            frame="+tUpward continued to 1000m",
+            cmap=True,
+        )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Upward continued to 1000m [nT]"',
+            frame="af+lnT",
             position="JBC+h+o0/1c",
         )
 fig.show()

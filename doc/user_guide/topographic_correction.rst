@@ -82,7 +82,7 @@ And plot it:
       projection="M15c",
       frame=['ag', 'WSen'],
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
    fig.show()
 
 

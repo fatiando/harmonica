@@ -94,9 +94,9 @@ pygmt.makecpt(
 title = "Observed gravity disturbance data"
 
 fig.plot(
-    projection="M10c",
+    projection="M12c",
     region=region,
-    frame=["WSne", "xa5", "ya4"],
+    frame=[f"WSne+t{title}", "xa5", "ya4"],
     x=longitude,
     y=latitude,
     fill=gravity_disturbance,
@@ -108,8 +108,10 @@ fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
 fig.shift_origin(xshift="w+3c")
 
+title = "Gridded and upward-continued"
+
 fig.grdimage(
-    frame=["ESnw", "xa5", "ya4"],
+    frame=[f"ESnw+t{title}", "xa5", "ya4"],
     grid=grid.gravity_disturbance,
     cmap=True,
 )

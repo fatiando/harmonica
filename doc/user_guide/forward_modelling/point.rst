@@ -238,7 +238,6 @@ Lets plot these results using :mod:`pygmt`:
       coordinates_spherical, g_z, data_names="g_z", extra_coords_names="extra")
 
    fig = pygmt.Figure()
-   title = "Gravitational acceleration (downward)"
    maxabs = vd.maxabs(g_z)
    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
@@ -246,7 +245,7 @@ Lets plot these results using :mod:`pygmt`:
       region=(-72, -68, -46, -42),
       projection="M10c",
       grid=grid.g_z,
-      frame=[f"WSne+t{title}", "x", "y"],
+      frame=["a", "x", "y"],
       cmap=True,)
 
    fig.colorbar(cmap=True, position="JMR", frame=["a0.000000005", "x+lmGal"])

@@ -53,10 +53,11 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             grid=magnetic_grid,
             projection="X?",
             cmap=True,
+            frame="+tMagnetic Anomaly",
         )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Magnetic anomaly [nT]"',
+            frame="af+lnT",
             position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
@@ -64,10 +65,15 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
         cpt_lim = vd.maxabs(deriv_upward) * 0.6
         pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot upward derivative
-        fig.grdimage(grid=deriv_upward, projection="X?", cmap=True)
+        fig.grdimage(
+            grid=deriv_upward,
+            projection="X?",
+            cmap=True,
+            frame="+tUpward Derivative",
+        )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Upward derivative [nT/m]"',
+            frame="af+lnT/m",
             position="JBC+h+o0/1c+e",
         )
 fig.show()

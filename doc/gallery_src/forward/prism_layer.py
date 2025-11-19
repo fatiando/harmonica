@@ -51,14 +51,14 @@ grid = vd.make_xarray_grid(
 # Plot gravity field
 fig = pygmt.Figure()
 
-title = "Gravitational acceleration of a layer of prisms"
+title = "Gravitational acceleration of topography with prisms"
 
 with pygmt.config(FONT_TITLE="14p"):
     fig.grdimage(
         region=region,
         projection="X10c/10c",
         grid=grid.gravity,
-        frame=["a", f"+t{title}", 'x+l"easting (m)"', 'y+l"northing (m)"'],
+        frame=["a", f"+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
         cmap="viridis",
     )
 
