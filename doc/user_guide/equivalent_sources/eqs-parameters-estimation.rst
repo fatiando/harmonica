@@ -39,7 +39,7 @@ Lets start by loading some sample gravity data:
 
    fname = ensaio.fetch_bushveld_gravity(version=1)
    data = pd.read_csv(fname)
-   data
+   print(data)
 
 And project their coordinates using a Mercator projection:
 
@@ -80,7 +80,7 @@ value of the score obtained after each cross validation.
            data.gravity_disturbance_mgal,
        )
    )
-   score_first_guess
+   print(score_first_guess)
 
 The resulting score corresponds to the R^2. It represents how well the
 equivalent sources can reproduce the variation of our data. As closer it gets
@@ -145,7 +145,7 @@ And now we can actually ran one cross validation for each pair of parameters:
            )
        )
        scores.append(score)
-   scores
+   print(scores)
 
 Once every score has been computed, we can obtain the best score and the
 corresponding parameters that generate it:
