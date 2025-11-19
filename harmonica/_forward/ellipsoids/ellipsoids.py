@@ -14,7 +14,7 @@ from numbers import Real
 import numpy as np
 import numpy.typing as npt
 
-from .utils import get_rotation_matrix
+from ..utils import get_rotation_matrix
 
 
 class BaseEllipsoid:

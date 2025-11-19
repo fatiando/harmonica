@@ -24,10 +24,8 @@ import verde as vd
 from harmonica import point_gravity
 from harmonica.errors import NoPhysicalPropertyWarning
 
-from .._forward.ellipsoid_gravity import (
-    ellipsoid_gravity,
-)
-from .._forward.ellipsoids import (
+from harmonica import ellipsoid_gravity
+from harmonica._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     Sphere,

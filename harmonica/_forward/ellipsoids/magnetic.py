@@ -18,10 +18,10 @@ import numpy.typing as npt
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-from .._utils import magnetic_angles_to_vec
-from ..errors import NoPhysicalPropertyWarning
-from ..typing import Coordinates, Ellipsoid
-from .utils_ellipsoids import (
+from ..._utils import magnetic_angles_to_vec
+from ...errors import NoPhysicalPropertyWarning
+from ...typing import Coordinates, Ellipsoid
+from .utils import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
