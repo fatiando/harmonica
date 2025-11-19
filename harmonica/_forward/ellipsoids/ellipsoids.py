@@ -17,6 +17,48 @@ import numpy.typing as npt
 from ..utils import get_rotation_matrix
 
 
+def create_ellipsoid(
+    a: float,
+    b: float,
+    c: float,
+    *,
+    center: tuple[float, float, float],
+    yaw: float = 0.0,
+    pitch: float = 0.0,
+    roll: float = 0.0,
+    **kwargs,
+) -> "BaseEllipsoid":
+
+    # Sanity checks
+    for semiaxis, value in zip(("a", "b", "c"), (a, b, c), strict=True):
+        if value <= 0:
+            msg = (
+                f"Invalid value of '{semiaxis}' equal to '{value}'. "
+                "It must be positive."
+            )
+            raise ValueError(msg)
+
+    if a == b == c:
+        return Sphere(a, center=center, **kwargs)
+
+    # Sort semiaxes so a >= b >= c
+    c, b, a = sorted((a, b, c))
+
+    if a == b:
+        a = c  # set `a` as the smallest semiaxis (`c`)
+        ellipsoid = OblateEllipsoid(a, b, yaw=yaw, pitch=pitch, center=center, **kwargs)
+    elif b == c:
+        ellipsoid = ProlateEllipsoid(
+            a, b, yaw=yaw, pitch=pitch, center=center, **kwargs
+        )
+    else:
+        ellipsoid = TriaxialEllipsoid(
+            a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, **kwargs
+        )
+
+    return ellipsoid
+
+
 class BaseEllipsoid:
     """
     Base class for ellipsoids.
