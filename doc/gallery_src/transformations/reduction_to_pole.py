@@ -58,10 +58,7 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid
         fig.grdimage(
-            grid=magnetic_grid,
-            projection="X?",
-            cmap=True,
-            frame="+tMagnetic anomaly"
+            grid=magnetic_grid, projection="X?", cmap=True, frame="+tMagnetic anomaly"
         )
         # Add colorbar
         fig.colorbar(
