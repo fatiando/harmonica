@@ -61,7 +61,7 @@ with pygmt.config(FONT_TITLE="16p"):
         cmap="viridis",
     )
 
-fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+fig.colorbar(cmap=True, position="JMR", frame=["a200f50", "x+lmGal"])
 
 fig.coast(shorelines="1p,black")
 
