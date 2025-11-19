@@ -55,13 +55,19 @@ gravity = vd.make_xarray_grid(
 
 # Plot gravity field
 fig = pygmt.Figure()
-maxabs = vd.maxabs(gravity.g_z)
-pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs))
+
+# Get the max absolute value to use as color scale limits
+cpt_lims = vd.maxabs(gravity.g_z)
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims])
 fig.grdimage(
     gravity.g_z,
     projection="M15c",
     nan_transparent=True,
+    cmap=True,
 )
+
 fig.basemap(frame=True)
 fig.colorbar(frame='af+l"Gravity [mGal]"', position="JCR")
 fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])

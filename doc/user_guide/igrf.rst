@@ -15,6 +15,7 @@ generation IGRF field with :class:`harmonica.IGRF14`. Here's how it works.
    import pygmt
    import boule as bl
    import harmonica as hm
+   import verde as vd
 
 All of the functionality is wrapped in the :class:`~harmonica.IGRF14` class.
 When creating an instance of it, we need to provide the date on which we want
@@ -147,24 +148,31 @@ We can plot the three components using :mod:`pygmt` on a nice map:
 .. jupyter-execute::
 
    fig = pygmt.Figure()
+
    for c in ["b_east", "b_north", "b_up"]:
-       fig.grdimage(
-           grid[c], cmap="polar+h", projection="W15c", region="g",
-       )
-       fig.coast(shorelines=True)
-       fig.colorbar(
-           position="JMR+ml+o0.5c",
-           frame=[
+      max_abs = vd.maxabs(grid[c])
+      pygmt.makecpt(
+         cmap="balance+h0",
+         series=[-max_abs, max_abs],
+         background=True,
+      )
+      fig.grdimage(
+         grid[c], cmap=True, projection="W15c", region="g",
+      )
+      fig.coast(shorelines=True)
+      fig.colorbar(
+         position="JMR+ml+o0.5c",
+         frame=[
                "a10000",
                f"x+l{grid[c].attrs['long_name']}",
                f"y+l{grid[c].attrs['units']}",
-           ]
-       )
-       if c == "b_east":
-           fig.basemap(frame=["a", f"+t{grid.attrs['title']}"])
-       else:
-           fig.basemap(frame="a")
-       fig.shift_origin(yshift="-h-0.5c")
+         ]
+      )
+      if c == "b_east":
+         fig.basemap(frame=["a", f"+t{grid.attrs['title']}"])
+      else:
+         fig.basemap(frame="a")
+      fig.shift_origin(yshift="-h-0.5c")
    fig.show()
 
 The grid spacing was calculated automatically to match the maximum degree of
@@ -201,33 +209,33 @@ with PyGMT the same way we did the vector components:
 
    fig = pygmt.Figure()
    cmaps = {
-       "intensity": "viridis",
-       "inclination": "polar+h",
-       "declination": "polar+h",
+      "intensity": "viridis",
+      "inclination": "balance+h0",
+      "declination": "balance+h0",
    }
    cb_annot = {
-       "intensity": "a10000",
-       "inclination": "a20+u\\260",
-       "declination": "a40+u\\260",
+      "intensity": "a10000",
+      "inclination": "a20+u\\260",
+      "declination": "a40+u\\260",
    }
    for c in ["intensity", "inclination", "declination"]:
-       fig.grdimage(
-           grid[c], cmap=cmaps[c], projection="W0/15c",
-       )
-       fig.coast(shorelines=True)
-       fig.colorbar(
-           position="JMR+ml+o0.5c",
-           frame=[
+      fig.grdimage(
+         grid[c], cmap=cmaps[c], projection="W0/15c",
+      )
+      fig.coast(shorelines=True)
+      fig.colorbar(
+         position="JMR+ml+o0.5c",
+         frame=[
                cb_annot[c],
                f"x+l{grid[c].attrs['long_name']}",
                f"y+l{grid[c].attrs['units']}",
-           ]
-       )
-       if c == "intensity":
-           fig.basemap(frame=["a", f"+t{grid.attrs['title']}"])
-       else:
-           fig.basemap(frame="a")
-       fig.shift_origin(yshift="-h-0.5c")
+         ]
+      )
+      if c == "intensity":
+         fig.basemap(frame=["a", f"+t{grid.attrs['title']}"])
+      else:
+         fig.basemap(frame="a")
+      fig.shift_origin(yshift="-h-0.5c")
    fig.show()
 
 We can clearly see the `South Atlantic Magnetic Anomaly

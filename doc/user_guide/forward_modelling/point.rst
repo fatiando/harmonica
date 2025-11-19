@@ -113,7 +113,7 @@ Lets plot this gravitational field:
    fig = pygmt.Figure()
 
    maxabs = vd.maxabs(g_z)
-   pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
    fig.grdimage(
       region=(-250, 1250, -250, 1250),
@@ -239,8 +239,8 @@ Lets plot these results using :mod:`pygmt`:
 
    fig = pygmt.Figure()
    title = "Gravitational acceleration (downward)"
-   maxabs = vd.maxabs(g_z)*.95
-   pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs), background=True)
+   maxabs = vd.maxabs(g_z)
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
    fig.grdimage(
       region=(-72, -68, -46, -42),

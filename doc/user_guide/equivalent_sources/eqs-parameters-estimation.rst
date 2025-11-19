@@ -216,7 +216,7 @@ Lets plot it:
    fig = pygmt.Figure()
 
    # Make colormap of data
-   pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+   pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs,))
 
    title = "Gravity disturbance with first guess"
 

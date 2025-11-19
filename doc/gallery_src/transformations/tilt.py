@@ -79,10 +79,10 @@ with fig.subplot(
     sharey="l",
     margins=["1c", "1c"],
 ):
-    scale = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
+    cpt_lim = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
     with fig.set_panel(panel=0):
         # Make colormap of data
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
@@ -92,7 +92,7 @@ with fig.subplot(
         )
     with fig.set_panel(panel=1):
         # Make colormap of data
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot reduced to the pole magnetic anomaly grid
         fig.grdimage(
             grid=rtp_grid,
@@ -104,13 +104,13 @@ with fig.subplot(
         label = "nT"
         fig.colorbar(
             frame=f"af+l{label}",
-            position="JMR+o1/-0.25c+e",
+            position="JMR+o1/-0.25c+ef",
         )
 
-    scale = 0.6 * vd.maxabs(tilt_grid, tilt_rtp_grid)
+    cpt_lim = vd.maxabs(tilt_grid, tilt_rtp_grid)
     with fig.set_panel(panel=2):
         # Make colormap for tilt (saturate it a little bit)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot tilt
         fig.grdimage(
             grid=tilt_grid,
@@ -120,7 +120,7 @@ with fig.subplot(
         )
     with fig.set_panel(panel=3):
         # Make colormap for tilt rtp (saturate it a little bit)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot tilt
         fig.grdimage(
             grid=tilt_rtp_grid,
@@ -132,6 +132,6 @@ with fig.subplot(
         label = "rad"
         fig.colorbar(
             frame=f"af+l{label}",
-            position="JMR+o1/-0.25c+e",
+            position="JMR+o1/-0.25c",
         )
 fig.show()

@@ -56,7 +56,7 @@ title = "Gravitational acceleration (downward)"
 
 maxabs = vd.maxabs(gravity) * 0.80
 
-pygmt.makecpt(cmap="vik", series=(-maxabs, maxabs, 0.3))
+pygmt.makecpt(cmap="vik", series=[-maxabs, maxabs, 0.3], background=True)
 
 with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
@@ -70,6 +70,8 @@ with pygmt.config(FONT_TITLE="16p"):
 
 fig.plot(x=easting, y=northing, style="c0.2c", fill="grey")
 
-fig.colorbar(cmap=True, position="JMR", frame=["a.6f.2", "x+lmGal"])
+fig.colorbar(cmap=True, position="JMR+e", frame=["x+lmGal"])
+
+fig.legend()
 
 fig.show()

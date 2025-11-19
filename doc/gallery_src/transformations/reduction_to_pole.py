@@ -52,9 +52,9 @@ print("\nReduced to the pole magnetic grid:\n", rtp_grid)
 # Plot original magnetic anomaly and the reduced to the pole
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
-    # Make colormap for both plots (saturate it a little bit)
-    scale = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
-    pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+    # Make colormap for both plots
+    cpt_lim = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
+    pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid
         fig.grdimage(
@@ -65,7 +65,7 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
         # Add colorbar
         fig.colorbar(
             frame='af+l"Magnetic anomaly [nT]"',
-            position="JBC+h+o0/1c+e",
+            position="JBC+h+o0/1c+ef",
         )
     with fig.set_panel(panel=1):
         # Plot upward reduced to the pole grid
@@ -73,6 +73,6 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
         # Add colorbar
         fig.colorbar(
             frame='af+l"Reduced to the pole [nT]"',
-            position="JBC+h+o0/1c+e",
+            position="JBC+h+o0/1c+ef",
         )
 fig.show()

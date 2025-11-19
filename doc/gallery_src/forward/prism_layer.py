@@ -62,6 +62,6 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap="viridis",
     )
 
-fig.colorbar(cmap=True, position="JMR", frame=["a2f1", "x+lmGal"])
+fig.colorbar(cmap=True, position="JMR", frame=["x+lmGal"])
 
 fig.show()

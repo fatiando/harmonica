@@ -143,7 +143,7 @@ And plot it:
    maxabs = vd.maxabs(gravity_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(series=[-maxabs, maxabs], cmap="polar+h")
+   pygmt.makecpt(series=[-maxabs, maxabs], cmap="balance+h0")
    fig.grdimage(
        gravity_disturbance,
        projection="W20c",
