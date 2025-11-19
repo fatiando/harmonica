@@ -9,6 +9,17 @@ predictions of the secular variation). Harmonica allows calculating the 14th
 generation IGRF field with :class:`harmonica.IGRF14`. Here's how it works.
 
 .. jupyter-execute::
+   :hide-code:
+
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+    
+.. jupyter-execute::
 
    import datetime
    import numpy as np
