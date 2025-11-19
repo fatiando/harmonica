@@ -9,6 +9,7 @@ Test ellipsoid classes.
 """
 
 import re
+import itertools
 
 import numpy as np
 import pytest
@@ -434,3 +435,40 @@ class TestPhysicalProperties:
         msg = re.escape("Invalid 'remanent_mag' with shape '(2,)'")
         with pytest.raises(ValueError, match=msg):
             ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
+
+
+class TestCreateEllipsoids:
+    """
+    Test the ``create_ellipsoids`` function.
+    """
+
+    def test_sphere(self): ...
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c"), [(2.0, 1.0, 1.0), (1.0, 2.0, 1.0), (1.0, 1.0, 2.0)]
+    )
+    def test_prolate(self, a, b, c): ...
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c"), [(2.0, 3.0, 3.0), (3.0, 2.0, 3.0), (3.0, 3.0, 2.0)]
+    )
+    def test_oblate(self, a, b, c): ...
+
+    @pytest.mark.parametrize(("a", "b", "c"), itertools.permutations((1.0, 2.0, 3.0)))
+    def test_triaxial(self, a, b, c): ...
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c"),
+        [(-1.0, 2.0, 3.0), (1.0, -2.0, 3.0), (1.0, 2.0, -3.0), (0.0, 1.0, 2.0)],
+    )
+    def test_invalid_semiaxes(self, a, b, c): ...
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c"),
+        [(1.0, 1.0, 1.0), (1.0, 1.0, 2.0), (2.0, 2.0, 1.0), (1.0, 2.0, 3.0)],
+    )
+    @pytest.mark.parametrize(
+        "physical_property",
+        ["density", "susceptibility", "remanent_mag"],
+    )
+    def test_physical_properties(self, a, b, c, physical_property): ...
