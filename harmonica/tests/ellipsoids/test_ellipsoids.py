@@ -8,13 +8,19 @@
 Test ellipsoid classes.
 """
 
-import re
 import itertools
+import re
 
 import numpy as np
 import pytest
 
-from harmonica import OblateEllipsoid, ProlateEllipsoid, Sphere, TriaxialEllipsoid
+from harmonica import (
+    OblateEllipsoid,
+    ProlateEllipsoid,
+    Sphere,
+    TriaxialEllipsoid,
+    create_ellipsoid,
+)
 
 
 class TestProlateEllipsoid:
@@ -437,38 +443,104 @@ class TestPhysicalProperties:
             ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
 
 
-class TestCreateEllipsoids:
+class TestCreateEllipsoid:
     """
-    Test the ``create_ellipsoids`` function.
+    Test the ``create_ellipsoid`` function.
     """
 
-    def test_sphere(self): ...
+    def test_sphere(self):
+        """Test ``create_ellipsoid`` when expecting a ``Sphere``."""
+        a = 50
+        center = (1.0, 2.0, 3.0)
+        sphere = create_ellipsoid(a, a, a, center=center)
+        assert isinstance(sphere, Sphere)
+        assert sphere.a == a
+        np.testing.assert_almost_equal(sphere.center, center)
 
     @pytest.mark.parametrize(
         ("a", "b", "c"), [(2.0, 1.0, 1.0), (1.0, 2.0, 1.0), (1.0, 1.0, 2.0)]
     )
-    def test_prolate(self, a, b, c): ...
+    def test_prolate(self, a, b, c):
+        """Test ``create_ellipsoid`` when expecting a ``ProlateEllipsoid``."""
+        center = (1.0, 2.0, 3.0)
+        yaw, pitch = 30.0, -17.0
+        ellipsoid = create_ellipsoid(a, b, c, center=center, yaw=yaw, pitch=pitch)
+        assert isinstance(ellipsoid, ProlateEllipsoid)
+        assert ellipsoid.a == 2.0
+        assert ellipsoid.b == 1.0
+        assert ellipsoid.c == 1.0
+        assert ellipsoid.yaw == yaw
+        assert ellipsoid.pitch == pitch
+        np.testing.assert_almost_equal(ellipsoid.center, center)
 
     @pytest.mark.parametrize(
         ("a", "b", "c"), [(2.0, 3.0, 3.0), (3.0, 2.0, 3.0), (3.0, 3.0, 2.0)]
     )
-    def test_oblate(self, a, b, c): ...
+    def test_oblate(self, a, b, c):
+        """Test ``create_ellipsoid`` when expecting a ``OblateEllipsoid``."""
+        center = (1.0, 2.0, 3.0)
+        yaw, pitch = 30.0, -17.0
+        ellipsoid = create_ellipsoid(a, b, c, center=center, yaw=yaw, pitch=pitch)
+        assert isinstance(ellipsoid, OblateEllipsoid)
+        assert ellipsoid.a == 2.0
+        assert ellipsoid.b == 3.0
+        assert ellipsoid.c == 3.0
+        assert ellipsoid.yaw == yaw
+        assert ellipsoid.pitch == pitch
+        np.testing.assert_almost_equal(ellipsoid.center, center)
 
     @pytest.mark.parametrize(("a", "b", "c"), itertools.permutations((1.0, 2.0, 3.0)))
-    def test_triaxial(self, a, b, c): ...
+    def test_triaxial(self, a, b, c):
+        """Test ``create_ellipsoid`` when expecting a ``TriaxialEllipsoid``."""
+        center = (1.0, 2.0, 3.0)
+        yaw, pitch, roll = 30.0, -17.0, 45.0
+        ellipsoid = create_ellipsoid(
+            a, b, c, center=center, yaw=yaw, pitch=pitch, roll=roll
+        )
+        assert isinstance(ellipsoid, TriaxialEllipsoid)
+        assert ellipsoid.a == 3.0
+        assert ellipsoid.b == 2.0
+        assert ellipsoid.c == 1.0
+        assert ellipsoid.yaw == yaw
+        assert ellipsoid.pitch == pitch
+        assert ellipsoid.roll == roll
+        np.testing.assert_almost_equal(ellipsoid.center, center)
 
     @pytest.mark.parametrize(
         ("a", "b", "c"),
         [(-1.0, 2.0, 3.0), (1.0, -2.0, 3.0), (1.0, 2.0, -3.0), (0.0, 1.0, 2.0)],
+        ids=["a", "b", "c", "a-zero"],
     )
-    def test_invalid_semiaxes(self, a, b, c): ...
+    def test_invalid_semiaxes(self, a, b, c):
+        """Test error when semiaxes are non-positive."""
+        msg = (
+            r"Invalid value of '[abc]' equal to '-?[0-9]+\.[0-9]+'\. "
+            r"It must be positive\."
+        )
+        with pytest.raises(ValueError, match=msg):
+            create_ellipsoid(a, b, c, center=(0, 1, 2))
 
     @pytest.mark.parametrize(
         ("a", "b", "c"),
         [(1.0, 1.0, 1.0), (1.0, 1.0, 2.0), (2.0, 2.0, 1.0), (1.0, 2.0, 3.0)],
+        ids=["sphere", "prolate", "oblate", "triaxial"],
     )
     @pytest.mark.parametrize(
         "physical_property",
         ["density", "susceptibility", "remanent_mag"],
     )
-    def test_physical_properties(self, a, b, c, physical_property): ...
+    def test_physical_properties(self, a, b, c, physical_property):
+        """Test if physical properties are present in the objects."""
+        match physical_property:
+            case "density":
+                value = 200.0
+            case "susceptibility":
+                value = 0.1
+            case "remanent_mag":
+                value = np.array([1.0, 2.0, 3.0])
+            case _:
+                raise ValueError()
+        kwargs = {physical_property: value}
+        center = (1.0, 2.0, 3.0)
+        ellipsoid = create_ellipsoid(a, b, c, center=center, **kwargs)
+        np.testing.assert_allclose(getattr(ellipsoid, physical_property), value)
