@@ -58,12 +58,13 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
-      - name: Setup Miniconda
+      - name: Setup Miniforge
         uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f
         with:
           python-version: ${{ env.PYTHON }}
           miniforge-version: latest
           channels: conda-forge
+          conda-remove-defaults: "true"
 
       - name: Collect requirements
         run: |
@@ -127,8 +128,7 @@ jobs:
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
-        # Only if not a pull request
-        if: success() && github.event_name != 'pull_request'
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: docs-${{ github.sha }}
