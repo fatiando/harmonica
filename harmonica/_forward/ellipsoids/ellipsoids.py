@@ -28,6 +28,40 @@ def create_ellipsoid(
     roll: float = 0.0,
     **kwargs,
 ) -> "BaseEllipsoid":
+    """
+    Create an ellipsoid given its three semiaxes lenghts.
+
+    This function returns an ellipsoid object of the correct type based on the values of
+    the three semiaxes lenghts. Semiaxes lengths can be passed in any order.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Semiaxes lenghts in meters. They can be passed in any particular order. They
+        must all be positive values.
+    center : tuple of float
+        Coordinates of the center of the ellipsoid in the following order: `easting`,
+        `northing`, `upward`.
+    yaw : float, optional
+        Rotation angle about the upward axis, in degrees.
+    pitch : float, optional
+        Rotation angle about the northing axis (after yaw rotation), in degrees.
+        A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
+        direction.
+    roll : float, optional
+        Rotation angle about the easting axis (after yaw and pitch rotation), in
+        degrees.
+    **kwargs : dict
+        Extra arguments passed to the ellipsoid classes. They can be physical properties
+        like ``density``, ``susceptibility``, and ``remanent_mag``.
+
+    Returns
+    -------
+    ellipsoid : harmonica.typing.Ellipsoid
+        Instance of one of the ellipsoid classes: :class:`harmonica.OblateEllipsoid`,
+        :class:`harmonica.ProlateEllipsoid`, :class:`harmonica.Sphere`, or
+        :class:`harmonica.TriaxialEllipsoid`.
+    """
     # Sanity checks
     for semiaxis, value in zip(("a", "b", "c"), (a, b, c), strict=True):
         if value <= 0:
