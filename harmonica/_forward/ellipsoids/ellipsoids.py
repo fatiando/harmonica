@@ -61,6 +61,58 @@ def create_ellipsoid(
         Instance of one of the ellipsoid classes: :class:`harmonica.OblateEllipsoid`,
         :class:`harmonica.ProlateEllipsoid`, :class:`harmonica.Sphere`, or
         :class:`harmonica.TriaxialEllipsoid`.
+
+    Examples
+    --------
+    Define a prolate, oblate, triaxial or spherical ellipsoid by passing its semiaxes in
+    any order:
+
+    >>> ellipsoid = create_ellipsoid(1, 1, 2, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    ProlateEllipsoid
+    >>> ellipsoid.a
+    2
+    >>> ellipsoid.b
+    1
+    >>> ellipsoid.c
+    1
+
+    >>> ellipsoid = create_ellipsoid(1, 2, 2, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    OblateEllipsoid
+    >>> ellipsoid.a
+    1
+    >>> ellipsoid.b
+    2
+    >>> ellipsoid.c
+    2
+
+    >>> ellipsoid = create_ellipsoid(1, 2, 3, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    TriaxialEllipsoid
+    >>> ellipsoid.a
+    3
+    >>> ellipsoid.b
+    2
+    >>> ellipsoid.c
+    1
+
+    We can specify rotation angles while creating the ellipsoid:
+
+    >>> ellipsoid = create_ellipsoid(1, 1, 2, yaw=85, pitch=32, center=(1., 2., 3.))
+    >>> ellipsoid.yaw
+    85
+    >>> ellipsoid.pitch
+    32
+
+    The function can also take physical properties:
+
+    >>> density, susceptibility = -200.0, 0.4
+    >>> ellipsoid = create_ellipsoid(
+    ...     1, 1, 2, center=(1., 2., 3.),
+    ...     density=density,
+    ...     susceptibility=susceptibility,
+    ... )
     """
     # Sanity checks
     for semiaxis, value in zip(("a", "b", "c"), (a, b, c), strict=True):
