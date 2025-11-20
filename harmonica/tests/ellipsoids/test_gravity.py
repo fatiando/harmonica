@@ -21,16 +21,14 @@ import numpy as np
 import pytest
 import verde as vd
 
-from harmonica import point_gravity
-from harmonica.errors import NoPhysicalPropertyWarning
-
-from harmonica import ellipsoid_gravity
+from harmonica import ellipsoid_gravity, point_gravity
 from harmonica._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     Sphere,
     TriaxialEllipsoid,
 )
+from harmonica.errors import NoPhysicalPropertyWarning
 
 
 def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):

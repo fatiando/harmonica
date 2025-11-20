@@ -21,9 +21,9 @@ from ._forward.ellipsoids import (
     ProlateEllipsoid,
     Sphere,
     TriaxialEllipsoid,
-    ellipsoid_magnetic,
-    ellipsoid_gravity,
     create_ellipsoid,
+    ellipsoid_gravity,
+    ellipsoid_magnetic,
 )
 from ._forward.point import point_gravity
 from ._forward.prism_gravity import prism_gravity

@@ -23,8 +23,6 @@ import verde as vd
 from scipy.constants import mu_0
 
 import harmonica as hm
-from harmonica.errors import NoPhysicalPropertyWarning
-
 from harmonica import ellipsoid_magnetic
 from harmonica._forward.ellipsoids import (
     OblateEllipsoid,
@@ -37,6 +35,7 @@ from harmonica._forward.ellipsoids.magnetic import (
     get_magnetisation,
 )
 from harmonica._forward.utils import get_rotation_matrix
+from harmonica.errors import NoPhysicalPropertyWarning
 
 
 def test_euler_returns():

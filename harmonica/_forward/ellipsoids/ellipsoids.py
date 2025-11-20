@@ -28,7 +28,6 @@ def create_ellipsoid(
     roll: float = 0.0,
     **kwargs,
 ) -> "BaseEllipsoid":
-
     # Sanity checks
     for semiaxis, value in zip(("a", "b", "c"), (a, b, c), strict=True):
         if value <= 0:
