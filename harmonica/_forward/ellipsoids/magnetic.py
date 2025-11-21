@@ -394,16 +394,17 @@ def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
     k = (a**2 - b**2) / (a**2 - c**2)
     ellipk = ellipkinc(phi, k)
     ellipe = ellipeinc(phi, k)
+    a_c_sqrt = np.sqrt(a**2 - c**2)
 
-    nxx = (a * b * c) / (np.sqrt(a**2 - c**2) * (a**2 - b**2)) * (ellipk - ellipe)
+    nxx = (a * b * c) / (a_c_sqrt * (a**2 - b**2)) * (ellipk - ellipe)
     nyy = (
         -1 * nxx
-        + ((a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))) * ellipe
+        + ((a * b * c) / (a_c_sqrt * (b**2 - c**2))) * ellipe
         - c**2 / (b**2 - c**2)
     )
-    nzz = -1 * (
-        (a * b * c) / (np.sqrt(a**2 - c**2) * (b**2 - c**2))
-    ) * ellipe + b**2 / (b**2 - c**2)
+    nzz = -1 * ((a * b * c) / (a_c_sqrt * (b**2 - c**2))) * ellipe + b**2 / (
+        b**2 - c**2
+    )
 
     return nxx, nyy, nzz
 
@@ -426,9 +427,8 @@ def _demag_tensor_prolate_internal(a: float, b: float):
     if not m > 1:
         msg = f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
         raise ValueError(msg)
-    nxx = (1 / (m**2 - 1)) * (
-        ((m / np.sqrt(m**2 - 1)) * np.log(m + np.sqrt(m**2 - 1))) - 1
-    )
+    sqrt = np.sqrt(m**2 - 1)
+    nxx = (1 / (m**2 - 1)) * (((m / sqrt) * np.log(m + sqrt)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
     return nxx, nyy, nzz
 
