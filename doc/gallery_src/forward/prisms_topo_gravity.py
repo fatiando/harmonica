@@ -87,15 +87,21 @@ fig = pygmt.Figure()
 
 title = "Gravitational acceleration of the topography"
 
+# Get the max absolute value to use as color scale limits
+cpt_lims = vd.maxabs(grid.gravity)
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims])
+
 with pygmt.config(FONT_TITLE="14p"):
     fig.grdimage(
         region=xy_region,
         projection=fig_proj,
         grid=grid.gravity,
         frame=["ag", f"+t{title}"],
-        cmap="vik",
+        cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+fig.colorbar(cmap=True, position="JMR", frame=["a100f50", "x+lmGal"])
 
 fig.show()
