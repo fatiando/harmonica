@@ -14,7 +14,134 @@ from numbers import Real
 import numpy as np
 import numpy.typing as npt
 
-from .utils import get_rotation_matrix
+from ..utils import get_rotation_matrix
+
+
+def create_ellipsoid(
+    a: float,
+    b: float,
+    c: float,
+    *,
+    center: tuple[float, float, float],
+    yaw: float = 0.0,
+    pitch: float = 0.0,
+    roll: float = 0.0,
+    **kwargs,
+) -> "BaseEllipsoid":
+    """
+    Create an ellipsoid given its three semiaxes lenghts.
+
+    This function returns an ellipsoid object of the correct type based on the values of
+    the three semiaxes lenghts. Semiaxes lengths can be passed in any order.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Semiaxes lenghts in meters. They can be passed in any particular order. They
+        must all be positive values.
+    center : tuple of float
+        Coordinates of the center of the ellipsoid in the following order: `easting`,
+        `northing`, `upward`.
+    yaw : float, optional
+        Rotation angle about the upward axis, in degrees.
+    pitch : float, optional
+        Rotation angle about the northing axis (after yaw rotation), in degrees.
+        A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
+        direction.
+    roll : float, optional
+        Rotation angle about the easting axis (after yaw and pitch rotation), in
+        degrees.
+    **kwargs : dict
+        Extra arguments passed to the ellipsoid classes. They can be physical properties
+        like ``density``, ``susceptibility``, and ``remanent_mag``.
+
+    Returns
+    -------
+    ellipsoid : harmonica.typing.Ellipsoid
+        Instance of one of the ellipsoid classes: :class:`harmonica.OblateEllipsoid`,
+        :class:`harmonica.ProlateEllipsoid`, :class:`harmonica.Sphere`, or
+        :class:`harmonica.TriaxialEllipsoid`.
+
+    Examples
+    --------
+    Define a prolate, oblate, triaxial or spherical ellipsoid by passing its semiaxes in
+    any order:
+
+    >>> ellipsoid = create_ellipsoid(1, 1, 2, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    ProlateEllipsoid
+    >>> ellipsoid.a
+    2
+    >>> ellipsoid.b
+    1
+    >>> ellipsoid.c
+    1
+
+    >>> ellipsoid = create_ellipsoid(1, 2, 2, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    OblateEllipsoid
+    >>> ellipsoid.a
+    1
+    >>> ellipsoid.b
+    2
+    >>> ellipsoid.c
+    2
+
+    >>> ellipsoid = create_ellipsoid(1, 2, 3, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    TriaxialEllipsoid
+    >>> ellipsoid.a
+    3
+    >>> ellipsoid.b
+    2
+    >>> ellipsoid.c
+    1
+
+    We can specify rotation angles while creating the ellipsoid:
+
+    >>> ellipsoid = create_ellipsoid(1, 1, 2, yaw=85, pitch=32, center=(1., 2., 3.))
+    >>> ellipsoid.yaw
+    85
+    >>> ellipsoid.pitch
+    32
+
+    The function can also take physical properties:
+
+    >>> density, susceptibility = -200.0, 0.4
+    >>> ellipsoid = create_ellipsoid(
+    ...     1, 1, 2, center=(1., 2., 3.),
+    ...     density=density,
+    ...     susceptibility=susceptibility,
+    ... )
+    """
+    # Sanity checks
+    for semiaxis, value in zip(("a", "b", "c"), (a, b, c), strict=True):
+        if value <= 0:
+            msg = (
+                f"Invalid value of '{semiaxis}' equal to '{value}'. "
+                "It must be positive."
+            )
+            raise ValueError(msg)
+
+    if a == b == c:
+        return Sphere(a, center=center, **kwargs)
+
+    # Sort semiaxes so a >= b >= c
+    c, b, a = sorted((a, b, c))
+
+    if a == b:
+        a = c  # set `a` as the smallest semiaxis (`c`)
+        ellipsoid = OblateEllipsoid(a, b, yaw=yaw, pitch=pitch, center=center, **kwargs)
+    elif b == c:
+        ellipsoid = ProlateEllipsoid(
+            a, b, yaw=yaw, pitch=pitch, center=center, **kwargs
+        )
+    else:
+        ellipsoid = TriaxialEllipsoid(
+            a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, **kwargs
+        )
+
+    return ellipsoid
 
 
 class BaseEllipsoid:

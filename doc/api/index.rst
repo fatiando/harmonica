@@ -91,6 +91,7 @@ Ellipsoids:
 .. autosummary::
     :toctree: generated/
 
+    create_ellipsoid
     OblateEllipsoid
     ProlateEllipsoid
     Sphere
