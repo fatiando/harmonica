@@ -8,6 +8,11 @@ import numpy as np
 import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
+# Relative tolerance for two ellipsoid semiaxes to be considered almost equal.
+# E.g.: two semiaxes a and b are considered almost equal if:
+# | a - b | <  max(a, b) * SEMIAXES_RTOL
+SEMIAXES_RTOL = 1e-5
+
 
 def is_internal(x, y, z, a, b, c):
     """
@@ -25,6 +30,41 @@ def is_internal(x, y, z, a, b, c):
     bool or (n,) array
     """
     return ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
+
+
+def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
+    """
+    Check if a given ellipsoid approximates a sphere.
+
+    Returns True if ellipsoid's semiaxes lenghts are close enough to each other to be
+    approximated by a sphere.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Ellipsoid's semiaxes lenghts.
+
+    Returns
+    -------
+    bool
+    """
+    # Exactly a sphere
+    if a == b == c:
+        return True
+
+    # Prolate or oblate that is almost a sphere
+    if b == c and np.abs(a - b) < SEMIAXES_RTOL * max(a, b):
+        return True
+
+    # Triaxial that is almost a sphere
+    if (  # noqa: SIM103
+        a != b != c
+        and np.abs(a - b) < SEMIAXES_RTOL * max(a, b)
+        and np.abs(b - c) < SEMIAXES_RTOL * max(b, c)
+    ):
+        return True
+
+    return False
 
 
 def calculate_lambda(x, y, z, a, b, c):

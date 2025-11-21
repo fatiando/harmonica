@@ -25,6 +25,7 @@ from .utils import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
+    is_almost_a_sphere,
     is_internal,
 )
 
@@ -359,14 +360,14 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
 
     where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
     """
-    if a > b > c:
+    if is_almost_a_sphere(a, b, c):
+        n_diagonal = 1 / 3 * np.ones(3)
+    elif a > b > c:
         n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
     elif a > b and b == c:
         n_diagonal = _demag_tensor_prolate_internal(a, b)
     elif a < b and b == c:
         n_diagonal = _demag_tensor_oblate_internal(a, b)
-    elif a == b == c:
-        n_diagonal = 1 / 3 * np.ones(3)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
@@ -532,7 +533,7 @@ def get_demagnetization_tensor_external(
 
     coords = (x, y, z)
 
-    if a == b == c:
+    if is_almost_a_sphere(a, b, c):
         r = np.sqrt(x**2 + y**2 + z**2)
         r5, r3 = r**5, r**3
         factor = -(a**3 / 3)
