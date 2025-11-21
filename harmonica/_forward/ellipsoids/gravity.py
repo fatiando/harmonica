@@ -20,8 +20,8 @@ from ...typing import Coordinates, Ellipsoid
 from .utils import (
     calculate_lambda,
     get_elliptical_integrals,
-    is_internal,
     is_almost_a_sphere,
+    is_internal,
 )
 
 
