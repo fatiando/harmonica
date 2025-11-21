@@ -347,8 +347,8 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     sqrt_l2 = np.sqrt(b**2 + lmbda)
     log = np.log((sqrt_e + sqrt_l1) / sqrt_l2)
 
-    g1 = (2 / (e2 ** (3 / 2))) * (log - sqrt_e / sqrt_l1)
-    g2 = (1 / (e2 ** (3 / 2))) * ((sqrt_e * sqrt_l1) / (b**2 + lmbda) - log)
+    g1 = (2 / (sqrt_e**3)) * (log - sqrt_e / sqrt_l1)
+    g2 = (1 / (sqrt_e**3)) * ((sqrt_e * sqrt_l1) / (b**2 + lmbda) - log)
     return g1, g2, g2
 
 
