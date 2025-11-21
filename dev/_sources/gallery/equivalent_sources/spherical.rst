@@ -31,7 +31,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-117
+.. GENERATED FROM PYTHON SOURCE LINES 21-118
 
 
 
@@ -51,8 +51,8 @@ account the curvature of the Earth.
      <xarray.Dataset> Size: 149kB
     Dimensions:              (spherical_latitude: 88, longitude: 105)
     Coordinates:
-      * longitude            (longitude) float64 840B 11.91 12.11 ... 32.48 32.68
       * spherical_latitude   (spherical_latitude) float64 704B -34.76 ... -17.28
+      * longitude            (longitude) float64 840B 11.91 12.11 ... 32.48 32.68
         radius               (spherical_latitude, longitude) float64 74kB 6.378e+...
     Data variables:
         gravity_disturbance  (spherical_latitude, longitude) float64 74kB 6.019 ....
@@ -67,6 +67,7 @@ account the curvature of the Earth.
 |
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -168,7 +169,7 @@ account the curvature of the Earth.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.532 seconds)
+   **Total running time of the script:** (0 minutes 2.489 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_spherical.py:
