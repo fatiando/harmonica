@@ -17,7 +17,12 @@ from choclo.constants import GRAVITATIONAL_CONST
 
 from ...errors import NoPhysicalPropertyWarning
 from ...typing import Coordinates, Ellipsoid
-from .utils import calculate_lambda, get_elliptical_integrals, is_internal
+from .utils import (
+    calculate_lambda,
+    get_elliptical_integrals,
+    is_internal,
+    is_almost_a_sphere,
+)
 
 
 def ellipsoid_gravity(
@@ -152,7 +157,7 @@ def _compute_gravity_ellipsoid(
     # Mask internal points
     internal = is_internal(x, y, z, a, b, c)
 
-    if a == b == c:
+    if is_almost_a_sphere(a, b, c):
         # Fallback to sphere equations which are simpler
         factor = -4 / 3 * np.pi * a**3 * GRAVITATIONAL_CONST * density
         gx, gy, gz = tuple(np.zeros_like(x) for _ in range(3))
