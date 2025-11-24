@@ -12,6 +12,7 @@ import contextlib
 
 import numpy as np
 from numba import jit
+from scipy.spatial.transform import Rotation
 
 # Attempt to import numba_progress
 try:
@@ -390,3 +391,45 @@ def initialize_progressbar(total, use_progressbar):
         )
         raise ImportError(msg)
     return ProgressBar(total=total)
+
+
+def get_rotation_matrix(yaw, pitch, roll):
+    """
+    Build rotation matrix from yaw, pitch and roll angles.
+
+    Generate a rotation matrix (V) from Tait-Bryan intrinsic angles:
+    yaw, pitch, and roll.
+
+    Parameters
+    ----------
+    yaw : float
+        Rotation about the vertical (Z) axis, in degrees.
+    pitch : float
+        Rotation about the northing (Y) axis, in degrees.
+    roll : float
+        Rotation about the easting (X) axis, in degrees.
+
+    Returns
+    -------
+    V : (3, 3) array
+        Rotation matrix that transforms coordinates from the local ellipsoid-aligned
+        frame to the global coordinate system.
+
+    Notes
+    -----
+    The rotations are applied in the following order: (ZŶX).
+    Yaw (Z) and roll (X) rotations are done using the right-hand rule. Rotations for the
+    pitch (Ŷ) are carried out in the opposite direction, so positive pitch *lifts* the
+    easting axis.
+
+    This rotation matrix allows to apply rotations from the local coordinate system of
+    the ellipsoid into the global coordinate system (easting, northing, upward).
+    """
+    # using scipy rotation package
+    # this produces the local to global rotation matrix (or what would be
+    # defined as r.T from global to local)
+    # Use capitalized axes for intrinsic rotations.
+    m = Rotation.from_euler("ZYX", [yaw, -pitch, roll], degrees=True)
+    v = m.as_matrix()
+
+    return v

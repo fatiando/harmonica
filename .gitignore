@@ -19,3 +19,5 @@ MANIFEST
 dask-worker-space
 .coverage.*
 harmonica/_version.py
+.DS_Store
+.spyproject/*

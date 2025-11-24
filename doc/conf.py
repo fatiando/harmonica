@@ -84,6 +84,8 @@ master_doc = "index"
 pygments_style = "default"
 add_function_parentheses = False
 
+# Disable type hints in API reference
+autodoc_typehints = "none"
 
 # Sphinx-Gallery configuration
 # -----------------------------------------------------------------------------

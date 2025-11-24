@@ -51,14 +51,10 @@ jobs:
             python: "3.13"
           - dependencies: optional
             python: "3.13"
-          # test on macos-13 (x86) using oldest dependencies and python 3.8
-          - os: macos-13
+          # Include tests on macos (x86) with oldest dependencies
+          - os: macos-15-intel
             dependencies: oldest
             python: "3.10"
-        exclude:
-          # don't test on macos-latest (arm64) with oldest dependencies
-          - os: macos-latest
-            dependencies: oldest
 
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
@@ -67,7 +63,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -154,7 +150,7 @@ jobs:
         run: coverage xml
 
       - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
           path: ./coverage.xml
@@ -169,7 +165,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since

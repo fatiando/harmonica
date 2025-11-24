@@ -5,6 +5,7 @@ References
 .. [Balmino1973] Balmino, G., Lambeck, K., & Kaula, W. M. (1973). A spherical harmonic analysis of the Earth's topography. Journal of Geophysical Research, 78(2), 478-481.
 .. [BarthelmesKohler2016] Barthelmes, F. and Kohler, W. (2016), International Centre for Global Earth Models (ICGEM), in: Drewes, H., Kuglitsch, F., Adam, J. et al., The Geodesists Handbook 2016, Journal of Geodesy (2016), 90(10), pp 907-1205, doi:`10.1007/s00190-016-0948-z <https://doi.org/10.1007/s00190-016-0948-z>`__
 .. [Blakely1995] Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:`10.1017/CBO9780511549816 <https://doi.org/10.1017/CBO9780511549816>`__
+.. [Clark1986] Clark, D. A., Saul, S. J., & Emerson, D. W. (1986). Magnetic and gravity anomalies of a triaxial ellipsoid. Exploration Geophysics, 17(4), 189–200. https://doi.org/10.1071/EG986189
 .. [Cordell1992] Lindrith Cordell (1992). A scattered equivalent‐source method for interpolation and gridding of potential‐field data in three dimensions. GEOPHYSICS 57: 629-636. doi:`10.1190/1.1443275 <https://doi.org/10.1190/1.1443275>`__
 .. [Dampney1969] Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:`10.1190/1.1439996 <https://doi.org/10.1190/1.1439996>`__
 .. [DriscollHealy1994] Driscoll, J. R., & Healy, D. M. (1994). Computing Fourier Transforms and Convolutions on the 2-Sphere. Advances in Applied Mathematics, 15(2), 202–250. `10.1006/aama.1994.1008 <https://doi.org/10.1006/aama.1994.1008>`__.
@@ -26,4 +27,5 @@ References
 .. [Uieda2014] Uieda, L., V. C. Oliveira Jr., and V. C. F. Barbosa (2014), Geophysical tutorial: Euler deconvolution of potential-field data, The Leading Edge, 33(4), 448-450, doi:`10.1190/tle33040448.1 <https://doi.org/10.1190/tle33040448.1>`__.
 .. [Uieda2015] Uieda, Leonardo (2015). A tesserioid (spherical prism) in a geocentric coordinate system with a local-North-oriented coordinate system. figshare. Figure. doi: `10.6084/m9.figshare.1495525.v1 <https://doi.org/10.6084/m9.figshare.1495525.v1>`_
 .. [Vajda2004] Vajda, P., Vaníček, P., Novák, P. and Meurers, B. (2004). On evaluation of Newton integrals in geodetic coordinates: Exact formulation and spherical approximation. Contributions to Geophysics and Geodesy, 34(4), 289-314.
+.. [Takahashi2018] Takahashi, D., Oliveira Jr., V. C., & Barbosa, V. C. F. (2020). Convolutional equivalent layer for gravity data processing. GEOPHYSICS, 85(6), G129–G141. https://doi.org/10.1190/geo2019-0826.1
 .. [TurcotteSchubert2014] Turcotte, D. L., & Schubert, G. (2014). Geodynamics (3 edition). Cambridge, United Kingdom: Cambridge University Press.
