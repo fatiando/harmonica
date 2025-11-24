@@ -54,7 +54,7 @@ def derivative_upward(grid, order=1):
     --------
     harmonica.filters.derivative_upward_kernel
     """
-    return apply_filter(grid, derivative_upward_kernel, order=order)
+    return apply_filter(grid, derivative_upward_kernel, filter_kwargs={"order": order})
 
 
 def derivative_easting(grid, order=1, method="finite-diff"):
@@ -107,7 +107,9 @@ def derivative_easting(grid, order=1, method="finite-diff"):
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
-        grid = apply_filter(grid, derivative_easting_kernel, order=order)
+        grid = apply_filter(
+            grid, derivative_easting_kernel, filter_kwargs={"order": order}
+        )
     else:
         msg = (
             f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
@@ -166,7 +168,9 @@ def derivative_northing(grid, order=1, method="finite-diff"):
         for _ in range(order):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
-        return apply_filter(grid, derivative_northing_kernel, order=order)
+        return apply_filter(
+            grid, derivative_northing_kernel, filter_kwargs={"order": order}
+        )
     else:
         msg = (
             f"Invalid method '{method}'. Please select one from 'finite-diff' or 'fft'."
@@ -209,7 +213,9 @@ def upward_continuation(grid, height_displacement):
     harmonica.filters.upward_continuation_kernel
     """
     return apply_filter(
-        grid, upward_continuation_kernel, height_displacement=height_displacement
+        grid,
+        upward_continuation_kernel,
+        filter_kwargs={"height_displacement": height_displacement},
     )
 
 
@@ -245,7 +251,12 @@ def gaussian_lowpass(grid, wavelength):
     --------
     harmonica.filters.gaussian_lowpass_kernel
     """
-    return apply_filter(grid, gaussian_lowpass_kernel, wavelength=wavelength)
+    return apply_filter(
+        grid,
+        gaussian_lowpass_kernel,
+        pad=False,
+        filter_kwargs={"wavelength": wavelength},
+    )
 
 
 def gaussian_highpass(grid, wavelength):
@@ -280,7 +291,12 @@ def gaussian_highpass(grid, wavelength):
     --------
     harmonica.filters.gaussian_highpass_kernel
     """
-    return apply_filter(grid, gaussian_highpass_kernel, wavelength=wavelength)
+    return apply_filter(
+        grid,
+        gaussian_highpass_kernel,
+        pad=False,
+        filter_kwargs={"wavelength": wavelength},
+    )
 
 
 def reduction_to_pole(
@@ -335,10 +351,12 @@ def reduction_to_pole(
     return apply_filter(
         grid,
         reduction_to_pole_kernel,
-        inclination=inclination,
-        declination=declination,
-        magnetization_inclination=magnetization_inclination,
-        magnetization_declination=magnetization_declination,
+        filter_kwargs={
+            "inclination": inclination,
+            "declination": declination,
+            "magnetization_inclination": magnetization_inclination,
+            "magnetization_declination": magnetization_declination,
+        },
     )
 
 
@@ -361,8 +379,8 @@ def total_gradient_amplitude(grid):
     Returns
     -------
     total_gradient_amplitude_grid : :class:`xarray.DataArray`
-        A :class:`xarray.DataArray` after calculating the
-        total gradient amplitude of the passed ``grid``.
+        A :class:`xarray.DataArray` after calculating the total gradient
+        amplitude of the passed ``grid``.
 
     Notes
     -----
@@ -398,10 +416,9 @@ def tilt_angle(grid):
     r"""
     Calculate the tilt angle of a potential field grid.
 
-    Compute the tilt of a regular gridded potential field
-    :math:`M`. The horizontal derivatives are calculated
-    through finite-differences while the upward derivative
-    is calculated using FFT.
+    Compute the tilt of a regular gridded potential field :math:`M`. The
+    horizontal derivatives are calculated through finite-differences while the
+    upward derivative is calculated using FFT.
 
     Parameters
     ----------
@@ -442,17 +459,12 @@ def tilt_angle(grid):
     [Blakely1995]_
     [MillerSingh1994]_
     """
-    # Run sanity checks on the grid
     grid_sanity_checks(grid)
-    # Calculate the gradients of the grid
-    gradient = (
-        derivative_easting(grid, order=1),
-        derivative_northing(grid, order=1),
-        derivative_upward(grid, order=1),
-    )
-    # Calculate and return the tilt
-    horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
-    tilt = np.arctan2(gradient[2], horiz_deriv)
+    deriv_east = derivative_easting(grid, order=1)
+    deriv_north = derivative_northing(grid, order=1)
+    deriv_up = derivative_upward(grid, order=1)
+    horiz_deriv = np.hypot(deriv_east, deriv_north)
+    tilt = np.arctan2(deriv_up, horiz_deriv)
     return tilt
 
 

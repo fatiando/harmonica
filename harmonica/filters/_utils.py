@@ -9,11 +9,12 @@ Utility functions for FFT filters.
 """
 
 import numpy as np
+import xrft
 
 from ._fft import fft, ifft
 
 
-def apply_filter(grid, fft_filter, **kwargs):
+def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None):
     """
     Apply a filter to a grid and return the transformed grid in spatial domain.
 
@@ -39,24 +40,46 @@ def apply_filter(grid, fft_filter, **kwargs):
         A :class:`xarray.DataArray` with the filtered version of the passed
         ``grid``. Defined are in the spatial domain.
     """
-    # Run sanity checks on the grid
+    if filter_kwargs is None:
+        filter_kwargs = {}
+    if pad_kwargs is None:
+        pad_kwargs = {}
     grid_sanity_checks(grid)
-    # Catch the dims of the grid
     dims = grid.dims
-    # Compute Fourier Transform of the grid
-    fft_grid = fft(grid)
-    # Build the filter
-    da_filter = fft_filter(fft_grid, **kwargs)
-    # Apply the filter
-    filtered_fft_grid = fft_grid * da_filter
-    # Compute inverse FFT
+    # Need to remove non-dimensional coordinates before padding and FFT because
+    # xrft doesn't know what to do with them.
+    non_dim_coords = {c: grid[c] for c in grid.coords if c not in grid.indexes}
+    grid = grid.drop_vars(non_dim_coords.keys())
+    if pad:
+        # By default, use a padding width of 25% of the largest grid dimension.
+        # Fedi et al. (2012; doi:10.1111/j.1365-246X.2011.05259.x) suggest
+        # a padding of 100% but that seems exaggerated.
+        if "pad_width" not in pad_kwargs:
+            width = int(0.25 * max(grid[d].size for d in dims))
+            pad_kwargs["pad_width"] = {d: width for d in dims}
+        if "mode" not in pad_kwargs:
+            pad_kwargs["mode"] = "edge"
+            # Has to be included explicitly as None or numpy complains about the
+            # argument being there.
+            pad_kwargs["constant_values"] = None
+        fft_grid = fft(xrft.pad(grid, **pad_kwargs))
+    else:
+        fft_grid = fft(grid)
+    # The filter convolution in the frequency domain is a multiplication
+    filtered_fft_grid = fft_grid * fft_filter(fft_grid, **filter_kwargs)
+    # Keep only the real part since the inverse transform returns complex
+    # number by default
     filtered_grid = ifft(filtered_fft_grid).real
-
-    # use original coordinates on the filtered grid
+    if pad:
+        filtered_grid = xrft.unpad(filtered_grid, pad_kwargs["pad_width"])
+    # Restore the original coordinates to the grid because the inverse
+    # transform calculates coordinates from the frequencies, which can lead to
+    # rounding errors and coordinates that are slightly off. This causes errors
+    # when doing operations with the transformed grids. Restoring the original
+    # coordinates avoids these issues.
     filtered_grid = filtered_grid.assign_coords(
         {dims[1]: grid[dims[1]].values, dims[0]: grid[dims[0]].values}
     )
-
     return filtered_grid
 
 
