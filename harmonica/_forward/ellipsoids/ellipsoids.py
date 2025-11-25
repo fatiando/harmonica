@@ -275,10 +275,8 @@ class BaseEllipsoid:
             xradius=self.a, yradius=self.b, zradius=self.c
         )
 
-        # Rotate ellipsoid along the local axes in the right order (ZŶX)
-        ellipsoid.rotate_z(self.yaw, inplace=True)
-        ellipsoid.rotate_y(-self.pitch, inplace=True)  # invert rotation along Y
-        ellipsoid.rotate_x(self.roll, inplace=True)
+        # Rotate ellipsoid using its rotation matrix
+        ellipsoid.rotate(rotation=self.rotation_matrix, inplace=True)
 
         # Translate the ellipsoid
         ellipsoid.translate(self.center, inplace=True)
