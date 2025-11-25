@@ -263,24 +263,35 @@ class BaseEllipsoid:
             msg = f"Invalid value of '{semiaxis}' equal to '{value}'. It must be positive."
             raise ValueError(msg)
 
-    def to_pyvista(self):
+    def to_pyvista(self, **kwargs):
+        """
+        Export ellipsoid to a :class:`pyvista.PolyData` object.
+
+        .. important::
+
+            The :mod:`pyvista` optional dependency must be installed to use this method.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Keyword arguments passed to :func:`pyvista.ParametricEllipsoid`.
+
+        Returns
+        -------
+        ellipsoid : pyvista.PolyData
+            A PyVista's parametric ellipsoid.
+        """
         if pyvista is None:
             msg = (
                 "Missing optional dependency 'pyvista' required for "
                 "exporting ellipsoids to PyVista."
             )
             raise ImportError(msg)
-
         ellipsoid = pyvista.ParametricEllipsoid(
-            xradius=self.a, yradius=self.b, zradius=self.c
+            xradius=self.a, yradius=self.b, zradius=self.c, **kwargs
         )
-
-        # Rotate ellipsoid using its rotation matrix
         ellipsoid.rotate(rotation=self.rotation_matrix, inplace=True)
-
-        # Translate the ellipsoid
         ellipsoid.translate(self.center, inplace=True)
-
         return ellipsoid
 
 
