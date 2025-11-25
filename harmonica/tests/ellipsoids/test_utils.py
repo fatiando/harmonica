@@ -7,7 +7,7 @@
 import numpy as np
 import pytest
 
-from .._forward.utils_ellipsoids import calculate_lambda
+from harmonica._forward.ellipsoids.utils import calculate_lambda
 
 
 @pytest.mark.parametrize(

@@ -23,20 +23,19 @@ import verde as vd
 from scipy.constants import mu_0
 
 import harmonica as hm
-from harmonica.errors import NoPhysicalPropertyWarning
-
-from .._forward.ellipsoid_magnetics import (
-    ellipsoid_magnetic,
-    get_demagnetization_tensor_internal,
-    get_magnetisation,
-)
-from .._forward.ellipsoids import (
+from harmonica import ellipsoid_magnetic
+from harmonica._forward.ellipsoids import (
     OblateEllipsoid,
     ProlateEllipsoid,
     Sphere,
     TriaxialEllipsoid,
 )
-from .._forward.utils import get_rotation_matrix
+from harmonica._forward.ellipsoids.magnetic import (
+    get_demagnetization_tensor_internal,
+    get_magnetisation,
+)
+from harmonica._forward.utils import get_rotation_matrix
+from harmonica.errors import NoPhysicalPropertyWarning
 
 
 def test_euler_returns():
