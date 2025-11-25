@@ -544,3 +544,48 @@ class TestCreateEllipsoid:
         center = (1.0, 2.0, 3.0)
         ellipsoid = create_ellipsoid(a, b, c, center=center, **kwargs)
         np.testing.assert_allclose(getattr(ellipsoid, physical_property), value)
+
+
+@pytest.mark.skipif(pyvista is None, reason="requires pyvista")
+class TestToPyvista:
+    """Test exporting ellipsoids to PyVista objects."""
+
+    @pytest.fixture(params=["oblate", "prolate", "triaxial", "sphere"])
+    def ellipsoid(self, request):
+        a, b, c = 3.0, 2.0, 1.0
+        yaw, pitch, roll = 73.0, 14.0, -35.0
+        center = (43.0, -72.0, 105)
+        match request.param:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(b, a, yaw, pitch, center=center)
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(a, b, yaw, pitch, center=center)
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, center=center)
+            case "sphere":
+                ellipsoid = Sphere(a, center=center)
+            case _:
+                raise ValueError()
+        return ellipsoid
+
+    @patch("harmonica._forward.ellipsoids.ellipsoids.pyvista", None)
+    def test_pyvista_missing_error(self, ellipsoid):
+        """
+        Check if error is raised when pyvista is not installed.
+        """
+        with pytest.raises(ImportError):
+            ellipsoid.to_pyvista()
+
+    def test_pyvista_object(self, ellipsoid):
+        """
+        Check if method works as expected.
+        """
+        ellipsoid_pv = ellipsoid.to_pyvista()
+        assert isinstance(ellipsoid_pv, pyvista.PolyData)
+        # rtol needed since the parametric ellipsoid is not the exact surface.
+        np.testing.assert_allclose(ellipsoid_pv.center, ellipsoid.center, rtol=1e-4)
+        np.testing.assert_allclose(
+            ellipsoid_pv.volume,
+            4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c,
+            rtol=1e-3,
+        )
