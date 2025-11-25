@@ -33,6 +33,7 @@ def create_ellipsoid(
 
     This function returns an ellipsoid object of the correct type based on the values of
     the three semiaxes lenghts. Semiaxes lengths can be passed in any order.
+    Ellipsoids will be rotated to match the re-ordering of semiaxes lengths.
 
     Parameters
     ----------
@@ -97,13 +98,34 @@ def create_ellipsoid(
     >>> ellipsoid.c
     1
 
+    When passing semiaxes lengths in arbitrary order, ellipsoids get rotated to match
+    the ordering:
+
+    >>> ellipsoid = create_ellipsoid(1, 1, 2, center=(1., 2., 3.))
+    >>> print(type(ellipsoid).__name__)
+    ProlateEllipsoid
+    >>> ellipsoid.a, ellipsoid.b, ellipsoid.c
+    (2, 1, 1)
+    >>> ellipsoid.yaw
+    0.0
+    >>> ellipsoid.pitch
+    90.0
+
     We can specify rotation angles while creating the ellipsoid:
+
+    >>> ellipsoid = create_ellipsoid(2, 1, 1, yaw=85, pitch=32, center=(1., 2., 3.))
+    >>> ellipsoid.yaw
+    85.0
+    >>> ellipsoid.pitch
+    32.0
+
+    Angles will be added to the rotation angles if semiaxes are passed in any order:
 
     >>> ellipsoid = create_ellipsoid(1, 1, 2, yaw=85, pitch=32, center=(1., 2., 3.))
     >>> ellipsoid.yaw
-    85
+    85.0
     >>> ellipsoid.pitch
-    32
+    122.0
 
     The function can also take physical properties:
 
@@ -126,19 +148,65 @@ def create_ellipsoid(
     if a == b == c:
         return Sphere(a, center=center, **kwargs)
 
-    # Sort semiaxes so a >= b >= c
-    c, b, a = sorted((a, b, c))
+    # Sort semiaxes so a_ >= b_ >= c_
+    c_, b_, a_ = sorted((a, b, c))
 
-    if a == b:
-        a = c  # set `a` as the smallest semiaxis (`c`)
-        ellipsoid = OblateEllipsoid(a, b, yaw=yaw, pitch=pitch, center=center, **kwargs)
-    elif b == c:
-        ellipsoid = ProlateEllipsoid(
-            a, b, yaw=yaw, pitch=pitch, center=center, **kwargs
+    # Oblate
+    if a_ == b_:
+        # Swap `a_` with `c_` so: a_ < b_ == c_
+        a_, c_ = c_, a_
+        # Set rotations to match semiaxes lengths in the right orientation
+        if a_ == a:
+            yaw_, pitch_ = 0.0, 0.0
+        elif a_ == b:
+            yaw_, pitch_ = 90.0, 0.0
+        elif a_ == c:
+            yaw_, pitch_ = 0.0, 90.0
+        else:
+            raise ValueError()
+        ellipsoid = OblateEllipsoid(
+            a_, c_, yaw=yaw + yaw_, pitch=pitch + pitch_, center=center, **kwargs
         )
+    # Prolate
+    elif b_ == c_:
+        # Set rotations to match semiaxes lengths in the right orientation
+        if a_ == a:
+            yaw_, pitch_ = 0.0, 0.0
+        elif a_ == b:
+            yaw_, pitch_ = 90.0, 0.0
+        elif a_ == c:
+            yaw_, pitch_ = 0.0, 90.0
+        else:
+            raise ValueError()
+        ellipsoid = ProlateEllipsoid(
+            a_, b_, yaw=yaw + yaw_, pitch=pitch + pitch_, center=center, **kwargs
+        )
+    # Triaxial
     else:
+        # Set rotations to match semiaxes lengths in the right orientation
+        if (a_, b_, c_) == (a, b, c):
+            yaw_, pitch_, roll_ = 0.0, 0.0, 0.0
+        elif (a_, b_, c_) == (b, a, c):
+            yaw_, pitch_, roll_ = 90.0, 0.0, 0.0
+        elif (a_, b_, c_) == (c, b, a):
+            yaw_, pitch_, roll_ = 0.0, 90.0, 0.0
+        elif (a_, b_, c_) == (a, c, b):
+            yaw_, pitch_, roll_ = 0.0, 0.0, 90.0
+        elif (a_, b_, c_) == (c, a, b):
+            yaw_, pitch_, roll_ = 90.0, 90.0, 0.0
+        elif (a_, b_, c_) == (b, c, a):
+            yaw_, pitch_, roll_ = 90.0, 0.0, 90.0
+        else:
+            raise ValueError()
         ellipsoid = TriaxialEllipsoid(
-            a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, **kwargs
+            a_,
+            b_,
+            c_,
+            yaw=yaw + yaw_,
+            pitch=pitch + pitch_,
+            roll=roll + roll_,
+            center=center,
+            **kwargs,
         )
 
     return ellipsoid
