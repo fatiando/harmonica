@@ -10,6 +10,7 @@ Test ellipsoid classes.
 
 import itertools
 import re
+from unittest.mock import patch
 
 import numpy as np
 import pytest
@@ -21,6 +22,11 @@ from harmonica import (
     TriaxialEllipsoid,
     create_ellipsoid,
 )
+
+try:
+    import pyvista
+except ImportError:
+    pyvista = None
 
 
 class TestProlateEllipsoid:
