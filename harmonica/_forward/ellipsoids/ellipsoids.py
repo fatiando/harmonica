@@ -16,6 +16,11 @@ import numpy.typing as npt
 
 from ..utils import get_rotation_matrix
 
+try:
+    import pyvista
+except ImportError:
+    pyvista = None
+
 
 def create_ellipsoid(
     a: float,
@@ -257,6 +262,28 @@ class BaseEllipsoid:
         if value <= 0:
             msg = f"Invalid value of '{semiaxis}' equal to '{value}'. It must be positive."
             raise ValueError(msg)
+
+    def to_pyvista(self):
+        if pyvista is None:
+            msg = (
+                "Missing optional dependency 'pyvista' required for "
+                "exporting ellipsoids to PyVista."
+            )
+            raise ImportError(msg)
+
+        ellipsoid = pyvista.ParametricEllipsoid(
+            xradius=self.a, yradius=self.b, zradius=self.c
+        )
+
+        # Rotate ellipsoid along the local axes in the right order (ZŶX)
+        ellipsoid.rotate_z(self.yaw, inplace=True)
+        ellipsoid.rotate_y(-self.pitch, inplace=True)  # invert rotation along Y
+        ellipsoid.rotate_x(self.roll, inplace=True)
+
+        # Translate the ellipsoid
+        ellipsoid.translate(self.center, inplace=True)
+
+        return ellipsoid
 
 
 class TriaxialEllipsoid(BaseEllipsoid):
