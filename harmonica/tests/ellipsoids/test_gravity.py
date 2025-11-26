@@ -663,3 +663,109 @@ class TestNoneDensity:
         # Check the gravity acceleration components are zero
         for g_component in (gx, gy, gz):
             assert g_component == 0.0
+
+
+class TestNumericalInstability:
+    """
+    Test fix for numerical instabilities when semiaxes lengths are very similar.
+
+    When the semiaxes are almost equal to each other (in the order of machine
+    precision), analytic solutions for prolate, oblate, and triaxial ellipsoids might
+    fall under singularities, triggering numerical instabilities.
+
+    Given two semiaxes a and b, define a ratio as:
+
+    .. code::
+
+        ratio  = | a - b | / max(a, b)
+
+    These test functions will build the ellipsoids using very small values of this
+    ratio.
+    """
+
+    # Properties of the sphere
+    radius = 50.0
+    center = (0, 0, 0)
+    density = 200.0
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(self.radius, 5 * self.radius, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.fixture
+    def sphere(self):
+        return Sphere(self.radius, center=self.center, density=self.density)
+
+    def test_gravity_prolate(self, sphere):
+        """
+        Test gravity field of prolate ellipsoid that is almost a sphere.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-9
+
+        a = self.radius
+        b = (1 - ratio) * a
+        ellipsoid = ProlateEllipsoid(
+            a, b, yaw=0, pitch=0, center=self.center, density=self.density
+        )
+        ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
+        ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gu_ell, gu_sphere, rtol=rtol, atol=atol)
+
+    def test_gravity_oblate(self, sphere):
+        """
+        Test gravity field of oblate ellipsoid that is almost a sphere.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.radius
+        b = (1 + ratio) * a
+        ellipsoid = OblateEllipsoid(
+            a, b, yaw=0, pitch=0, center=self.center, density=self.density
+        )
+        ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
+        ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gu_ell, gu_sphere, rtol=rtol, atol=atol)
+
+    def test_gravity_triaxial(self, sphere):
+        """
+        Test gravity field of triaxial ellipsoid that is almost a sphere.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.radius
+        b = (1 - ratio) * a
+        c = (1 - 2 * ratio) * a
+        ellipsoid = TriaxialEllipsoid(
+            a, b, c, yaw=0, pitch=0, roll=0, center=self.center, density=self.density
+        )
+        ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
+        ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_sphere, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gu_ell, gu_sphere, rtol=rtol, atol=atol)
