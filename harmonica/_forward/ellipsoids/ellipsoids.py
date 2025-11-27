@@ -263,6 +263,34 @@ class BaseEllipsoid:
             msg = f"Invalid value of '{semiaxis}' equal to '{value}'. It must be positive."
             raise ValueError(msg)
 
+    def __str__(self) -> str:
+        e, n, u = self.center
+        string = (
+            f"{type(self).__name__}:\n"
+            f"  • a:      {float(self.a)} m\n"
+            f"  • b:      {float(self.b)} m\n"
+            f"  • c:      {float(self.c)} m\n"
+            f"  • center: ({float(e)}, {float(n)}, {float(u)}) m\n"
+            f"  • yaw:    {float(self.yaw)}\n"
+            f"  • pitch:  {float(self.pitch)}\n"
+            f"  • roll:   {float(self.roll)}"
+        )
+
+        if self.density is not None:
+            string += f"\n  • density: {float(self.density)} kg/m³"
+        if self.susceptibility is not None:
+            if isinstance(self.susceptibility, Real):
+                string += f"\n  • susceptibility: {float(self.susceptibility)}"
+            else:
+                string += "\n  • susceptibility:"
+                matrix_as_str = str(self.susceptibility)
+                for line in matrix_as_str.splitlines():
+                    string += f"\n        {line}"
+        if self.remanent_mag is not None:
+            me, mn, mu = self.remanent_mag
+            string += f"\n  • remanent_mag: ({float(me)}, {float(mn)}, {float(mu)}) A/m"
+        return string
+
     def to_pyvista(self, **kwargs):
         """
         Export ellipsoid to a :class:`pyvista.PolyData` object.
