@@ -20,6 +20,7 @@ from ...typing import Coordinates, Ellipsoid
 from .utils import (
     calculate_lambda,
     get_elliptical_integrals,
+    get_permutation_matrix,
     is_almost_a_sphere,
     is_internal,
 )
@@ -97,19 +98,23 @@ def ellipsoid_gravity(
         origin_e, origin_n, origin_u = ellipsoid.center
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
-        # Create rotation matrix
-        r = ellipsoid.rotation_matrix
+        # Get permutation matrix and order the semiaxes
+        permutation_matrix = get_permutation_matrix(ellipsoid)
+        a, b, c = permutation_matrix @ np.array([ellipsoid.a, ellipsoid.b, ellipsoid.c])
+
+        # Combine the rotation and the permutation matrices
+        transformation = ellipsoid.rotation_matrix.T @ permutation_matrix
 
         # Rotate observation points
-        x, y, z = r.T @ np.vstack(coords_shifted)
+        x, y, z = transformation @ np.vstack(coords_shifted)
 
         # Calculate gravity components on local coordinate system
         gravity_ellipsoid = _compute_gravity_ellipsoid(
-            x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c, ellipsoid.density
+            x, y, z, a, b, c, ellipsoid.density
         )
 
         # project onto upward unit vector, axis U
-        ge_i, gn_i, gu_i = r @ np.vstack(gravity_ellipsoid)
+        ge_i, gn_i, gu_i = transformation.T @ np.vstack(gravity_ellipsoid)
 
         # sum contributions from each ellipsoid
         ge += ge_i

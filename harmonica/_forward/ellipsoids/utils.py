@@ -14,6 +14,101 @@ from scipy.special import ellipeinc, ellipkinc
 SEMIAXES_RTOL = 1e-5
 
 
+def get_permutation_matrix(ellipsoid):
+    """
+    Get permutation matrix for the given ellipsoid.
+
+    Build a permutation matrix that sorts the ellipsoid's semiaxes lengths
+    ``ellipsoid.a``, ``ellipsoid.b``, ``ellipsoid.c`` into ``a``, ``b``, ``c`` values
+    that satisfy that:
+
+    - Triaxial: ``a > b > c``
+    - Prolate: ``a > b == c``
+    - Oblate: ``a < b == c``
+    - Sphere: ``a == b == c``
+
+
+    Parameters
+    ----------
+    ellipsoid : Ellipsoid
+        Ellipsoid object.
+
+    Returns
+    -------
+    permutation_matrix : (3, 3) np.ndarray
+        Permutation matrix.
+
+    Examples
+    --------
+    >>> from harmonica import Ellipsoid
+    >>> ellipsoid = Ellipsoid(
+    ...     a=43.0, b=50.0, c=83.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
+    ... )
+    >>> get_permutation_matrix(ellipsoid)
+    [[0 0 1]
+     [0 1 0]
+     [1 0 0]]
+
+    >>> ellipsoid = Ellipsoid(
+    ...     a=43.0, b=83.0, c=50.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
+    ... )
+    >>> get_permutation_matrix(ellipsoid)
+    [[0 1 0]
+     [0 0 1]
+     [1 0 0]]
+    """
+    # Sphere
+    if ellipsoid.a == ellipsoid.b == ellipsoid.c:
+        a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
+        permutation_matrix = np.eye(3)
+        return a, b, c, permutation_matrix
+
+    # Get permutation matrix
+    permutation_matrix = _get_simple_permutation_matrix(
+        ellipsoid.a, ellipsoid.b, ellipsoid.c
+    )
+
+    # Sort semiaxes so a >= b >= c
+    c, b, a = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c))
+
+    # Treat oblate ellipsoids
+    if a == b:
+        # Swap `a` with `c` so: a < b == c
+        a, c = c, a
+        permutation_matrix[0, :], permutation_matrix[2, :] = (
+            permutation_matrix[2, :],
+            permutation_matrix[0, :],
+        )
+
+    return permutation_matrix
+
+
+def _get_simple_permutation_matrix(a, b, c):
+    """
+    Build permutation matrix for the given semiaxes.
+
+    This permutation matrix sorts the semiaxes ``a``, ``b``, ``c`` in reverse order.
+
+    Parameters
+    ----------
+    a, b, c : float
+        Semiaxes lenghts.
+
+    Returns
+    -------
+    permutation_matrix : (3, 3) np.ndarray
+        Permutation matrix.
+    """
+    # Get sort indices
+    semiaxes = np.array([a, b, c])
+    argsort = np.argsort(semiaxes)
+    # Build permutation matrix
+    p_matrix = np.zeros((3, 3), dtype=np.int32)
+    sorted_indices = np.array([2, 1, 0])
+    p_matrix[sorted_indices, argsort] = 1
+    return p_matrix
+
+
 def is_internal(x, y, z, a, b, c):
     """
     Check if a given point(s) is internal or external to the ellipsoid.
