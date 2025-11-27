@@ -59,9 +59,8 @@ def get_permutation_matrix(ellipsoid):
     """
     # Sphere
     if ellipsoid.a == ellipsoid.b == ellipsoid.c:
-        a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
         permutation_matrix = np.eye(3)
-        return a, b, c, permutation_matrix
+        return permutation_matrix
 
     # Get permutation matrix
     permutation_matrix = _get_simple_permutation_matrix(
