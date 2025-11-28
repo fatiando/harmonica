@@ -30,16 +30,16 @@ class Ellipsoid:
     ----------
     a, b, c : float
         Semi-axis lengths of the ellipsoid in meters.
-    yaw : float
+    yaw : float, optional
         Rotation angle about the upward axis, in degrees.
-    pitch : float
+    pitch : float, optional
         Rotation angle about the northing axis (after yaw rotation), in degrees.
         A positive pitch angle *lifts* the side of the ellipsoid pointing in easting
         direction.
-    roll : float
+    roll : float, optional
         Rotation angle about the easting axis (after yaw and pitch rotation), in
         degrees.
-    center : tuple of float
+    center : tuple of float, optional
         Coordinates of the center of the ellipsoid in the following order: `easting`,
         `northing`, `upward`, in meters.
     density : float or None, optional
@@ -71,10 +71,10 @@ class Ellipsoid:
         a: float,
         b: float,
         c: float,
-        yaw: float,
-        pitch: float,
-        roll: float,
-        center: tuple[float, float, float],
+        yaw: float = 0.0,
+        pitch: float = 0.0,
+        roll: float = 0.0,
+        center: tuple[float, float, float] = (0.0, 0.0, 0.0),
         *,
         density: float | None = None,
         susceptibility: float | npt.NDArray | None = None,
