@@ -8,7 +8,6 @@
 Test ellipsoid classes.
 """
 
-import itertools
 import re
 from unittest.mock import patch
 
