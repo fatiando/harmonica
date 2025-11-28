@@ -21,22 +21,43 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
     """
     Create a layer of tesseroids of equal size.
 
+    Build a regular grid of tesseroids (spherical prisms) with variable top and bottom
+    boundaries and properties like density, magnetization, etc. The function returns a
+    :class:`xarray.Dataset` containing ``longitude``, ``latitude``, ``top`` and
+    ``bottom`` coordinates, and all physical properties as ``data_var`` s. The
+    ``longitude`` and ``latitude`` coordinates correspond to the location of the center
+    of each tesseroid.
+
+    Unlike the :func:`harmonica.prism_layer`, the top and bottom boundaries of
+    tesseroids, provided via `surface` and `reference`, are not heights relative to a
+    reference level (e.g., sea level). Instead, they are radii from the center of the
+    body (ellipsoid or sphere) to the top and bottom boundaries of the tesseroids. To
+    convert top and bottom boundaries from heights to radii, you can use the
+    :meth:`boule.geocentric_radius` method from :mod:`boule` to calculate the radius
+    based on the latitude, and add these values to your height values.
+
+    The ``tesseroid_layer`` dataset accessor can be used to access special methods
+    and attributes for the layer of tesseroids, like the horizontal dimensions of
+    the tesseroids, getting the boundaries of each tesseroids, etc.
+    See :class:`DatasetAccessorTesseroidLayer` for the definition of these methods
+    and attributes.
+
     Parameters
     ----------
     coordinates : tuple
         List containing the coordinates of the centers of the tesseroids in
         spherical coordinates in the following order ``longitude`` and
-        ``latitude``.
+        ``latitude``. All coordinates should be in degrees.
     surface : 2d-array
-        Array used to create the uppermost boundary of the tesserois layer. All
-        radii should be in meters. On every point where ``surface`` is below
-        ``reference``, the ``surface`` value will be used to set the ``bottom``
+        Array used to create the uppermost boundary of the tesseroids layer. Values
+        should be radii (not heights) in meters. On every point where ``surface`` is
+        below ``reference``, the ``surface`` value will be used to set the ``bottom``
         boundary of that tesseroid, while the ``reference`` value will be used
         to set the ``top`` boundary of the tesseroid.
     reference : 2d-array or float
         Reference surface used to create the lowermost boundary of the
         tesseroids layer. It can be either a plane or an irregular surface
-        passed as 2d array. Radii must be in meters.
+        passed as 2d array. Values must be radii (not heights) in meters.
     properties : dict or None
         Dictionary containing the physical properties of the tesseroids. The
         keys must be strings that will be used to name the corresponding
@@ -56,6 +77,50 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
     --------
     harmonica.DatasetAccessorsTesseroidLayer
 
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import boule as bl
+    >>> # Create a synthetic relief
+    >>> longitude = np.linspace(0, 10, 5)
+    >>> latitude = np.linspace(2, 8, 4)
+    >>> mesh_longitude, mesh_latitude = np.meshgrid(longitude, latitude)
+    >>> surface_heights = np.arange(20, dtype=float).reshape((4, 5))
+    >>> # Convert heights to radii
+    >>> reference_radii = bl.WGS84.geocentric_radius(mesh_latitude)
+    >>> surface_radii = surface_heights + reference_radii
+    >>> # Define constant densities
+    >>> density = 2670.0 * np.ones_like(surface_radii)
+    >>> # Define a layer of tesseroids
+    >>> tesseroids = tesseroid_layer(
+    ...     (longitude, latitude),
+    ...     surface_radii,
+    ...     reference=reference_radii,
+    ...     properties={"density": density},
+    ... )
+    >>> print(tesseroids) # doctest: +SKIP
+    <xarray.Dataset>
+    Dimensions:   (latitude: 4, longitude: 5)
+    Coordinates:
+      * latitude   (latitude) float64 2.0 4.0 6.0 8.0
+      * longitude  (longitude) float64 0.0 2.5 5.0 7.5 10.0
+        top       (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06
+        bottom    (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06
+    Data variables:
+        density   (latitude, longitude) float64 2.67e+03 2.67e+03 ... 2.67e+03
+    Attributes:
+        longitude_units:  degrees
+        latitude_units:   degrees
+        radius_units:     meters
+        properties_units:  SI
+    >>> # Get the boundaries of the layer (will exceed the region)
+    >>> boundaries = tesseroids.tesseroid_layer.boundaries
+    >>> list(float(b) for b in boundaries)
+    [-1.25, 11.25, 1.0, 9.0]
+    >>> # Get the boundaries of one of the tesseroids
+    >>> tesseroid = tesseroids.tesseroid_layer.get_tesseroid((0, 2))
+    >>> list(float(b) for b in tesseroid)
+    [3.75, 6.25, 1.0, 3.0, 6378137.0, 6378138.0]
     """
     dims = ("latitude", "longitude")
     # Initialize data and data_names as None
@@ -183,7 +248,7 @@ class DatasetAccessorTesseroidLayer:
         n_latitude : int
             Number of tesseroids on the latitude direction.
         n_longitude : int
-            Number of tesserods on the longitude direction.
+            Number of tesseroids on the longitude direction.
         """
         return (self._obj.latitude.size, self._obj.longitude.size)
 
@@ -221,15 +286,14 @@ class DatasetAccessorTesseroidLayer:
         ----------
         surface : 2d-array
             Array used to create the uppermost boundary of the tesseroid layer.
-            All heights should be in meters. On every point where ``surface``
+            All radii should be in meters. On every point where ``surface``
             is below ``reference``, the ``surface`` value will be used to set
             the ``bottom`` boundary of that tesseroid, while the ``reference``
             value will be used to set the ``top`` boundary of the tesseroid.
-
         reference : 2d-array or float
             Reference surface used to create the lowermost boundary of the
             tesseroid layer. It can be either a plane or an irregular surface
-            passed as 2d array. Height(s) must be in meters.
+            passed as 2d array. Radii must be in meters.
         """
         surface, reference = np.asarray(surface), np.asarray(reference)
         if surface.shape != self.shape:
@@ -261,6 +325,13 @@ class DatasetAccessorTesseroidLayer:
         """
         Compute the gravity generated by the layer of tesseroids.
 
+        Uses :func:`harmonica.tesseroid_gravity` for computing the gravity field
+        generated by the tesseroids of the layer.
+        The density of the tesseroids will be assigned from the ``data_var`` chosen
+        through the ``density_name`` argument.
+        Ignores the tesseroids which ``top`` or ``bottom`` boundaries are
+        ``np.nan``s.
+
         Parameters
         ----------
         coordinates : list of arrays
@@ -270,7 +341,7 @@ class DatasetAccessorTesseroidLayer:
             ``latitude`` should be in degrees and ``radius`` in meters.
         field : str
             Gravitational field that wants to be computed.
-            The variable fields are:
+            The available fields are:
             - Gravitational potential: ``potential``
             - Downward acceleration: ``g_z``
         progressbar : bool (optional)
@@ -302,7 +373,7 @@ class DatasetAccessorTesseroidLayer:
         # Select only the boundaries and density elements for masked tesseroid
         boundaries = boundaries[mask.ravel()]
         density = density[mask]
-        # Return gravity field of tesserids
+        # Return gravity field of tesseroids
         return tesseroid_gravity(
             coordinates,
             tesseroids=boundaries,
@@ -318,6 +389,13 @@ class DatasetAccessorTesseroidLayer:
 
         Parameters
         ----------
+        property_name : str (optional)
+            Name of the property layer (or ``data_var`` of the
+            :class:`xarray.Dataset`) that will be used for masking the tesseroids
+            in the layer.
+
+        Returns
+        -------
         mask : 2d-array
             Array of bools that can be used as a mask for selecting tesseroids
             with no nans on top boundaries, bottom boundaries ans the passed
@@ -398,12 +476,12 @@ class DatasetAccessorTesseroidLayer:
         ----------
         indices : tuple
             Indices of the desired tesseroid of the layer in the following
-            order: ``(index_northing, index_easting)``.
+            order: ``(index_latitude, index_longitude)``.
 
         Returns
         -------
         tesseroid : tuple
-           Boundaries of the prisms in the following order:
+           Boundaries of the tesseroids in the following order:
            ``longitude_w``, ``longitude_e``, ``latitude_s``, ``latitude_n``,
            ``bottom``, ``top``.
         """
