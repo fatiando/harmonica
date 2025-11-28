@@ -100,7 +100,7 @@ def ellipsoid_gravity(
 
         # Get permutation matrix and order the semiaxes
         permutation_matrix = get_permutation_matrix(ellipsoid)
-        a, b, c = permutation_matrix @ np.array([ellipsoid.a, ellipsoid.b, ellipsoid.c])
+        a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
 
         # Combine the rotation and the permutation matrices
         rotation = ellipsoid.rotation_matrix.T @ permutation_matrix
