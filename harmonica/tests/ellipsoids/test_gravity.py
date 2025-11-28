@@ -22,12 +22,7 @@ import pytest
 import verde as vd
 
 from harmonica import ellipsoid_gravity, point_gravity
-from harmonica._forward.ellipsoids import (
-    OblateEllipsoid,
-    ProlateEllipsoid,
-    Sphere,
-    TriaxialEllipsoid,
-)
+from harmonica._forward.ellipsoids import Ellipsoid
 from harmonica.errors import NoPhysicalPropertyWarning
 
 
@@ -46,49 +41,21 @@ def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
     match ellipsoid_type:
         case "triaxial":
             a, b, c = 3.2, 2.1, 1.3
-            ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center, density=density
-            )
         case "prolate":
             a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(
-                a=a, b=b, yaw=0, pitch=0, center=center, density=density
-            )
+            c = b
         case "oblate":
             a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(
-                a=a, b=b, yaw=0, pitch=0, center=center, density=density
-            )
+            c = b
         case "sphere":
             a = 3.2
-            ellipsoid = Sphere(a=a, center=center, density=density)
+            b, c = a, a
         case _:
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
+
+    ellipsoid = Ellipsoid(a, b, c, center=center, density=density)
     return ellipsoid
-
-
-def test_degenerate_ellipsoid_cases():
-    """
-    Test cases where the ellipsoid axes lengths are close to the boundary of
-    accepted values.
-
-    """
-    # ellipsoids take (a, b, #c, yaw, pitch, #roll, center)
-    a, b, c = 5, 4.99999999, 4.99999998
-    yaw, pitch, roll = 0, 0, 0
-    center = (0, 0, 0)
-    density = 2000
-    tri = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, center, density=density)
-    pro = ProlateEllipsoid(a, b, yaw, pitch, center, density=density)
-    obl = OblateEllipsoid(b, a, yaw, pitch, center, density=density)
-    coordinates = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
-    )
-
-    _, _, _ = ellipsoid_gravity(coordinates, tri)
-    _, _, _ = ellipsoid_gravity(coordinates, pro)
-    _, _, _ = ellipsoid_gravity(coordinates, obl)
 
 
 def test_opposite_planes():
@@ -99,12 +66,8 @@ def test_opposite_planes():
 
     """
     a, b, c = (4, 3, 2)  # triaxial ellipsoid
-    yaw, pitch, roll = 90, 0, 0
-    center = (0, 0, 0)
     density = 2000
-    triaxial_example = TriaxialEllipsoid(
-        a, b, c, yaw, pitch, roll, center, density=density
-    )
+    triaxial_example = Ellipsoid(a, b, c, density=density)
 
     # define observation points (2D grid) at surface height (z axis,
     # 'Upward') = 5
@@ -130,9 +93,7 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(
-        a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0), density=2000
-    )
+    ellipsoid = Ellipsoid(a, b, c, density=2000)
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])
@@ -330,7 +291,7 @@ class TestSphereVsPointSource:
         radius = 50.0
         center = (10, -29, 105)
         density = 200.0
-        sphere = Sphere(radius, center=center, density=density)
+        sphere = Ellipsoid(radius, radius, radius, center=center, density=density)
 
         # Build a 3d grid of observation points centered in (0, 0, 0)
         n = 51
@@ -382,47 +343,33 @@ class TestEllipsoidVsSphere:
     @pytest.fixture
     def sphere(self):
         """Sphere used to compare gravity fields."""
-        return Sphere(self.radius, self.center, density=self.density)
+        return Ellipsoid(
+            self.radius,
+            self.radius,
+            self.radius,
+            center=self.center,
+            density=self.density,
+        )
 
     @pytest.fixture(params=["oblate", "prolate", "triaxial"])
     def ellipsoid(self, request):
         """
         Ellipsoid that approximates a sphere.
         """
-        yaw, pitch, roll = 0, 0, 0
         a = self.radius
         match request.param:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=a,
-                    b=a + self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    density=self.density,
-                )
+                b = a + self.delta
+                c = b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    density=self.density,
-                )
+                b = a - self.delta
+                c = b
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    c=a - 2 * self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=self.center,
-                    density=self.density,
-                )
+                b = a - self.delta
+                c = a - 2 * self.delta
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
         return ellipsoid
 
     @pytest.fixture
@@ -467,8 +414,7 @@ class TestSymmetryOnRotations:
         """
         ellipsoid.yaw += 180
         ellipsoid.pitch *= -1
-        if isinstance(ellipsoid, TriaxialEllipsoid):
-            ellipsoid.roll *= -1
+        ellipsoid.roll *= -1
         return ellipsoid
 
     @pytest.fixture(params=["oblate", "prolate", "triaxial"])
@@ -482,36 +428,19 @@ class TestSymmetryOnRotations:
         density = 238
         match ellipsoid_type:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=semiminor,
-                    b=semimajor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=center,
-                    density=density,
-                )
+                a, b = semiminor, semimajor
+                c = b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=semimajor,
-                    b=semiminor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=center,
-                    density=density,
-                )
+                a, b = semimajor, semiminor
+                c = b
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=semimajor,
-                    b=semimiddle,
-                    c=semiminor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=center,
-                    density=density,
-                )
+                a, b, c = semimajor, semimiddle, semiminor
+                c = b
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(
+            a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, density=density
+        )
         return ellipsoid
 
     def test_symmetry_when_flipping(self, ellipsoid):
@@ -558,23 +487,25 @@ class TestMultipleEllipsoids:
     def ellipsoids(self):
         """Sample ellipsoids."""
         ellipsoids = [
-            OblateEllipsoid(
+            Ellipsoid(
                 a=20,
                 b=60,
+                c=60,
                 yaw=30.2,
                 pitch=-23,
                 center=(-10.0, 20.0, -10.0),
                 density=200.0,
             ),
-            ProlateEllipsoid(
+            Ellipsoid(
                 a=40,
                 b=15,
+                c=15,
                 yaw=170.2,
                 pitch=71,
                 center=(15.0, 0.0, -40.0),
                 density=-400.0,
             ),
-            TriaxialEllipsoid(
+            Ellipsoid(
                 a=60,
                 b=18,
                 c=15,
@@ -607,52 +538,15 @@ class TestMultipleEllipsoids:
         np.testing.assert_allclose(gz, gz_expected)
 
 
-@pytest.mark.parametrize(
-    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid]
-)
 class TestNoneDensity:
     """Test warning when ellipsoid has no density."""
 
-    @pytest.fixture
-    def ellipsoid_args(self, ellipsoid_class):
-        if ellipsoid_class is OblateEllipsoid:
-            args = {
-                "a": 20.0,
-                "b": 50.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is ProlateEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is TriaxialEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "c": 10.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "roll": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is Sphere:
-            args = {"a": 50.0, "center": (0, 0, 0)}
-        else:
-            raise TypeError()
-        return args
-
-    def test_warning(self, ellipsoid_class, ellipsoid_args):
+    def test_warning(self):
         """
         Test warning about ellipsoid with no density being skipped.
         """
         coordinates = (0.0, 0.0, 0.0)
-        ellipsoid = ellipsoid_class(**ellipsoid_args)
+        ellipsoid = build_ellipsoid("triaxial")
 
         msg = re.escape(
             f"Ellipsoid {ellipsoid} doesn't have a density value. It will be skipped."
@@ -701,7 +595,8 @@ class TestNumericalInstability:
 
     @pytest.fixture
     def sphere(self):
-        return Sphere(self.radius, center=self.center, density=self.density)
+        a = self.radius
+        return Ellipsoid(a, a, a, center=self.center, density=self.density)
 
     def test_gravity_prolate(self, sphere):
         """
@@ -714,9 +609,7 @@ class TestNumericalInstability:
 
         a = self.radius
         b = (1 - ratio) * a
-        ellipsoid = ProlateEllipsoid(
-            a, b, yaw=0, pitch=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, b, b, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
@@ -736,9 +629,7 @@ class TestNumericalInstability:
 
         a = self.radius
         b = (1 + ratio) * a
-        ellipsoid = OblateEllipsoid(
-            a, b, yaw=0, pitch=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, a, b, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
@@ -759,9 +650,7 @@ class TestNumericalInstability:
         a = self.radius
         b = (1 - ratio) * a
         c = (1 - 2 * ratio) * a
-        ellipsoid = TriaxialEllipsoid(
-            a, b, c, yaw=0, pitch=0, roll=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
