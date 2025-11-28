@@ -24,7 +24,7 @@ def get_permutation_matrix(ellipsoid):
 
     - Triaxial: ``a > b > c``
     - Prolate: ``a > b == c``
-    - Oblate: ``a < b == c``
+    - Oblate: ``a == b > c``
     - Sphere: ``a == b == c``
 
 
@@ -57,55 +57,21 @@ def get_permutation_matrix(ellipsoid):
      [0 0 1]
      [1 0 0]]
     """
-    # Sphere
+    # Return identity matrix for a sphere
     if ellipsoid.a == ellipsoid.b == ellipsoid.c:
         permutation_matrix = np.eye(3)
         return permutation_matrix
 
-    # Get permutation matrix
-    permutation_matrix = _get_simple_permutation_matrix(
-        ellipsoid.a, ellipsoid.b, ellipsoid.c
-    )
+    # Get sort indices
+    semiaxes = np.array([ellipsoid.a, ellipsoid.b, ellipsoid.c])
+    argsort = np.argsort(semiaxes)
 
-    # Sort semiaxes so a >= b >= c
-    c, b, a = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c))
-
-    # Treat oblate ellipsoids
-    if a == b:
-        # Swap `a` with `c` so: a < b == c
-        a, c = c, a
-        permutation_matrix[0, :], permutation_matrix[2, :] = (
-            permutation_matrix[2, :],
-            permutation_matrix[0, :],
-        )
+    # Build permutation matrix
+    permutation_matrix = np.zeros((3, 3), dtype=np.int32)
+    sorted_indices = np.array([2, 1, 0])
+    permutation_matrix[sorted_indices, argsort] = 1
 
     return permutation_matrix
-
-
-def _get_simple_permutation_matrix(a, b, c):
-    """
-    Build permutation matrix for the given semiaxes.
-
-    This permutation matrix sorts the semiaxes ``a``, ``b``, ``c`` in reverse order.
-
-    Parameters
-    ----------
-    a, b, c : float
-        Semiaxes lenghts.
-
-    Returns
-    -------
-    permutation_matrix : (3, 3) np.ndarray
-        Permutation matrix.
-    """
-    # Get sort indices
-    semiaxes = np.array([a, b, c])
-    argsort = np.argsort(semiaxes)
-    # Build permutation matrix
-    p_matrix = np.zeros((3, 3), dtype=np.int32)
-    sorted_indices = np.array([2, 1, 0])
-    p_matrix[sorted_indices, argsort] = 1
-    return p_matrix
 
 
 def is_internal(x, y, z, a, b, c):
@@ -296,8 +262,8 @@ def get_elliptical_integrals(
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     elif a > b and b == c:
         g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lambda_)
-    elif a < b and b == c:
-        g1, g2, g3 = _get_elliptical_integrals_oblate(a, b, lambda_)
+    elif a == b and b > c:
+        g1, g2, g3 = _get_elliptical_integrals_oblate(b, c, lambda_)
     else:
         msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
         raise ValueError(msg)
@@ -486,7 +452,7 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     return g1, g2, g2
 
 
-def _get_elliptical_integrals_oblate(a, b, lmbda):
+def _get_elliptical_integrals_oblate(b, c, lmbda):
     r"""
     Compute elliptical integrals for a oblate ellipsoid.
 
@@ -512,46 +478,52 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     .. math::
 
         A(\lambda) =
-            \frac{ 2 }{ (b^2 - a^2)^{\frac{3}{2}} }
+            \frac{ 1 }{ (b^2 - c^2)^{\frac{3}{2}} }
             \left\{
-                \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} }
-                -
-                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
-            \right\}
-
-    .. math::
-
-        B(\lambda) =
-            \frac{ 1 }{ (b^2 - a^2)^{\frac{3}{2}} }
-            \left\{
-                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
+                \arctan \left[ \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} } \right]
                 -
                 \frac{
-                    \sqrt{ (b^2 - a^2) (a^2 + \lambda) }
+                    \sqrt{ (b^2 - c^2) (c^2 + \lambda) }
                 }{
                     b^2 + \lambda
                 }
             \right\}
 
+    .. math::
+
+        C(\lambda) =
+            \frac{ 2 }{ (b^2 - c^2)^{\frac{3}{2}} }
+            \left\{
+                \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} }
+                -
+                \arctan \left[ \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} } \right]
+            \right\}
+
+
     and
 
     .. math::
 
-        C(\lambda) = B(\lambda)
+        B(\lambda) = A(\lambda)
+
+    .. important::
+
+        These equations are modified versions of the one in Takahashi (2018), adapted to
+        any oblate ellipsoid defined as: ``a = b > c``.
 
     """
-    arctan = np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+    arctan = np.arctan(np.sqrt((b**2 - c**2) / (c**2 + lmbda)))
     g1 = (
-        2
-        / ((b**2 - a**2) ** (3 / 2))
-        * ((np.sqrt((b**2 - a**2) / (a**2 + lmbda))) - arctan)
-    )
-    g2 = (
         1
-        / ((b**2 - a**2) ** (3 / 2))
-        * (arctan - (np.sqrt((b**2 - a**2) * (a**2 + lmbda))) / (b**2 + lmbda))
+        / ((b**2 - c**2) ** (3 / 2))
+        * (arctan - (np.sqrt((b**2 - c**2) * (c**2 + lmbda))) / (b**2 + lmbda))
     )
-    return g1, g2, g2
+    g3 = (
+        2
+        / ((b**2 - c**2) ** (3 / 2))
+        * ((np.sqrt((b**2 - c**2) / (c**2 + lmbda))) - arctan)
+    )
+    return g1, g1, g3
 
 
 def get_derivatives_of_elliptical_integrals(
