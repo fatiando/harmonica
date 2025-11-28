@@ -19,14 +19,8 @@ def get_permutation_matrix(ellipsoid):
     Get permutation matrix for the given ellipsoid.
 
     Build a permutation matrix that sorts the ellipsoid's semiaxes lengths
-    ``ellipsoid.a``, ``ellipsoid.b``, ``ellipsoid.c`` into ``a``, ``b``, ``c`` values
-    that satisfy that:
-
-    - Triaxial: ``a > b > c``
-    - Prolate: ``a > b == c``
-    - Oblate: ``a == b > c``
-    - Sphere: ``a == b == c``
-
+    ``ellipsoid.a``, ``ellipsoid.b``, ``ellipsoid.c`` in reverse order, into ``a``,
+    ``b``, ``c`` values that verify ``a >= b >= c``.
 
     Parameters
     ----------
@@ -44,7 +38,8 @@ def get_permutation_matrix(ellipsoid):
     >>> ellipsoid = Ellipsoid(
     ...     a=43.0, b=50.0, c=83.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
     ... )
-    >>> get_permutation_matrix(ellipsoid)
+    >>> matrix = get_permutation_matrix(ellipsoid)
+    >>> print(matrix)
     [[0 0 1]
      [0 1 0]
      [1 0 0]]
@@ -52,7 +47,8 @@ def get_permutation_matrix(ellipsoid):
     >>> ellipsoid = Ellipsoid(
     ...     a=43.0, b=83.0, c=50.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
     ... )
-    >>> get_permutation_matrix(ellipsoid)
+    >>> matrix = get_permutation_matrix(ellipsoid)
+    >>> print(matrix)
     [[0 1 0]
      [0 0 1]
      [1 0 0]]
