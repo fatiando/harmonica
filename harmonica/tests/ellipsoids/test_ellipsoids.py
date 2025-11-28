@@ -15,13 +15,7 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 
-from harmonica import (
-    OblateEllipsoid,
-    ProlateEllipsoid,
-    Sphere,
-    TriaxialEllipsoid,
-    create_ellipsoid,
-)
+from harmonica import Ellipsoid
 
 try:
     import pyvista
@@ -29,161 +23,8 @@ except ImportError:
     pyvista = None
 
 
-class TestProlateEllipsoid:
-    """Test the ProlateEllipsoid class."""
-
-    @pytest.mark.parametrize(("a", "b"), [(35.0, 50.0), (50.0, 50.0)])
-    def test_invalid_semiaxes(self, a, b):
-        """Test error if not a > b."""
-        msg = re.escape("Invalid ellipsoid axis lengths for prolate ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-
-    @pytest.mark.parametrize("semiaxis", ["a", "b"])
-    def test_non_positive_semiaxis(self, semiaxis):
-        """Test error after non-positive semiaxis."""
-        match semiaxis:
-            case "a":
-                a, b = -1.0, 40.0
-            case "b":
-                a, b = 50.0, -1.0
-            case _:
-                raise ValueError()
-        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
-        with pytest.raises(ValueError, match=msg):
-            ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-
-    @pytest.mark.parametrize("semiaxis", ["a", "b"])
-    def test_non_positive_semiaxis_setter(self, semiaxis):
-        """Test error after non-positive semiaxis when using the setter."""
-        a, b = 50.0, 35.0
-        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
-        with pytest.raises(ValueError, match=msg):
-            setattr(ellipsoid, semiaxis, -1.0)
-
-    def test_semiaxes_setter(self):
-        """Test setters for semiaxes."""
-        a, b = 50.0, 35.0
-        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        # Test setter of a
-        new_a = a + 1
-        ellipsoid.a = new_a
-        assert ellipsoid.a == new_a
-        # Test setter of b
-        new_b = b + 1
-        ellipsoid.b = new_b
-        assert ellipsoid.b == new_b
-
-    def test_invalid_semiaxes_setter(self):
-        """Test error if not a > b when using the setter."""
-        a, b = 50.0, 35.0
-        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        msg = re.escape("Invalid ellipsoid axis lengths for prolate ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.a = 20.0
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.b = 70.0
-
-    def test_value_of_c(self):
-        """Test if c is always equal to b."""
-        a, b = 50.0, 35.0
-        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        assert ellipsoid.b == ellipsoid.c
-        # Update the value of b and check again
-        ellipsoid.b = 45.0
-        assert ellipsoid.b == ellipsoid.c
-
-    def test_roll_equal_to_zero(self):
-        """Test if roll is always equal to zero."""
-        a, b = 50.0, 35.0
-        ellipsoid = ProlateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        assert ellipsoid.roll == 0.0
-
-
-class TestOblateEllipsoid:
-    """Test the OblateEllipsoid class."""
-
-    @pytest.mark.parametrize(("a", "b"), [(50.0, 35.0), (50.0, 50.0)])
-    def test_invalid_semiaxes(self, a, b):
-        """Test error if not a < b."""
-        msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-
-    @pytest.mark.parametrize("semiaxis", ["a", "b"])
-    def test_non_positive_semiaxis(self, semiaxis):
-        """Test error after non-positive semiaxis."""
-        match semiaxis:
-            case "a":
-                a, b = -1.0, 40.0
-            case "b":
-                a, b = 50.0, -1.0
-            case _:
-                raise ValueError()
-        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
-        with pytest.raises(ValueError, match=msg):
-            OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-
-    @pytest.mark.parametrize("semiaxis", ["a", "b"])
-    def test_non_positive_semiaxis_setter(self, semiaxis):
-        """Test error after non-positive semiaxis when using the setter."""
-        a, b = 35.0, 50.0
-        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
-        with pytest.raises(ValueError, match=msg):
-            setattr(ellipsoid, semiaxis, -1.0)
-
-    def test_semiaxes_setter(self):
-        """Test setters for semiaxes."""
-        a, b = 35.0, 50.0
-        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        # Test setter of a
-        new_a = a + 1
-        ellipsoid.a = new_a
-        assert ellipsoid.a == new_a
-        # Test setter of b
-        new_b = b + 1
-        ellipsoid.b = new_b
-        assert ellipsoid.b == new_b
-
-    def test_invalid_semiaxes_setter(self):
-        """Test error if not a < b when using the setter."""
-        a, b = 35.0, 50.0
-        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        msg = re.escape("Invalid ellipsoid axis lengths for oblate ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.a = 70.0
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.b = 20.0
-
-    def test_value_of_c(self):
-        """Test if c is always equal to b."""
-        a, b = 35.0, 50.0
-        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        assert ellipsoid.b == ellipsoid.c
-        # Update the value of b and check again
-        ellipsoid.b = 45.0
-        assert ellipsoid.b == ellipsoid.c
-
-    def test_roll_equal_to_zero(self):
-        """Test if roll is always equal to zero."""
-        a, b = 35.0, 50.0
-        ellipsoid = OblateEllipsoid(a, b, yaw=0, pitch=0, center=(0, 0, 0))
-        assert ellipsoid.roll == 0.0
-
-
-class TestTriaxialEllipsoid:
-    """Test the TriaxialEllipsoid class."""
-
-    @pytest.mark.parametrize(
-        ("a", "b", "c"), [(50.0, 35.0, 45.0), (50.0, 50.0, 50.0), (60.0, 50.0, 50.0)]
-    )
-    def test_invalid_semiaxes(self, a, b, c):
-        """Test error if not a > b > c."""
-        msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+class TestEllipsoid:
+    """Test the Ellipsoid class."""
 
     @pytest.mark.parametrize("semiaxis", ["a", "b", "c"])
     def test_non_positive_semiaxis(self, semiaxis):
@@ -199,13 +40,13 @@ class TestTriaxialEllipsoid:
                 raise ValueError()
         msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
         with pytest.raises(ValueError, match=msg):
-            TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+            Ellipsoid(a, b, c)
 
     @pytest.mark.parametrize("semiaxis", ["a", "b", "c"])
     def test_non_positive_semiaxis_setter(self, semiaxis):
         """Test error after non-positive semiaxis when using the setter."""
         a, b, c = 50.0, 40.0, 35.0
-        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+        ellipsoid = Ellipsoid(a, b, c)
         msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
         with pytest.raises(ValueError, match=msg):
             setattr(ellipsoid, semiaxis, -1.0)
@@ -213,7 +54,7 @@ class TestTriaxialEllipsoid:
     def test_semiaxes_setter(self):
         """Test setters for semiaxes."""
         a, b, c = 50.0, 40.0, 35.0
-        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
+        ellipsoid = Ellipsoid(a, b, c)
         # Test setter of a
         new_a = a + 1
         ellipsoid.a = new_a
@@ -227,149 +68,56 @@ class TestTriaxialEllipsoid:
         ellipsoid.c = new_c
         assert ellipsoid.c == new_c
 
-    def test_invalid_semiaxes_setter(self):
-        """Test error if not a > b > c when using the setter."""
-        a, b, c = 50.0, 40.0, 30.0
-        ellipsoid = TriaxialEllipsoid(a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0))
-        msg = re.escape("Invalid ellipsoid axis lengths for triaxial ellipsoid")
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.a = 30.0
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.b = 20.0
-        with pytest.raises(ValueError, match=msg):
-            ellipsoid.c = 70.0
-
-
-class TestSphere:
-    """Test the Sphere class."""
-
-    def test_non_positive_semiaxis(self):
-        """Test error after non-positive a semiaxis."""
-        a = -1.0
-        msg = re.escape(f"Invalid value of 'a' equal to '{a}'")
-        with pytest.raises(ValueError, match=msg):
-            Sphere(a=a, center=(0, 0, 0))
-
-    def test_non_positive_semiaxis_setter(self):
-        """Test error after non-positive semiaxis when using the setter."""
-        sphere = Sphere(a=10.0, center=(0, 0, 0))
-        new_value = -1.0
-        msg = re.escape(f"Invalid value of 'a' equal to '{new_value}'")
-        with pytest.raises(ValueError, match=msg):
-            sphere.a = new_value
-
-    def test_semiaxes_setter(self):
-        """Test setters for semiaxes."""
-        a = 10.0
-        sphere = Sphere(a, center=(0, 0, 0))
-        new_a = a + 1
-        sphere.a = new_a
-        assert sphere.a == new_a
-
-    @pytest.mark.parametrize("semiaxis", ["b", "c"])
-    def test_value_of_b_and_c(self, semiaxis):
-        """Test if b and c are always equal to a."""
-        a = 10.0
-        sphere = Sphere(a, center=(0, 0, 0))
-        assert sphere.a == getattr(sphere, semiaxis)
-        # Update the value of the semiaxis and check again
-        sphere.a = 45.0
-        assert sphere.a == getattr(sphere, semiaxis)
-
-    def test_radius(self):
-        """Test that the radius is always equal to a."""
-        a = 10.0
-        sphere = Sphere(a, center=(0, 0, 0))
-        assert sphere.a == sphere.radius
-        # Update the value of the semiaxis and check again
-        sphere.a = 45.0
-        assert sphere.a == sphere.radius
-
-    def test_angles_equal_to_zero(self):
-        """Test if all angles are always equal to zero."""
-        sphere = Sphere(10.0, center=(0, 0, 0))
-        assert sphere.yaw == 0.0
-        assert sphere.pitch == 0.0
-        assert sphere.roll == 0.0
-
-    def test_rotation_matrix(self):
+    def test_rotation_matrix_of_sphere(self):
         """Make sure the rotation matrix of a sphere is always the identity."""
-        sphere = Sphere(10.0, center=(0, 0, 0))
+        a = 10.0
+        sphere = Ellipsoid(a, a, a)
         np.testing.assert_array_equal(
             sphere.rotation_matrix, np.eye(3, dtype=np.float64)
         )
 
 
-@pytest.mark.parametrize(
-    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid, Sphere]
-)
 class TestPhysicalProperties:
     @pytest.fixture
-    def ellipsoid_args(self, ellipsoid_class):
-        if ellipsoid_class is OblateEllipsoid:
-            args = {
-                "a": 20.0,
-                "b": 50.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is ProlateEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is TriaxialEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "c": 10.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "roll": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is Sphere:
-            args = {"a": 50.0, "center": (0, 0, 0)}
-        else:
-            raise TypeError()
-        return args
+    def semiaxes(self):
+        """Ellipsoid semiaxes."""
+        return 50.0, 35.0, 25.0
 
-    def test_density(self, ellipsoid_class, ellipsoid_args):
+    def test_density(self, semiaxes):
         """
         Test assigning density to the ellipsoid.
         """
+        a, b, c = semiaxes
         density = 3.0
-        ellipsoid = ellipsoid_class(**ellipsoid_args, density=density)
+        ellipsoid = Ellipsoid(a, b, c, density=density)
         assert ellipsoid.density == density
         # Check overwriting it
         new_density = -4.0
         ellipsoid.density = new_density
         assert ellipsoid.density == new_density
         # Check density as None
-        ellipsoid = ellipsoid_class(**ellipsoid_args, density=None)
+        ellipsoid = Ellipsoid(a, b, c, density=None)
         assert ellipsoid.density is None
 
-    def test_invalid_density(self, ellipsoid_class, ellipsoid_args):
+    def test_invalid_density(self, semiaxes):
         """
         Test errors after invalid density.
         """
+        a, b, c = semiaxes
         density = [1.0, 3.0]
         msg = re.escape("Invalid 'density' of type 'list'")
         with pytest.raises(TypeError, match=msg):
-            ellipsoid_class(**ellipsoid_args, density=density)
+            Ellipsoid(a, b, c, density=density)
 
     @pytest.mark.parametrize("susceptibility", [0.1, "tensor", None])
-    def test_susceptibility(self, ellipsoid_class, ellipsoid_args, susceptibility):
+    def test_susceptibility(self, semiaxes, susceptibility):
         """
         Test assigning susceptibility to the ellipsoid.
         """
+        a, b, c = semiaxes
         if susceptibility == "tensor":
             susceptibility = np.random.default_rng(seed=42).uniform(size=(3, 3))
-        ellipsoid = ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+        ellipsoid = Ellipsoid(a, b, c, susceptibility=susceptibility)
 
         # Check if it was correctly assigned
         if susceptibility is None:
@@ -384,29 +132,32 @@ class TestPhysicalProperties:
         ellipsoid.susceptibility = new_sus
         assert ellipsoid.susceptibility == new_sus
 
-    def test_invalid_susceptibility_type(self, ellipsoid_class, ellipsoid_args):
+    def test_invalid_susceptibility_type(self, semiaxes):
         """
         Test errors after invalid susceptibility type.
         """
+        a, b, c = semiaxes
         susceptibility = [1.0, 3.0]
         msg = re.escape("Invalid 'susceptibility' of type 'list'")
         with pytest.raises(TypeError, match=msg):
-            ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+            Ellipsoid(a, b, c, susceptibility=susceptibility)
 
-    def test_invalid_susceptibility_shape(self, ellipsoid_class, ellipsoid_args):
+    def test_invalid_susceptibility_shape(self, semiaxes):
         """
         Test errors after invalid susceptibility shape.
         """
+        a, b, c = semiaxes
         susceptibility = np.array([[1, 2, 3], [4, 5, 6]])
         msg = re.escape("Invalid 'susceptibility' as an array with shape '(2, 3)'")
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_class(**ellipsoid_args, susceptibility=susceptibility)
+            Ellipsoid(a, b, c, susceptibility=susceptibility)
 
     @pytest.mark.parametrize("remanent_mag_type", ["array", "list", None])
-    def test_remanent_mag(self, ellipsoid_class, ellipsoid_args, remanent_mag_type):
+    def test_remanent_mag(self, semiaxes, remanent_mag_type):
         """
         Test assigning susceptibility to the ellipsoid.
         """
+        a, b, c = semiaxes
         if remanent_mag_type == "array":
             remanent_mag = np.array([1.0, 2.0, 3.0])
         elif remanent_mag_type == "list":
@@ -414,7 +165,7 @@ class TestPhysicalProperties:
         else:
             remanent_mag = None
 
-        ellipsoid = ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
+        ellipsoid = Ellipsoid(a, b, c, remanent_mag=remanent_mag)
 
         # Check if it was correctly assigned
         if remanent_mag is None:
@@ -427,152 +178,40 @@ class TestPhysicalProperties:
         ellipsoid.remanent_mag = new_remanent_mag
         np.testing.assert_almost_equal(ellipsoid.remanent_mag, new_remanent_mag)
 
-    def test_invalid_remanent_mag_type(self, ellipsoid_class, ellipsoid_args):
+    def test_invalid_remanent_mag_type(self, semiaxes):
         """
         Test errors after invalid remanent_mag type.
         """
 
         class Dummy: ...
 
+        a, b, c = semiaxes
         remanent_mag = Dummy()
         msg = re.escape("Invalid 'remanent_mag' of type 'Dummy'")
         with pytest.raises(TypeError, match=msg):
-            ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
+            Ellipsoid(a, b, c, remanent_mag=remanent_mag)
 
-    def test_invalid_remanent_mag_shape(self, ellipsoid_class, ellipsoid_args):
+    def test_invalid_remanent_mag_shape(self, semiaxes):
         """
         Test errors after invalid remanent_mag shape.
         """
+        a, b, c = semiaxes
         remanent_mag = np.array([1.0, 2.0])
         msg = re.escape("Invalid 'remanent_mag' with shape '(2,)'")
         with pytest.raises(ValueError, match=msg):
-            ellipsoid_class(**ellipsoid_args, remanent_mag=remanent_mag)
-
-
-class TestCreateEllipsoid:
-    """
-    Test the ``create_ellipsoid`` function.
-    """
-
-    def test_sphere(self):
-        """Test ``create_ellipsoid`` when expecting a ``Sphere``."""
-        a = 50
-        center = (1.0, 2.0, 3.0)
-        sphere = create_ellipsoid(a, a, a, center=center)
-        assert isinstance(sphere, Sphere)
-        assert sphere.a == a
-        np.testing.assert_almost_equal(sphere.center, center)
-
-    @pytest.mark.parametrize(
-        ("a", "b", "c"), [(2.0, 1.0, 1.0), (1.0, 2.0, 1.0), (1.0, 1.0, 2.0)]
-    )
-    def test_prolate(self, a, b, c):
-        """Test ``create_ellipsoid`` when expecting a ``ProlateEllipsoid``."""
-        center = (1.0, 2.0, 3.0)
-        yaw, pitch = 30.0, -17.0
-        ellipsoid = create_ellipsoid(a, b, c, center=center, yaw=yaw, pitch=pitch)
-        assert isinstance(ellipsoid, ProlateEllipsoid)
-        assert ellipsoid.a == 2.0
-        assert ellipsoid.b == 1.0
-        assert ellipsoid.c == 1.0
-        assert ellipsoid.yaw == yaw
-        assert ellipsoid.pitch == pitch
-        np.testing.assert_almost_equal(ellipsoid.center, center)
-
-    @pytest.mark.parametrize(
-        ("a", "b", "c"), [(2.0, 3.0, 3.0), (3.0, 2.0, 3.0), (3.0, 3.0, 2.0)]
-    )
-    def test_oblate(self, a, b, c):
-        """Test ``create_ellipsoid`` when expecting a ``OblateEllipsoid``."""
-        center = (1.0, 2.0, 3.0)
-        yaw, pitch = 30.0, -17.0
-        ellipsoid = create_ellipsoid(a, b, c, center=center, yaw=yaw, pitch=pitch)
-        assert isinstance(ellipsoid, OblateEllipsoid)
-        assert ellipsoid.a == 2.0
-        assert ellipsoid.b == 3.0
-        assert ellipsoid.c == 3.0
-        assert ellipsoid.yaw == yaw
-        assert ellipsoid.pitch == pitch
-        np.testing.assert_almost_equal(ellipsoid.center, center)
-
-    @pytest.mark.parametrize(("a", "b", "c"), itertools.permutations((1.0, 2.0, 3.0)))
-    def test_triaxial(self, a, b, c):
-        """Test ``create_ellipsoid`` when expecting a ``TriaxialEllipsoid``."""
-        center = (1.0, 2.0, 3.0)
-        yaw, pitch, roll = 30.0, -17.0, 45.0
-        ellipsoid = create_ellipsoid(
-            a, b, c, center=center, yaw=yaw, pitch=pitch, roll=roll
-        )
-        assert isinstance(ellipsoid, TriaxialEllipsoid)
-        assert ellipsoid.a == 3.0
-        assert ellipsoid.b == 2.0
-        assert ellipsoid.c == 1.0
-        assert ellipsoid.yaw == yaw
-        assert ellipsoid.pitch == pitch
-        assert ellipsoid.roll == roll
-        np.testing.assert_almost_equal(ellipsoid.center, center)
-
-    @pytest.mark.parametrize(
-        ("a", "b", "c"),
-        [(-1.0, 2.0, 3.0), (1.0, -2.0, 3.0), (1.0, 2.0, -3.0), (0.0, 1.0, 2.0)],
-        ids=["a", "b", "c", "a-zero"],
-    )
-    def test_invalid_semiaxes(self, a, b, c):
-        """Test error when semiaxes are non-positive."""
-        msg = (
-            r"Invalid value of '[abc]' equal to '-?[0-9]+\.[0-9]+'\. "
-            r"It must be positive\."
-        )
-        with pytest.raises(ValueError, match=msg):
-            create_ellipsoid(a, b, c, center=(0, 1, 2))
-
-    @pytest.mark.parametrize(
-        ("a", "b", "c"),
-        [(1.0, 1.0, 1.0), (1.0, 1.0, 2.0), (2.0, 2.0, 1.0), (1.0, 2.0, 3.0)],
-        ids=["sphere", "prolate", "oblate", "triaxial"],
-    )
-    @pytest.mark.parametrize(
-        "physical_property",
-        ["density", "susceptibility", "remanent_mag"],
-    )
-    def test_physical_properties(self, a, b, c, physical_property):
-        """Test if physical properties are present in the objects."""
-        match physical_property:
-            case "density":
-                value = 200.0
-            case "susceptibility":
-                value = 0.1
-            case "remanent_mag":
-                value = np.array([1.0, 2.0, 3.0])
-            case _:
-                raise ValueError()
-        kwargs = {physical_property: value}
-        center = (1.0, 2.0, 3.0)
-        ellipsoid = create_ellipsoid(a, b, c, center=center, **kwargs)
-        np.testing.assert_allclose(getattr(ellipsoid, physical_property), value)
+            Ellipsoid(a, b, c, remanent_mag=remanent_mag)
 
 
 @pytest.mark.skipif(pyvista is None, reason="requires pyvista")
 class TestToPyvista:
     """Test exporting ellipsoids to PyVista objects."""
 
-    @pytest.fixture(params=["oblate", "prolate", "triaxial", "sphere"])
-    def ellipsoid(self, request):
+    @pytest.fixture
+    def ellipsoid(self):
         a, b, c = 3.0, 2.0, 1.0
         yaw, pitch, roll = 73.0, 14.0, -35.0
         center = (43.0, -72.0, 105)
-        match request.param:
-            case "oblate":
-                ellipsoid = OblateEllipsoid(b, a, yaw, pitch, center=center)
-            case "prolate":
-                ellipsoid = ProlateEllipsoid(a, b, yaw, pitch, center=center)
-            case "triaxial":
-                ellipsoid = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, center=center)
-            case "sphere":
-                ellipsoid = Sphere(a, center=center)
-            case _:
-                raise ValueError()
-        return ellipsoid
+        return Ellipsoid(a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center)
 
     @patch("harmonica._forward.ellipsoids.ellipsoids.pyvista", None)
     def test_pyvista_missing_error(self, ellipsoid):
