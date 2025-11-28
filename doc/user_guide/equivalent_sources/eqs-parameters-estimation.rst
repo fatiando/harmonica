@@ -39,7 +39,7 @@ Lets start by loading some sample gravity data:
 
    fname = ensaio.fetch_bushveld_gravity(version=1)
    data = pd.read_csv(fname)
-   print(data)
+   data
 
 And project their coordinates using a Mercator projection:
 
