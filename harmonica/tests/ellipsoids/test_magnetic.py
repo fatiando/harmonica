@@ -514,7 +514,7 @@ class TestMagneticFieldVersusDipole:
 
         Returns
         -------
-        OblateEllipsoid, ProlateEllipsoid, Sphere or TriaxialEllipsoid
+        Ellipsoid
         """
         match ellipsoid_type:
             case "oblate":
