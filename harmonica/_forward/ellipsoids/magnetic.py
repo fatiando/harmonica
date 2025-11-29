@@ -157,10 +157,10 @@ def _single_ellipsoid_magnetic(
     a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
 
     # Combine the rotation and the permutation matrices
-    rotation = ellipsoid.rotation_matrix.T @ permutation_matrix
+    transformation = ellipsoid.rotation_matrix.T @ permutation_matrix
 
     # Rotate observation points
-    x, y, z = rotation @ np.vstack(coords_shifted)
+    x, y, z = transformation @ np.vstack(coords_shifted)
 
     # Build internal demagnetization tensor
     n_tensor_internal = get_demagnetization_tensor_internal(a, b, c)
@@ -170,8 +170,8 @@ def _single_ellipsoid_magnetic(
     remanent_mag = cast_remanent_magnetization(remanent_mag)
 
     # Rotate the external field and the remanent magnetization
-    h0_field_rotated = rotation @ h0_field
-    remnant_mag_rotated = rotation @ remanent_mag
+    h0_field_rotated = transformation @ h0_field
+    remnant_mag_rotated = transformation @ remanent_mag
 
     # Get magnetization of the ellipsoid
     magnetization = get_magnetisation(
@@ -202,7 +202,7 @@ def _single_ellipsoid_magnetic(
     b_field[~internal, :] = mu_0 * (-n_tensors @ magnetization)
 
     # Rotate the b fields
-    be, bn, bu = rotation.T @ b_field.T
+    be, bn, bu = transformation.T @ b_field.T
 
     return be, bn, bu
 

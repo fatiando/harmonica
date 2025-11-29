@@ -101,10 +101,10 @@ def ellipsoid_gravity(
         a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
 
         # Combine the rotation and the permutation matrices
-        rotation = ellipsoid.rotation_matrix.T @ permutation_matrix
+        transformation = ellipsoid.rotation_matrix.T @ permutation_matrix
 
         # Rotate observation points
-        x, y, z = rotation @ np.vstack(coords_shifted)
+        x, y, z = transformation @ np.vstack(coords_shifted)
 
         # Calculate gravity components on local coordinate system
         gravity_ellipsoid = _compute_gravity_ellipsoid(
@@ -112,7 +112,7 @@ def ellipsoid_gravity(
         )
 
         # project onto upward unit vector, axis U
-        ge_i, gn_i, gu_i = rotation.T @ np.vstack(gravity_ellipsoid)
+        ge_i, gn_i, gu_i = transformation.T @ np.vstack(gravity_ellipsoid)
 
         # sum contributions from each ellipsoid
         ge += ge_i
