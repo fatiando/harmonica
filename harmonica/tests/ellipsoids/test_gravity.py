@@ -658,3 +658,66 @@ class TestNumericalInstability:
         np.testing.assert_allclose(ge_ell, ge_sphere, rtol=rtol, atol=atol)
         np.testing.assert_allclose(gn_ell, gn_sphere, rtol=rtol, atol=atol)
         np.testing.assert_allclose(gu_ell, gu_sphere, rtol=rtol, atol=atol)
+
+
+class TestTriaxialOnLimits:
+    """
+    Test a triaxial ellipsoid vs oblate and prolate ellipsoids.
+
+    Test the gravity fields of a triaxial ellipsoid that approximates an oblate and
+    a prolate one against their gravity fields.
+    """
+
+    semimajor = 50.0
+    atol_ratio = 1e-5
+    rtol = 1e-5
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(self.semimajor, 5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    def test_triaxial_vs_prolate(self):
+        """Compare triaxial with prolate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a, b = self.semimajor, 20.0
+        c = b - 1e-4
+        density = 200.0
+        triaxial = Ellipsoid(a, b, c, density=density)
+        prolate = Ellipsoid(a, b, b, density=density)
+
+        g_triaxial, g_prolate = tuple(
+            ellipsoid_gravity(coordinates, ell) for ell in (triaxial, prolate)
+        )
+
+        for gi_triaxial, gi_prolate in zip(g_triaxial, g_prolate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(gi_prolate)
+            np.testing.assert_allclose(
+                gi_triaxial, gi_prolate, atol=atol, rtol=self.rtol
+            )
+
+    def test_triaxial_vs_oblate(self):
+        """Compare triaxial with oblate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a = self.semimajor
+        b = a - 1e-4
+        c = 20.0
+        density = 200.0
+        triaxial = Ellipsoid(a, b, c, density=density)
+        oblate = Ellipsoid(a, a, c, density=density)
+
+        g_triaxial, g_oblate = tuple(
+            ellipsoid_gravity(coordinates, ell) for ell in (triaxial, oblate)
+        )
+
+        for gi_triaxial, gi_oblate in zip(g_triaxial, g_oblate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(gi_oblate)
+            np.testing.assert_allclose(
+                gi_triaxial, gi_oblate, atol=atol, rtol=self.rtol
+            )
