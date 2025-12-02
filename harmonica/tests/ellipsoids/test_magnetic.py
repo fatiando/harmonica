@@ -799,7 +799,7 @@ class TestNoMagnetic:
         with pytest.warns(NoPhysicalPropertyWarning, match=msg):
             bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
 
-        # Check the gravity acceleration components are zero
+        # Check the magnetic field components are zero
         for b_component in (bx, by, bz):
             assert b_component == 0.0
 
