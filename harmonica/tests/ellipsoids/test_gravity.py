@@ -445,7 +445,7 @@ class TestSymmetryOnRotations:
 
     def test_symmetry_when_flipping(self, ellipsoid):
         """
-        Test symmetry of magnetic field when flipping the ellipsoid.
+        Test symmetry of gravity field when flipping the ellipsoid.
 
         Rotate the ellipsoid so the geometry is preserved. The gravity field generated
         by the ellipsoid should be the same as before the rotation.
@@ -458,7 +458,7 @@ class TestSymmetryOnRotations:
         # Generate a flipped ellipsoid
         ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
 
-        # Compute magnetic fields
+        # Compute gravity fields
         g_field, g_field_flipped = tuple(
             ellipsoid_gravity(coordinates, ell)
             for ell in (ellipsoid, ellipsoid_flipped)
