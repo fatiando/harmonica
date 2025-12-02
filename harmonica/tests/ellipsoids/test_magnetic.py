@@ -802,3 +802,69 @@ class TestNoMagnetic:
         # Check the gravity acceleration components are zero
         for b_component in (bx, by, bz):
             assert b_component == 0.0
+
+
+class TestTriaxialOnLimits:
+    """
+    Test a triaxial ellipsoid vs oblate and prolate ellipsoids.
+
+    Test the magnetic fields of a triaxial ellipsoid that approximates an oblate and
+    a prolate one against their magnetic fields.
+    """
+
+    semimajor = 50.0
+    external_field = (55_000, 71, 18)
+    atol_ratio = 1e-6
+    rtol = 1e-5
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(self.semimajor, 5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    def test_triaxial_vs_prolate(self):
+        """Compare triaxial with prolate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a, b = self.semimajor, 20.0
+        c = b - 1e-4
+        susceptibility = 0.2
+        triaxial = Ellipsoid(a, b, c, susceptibility=susceptibility)
+        prolate = Ellipsoid(a, b, b, susceptibility=susceptibility)
+
+        b_triaxial, b_prolate = tuple(
+            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            for ell in (triaxial, prolate)
+        )
+
+        for bi_triaxial, bi_prolate in zip(b_triaxial, b_prolate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(bi_prolate)
+            np.testing.assert_allclose(
+                bi_triaxial, bi_prolate, atol=atol, rtol=self.rtol
+            )
+
+    def test_triaxial_vs_oblate(self):
+        """Compare triaxial with oblate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a = self.semimajor
+        b = a - 1e-4
+        c = 20.0
+        susceptibility = 0.2
+        triaxial = Ellipsoid(a, b, c, susceptibility=susceptibility)
+        oblate = Ellipsoid(a, a, c, susceptibility=susceptibility)
+
+        b_triaxial, b_oblate = tuple(
+            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            for ell in (triaxial, oblate)
+        )
+
+        for bi_triaxial, bi_oblate in zip(b_triaxial, b_oblate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(bi_oblate)
+            np.testing.assert_allclose(
+                bi_triaxial, bi_oblate, atol=atol, rtol=self.rtol
+            )
