@@ -25,7 +25,7 @@ from .utils import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
-    get_permutation_matrix,
+    get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
     is_internal,
 )
@@ -152,15 +152,17 @@ def _single_ellipsoid_magnetic(
     easting, northing, upward = coordinates
     coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
-    # Get permutation matrix and order the semiaxes
-    permutation_matrix = get_permutation_matrix(ellipsoid)
+    # Sort the semiaxes (a >= b >= c)
     a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
 
-    # Combine the rotation and the permutation matrices
-    transformation = ellipsoid.rotation_matrix.T @ permutation_matrix
+    # Get rotation matrix to produce sorted semiaxes in local coordinate system
+    semiaxes_rotation_matrix = get_semiaxes_rotation_matrix(ellipsoid)
+
+    # Combine the two rotation matrices
+    rotation = semiaxes_rotation_matrix.T @ ellipsoid.rotation_matrix.T
 
     # Rotate observation points
-    x, y, z = transformation @ np.vstack(coords_shifted)
+    x, y, z = rotation @ np.vstack(coords_shifted)
 
     # Build internal demagnetization tensor
     n_tensor_internal = get_demagnetization_tensor_internal(a, b, c)
@@ -170,8 +172,8 @@ def _single_ellipsoid_magnetic(
     remanent_mag = cast_remanent_magnetization(remanent_mag)
 
     # Rotate the external field and the remanent magnetization
-    h0_field_rotated = transformation @ h0_field
-    remnant_mag_rotated = transformation @ remanent_mag
+    h0_field_rotated = rotation @ h0_field
+    remnant_mag_rotated = rotation @ remanent_mag
 
     # Get magnetization of the ellipsoid
     magnetization = get_magnetisation(
@@ -202,7 +204,7 @@ def _single_ellipsoid_magnetic(
     b_field[~internal, :] = mu_0 * (-n_tensors @ magnetization)
 
     # Rotate the b fields
-    be, bn, bu = transformation.T @ b_field.T
+    be, bn, bu = rotation.T @ b_field.T
 
     return be, bn, bu
 

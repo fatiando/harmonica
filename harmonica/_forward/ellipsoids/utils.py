@@ -8,19 +8,36 @@ import numpy as np
 import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
+from ..utils import get_rotation_matrix
+
 # Relative tolerance for two ellipsoid semiaxes to be considered almost equal.
 # E.g.: two semiaxes a and b are considered almost equal if:
 # | a - b | <  max(a, b) * SEMIAXES_RTOL
 SEMIAXES_RTOL = 1e-5
 
 
-def get_permutation_matrix(ellipsoid):
+def get_semiaxes_rotation_matrix(ellipsoid):
     """
-    Get permutation matrix for the given ellipsoid.
+    Build extra rotation matrix to align semiaxes in decreasing order.
 
-    Build a permutation matrix that sorts the ellipsoid's semiaxes lengths
-    ``ellipsoid.a``, ``ellipsoid.b``, ``ellipsoid.c`` in reverse order, into ``a``,
-    ``b``, ``c`` values that verify ``a >= b >= c``.
+    Build a 90 degrees rotations matrix that goes from a local coordinate system where:
+
+    - ``x`` points in the direction of ``a``,
+    - ``y`` points in the direction of ``b``, and
+    - ``z`` points in the direction of ``c``,
+
+    where ``a >= b >= c``, to a *primed* local coordinate system where:
+
+    - ``x'`` points in the direction of ``ellipsoid.a``,
+    - ``y'`` points in the direction of ``ellipsoid.b``, and
+    - ``z'`` points in the direction of ``ellipsoid.c``,
+
+    and ``ellipsoid.a``, ``ellipsoid.b`` and ``ellipsoid.c`` have no particular order.
+    The ``a``, ``b``, ``c`` are defined as:
+
+    .. code::python
+
+        a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
 
     Parameters
     ----------
@@ -29,45 +46,34 @@ def get_permutation_matrix(ellipsoid):
 
     Returns
     -------
-    permutation_matrix : (3, 3) np.ndarray
-        Permutation matrix.
+    rotation_matrix : (3, 3) np.ndarray
+        Rotation matrix.
 
-    Examples
-    --------
-    >>> from harmonica import Ellipsoid
-    >>> ellipsoid = Ellipsoid(
-    ...     a=43.0, b=50.0, c=83.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
-    ... )
-    >>> matrix = get_permutation_matrix(ellipsoid)
-    >>> print(matrix)
-    [[0 0 1]
-     [0 1 0]
-     [1 0 0]]
-
-    >>> ellipsoid = Ellipsoid(
-    ...     a=43.0, b=83.0, c=50.0, yaw=0, pitch=0, roll=0, center=(0, 0, 0)
-    ... )
-    >>> matrix = get_permutation_matrix(ellipsoid)
-    >>> print(matrix)
-    [[0 1 0]
-     [0 0 1]
-     [1 0 0]]
+    Notes
+    -----
+    This matrix is not necessarily a permutation matrix, since it can contain -1.
+    But it acts as a permutation matrix that ensures that ``x``, ``y``, ``z`` form
+    a right-handed system.
     """
-    # Return identity matrix for a sphere
-    if ellipsoid.a == ellipsoid.b == ellipsoid.c:
-        permutation_matrix = np.eye(3)
-        return permutation_matrix
+    a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
+    if a >= b >= c:
+        return np.eye(3, dtype=int)
 
-    # Get sort indices
-    semiaxes = np.array([ellipsoid.a, ellipsoid.b, ellipsoid.c])
-    argsort = np.argsort(semiaxes)
+    if b >= a >= c:
+        yaw, pitch, roll = 90, 0, 0
+    elif c >= b >= a:
+        yaw, pitch, roll = 0, 90, 0
+    elif a >= c >= b:
+        yaw, pitch, roll = 0, 0, 90
+    elif b >= c >= a:
+        yaw, pitch, roll = 90, 0, 90
+    elif c >= a >= b:
+        yaw, pitch, roll = 90, 90, 0
+    else:
+        raise ValueError()
 
-    # Build permutation matrix
-    permutation_matrix = np.zeros((3, 3), dtype=np.int32)
-    sorted_indices = np.array([2, 1, 0])
-    permutation_matrix[sorted_indices, argsort] = 1
-
-    return permutation_matrix
+    matrix = get_rotation_matrix(yaw, pitch, roll).astype(int)
+    return matrix
 
 
 def is_internal(x, y, z, a, b, c):
