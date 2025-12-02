@@ -40,9 +40,10 @@ In this example we will show how we can build a prism layer out of a topography
 and bathymetry grid for South Africa and how we can visualize the layer as a 3D
 plot using ``pyvista``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-68
+.. GENERATED FROM PYTHON SOURCE LINES 31-69
 
 .. code-block:: Python
+
 
     import ensaio
     import pyproj
@@ -111,7 +112,7 @@ plot using ``pyvista``.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-93
+.. GENERATED FROM PYTHON SOURCE LINES 70-94
 
 .. code-block:: Python
 
@@ -154,7 +155,7 @@ plot using ``pyvista``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 22.229 seconds)
+   **Total running time of the script:** (2 minutes 25.051 seconds)
 
 
 .. _sphx_glr_download_gallery_visualization_prism_layer_pyvista.py:
