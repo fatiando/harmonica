@@ -233,3 +233,150 @@ class TestToPyvista:
             4 / 3 * np.pi * ellipsoid.a * ellipsoid.b * ellipsoid.c,
             rtol=1e-3,
         )
+
+
+class TestString:
+    """Test string representation of ellipsoids."""
+
+    a, b, c = 3, 2, 1
+    yaw, pitch, roll = 73, 14, -35
+    center = (43.0, -72.0, 105)
+
+    def build_ellipsoid(self, ellipsoid_type):
+        match ellipsoid_type:
+            case "oblate":
+                ellipsoid = OblateEllipsoid(
+                    self.b, self.a, self.yaw, self.pitch, center=self.center
+                )
+            case "prolate":
+                ellipsoid = ProlateEllipsoid(
+                    self.a, self.b, self.yaw, self.pitch, center=self.center
+                )
+            case "triaxial":
+                ellipsoid = TriaxialEllipsoid(
+                    self.a,
+                    self.b,
+                    self.c,
+                    self.yaw,
+                    self.pitch,
+                    self.roll,
+                    center=self.center,
+                )
+            case "sphere":
+                ellipsoid = Sphere(self.a, center=self.center)
+            case _:
+                raise ValueError()
+        return ellipsoid
+
+    def test_prolate(self):
+        ellipsoid = self.build_ellipsoid("prolate")
+        expected = (
+            "ProlateEllipsoid:"
+            "\n  • a:      3.0 m"
+            "\n  • b:      2.0 m"
+            "\n  • c:      2.0 m"
+            "\n  • center: (43.0, -72.0, 105.0) m"
+            "\n  • yaw:    73.0"
+            "\n  • pitch:  14.0"
+            "\n  • roll:   0.0"
+        )
+        assert expected == str(ellipsoid)
+
+    def test_oblate(self):
+        ellipsoid = self.build_ellipsoid("oblate")
+        expected = (
+            "OblateEllipsoid:"
+            "\n  • a:      2.0 m"
+            "\n  • b:      3.0 m"
+            "\n  • c:      3.0 m"
+            "\n  • center: (43.0, -72.0, 105.0) m"
+            "\n  • yaw:    73.0"
+            "\n  • pitch:  14.0"
+            "\n  • roll:   0.0"
+        )
+        assert expected == str(ellipsoid)
+
+    def test_triaxial(self):
+        ellipsoid = self.build_ellipsoid("triaxial")
+        expected = (
+            "TriaxialEllipsoid:"
+            "\n  • a:      3.0 m"
+            "\n  • b:      2.0 m"
+            "\n  • c:      1.0 m"
+            "\n  • center: (43.0, -72.0, 105.0) m"
+            "\n  • yaw:    73.0"
+            "\n  • pitch:  14.0"
+            "\n  • roll:   -35.0"
+        )
+        assert expected == str(ellipsoid)
+
+    def test_sphere(self):
+        ellipsoid = self.build_ellipsoid("sphere")
+        expected = (
+            "Sphere:"
+            "\n  • a:      3.0 m"
+            "\n  • b:      3.0 m"
+            "\n  • c:      3.0 m"
+            "\n  • center: (43.0, -72.0, 105.0) m"
+            "\n  • yaw:    0.0"
+            "\n  • pitch:  0.0"
+            "\n  • roll:   0.0"
+        )
+        assert expected == str(ellipsoid)
+
+    @pytest.mark.parametrize(
+        "ellipsoid_type", ["prolate", "oblate", "sphere", "triaxial"]
+    )
+    def test_density(self, ellipsoid_type):
+        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+        ellipsoid.density = -400
+        (density_line,) = [
+            line for line in str(ellipsoid).split("\n") if "density" in line
+        ]
+        expected_line = "  • density: -400.0 kg/m³"
+        assert density_line == expected_line
+
+    @pytest.mark.parametrize(
+        "ellipsoid_type", ["prolate", "oblate", "sphere", "triaxial"]
+    )
+    def test_susceptibility(self, ellipsoid_type):
+        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+        ellipsoid.susceptibility = 0.3
+        (sus_line,) = [
+            line for line in str(ellipsoid).splitlines() if "susceptibility" in line
+        ]
+        expected_line = "  • susceptibility: 0.3"
+        assert sus_line == expected_line
+
+    @pytest.mark.parametrize(
+        "ellipsoid_type", ["prolate", "oblate", "sphere", "triaxial"]
+    )
+    def test_remanent_mag(self, ellipsoid_type):
+        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+        ellipsoid.remanent_mag = (12, -43, 59)
+        (rem_line,) = [
+            line for line in str(ellipsoid).splitlines() if "remanent_mag" in line
+        ]
+        expected_line = "  • remanent_mag: (12.0, -43.0, 59.0) A/m"
+        assert rem_line == expected_line
+
+    @pytest.mark.parametrize(
+        "ellipsoid_type", ["prolate", "oblate", "sphere", "triaxial"]
+    )
+    def test_susceptibility_tensor(self, ellipsoid_type):
+        ellipsoid = self.build_ellipsoid(ellipsoid_type)
+        sus = np.array([[1, 0, 0], [0, 2, 0], [0, 0, 3]])
+        ellipsoid.susceptibility = sus
+        # Grab the susceptibility tensor lines
+        matrix_lines, record = [], False
+        for line in str(ellipsoid).splitlines():
+            if "susceptibility" in line:
+                record = True
+                continue
+            if record:
+                matrix_lines.append(line)
+            if len(matrix_lines) == 3:
+                break
+
+        expected = [8 * " " + line for line in str(sus).splitlines()]
+        assert matrix_lines == expected
