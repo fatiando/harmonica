@@ -721,3 +721,96 @@ class TestTriaxialOnLimits:
             np.testing.assert_allclose(
                 gi_triaxial, gi_oblate, atol=atol, rtol=self.rtol
             )
+
+
+class TestSemiaxesArbitraryOrder:
+    """
+    Test gravity fields when defining the same ellipsoids with different orders of the
+    semiaxes plus needed rotation angles.
+    """
+
+    atol_ratio = 0.0
+    rtol = 1e-7
+
+    def get_coordinates(self, semimajor, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(0.5 * semimajor, 5.5 * semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 20, 10), 0, 0, 0),
+            ((20, 30, 10), 90, 0, 0),
+            ((10, 20, 30), 0, 90, 0),
+            ((30, 10, 20), 0, 0, 90),
+            ((20, 10, 30), 90, 90, 0),
+            ((10, 30, 20), 90, 0, 90),
+        ],
+    )
+    def test_triaxial(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 10, 10), 0, 0, 0),
+            ((10, 30, 10), 90, 0, 0),
+            ((10, 10, 30), 0, 90, 0),
+        ],
+    )
+    def test_prolate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((20, 20, 10), 0, 0, 0),
+            ((20, 10, 20), 0, 0, 90),
+            ((10, 20, 20), 0, 90, 0),
+        ],
+    )
+    def test_oblate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
