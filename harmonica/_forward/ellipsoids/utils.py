@@ -101,6 +101,10 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     Returns True if ellipsoid's semiaxes lengths are close enough to each other to be
     approximated by a sphere.
 
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
+
     Parameters
     ----------
     a, b, c: float
@@ -110,6 +114,9 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     -------
     bool
     """
+    if not (a >= b >= c):
+        raise ValueError()
+
     # Exactly a sphere
     if a == b == c:
         return True

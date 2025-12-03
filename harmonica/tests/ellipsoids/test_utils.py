@@ -13,6 +13,7 @@ from harmonica import Ellipsoid
 from harmonica._forward.ellipsoids.utils import (
     calculate_lambda,
     get_semiaxes_rotation_matrix,
+    is_almost_a_sphere,
 )
 
 
@@ -141,3 +142,20 @@ class TestSemiaxesRotationMatrix:
         semiaxes = np.array([a, b, c])
         expected = [c, b, -a]
         np.testing.assert_allclose(matrix.T @ semiaxes, expected)
+
+
+@pytest.mark.parametrize(
+    ("a", "b", "c", "expected"),
+    [
+        (1, 1, 1, True),  # exact sphere
+        (1.00001, 1, 1, True),  # prolate as sphere
+        (1.00001, 1.00001, 1, True),  # oblate as sphere
+        (3.00002, 3.00001, 3, True),  # triaxial as sphere
+        (2, 1, 1, False),  # non-spherical prolate
+        (2, 2, 1, False),  # non-spherical oblate
+        (3, 2, 1, False),  # non-spherical triaxial
+    ],
+)
+def test_is_almost_a_sphere(a, b, c, expected):
+    """Test the ``is_almost_a_sphere`` function."""
+    assert is_almost_a_sphere(a, b, c) == expected
