@@ -998,3 +998,113 @@ class TestSemiaxesArbitraryOrder:
         )
 
         np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+
+class TestNumericalInstabilitiesTriaxial:
+    """
+    Test fix for numerical instabilities when triaxial approximates a prolate or oblate.
+
+    When two of the three semiaxes of a triaxial ellipsoid are almost equal to each
+    other (in the order of machine precision), analytic solutions might fall under
+    singularities, triggering numerical instabilities.
+
+    Given two semiaxes a and b, define a ratio as:
+
+    .. code::
+
+        ratio  = | a - b | / max(a, b)
+
+    These test functions will build the ellipsoids using very small values of this
+    ratio.
+    """
+
+    # Properties of the sphere
+    semimajor, semiminor = 50.0, 30.0
+    center = (0, 0, 0)
+    susceptibility = 0.1
+    external_field = (55_000, 17, 21)
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(1e-3 * self.semimajor, 5.5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.fixture
+    def prolate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semiminor,
+            self.semiminor,
+            center=self.center,
+            susceptibility=self.susceptibility,
+        )
+
+    @pytest.fixture
+    def oblate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semimajor,
+            self.semiminor,
+            center=self.center,
+            susceptibility=self.susceptibility,
+        )
+
+    def test_triaxial_vs_prolate(self, prolate):
+        """
+        Test magnetic field of triaxial ellipsoid that is almost a prolate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = self.semiminor
+        c = (1 - ratio) * b
+        ellipsoid = Ellipsoid(
+            a, b, c, center=self.center, susceptibility=self.susceptibility
+        )
+        be_prolate, bn_prolate, bu_prolate = ellipsoid_magnetic(
+            coordinates, prolate, self.external_field
+        )
+        be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
+            coordinates, ellipsoid, self.external_field
+        )
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(be_ell, be_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bn_ell, bn_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bu_ell, bu_prolate, rtol=rtol, atol=atol)
+
+    def test_triaxial_vs_oblate(self, oblate):
+        """
+        Test magnetic field of triaxial ellipsoid that is almost a oblate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = (1 - ratio) * a
+        c = self.semiminor
+        ellipsoid = Ellipsoid(
+            a, b, c, center=self.center, susceptibility=self.susceptibility
+        )
+        be_oblate, bn_oblate, bu_oblate = ellipsoid_magnetic(
+            coordinates, oblate, self.external_field
+        )
+        be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
+            coordinates, ellipsoid, self.external_field
+        )
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(be_ell, be_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bn_ell, bn_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bu_ell, bu_oblate, rtol=rtol, atol=atol)
