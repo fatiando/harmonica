@@ -140,6 +140,74 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     return False
 
 
+def is_almost_prolate(a: float, b: float, c: float) -> bool:
+    """
+    Check if a given ellipsoid approximates a prolate ellipsoid.
+
+    Returns True if ellipsoid's semimiddle and semiminor lengths are close enough to
+    each other to be approximated by a prolate ellipsoid.
+
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Ellipsoid's semiaxes lenghts.
+
+    Returns
+    -------
+    bool
+    """
+    if not (a >= b >= c):
+        raise ValueError()
+
+    # Exactly a prolate
+    if a > b == c:
+        return True
+
+    # Triaxial that is almost a prolate
+    if np.abs(b - c) < SEMIAXES_RTOL * max(b, c):  # noqa: SIM103
+        return True
+
+    return False
+
+
+def is_almost_oblate(a: float, b: float, c: float) -> bool:
+    """
+    Check if a given ellipsoid approximates an oblate ellipsoid.
+
+    Returns True if ellipsoid's semimajor and semimiddle lengths are close enough to
+    each other to be approximated by a oblate ellipsoid.
+
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Ellipsoid's semiaxes lenghts.
+
+    Returns
+    -------
+    bool
+    """
+    if not (a >= b >= c):
+        raise ValueError()
+
+    # Exactly an oblate
+    if a == b > c:
+        return True
+
+    # Triaxial that is almost an oblate
+    if np.abs(a - b) < SEMIAXES_RTOL * max(a, b):  # noqa: SIM103
+        return True
+
+    return False
+
+
 def calculate_lambda(x, y, z, a, b, c):
     """
     Get the lambda ellipsoidal coordinate for a given ellipsoid and observation points.
@@ -225,6 +293,11 @@ def get_elliptical_integrals(
         These integrals are also called :math:`g_1`, :math:`g_2`, and :math:`g_3` in
         Takahashi et al. (2018).
 
+    .. important::
+
+        The elliptical integrals should not be used with spheres or ellipsoids that
+        approximate a sphere.
+
     Parameters
     ----------
     a, b, c : floats
@@ -271,12 +344,15 @@ def get_elliptical_integrals(
     Expressions of the elliptic integrals vary for each type of ellipsoid (triaxial,
     oblate and prolate).
     """
-    if a > b > c:
-        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
-    elif a > b and b == c:
+    if is_almost_a_sphere(a, b, c):
+        raise ValueError()
+
+    if is_almost_prolate(a, b, c):
         g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lambda_)
-    elif a == b and b > c:
+    elif is_almost_oblate(a, b, c):
         g1, g2, g3 = _get_elliptical_integrals_oblate(b, c, lambda_)
+    elif a > b > c:
+        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     else:
         msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
         raise ValueError(msg)
