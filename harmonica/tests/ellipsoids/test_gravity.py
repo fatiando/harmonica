@@ -814,3 +814,100 @@ class TestSemiaxesArbitraryOrder:
         g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
 
         np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+
+class TestNumericalInstabilitiesTriaxial:
+    """
+    Test fix for numerical instabilities when triaxial approximates a prolate or oblate.
+
+    When two of the three semiaxes of a triaxial ellipsoid are almost equal to each
+    other (in the order of machine precision), analytic solutions might fall under
+    singularities, triggering numerical instabilities.
+
+    Given two semiaxes a and b, define a ratio as:
+
+    .. code::
+
+        ratio  = | a - b | / max(a, b)
+
+    These test functions will build the ellipsoids using very small values of this
+    ratio.
+    """
+
+    # Properties of the sphere
+    semimajor, semiminor = 50.0, 30.0
+    center = (0, 0, 0)
+    density = 200.0
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(0.5 * self.semimajor, 5.5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.fixture
+    def prolate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semiminor,
+            self.semiminor,
+            center=self.center,
+            density=self.density,
+        )
+
+    @pytest.fixture
+    def oblate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semimajor,
+            self.semiminor,
+            center=self.center,
+            density=self.density,
+        )
+
+    def test_triaxial_vs_prolate(self, prolate):
+        """
+        Test gravity field of triaxial ellipsoid that is almost a prolate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = self.semiminor
+        c = (1 - ratio) * b
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
+        ge_prolate, gn_prolate, gz_prolate = ellipsoid_gravity(coordinates, prolate)
+        ge_ell, gn_ell, gz_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gz_ell, gz_prolate, rtol=rtol, atol=atol)
+
+    def test_triaxial_vs_oblate(self, oblate):
+        """
+        Test gravity field of triaxial ellipsoid that is almost a oblate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = (1 - ratio) * a
+        c = self.semiminor
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
+        ge_oblate, gn_oblate, gz_oblate = ellipsoid_gravity(coordinates, oblate)
+        ge_ell, gn_ell, gz_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gz_ell, gz_oblate, rtol=rtol, atol=atol)
