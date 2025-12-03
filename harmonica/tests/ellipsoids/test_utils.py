@@ -4,10 +4,16 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import itertools
+
 import numpy as np
 import pytest
 
-from harmonica._forward.ellipsoids.utils import calculate_lambda
+from harmonica import Ellipsoid
+from harmonica._forward.ellipsoids.utils import (
+    calculate_lambda,
+    get_semiaxes_rotation_matrix,
+)
 
 
 @pytest.mark.parametrize(
@@ -94,3 +100,44 @@ def test_second_order_equations(a, b, c, zero_coord):
         p0 = b**2 * c**2 - y**2 * c**2 - z**2 * b**2
     expected_lambda = 0.5 * (np.sqrt(p1**2 - 4 * p0) - p1)
     np.testing.assert_allclose(expected_lambda, lambda_)
+
+
+class TestSemiaxesRotationMatrix:
+    """
+    Test the ``get_semiaxes_rotation_matrix`` function.
+    """
+
+    @pytest.mark.parametrize(("a", "b", "c"), itertools.permutations((3.0, 2.0, 1.0)))
+    def test_sorting_of_semiaxes(self, a, b, c):
+        """
+        Test if the transposed matrix correctly sorts the semiaxes.
+
+        When we apply the transposed matrix to unsorted semiaxes, we should recover the
+        semiaxes in the right order. Although some of them might have a minus sign due
+        to the rotation, so we'll compare with absolute values.
+
+        For example:
+
+        .. code::python
+
+            matrix.T @ np.array([1.0, 2.0, 3.0])
+
+        Should return:
+
+        .. code::python
+
+            np.array([3.0, 2.0, -1.0])
+        """
+        ellipsoid = Ellipsoid(a, b, c)
+        matrix = get_semiaxes_rotation_matrix(ellipsoid)
+        semiaxes = np.array([a, b, c])
+        expected = sorted((a, b, c), reverse=True)
+        np.testing.assert_allclose(np.abs(matrix.T @ semiaxes), expected)
+
+    def test_example(self):
+        a, b, c = 1, 2, 3
+        ellipsoid = Ellipsoid(a, b, c)
+        matrix = get_semiaxes_rotation_matrix(ellipsoid)
+        semiaxes = np.array([a, b, c])
+        expected = [c, b, -a]
+        np.testing.assert_allclose(matrix.T @ semiaxes, expected)
