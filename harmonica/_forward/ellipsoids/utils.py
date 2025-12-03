@@ -98,7 +98,7 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     """
     Check if a given ellipsoid approximates a sphere.
 
-    Returns True if ellipsoid's semiaxes lenghts are close enough to each other to be
+    Returns True if ellipsoid's semiaxes lengths are close enough to each other to be
     approximated by a sphere.
 
     Parameters
@@ -114,8 +114,12 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     if a == b == c:
         return True
 
-    # Prolate or oblate that is almost a sphere
+    # Prolate that is almost a sphere
     if b == c and np.abs(a - b) < SEMIAXES_RTOL * max(a, b):
+        return True
+
+    # Oblate that is almost a sphere
+    if a == b and np.abs(b - c) < SEMIAXES_RTOL * max(b, c):
         return True
 
     # Triaxial that is almost a sphere
