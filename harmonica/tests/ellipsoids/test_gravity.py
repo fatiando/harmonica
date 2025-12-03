@@ -23,6 +23,7 @@ import verde as vd
 
 from harmonica import ellipsoid_gravity, point_gravity
 from harmonica._forward.ellipsoids import Ellipsoid
+from harmonica._forward.ellipsoids.utils import SEMIAXES_RTOL
 from harmonica.errors import NoPhysicalPropertyWarning
 
 
@@ -335,10 +336,11 @@ class TestEllipsoidVsSphere:
     center = (28, 19, -50)
     density = 200.0
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 1e-4
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     @pytest.fixture
     def sphere(self):
@@ -359,14 +361,15 @@ class TestEllipsoidVsSphere:
         a = self.radius
         match request.param:
             case "oblate":
-                b = a + self.delta
-                c = b
+                a = b = self.radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                b = a - self.delta
-                c = b
+                a = self.radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                b = a - self.delta
-                c = a - 2 * self.delta
+                a = self.radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
@@ -395,9 +398,7 @@ class TestEllipsoidVsSphere:
         g_ellipsoid = ellipsoid_gravity(coordinates, ellipsoid)
 
         # Compare the two fields
-        maxabs = vd.maxabs(*g_sphere, *g_ellipsoid)
-        atol = maxabs * 1e-5
-        np.testing.assert_allclose(g_sphere, g_ellipsoid, atol=atol)
+        np.testing.assert_allclose(g_sphere, g_ellipsoid, rtol=7e-4)
 
 
 class TestSymmetryOnRotations:
