@@ -27,6 +27,8 @@ from .utils import (
     get_elliptical_integrals,
     get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
+    is_almost_oblate,
+    is_almost_prolate,
     is_internal,
 )
 
@@ -367,12 +369,12 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
     """
     if is_almost_a_sphere(a, b, c):
         n_diagonal = 1 / 3 * np.ones(3)
+    elif is_almost_prolate(a, b, c):
+        n_diagonal = _demag_tensor_prolate_internal(a, b)
+    elif is_almost_oblate(a, b, c):
+        n_diagonal = _demag_tensor_oblate_internal(b, c)
     elif a > b > c:
         n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
-    elif a > b and b == c:
-        n_diagonal = _demag_tensor_prolate_internal(a, b)
-    elif a == b and b > c:
-        n_diagonal = _demag_tensor_oblate_internal(b, c)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
