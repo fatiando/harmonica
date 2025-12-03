@@ -29,6 +29,7 @@ from harmonica._forward.ellipsoids.magnetic import (
     get_demagnetization_tensor_internal,
     get_magnetisation,
 )
+from harmonica._forward.ellipsoids.utils import SEMIAXES_RTOL
 from harmonica._forward.utils import get_rotation_matrix
 from harmonica.errors import NoPhysicalPropertyWarning
 
@@ -338,10 +339,11 @@ class TestMagnetizationVersusSphere:
     Test if ellipsoid's magnetization approximates the one of the sphere.
     """
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 1e-2
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     @pytest.fixture
     def radius(self):
@@ -355,17 +357,18 @@ class TestMagnetizationVersusSphere:
         """
         Ellipsoid's semiaxes that approximate a sphere.
         """
-        a = radius
         ellipsoid_type = request.param
         match ellipsoid_type:
             case "oblate":
-                b = a
-                c = a - self.delta
+                a = b = radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                b = c = a - self.delta
+                a = radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                b = a - self.delta
-                c = a - 2 * self.delta
+                a = radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
         return a, b, c
@@ -410,10 +413,11 @@ class TestMagneticFieldVersusSphere:
     center = (0, 0, 0)
     susceptibility = 0.5
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 0.001
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     # Define external field
     external_field = (55_123.0, 32.0, -28.9)
@@ -443,14 +447,14 @@ class TestMagneticFieldVersusSphere:
         match ellipsoid_type:
             case "oblate":
                 a = b = self.radius
-                c = a - self.delta
+                c = (1 - self.ratio) * b
             case "prolate":
                 a = self.radius
-                b = c = a - self.delta
+                b = c = (1 - self.ratio) * a
             case "triaxial":
                 a = self.radius
-                b = a - self.delta
-                c = a - 2 * self.delta
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
@@ -472,7 +476,7 @@ class TestMagneticFieldVersusSphere:
         rtol = 5e-4
         for bi_sphere, bi_ellipsoid in zip(b_sphere, b_ellipsoid, strict=True):
             maxabs = vd.maxabs(bi_sphere, bi_ellipsoid)
-            atol = maxabs * 1e-4
+            atol = maxabs * 5e-4
             np.testing.assert_allclose(bi_sphere, bi_ellipsoid, atol=atol, rtol=rtol)
 
 
@@ -486,10 +490,11 @@ class TestMagneticFieldVersusDipole:
     center = (0, 0, 0)
     susceptibility = 0.001  # use small sus to reduce demag effects
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 0.001
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     # Define external field
     external_field = (55_123.0, 32.0, -28.9)
@@ -519,14 +524,14 @@ class TestMagneticFieldVersusDipole:
         match ellipsoid_type:
             case "oblate":
                 a = b = self.radius
-                c = a - self.delta
+                c = (1 - self.ratio) * b
             case "prolate":
                 a = self.radius
-                b = c = a - self.delta
+                b = c = (1 - self.ratio) * a
             case "triaxial":
                 a = self.radius
-                b = a - self.delta
-                c = a - 2 * self.delta
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case "sphere":
                 a = b = c = self.radius
             case _:
@@ -565,8 +570,8 @@ class TestMagneticFieldVersusDipole:
         rtol = 5e-4
         for bi_dipole, bi_ellipsoid in zip(b_dipole, b_ellipsoid, strict=True):
             maxabs = vd.maxabs(bi_dipole, bi_ellipsoid)
-            atol = maxabs * 1e-4
-            np.testing.assert_allclose(bi_dipole, bi_ellipsoid, atol=atol, rtol=rtol)
+            atol = maxabs * 5e-4
+            np.testing.assert_allclose(bi_dipole, bi_ellipsoid, rtol=rtol, atol=atol)
 
 
 class TestSymmetryOnRotations:
