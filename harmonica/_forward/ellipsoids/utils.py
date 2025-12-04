@@ -8,10 +8,72 @@ import numpy as np
 import numpy.typing as npt
 from scipy.special import ellipeinc, ellipkinc
 
+from ..utils import get_rotation_matrix
+
 # Relative tolerance for two ellipsoid semiaxes to be considered almost equal.
 # E.g.: two semiaxes a and b are considered almost equal if:
 # | a - b | <  max(a, b) * SEMIAXES_RTOL
 SEMIAXES_RTOL = 1e-5
+
+
+def get_semiaxes_rotation_matrix(ellipsoid):
+    """
+    Build extra rotation matrix to align semiaxes in decreasing order.
+
+    Build a 90 degrees rotations matrix that goes from a local coordinate system where:
+
+    - ``x`` points in the direction of ``a``,
+    - ``y`` points in the direction of ``b``, and
+    - ``z`` points in the direction of ``c``,
+
+    where ``a >= b >= c``, to a *primed* local coordinate system where:
+
+    - ``x'`` points in the direction of ``ellipsoid.a``,
+    - ``y'`` points in the direction of ``ellipsoid.b``, and
+    - ``z'`` points in the direction of ``ellipsoid.c``,
+
+    and ``ellipsoid.a``, ``ellipsoid.b`` and ``ellipsoid.c`` have no particular order.
+    The ``a``, ``b``, ``c`` are defined as:
+
+    .. code::python
+
+        a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
+
+    Parameters
+    ----------
+    ellipsoid : Ellipsoid
+        Ellipsoid object.
+
+    Returns
+    -------
+    rotation_matrix : (3, 3) np.ndarray
+        Rotation matrix.
+
+    Notes
+    -----
+    This matrix is not necessarily a permutation matrix, since it can contain -1.
+    But it acts as a permutation matrix that ensures that ``x``, ``y``, ``z`` form
+    a right-handed system.
+    """
+    a, b, c = ellipsoid.a, ellipsoid.b, ellipsoid.c
+    if a >= b >= c:
+        return np.eye(3, dtype=int)
+
+    if b >= a >= c:
+        yaw, pitch, roll = 90, 0, 0
+    elif c >= b >= a:
+        yaw, pitch, roll = 0, 90, 0
+    elif a >= c >= b:
+        yaw, pitch, roll = 0, 0, 90
+    elif b >= c >= a:
+        yaw, pitch, roll = 90, 0, 90
+    elif c >= a >= b:
+        yaw, pitch, roll = 90, 90, 0
+    else:
+        raise ValueError()
+
+    matrix = get_rotation_matrix(yaw, pitch, roll).astype(int)
+    return matrix
 
 
 def is_internal(x, y, z, a, b, c):
@@ -36,8 +98,12 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     """
     Check if a given ellipsoid approximates a sphere.
 
-    Returns True if ellipsoid's semiaxes lenghts are close enough to each other to be
+    Returns True if ellipsoid's semiaxes lengths are close enough to each other to be
     approximated by a sphere.
+
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
 
     Parameters
     ----------
@@ -48,12 +114,19 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     -------
     bool
     """
+    if not (a >= b >= c):
+        raise ValueError()
+
     # Exactly a sphere
     if a == b == c:
         return True
 
-    # Prolate or oblate that is almost a sphere
+    # Prolate that is almost a sphere
     if b == c and np.abs(a - b) < SEMIAXES_RTOL * max(a, b):
+        return True
+
+    # Oblate that is almost a sphere
+    if a == b and np.abs(b - c) < SEMIAXES_RTOL * max(b, c):
         return True
 
     # Triaxial that is almost a sphere
@@ -62,6 +135,74 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
         and np.abs(a - b) < SEMIAXES_RTOL * max(a, b)
         and np.abs(b - c) < SEMIAXES_RTOL * max(b, c)
     ):
+        return True
+
+    return False
+
+
+def is_almost_prolate(a: float, b: float, c: float) -> bool:
+    """
+    Check if a given ellipsoid approximates a prolate ellipsoid.
+
+    Returns True if ellipsoid's semimiddle and semiminor lengths are close enough to
+    each other to be approximated by a prolate ellipsoid.
+
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Ellipsoid's semiaxes lenghts.
+
+    Returns
+    -------
+    bool
+    """
+    if not (a >= b >= c):
+        raise ValueError()
+
+    # Exactly a prolate
+    if a > b == c:
+        return True
+
+    # Triaxial that is almost a prolate
+    if np.abs(b - c) < SEMIAXES_RTOL * max(b, c):  # noqa: SIM103
+        return True
+
+    return False
+
+
+def is_almost_oblate(a: float, b: float, c: float) -> bool:
+    """
+    Check if a given ellipsoid approximates an oblate ellipsoid.
+
+    Returns True if ellipsoid's semimajor and semimiddle lengths are close enough to
+    each other to be approximated by a oblate ellipsoid.
+
+    .. important::
+
+        The semiaxes should be already sorted such as ``a >= b >= c``.
+
+    Parameters
+    ----------
+    a, b, c: float
+        Ellipsoid's semiaxes lenghts.
+
+    Returns
+    -------
+    bool
+    """
+    if not (a >= b >= c):
+        raise ValueError()
+
+    # Exactly an oblate
+    if a == b > c:
+        return True
+
+    # Triaxial that is almost an oblate
+    if np.abs(a - b) < SEMIAXES_RTOL * max(a, b):  # noqa: SIM103
         return True
 
     return False
@@ -152,6 +293,11 @@ def get_elliptical_integrals(
         These integrals are also called :math:`g_1`, :math:`g_2`, and :math:`g_3` in
         Takahashi et al. (2018).
 
+    .. important::
+
+        The elliptical integrals should not be used with spheres or ellipsoids that
+        approximate a sphere.
+
     Parameters
     ----------
     a, b, c : floats
@@ -198,12 +344,15 @@ def get_elliptical_integrals(
     Expressions of the elliptic integrals vary for each type of ellipsoid (triaxial,
     oblate and prolate).
     """
-    if a > b > c:
-        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
-    elif a > b and b == c:
+    if is_almost_a_sphere(a, b, c):
+        raise ValueError()
+
+    if is_almost_prolate(a, b, c):
         g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lambda_)
-    elif a < b and b == c:
-        g1, g2, g3 = _get_elliptical_integrals_oblate(a, b, lambda_)
+    elif is_almost_oblate(a, b, c):
+        g1, g2, g3 = _get_elliptical_integrals_oblate(b, c, lambda_)
+    elif a > b > c:
+        g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     else:
         msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
         raise ValueError(msg)
@@ -392,7 +541,7 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     return g1, g2, g2
 
 
-def _get_elliptical_integrals_oblate(a, b, lmbda):
+def _get_elliptical_integrals_oblate(b, c, lmbda):
     r"""
     Compute elliptical integrals for a oblate ellipsoid.
 
@@ -418,46 +567,52 @@ def _get_elliptical_integrals_oblate(a, b, lmbda):
     .. math::
 
         A(\lambda) =
-            \frac{ 2 }{ (b^2 - a^2)^{\frac{3}{2}} }
+            \frac{ 1 }{ (b^2 - c^2)^{\frac{3}{2}} }
             \left\{
-                \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} }
-                -
-                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
-            \right\}
-
-    .. math::
-
-        B(\lambda) =
-            \frac{ 1 }{ (b^2 - a^2)^{\frac{3}{2}} }
-            \left\{
-                \arctan \left[ \sqrt{ \frac{b^2 - a^2}{a^2 + \lambda} } \right]
+                \arctan \left[ \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} } \right]
                 -
                 \frac{
-                    \sqrt{ (b^2 - a^2) (a^2 + \lambda) }
+                    \sqrt{ (b^2 - c^2) (c^2 + \lambda) }
                 }{
                     b^2 + \lambda
                 }
             \right\}
 
+    .. math::
+
+        C(\lambda) =
+            \frac{ 2 }{ (b^2 - c^2)^{\frac{3}{2}} }
+            \left\{
+                \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} }
+                -
+                \arctan \left[ \sqrt{ \frac{b^2 - c^2}{c^2 + \lambda} } \right]
+            \right\}
+
+
     and
 
     .. math::
 
-        C(\lambda) = B(\lambda)
+        B(\lambda) = A(\lambda)
+
+    .. important::
+
+        These equations are modified versions of the one in Takahashi (2018), adapted to
+        any oblate ellipsoid defined as: ``a = b > c``.
 
     """
-    arctan = np.arctan(np.sqrt((b**2 - a**2) / (a**2 + lmbda)))
+    arctan = np.arctan(np.sqrt((b**2 - c**2) / (c**2 + lmbda)))
     g1 = (
-        2
-        / ((b**2 - a**2) ** (3 / 2))
-        * ((np.sqrt((b**2 - a**2) / (a**2 + lmbda))) - arctan)
-    )
-    g2 = (
         1
-        / ((b**2 - a**2) ** (3 / 2))
-        * (arctan - (np.sqrt((b**2 - a**2) * (a**2 + lmbda))) / (b**2 + lmbda))
+        / ((b**2 - c**2) ** (3 / 2))
+        * (arctan - (np.sqrt((b**2 - c**2) * (c**2 + lmbda))) / (b**2 + lmbda))
     )
-    return g1, g2, g2
+    g3 = (
+        2
+        / ((b**2 - c**2) ** (3 / 2))
+        * ((np.sqrt((b**2 - c**2) / (c**2 + lmbda))) - arctan)
+    )
+    return g1, g1, g3
 
 
 def get_derivatives_of_elliptical_integrals(

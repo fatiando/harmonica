@@ -20,6 +20,7 @@ from ...typing import Coordinates, Ellipsoid
 from .utils import (
     calculate_lambda,
     get_elliptical_integrals,
+    get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
     is_internal,
 )
@@ -54,9 +55,7 @@ def ellipsoid_gravity(
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
     ellipsoid : ellipsoid or list of ellipsoids
-        Ellipsoidal body represented by an instance of
-        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`,
-        or :class:`harmonica.OblateEllipsoid`, or a list of them.
+        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid`.
 
     Returns
     -------
@@ -97,19 +96,25 @@ def ellipsoid_gravity(
         origin_e, origin_n, origin_u = ellipsoid.center
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
-        # Create rotation matrix
-        r = ellipsoid.rotation_matrix
+        # Sort the semiaxes (a >= b >= c)
+        a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
+
+        # Get rotation matrix to produce sorted semiaxes in local coordinate system
+        semiaxes_rotation_matrix = get_semiaxes_rotation_matrix(ellipsoid)
+
+        # Combine the two rotation matrices
+        rotation = semiaxes_rotation_matrix.T @ ellipsoid.rotation_matrix.T
 
         # Rotate observation points
-        x, y, z = r.T @ np.vstack(coords_shifted)
+        x, y, z = rotation @ np.vstack(coords_shifted)
 
         # Calculate gravity components on local coordinate system
         gravity_ellipsoid = _compute_gravity_ellipsoid(
-            x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c, ellipsoid.density
+            x, y, z, a, b, c, ellipsoid.density
         )
 
         # project onto upward unit vector, axis U
-        ge_i, gn_i, gu_i = r @ np.vstack(gravity_ellipsoid)
+        ge_i, gn_i, gu_i = rotation.T @ np.vstack(gravity_ellipsoid)
 
         # sum contributions from each ellipsoid
         ge += ge_i
