@@ -597,7 +597,7 @@ def _get_elliptical_integrals_oblate(b, c, lmbda):
 
     .. important::
 
-        These equations are modified versions of the one in Takahashi (2018), adapted to
+        These equations are modified versions of the ones in Takahashi (2018), adapted to
         any oblate ellipsoid defined as: ``a = b > c``.
 
     """
