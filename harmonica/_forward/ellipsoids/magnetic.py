@@ -18,7 +18,6 @@ import numpy.typing as npt
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-from ..._utils import magnetic_angles_to_vec
 from ...errors import NoPhysicalPropertyWarning
 from ...typing import Coordinates
 from .ellipsoids import Ellipsoid
