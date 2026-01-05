@@ -16,6 +16,27 @@ from ..utils import get_rotation_matrix
 SEMIAXES_RTOL = 1e-5
 
 
+def check_semiaxes_sorted(a, b, c):
+    """
+    Check if ellipsoid's semiaxes are sorted such as ``a >= b >= c``.
+
+    Parameters
+    ----------
+    a, b, c : float
+        Semiaxes lenghts.
+
+    Raises
+    ------
+    ValueError : if ``not a >= b >= c``.
+    """
+    if not (a >= b >= c):
+        msg = (
+            "Invalid semiaxes not properly sorted (a >= b >= c): "
+            f"a={a}, b={b}, c={c}."
+        )
+        raise ValueError(msg)
+
+
 def get_semiaxes_rotation_matrix(ellipsoid):
     """
     Build extra rotation matrix to align semiaxes in decreasing order.
@@ -109,18 +130,13 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lengths.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
     bool
     """
-    if not (a >= b >= c):
-        msg = (
-            "Invalid semiaxes not properly sorted (a >= b >= c): "
-            f"a={a}, b={b}, c={c}."
-        )
-        raise ValueError(msg)
+    check_semiaxes_sorted(a, b, c)
 
     # Exactly a sphere
     if a == b == c:
@@ -159,18 +175,13 @@ def is_almost_prolate(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lengths.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
     bool
     """
-    if not (a >= b >= c):
-        msg = (
-            "Invalid semiaxes not properly sorted (a >= b >= c): "
-            f"a={a}, b={b}, c={c}."
-        )
-        raise ValueError(msg)
+    check_semiaxes_sorted(a, b, c)
 
     # Exactly a prolate
     if a > b == c:
@@ -197,18 +208,13 @@ def is_almost_oblate(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lengths.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
     bool
     """
-    if not (a >= b >= c):
-        msg = (
-            "Invalid semiaxes not properly sorted (a >= b >= c): "
-            f"a={a}, b={b}, c={c}."
-        )
-        raise ValueError(msg)
+    check_semiaxes_sorted(a, b, c)
 
     # Exactly an oblate
     if a == b > c:
@@ -231,19 +237,10 @@ def calculate_lambda(x, y, z, a, b, c):
 
     Parameters
     ----------
-    x : float or array
-        X-coordinate(s) of the observation point(s) in the local coordinate
-        system.
-    y : float or array
-        Y-coordinate(s) of the observation point(s).
-    z : float or array
-        Z-coordinate(s) of the observation point(s).
-    a : float
-        Semi-major axis of the ellipsoid along the x-direction.
-    b : float
-        Semi-major axis of the ellipsoid along the y-direction.
-    c : float
-        Semi-major axis of the ellipsoid along the z-direction.
+    x, y, z : float or array
+        Coordinates of the observation point(s) in the local coordinate system.
+    a, b, c : float
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
@@ -251,7 +248,11 @@ def calculate_lambda(x, y, z, a, b, c):
         The computed value(s) of the lambda parameter.
 
     """
+    check_semiaxes_sorted(a, b, c)
+
     # Solve lambda for prolate and oblate ellipsoids
+    # TODO: update this code. I think this is not right for the new definition of
+    # oblate. Maybe add a notes section explaining why splitting the computations.
     if b == c:
         p0 = a**2 * b**2 - b**2 * x**2 - a**2 * (y**2 + z**2)
         p1 = a**2 + b**2 - x**2 - y**2 - z**2
@@ -281,7 +282,7 @@ def calculate_lambda(x, y, z, a, b, c):
         # Clip the cos_theta to [-1, 1]. Due to floating point errors its value
         # could be slightly above 1 or slightly below -1.
         if isinstance(cos_theta, np.ndarray):
-            # Run inplace to avoid allocating a new array.
+            # Run in-place to avoid allocating a new array.
             np.clip(cos_theta, -1.0, 1.0, out=cos_theta)
         else:
             cos_theta = np.clip(cos_theta, -1.0, 1.0)
@@ -314,7 +315,7 @@ def get_elliptical_integrals(
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the given ellipsoid.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
@@ -357,6 +358,8 @@ def get_elliptical_integrals(
     Expressions of the elliptic integrals vary for each type of ellipsoid (triaxial,
     oblate and prolate).
     """
+    check_semiaxes_sorted(a, b, c)
+
     if is_almost_a_sphere(a, b, c):
         msg = (
             "Invalid semiaxes that create (almost) a spherical ellipsoid: "
@@ -383,7 +386,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the given ellipsoid.
+        Semi-axes lengths of the ellipsoid sorted such as ``a > b > c``.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -448,6 +451,10 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
         from Takahashi et al. (2018).
 
     """
+    if not a > b > c:
+        msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
+        raise ValueError(msg)
+
     # Compute phi and kappa
     int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
     phi = np.arcsin(int_arcsin)
@@ -487,7 +494,7 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     Parameters
     ----------
     a, b : floats
-        Semi-axes lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid, where ``a > b``.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -546,6 +553,10 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
         C(\lambda) = B(\lambda)
 
     """
+    if not a > b:
+        msg = f"Invalid semiaxes length (not a > b): a={a}, b={b}."
+        raise ValueError(msg)
+
     # Cache some reused variables
     e2 = a**2 - b**2
     sqrt_e = np.sqrt(e2)
@@ -564,8 +575,8 @@ def _get_elliptical_integrals_oblate(b, c, lmbda):
 
     Parameters
     ----------
-    a, b : floats
-        Semi-axes lengths of the given ellipsoid.
+    b, c : floats
+        Semi-axes lengths of the given ellipsoid, where ``b > c``.
     lmbda : float
         The given lambda value for the point we are considering.
 
@@ -618,6 +629,10 @@ def _get_elliptical_integrals_oblate(b, c, lmbda):
         any oblate ellipsoid defined as: ``a = b > c``.
 
     """
+    if not b > c:
+        msg = f"Invalid semiaxes length (not b > c): b={b}, c={c}."
+        raise ValueError(msg)
+
     arctan = np.arctan(np.sqrt((b**2 - c**2) / (c**2 + lmbda)))
     g1 = (
         1
@@ -644,7 +659,7 @@ def get_derivatives_of_elliptical_integrals(
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the given ellipsoid.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     lambda_ : float
         The given lambda value for the point we are considering.
 
@@ -653,6 +668,7 @@ def get_derivatives_of_elliptical_integrals(
     hx, hy, hz : tuple of floats
         The h values for the given observation point.
     """
+    check_semiaxes_sorted(a, b, c)
     r = np.sqrt((a**2 + lambda_) * (b**2 + lambda_) * (c**2 + lambda_))
     hx, hy, hz = tuple(-1 / (e**2 + lambda_) / r for e in (a, b, c))
     return hx, hy, hz

@@ -24,6 +24,7 @@ from ...typing import Coordinates
 from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
+    check_semiaxes_sorted,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
     get_semiaxes_rotation_matrix,
@@ -238,7 +239,7 @@ def get_magnetisation(
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the ellipsoid.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     susceptibility : (3, 3) array
         Susceptibility tensor.
     h0_field : (3,) array
@@ -277,6 +278,8 @@ def get_magnetisation(
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})
         \mathbf{M}.
     """
+    check_semiaxes_sorted(a, b, c)
+
     if n_tensor is None:
         n_tensor = get_demagnetization_tensor_internal(a, b, c)
     eye = np.identity(3)
@@ -349,7 +352,7 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the given ellipsoid.
+        Semi-axes lengths of the given ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
@@ -369,6 +372,8 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
 
     where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
     """
+    check_semiaxes_sorted(a, b, c)
+
     if is_almost_a_sphere(a, b, c):
         n_diagonal = 1 / 3 * np.ones(3)
     elif is_almost_prolate(a, b, c):
@@ -392,13 +397,17 @@ def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
     Parameters
     ----------
     a, b, c : floats
-        Semi-axes lengths of the triaxial ellipsoid (a ≥ b ≥ c).
+        Semi-axes lengths of the given ellipsoid sorted such as ``a > b > c``.
 
     Returns
     -------
     nxx, nyy, nzz : floats
         individual diagonal components of the x, y, z matrix.
     """
+    if not a > b > c:
+        msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
+        raise ValueError(msg)
+
     # Cache values of E(theta, k) and F(theta, k) so we compute them only once
     phi = np.arccos(c / a)
     k = (a**2 - b**2) / (a**2 - c**2)
@@ -426,12 +435,12 @@ def _demag_tensor_prolate_internal(a: float, b: float):
     Parameters
     ----------
     a, b: floats
-        Semi-axes lengths of the prolate ellipsoid (a > b = c).
+        Semi-axes lengths of the prolate ellipsoid (``a > b = c``).
 
     Returns
     -------
     nxx, nyy, nzz : floats
-        individual diagonal components of the x, y, z matrix.
+        Diagonal components of the internal demagnetization tensor.
     """
     m = a / b
     if not m > 1:
@@ -455,7 +464,7 @@ def _demag_tensor_oblate_internal(b: float, c: float):
     Returns
     -------
     nxx, nyy, nzz : floats
-        individual diagonal components of the x, y, z matrix.
+        Diagonal components of the internal demagnetization tensor.
     """
     m = c / b
     if not 0 < m < 1:

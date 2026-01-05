@@ -20,6 +20,7 @@ from ...typing import Coordinates
 from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
+    check_semiaxes_sorted,
     get_elliptical_integrals,
     get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
@@ -150,8 +151,7 @@ def _compute_gravity_ellipsoid(
     x, y, z : arrays
         Observation coordinates in the local ellipsoid reference frame.
     a, b, c : floats
-        Semiaxis lengths of the ellipsoid. Must conform to the constraints of
-        the chosen ellipsoid type.
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     density : float
         Density of the ellipsoidal body in kg/m³.
 
@@ -161,6 +161,8 @@ def _compute_gravity_ellipsoid(
         Gravity acceleration components in the local coordinate system for the
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
+    check_semiaxes_sorted(a, b, c)
+
     # Mask internal points
     internal = is_internal(x, y, z, a, b, c)
 
