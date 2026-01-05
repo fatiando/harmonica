@@ -70,7 +70,8 @@ def get_semiaxes_rotation_matrix(ellipsoid):
     elif c >= a >= b:
         yaw, pitch, roll = 90, 90, 0
     else:
-        raise ValueError()
+        msg = f"Invalid semiaxes: a={a}, b={b}, c={c}."
+        raise ValueError(msg)
 
     matrix = get_rotation_matrix(yaw, pitch, roll).astype(int)
     return matrix
