@@ -109,7 +109,7 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lenghts.
+        Ellipsoid's semiaxes lengths.
 
     Returns
     -------
@@ -159,7 +159,7 @@ def is_almost_prolate(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lenghts.
+        Ellipsoid's semiaxes lengths.
 
     Returns
     -------
@@ -197,7 +197,7 @@ def is_almost_oblate(a: float, b: float, c: float) -> bool:
     Parameters
     ----------
     a, b, c : float
-        Ellipsoid's semiaxes lenghts.
+        Ellipsoid's semiaxes lengths.
 
     Returns
     -------
@@ -371,7 +371,7 @@ def get_elliptical_integrals(
     elif a > b > c:
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     else:
-        msg = f"Invalid semiaxes lenghts: a={a}, b={b}, c={c}."
+        msg = f"Invalid semiaxes lengths: a={a}, b={b}, c={c}."
         raise ValueError(msg)
     return g1, g2, g3
 
