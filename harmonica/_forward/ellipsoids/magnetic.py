@@ -55,8 +55,9 @@ def ellipsoid_magnetic(
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
-    ellipsoid : ellipsoid or list of ellipsoids
-        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid`.
+    ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
+        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or
+        a list of them.
     external_field : tuple
         The uniform magnetic field (B) as and array with values of
         (magnitude, inclination, declination). The magnitude should be in nT,

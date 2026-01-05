@@ -56,7 +56,8 @@ def ellipsoid_gravity(
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
     ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
-        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or a list of them.
+        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or
+        a list of them.
 
     Returns
     -------
