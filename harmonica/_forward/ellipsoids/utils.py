@@ -107,7 +107,7 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
 
     Parameters
     ----------
-    a, b, c: float
+    a, b, c : float
         Ellipsoid's semiaxes lenghts.
 
     Returns
@@ -153,7 +153,7 @@ def is_almost_prolate(a: float, b: float, c: float) -> bool:
 
     Parameters
     ----------
-    a, b, c: float
+    a, b, c : float
         Ellipsoid's semiaxes lenghts.
 
     Returns
@@ -187,7 +187,7 @@ def is_almost_oblate(a: float, b: float, c: float) -> bool:
 
     Parameters
     ----------
-    a, b, c: float
+    a, b, c : float
         Ellipsoid's semiaxes lenghts.
 
     Returns
