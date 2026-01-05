@@ -54,7 +54,7 @@ def ellipsoid_gravity(
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
-    ellipsoid : ellipsoid or list of ellipsoids
+    ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
         Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid`.
 
     Returns
