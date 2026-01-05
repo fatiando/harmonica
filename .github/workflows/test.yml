@@ -112,7 +112,7 @@ jobs:
           echo "dir="$(pip cache dir) >> $GITHUB_OUTPUT
 
       - name: Setup caching for pip packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements-full.txt') }}
@@ -150,7 +150,7 @@ jobs:
         run: coverage xml
 
       - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
           path: ./coverage.xml
@@ -181,7 +181,7 @@ jobs:
         # Maximum coverage is achieved by combining reports from every runner.
         # Each coverage file will live in its own folder with the same name as
         # the artifact.
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: coverage_*
 
@@ -189,7 +189,7 @@ jobs:
         run: ls -l -R .
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           # Upload all coverage report files
           files: ./coverage_*/coverage.xml
