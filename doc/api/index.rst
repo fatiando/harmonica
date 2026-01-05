@@ -170,4 +170,3 @@ Type hints
    :toctree: generated/
 
     typing.Coordinates
-    typing.Ellipsoid

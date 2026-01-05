@@ -20,7 +20,8 @@ from scipy.special import ellipeinc, ellipkinc
 
 from ..._utils import magnetic_angles_to_vec
 from ...errors import NoPhysicalPropertyWarning
-from ...typing import Coordinates, Ellipsoid
+from ...typing import Coordinates
+from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
     get_derivatives_of_elliptical_integrals,

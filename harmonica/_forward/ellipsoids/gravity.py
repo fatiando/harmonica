@@ -16,7 +16,8 @@ import numpy.typing as npt
 from choclo.constants import GRAVITATIONAL_CONST
 
 from ...errors import NoPhysicalPropertyWarning
-from ...typing import Coordinates, Ellipsoid
+from ...typing import Coordinates
+from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
     get_elliptical_integrals,
