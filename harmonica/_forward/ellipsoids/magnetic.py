@@ -20,12 +20,17 @@ from scipy.special import ellipeinc, ellipkinc
 
 from ..._utils import magnetic_angles_to_vec
 from ...errors import NoPhysicalPropertyWarning
-from ...typing import Coordinates, Ellipsoid
+from ...typing import Coordinates
+from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
+    check_semiaxes_sorted,
     get_derivatives_of_elliptical_integrals,
     get_elliptical_integrals,
+    get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
+    is_almost_oblate,
+    is_almost_prolate,
     is_internal,
 )
 
@@ -51,10 +56,9 @@ def ellipsoid_magnetic(
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
-    ellipsoid : ellipsoid or list of ellipsoids
-        Ellipsoidal body represented by an instance of
-        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`, or
-        :class:`harmonica.OblateEllipsoid`, or a list of them.
+    ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
+        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or
+        a list of them.
     external_field : tuple
         The uniform magnetic field (B) as and array with values of
         (magnitude, inclination, declination). The magnitude should be in nT,
@@ -132,7 +136,8 @@ def _single_ellipsoid_magnetic(
     ellipsoid : harmonica.typing.Ellipsoid
         Ellipsoid object for which the magnetic field will be computed.
     susceptibility : float, (3, 3) array or None
-        Susceptibility scalar or tensor of the ellipsoid.
+        Susceptibility scalar or tensor of the ellipsoid
+        (defined in the local coordinate system of the ellipsoid).
     remanent_mag : (3,) array or None
         Remanent magnetization vector of the ellipsoid in SI units.
         The components of the vector should be in the easting-northing-upward coordinate
@@ -153,28 +158,34 @@ def _single_ellipsoid_magnetic(
     easting, northing, upward = coordinates
     coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
+    # Sort the semiaxes (a >= b >= c)
+    a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
+
+    # Get rotation matrix to produce sorted semiaxes in local coordinate system
+    semiaxes_rotation_matrix = get_semiaxes_rotation_matrix(ellipsoid)
+
+    # Combine the two rotation matrices
+    rotation = semiaxes_rotation_matrix.T @ ellipsoid.rotation_matrix.T
+
     # Rotate observation points
-    r_matrix = ellipsoid.rotation_matrix
-    x, y, z = r_matrix.T @ np.vstack(coords_shifted)
+    x, y, z = rotation @ np.vstack(coords_shifted)
 
     # Build internal demagnetization tensor
-    n_tensor_internal = get_demagnetization_tensor_internal(
-        ellipsoid.a, ellipsoid.b, ellipsoid.c
-    )
+    n_tensor_internal = get_demagnetization_tensor_internal(a, b, c)
 
     # Cast susceptibility and remanent magnetization into matrix and array, respectively
     susceptibility = cast_susceptibility(susceptibility)
     remanent_mag = cast_remanent_magnetization(remanent_mag)
 
     # Rotate the external field and the remanent magnetization
-    h0_field_rotated = r_matrix.T @ h0_field
-    remnant_mag_rotated = r_matrix.T @ remanent_mag
+    h0_field_rotated = rotation @ h0_field
+    remnant_mag_rotated = rotation @ remanent_mag
 
     # Get magnetization of the ellipsoid
     magnetization = get_magnetisation(
-        ellipsoid.a,
-        ellipsoid.b,
-        ellipsoid.c,
+        a,
+        b,
+        c,
         susceptibility,
         h0_field_rotated,
         remnant_mag_rotated,
@@ -187,19 +198,19 @@ def _single_ellipsoid_magnetic(
     b_field = np.zeros((easting.size, 3), dtype=np.float64)
 
     # Mask internal observation points
-    internal = is_internal(x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c)
+    internal = is_internal(x, y, z, a, b, c)
 
     # Compute b_field on internal points
     b_field[internal, :] = mu_0 * (-n_tensor_internal @ magnetization + magnetization)
 
     # Compute b_field on external points
     n_tensors = get_demagnetization_tensor_external(
-        x[~internal], y[~internal], z[~internal], ellipsoid.a, ellipsoid.b, ellipsoid.c
+        x[~internal], y[~internal], z[~internal], a, b, c
     )
     b_field[~internal, :] = mu_0 * (-n_tensors @ magnetization)
 
     # Rotate the b fields
-    be, bn, bu = r_matrix @ b_field.T
+    be, bn, bu = rotation.T @ b_field.T
 
     return be, bn, bu
 
@@ -228,10 +239,10 @@ def get_magnetisation(
 
     Parameters
     ----------
-    a, b, c : floats
-        Semi-axes lengths of the ellipsoid.
+    a, b, c : float
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     susceptibility : (3, 3) array
-        Susceptibility tensor.
+        Susceptibility tensor defined in the local coordinate system of the ellipsoid.
     h0_field : (3,) array
         The rotated background field (in local coordinates).
     remnant_mag : (3,) array
@@ -268,6 +279,8 @@ def get_magnetisation(
         \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})
         \mathbf{M}.
     """
+    check_semiaxes_sorted(a, b, c)
+
     if n_tensor is None:
         n_tensor = get_demagnetization_tensor_internal(a, b, c)
     eye = np.identity(3)
@@ -288,7 +301,8 @@ def cast_susceptibility(susceptibility: float | npt.NDArray | None) -> npt.NDArr
     susceptibility : float, (3, 3) array or None
         Magnetic susceptibility value.
         A single float represents isotropic susceptibility in the body.
-        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy
+        (defined in the local coordinate system of the ellipsoid).
         If None, a susceptibility of zero is assumed.
 
     Returns
@@ -339,8 +353,8 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
 
     Parameters
     ----------
-    a, b, c : floats
-        Semi-axes lengths of the given ellipsoid.
+    a, b, c : float
+        Semi-axes lengths of the given ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
     -------
@@ -360,14 +374,16 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
 
     where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.
     """
+    check_semiaxes_sorted(a, b, c)
+
     if is_almost_a_sphere(a, b, c):
         n_diagonal = 1 / 3 * np.ones(3)
+    elif is_almost_prolate(a, b, c):
+        n_diagonal = _demag_tensor_prolate_internal(a, b)
+    elif is_almost_oblate(a, b, c):
+        n_diagonal = _demag_tensor_oblate_internal(b, c)
     elif a > b > c:
         n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
-    elif a > b and b == c:
-        n_diagonal = _demag_tensor_prolate_internal(a, b)
-    elif a < b and b == c:
-        n_diagonal = _demag_tensor_oblate_internal(a, b)
     else:
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
@@ -382,14 +398,18 @@ def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
 
     Parameters
     ----------
-    a, b, c : floats
-        Semi-axes lengths of the triaxial ellipsoid (a ≥ b ≥ c).
+    a, b, c : float
+        Semi-axes lengths of the given ellipsoid sorted such as ``a > b > c``.
 
     Returns
     -------
-    nxx, nyy, nzz : floats
+    nxx, nyy, nzz : float
         individual diagonal components of the x, y, z matrix.
     """
+    if not a > b > c:
+        msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
+        raise ValueError(msg)
+
     # Cache values of E(theta, k) and F(theta, k) so we compute them only once
     phi = np.arccos(c / a)
     k = (a**2 - b**2) / (a**2 - c**2)
@@ -416,44 +436,44 @@ def _demag_tensor_prolate_internal(a: float, b: float):
 
     Parameters
     ----------
-    a, b: floats
-        Semi-axes lengths of the prolate ellipsoid (a > b = c).
+    a, b : float
+        Semi-axes lengths of the prolate ellipsoid (``a > b = c``).
 
     Returns
     -------
-    nxx, nyy, nzz : floats
-        individual diagonal components of the x, y, z matrix.
+    nxx, nyy, nzz : float
+        Diagonal components of the internal demagnetization tensor.
     """
-    m = a / b
-    if not m > 1:
-        msg = f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
+    if not a > b:
+        msg = f"Invalid semiaxes for prolate ellipsoid (not a > b): a={a}, b={b}."
         raise ValueError(msg)
+    m = a / b
     sqrt = np.sqrt(m**2 - 1)
     nxx = (1 / (m**2 - 1)) * (((m / sqrt) * np.log(m + sqrt)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
     return nxx, nyy, nzz
 
 
-def _demag_tensor_oblate_internal(a: float, b: float):
+def _demag_tensor_oblate_internal(b: float, c: float):
     """
     Calculate internal demagnetization factors for oblate case.
 
     Parameters
     ----------
-    a, b: floats
-        Semi-axes lengths of the oblate ellipsoid (a < b = c).
+    b, c : float
+        Semi-axes lengths of the oblate ellipsoid (``a == b > c``).
 
     Returns
     -------
-    nxx, nyy, nzz : floats
-        individual diagonal components of the x, y, z matrix.
+    nxx, nyy, nzz : float
+        Diagonal components of the internal demagnetization tensor.
     """
-    m = a / b
-    if not 0 < m < 1:
-        msg = f"Invalid aspect ratio for oblate ellipsoid: a={a}, b={b}, a/b={m}"
+    if not b > c:
+        msg = f"Invalid semiaxes for oblate ellipsoid (not b > c): b={b}, c={c}."
         raise ValueError(msg)
-    nxx = 1 / (1 - m**2) * (1 - (m / np.sqrt(1 - m**2)) * np.arccos(m))
-    nyy = nzz = 0.5 * (1 - nxx)
+    m = c / b
+    nzz = 1 / (1 - m**2) * (1 - (m / np.sqrt(1 - m**2)) * np.arccos(m))
+    nxx = nyy = 0.5 * (1 - nzz)
     return nxx, nyy, nzz
 
 
@@ -474,7 +494,7 @@ def get_demagnetization_tensor_external(
     ----------
     x, y, z : (n,) array
         Coordinates of the observation points in the local coordinate system.
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid.
 
     Returns
@@ -551,17 +571,17 @@ def get_demagnetization_tensor_external(
         deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(
             a, b, c, lambda_
         )
-        derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
+        derivs_lambda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
 
         for i, j in itertools.product(range(3), range(3)):
             if i == j:
                 demag_tensors[:, i, i] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
+                    derivs_lambda[i] * deriv_ellip_integrals[i] * coords[i]
                     + ellip_integrals[i]
                 )
             else:
                 demag_tensors[:, i, j] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
+                    derivs_lambda[i] * deriv_ellip_integrals[j] * coords[j]
                 )
 
     return demag_tensors
@@ -581,16 +601,16 @@ def _spatial_deriv_lambda(
 
     Parameters
     ----------
-    x, y, z : floats or (n,) arrays
+    x, y, z : float or (n,) array
         Coordinates of the observation points in the local coordinate system.
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid.
     lambda_ : float or (n,) arrays
         The given lambda value for each point we are considering with this matrix.
 
     Returns
     -------
-    derivatives : tuple of floats or tuple of (n,) arrays
+    derivatives : tuple of float or tuple of (n,) array
         The spatial derivatives of lambda for each observation point.
 
     """

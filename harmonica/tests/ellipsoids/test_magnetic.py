@@ -24,16 +24,12 @@ from scipy.constants import mu_0
 
 import harmonica as hm
 from harmonica import ellipsoid_magnetic
-from harmonica._forward.ellipsoids import (
-    OblateEllipsoid,
-    ProlateEllipsoid,
-    Sphere,
-    TriaxialEllipsoid,
-)
+from harmonica._forward.ellipsoids import Ellipsoid
 from harmonica._forward.ellipsoids.magnetic import (
     get_demagnetization_tensor_internal,
     get_magnetisation,
 )
+from harmonica._forward.ellipsoids.utils import SEMIAXES_RTOL
 from harmonica._forward.utils import get_rotation_matrix
 from harmonica.errors import NoPhysicalPropertyWarning
 
@@ -47,22 +43,12 @@ def test_euler_returns():
 
 def test_magnetic_symmetry():
     """
-    Check the symmetry of magentic calculations at surfaces above and below
+    Check the symmetry of magnetic calculations at surfaces above and below
     the body.
     """
-    a, b, c = (4, 3, 2)  # triaxial ellipsoid
-    yaw, pitch, roll = (0, 0, 0)
-    external_field = (10_000, 0, 0)
     susceptibility = 0.1
-    triaxial_example = TriaxialEllipsoid(
-        a, b, c, yaw, pitch, roll, (0, 0, 0), susceptibility=susceptibility
-    )
-    triaxial_example2 = TriaxialEllipsoid(
-        a, b, c, yaw, pitch, roll, (0, 0, 0), susceptibility=susceptibility
-    )
+    ellipsoid = Ellipsoid(4, 3, 2, susceptibility=susceptibility)
 
-    # define observation points (2D grid) at surface height (z axis,
-    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
@@ -70,8 +56,9 @@ def test_magnetic_symmetry():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, triaxial_example, external_field)
-    be2, bn2, bu2 = ellipsoid_magnetic(coordinates2, triaxial_example2, external_field)
+    external_field = (10_000, 0, 0)
+    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+    be2, bn2, bu2 = ellipsoid_magnetic(coordinates2, ellipsoid, external_field)
 
     np.testing.assert_allclose(np.abs(be1), np.flip(np.abs(be2)))
     np.testing.assert_allclose(np.abs(bn1), np.flip(np.abs(bn2)))
@@ -83,25 +70,18 @@ def test_flipped_h0():
     Check that reversing the magentising field produces the same (reversed)
     field.
     """
-
-    a, b = (2, 4)  # triaxial ellipsoid
-    yaw, pitch = 0, 0
-
-    external_field1 = np.array((55_000, 0.0, 90.0))
-    external_field2 = -external_field1
+    a, c = (2, 4)
     susceptibility = 0.1
-    oblate_example = OblateEllipsoid(
-        a, b, yaw, pitch, (0, 0, 0), susceptibility=susceptibility
-    )
+    oblate = Ellipsoid(a, a, c, susceptibility=susceptibility)
 
-    # define observation points (2D grid) at surface height (z axis,
-    # 'Upward') = 5
     coordinates = vd.grid_coordinates(
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, oblate_example, external_field1)
-    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, oblate_example, external_field2)
+    external_field1 = np.array((55_000, 0.0, 90.0))
+    external_field2 = -external_field1
+    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, oblate, external_field1)
+    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, oblate, external_field2)
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
     np.testing.assert_allclose(np.abs(bn1), np.abs(bn2))
@@ -112,12 +92,8 @@ def test_zero_susceptibility():
     """
     Test for the case of 0 susceptibility == inducing field.
     """
-
-    a, b = 1, 2
     susceptibility = 0
-    ellipsoid = OblateEllipsoid(
-        a, b, yaw=0, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    ellipsoid = Ellipsoid(2, 2, 1, susceptibility=susceptibility)
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
@@ -134,18 +110,13 @@ def test_zero_field():
     """
     Test that zero field produces zero anomalies.
     """
-
-    a, b = 1, 2
-    external_field = np.array([0, 0, 0])
     susceptibility = 0.01
-
-    ellipsoid = OblateEllipsoid(
-        a, b, yaw=0, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    ellipsoid = Ellipsoid(2, 1, 1, susceptibility=susceptibility)
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
 
+    external_field = (0, 0, 0)
     be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
 
     np.testing.assert_allclose(be[0], 0)
@@ -159,13 +130,11 @@ def test_mag_ext_int_boundary():
     consistent.
     """
 
-    a, b = 50, 60
+    a, c = 50, 60
     external_field = (55_000, 0.0, 90.0)
     susceptibility = 0.01
 
-    ellipsoid = OblateEllipsoid(
-        a, b, yaw=0, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    ellipsoid = Ellipsoid(a, a, c, susceptibility=susceptibility)
 
     e = np.array([49.99, 50.00])
     n = np.array([0.0, 0.0])
@@ -187,10 +156,10 @@ def test_mag_flipped_ellipsoid():
     external_field = (10_000, 0, 0)
     susceptibility = 0.01
 
-    triaxial_example = TriaxialEllipsoid(
+    triaxial_example = Ellipsoid(
         a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0), susceptibility=susceptibility
     )
-    triaxial_example2 = TriaxialEllipsoid(
+    triaxial_example2 = Ellipsoid(
         a,
         b,
         c,
@@ -245,68 +214,27 @@ def test_euler_rotation_symmetry_mag():
             np.testing.assert_allclose(np.abs(bu), np.abs(base_bu), rtol=1e-4)
 
     # triaxial cases
-    base_tri = TriaxialEllipsoid(
-        a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    base_tri = Ellipsoid(a, b, c, susceptibility=susceptibility)
     tri_rotated = [
-        TriaxialEllipsoid(
-            a,
-            b,
-            c,
-            yaw=360,
-            pitch=0,
-            roll=0,
-            center=(0, 0, 0),
-            susceptibility=susceptibility,
-        ),
-        TriaxialEllipsoid(
-            a,
-            b,
-            c,
-            yaw=0,
-            pitch=180,
-            roll=0,
-            center=(0, 0, 0),
-            susceptibility=susceptibility,
-        ),
-        TriaxialEllipsoid(
-            a,
-            b,
-            c,
-            yaw=0,
-            pitch=360,
-            roll=360,
-            center=(0, 0, 0),
-            susceptibility=susceptibility,
-        ),
+        Ellipsoid(a, b, c, yaw=360, susceptibility=susceptibility),
+        Ellipsoid(a, b, c, pitch=180, susceptibility=susceptibility),
+        Ellipsoid(a, b, c, pitch=360, roll=360, susceptibility=susceptibility),
     ]
     check_rotation_equivalence(base_tri, tri_rotated)
 
     # prolate cases
-    base_pro = ProlateEllipsoid(
-        a, b, yaw=0, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    base_pro = Ellipsoid(a, b, b, susceptibility=susceptibility)
     pro_rotated = [
-        ProlateEllipsoid(
-            a, b, yaw=360, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-        ),
-        ProlateEllipsoid(
-            a, b, yaw=0, pitch=180, center=(0, 0, 0), susceptibility=susceptibility
-        ),
+        Ellipsoid(a, b, b, yaw=360, susceptibility=susceptibility),
+        Ellipsoid(a, b, b, pitch=180, susceptibility=susceptibility),
     ]
     check_rotation_equivalence(base_pro, pro_rotated)
 
     # oblate cases
-    base_obl = OblateEllipsoid(
-        b, a, yaw=0, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-    )
+    base_obl = Ellipsoid(a, a, c, susceptibility=susceptibility)
     obl_rotated = [
-        OblateEllipsoid(
-            b, a, yaw=360, pitch=0, center=(0, 0, 0), susceptibility=susceptibility
-        ),
-        OblateEllipsoid(
-            b, a, yaw=0, pitch=180, center=(0, 0, 0), susceptibility=susceptibility
-        ),
+        Ellipsoid(a, a, c, yaw=360, susceptibility=susceptibility),
+        Ellipsoid(a, a, c, pitch=180, susceptibility=susceptibility),
     ]
     check_rotation_equivalence(base_obl, obl_rotated)
 
@@ -321,11 +249,11 @@ class TestDemagnetizationEffects:
         ellipsoid_type = request.param
         match ellipsoid_type:
             case "oblate":
-                a, b = 50.0, 60.0
-                c = b
+                a = b = 60.0
+                c = 50.0
             case "prolate":
-                a, b = 60.0, 50.0
-                c = b
+                a = 60.0
+                b = c = 50.0
             case "triaxial":
                 a, b, c = 70.0, 60.0, 50.0
             case _:
@@ -361,7 +289,7 @@ class TestDemagnetizationEffects:
 @pytest.mark.parametrize(
     ("a", "b", "c"),
     [
-        (50.0, 60.0, 60.0),  # oblate
+        (60.0, 60.0, 50.0),  # oblate
         (60.0, 50.0, 50.0),  # prolate
         (70.0, 60.0, 50.0),  # triaxial
         (70.0, 70.0, 70.0),  # sphere
@@ -411,6 +339,12 @@ class TestMagnetizationVersusSphere:
     Test if ellipsoid's magnetization approximates the one of the sphere.
     """
 
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
+
     @pytest.fixture
     def radius(self):
         """
@@ -423,16 +357,18 @@ class TestMagnetizationVersusSphere:
         """
         Ellipsoid's semiaxes that approximate a sphere.
         """
-        a = radius
         ellipsoid_type = request.param
         match ellipsoid_type:
             case "oblate":
-                b = c = a + 1e-2
+                a = b = radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                b = c = a - 1e-2
+                a = radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                b = a - 1e-3
-                c = a - 1e-2
+                a = radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
         return a, b, c
@@ -472,15 +408,15 @@ class TestMagneticFieldVersusSphere:
     Test if magnetic field of ellipsoid approximates the one of the sphere.
     """
 
-    # Sphere radius, center, and susceptibility.
+    # Sphere radius and susceptibility.
     radius = 50.0
-    center = (0, 0, 0)
     susceptibility = 0.5
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 0.001
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     # Define external field
     external_field = (55_123.0, 32.0, -28.9)
@@ -505,42 +441,22 @@ class TestMagneticFieldVersusSphere:
 
         Returns
         -------
-        OblateEllipsoid, ProlateEllipsoid or TriaxialEllipsoid
+        Ellipsoid
         """
-        yaw, pitch, roll = 0, 0, 0
-        a = self.radius
         match ellipsoid_type:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=a,
-                    b=a + self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = b = self.radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = self.radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    c=a - 2 * self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = self.radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
 
     @pytest.mark.parametrize("ellipsoid_type", ["oblate", "prolate", "triaxial"])
@@ -548,8 +464,8 @@ class TestMagneticFieldVersusSphere:
         """
         Test magnetic field of ellipsoids against the one for a sphere.
         """
-        sphere = Sphere(
-            self.radius, center=self.center, susceptibility=self.susceptibility
+        sphere = Ellipsoid(
+            self.radius, self.radius, self.radius, susceptibility=self.susceptibility
         )
         b_sphere = ellipsoid_magnetic(coordinates, sphere, self.external_field)
 
@@ -559,7 +475,7 @@ class TestMagneticFieldVersusSphere:
         rtol = 5e-4
         for bi_sphere, bi_ellipsoid in zip(b_sphere, b_ellipsoid, strict=True):
             maxabs = vd.maxabs(bi_sphere, bi_ellipsoid)
-            atol = maxabs * 1e-4
+            atol = maxabs * 5e-4
             np.testing.assert_allclose(bi_sphere, bi_ellipsoid, atol=atol, rtol=rtol)
 
 
@@ -573,10 +489,11 @@ class TestMagneticFieldVersusDipole:
     center = (0, 0, 0)
     susceptibility = 0.001  # use small sus to reduce demag effects
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 0.001
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     # Define external field
     external_field = (55_123.0, 32.0, -28.9)
@@ -601,46 +518,24 @@ class TestMagneticFieldVersusDipole:
 
         Returns
         -------
-        OblateEllipsoid, ProlateEllipsoid, Sphere or TriaxialEllipsoid
+        Ellipsoid
         """
-        yaw, pitch, roll = 0, 0, 0
-        a = self.radius
         match ellipsoid_type:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=a,
-                    b=a + self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = b = self.radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = self.radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    c=a - 2 * self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=self.center,
-                    susceptibility=self.susceptibility,
-                )
+                a = self.radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case "sphere":
-                ellipsoid = Sphere(
-                    a=a, center=self.center, susceptibility=self.susceptibility
-                )
+                a = b = c = self.radius
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
 
     def get_dipole_moment(self, ellipsoid):
@@ -674,8 +569,8 @@ class TestMagneticFieldVersusDipole:
         rtol = 5e-4
         for bi_dipole, bi_ellipsoid in zip(b_dipole, b_ellipsoid, strict=True):
             maxabs = vd.maxabs(bi_dipole, bi_ellipsoid)
-            atol = maxabs * 1e-4
-            np.testing.assert_allclose(bi_dipole, bi_ellipsoid, atol=atol, rtol=rtol)
+            atol = maxabs * 5e-4
+            np.testing.assert_allclose(bi_dipole, bi_ellipsoid, rtol=rtol, atol=atol)
 
 
 class TestSymmetryOnRotations:
@@ -692,8 +587,7 @@ class TestSymmetryOnRotations:
         """
         ellipsoid.yaw += 180
         ellipsoid.pitch *= -1
-        if isinstance(ellipsoid, TriaxialEllipsoid):
-            ellipsoid.roll *= -1
+        ellipsoid.roll *= -1
         return ellipsoid
 
     @pytest.fixture(params=["oblate", "prolate", "triaxial"])
@@ -706,25 +600,17 @@ class TestSymmetryOnRotations:
         yaw, pitch, roll = 62.3, 48.2, 14.9
         match ellipsoid_type:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=semiminor, b=semimajor, yaw=yaw, pitch=pitch, center=center
-                )
+                a = b = semimajor
+                c = semiminor
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=semimajor, b=semiminor, yaw=yaw, pitch=pitch, center=center
-                )
+                a = semimajor
+                b = c = semiminor
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=semimajor,
-                    b=semimiddle,
-                    c=semiminor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=center,
-                )
+                a, b, c = semimajor, semimiddle, semiminor
             case _:
                 raise ValueError()
+
+        ellipsoid = Ellipsoid(a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center)
         return ellipsoid
 
     @pytest.mark.parametrize("magnetization_type", ["induced", "remanent", "both"])
@@ -786,21 +672,23 @@ class TestMultipleEllipsoids:
     def ellipsoids(self):
         """Sample ellipsoids."""
         ellipsoids = [
-            OblateEllipsoid(
-                a=20,
+            Ellipsoid(
+                a=60,
                 b=60,
+                c=20,
                 yaw=30.2,
                 pitch=-23,
                 center=(-10.0, 20.0, -10.0),
             ),
-            ProlateEllipsoid(
+            Ellipsoid(
                 a=40,
                 b=15,
+                c=15,
                 yaw=170.2,
                 pitch=71,
                 center=(15.0, 0.0, -40.0),
             ),
-            TriaxialEllipsoid(
+            Ellipsoid(
                 a=60,
                 b=18,
                 c=15,
@@ -896,52 +784,16 @@ class TestMultipleEllipsoids:
         np.testing.assert_allclose(bz, bz_expected)
 
 
-@pytest.mark.parametrize(
-    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid, Sphere]
-)
 class TestNoMagnetic:
     """Test warning when ellipsoid has no susceptibility nor remanent magnetization."""
 
-    @pytest.fixture
-    def ellipsoid_args(self, ellipsoid_class):
-        if ellipsoid_class is OblateEllipsoid:
-            args = {
-                "a": 20.0,
-                "b": 50.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is ProlateEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is TriaxialEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "c": 10.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "roll": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is Sphere:
-            args = {"a": 50.0, "center": (0, 0, 0)}
-        else:
-            raise TypeError()
-        return args
-
-    def test_warning(self, ellipsoid_class, ellipsoid_args):
+    def test_warning(self):
         """
         Test warning about ellipsoid with no susceptibility nor remanence being skipped.
         """
         coordinates = (0.0, 0.0, 0.0)
-        ellipsoid = ellipsoid_class(**ellipsoid_args)
+        a, b, c = 50.0, 35.0, 25.0
+        ellipsoid = Ellipsoid(a, b, c)
         external_field = (55_000.0, 13, 71)
 
         msg = re.escape(
@@ -951,6 +803,312 @@ class TestNoMagnetic:
         with pytest.warns(NoPhysicalPropertyWarning, match=msg):
             bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
 
-        # Check the gravity acceleration components are zero
+        # Check the magnetic field components are zero
         for b_component in (bx, by, bz):
             assert b_component == 0.0
+
+
+class TestTriaxialOnLimits:
+    """
+    Test a triaxial ellipsoid vs oblate and prolate ellipsoids.
+
+    Test the magnetic fields of a triaxial ellipsoid that approximates an oblate and
+    a prolate one against their magnetic fields.
+    """
+
+    semimajor = 50.0
+    external_field = (55_000, 71, 18)
+    atol_ratio = 1e-6
+    rtol = 1e-5
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(self.semimajor, 5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    def test_triaxial_vs_prolate(self):
+        """Compare triaxial with prolate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a, b = self.semimajor, 20.0
+        c = b - 1e-4
+        susceptibility = 0.2
+        triaxial = Ellipsoid(a, b, c, susceptibility=susceptibility)
+        prolate = Ellipsoid(a, b, b, susceptibility=susceptibility)
+
+        b_triaxial, b_prolate = tuple(
+            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            for ell in (triaxial, prolate)
+        )
+
+        for bi_triaxial, bi_prolate in zip(b_triaxial, b_prolate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(bi_prolate)
+            np.testing.assert_allclose(
+                bi_triaxial, bi_prolate, atol=atol, rtol=self.rtol
+            )
+
+    def test_triaxial_vs_oblate(self):
+        """Compare triaxial with oblate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a = self.semimajor
+        b = a - 1e-4
+        c = 20.0
+        susceptibility = 0.2
+        triaxial = Ellipsoid(a, b, c, susceptibility=susceptibility)
+        oblate = Ellipsoid(a, a, c, susceptibility=susceptibility)
+
+        b_triaxial, b_oblate = tuple(
+            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            for ell in (triaxial, oblate)
+        )
+
+        for bi_triaxial, bi_oblate in zip(b_triaxial, b_oblate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(bi_oblate)
+            np.testing.assert_allclose(
+                bi_triaxial, bi_oblate, atol=atol, rtol=self.rtol
+            )
+
+
+class TestSemiaxesArbitraryOrder:
+    """
+    Test magnetic fields when defining the same ellipsoids with different orders of the
+    semiaxes plus needed rotation angles.
+    """
+
+    atol_ratio = 0.0
+    rtol = 1e-7
+    external_field = (55_000, 17, -21)
+
+    def get_coordinates(self, semimajor, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(0.5 * semimajor, 5.5 * semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 20, 10), 0, 0, 0),
+            ((20, 30, 10), 90, 0, 0),
+            ((10, 20, 30), 0, 90, 0),
+            ((30, 10, 20), 0, 0, 90),
+            ((20, 10, 30), 90, 90, 0),
+            ((10, 30, 20), 90, 0, 90),
+        ],
+    )
+    def test_triaxial(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        susceptibility = 0.2
+        rem_mag = np.array([1.0, 2.0, -3.0])
+        ellipsoid = Ellipsoid(
+            a, b, c, susceptibility=susceptibility, remanent_mag=rem_mag
+        )
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted,
+            yaw=yaw,
+            pitch=pitch,
+            roll=roll,
+            susceptibility=susceptibility,
+            remanent_mag=rem_mag,
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_magnetic(
+            coordinates, ellipsoid, external_field=self.external_field
+        )
+        g_rotated = ellipsoid_magnetic(
+            coordinates, ellipsoid_rotated, external_field=self.external_field
+        )
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 10, 10), 0, 0, 0),
+            ((10, 30, 10), 90, 0, 0),
+            ((10, 10, 30), 0, 90, 0),
+        ],
+    )
+    def test_prolate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        susceptibility = 0.2
+        rem_mag = np.array([1.0, 2.0, -3.0])
+        ellipsoid = Ellipsoid(
+            a, b, c, susceptibility=susceptibility, remanent_mag=rem_mag
+        )
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted,
+            yaw=yaw,
+            pitch=pitch,
+            roll=roll,
+            susceptibility=susceptibility,
+            remanent_mag=rem_mag,
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_magnetic(
+            coordinates, ellipsoid, external_field=self.external_field
+        )
+        g_rotated = ellipsoid_magnetic(
+            coordinates, ellipsoid_rotated, external_field=self.external_field
+        )
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((20, 20, 10), 0, 0, 0),
+            ((20, 10, 20), 0, 0, 90),
+            ((10, 20, 20), 0, 90, 0),
+        ],
+    )
+    def test_oblate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        susceptibility = 0.2
+        rem_mag = np.array([1.0, 2.0, -3.0])
+        ellipsoid = Ellipsoid(
+            a, b, c, susceptibility=susceptibility, remanent_mag=rem_mag
+        )
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted,
+            yaw=yaw,
+            pitch=pitch,
+            roll=roll,
+            susceptibility=susceptibility,
+            remanent_mag=rem_mag,
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_magnetic(
+            coordinates, ellipsoid, external_field=self.external_field
+        )
+        g_rotated = ellipsoid_magnetic(
+            coordinates, ellipsoid_rotated, external_field=self.external_field
+        )
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+
+class TestNumericalInstabilitiesTriaxial:
+    """
+    Test fix for numerical instabilities when triaxial approximates a prolate or oblate.
+
+    When two of the three semiaxes of a triaxial ellipsoid are almost equal to each
+    other (in the order of machine precision), analytic solutions might fall under
+    singularities, triggering numerical instabilities.
+
+    Given two semiaxes a and b, define a ratio as:
+
+    .. code::
+
+        ratio  = | a - b | / max(a, b)
+
+    These test functions will build the ellipsoids using very small values of this
+    ratio.
+    """
+
+    # Properties of the sphere
+    semimajor, semiminor = 50.0, 30.0
+    center = (0, 0, 0)
+    susceptibility = 0.1
+    external_field = (55_000, 17, 21)
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(1e-3 * self.semimajor, 5.5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.fixture
+    def prolate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semiminor,
+            self.semiminor,
+            center=self.center,
+            susceptibility=self.susceptibility,
+        )
+
+    @pytest.fixture
+    def oblate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semimajor,
+            self.semiminor,
+            center=self.center,
+            susceptibility=self.susceptibility,
+        )
+
+    def test_triaxial_vs_prolate(self, prolate):
+        """
+        Test magnetic field of triaxial ellipsoid that is almost a prolate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = self.semiminor
+        c = (1 - ratio) * b
+        ellipsoid = Ellipsoid(
+            a, b, c, center=self.center, susceptibility=self.susceptibility
+        )
+        be_prolate, bn_prolate, bu_prolate = ellipsoid_magnetic(
+            coordinates, prolate, self.external_field
+        )
+        be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
+            coordinates, ellipsoid, self.external_field
+        )
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(be_ell, be_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bn_ell, bn_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bu_ell, bu_prolate, rtol=rtol, atol=atol)
+
+    def test_triaxial_vs_oblate(self, oblate):
+        """
+        Test magnetic field of triaxial ellipsoid that is almost a oblate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = (1 - ratio) * a
+        c = self.semiminor
+        ellipsoid = Ellipsoid(
+            a, b, c, center=self.center, susceptibility=self.susceptibility
+        )
+        be_oblate, bn_oblate, bu_oblate = ellipsoid_magnetic(
+            coordinates, oblate, self.external_field
+        )
+        be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
+            coordinates, ellipsoid, self.external_field
+        )
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(be_ell, be_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bn_ell, bn_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(bu_ell, bu_oblate, rtol=rtol, atol=atol)

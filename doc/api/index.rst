@@ -86,16 +86,12 @@ Magnetic fields:
     ellipsoid_magnetic
     prism_magnetic
 
-Ellipsoids:
+Geometric bodies:
 
 .. autosummary::
     :toctree: generated/
 
-    create_ellipsoid
-    OblateEllipsoid
-    ProlateEllipsoid
-    Sphere
-    TriaxialEllipsoid
+    Ellipsoid
 
 Layers and meshes:
 
@@ -174,4 +170,3 @@ Type hints
    :toctree: generated/
 
     typing.Coordinates
-    typing.Ellipsoid
