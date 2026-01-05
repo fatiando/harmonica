@@ -5,6 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 import itertools
+import re
 
 import numpy as np
 import pytest
@@ -19,7 +20,7 @@ from harmonica._forward.ellipsoids.utils import (
 
 @pytest.mark.parametrize(
     ("a", "b", "c"),
-    [(6.0, 5.0, 5.0), (4.0, 5.0, 5.0), (6.0, 5.0, 4.0)],
+    [(6.0, 5.0, 5.0), (5.0, 5.0, 4.0), (6.0, 5.0, 4.0)],
     ids=["prolate", "oblate", "triaxial"],
 )
 def test_lambda(a, b, c):
@@ -46,9 +47,20 @@ def test_lambda(a, b, c):
     )
 
 
+def test_lambda_unsorted():
+    """
+    Test error if semiaxes are not sorted.
+    """
+    a, b, c = 1.0, 2.0, 3.0
+    x, y, z = np.meshgrid(*[np.linspace(-10, 10, 41) for _ in range(3)])
+    msg = re.escape("Invalid semiaxes not properly sorted")
+    with pytest.raises(ValueError, match=msg):
+        calculate_lambda(x, y, z, a, b, c)
+
+
 @pytest.mark.parametrize(
     ("a", "b", "c"),
-    [(3.0, 2.0, 2.0), (1.0, 2.0, 2.0), (3.0, 2.0, 1.0)],
+    [(3.0, 2.0, 2.0), (2.0, 2.0, 1.0), (3.0, 2.0, 1.0)],
     ids=["prolate", "oblate", "triaxial"],
 )
 def test_zero_cases_for_lambda(a, b, c):
@@ -75,7 +87,7 @@ def test_zero_cases_for_lambda(a, b, c):
 @pytest.mark.parametrize("zero_coord", ["x", "y", "z"])
 @pytest.mark.parametrize(
     ("a", "b", "c"),
-    [(3.4, 2.2, 2.2), (1.1, 2.8, 2.8), (3.4, 2.2, 1.1)],
+    [(3.4, 2.2, 2.2), (2.8, 2.8, 1.1), (3.4, 2.2, 1.1)],
     ids=["prolate", "oblate", "triaxial"],
 )
 def test_second_order_equations(a, b, c, zero_coord):
