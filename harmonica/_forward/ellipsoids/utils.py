@@ -116,7 +116,11 @@ def is_almost_a_sphere(a: float, b: float, c: float) -> bool:
     bool
     """
     if not (a >= b >= c):
-        raise ValueError()
+        msg = (
+            "Invalid semiaxes not properly sorted (a >= b >= c): "
+            f"a={a}, b={b}, c={c}."
+        )
+        raise ValueError(msg)
 
     # Exactly a sphere
     if a == b == c:
@@ -162,7 +166,11 @@ def is_almost_prolate(a: float, b: float, c: float) -> bool:
     bool
     """
     if not (a >= b >= c):
-        raise ValueError()
+        msg = (
+            "Invalid semiaxes not properly sorted (a >= b >= c): "
+            f"a={a}, b={b}, c={c}."
+        )
+        raise ValueError(msg)
 
     # Exactly a prolate
     if a > b == c:
@@ -196,7 +204,11 @@ def is_almost_oblate(a: float, b: float, c: float) -> bool:
     bool
     """
     if not (a >= b >= c):
-        raise ValueError()
+        msg = (
+            "Invalid semiaxes not properly sorted (a >= b >= c): "
+            f"a={a}, b={b}, c={c}."
+        )
+        raise ValueError(msg)
 
     # Exactly an oblate
     if a == b > c:
@@ -346,7 +358,11 @@ def get_elliptical_integrals(
     oblate and prolate).
     """
     if is_almost_a_sphere(a, b, c):
-        raise ValueError()
+        msg = (
+            "Invalid semiaxes that create (almost) a spherical ellipsoid: "
+            f"a={a}, b={b}, c={c}."
+        )
+        raise ValueError(msg)
 
     if is_almost_prolate(a, b, c):
         g1, g2, g3 = _get_elliptical_integrals_prolate(a, b, lambda_)
