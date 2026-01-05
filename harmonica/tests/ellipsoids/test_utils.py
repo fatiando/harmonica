@@ -69,19 +69,19 @@ def test_zero_cases_for_lambda(a, b, c):
     may throw zero errors.
     """
     x, y, z = 0, 0, 5
-    lmbda = calculate_lambda(x, y, z, a, b, c)
-    lmbda_eqn = z**2 - c**2
-    np.testing.assert_allclose(lmbda, lmbda_eqn)
+    lambda_ = calculate_lambda(x, y, z, a, b, c)
+    lambda_eqn = z**2 - c**2
+    np.testing.assert_allclose(lambda_, lambda_eqn)
 
     x, y, z = 0, 5, 0
-    lmbda = calculate_lambda(x, y, z, a, b, c)
-    lmbda_eqn = y**2 - b**2
-    np.testing.assert_allclose(lmbda, lmbda_eqn)
+    lambda_ = calculate_lambda(x, y, z, a, b, c)
+    lambda_eqn = y**2 - b**2
+    np.testing.assert_allclose(lambda_, lambda_eqn)
 
     x, y, z = 5, 0, 0
-    lmbda = calculate_lambda(x, y, z, a, b, c)
-    lmbda_eqn = x**2 - a**2
-    np.testing.assert_allclose(lmbda, lmbda_eqn)
+    lambda_ = calculate_lambda(x, y, z, a, b, c)
+    lambda_eqn = x**2 - a**2
+    np.testing.assert_allclose(lambda_, lambda_eqn)
 
 
 @pytest.mark.parametrize("zero_coord", ["x", "y", "z"])

@@ -569,17 +569,17 @@ def get_demagnetization_tensor_external(
         deriv_ellip_integrals = get_derivatives_of_elliptical_integrals(
             a, b, c, lambda_
         )
-        derivs_lmbda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
+        derivs_lambda = _spatial_deriv_lambda(x, y, z, a, b, c, lambda_)
 
         for i, j in itertools.product(range(3), range(3)):
             if i == j:
                 demag_tensors[:, i, i] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[i] * coords[i]
+                    derivs_lambda[i] * deriv_ellip_integrals[i] * coords[i]
                     + ellip_integrals[i]
                 )
             else:
                 demag_tensors[:, i, j] = ((a * b * c) / 2) * (
-                    derivs_lmbda[i] * deriv_ellip_integrals[j] * coords[j]
+                    derivs_lambda[i] * deriv_ellip_integrals[j] * coords[j]
                 )
 
     return demag_tensors

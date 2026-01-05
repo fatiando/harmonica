@@ -103,9 +103,9 @@ def is_internal(x, y, z, a, b, c):
 
     Parameters
     ----------
-    x, y, z : (n,) arrays or floats
+    x, y, z : (n,) array or float
         Coordinates of the observation point(s) in the local coordinate system.
-    a, b, c : floats
+    a, b, c : float
         Ellipsoid's semiaxes lengths.
 
     Returns
@@ -317,14 +317,14 @@ def get_elliptical_integrals(
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    A, B, C : floats or tuple of (n,) arrays
+    A, B, C : float or tuple of (n,) array
         The elliptical integrals evaluated for the given ellipsoid and observation
         point.
 
@@ -382,22 +382,22 @@ def get_elliptical_integrals(
     return g1, g2, g3
 
 
-def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
+def _get_elliptical_integrals_triaxial(a, b, c, lambda_):
     r"""
     Compute elliptical integrals for a triaxial ellipsoid.
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the ellipsoid sorted such as ``a > b > c``.
-    lmbda : float
+    lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    floats
+    A, B, C : float or tuple of (n,) array
         The elliptical integrals evaluated for the given ellipsoid and observation
-        point.
+        point(s).
 
     Notes
     -----
@@ -459,7 +459,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
         raise ValueError(msg)
 
     # Compute phi and kappa
-    int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lmbda))
+    int_arcsin = np.sqrt((a**2 - c**2) / (a**2 + lambda_))
     phi = np.arcsin(int_arcsin)
     k = (a**2 - b**2) / (a**2 - c**2)
 
@@ -474,7 +474,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     g2_multiplier = (2 * np.sqrt(a**2 - c**2)) / ((a**2 - b**2) * (b**2 - c**2))
     g2_elliptics = ellipe - ((b**2 - c**2) / (a**2 - c**2)) * ellipk
     g2_last_term = ((a**2 - b**2) / np.sqrt(a**2 - c**2)) * np.sqrt(
-        (c**2 + lmbda) / ((a**2 + lmbda) * (b**2 + lmbda))
+        (c**2 + lambda_) / ((a**2 + lambda_) * (b**2 + lambda_))
     )
     g2 = g2_multiplier * (g2_elliptics - g2_last_term)
 
@@ -483,29 +483,29 @@ def _get_elliptical_integrals_triaxial(a, b, c, lmbda):
     # (the minus sign is missing in Takahashi (2018)).
     g3_term_1 = -(2 / ((b**2 - c**2) * np.sqrt(a**2 - c**2))) * ellipe
     g3_term_2 = (2 / (b**2 - c**2)) * np.sqrt(
-        (b**2 + lmbda) / ((a**2 + lmbda) * (c**2 + lmbda))
+        (b**2 + lambda_) / ((a**2 + lambda_) * (c**2 + lambda_))
     )
     g3 = g3_term_1 + g3_term_2
 
     return g1, g2, g3
 
 
-def _get_elliptical_integrals_prolate(a, b, lmbda):
+def _get_elliptical_integrals_prolate(a, b, lambda_):
     r"""
     Compute elliptical integrals for a prolate ellipsoid.
 
     Parameters
     ----------
-    a, b : floats
+    a, b : float
         Semi-axes lengths of the given ellipsoid, where ``a > b``.
-    lmbda : float
+    lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    floats
+    A, B, C : float or tuple of (n,) array
         The elliptical integrals evaluated for the given ellipsoid and observation
-        point.
+        point(s).
 
     Notes
     -----
@@ -563,31 +563,31 @@ def _get_elliptical_integrals_prolate(a, b, lmbda):
     # Cache some reused variables
     e2 = a**2 - b**2
     sqrt_e = np.sqrt(e2)
-    sqrt_l1 = np.sqrt(a**2 + lmbda)
-    sqrt_l2 = np.sqrt(b**2 + lmbda)
+    sqrt_l1 = np.sqrt(a**2 + lambda_)
+    sqrt_l2 = np.sqrt(b**2 + lambda_)
     log = np.log((sqrt_e + sqrt_l1) / sqrt_l2)
 
     g1 = (2 / (sqrt_e**3)) * (log - sqrt_e / sqrt_l1)
-    g2 = (1 / (sqrt_e**3)) * ((sqrt_e * sqrt_l1) / (b**2 + lmbda) - log)
+    g2 = (1 / (sqrt_e**3)) * ((sqrt_e * sqrt_l1) / (b**2 + lambda_) - log)
     return g1, g2, g2
 
 
-def _get_elliptical_integrals_oblate(b, c, lmbda):
+def _get_elliptical_integrals_oblate(b, c, lambda_):
     r"""
     Compute elliptical integrals for a oblate ellipsoid.
 
     Parameters
     ----------
-    b, c : floats
+    b, c : float
         Semi-axes lengths of the given ellipsoid, where ``b > c``.
-    lmbda : float
+    lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    floats
+    A, B, C : float or tuple of (n,) array
         The elliptical integrals evaluated for the given ellipsoid and observation
-        point.
+        point(s).
 
     Notes
     -----
@@ -636,16 +636,16 @@ def _get_elliptical_integrals_oblate(b, c, lmbda):
         msg = f"Invalid semiaxes length (not b > c): b={b}, c={c}."
         raise ValueError(msg)
 
-    arctan = np.arctan(np.sqrt((b**2 - c**2) / (c**2 + lmbda)))
+    arctan = np.arctan(np.sqrt((b**2 - c**2) / (c**2 + lambda_)))
     g1 = (
         1
         / ((b**2 - c**2) ** (3 / 2))
-        * (arctan - (np.sqrt((b**2 - c**2) * (c**2 + lmbda))) / (b**2 + lmbda))
+        * (arctan - (np.sqrt((b**2 - c**2) * (c**2 + lambda_))) / (b**2 + lambda_))
     )
     g3 = (
         2
         / ((b**2 - c**2) ** (3 / 2))
-        * ((np.sqrt((b**2 - c**2) / (c**2 + lmbda))) - arctan)
+        * ((np.sqrt((b**2 - c**2) / (c**2 + lambda_))) - arctan)
     )
     return g1, g1, g3
 
@@ -661,14 +661,14 @@ def get_derivatives_of_elliptical_integrals(
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
-    lambda_ : float
+    lambda_ : float or (n,) array
         The given lambda value for the point we are considering.
 
     Returns
     -------
-    hx, hy, hz : tuple of floats
+    hx, hy, hz : tuple of float or tuple of (n,) array
         The h values for the given observation point.
     """
     check_semiaxes_sorted(a, b, c)
