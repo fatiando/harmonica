@@ -136,7 +136,8 @@ def _single_ellipsoid_magnetic(
     ellipsoid : harmonica.typing.Ellipsoid
         Ellipsoid object for which the magnetic field will be computed.
     susceptibility : float, (3, 3) array or None
-        Susceptibility scalar or tensor of the ellipsoid.
+        Susceptibility scalar or tensor of the ellipsoid
+        (defined in the local coordinate system of the ellipsoid).
     remanent_mag : (3,) array or None
         Remanent magnetization vector of the ellipsoid in SI units.
         The components of the vector should be in the easting-northing-upward coordinate
@@ -241,7 +242,7 @@ def get_magnetisation(
     a, b, c : floats
         Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     susceptibility : (3, 3) array
-        Susceptibility tensor.
+        Susceptibility tensor defined in the local coordinate system of the ellipsoid.
     h0_field : (3,) array
         The rotated background field (in local coordinates).
     remnant_mag : (3,) array
@@ -300,7 +301,8 @@ def cast_susceptibility(susceptibility: float | npt.NDArray | None) -> npt.NDArr
     susceptibility : float, (3, 3) array or None
         Magnetic susceptibility value.
         A single float represents isotropic susceptibility in the body.
-        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy
+        (defined in the local coordinate system of the ellipsoid).
         If None, a susceptibility of zero is assumed.
 
     Returns

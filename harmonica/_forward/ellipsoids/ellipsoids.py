@@ -47,7 +47,8 @@ class Ellipsoid:
     susceptibility : float, (3, 3) array or None, optional
         Magnetic susceptibility of the ellipsoid in SI units.
         A single float represents isotropic susceptibility in the body.
-        A (3, 3) array represents the susceptibility tensor to account for anisotropy.
+        A (3, 3) array represents the susceptibility tensor to account for anisotropy
+        (defined in the local coordinate system of the ellipsoid).
         If None, zero susceptibility will be assigned to the ellipsoid.
     remanent_mag : (3,) array or None, optional
         Remanent magnetization vector of the ellipsoid in A/m units. Its components
