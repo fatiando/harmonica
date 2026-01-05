@@ -355,7 +355,7 @@ def get_elliptical_integrals(
     elif a > b > c:
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     else:
-        msg = f"Invalid semiaxis lenghts: a={a}, b={b}, c={c}."
+        msg = f"Invalid semiaxes lenghts: a={a}, b={b}, c={c}."
         raise ValueError(msg)
     return g1, g2, g3
 
