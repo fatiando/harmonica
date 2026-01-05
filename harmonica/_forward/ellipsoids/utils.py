@@ -31,8 +31,7 @@ def check_semiaxes_sorted(a, b, c):
     """
     if not (a >= b >= c):
         msg = (
-            "Invalid semiaxes not properly sorted (a >= b >= c): "
-            f"a={a}, b={b}, c={c}."
+            f"Invalid semiaxes not properly sorted (a >= b >= c): a={a}, b={b}, c={c}."
         )
         raise ValueError(msg)
 
