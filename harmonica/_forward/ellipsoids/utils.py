@@ -249,15 +249,19 @@ def calculate_lambda(x, y, z, a, b, c):
     """
     check_semiaxes_sorted(a, b, c)
 
-    # Solve lambda for prolate and oblate ellipsoids
-    # TODO: update this code. I think this is not right for the new definition of
-    # oblate. Maybe add a notes section explaining why splitting the computations.
+    # Solve lambda for prolate (a > b == c )
     if b == c:
         p0 = a**2 * b**2 - b**2 * x**2 - a**2 * (y**2 + z**2)
         p1 = a**2 + b**2 - x**2 - y**2 - z**2
         lambda_ = 0.5 * (np.sqrt(p1**2 - 4 * p0) - p1)
 
-    # Solve lambda for triaxial ellipsoids
+    # Solve lambda for oblate ( a == b > c )
+    elif a == b:
+        p0 = a**2 * c**2 - c**2 * (x**2 + y**2) - a**2 * z**2
+        p1 = a**2 + c**2 - x**2 - y**2 - z**2
+        lambda_ = 0.5 * (np.sqrt(p1**2 - 4 * p0) - p1)
+
+    # Solve lambda for triaxial (a > b > c)
     else:
         p0 = (
             a**2 * b**2 * c**2
