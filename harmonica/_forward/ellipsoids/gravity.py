@@ -148,16 +148,16 @@ def _compute_gravity_ellipsoid(
 
     Parameters
     ----------
-    x, y, z : arrays
+    x, y, z : (n,) array
         Observation coordinates in the local ellipsoid reference frame.
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     density : float
         Density of the ellipsoidal body in kg/m³.
 
     Returns
     -------
-    gx, gy, gz : arrays
+    gx, gy, gz : (n,) array
         Gravity acceleration components in the local coordinate system for the
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """

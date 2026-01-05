@@ -239,7 +239,7 @@ def get_magnetisation(
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     susceptibility : (3, 3) array
         Susceptibility tensor defined in the local coordinate system of the ellipsoid.
@@ -353,7 +353,7 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid sorted such as ``a >= b >= c``.
 
     Returns
@@ -398,12 +398,12 @@ def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
 
     Parameters
     ----------
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid sorted such as ``a > b > c``.
 
     Returns
     -------
-    nxx, nyy, nzz : floats
+    nxx, nyy, nzz : float
         individual diagonal components of the x, y, z matrix.
     """
     if not a > b > c:
@@ -436,12 +436,12 @@ def _demag_tensor_prolate_internal(a: float, b: float):
 
     Parameters
     ----------
-    a, b: floats
+    a, b : float
         Semi-axes lengths of the prolate ellipsoid (``a > b = c``).
 
     Returns
     -------
-    nxx, nyy, nzz : floats
+    nxx, nyy, nzz : float
         Diagonal components of the internal demagnetization tensor.
     """
     if not a > b:
@@ -460,12 +460,12 @@ def _demag_tensor_oblate_internal(b: float, c: float):
 
     Parameters
     ----------
-    b, c: floats
+    b, c : float
         Semi-axes lengths of the oblate ellipsoid (``a == b > c``).
 
     Returns
     -------
-    nxx, nyy, nzz : floats
+    nxx, nyy, nzz : float
         Diagonal components of the internal demagnetization tensor.
     """
     if not b > c:
@@ -494,7 +494,7 @@ def get_demagnetization_tensor_external(
     ----------
     x, y, z : (n,) array
         Coordinates of the observation points in the local coordinate system.
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid.
 
     Returns
@@ -601,16 +601,16 @@ def _spatial_deriv_lambda(
 
     Parameters
     ----------
-    x, y, z : floats or (n,) arrays
+    x, y, z : float or (n,) array
         Coordinates of the observation points in the local coordinate system.
-    a, b, c : floats
+    a, b, c : float
         Semi-axes lengths of the given ellipsoid.
     lambda_ : float or (n,) arrays
         The given lambda value for each point we are considering with this matrix.
 
     Returns
     -------
-    derivatives : tuple of floats or tuple of (n,) arrays
+    derivatives : tuple of float or tuple of (n,) array
         The spatial derivatives of lambda for each observation point.
 
     """
