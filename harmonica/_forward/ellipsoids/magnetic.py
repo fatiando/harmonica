@@ -444,10 +444,10 @@ def _demag_tensor_prolate_internal(a: float, b: float):
     nxx, nyy, nzz : floats
         Diagonal components of the internal demagnetization tensor.
     """
-    m = a / b
-    if not m > 1:
-        msg = f"Invalid aspect ratio for prolate ellipsoid: a={a}, b={b}, a/b={m}"
+    if not a > b:
+        msg = f"Invalid semiaxes for prolate ellipsoid (not a > b): a={a}, b={b}."
         raise ValueError(msg)
+    m = a / b
     sqrt = np.sqrt(m**2 - 1)
     nxx = (1 / (m**2 - 1)) * (((m / sqrt) * np.log(m + sqrt)) - 1)
     nyy = nzz = 0.5 * (1 - nxx)
@@ -468,10 +468,10 @@ def _demag_tensor_oblate_internal(b: float, c: float):
     nxx, nyy, nzz : floats
         Diagonal components of the internal demagnetization tensor.
     """
-    m = c / b
-    if not 0 < m < 1:
-        msg = f"Invalid aspect ratio for oblate ellipsoid: b={b}, c={c}, c/b={m}"
+    if not b > c:
+        msg = f"Invalid semiaxes for oblate ellipsoid (not b > c): b={b}, c={c}."
         raise ValueError(msg)
+    m = c / b
     nzz = 1 / (1 - m**2) * (1 - (m / np.sqrt(1 - m**2)) * np.arccos(m))
     nxx = nyy = 0.5 * (1 - nzz)
     return nxx, nyy, nzz
