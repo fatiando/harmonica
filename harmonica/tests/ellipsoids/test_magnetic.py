@@ -408,9 +408,8 @@ class TestMagneticFieldVersusSphere:
     Test if magnetic field of ellipsoid approximates the one of the sphere.
     """
 
-    # Sphere radius, center, and susceptibility.
+    # Sphere radius and susceptibility.
     radius = 50.0
-    center = (0, 0, 0)
     susceptibility = 0.5
 
     # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
