@@ -155,6 +155,15 @@ class TestSemiaxesRotationMatrix:
         (2, 2, 1, False),  # non-spherical oblate
         (3, 2, 1, False),  # non-spherical triaxial
     ],
+    ids=[
+        "exact sphere",
+        "prolate as sphere",
+        "oblate as sphere",
+        "triaxial as sphere",
+        "non-spherical prolate",
+        "non-spherical oblate",
+        "non-spherical triaxial",
+    ],
 )
 def test_is_almost_a_sphere(a, b, c, expected):
     """Test the ``is_almost_a_sphere`` function."""
