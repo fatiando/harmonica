@@ -181,6 +181,12 @@ def _single_ellipsoid_magnetic(
     h0_field_rotated = rotation @ h0_field
     remnant_mag_rotated = rotation @ remanent_mag
 
+    # Rotate the susceptibility (only to account for the resorting of the semiaxes).
+    # Need to apply second rank tensor rotation: A_rotated = R @ A @ R.T.
+    susceptibility = (
+        semiaxes_rotation_matrix.T @ susceptibility @ semiaxes_rotation_matrix
+    )
+
     # Get magnetization of the ellipsoid
     magnetization = get_magnetisation(
         a,

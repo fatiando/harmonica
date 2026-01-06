@@ -14,6 +14,7 @@ Test magnetic forward modelling of ellipsoids.
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import itertools
 import re
 from copy import copy
 
@@ -1112,3 +1113,51 @@ class TestNumericalInstabilitiesTriaxial:
         np.testing.assert_allclose(be_ell, be_oblate, rtol=rtol, atol=atol)
         np.testing.assert_allclose(bn_ell, bn_oblate, rtol=rtol, atol=atol)
         np.testing.assert_allclose(bu_ell, bu_oblate, rtol=rtol, atol=atol)
+
+
+class TestAnisotropy:
+    """
+    Test behaviour of susceptibility as a tensor.
+    """
+
+    def test_invariance_semiaxes_order(self):
+        """
+        Test if fields are invariant under change of semiaxes order.
+
+        Check if the susceptibility tensor is correctly rotated using the semiaxes
+        rotation matrix.
+        """
+        region = (-50, 50, -50, 50)
+        coordinates = vd.grid_coordinates(region, shape=(151, 151), extra_coords=0)
+        inducing_field = np.array([0, 0, -20_000])  # pointing on z
+        # Define susceptibility as a tensor with only component on the vertical axes
+        # of the local coordinate system.
+        susceptibility = np.array(
+            [
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 1],
+            ]
+        )
+        semiaxes = 5.002, 5.001, 5.0
+        ellipsoids = [
+            hm.Ellipsoid(a, b, c, center=(0, 0, -20), susceptibility=susceptibility)
+            for a, b, c in itertools.permutations(semiaxes)
+        ]
+
+        b_fields = np.array(
+            [
+                hm.ellipsoid_magnetic(
+                    coordinates, ellipsoid, inducing_field=inducing_field
+                )
+                for ellipsoid in ellipsoids
+            ]
+        )
+
+        atol_ratio = 1e-5
+        for b_field in b_fields[1:]:
+            for i in range(3):
+                maxabs = vd.maxabs(b_field[i])
+                np.testing.assert_allclose(
+                    b_fields[0, i], b_field[i], rtol=5e-4, atol=atol_ratio * maxabs
+                )
