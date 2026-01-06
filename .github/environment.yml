@@ -6,7 +6,6 @@ name: harmonica-docs
 channels:
   - conda-forge
 dependencies:
-  - python==3.12.*
   - numpy>=1.23
   - pandas>=1.4
   - scipy>=1.9
