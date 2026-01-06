@@ -1,0 +1,11 @@
+# Configure zizmor
+# ================
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # Allow to ref-pinning for first-party actions.
+        # Reference: https://docs.zizmor.sh/release-notes/#1200
+        actions/*: ref-pin
+        github/*: ref-pin
+        dependabot/*: ref-pin
