@@ -1,0 +1,42 @@
+# Conda environment to build the docs in Actions.
+# Don't use this environment for development. This environment is solely used
+# by GitHub Actions to create an environment to build the documentation that
+# gets pushed to GitHub Pages.
+name: harmonica-docs
+channels:
+  - conda-forge
+dependencies:
+  - numpy>=1.23
+  - pandas>=1.4
+  - scipy>=1.9
+  - scikit-learn>=1.1
+  - numba>=0.57
+  - xarray>=2022.03
+  - verde>=1.8.1
+  - xrft>=1.0
+  - choclo>=0.1
+  - boule>=0.4.1
+  # Build
+  - python-build
+  - twine
+  # Docs
+  - sphinx==7.2.*
+  - numpydoc==1.7.*
+  - sphinx-book-theme==1.1.*
+  - sphinx-gallery==0.15.*
+  - sphinx-design==0.5.*
+  - sphinx-copybutton==0.5.*
+  - jupyter-sphinx==0.5.*
+  - ipykernel
+  - boule
+  - pyproj
+  - ensaio>=0.5.*
+  - netcdf4
+  - matplotlib
+  - pyvista
+  - vtk==9.4.*
+  - pygmt
+  - gmt
+  - gdal
+  - ipykernel
+  - trame
