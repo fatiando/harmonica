@@ -56,9 +56,9 @@ def test_magnetic_symmetry():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
     )
 
-    external_field = (10_000, 0, 0)
-    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
-    be2, bn2, bu2 = ellipsoid_magnetic(coordinates2, ellipsoid, external_field)
+    inducing_field = hm.magnetic_angles_to_vec(10_000, 0, 0)
+    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
+    be2, bn2, bu2 = ellipsoid_magnetic(coordinates2, ellipsoid, inducing_field)
 
     np.testing.assert_allclose(np.abs(be1), np.flip(np.abs(be2)))
     np.testing.assert_allclose(np.abs(bn1), np.flip(np.abs(bn2)))
@@ -78,10 +78,11 @@ def test_flipped_h0():
         region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
     )
 
-    external_field1 = np.array((55_000, 0.0, 90.0))
-    external_field2 = -external_field1
-    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, oblate, external_field1)
-    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, oblate, external_field2)
+    inducing_field = np.asarray(
+        hm.magnetic_angles_to_vec(intensity=55_000, inclination=0.0, declination=90.0)
+    )
+    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, oblate, inducing_field)
+    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, oblate, -inducing_field)
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
     np.testing.assert_allclose(np.abs(bn1), np.abs(bn2))
@@ -97,9 +98,9 @@ def test_zero_susceptibility():
     coordinates = vd.grid_coordinates(
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
-    external_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
 
-    be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+    be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
     np.testing.assert_allclose(be[0], 0)
     np.testing.assert_allclose(bn[0], 0)
@@ -116,8 +117,8 @@ def test_zero_field():
         region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
     )
 
-    external_field = (0, 0, 0)
-    be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+    inducing_field = (0, 0, 0)
+    be, bn, bu = ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
     np.testing.assert_allclose(be[0], 0)
     np.testing.assert_allclose(bn[0], 0)
@@ -129,9 +130,8 @@ def test_mag_ext_int_boundary():
     Check the boundary between internal and external field calculations is
     consistent.
     """
-
     a, c = 50, 60
-    external_field = (55_000, 0.0, 90.0)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
     susceptibility = 0.01
 
     ellipsoid = Ellipsoid(a, a, c, susceptibility=susceptibility)
@@ -141,7 +141,7 @@ def test_mag_ext_int_boundary():
     u = np.array([0.0, 0.0])
     coordinates = (e, n, u)
 
-    be, _, _ = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+    be, _, _ = ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
     np.testing.assert_allclose(be[0], be[1], rtol=1e-7)
 
@@ -153,7 +153,7 @@ def test_mag_flipped_ellipsoid():
 
     """
     a, b, c = (4, 3, 2)
-    external_field = (10_000, 0, 0)
+    inducing_field = hm.magnetic_angles_to_vec(10_000, 0, 0)
     susceptibility = 0.01
 
     triaxial_example = Ellipsoid(
@@ -180,8 +180,8 @@ def test_mag_flipped_ellipsoid():
     internal_mask = ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
     coordinates = tuple(c[internal_mask] for c in (x, y, z))
 
-    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, triaxial_example, external_field)
-    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, triaxial_example2, external_field)
+    be1, bn1, bu1 = ellipsoid_magnetic(coordinates, triaxial_example, inducing_field)
+    be2, bn2, bu2 = ellipsoid_magnetic(coordinates, triaxial_example2, inducing_field)
 
     np.testing.assert_allclose(np.abs(be1), np.abs(be2))
     np.testing.assert_allclose(np.abs(bn1), np.abs(bn2))
@@ -195,7 +195,7 @@ def test_euler_rotation_symmetry_mag():
     """
 
     a, b, c = 5, 4, 3
-    external_field = (55_000, 0.0, 90.0)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
     susceptibility = 0.01
     coordinates = x, y, z = vd.grid_coordinates(
         region=(-5, 5, -5, 5), spacing=1.0, extra_coords=5
@@ -205,10 +205,10 @@ def test_euler_rotation_symmetry_mag():
 
     def check_rotation_equivalence(base_ellipsoid, rotated_ellipsoids):
         base_be, base_bn, base_bu = ellipsoid_magnetic(
-            coordinates, base_ellipsoid, external_field
+            coordinates, base_ellipsoid, inducing_field
         )
         for rotated in rotated_ellipsoids:
-            be, bn, bu = ellipsoid_magnetic(coordinates, rotated, external_field)
+            be, bn, bu = ellipsoid_magnetic(coordinates, rotated, inducing_field)
             np.testing.assert_allclose(np.abs(be), np.abs(base_be), rtol=1e-4)
             np.testing.assert_allclose(np.abs(bn), np.abs(base_bn), rtol=1e-4)
             np.testing.assert_allclose(np.abs(bu), np.abs(base_bu), rtol=1e-4)
@@ -380,7 +380,7 @@ class TestMagnetizationVersusSphere:
         # Define moderately high susceptibility to account for demagnetization effects
         susceptibility = 0.5
 
-        # Define arbitrary external field
+        # Define arbitrary inducing field
         intensity, inclination, declination = 55_321, 70.2, -12.3
         b0_field = np.array(
             hm.magnetic_angles_to_vec(intensity, inclination, declination)
@@ -418,8 +418,8 @@ class TestMagneticFieldVersusSphere:
     ratio = 1e-4
     assert ratio > SEMIAXES_RTOL
 
-    # Define external field
-    external_field = (55_123.0, 32.0, -28.9)
+    # Define inducing field
+    inducing_field = hm.magnetic_angles_to_vec(55_123.0, 32.0, -28.9)
 
     @pytest.fixture(params=[0.0, 100.0], ids=["height=0", "height=100"])
     def coordinates(self, request):
@@ -467,10 +467,10 @@ class TestMagneticFieldVersusSphere:
         sphere = Ellipsoid(
             self.radius, self.radius, self.radius, susceptibility=self.susceptibility
         )
-        b_sphere = ellipsoid_magnetic(coordinates, sphere, self.external_field)
+        b_sphere = ellipsoid_magnetic(coordinates, sphere, self.inducing_field)
 
         ellipsoid = self.get_ellipsoid(ellipsoid_type)
-        b_ellipsoid = ellipsoid_magnetic(coordinates, ellipsoid, self.external_field)
+        b_ellipsoid = ellipsoid_magnetic(coordinates, ellipsoid, self.inducing_field)
 
         rtol = 5e-4
         for bi_sphere, bi_ellipsoid in zip(b_sphere, b_ellipsoid, strict=True):
@@ -495,8 +495,8 @@ class TestMagneticFieldVersusDipole:
     ratio = 1e-4
     assert ratio > SEMIAXES_RTOL
 
-    # Define external field
-    external_field = (55_123.0, 32.0, -28.9)
+    # Define inducing field
+    inducing_field = hm.magnetic_angles_to_vec(55_123.0, 32.0, -28.9)
 
     @pytest.fixture
     def coordinates(self):
@@ -545,8 +545,8 @@ class TestMagneticFieldVersusDipole:
         Assume the ellipsoid is close enough to a sphere for the conversion to be
         valid. Don't consider demagnetization effects.
         """
-        b0_field = hm.magnetic_angles_to_vec(*self.external_field)
-        h0_field = np.array(b0_field) * 1e-9 / mu_0  # convert to SI units
+        b0_field = np.asarray(self.inducing_field) * 1e-9  # convert to SI units
+        h0_field = b0_field / mu_0
         return 4 / 3 * np.pi * ellipsoid.a**3 * ellipsoid.susceptibility * h0_field
 
     @pytest.mark.parametrize(
@@ -558,7 +558,7 @@ class TestMagneticFieldVersusDipole:
         """
         # Forward model the magnetic field of the ellipsoid
         ellipsoid = self.get_ellipsoid(ellipsoid_type)
-        b_ellipsoid = ellipsoid_magnetic(coordinates, ellipsoid, self.external_field)
+        b_ellipsoid = ellipsoid_magnetic(coordinates, ellipsoid, self.inducing_field)
 
         # Forward model the magnetic field of the dipole
         dipole_moment = self.get_dipole_moment(ellipsoid)
@@ -630,7 +630,7 @@ class TestSymmetryOnRotations:
         )
 
         # Define physical properties
-        external_field = (55_000, -71, 15)
+        inducing_field = hm.magnetic_angles_to_vec(55_000, -71, 15)
         magnetization = (
             (400, 21, -8) if magnetization_type in ("remanent", "both") else (0, 0, 0)
         )
@@ -645,7 +645,7 @@ class TestSymmetryOnRotations:
 
         # Compute magnetic fields
         b_field, b_field_flipped = tuple(
-            ellipsoid_magnetic(coordinates, ell, external_field)
+            ellipsoid_magnetic(coordinates, ell, inducing_field)
             for ell in (ellipsoid, ellipsoid_flipped)
         )
 
@@ -716,14 +716,14 @@ class TestMultipleEllipsoids:
         for ellipsoid, susceptibility in zip(ellipsoids, susceptibilities, strict=True):
             ellipsoid.susceptibility = susceptibility
 
-        # Define external field
-        external_field = (55_000, -15, 65)
+        # Define inducing field
+        inducing_field = hm.magnetic_angles_to_vec(55_000, -15, 65)
 
         # Compute magnetic field
         bx, by, bz = ellipsoid_magnetic(
             coordinates,
             ellipsoids,
-            external_field,
+            inducing_field,
         )
 
         # Compute expected arrays
@@ -732,7 +732,7 @@ class TestMultipleEllipsoids:
         )
         for ellipsoid in ellipsoids:
             bx_i, by_i, bz_i = ellipsoid_magnetic(
-                coordinates, ellipsoid, external_field
+                coordinates, ellipsoid, inducing_field
             )
             bx_expected += bx_i
             by_expected += by_i
@@ -757,11 +757,11 @@ class TestMultipleEllipsoids:
             ellipsoid.remanent_mag = remanent_mag
 
         # Compute magnetic field
-        external_field = (55_000, -15, 65)
+        inducing_field = hm.magnetic_angles_to_vec(55_000, -15, 65)
         bx, by, bz = ellipsoid_magnetic(
             coordinates,
             ellipsoids,
-            external_field,
+            inducing_field,
         )
 
         # Compute expected arrays
@@ -772,7 +772,7 @@ class TestMultipleEllipsoids:
             bx_i, by_i, bz_i = ellipsoid_magnetic(
                 coordinates,
                 ellipsoid,
-                external_field,
+                inducing_field,
             )
             bx_expected += bx_i
             by_expected += by_i
@@ -794,14 +794,14 @@ class TestNoMagnetic:
         coordinates = (0.0, 0.0, 0.0)
         a, b, c = 50.0, 35.0, 25.0
         ellipsoid = Ellipsoid(a, b, c)
-        external_field = (55_000.0, 13, 71)
+        inducing_field = hm.magnetic_angles_to_vec(55_000.0, 13, 71)
 
         msg = re.escape(
             f"Ellipsoid {ellipsoid} doesn't have a susceptibility nor a "
             "remanent_mag value. It will be skipped."
         )
         with pytest.warns(NoPhysicalPropertyWarning, match=msg):
-            bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, external_field)
+            bx, by, bz = ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
         # Check the magnetic field components are zero
         for b_component in (bx, by, bz):
@@ -817,7 +817,7 @@ class TestTriaxialOnLimits:
     """
 
     semimajor = 50.0
-    external_field = (55_000, 71, 18)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 71, 18)
     atol_ratio = 1e-6
     rtol = 1e-5
 
@@ -842,7 +842,7 @@ class TestTriaxialOnLimits:
         prolate = Ellipsoid(a, b, b, susceptibility=susceptibility)
 
         b_triaxial, b_prolate = tuple(
-            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            ellipsoid_magnetic(coordinates, ell, inducing_field=self.inducing_field)
             for ell in (triaxial, prolate)
         )
 
@@ -863,7 +863,7 @@ class TestTriaxialOnLimits:
         oblate = Ellipsoid(a, a, c, susceptibility=susceptibility)
 
         b_triaxial, b_oblate = tuple(
-            ellipsoid_magnetic(coordinates, ell, external_field=self.external_field)
+            ellipsoid_magnetic(coordinates, ell, inducing_field=self.inducing_field)
             for ell in (triaxial, oblate)
         )
 
@@ -882,7 +882,7 @@ class TestSemiaxesArbitraryOrder:
 
     atol_ratio = 0.0
     rtol = 1e-7
-    external_field = (55_000, 17, -21)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 17, -21)
 
     def get_coordinates(self, semimajor, azimuth=45, polar=45):
         """
@@ -925,10 +925,10 @@ class TestSemiaxesArbitraryOrder:
 
         coordinates = self.get_coordinates(semiaxes_sorted[0])
         g_field = ellipsoid_magnetic(
-            coordinates, ellipsoid, external_field=self.external_field
+            coordinates, ellipsoid, inducing_field=self.inducing_field
         )
         g_rotated = ellipsoid_magnetic(
-            coordinates, ellipsoid_rotated, external_field=self.external_field
+            coordinates, ellipsoid_rotated, inducing_field=self.inducing_field
         )
 
         np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
@@ -960,10 +960,10 @@ class TestSemiaxesArbitraryOrder:
 
         coordinates = self.get_coordinates(semiaxes_sorted[0])
         g_field = ellipsoid_magnetic(
-            coordinates, ellipsoid, external_field=self.external_field
+            coordinates, ellipsoid, inducing_field=self.inducing_field
         )
         g_rotated = ellipsoid_magnetic(
-            coordinates, ellipsoid_rotated, external_field=self.external_field
+            coordinates, ellipsoid_rotated, inducing_field=self.inducing_field
         )
 
         np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
@@ -995,10 +995,10 @@ class TestSemiaxesArbitraryOrder:
 
         coordinates = self.get_coordinates(semiaxes_sorted[0])
         g_field = ellipsoid_magnetic(
-            coordinates, ellipsoid, external_field=self.external_field
+            coordinates, ellipsoid, inducing_field=self.inducing_field
         )
         g_rotated = ellipsoid_magnetic(
-            coordinates, ellipsoid_rotated, external_field=self.external_field
+            coordinates, ellipsoid_rotated, inducing_field=self.inducing_field
         )
 
         np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
@@ -1026,7 +1026,7 @@ class TestNumericalInstabilitiesTriaxial:
     semimajor, semiminor = 50.0, 30.0
     center = (0, 0, 0)
     susceptibility = 0.1
-    external_field = (55_000, 17, 21)
+    inducing_field = hm.magnetic_angles_to_vec(55_000, 17, 21)
 
     def get_coordinates(self, azimuth=45, polar=45):
         """
@@ -1075,10 +1075,10 @@ class TestNumericalInstabilitiesTriaxial:
             a, b, c, center=self.center, susceptibility=self.susceptibility
         )
         be_prolate, bn_prolate, bu_prolate = ellipsoid_magnetic(
-            coordinates, prolate, self.external_field
+            coordinates, prolate, self.inducing_field
         )
         be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
-            coordinates, ellipsoid, self.external_field
+            coordinates, ellipsoid, self.inducing_field
         )
 
         rtol, atol = 1e-7, 1e-8
@@ -1102,10 +1102,10 @@ class TestNumericalInstabilitiesTriaxial:
             a, b, c, center=self.center, susceptibility=self.susceptibility
         )
         be_oblate, bn_oblate, bu_oblate = ellipsoid_magnetic(
-            coordinates, oblate, self.external_field
+            coordinates, oblate, self.inducing_field
         )
         be_ell, bn_ell, bu_ell = ellipsoid_magnetic(
-            coordinates, ellipsoid, self.external_field
+            coordinates, ellipsoid, self.inducing_field
         )
 
         rtol, atol = 1e-7, 1e-8

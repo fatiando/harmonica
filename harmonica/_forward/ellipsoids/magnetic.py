@@ -18,7 +18,6 @@ import numpy.typing as npt
 from scipy.constants import mu_0
 from scipy.special import ellipeinc, ellipkinc
 
-from ..._utils import magnetic_angles_to_vec
 from ...errors import NoPhysicalPropertyWarning
 from ...typing import Coordinates
 from .ellipsoids import Ellipsoid
@@ -38,9 +37,9 @@ from .utils import (
 def ellipsoid_magnetic(
     coordinates: Coordinates,
     ellipsoids: Iterable[Ellipsoid] | Ellipsoid,
-    external_field: tuple[float, float, float],
+    inducing_field: npt.NDArray | tuple[float, float, float],
 ):
-    """
+    r"""
     Forward model magnetic fields of ellipsoids.
 
     Compute the magnetic field components for an ellipsoidal body at specified
@@ -59,10 +58,9 @@ def ellipsoid_magnetic(
     ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
         Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or
         a list of them.
-    external_field : tuple
-        The uniform magnetic field (B) as and array with values of
-        (magnitude, inclination, declination). The magnitude should be in nT,
-        and the angles in degrees.
+    inducing_field : (3,) array or tuple of float
+        The easting, northing and upward components of the inducing magnetic field
+        :math:`\mathbf{B}` in nT.
 
     Returns
     -------
@@ -86,9 +84,7 @@ def ellipsoid_magnetic(
     be, bn, bu = tuple(np.zeros_like(easting, dtype=np.float64) for _ in range(3))
 
     # Compute the inducing H0 field
-    magnitude, inclination, declination = external_field
-    b0_field = np.array(magnetic_angles_to_vec(magnitude, inclination, declination))
-    b0_field *= 1e-9  # convert to SI units
+    b0_field = np.asarray(inducing_field) * 1e-9  # convert to SI units
     h0_field = b0_field / mu_0
 
     # Forward model the magnetic field of ellipsoids
@@ -125,7 +121,7 @@ def _single_ellipsoid_magnetic(
     remanent_mag: npt.NDArray | None,
     h0_field: npt.NDArray,
 ):
-    """
+    r"""
     Forward model the magnetic field of a single ellipsoid.
 
     Parameters
@@ -143,9 +139,8 @@ def _single_ellipsoid_magnetic(
         The components of the vector should be in the easting-northing-upward coordinate
         system.
     h0_field : (3,) array
-        Array with the components of the external H field in SI units.
-        The components of the vector should be in the easting-northing-upward coordinate
-        system.
+        Array with the easting, northing, and upward components of the inducing
+        :math:`\mathbf{H}` field in SI units.
 
     Returns
     -------
@@ -177,7 +172,7 @@ def _single_ellipsoid_magnetic(
     susceptibility = cast_susceptibility(susceptibility)
     remanent_mag = cast_remanent_magnetization(remanent_mag)
 
-    # Rotate the external field and the remanent magnetization
+    # Rotate the inducing field and the remanent magnetization
     h0_field_rotated = rotation @ h0_field
     remnant_mag_rotated = rotation @ remanent_mag
 
@@ -233,9 +228,9 @@ def get_magnetisation(
     .. important::
 
         This function works in the local x, y, z coordinate system defined for the
-        ellipsoid. The external field and the remanent magnetization vector should be
-        provided in the x-y-z coordinate system. The generated magnetization vector will
-        be defined in the same coordinate system.
+        ellipsoid. The inducing ``h0_field`` and the remanent magnetization vector
+        should be provided in the x-y-z coordinate system. The generated magnetization
+        vector will be defined in the same coordinate system.
 
     Parameters
     ----------
