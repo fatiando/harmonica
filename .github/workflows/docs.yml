@@ -35,8 +35,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
-      PYTHON: "3.12"
       ENSAIO_DATA_FROM_GITHUB: true
 
     steps:
@@ -66,39 +64,14 @@ jobs:
           channels: conda-forge
           conda-remove-defaults: "true"
 
-      - name: Collect requirements
-        run: |
-          echo "Install Dependente to capture dependencies:"
-          conda install dependente==0.3.0 -c conda-forge
-          echo ""
-          echo "Capturing run-time dependencies:"
-          dependente --source install > requirements-full.txt
-          echo "Capturing dependencies from:"
-          for requirement in $REQUIREMENTS
-          do
-            echo "  $requirement"
-            cat $requirement >> requirements-full.txt
-          done
-          echo ""
-          echo "Collected dependencies:"
-          cat requirements-full.txt
-
-      - name: Rename conda-forge packages
-        run: |
-          echo "Rename conda-forge packages in requirements-full.txt"
-          # Replace "build" for "python-build"
-          sed -s --in-place 's/^build$/python-build/' requirements-full.txt
-          echo "Renamed dependencies:"
-          cat requirements-full.txt
-
       - name: Setup caching for conda packages
         uses: actions/cache@v5
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
-      - name: Install requirements
-        run: conda install --quiet --file requirements-full.txt python=$PYTHON
+      - name: Install requirements through environment file
+        run: conda env create --file .github/environment.yml
 
       - name: List installed packages
         run: conda list
