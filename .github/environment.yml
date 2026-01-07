@@ -9,7 +9,9 @@ dependencies:
   - numpy>=1.23
   - pandas>=1.4
   - scipy>=1.9
-  - scikit-learn>=1.1
+  # Pin sklearn to bypass issue with Verde 1.8.1 and sklearn 1.8.0. We should
+  # fix this upstream and remove the upper constrain.
+  - scikit-learn>=1.1,<1.8.0
   - numba>=0.57
   - xarray>=2022.03
   - verde>=1.8.1
