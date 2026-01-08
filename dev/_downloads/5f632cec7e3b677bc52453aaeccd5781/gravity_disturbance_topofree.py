@@ -25,6 +25,7 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 """
+
 import boule as bl
 import ensaio
 import pygmt

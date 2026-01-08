@@ -25,6 +25,35 @@ harmonica.DatasetAccessorTesseroidLayer
 
 
 
+
+
+Attributes
+----------
+
+
+
+.. autoattribute:: DatasetAccessorTesseroidLayer.boundaries
+
+
+
+.. autoattribute:: DatasetAccessorTesseroidLayer.dims
+
+
+
+.. autoattribute:: DatasetAccessorTesseroidLayer.shape
+
+
+
+.. autoattribute:: DatasetAccessorTesseroidLayer.size
+
+
+
+.. autoattribute:: DatasetAccessorTesseroidLayer.spacing
+
+
+
+
+
 ----
 
 .. include:: backreferences/harmonica.DatasetAccessorTesseroidLayer.examples

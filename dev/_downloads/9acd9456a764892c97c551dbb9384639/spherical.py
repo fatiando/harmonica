@@ -18,6 +18,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
+
 import boule as bl
 import ensaio
 import numpy as np
