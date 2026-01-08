@@ -111,6 +111,7 @@ And finally plot the computed gravitational field
 .. jupyter-execute::
 
    import pygmt
+   
    grid = vd.make_xarray_grid(
       coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 

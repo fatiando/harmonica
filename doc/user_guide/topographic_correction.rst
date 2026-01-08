@@ -72,7 +72,7 @@ And plot it:
    maxabs = vd.maxabs(data.gravity_disturbance_mgal)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -82,7 +82,7 @@ And plot it:
       projection="M15c",
       frame=['ag', 'WSen'],
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
    fig.show()
 
 
@@ -125,7 +125,7 @@ We can now compute the Bouguer disturbance and plot it:
    maxabs = vd.maxabs(bouguer_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -245,7 +245,7 @@ And plot it:
    maxabs = vd.maxabs(topo_free_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
    fig.plot(
       x=data.longitude,
       y=data.latitude,
