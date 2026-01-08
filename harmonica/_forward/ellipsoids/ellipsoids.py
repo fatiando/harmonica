@@ -65,6 +65,12 @@ class Ellipsoid:
     across their respective axes. Pitch rotations are carried out in the opposite
     direction, so a positive ``pitch`` *lifts* the side of the ellipsoid pointing in the
     easting direction.
+
+    .. figure:: ../../_static/figures/ellipsoid-rotations.svg
+       :name: ellipsoid rotations
+       :width: 90%
+       :alt: Figure showing an ellipsoid with arbitrary rotation given by the yaw, pitch and roll angles.
+
     """
 
     def __init__(
