@@ -258,6 +258,37 @@ class Ellipsoid:
             string += f"\n  • remanent_mag: ({float(me)}, {float(mn)}, {float(mu)}) A/m"
         return string
 
+    def __repr__(self):
+        module = next(iter(self.__class__.__module__.split(".")))
+        attrs = [
+            f"a={float(self.a)}",
+            f"b={float(self.b)}",
+            f"c={float(self.c)}",
+            f"center={tuple(float(i) for i in self.center)}",
+            f"yaw={float(self.yaw)}",
+            f"pitch={float(self.pitch)}",
+            f"roll={float(self.roll)}",
+        ]
+
+        if self.density is not None:
+            attrs.append(f"density={float(self.density)}")
+
+        if self.susceptibility is not None:
+            if isinstance(self.susceptibility, Real):
+                susceptibility = f"{float(self.susceptibility)}"
+            else:
+                susceptibility = []
+                for line in str(self.susceptibility).splitlines():
+                    susceptibility.append(line.strip())
+                susceptibility = " ".join(susceptibility)
+            attrs.append(f"susceptibility={susceptibility}")
+
+        if self.remanent_mag is not None:
+            attrs.append(f"remanent_mag={self.remanent_mag}")
+
+        attrs = ", ".join(attrs)
+        return f"{module}.{self.__class__.__name__}({attrs})"
+
     def to_pyvista(self, **kwargs):
         """
         Export ellipsoid to a :class:`pyvista.PolyData` object.

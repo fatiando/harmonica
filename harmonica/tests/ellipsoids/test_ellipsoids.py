@@ -307,3 +307,74 @@ class TestString:
 
         expected = [8 * " " + line for line in str(sus).splitlines()]
         assert matrix_lines == expected
+
+
+class TestRepr:
+    """Test the ``Ellipsoid.__repr__`` method."""
+
+    a, b, c = 3, 2, 1
+    yaw, pitch, roll = 73, 14, -35
+    center = (43.0, -72.0, 105)
+
+    @pytest.fixture
+    def ellipsoid(self):
+        return Ellipsoid(
+            self.a,
+            self.b,
+            self.c,
+            yaw=self.yaw,
+            pitch=self.pitch,
+            roll=self.roll,
+            center=self.center,
+        )
+
+    def test_triaxial(self, ellipsoid):
+        expected = (
+            "harmonica.Ellipsoid("
+            "a=3.0, b=2.0, c=1.0, center=(43.0, -72.0, 105.0), "
+            "yaw=73.0, pitch=14.0, roll=-35.0"
+            ")"
+        )
+        assert expected == repr(ellipsoid)
+
+    def test_density(self, ellipsoid):
+        ellipsoid.density = -400
+        expected = (
+            "harmonica.Ellipsoid("
+            "a=3.0, b=2.0, c=1.0, center=(43.0, -72.0, 105.0), "
+            "yaw=73.0, pitch=14.0, roll=-35.0, density=-400.0"
+            ")"
+        )
+        assert expected == repr(ellipsoid)
+
+    def test_susceptibility(self, ellipsoid):
+        ellipsoid.susceptibility = 0.3
+        expected = (
+            "harmonica.Ellipsoid("
+            "a=3.0, b=2.0, c=1.0, center=(43.0, -72.0, 105.0), "
+            "yaw=73.0, pitch=14.0, roll=-35.0, susceptibility=0.3"
+            ")"
+        )
+        assert expected == repr(ellipsoid)
+
+    def test_remanent_mag(self, ellipsoid):
+        ellipsoid.remanent_mag = (12, -43, 59)
+        expected = (
+            "harmonica.Ellipsoid("
+            "a=3.0, b=2.0, c=1.0, center=(43.0, -72.0, 105.0), "
+            "yaw=73.0, pitch=14.0, roll=-35.0, remanent_mag=[ 12 -43  59]"
+            ")"
+        )
+        assert expected == repr(ellipsoid)
+
+    def test_susceptibility_tensor(self, ellipsoid):
+        sus = np.array([[1, 0, 0], [0, 2, 0], [0, 0, 3]])
+        ellipsoid.susceptibility = sus
+        expected = (
+            "harmonica.Ellipsoid("
+            "a=3.0, b=2.0, c=1.0, center=(43.0, -72.0, 105.0), "
+            "yaw=73.0, pitch=14.0, roll=-35.0, "
+            "susceptibility=[[1 0 0] [0 2 0] [0 0 3]]"
+            ")"
+        )
+        assert expected == repr(ellipsoid)
