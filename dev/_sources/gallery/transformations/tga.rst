@@ -21,7 +21,7 @@
 Total gradient amplitude of a regular grid
 ==========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-72
+.. GENERATED FROM PYTHON SOURCE LINES 11-73
 
 
 
@@ -50,10 +50,10 @@ Total gradient amplitude of a regular grid
            [3.71454961, 0.92058867, 0.87376757, ..., 0.63073088, 0.60064385,
             1.14353417],
            [5.63063027, 3.39067041, 3.24439853, ..., 0.61133653, 0.64716741,
-            1.33503332]])
+            1.33503332]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
 
 
 
@@ -63,6 +63,7 @@ Total gradient amplitude of a regular grid
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -129,7 +130,7 @@ Total gradient amplitude of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.414 seconds)
+   **Total running time of the script:** (0 minutes 0.404 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tga.py:
