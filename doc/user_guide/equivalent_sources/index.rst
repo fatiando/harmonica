@@ -143,7 +143,7 @@ And plot it:
    fig_proj = f"x1:{fig_ratio}"
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
    title="Predicted gravity disturbance"
    with pygmt.config(FONT_TITLE="14p"):
       fig.plot(
@@ -204,7 +204,7 @@ And plot it
    maxabs = vd.maxabs(grid.gravity_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
    fig.grdimage(
       frame=['af', 'WSen'],
       grid=grid.gravity_disturbance,

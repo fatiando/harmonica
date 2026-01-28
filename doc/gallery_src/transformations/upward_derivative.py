@@ -46,28 +46,34 @@ fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     with fig.set_panel(panel=0):
         # Make colormap of data
-        scale = 2500
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        cpt_lim = vd.maxabs(magnetic_grid) * 0.6
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
             projection="X?",
             cmap=True,
+            frame="+tMagnetic Anomaly",
         )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Magnetic anomaly [nT]"',
+            frame="af+lnT",
             position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
         # Make colormap for upward derivative (saturate it a little bit)
-        scale = 0.6 * vd.maxabs(deriv_upward)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        cpt_lim = vd.maxabs(deriv_upward) * 0.6
+        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
         # Plot upward derivative
-        fig.grdimage(grid=deriv_upward, projection="X?", cmap=True)
+        fig.grdimage(
+            grid=deriv_upward,
+            projection="X?",
+            cmap=True,
+            frame="+tUpward Derivative",
+        )
         # Add colorbar
         fig.colorbar(
-            frame='af+l"Upward derivative [nT/m]"',
+            frame="af+lnT/m",
             position="JBC+h+o0/1c+e",
         )
 fig.show()
