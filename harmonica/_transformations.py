@@ -342,6 +342,58 @@ def reduction_to_pole(
     )
 
 
+def total_horizontal_gradient(grid):
+    r"""
+    Calculate the total horizontal derivative of a potential field grid.
+
+    Compute the amplitude of the horizontal gradient of a regular gridded
+    potential field `M`. This is a measure of the rate of change in the x and y
+    (horizontal) directions. . The horizontal derivatives are calculated though 
+    finite-differences.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two-dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. The coordinates must be defined in the same units.
+
+    Returns
+    -------
+    horizontal_derivative_grid : :class:`xarray.DataArray`
+        A :class:`xarray.DataArray` containing the total horizontal derivative of
+        the input ``grid``.
+
+    Notes
+    -----
+    The total horizontal derivative is calculated as:
+
+    .. math::
+
+        A(x, y) = \sqrt{
+            \left( \frac{\partial M}{\partial x} \right)^2
+            + \left( \frac{\partial M}{\partial y} \right)^2
+        }
+
+    where :math:`M` is the regularly gridded potential field.
+
+    References
+    ----------
+    [Blakely1995]_
+    [CordellGrauch1985]_
+    """
+
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
+    # Calculate the horizontal gradients of the grid
+    horizontal_gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1)
+    )
+    # return the total horizontal gradient
+    return np.sqrt(horizontal_gradient[0] ** 2 + horizontal_gradient[1] ** 2)
+
+
 def total_gradient_amplitude(grid):
     r"""
     Calculate the total gradient amplitude of a potential field grid.
@@ -454,6 +506,72 @@ def tilt_angle(grid):
     horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
     tilt = np.arctan2(gradient[2], horiz_deriv)
     return tilt
+
+
+def theta_map(grid):
+    r"""
+    Calculate the theta map of a potential field grid
+
+    Compute the theta map of a regularly gridded potential field
+    :math:`M`, used to enhance edges in gravity and magnetic data.
+    The horizontal and vertical derivatives are calculated from the
+    input grid, and the theta angle is defined as the arctangent
+    of the ratio between the total horizontal derivative and the
+    total gradient amplitude.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+       A two-dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. Its coordinates should be defined in the
+        same units.
+
+    Returns
+    -------
+    theta_grid : :class:`xarray.DataArray`
+       A :class:`xarray.DataArray` with the calculated theta angle
+        in radians.
+
+    Notes
+    -----
+    The theta angle is calculated as:
+
+    .. math::
+
+        \theta(M) = \tan^{-1} \left(
+            \frac{
+                \sqrt{
+                    \left( \frac{\partial M}{\partial x} \right)^2 +
+                    \left( \frac{\partial M}{\partial y} \right)^2
+                }
+            }{
+                \sqrt{
+                    \left( \frac{\partial M}{\partial x} \right)^2 +
+                    \left( \frac{\partial M}{\partial y} \right)^2 +
+                    \left( \frac{\partial M}{\partial z} \right)^2
+                }
+            }
+        \right)
+
+    where :math:`M` is the regularly gridded potential field.
+
+    References
+    ----------
+    [Wijns et al., 2005]_
+    """
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
+    # Calculate the gradients of the grid
+    gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1),
+        derivative_upward(grid, order=1),
+    )
+    # Calculate and return the theta map
+    total_gradient = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
+    horiz_deriv = np.sqrt(gradient[0] ** 2 + gradient[1] ** 2)
+    return np.arctan2(horiz_deriv, total_gradient)
 
 
 def _get_dataarray_coordinate(grid, dimension_index):
