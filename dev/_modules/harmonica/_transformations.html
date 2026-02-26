@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -440,11 +447,12 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Apply transformations to regular grids of potential fields</span>
+<span class="sd">Apply transformations to regular grids of potential fields.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.filters._filters</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.filters._filters</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">derivative_easting_kernel</span><span class="p">,</span>
     <span class="n">derivative_northing_kernel</span><span class="p">,</span>
     <span class="n">derivative_upward_kernel</span><span class="p">,</span>
@@ -453,14 +461,14 @@ document.write(`
     <span class="n">reduction_to_pole_kernel</span><span class="p">,</span>
     <span class="n">upward_continuation_kernel</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.filters._utils</span> <span class="kn">import</span> <span class="n">apply_filter</span><span class="p">,</span> <span class="n">grid_sanity_checks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.filters._utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_filter</span><span class="p">,</span> <span class="n">grid_sanity_checks</span>
 
 
 <div class="viewcode-block" id="derivative_upward">
 <a class="viewcode-back" href="../../api/generated/harmonica.derivative_upward.html#harmonica.derivative_upward">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_upward</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_upward</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the derivative of a potential field grid in the upward direction</span>
+<span class="sd">    Calculate the derivative of a potential field grid in the upward direction.</span>
 
 <span class="sd">    Compute the spatial derivative in the upward direction of regular gridded</span>
 <span class="sd">    data using frequency domain calculations through Fast Fourier Transform.</span>
@@ -486,7 +494,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.derivative_upward_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -496,9 +504,9 @@ document.write(`
 
 <div class="viewcode-block" id="derivative_easting">
 <a class="viewcode-back" href="../../api/generated/harmonica.derivative_easting.html#harmonica.derivative_easting">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_easting</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_easting</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the derivative of a regular grid in the easting direction</span>
+<span class="sd">    Calculate the derivative of a regular grid in the easting direction.</span>
 
 <span class="sd">    Compute the spatial derivative in the easting direction of regular gridded</span>
 <span class="sd">    data. It can compute using accurate central differences using</span>
@@ -537,7 +545,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.derivative_easting_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -548,19 +556,19 @@ document.write(`
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fft&quot;</span><span class="p">:</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">derivative_easting_kernel</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-            <span class="s2">&quot;Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">grid</span></div>
 
 
 
 <div class="viewcode-block" id="derivative_northing">
 <a class="viewcode-back" href="../../api/generated/harmonica.derivative_northing.html#harmonica.derivative_northing">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_northing</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_northing</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;finite-diff&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the derivative of a regular grid in the northing direction</span>
+<span class="sd">    Calculate the derivative of a regular grid in the northing direction.</span>
 
 <span class="sd">    Compute the spatial derivative in the northing direction of regular gridded</span>
 <span class="sd">    data. It can compute using accurate central differences using</span>
@@ -599,7 +607,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.derivative_northing_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -610,19 +618,19 @@ document.write(`
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fft&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">apply_filter</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">derivative_northing_kernel</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-            <span class="s2">&quot;Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. Please select one from &#39;finite-diff&#39; or &#39;fft&#39;.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">grid</span></div>
 
 
 
 <div class="viewcode-block" id="upward_continuation">
 <a class="viewcode-back" href="../../api/generated/harmonica.upward_continuation.html#harmonica.upward_continuation">[docs]</a>
-<span class="k">def</span> <span class="nf">upward_continuation</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">upward_continuation</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the upward continuation of a potential field grid</span>
+<span class="sd">    Calculate the upward continuation of a potential field grid.</span>
 
 <span class="sd">    Compute the upward continuation of regular gridded data using frequency</span>
 <span class="sd">    domain calculations through Fast Fourier Transform.</span>
@@ -649,7 +657,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.upward_continuation_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -661,9 +669,9 @@ document.write(`
 
 <div class="viewcode-block" id="gaussian_lowpass">
 <a class="viewcode-back" href="../../api/generated/harmonica.gaussian_lowpass.html#harmonica.gaussian_lowpass">[docs]</a>
-<span class="k">def</span> <span class="nf">gaussian_lowpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_lowpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Gaussian low-pass of a potential field grid</span>
+<span class="sd">    Calculate the Gaussian low-pass of a potential field grid.</span>
 
 <span class="sd">    Compute the Gaussian low-pass of regular gridded data using frequency</span>
 <span class="sd">    domain calculations through Fast Fourier Transform.</span>
@@ -689,7 +697,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Geosoft1999]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.gaussian_lowpass_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -699,9 +707,9 @@ document.write(`
 
 <div class="viewcode-block" id="gaussian_highpass">
 <a class="viewcode-back" href="../../api/generated/harmonica.gaussian_highpass.html#harmonica.gaussian_highpass">[docs]</a>
-<span class="k">def</span> <span class="nf">gaussian_highpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_highpass</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Gaussian high-pass of a potential field grid</span>
+<span class="sd">    Calculate the Gaussian high-pass of a potential field grid.</span>
 
 <span class="sd">    Compute the Gaussian high-pass of regular gridded data using frequency</span>
 <span class="sd">    domain calculations through Fast Fourier Transform.</span>
@@ -727,7 +735,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Geosoft1999]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.gaussian_highpass_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -737,7 +745,7 @@ document.write(`
 
 <div class="viewcode-block" id="reduction_to_pole">
 <a class="viewcode-back" href="../../api/generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole">[docs]</a>
-<span class="k">def</span> <span class="nf">reduction_to_pole</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reduction_to_pole</span><span class="p">(</span>
     <span class="n">grid</span><span class="p">,</span>
     <span class="n">inclination</span><span class="p">,</span>
     <span class="n">declination</span><span class="p">,</span>
@@ -745,7 +753,7 @@ document.write(`
     <span class="n">magnetization_declination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the reduction to the pole of a magnetic field grid</span>
+<span class="sd">    Calculate the reduction to the pole of a magnetic field grid.</span>
 
 <span class="sd">    Compute the reduction to the pole of regular gridded magnetic data using</span>
 <span class="sd">    frequency domain calculations through Fast Fourier Transform.</span>
@@ -782,7 +790,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.filters.reduction_to_pole_kernel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -799,9 +807,9 @@ document.write(`
 
 <div class="viewcode-block" id="total_gradient_amplitude">
 <a class="viewcode-back" href="../../api/generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude">[docs]</a>
-<span class="k">def</span> <span class="nf">total_gradient_amplitude</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_gradient_amplitude</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the total gradient amplitude of a potential field grid</span>
+<span class="sd">    Calculate the total gradient amplitude of a potential field grid.</span>
 
 <span class="sd">    Compute the total gradient amplitude of a regular gridded potential field</span>
 <span class="sd">    `M`. The horizontal derivatives are calculated though finite-differences</span>
@@ -854,9 +862,9 @@ document.write(`
 
 <div class="viewcode-block" id="tilt_angle">
 <a class="viewcode-back" href="../../api/generated/harmonica.tilt_angle.html#harmonica.tilt_angle">[docs]</a>
-<span class="k">def</span> <span class="nf">tilt_angle</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tilt_angle</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the tilt angle of a potential field grid</span>
+<span class="sd">    Calculate the tilt angle of a potential field grid.</span>
 
 <span class="sd">    Compute the tilt of a regular gridded potential field</span>
 <span class="sd">    :math:`M`. The horizontal derivatives are calculated</span>
@@ -917,9 +925,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_get_dataarray_coordinate</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dimension_index</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_dataarray_coordinate</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dimension_index</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the name of the easting or northing coordinate in the grid</span>
+<span class="sd">    Return the name of the easting or northing coordinate in the grid.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -934,15 +942,13 @@ document.write(`
     <span class="n">dim_name</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">dimension_index</span><span class="p">]</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span> <span class="o">==</span> <span class="p">(</span><span class="n">dim_name</span><span class="p">,)]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">dimension_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;northing&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;easting&quot;</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;northing&quot;</span> <span class="k">if</span> <span class="n">dimension_index</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;easting&quot;</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Grid contains more than one coordinate along the &#39;</span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;direction: &#39;</span><span class="si">{</span><span class="n">coords</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
@@ -980,7 +986,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

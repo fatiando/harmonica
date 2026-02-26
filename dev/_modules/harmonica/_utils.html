@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -439,14 +446,32 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pooch</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_harmonica_cache</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the Harmonica data cache folder for the current system.</span>
+
+<span class="sd">    Uses :func:`pooch.os_cache` to reliably get a cache folder dependant on the</span>
+<span class="sd">    underlying operating system.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : class:`pathlib.Path`</span>
+<span class="sd">        The path to the cache folder. It may or may not exist yet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;harmonica&quot;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="magnetic_angles_to_vec">
 <a class="viewcode-back" href="../../api/generated/harmonica.magnetic_angles_to_vec.html#harmonica.magnetic_angles_to_vec">[docs]</a>
-<span class="k">def</span> <span class="nf">magnetic_angles_to_vec</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">magnetic_angles_to_vec</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert magnetic field angles to magnetic field vector</span>
+<span class="sd">    Convert magnetic field angles to magnetic field vector.</span>
 
 <span class="sd">    Convert intensity, inclination and declination angles of the magnetic field</span>
 <span class="sd">    to a 3-component magnetic vector.</span>
@@ -496,9 +521,9 @@ document.write(`
 
 <div class="viewcode-block" id="magnetic_vec_to_angles">
 <a class="viewcode-back" href="../../api/generated/harmonica.magnetic_vec_to_angles.html#harmonica.magnetic_vec_to_angles">[docs]</a>
-<span class="k">def</span> <span class="nf">magnetic_vec_to_angles</span><span class="p">(</span><span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">,</span> <span class="n">magnetic_u</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">magnetic_vec_to_angles</span><span class="p">(</span><span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">,</span> <span class="n">magnetic_u</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert magnetic field vector to magnetic field angles</span>
+<span class="sd">    Convert magnetic field vector to magnetic field angles.</span>
 
 <span class="sd">    Convert the 3-component magnetic vector to intensity, and inclination and</span>
 <span class="sd">    declination angles.</span>
@@ -507,7 +532,6 @@ document.write(`
 
 <span class="sd">        Inclination is measured positive downward from the horizontal plane and</span>
 <span class="sd">        declination is measured with respect to North and it is positive east.</span>
-
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -559,7 +583,7 @@ document.write(`
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        D = \arcsin \frac{B_e}{\sqrt{B_e^2 + B_n^2}}</span>
+<span class="sd">        D = \arctan \frac{B_e}{B_n}</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -570,32 +594,23 @@ document.write(`
     <span class="c1"># Compute the intensity as a norm</span>
     <span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">magnetic_e</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">magnetic_n</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">magnetic_u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="c1"># Compute the horizontal component of the magnetic vector</span>
-    <span class="n">horizontal_component</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">magnetic_e</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">magnetic_n</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
-    <span class="c1"># Mask the values equal to zero in the horizontal component</span>
-    <span class="n">horizontal_component</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_values</span><span class="p">(</span><span class="n">horizontal_component</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-    <span class="c1"># Calculate the inclination and declination using the mask</span>
-    <span class="n">inclination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="o">-</span><span class="n">magnetic_u</span> <span class="o">/</span> <span class="n">horizontal_component</span><span class="p">)</span>
-    <span class="n">declination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">magnetic_e</span> <span class="o">/</span> <span class="n">horizontal_component</span><span class="p">)</span>
-    <span class="c1"># Fill the masked values</span>
-    <span class="n">inclination</span> <span class="o">=</span> <span class="n">inclination</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">magnetic_u</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">declination</span> <span class="o">=</span> <span class="n">declination</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">horizontal_component</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">magnetic_e</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">magnetic_n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Calculate the inclination and declination</span>
+    <span class="n">inclination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">magnetic_u</span><span class="p">,</span> <span class="n">horizontal_component</span><span class="p">)</span>
+    <span class="n">declination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">)</span>
     <span class="c1"># Convert to degree if needed</span>
     <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
         <span class="n">inclination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">inclination</span><span class="p">)</span>
         <span class="n">declination</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">declination</span><span class="p">)</span>
-    <span class="c1"># Cast to floats if all components are floats</span>
-    <span class="k">if</span> <span class="n">intensity</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="p">(</span><span class="n">inclination</span><span class="p">,)</span> <span class="o">=</span> <span class="n">inclination</span>
-        <span class="p">(</span><span class="n">declination</span><span class="p">,)</span> <span class="o">=</span> <span class="n">declination</span>
     <span class="k">return</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span></div>
 
 
 
 <div class="viewcode-block" id="total_field_anomaly">
 <a class="viewcode-back" href="../../api/generated/harmonica.total_field_anomaly.html#harmonica.total_field_anomaly">[docs]</a>
-<span class="k">def</span> <span class="nf">total_field_anomaly</span><span class="p">(</span><span class="n">magnetic_field</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_field_anomaly</span><span class="p">(</span><span class="n">magnetic_field</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The total field anomaly from the anomalous magnetic field.</span>
+<span class="sd">    Compute the total field anomaly from the anomalous magnetic field.</span>
 
 <span class="sd">    Compute the total field anomaly from the anomalous magnetic field given the</span>
 <span class="sd">    regional field direction.</span>
@@ -681,7 +696,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

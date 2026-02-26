@@ -40,7 +40,7 @@ large, in fact we could use the :class:`harmonica.EquivalentSources` instead.
 But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
 to use them on a small example.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-155
+.. GENERATED FROM PYTHON SOURCE LINES 31-156
 
 
 
@@ -58,12 +58,14 @@ to use them on a small example.
     Mean height of observations: 868.9293913591926
     Required memory for storing the largest Jacobian: 672792 bytes
     Number of sources: 6231
-    R² score: 0.980707030192003
+    /home/runner/work/harmonica/harmonica/doc/gallery_src/equivalent_sources/gradient_boosted.py:94: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      print("R² score:", eqs_gb.score(coordinates, data.gravity_disturbance))
+    R² score: 0.9807070301920021
     <xarray.Dataset> Size: 3MB
     Dimensions:              (northing: 416, easting: 431)
     Coordinates:
-      * easting              (easting) float64 3kB 1.72e+06 1.722e+06 ... 2.58e+06
       * northing             (northing) float64 3kB -3.495e+06 ... -2.665e+06
+      * easting              (easting) float64 3kB 1.72e+06 1.722e+06 ... 2.58e+06
         upward               (northing, easting) float64 1MB 1e+03 1e+03 ... 1e+03
     Data variables:
         gravity_disturbance  (northing, easting) float64 1MB 7.169 7.235 ... 17.69
@@ -78,6 +80,7 @@ to use them on a small example.
 |
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -207,7 +210,7 @@ to use them on a small example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.885 seconds)
+   **Total running time of the script:** (0 minutes 7.126 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_gradient_boosted.py:

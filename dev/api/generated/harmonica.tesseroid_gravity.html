@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -229,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -253,23 +254,29 @@
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -535,37 +542,37 @@ it’s positive if the acceleration vector points inside the spheroid.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and
 <code class="docutils literal notranslate"><span class="pre">radius</span></code> coordinates of the computation points, defined on
 a spherical geocentric coordinate system. Both <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and
 <code class="docutils literal notranslate"><span class="pre">latitude</span></code> should be in degrees and <code class="docutils literal notranslate"><span class="pre">radius</span></code> in meters.</p>
 </dd>
-<dt><strong>tesseroids</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> or 2d-array</span></dt><dd><p>List or array containing the coordinates of the tesseroid:
+<dt><strong>tesseroids</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> or 2d-array</span></dt><dd><p>List or array containing the coordinates of the tesseroid:
 <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> under a geocentric
 spherical coordinate system.
 The longitudinal and latitudinal boundaries should be in degrees, while
 the radial ones must be in meters.</p>
 </dd>
-<dt><strong>density</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">func</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">decorated</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">with</span></code> <a class="reference external" href="https://numba.pydata.org/numba-doc/latest/reference/jit-compilation.html#numba.jit" title="(in Numba v0.50)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a></span></dt><dd><p>List or array containing the density of each tesseroid in kg/m^3.
+<dt><strong>density</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">func</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">decorated</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">with</span></code> <a class="reference external" href="https://numba.readthedocs.io/en/stable/reference/jit-compilation.html#numba.jit" title="(in Numba v0+untagged.2593)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a></span></dt><dd><p>List or array containing the density of each tesseroid in kg/m^3.
 Alternatively, it can be a continuous function within the boundaries of
 the tesseroids, in which case the variable density tesseroids method
 introduced in <a class="reference internal" href="../../references.html#soler2019" id="id1"><span>[Soler2019]</span></a> will be used.
 If <code class="docutils literal notranslate"><span class="pre">density</span></code> is a function, it should be decorated with
-<a class="reference external" href="https://numba.pydata.org/numba-doc/latest/reference/jit-compilation.html#numba.jit" title="(in Numba v0.50)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a>.</p>
+<a class="reference external" href="https://numba.readthedocs.io/en/stable/reference/jit-compilation.html#numba.jit" title="(in Numba v0+untagged.2593)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numba.jit</span></code></a>.</p>
 </dd>
-<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
+<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
 The available fields are:</p>
 <ul class="simple">
 <li><p>Gravitational potential: <code class="docutils literal notranslate"><span class="pre">potential</span></code></p></li>
 <li><p>Downward acceleration: <code class="docutils literal notranslate"><span class="pre">g_z</span></code></p></li>
 </ul>
 </dd>
-<dt><strong>parallel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True the computations will run in parallel using Numba built-in
+<dt><strong>parallel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True the computations will run in parallel using Numba built-in
 parallelization. If False, the forward model will run on a single core.
 Might be useful to disable parallelization if the forward model is run
 by an already parallelized workflow. Default to True.</p>
 </dd>
-<dt><strong>radial_adaptive_discretization</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the adaptive discretization algorithm will split the
+<dt><strong>radial_adaptive_discretization</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the adaptive discretization algorithm will split the
 tesseroid only on the horizontal direction.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code>, it will perform a three dimensional adaptive
 discretization, splitting the tesseroids on every direction.
@@ -574,11 +581,11 @@ Default <code class="docutils literal notranslate"><span class="pre">False</span
 <dt><strong>dtype</strong><span class="classifier">data-type (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Data type assigned to the resulting gravitational field. Default to
 <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p>
 </dd>
-<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to standard
+<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to standard
 error (stderr). Requires <code class="xref py py-mod docutils literal notranslate"><span class="pre">numba_progress</span></code> to be installed.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
-<dt><strong>disable_checks</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Flag that controls whether to perform a sanity check on the model.
+<dt><strong>disable_checks</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Flag that controls whether to perform a sanity check on the model.
 Should be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> only when it is certain that the input model
 is valid and it does not need to be checked.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
@@ -587,7 +594,7 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the tesseroids on the computation
+<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the tesseroids on the computation
 points. Gravitational potential is returned in
 <span class="math notranslate nohighlight">\(\text{J}/\text{kg}\)</span> and acceleration components in mGal.</p>
 </dd>
@@ -598,7 +605,7 @@ points. Gravitational potential is returned in
 <p><a class="reference internal" href="../../references.html#soler2019" id="id2"><span>[Soler2019]</span></a></p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get WGS84 ellipsoid from the Boule package</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">boule</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">boule</span><span class="o">.</span><span class="n">WGS84</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define tesseroid of 1km of thickness with top surface on the mean</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Earth radius</span>
@@ -617,9 +624,9 @@ points. Gravitational potential is returned in
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a linear density function for the same tesseroid.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># It should be decorated with numba.njit</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span> <span class="nf">linear_density</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">linear_density</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">density_top</span> <span class="o">=</span> <span class="mf">2670.</span>
 <span class="gp">... </span>    <span class="n">density_bottom</span> <span class="o">=</span> <span class="mf">3300.</span>
 <span class="gp">... </span>    <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">density_top</span> <span class="o">-</span> <span class="n">density_bottom</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
@@ -712,7 +719,7 @@ points. Gravitational potential is returned in
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -228,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -252,23 +253,29 @@
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -502,6 +509,14 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.update_top_bottom</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.boundaries"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.boundaries</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.dims"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.dims</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.shape"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.shape</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.size"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.spacing"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.spacing</span></code></a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -518,7 +533,7 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">DatasetAccessorTesseroidLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/tesseroid_layer.html#DatasetAccessorTesseroidLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer" title="Link to this definition">#</a></dt>
-<dd><p>Define dataset accessor for layer of tesseroids</p>
+<dd><p>Define dataset accessor for layer of tesseroids.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This class in not intended to be initialized.
@@ -534,15 +549,15 @@ attributes of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundaries</span></code></dt><dd><p>Boundaries of the layer</p>
+<dt><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.boundaries" title="harmonica.DatasetAccessorTesseroidLayer.boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundaries</span></code></a></dt><dd><p>Boundaries of the layer.</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dims</span></code></dt><dd><p>Return the dims tuple of the prism layer</p>
+<dt><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.dims" title="harmonica.DatasetAccessorTesseroidLayer.dims"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dims</span></code></a></dt><dd><p>Return the dims tuple of the prism layer.</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></dt><dd><p>Return the number of tesseroids on each directions</p>
+<dt><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.shape" title="harmonica.DatasetAccessorTesseroidLayer.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt><dd><p>Return the number of tesseroids on each directions.</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>Return the total number of tesseroids on the layer</p>
+<dt><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.size" title="harmonica.DatasetAccessorTesseroidLayer.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></dt><dd><p>Return the total number of tesseroids on the layer.</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">spacing</span></code></dt><dd><p>Spacing between center of tesseroids</p>
+<dt><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.spacing" title="harmonica.DatasetAccessorTesseroidLayer.spacing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spacing</span></code></a></dt><dd><p>Spacing between center of tesseroids.</p>
 </dd>
 </dl>
 </dd>
@@ -551,13 +566,13 @@ attributes of this class.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.get_tesseroid" title="harmonica.DatasetAccessorTesseroidLayer.get_tesseroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tesseroid</span></code></a>(indices)</p></td>
-<td><p>Return the boundaries of the chosen tesseroid</p></td>
+<td><p>Return the boundaries of the chosen tesseroid.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.gravity" title="harmonica.DatasetAccessorTesseroidLayer.gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gravity</span></code></a>(coordinates, field[, progressbar, ...])</p></td>
-<td><p>Computes the gravity generated by the layer of tesseroids</p></td>
+<td><p>Compute the gravity generated by the layer of tesseroids.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom" title="harmonica.DatasetAccessorTesseroidLayer.update_top_bottom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_top_bottom</span></code></a>(surface, reference)</p></td>
-<td><p>Update top and bottom boundaries of the layer</p></td>
+<td><p>Update top and bottom boundaries of the layer.</p></td>
 </tr>
 </tbody>
 </table>
@@ -567,18 +582,18 @@ attributes of this class.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.get_tesseroid">
 <span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">get_tesseroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/tesseroid_layer.html#DatasetAccessorTesseroidLayer.get_tesseroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.get_tesseroid" title="Link to this definition">#</a></dt>
-<dd><p>Return the boundaries of the chosen tesseroid</p>
+<dd><p>Return the boundaries of the chosen tesseroid.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>indices</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Indices of the desired tesseroid of the layer in the following
+<dt><strong>indices</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Indices of the desired tesseroid of the layer in the following
 order: <code class="docutils literal notranslate"><span class="pre">(index_northing,</span> <span class="pre">index_easting)</span></code>.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>tesseroid</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Boundaries of the prisms in the following order:
+<dt><strong>tesseroid</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Boundaries of the prisms in the following order:
 <code class="docutils literal notranslate"><span class="pre">longitude_w</span></code>, <code class="docutils literal notranslate"><span class="pre">longitude_e</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude_s</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude_n</span></code>,
 <code class="docutils literal notranslate"><span class="pre">bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>.</p>
 </dd>
@@ -590,33 +605,33 @@ order: <code class="docutils literal notranslate"><span class="pre">(index_north
 <dl class="py method">
 <dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.gravity">
 <span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'density'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/tesseroid_layer.html#DatasetAccessorTesseroidLayer.gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.gravity" title="Link to this definition">#</a></dt>
-<dd><p>Computes the gravity generated by the layer of tesseroids</p>
+<dd><p>Compute the gravity generated by the layer of tesseroids.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code> and
 <code class="docutils literal notranslate"><span class="pre">radius</span></code> coordinates of the computation points, defined on
 a spherical geocentric coordinate system. Both <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and
 <code class="docutils literal notranslate"><span class="pre">latitude</span></code> should be in degrees and <code class="docutils literal notranslate"><span class="pre">radius</span></code> in meters.</p>
 </dd>
-<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
+<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
 The variable fields are:
 - Gravitational potential: <code class="docutils literal notranslate"><span class="pre">potential</span></code>
 - Downward acceleration: <code class="docutils literal notranslate"><span class="pre">g_z</span></code></p>
 </dd>
-<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to
+<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to
 standard error (stderr). Requires <code class="xref py py-mod docutils literal notranslate"><span class="pre">numba_progress</span></code> to be
 installed. Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
-<dt><strong>density_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Name of the property layer (or <code class="docutils literal notranslate"><span class="pre">data_var</span></code> of the
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) that will be used for the density of each
+<dt><strong>density_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Name of the property layer (or <code class="docutils literal notranslate"><span class="pre">data_var</span></code> of the
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) that will be used for the density of each
 tesseroid in the layer. Default to <code class="docutils literal notranslate"><span class="pre">&quot;density&quot;</span></code></p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the tesseroid on the computation
+<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the tesseroid on the computation
 point. Gravitational potential will be returned in SI units, while
 acceleration components will be in mGal.</p>
 </dd>
@@ -634,7 +649,7 @@ acceleration components will be in mGal.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.update_top_bottom">
 <span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">update_top_bottom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/tesseroid_layer.html#DatasetAccessorTesseroidLayer.update_top_bottom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom" title="Link to this definition">#</a></dt>
-<dd><p>Update top and bottom boundaries of the layer</p>
+<dd><p>Update top and bottom boundaries of the layer.</p>
 <p>Change the values of the <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code> coordinates based on
 the passed <code class="docutils literal notranslate"><span class="pre">surface</span></code> and <code class="docutils literal notranslate"><span class="pre">reference</span></code>. The <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code>
 boundaries of every tesseroid will be equal to the corresponding
@@ -651,7 +666,7 @@ is below <code class="docutils literal notranslate"><span class="pre">reference<
 the <code class="docutils literal notranslate"><span class="pre">bottom</span></code> boundary of that tesseroid, while the <code class="docutils literal notranslate"><span class="pre">reference</span></code>
 value will be used to set the <code class="docutils literal notranslate"><span class="pre">top</span></code> boundary of the tesseroid.</p>
 </dd>
-<dt><strong>reference</strong><span class="classifier">2d-array or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Reference surface used to create the lowermost boundary of the
+<dt><strong>reference</strong><span class="classifier">2d-array or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Reference surface used to create the lowermost boundary of the
 tesseroid layer. It can be either a plane or an irregular surface
 passed as 2d array. Height(s) must be in meters.</p>
 </dd>
@@ -660,8 +675,80 @@ passed as 2d array. Height(s) must be in meters.</p>
 </dl>
 </dd></dl>
 
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.boundaries">
+<span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">boundaries</span></span><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.boundaries" title="Link to this definition">#</a></dt>
+<dd><p>Boundaries of the layer.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>boundaries</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Boundaries</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">the</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseroids</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">the</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">following</span></code> order:</dt><dd></dd>
+<dt><code class="docutils literal notranslate"><span class="pre">longitude_w</span></code>, <code class="docutils literal notranslate"><span class="pre">longitude_e</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude_s</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude_n</span></code></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.dims">
+<span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">dims</span></span><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.dims" title="Link to this definition">#</a></dt>
+<dd><p>Return the dims tuple of the prism layer.</p>
+<p>The tuple follows the xarray order: <code class="docutils literal notranslate"><span class="pre">&quot;latitude&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;longitude&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.shape">
+<span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.shape" title="Link to this definition">#</a></dt>
+<dd><p>Return the number of tesseroids on each directions.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>n_latitude</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of tesseroids on the latitude direction.</p>
+</dd>
+<dt><strong>n_longitude</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of tesserods on the longitude direction.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.size">
+<span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.size" title="Link to this definition">#</a></dt>
+<dd><p>Return the total number of tesseroids on the layer.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Total number of tesseroids in the layer.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.DatasetAccessorTesseroidLayer.spacing">
+<span class="sig-prename descclassname"><span class="pre">DatasetAccessorTesseroidLayer.</span></span><span class="sig-name descname"><span class="pre">spacing</span></span><a class="headerlink" href="#harmonica.DatasetAccessorTesseroidLayer.spacing" title="Link to this definition">#</a></dt>
+<dd><p>Spacing between center of tesseroids.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>s_latitude</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Spacing between center of the tesseroids on the latitude direction.</p>
+</dd>
+<dt><strong>s_longitude</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Spacing between center of the tesseroids on the longitude
+direction.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <hr class="docutils" />
 <div style='clear:both'></div></section>
+</section>
 
 
                 </article>
@@ -714,6 +801,14 @@ passed as 2d array. Height(s) must be in meters.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.update_top_bottom</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.boundaries"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.boundaries</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.dims"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.dims</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.shape"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.shape</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.size"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.DatasetAccessorTesseroidLayer.spacing"><code class="docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer.spacing</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -736,7 +831,7 @@ passed as 2d array. Height(s) must be in meters.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

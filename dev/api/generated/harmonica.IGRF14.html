@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    
+        <title>harmonica.IGRF14 | Harmonica dev</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/harmonica.IGRF14';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="harmonica.load_icgem_gdf" href="harmonica.load_icgem_gdf.html" />
+    <link rel="prev" title="harmonica.EulerDeconvolution" href="harmonica.EulerDeconvolution.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">harmonica.IGRF14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/edit/main/doc/api/generated/harmonica.IGRF14.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2Fapi/generated/harmonica.IGRF14.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/api/generated/harmonica.IGRF14.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>harmonica.IGRF14</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14"><code class="docutils literal notranslate"><span class="pre">IGRF14</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.grid"><code class="docutils literal notranslate"><span class="pre">IGRF14.grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.predict"><code class="docutils literal notranslate"><span class="pre">IGRF14.predict</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.coefficients"><code class="docutils literal notranslate"><span class="pre">IGRF14.coefficients</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.doi"><code class="docutils literal notranslate"><span class="pre">IGRF14.doi</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.file_name"><code class="docutils literal notranslate"><span class="pre">IGRF14.file_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.hash"><code class="docutils literal notranslate"><span class="pre">IGRF14.hash</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.reference_radius"><code class="docutils literal notranslate"><span class="pre">IGRF14.reference_radius</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="harmonica-igrf14">
+<h1>harmonica.IGRF14<a class="headerlink" href="#harmonica-igrf14" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="harmonica.IGRF14">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">IGRF14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ellipsoid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Ellipsoid(name='WGS84',</span> <span class="pre">semimajor_axis=6378137,</span> <span class="pre">flattening=0.0033528106647474805,</span> <span class="pre">geocentric_grav_const=398600441800000.0,</span> <span class="pre">angular_velocity=7.292115e-05,</span> <span class="pre">long_name='World</span> <span class="pre">Geodetic</span> <span class="pre">System</span> <span class="pre">(1984)',</span> <span class="pre">reference='Hofmann-Wellenhof,</span> <span class="pre">B.,</span> <span class="pre">&amp;</span> <span class="pre">Moritz,</span> <span class="pre">H.</span> <span class="pre">(2006).</span> <span class="pre">Physical</span> <span class="pre">Geodesy</span> <span class="pre">(2nd,</span> <span class="pre">corr.</span> <span class="pre">ed.</span> <span class="pre">2006</span> <span class="pre">edition</span> <span class="pre">ed.).</span> <span class="pre">Wien;</span> <span class="pre">New</span> <span class="pre">York:</span> <span class="pre">Springer.',</span> <span class="pre">comments=None)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_spherical_harmonics/igrf.html#IGRF14"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.IGRF14" title="Link to this definition">#</a></dt>
+<dd><p>International Geomagnetic Reference Field (14th generation).</p>
+<p>Calculate the three components of the magnetic field vector of the IGRF
+model in a geodetic (longitude, latitude, geometric height) system for any
+date between 1900 and 2030. Model coefficients are automatically downloaded
+and cached locally using <a class="reference external" href="https://www.fatiando.org/pooch/latest/api/index.html#module-pooch" title="(in Pooch vv1.9.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pooch</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The code is automatically parallelized (multithreaded shared-memory)
+with Numba. To evaluate the model on a regular grid, it’s <strong>at least 2x
+faster</strong> to use the <a class="reference internal" href="#harmonica.IGRF14.grid" title="harmonica.IGRF14.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method than the
+<a class="reference internal" href="#harmonica.IGRF14.predict" title="harmonica.IGRF14.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> method since the former is able to
+avoid repeat computations.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>date</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></span></dt><dd><p>The date and time at which to calculate the IGRF field. If it’s
+a string, should be an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 formatted date</a> and it will be converted
+into a Python <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>. Must be on or after 1900 and
+before 2030.</p>
+</dd>
+<dt><strong>min_degree</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The minimum degree used in the expansion. Default is 1 (magnetic fields
+don’t have the 0 degree term).</p>
+</dd>
+<dt><strong>max_degree</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The maximum degree used in the expansion. Default is 13.</p>
+</dd>
+<dt><strong>ellipsoid</strong><span class="classifier"><a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="(in Boule vv0.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boule.Ellipsoid</span></code></a></span></dt><dd><p>The ellipsoid used to convert geodetic to geocentric spherical
+coordinates and convert the magnetic field vector from a geocentric
+spherical to a geodetic system. Default is <code class="docutils literal notranslate"><span class="pre">boule.WGS84</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The IGRF is a spherical harmonic model of the Earth’s internal magnetic
+field. Its time variation is represented by piecewise linear functions. In
+practice, the model Gauss coefficients are provided in 5-year epochs and
+can be linearly interpolated between two epochs. For years later than the
+last epoch, the coefficients can be extrapolated linearly using the
+provided estimates of secular variation for each Gauss coefficient.</p>
+<p>The 3-component magnetic field vector in a geocentric spherical coordinate
+system (longitude, spherical colatitude, radius) system can be expressed in
+terms of spherical harmonics as:</p>
+<div class="math notranslate nohighlight">
+\[B_e(r, \theta, \lambda) = -\dfrac{1}{\sin\theta}
+\sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n}
+\left(\dfrac{R}{r}\right)^{n+2} [ -m g_n^m \sin m\lambda + m h_n^m \cos
+m\lambda ] P_n^m(\cos\theta)\]</div>
+<div class="math notranslate nohighlight">
+\[B_n(r, \theta, \lambda) = \sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n}
+\left(\dfrac{R}{r}\right)^{n+2} [ g_n^m \cos m\lambda + h_n^m \sin
+m\lambda ] \dfrac{\partial P_n^m(\cos\theta)}{\partial \theta}\]</div>
+<div class="math notranslate nohighlight">
+\[B_r(r, \theta, \lambda) = \sum\limits_{n=1}^{N}\sum\limits_{m=0}^{n} (n
++ 1)\left(\dfrac{R}{r}\right)^{n+2} [ g_n^m \cos m\lambda + h_n^m \sin
+m\lambda ] P_n^m(\cos\theta)\]</div>
+<p>in which <span class="math notranslate nohighlight">\(B_e\)</span> is the easting/longitudinal component, <span class="math notranslate nohighlight">\(B_n\)</span> is
+the northing/latitudinal component, <span class="math notranslate nohighlight">\(B_r\)</span> is the radial component,
+<span class="math notranslate nohighlight">\(r\)</span> is the radius coordinate, <span class="math notranslate nohighlight">\(\theta\)</span> is the colatitude,
+<span class="math notranslate nohighlight">\(\lambda\)</span> is the longitude, <span class="math notranslate nohighlight">\(n\)</span> is the degree, <span class="math notranslate nohighlight">\(m\)</span> is the
+order, <span class="math notranslate nohighlight">\(P_n^m\)</span> are <a class="reference external" href="https://en.wikipedia.org/wiki/Associated_Legendre_polynomials">associated Legendre functions</a>, and
+<span class="math notranslate nohighlight">\(g_n^m\)</span> and  <span class="math notranslate nohighlight">\(h_n^m\)</span> are the Gauss coefficients.</p>
+<p>The vector is converted to a geodetic system (longitude, latitude,
+height/upward) using the following rotation:</p>
+<div class="math notranslate nohighlight">
+\[B_{n}^{geodetic} = \cos(\varphi - \phi) B_n + \sin(\varphi - \phi) B_r\]</div>
+<div class="math notranslate nohighlight">
+\[B_{u} = -\sin(\varphi - \phi) B_n + \cos(\varphi - \phi) B_r\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\varphi\)</span> is the spherical latitude and <span class="math notranslate nohighlight">\(\phi\)</span> is the
+geodetic latitude.</p>
+<p class="rubric">References</p>
+<p><a class="reference internal" href="../../references.html#alken2021" id="id1"><span>[Alken2021]</span></a></p>
+<p><a class="reference internal" href="../../references.html#iaga2024" id="id2"><span>[IAGA2024]</span></a></p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>doi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The DOI used to download the coefficient file.</p>
+</dd>
+<dt><strong>file_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The name of the coefficient file in the online archive.</p>
+</dd>
+<dt><strong>hash</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The hash of the coefficient file, used to check download integrity.</p>
+</dd>
+<dt><strong>reference_radius</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>The reference radius used in the spherical harmonic expansion in
+meters.</p>
+</dd>
+<dt><strong>coefficients</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">g</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">h</span></code>)</span></dt><dd><p>The g and h Gauss coefficients interpolated to the given date. Each
+coefficient is a 2d-array with shape <code class="docutils literal notranslate"><span class="pre">(max_degree</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">max_degree</span>
+<span class="pre">+</span> <span class="pre">1)</span></code>. The degree n varies with rows and the order m varies with
+columns. The values where m &gt; n are set to zero.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#harmonica.IGRF14.grid" title="harmonica.IGRF14.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(region, height[, shape, spacing, adjust])</p></td>
+<td><p>Generate a grid of the IGRF magnetic field vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#harmonica.IGRF14.predict" title="harmonica.IGRF14.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(coordinates)</p></td>
+<td><p>Calculate the IGRF magnetic field vector at the given coordinates.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="harmonica.IGRF14.grid">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spacing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_spherical_harmonics/igrf.html#IGRF14.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.IGRF14.grid" title="Link to this definition">#</a></dt>
+<dd><p>Generate a grid of the IGRF magnetic field vector.</p>
+<p>Predict the magnetic field vector on a regular grid of geodetic
+coordinates. This is much faster than using
+<a class="reference internal" href="#harmonica.IGRF14.predict" title="harmonica.IGRF14.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> to predict on the same points because
+we are able to reduce repeated calculations when we know the data are
+on a regular grid.</p>
+<p>If neither a spacing nor a shape are given, will estimate the optimal
+grid spacing for the maximum degree used using the sampling theorem of
+<a class="reference internal" href="../../references.html#driscollhealy1994" id="id3"><span>[DriscollHealy1994]</span></a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>region</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">W</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">E</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">S</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">N</span></code>)</span></dt><dd><p>The boundaries of the grid in geographic coordinates. Should have
+a lower and an upper boundary for each dimension of the coordinate
+system. If region is not given, will use the bounding region of the
+given coordinates. Units are degrees.</p>
+</dd>
+<dt><strong>height</strong><span class="classifier">2d-array or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>The geometric height above the reference ellipsoid where the
+magnetic field will be calculated. Units are meters.</p>
+</dd>
+<dt><strong>shape</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">size_SN</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">size_WE</span></code>) <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The number of points in each direction of the given region, in reverse
+order. Must have one integer value per dimension of the region. The
+order of arguments is the opposite of the order of the region for
+compatibility with numpy’s <code class="docutils literal notranslate"><span class="pre">.shape</span></code> attribute. If None, <em>spacing</em>
+must be provided. Default is None.</p>
+</dd>
+<dt><strong>spacing</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">space_SN</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">space_WE</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The grid spacing in each direction of the given region, in reverse
+order. A single value means that the spacing is equal in all
+directions. If a tuple, must have one value per dimension of the
+region. The order of arguments is the opposite of the order of the
+region for compatibility with <em>shape</em>. If None, <em>shape</em> must be
+provided. Default is None. Units are degrees.</p>
+</dd>
+<dt><strong>adjust</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> = “spacing” or “region”</span></dt><dd><p>Whether to adjust the spacing or the region if the spacing is not
+a multiple of the region. Ignored if <em>shape</em> is given instead of
+<em>spacing</em>. Default is <code class="docutils literal notranslate"><span class="pre">&quot;spacing&quot;</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>A collection of the grids of the eastward (<code class="docutils literal notranslate"><span class="pre">b_east</span></code>), northward
+(<code class="docutils literal notranslate"><span class="pre">b_north</span></code>), and upward (<code class="docutils literal notranslate"><span class="pre">b_up</span></code>) components of the magnetic
+field. Each has dimensions of latitude and longitude and the height
+as a non-dimensional coordinate. Grid points are grid-line
+registered.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="harmonica.IGRF14.predict">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_spherical_harmonics/igrf.html#IGRF14.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.IGRF14.predict" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the IGRF magnetic field vector at the given coordinates.</p>
+<p>The field is evaluated using the given minimum and maximum degrees. The
+input coordinates are assumed to be in a geodetic coordinate system and
+are converted to geocentric spherical with the given ellipsoid. The
+output vector is rotated to the geodetic system with the horizontal
+components tangential to the ellipsoid and the upward component
+parallel to the ellipsoid normal.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code>)</span></dt><dd><p>Tuple of arrays with the longitude, latitude, and height
+coordinates of each point. Arrays can be Python lists or any
+numpy-compatible array type. Arrays can be of any shape but must
+all have the same shape. Longitude and latitude are in degrees and
+height in meters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>be, bn, bu</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>The eastward, northward, and upward magnetic field vector
+components calculated at each point. The arrays will have the same
+shape as the coordinate arrays. All are in nT.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.IGRF14.coefficients">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">coefficients</span></span><a class="headerlink" href="#harmonica.IGRF14.coefficients" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.IGRF14.doi">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">doi</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'10.5281/zenodo.14218973'</span></em><a class="headerlink" href="#harmonica.IGRF14.doi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.IGRF14.file_name">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">file_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'igrf14coeffs.txt'</span></em><a class="headerlink" href="#harmonica.IGRF14.file_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.IGRF14.hash">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">hash</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'md5:3606931c15c9234d9ba8e2e91b729cb0'</span></em><a class="headerlink" href="#harmonica.IGRF14.hash" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="harmonica.IGRF14.reference_radius">
+<span class="sig-prename descclassname"><span class="pre">IGRF14.</span></span><span class="sig-name descname"><span class="pre">reference_radius</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6371200.0</span></em><a class="headerlink" href="#harmonica.IGRF14.reference_radius" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<div style='clear:both'></div></section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="harmonica.EulerDeconvolution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">harmonica.EulerDeconvolution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="harmonica.load_icgem_gdf.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">harmonica.load_icgem_gdf</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14"><code class="docutils literal notranslate"><span class="pre">IGRF14</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.grid"><code class="docutils literal notranslate"><span class="pre">IGRF14.grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.predict"><code class="docutils literal notranslate"><span class="pre">IGRF14.predict</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.coefficients"><code class="docutils literal notranslate"><span class="pre">IGRF14.coefficients</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.doi"><code class="docutils literal notranslate"><span class="pre">IGRF14.doi</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.file_name"><code class="docutils literal notranslate"><span class="pre">IGRF14.file_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.hash"><code class="docutils literal notranslate"><span class="pre">IGRF14.hash</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.IGRF14.reference_radius"><code class="docutils literal notranslate"><span class="pre">IGRF14.reference_radius</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 26, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -440,12 +447,12 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Forward modelling for point masses</span>
+<span class="sd">Forward modelling for point masses.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">choclo.constants</span> <span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
-<span class="kn">from</span> <span class="nn">choclo.point</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">choclo.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">GRAVITATIONAL_CONST</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">choclo.point</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">gravity_e</span><span class="p">,</span>
     <span class="n">gravity_ee</span><span class="p">,</span>
     <span class="n">gravity_en</span><span class="p">,</span>
@@ -457,14 +464,14 @@ document.write(`
     <span class="n">gravity_u</span><span class="p">,</span>
     <span class="n">gravity_uu</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_coordinate_system</span><span class="p">,</span> <span class="n">distance_spherical_core</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_coordinate_system</span><span class="p">,</span> <span class="n">distance_spherical_core</span>
 
 
 <div class="viewcode-block" id="point_gravity">
 <a class="viewcode-back" href="../../../api/generated/harmonica.point_gravity.html#harmonica.point_gravity">[docs]</a>
-<span class="k">def</span> <span class="nf">point_gravity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_gravity</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">points</span><span class="p">,</span>
     <span class="n">masses</span><span class="p">,</span>
@@ -678,8 +685,8 @@ document.write(`
     <span class="c1"># Sanity checks</span>
     <span class="k">if</span> <span class="n">masses</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Number of elements in masses (</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">masses</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;mismatch the number of points (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of elements in masses (</span><span class="si">{</span><span class="n">masses</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">) &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;mismatch the number of points (</span><span class="si">{</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="p">)</span>
     <span class="c1"># Compute gravitational field</span>
     <span class="n">kernel</span> <span class="o">=</span> <span class="n">get_kernel</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
@@ -699,9 +706,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">parallel</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dispatcher</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">parallel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the appropriate forward model function</span>
+<span class="sd">    Return the appropriate forward model function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dispatchers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -716,9 +723,9 @@ document.write(`
     <span class="k">return</span> <span class="n">dispatchers</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">][</span><span class="n">parallel</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kernel</span><span class="p">(</span><span class="n">coordinate_system</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the appropriate kernel</span>
+<span class="sd">    Return the appropriate kernel.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">kernels</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -746,7 +753,8 @@ document.write(`
         <span class="p">},</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Gravitational field &#39;</span><span class="si">{}</span><span class="s2">&#39; not recognized&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Gravitational field &#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&#39; not recognized&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">kernel</span> <span class="o">=</span> <span class="n">kernels</span><span class="p">[</span><span class="n">coordinate_system</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">kernel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -759,11 +767,11 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">potential_spherical</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">potential_spherical</span><span class="p">(</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Kernel function for potential gravitational field in spherical coordinates</span>
+<span class="sd">    Kernel function for potential gravitational field in spherical coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">distance</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">distance_spherical_core</span><span class="p">(</span>
         <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
@@ -776,11 +784,11 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">gravity_u_spherical</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gravity_u_spherical</span><span class="p">(</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">cosphi</span><span class="p">,</span> <span class="n">sinphi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">cosphi_p</span><span class="p">,</span> <span class="n">sinphi_p</span><span class="p">,</span> <span class="n">radius_p</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Kernel for upward component of gravitational acceleration</span>
+<span class="sd">    Kernel for upward component of gravitational acceleration.</span>
 
 <span class="sd">    Use spherical coordinates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -791,7 +799,7 @@ document.write(`
     <span class="k">return</span> <span class="o">-</span><span class="n">GRAVITATIONAL_CONST</span> <span class="o">*</span> <span class="n">delta_z</span> <span class="o">/</span> <span class="n">distance</span><span class="o">**</span><span class="mi">3</span>
 
 
-<span class="k">def</span> <span class="nf">point_mass_cartesian</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_mass_cartesian</span><span class="p">(</span>
     <span class="n">easting</span><span class="p">,</span>
     <span class="n">northing</span><span class="p">,</span>
     <span class="n">upward</span><span class="p">,</span>
@@ -803,7 +811,7 @@ document.write(`
     <span class="n">forward_func</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute gravitational field of point masses in Cartesian coordinates</span>
+<span class="sd">    Compute gravitational field of point masses in Cartesian coordinates.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -822,24 +830,24 @@ document.write(`
 <span class="sd">        field on the computation points. It could be one of the forward</span>
 <span class="sd">        modelling functions in :mod:`choclo.point`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">out</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
-                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">masses</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">masses</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
             <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">point_mass_spherical</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_mass_spherical</span><span class="p">(</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">longitude_p</span><span class="p">,</span> <span class="n">latitude_p</span><span class="p">,</span> <span class="n">radius_p</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">kernel</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute gravitational field of point masses in spherical coordinates</span>
+<span class="sd">    Compute gravitational field of point masses in spherical coordinates.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -870,17 +878,17 @@ document.write(`
     <span class="n">cosphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
     <span class="n">sinphi_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude_p</span><span class="p">)</span>
     <span class="c1"># Compute gravitational field</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">longitude_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">out</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">masses</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">(</span>
-                <span class="n">longitude</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">cosphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">sinphi</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">radius</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">longitude_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">cosphi_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">sinphi_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">radius_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">longitude_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">masses</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">(</span>
+                <span class="n">longitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">cosphi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">sinphi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">radius</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">longitude_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">cosphi_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">sinphi_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">radius_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
             <span class="p">)</span>
 
 
@@ -925,7 +933,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

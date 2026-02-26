@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -229,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -253,23 +254,29 @@
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -514,8 +521,8 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="harmonica.filters.reduction_to_pole_kernel">
 <span class="sig-prename descclassname"><span class="pre">harmonica.filters.</span></span><span class="sig-name descname"><span class="pre">reduction_to_pole_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">declination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetization_inclination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetization_declination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/filters/_filters.html#reduction_to_pole_kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.filters.reduction_to_pole_kernel" title="Link to this definition">#</a></dt>
-<dd><p>Filter for reduction to the pole in frequency domain</p>
-<p>Return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with the values of the frequency domain
+<dd><p>Filter for reduction to the pole in the frequency domain.</p>
+<p>Return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with the values of the frequency domain
 filter for applying a reduction to the pole on magnetic data. The filter
 is built upon the frequency coordinates of the passed <code class="docutils literal notranslate"><span class="pre">fft_grid</span></code> and is
 defined as follows:</p>
@@ -526,47 +533,32 @@ defined as follows:</p>
 \[\Theta_m = m_z + i \frac{m_e k_e + m_n k_n}{|\mathbf{k}|}\]</div>
 <div class="math notranslate nohighlight">
 \[\Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\hat{\mathbf{f}} = (f_e, f_n, f_z)\)</span> is a unit vector parallel
+<p>where <span class="math notranslate nohighlight">\(\mathbf{k} = (k_e, k_n)\)</span> is the wavenumber vector,
+<span class="math notranslate nohighlight">\(\hat{\mathbf{f}} = (f_e, f_n, f_z)\)</span> is a unit vector parallel
 to the geomagnetic field and <span class="math notranslate nohighlight">\(\hat{\mathbf{m}} = (m_e, m_n, m_z)\)</span>
 is a unit vector parallel to the magnetization vector of the source. The
 <span class="math notranslate nohighlight">\(f_e\)</span>, <span class="math notranslate nohighlight">\(f_n\)</span>, <span class="math notranslate nohighlight">\(m_e\)</span>, <span class="math notranslate nohighlight">\(m_n\)</span> are the easting and
 northing components while the <span class="math notranslate nohighlight">\(f_z\)</span> and <span class="math notranslate nohighlight">\(m_z\)</span> are the
-<strong>downward</strong> coordinates.
-Each of these components can be obtained from the inclination and
-declination angles of the geomagnetic field (<span class="math notranslate nohighlight">\(I\)</span> and <span class="math notranslate nohighlight">\(D\)</span>,
-respectively) and for the magnetization vector (<span class="math notranslate nohighlight">\(I_m\)</span> and
-<span class="math notranslate nohighlight">\(D_m\)</span>, respectively):</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{cases}
-    f_e = \sin D \cos I \\
-    f_n = \cos D \cos I \\
-    f_u = \sin I
-\end{cases}\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{cases}
-    m_e = \sin D_m \cos I_m \\
-    m_n = \cos D_m \cos I_m \\
-    m_u = \sin I_m
-\end{cases}\end{split}\]</div>
+<strong>downward</strong> components.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>fft_grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Array with the Fourier transform of the original grid.
+<dt><strong>fft_grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Array with the Fourier transform of the original grid.
 Its dimensions should be in the following order:
 <em>freq_northing</em>, <em>freq_easting</em>.
 Use <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.fft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.fft</span></code></a> and <a class="reference external" href="https://xrft.readthedocs.io/en/stable/api.html#xrft.xrft.ifft" title="(in xrft v0.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xrft.xrft.ifft</span></code></a> functions to
 compute the Fourier Transform and its inverse, respectively.</p>
 </dd>
-<dt><strong>inclination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The inclination of the inducing Geomagnetic field.</p>
+<dt><strong>inclination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The inclination of the inducing Geomagnetic field.</p>
 </dd>
-<dt><strong>declination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The declination of the inducing Geomagnetic field.</p>
+<dt><strong>declination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The declination of the inducing Geomagnetic field.</p>
 </dd>
-<dt><strong>magnetization_inclination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The inclination of the total magnetization of the anomaly source. If
+<dt><strong>magnetization_inclination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The inclination of the total magnetization of the anomaly source. If
 None, the <code class="docutils literal notranslate"><span class="pre">magnetization_inclination</span></code> will be set equal to the
 <code class="docutils literal notranslate"><span class="pre">inclination</span></code>, neglecting remanent magnetization and self
 demagnetization. Default None.</p>
 </dd>
-<dt><strong>magnetization_declination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The declination of the total magnetization of the anomaly source. If
+<dt><strong>magnetization_declination</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">in</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">degrees</span></code></span></dt><dd><p>The declination of the total magnetization of the anomaly source. If
 None, the <code class="docutils literal notranslate"><span class="pre">magnetization_declination</span></code> will be set equal to the
 <code class="docutils literal notranslate"><span class="pre">declination</span></code>, neglecting remanent magnetization and self
 demagnetization. Default None.</p>
@@ -575,7 +567,7 @@ demagnetization. Default None.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>da_filter</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Array with the kernel for the reduction to the pole filter in frequency
+<dt><strong>da_filter</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>Array with the kernel for the reduction to the pole filter in frequency
 domain.</p>
 </dd>
 </dl>
@@ -661,7 +653,7 @@ domain.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

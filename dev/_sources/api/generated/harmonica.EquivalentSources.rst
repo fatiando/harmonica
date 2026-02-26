@@ -69,6 +69,27 @@ harmonica.EquivalentSources
 
 
 
+
+
+Attributes
+----------
+
+
+
+.. autoattribute:: EquivalentSources.data_names_defaults
+
+
+
+.. autoattribute:: EquivalentSources.dims
+
+
+
+.. autoattribute:: EquivalentSources.extra_coords_name
+
+
+
+
+
 ----
 
 .. include:: backreferences/harmonica.EquivalentSources.examples

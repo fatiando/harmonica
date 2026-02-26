@@ -21,7 +21,7 @@
 Tilt of a regular grid
 ======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-137
+.. GENERATED FROM PYTHON SOURCE LINES 11-138
 
 
 
@@ -35,6 +35,14 @@ Tilt of a regular grid
 
  .. code-block:: none
 
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/harmonica/filters/_fft.py:48: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      grid = grid.drop(bad_coords)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:455: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      daft = daft.drop([d for d in dim if d in daft.coords])
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:573: FutureWarning: Default ifft's behaviour (lag=None) changed! Default value of lag was zero (centered output coordinates) and is now set to transformed coordinate's attribute: 'direct_lag'.
+      warnings.warn(msg, FutureWarning)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:671: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      da = da.drop([d for d in dim if d in da.coords])
 
     Tilt:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
@@ -50,10 +58,26 @@ Tilt of a regular grid
            [-1.08740577, -1.34292621, -1.3185706 , ...,  0.24911404,
              0.65291946,  1.37433697],
            [-1.11194247, -1.03333203, -1.04572183, ..., -0.19281687,
-             0.64110985,  1.23484722]])
+             0.64110985,  1.23484722]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/harmonica/filters/_fft.py:48: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      grid = grid.drop(bad_coords)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:455: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      daft = daft.drop([d for d in dim if d in daft.coords])
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:573: FutureWarning: Default ifft's behaviour (lag=None) changed! Default value of lag was zero (centered output coordinates) and is now set to transformed coordinate's attribute: 'direct_lag'.
+      warnings.warn(msg, FutureWarning)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:671: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      da = da.drop([d for d in dim if d in da.coords])
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/harmonica/filters/_fft.py:48: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      grid = grid.drop(bad_coords)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:455: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      daft = daft.drop([d for d in dim if d in daft.coords])
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:573: FutureWarning: Default ifft's behaviour (lag=None) changed! Default value of lag was zero (centered output coordinates) and is now set to transformed coordinate's attribute: 'direct_lag'.
+      warnings.warn(msg, FutureWarning)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:671: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      da = da.drop([d for d in dim if d in da.coords])
 
     Tilt from RTP:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
@@ -69,10 +93,10 @@ Tilt of a regular grid
            [-1.21908118, -0.54733936, -0.90922684, ...,  0.17107842,
              0.80343702,  1.21308321],
            [-0.4247845 ,  0.72898686,  0.59961164, ...,  1.04173936,
-            -0.14524941,  0.66491492]])
+            -0.14524941,  0.66491492]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
 
 
 
@@ -82,6 +106,7 @@ Tilt of a regular grid
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -213,7 +238,7 @@ Tilt of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.096 seconds)
+   **Total running time of the script:** (0 minutes 1.135 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tilt.py:

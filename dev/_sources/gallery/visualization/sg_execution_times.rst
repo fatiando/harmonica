@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:22.229** total execution time for 1 file **from gallery/visualization**:
+**03:45.913** total execution time for 1 file **from gallery/visualization**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_visualization_prism_layer_pyvista.py` (``prism_layer_pyvista.py``)
-     - 02:22.229
+     - 03:45.913
      - 0.0

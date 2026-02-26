@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
@@ -229,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -253,23 +254,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
@@ -535,13 +542,13 @@ centrifugal potential <span class="math notranslate nohighlight">\(\Phi\)</span>
 gravity and the definition of its gravity and gravitational potentials.</p>
 </div>
 <p>We can compute the normal gravity generated by any ellipsoid through the
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and then use it
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.5.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.5.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and then use it
 to compute gravity disturbances.</p>
 <p>Lets start by loading a sample gravity dataset for the whole Earth:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ensaio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="n">fname</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_earth_gravity</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">gravity</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataarray</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -563,10 +570,10 @@ array([[980106.525, 980106.525, 980106.525, ..., 980106.525, 980106.525,
        [980160.425, 980160.425, 980160.425, ..., 980160.425, 980160.425,
         980160.425],
        [980157.525, 980157.525, 980157.525, ..., 980157.525, 980157.525,
-        980157.525]])
+        980157.525]], shape=(1081, 2161))
 Coordinates:
-  * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
   * latitude   (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
+  * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
     height     (latitude, longitude) float32 9MB 1e+04 1e+04 ... 1e+04 1e+04
 Attributes:
     Conventions:     CF-1.8
@@ -593,7 +600,7 @@ Lets plot it:</p>
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
@@ -616,15 +623,15 @@ Lets plot it:</p>
 <img alt="../_images/gravity_disturbance_2_0.png" src="../_images/gravity_disturbance_2_0.png" />
 </div>
 </div>
-<p>We can then get the WGS84 ellipsoid defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and use the
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> to compute the normal gravity (the
+<p>We can then get the WGS84 ellipsoid defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.5.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and use the
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity" title="(in Boule vv0.5.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.normal_gravity</span></code></a> to compute the normal gravity (the
 gravity acceleration generated by the ellipsoid) on every observation point.
 This method implements the closed-form formula of <a class="reference internal" href="../references.html#ligotze2001" id="id3"><span>[LiGotze2001]</span></a>, which
 calculates the normal gravity at any latitude and (geometric) height through an
 analytic solution.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
 
 <span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
 <span class="n">normal_gravity</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">normal_gravity</span><span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">gravity</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
@@ -655,7 +662,7 @@ analytic solution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/gravity_disturbance_4_2.png" src="../_images/gravity_disturbance_4_2.png" />
+<img alt="../_images/gravity_disturbance_4_0.png" src="../_images/gravity_disturbance_4_0.png" />
 </div>
 </div>
 <p>Now we can compute the gravity disturbance:</p>
@@ -680,11 +687,20 @@ array([[-35.81009235, -35.81009235, -35.81009235, ..., -35.81009235,
        [ 18.13402106,  18.13402106,  18.13402106, ...,  18.13402106,
          18.13402106,  18.13402106],
        [ 15.18990765,  15.18990765,  15.18990765, ...,  15.18990765,
-         15.18990765,  15.18990765]])
+         15.18990765,  15.18990765]], shape=(1081, 2161))
 Coordinates:
-  * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
   * latitude   (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
+  * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
     height     (latitude, longitude) float32 9MB 1e+04 1e+04 ... 1e+04 1e+04
+Attributes:
+    Conventions:     CF-1.8
+    title:           Gravity acceleration (EIGEN-6C4) at a constant geometric...
+    crs:             WGS84
+    source:          Generated from the EIGEN-6C4 model by the ICGEM Calculat...
+    license:         Creative Commons Attribution 4.0 International Licence
+    references:      https://doi.org/10.5880/icgem.2015.1
+    icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
+    standard_name:   latitude
 </pre></div>
 </div>
 </div>
@@ -692,7 +708,7 @@ Coordinates:
 <p>And plot it:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
 
 <span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">gravity_disturbance</span><span class="p">)</span>
 
@@ -715,7 +731,7 @@ Coordinates:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/gravity_disturbance_6_2.png" src="../_images/gravity_disturbance_6_2.png" />
+<img alt="../_images/gravity_disturbance_6_0.png" src="../_images/gravity_disturbance_6_0.png" />
 </div>
 </div>
 <p>The gravity disturbances can be interpreted as the gravitational effect of
@@ -796,7 +812,7 @@ every <em>anomalous mass</em>, i.e. that is not contained in the <em>normal Eart
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

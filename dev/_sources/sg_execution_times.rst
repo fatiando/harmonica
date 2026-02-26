@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**04:09.035** total execution time for 19 files **from all galleries**:
+**05:20.224** total execution time for 19 files **from all galleries**:
 
 .. container::
 
@@ -32,60 +32,60 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_visualization_prism_layer_pyvista.py` (``../examples/visualization/prism_layer_pyvista.py``)
-     - 02:22.229
+   * - :ref:`sphx_glr_gallery_visualization_prism_layer_pyvista.py` (``gallery_src/visualization/prism_layer_pyvista.py``)
+     - 03:45.913
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``../examples/forward/prisms_topo_gravity.py``)
-     - 00:32.442
+   * - :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``gallery_src/forward/prisms_topo_gravity.py``)
+     - 00:29.885
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_tesseroid_layer.py` (``../examples/forward/tesseroid_layer.py``)
-     - 00:25.108
+   * - :ref:`sphx_glr_gallery_forward_tesseroid_layer.py` (``gallery_src/forward/tesseroid_layer.py``)
+     - 00:24.102
      - 0.0
-   * - :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``../examples/equivalent_sources/cartesian.py``)
-     - 00:07.180
+   * - :ref:`sphx_glr_gallery_equivalent_sources_cartesian.py` (``gallery_src/equivalent_sources/cartesian.py``)
+     - 00:07.240
      - 0.0
-   * - :ref:`sphx_glr_gallery_gravity_disturbance_topofree.py` (``../examples/gravity_disturbance_topofree.py``)
-     - 00:06.675
+   * - :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py` (``gallery_src/equivalent_sources/gradient_boosted.py``)
+     - 00:07.126
      - 0.0
-   * - :ref:`sphx_glr_gallery_equivalent_sources_gradient_boosted.py` (``../examples/equivalent_sources/gradient_boosted.py``)
-     - 00:05.885
+   * - :ref:`sphx_glr_gallery_forward_tesseroid.py` (``gallery_src/forward/tesseroid.py``)
+     - 00:04.694
      - 0.0
-   * - :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py` (``../examples/equivalent_sources/block_averaged_sources.py``)
-     - 00:05.428
+   * - :ref:`sphx_glr_gallery_equivalent_sources_block_averaged_sources.py` (``gallery_src/equivalent_sources/block_averaged_sources.py``)
+     - 00:04.464
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_tesseroid.py` (``../examples/forward/tesseroid.py``)
-     - 00:04.593
+   * - :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``gallery_src/equivalent_sources/spherical.py``)
+     - 00:03.182
      - 0.0
-   * - :ref:`sphx_glr_gallery_gravity_disturbance.py` (``../examples/gravity_disturbance.py``)
-     - 00:04.411
+   * - :ref:`sphx_glr_gallery_gravity_disturbance_topofree.py` (``gallery_src/gravity_disturbance_topofree.py``)
+     - 00:02.455
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``../examples/forward/tesseroid_variable_density.py``)
-     - 00:03.382
+   * - :ref:`sphx_glr_gallery_forward_point_gravity.py` (``gallery_src/forward/point_gravity.py``)
+     - 00:02.217
      - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py` (``../examples/transformations/reduction_to_pole.py``)
-     - 00:02.623
+   * - :ref:`sphx_glr_gallery_gravity_disturbance.py` (``gallery_src/gravity_disturbance.py``)
+     - 00:02.122
      - 0.0
-   * - :ref:`sphx_glr_gallery_equivalent_sources_spherical.py` (``../examples/equivalent_sources/spherical.py``)
-     - 00:02.532
+   * - :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``gallery_src/forward/tesseroid_variable_density.py``)
+     - 00:02.079
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_point_gravity.py` (``../examples/forward/point_gravity.py``)
-     - 00:02.337
+   * - :ref:`sphx_glr_gallery_forward_prism_layer.py` (``gallery_src/forward/prism_layer.py``)
+     - 00:01.387
      - 0.0
-   * - :ref:`sphx_glr_gallery_forward_prism_layer.py` (``../examples/forward/prism_layer.py``)
-     - 00:01.503
+   * - :ref:`sphx_glr_gallery_transformations_tilt.py` (``gallery_src/transformations/tilt.py``)
+     - 00:01.135
      - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_tilt.py` (``../examples/transformations/tilt.py``)
-     - 00:01.096
+   * - :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py` (``gallery_src/transformations/reduction_to_pole.py``)
+     - 00:00.565
      - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_tga.py` (``../examples/transformations/tga.py``)
-     - 00:00.414
+   * - :ref:`sphx_glr_gallery_transformations_upward_derivative.py` (``gallery_src/transformations/upward_derivative.py``)
+     - 00:00.433
      - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_upward_derivative.py` (``../examples/transformations/upward_derivative.py``)
+   * - :ref:`sphx_glr_gallery_transformations_tga.py` (``gallery_src/transformations/tga.py``)
+     - 00:00.420
+     - 0.0
+   * - :ref:`sphx_glr_gallery_isostatic_moho_airy.py` (``gallery_src/isostatic_moho_airy.py``)
      - 00:00.408
      - 0.0
-   * - :ref:`sphx_glr_gallery_isostatic_moho_airy.py` (``../examples/isostatic_moho_airy.py``)
-     - 00:00.401
-     - 0.0
-   * - :ref:`sphx_glr_gallery_transformations_upward_continuation.py` (``../examples/transformations/upward_continuation.py``)
-     - 00:00.386
+   * - :ref:`sphx_glr_gallery_transformations_upward_continuation.py` (``gallery_src/transformations/upward_continuation.py``)
+     - 00:00.395
      - 0.0

@@ -21,7 +21,7 @@
 Layer of tesseroids
 ===================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-68
+.. GENERATED FROM PYTHON SOURCE LINES 11-69
 
 
 
@@ -35,6 +35,7 @@ Layer of tesseroids
 
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -97,7 +98,7 @@ Layer of tesseroids
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 25.108 seconds)
+   **Total running time of the script:** (0 minutes 24.102 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_tesseroid_layer.py:

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:09.366** total execution time for 6 files **from gallery/forward**:
+**01:04.365** total execution time for 6 files **from gallery/forward**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_forward_prisms_topo_gravity.py` (``prisms_topo_gravity.py``)
-     - 00:32.442
+     - 00:29.885
      - 0.0
    * - :ref:`sphx_glr_gallery_forward_tesseroid_layer.py` (``tesseroid_layer.py``)
-     - 00:25.108
+     - 00:24.102
      - 0.0
    * - :ref:`sphx_glr_gallery_forward_tesseroid.py` (``tesseroid.py``)
-     - 00:04.593
-     - 0.0
-   * - :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``)
-     - 00:03.382
+     - 00:04.694
      - 0.0
    * - :ref:`sphx_glr_gallery_forward_point_gravity.py` (``point_gravity.py``)
-     - 00:02.337
+     - 00:02.217
+     - 0.0
+   * - :ref:`sphx_glr_gallery_forward_tesseroid_variable_density.py` (``tesseroid_variable_density.py``)
+     - 00:02.079
      - 0.0
    * - :ref:`sphx_glr_gallery_forward_prism_layer.py` (``prism_layer.py``)
-     - 00:01.503
+     - 00:01.387
      - 0.0

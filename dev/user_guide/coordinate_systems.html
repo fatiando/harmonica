@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
@@ -229,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -253,23 +254,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Harmonica</a></li>
@@ -537,7 +544,7 @@ the <em>easting</em>, <em>northing</em> and <em>upward</em> coordinates are give
 height:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
 
 <span class="c1"># Define boundaries of the rectangular prism (in meters)</span>
 <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span>
@@ -671,14 +678,14 @@ height: [[2000. 2000. 2000. 2000. 2000. 2000.]
 </div>
 </div>
 <p>Some processes need to know the reference ellipsoid used to define the
-geodetic coordinates of points. <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> offers several ellipsoids that
+geodetic coordinates of points. <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.5.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> offers several ellipsoids that
 are commonly used on geophysical applications. Harmonica will ask for
-a <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="(in Boule vv0.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boule.Ellipsoid</span></code></a> instance as argument if it needs the reference
+a <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="(in Boule vv0.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boule.Ellipsoid</span></code></a> instance as argument if it needs the reference
 ellipsoid.</p>
-<p>Lets define the WGS84 ellipsoide using <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>:</p>
+<p>Lets define the WGS84 ellipsoide using <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.5.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
 
 <span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ellipsoid</span><span class="p">)</span>
@@ -686,7 +693,15 @@ ellipsoid.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Ellipsoid(name=&#39;WGS84&#39;, semimajor_axis=6378137, flattening=0.0033528106647474805, geocentric_grav_const=398600441800000.0, angular_velocity=7.292115e-05, long_name=&#39;World Geodetic System 1984&#39;, reference=&#39;Hofmann-Wellenhof, B., &amp; Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien\u202f; New York: Springer.&#39;)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>WGS84 - World Geodetic System (1984)
+Oblate ellipsoid:
+  • Semimajor axis: 6378137 m
+  • Flattening: 0.0033528106647474805
+  • GM: 398600441800000.0 m³/s²
+  • Angular velocity: 7.292115e-05 rad/s
+Source:
+  Hofmann-Wellenhof, B., &amp; Moritz, H. (2006). Physical Geodesy (2nd,
+    corr. ed. 2006 edition ed.). Wien; New York: Springer.
 </pre></div>
 </div>
 </div>
@@ -698,7 +713,7 @@ map <strong>projections</strong>. This can be done through <code class="xref py 
 previously generated grid using a Mercator projection:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
 
 <span class="c1"># Define a Mercator projection through pyproj</span>
 <span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">ellps</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">)</span>
@@ -808,24 +823,24 @@ spherical latitude: [[-35. -35. -35. -35. -35. -35.]
  [-32. -32. -32. -32. -32. -32.]
  [-31. -31. -31. -31. -31. -31.]
  [-30. -30. -30. -30. -30. -30.]]
-radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]]
+radius: [[6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]]
 </pre></div>
 </div>
 </div>
 </div>
 <p>We can convert spherical coordinates to geodetic ones through
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.spherical_to_geodetic" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.spherical_to_geodetic</span></code></a>:</p>
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.spherical_to_geodetic" title="(in Boule vv0.5.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.spherical_to_geodetic</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates_geodetic</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">spherical_to_geodetic</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)</span>
@@ -843,36 +858,36 @@ radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
  [-70. -69. -68. -67. -66. -65.]
  [-70. -69. -68. -67. -66. -65.]
  [-70. -69. -68. -67. -66. -65.]]
-latitude: [[-35.18102866 -35.18102866 -35.18102866 -35.18102866 -35.18102866
-  -35.18102866]
- [-34.17864829 -34.17864829 -34.17864829 -34.17864829 -34.17864829
-  -34.17864829]
- [-33.17604904 -33.17604904 -33.17604904 -33.17604904 -33.17604904
-  -33.17604904]
- [-32.17323399 -32.17323399 -32.17323399 -32.17323399 -32.17323399
-  -32.17323399]
- [-31.17020649 -31.17020649 -31.17020649 -31.17020649 -31.17020649
-  -31.17020649]
- [-30.16697016 -30.16697016 -30.16697016 -30.16697016 -30.16697016
-  -30.16697016]]
-height: [[  -69.07752705   -69.07752705   -69.07752705   -69.07752705
-    -69.07752705   -69.07752705]
- [ -418.12875198  -418.12875198  -418.12875198  -418.12875198
-   -418.12875198  -418.12875198]
- [ -762.34749847  -762.34749847  -762.34749847  -762.34749847
-   -762.34749847  -762.34749847]
- [-1101.31193327 -1101.31193327 -1101.31193327 -1101.31193327
-  -1101.31193327 -1101.31193327]
- [-1434.60646097 -1434.60646097 -1434.60646097 -1434.60646097
-  -1434.60646097 -1434.60646097]
- [-1761.8222431  -1761.8222431  -1761.8222431  -1761.8222431
-  -1761.8222431  -1761.8222431 ]]
+latitude: [[-35.18102907 -35.18102907 -35.18102907 -35.18102907 -35.18102907
+  -35.18102907]
+ [-34.17864869 -34.17864869 -34.17864869 -34.17864869 -34.17864869
+  -34.17864869]
+ [-33.17604943 -33.17604943 -33.17604943 -33.17604943 -33.17604943
+  -33.17604943]
+ [-32.17323438 -32.17323438 -32.17323438 -32.17323438 -32.17323438
+  -32.17323438]
+ [-31.17020688 -31.17020688 -31.17020688 -31.17020688 -31.17020688
+  -31.17020688]
+ [-30.16697054 -30.16697054 -30.16697054 -30.16697054 -30.16697054
+  -30.16697054]]
+height: [[  -83.44704281   -83.44704281   -83.44704281   -83.44704281
+    -83.44704281   -83.44704281]
+ [ -432.49826962  -432.49826962  -432.49826962  -432.49826962
+   -432.49826962  -432.49826962]
+ [ -776.71701812  -776.71701812  -776.71701812  -776.71701812
+   -776.71701812  -776.71701812]
+ [-1115.68145507 -1115.68145507 -1115.68145507 -1115.68145507
+  -1115.68145507 -1115.68145507]
+ [-1448.97598505 -1448.97598505 -1448.97598505 -1448.97598505
+  -1448.97598505 -1448.97598505]
+ [-1776.19176956 -1776.19176956 -1776.19176956 -1776.19176956
+  -1776.19176956 -1776.19176956]]
 </pre></div>
 </div>
 </div>
 </div>
 <p>While the conversion of spherical coordinates into geodetic ones can be
-carried out through <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geodetic_to_spherical" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geodetic_to_spherical</span></code></a>:</p>
+carried out through <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geodetic_to_spherical" title="(in Boule vv0.5.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geodetic_to_spherical</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates_spherical</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geodetic_to_spherical</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates_geodetic</span><span class="p">)</span>
@@ -896,18 +911,18 @@ spherical latitude: [[-35. -35. -35. -35. -35. -35.]
  [-32. -32. -32. -32. -32. -32.]
  [-31. -31. -31. -31. -31. -31.]
  [-30. -30. -30. -30. -30. -30.]]
-radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]
- [6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
-  6371008.77141506 6371008.77141506]]
+radius: [[6370994.40182757 6370994.40182757 6370994.40182757 6370994.40182757
+  6370994.40182757 6370994.40182757]
+ [6370994.40182757 6370994.40182757 6370994.40182757 6370994.40182757
+  6370994.40182757 6370994.40182757]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182757 6370994.40182757 6370994.40182757 6370994.40182757
+  6370994.40182757 6370994.40182757]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]
+ [6370994.40182758 6370994.40182758 6370994.40182758 6370994.40182758
+  6370994.40182758 6370994.40182758]]
 </pre></div>
 </div>
 </div>
@@ -1006,7 +1021,7 @@ radius: [[6371008.77141506 6371008.77141506 6371008.77141506 6371008.77141506
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

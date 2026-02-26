@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -440,24 +447,25 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Gradient-boosted equivalent sources in Cartesian coordinates</span>
+<span class="sd">Gradient-boosted equivalent sources in Cartesian coordinates.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">rolling_window</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">.cartesian</span> <span class="kn">import</span> <span class="n">EquivalentSources</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cast_fit_input</span><span class="p">,</span> <span class="n">predict_numba_parallel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde.base</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vdb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">rolling_window</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cartesian</span><span class="w"> </span><span class="kn">import</span> <span class="n">EquivalentSources</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast_fit_input</span><span class="p">,</span> <span class="n">predict_numba_parallel</span>
 
 
 <div class="viewcode-block" id="EquivalentSourcesGB">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB">[docs]</a>
-<span class="k">class</span> <span class="nc">EquivalentSourcesGB</span><span class="p">(</span><span class="n">EquivalentSources</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EquivalentSourcesGB</span><span class="p">(</span><span class="n">EquivalentSources</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gradient-boosted equivalent sources for generic harmonic functions.</span>
 
@@ -547,7 +555,7 @@ document.write(`
     <span class="c1"># Define amount of overlapping between adjacent windows to 50%.</span>
     <span class="n">overlapping</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -559,10 +567,11 @@ document.write(`
         <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window_size</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">window_size</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Found invalid &#39;window_size&#39; value equal to &#39;</span><span class="si">{</span><span class="n">window_size</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
                 <span class="s2">&quot;It should be &#39;default&#39; or a numeric value.&quot;</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span>
@@ -576,9 +585,9 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesGB.estimate_required_memory">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">[docs]</a>
-    <span class="k">def</span> <span class="nf">estimate_required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Estimate the memory required for storing the largest Jacobian matrix</span>
+<span class="sd">        Estimate the memory required for storing the largest Jacobian matrix.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -596,7 +605,6 @@ document.write(`
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-
 <span class="sd">        &gt;&gt;&gt; import verde as vd</span>
 <span class="sd">        &gt;&gt;&gt; coordinates = vd.scatter_points(</span>
 <span class="sd">        ...     region=(-1e3, 3e3, 2e3, 5e3),</span>
@@ -626,7 +634,7 @@ document.write(`
 
 <div class="viewcode-block" id="EquivalentSourcesGB.fit">
 <a class="viewcode-back" href="../../../api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the coefficients of the equivalent sources.</span>
 
@@ -663,9 +671,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="c1"># Ravel coordinates, data and weights to 1d-arrays</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
         <span class="c1"># Build point sources</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points_</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
@@ -683,9 +691,9 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_gradient_boosting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gradient_boosting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit source coefficients through gradient boosting</span>
+<span class="sd">        Fit source coefficients through gradient boosting.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create rolling windows</span>
         <span class="n">point_windows</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_windows</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
@@ -734,9 +742,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">coefs_</span><span class="p">[</span><span class="n">point_window</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coeffs_chunk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rmse_per_iteration_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_create_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create indices of sources and data points for each overlapping window</span>
+<span class="sd">        Create indices of sources and data points for each overlapping window.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -762,7 +770,6 @@ document.write(`
 <span class="sd">            shuffled if ``shuffle_windows`` is True, although the order of the</span>
 <span class="sd">            windows is the same as the one in ``source_windows_nonempty``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Get the region that contains every data point and every source</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">)</span>
         <span class="c1"># Calculate the window size such that there are approximately 5000 data</span>
@@ -793,7 +800,11 @@ document.write(`
         <span class="c1"># one for the sources and one for the data points.</span>
         <span class="c1"># We pass the same region, size and spacing to be sure that both set of</span>
         <span class="c1"># windows are the same.</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window_size_</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">window_spacing</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="n">region</span><span class="p">,</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size_</span><span class="p">,</span>
+            <span class="s2">&quot;spacing&quot;</span><span class="p">:</span> <span class="n">window_spacing</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">source_windows</span> <span class="o">=</span> <span class="n">rolling_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">data_windows</span> <span class="o">=</span> <span class="n">rolling_window</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Ravel the indices</span>
@@ -807,7 +818,7 @@ document.write(`
         <span class="c1"># Remove empty windows</span>
         <span class="n">source_windows_nonempty</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">data_windows_nonempty</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_windows</span><span class="p">,</span> <span class="n">data_windows</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">source_windows_nonempty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
                 <span class="n">data_windows_nonempty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -815,9 +826,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_region_data_sources</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the region that contains every observation and every source</span>
+<span class="sd">    Return the region that contains every observation and every source.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -873,7 +884,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

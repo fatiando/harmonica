@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -440,15 +447,16 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Forward modelling for magnetic fields of dipoles</span>
+<span class="sd">Forward modelling for magnetic fields of dipoles.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">prod</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">choclo.dipole</span> <span class="kn">import</span> <span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_field</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">,</span> <span class="n">magnetic_u</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">prod</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">initialize_progressbar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">choclo.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">magnetic_e</span><span class="p">,</span> <span class="n">magnetic_field</span><span class="p">,</span> <span class="n">magnetic_n</span><span class="p">,</span> <span class="n">magnetic_u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize_progressbar</span>
 
 <span class="n">VALID_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b_e&quot;</span><span class="p">,</span> <span class="s2">&quot;b_n&quot;</span><span class="p">,</span> <span class="s2">&quot;b_u&quot;</span><span class="p">)</span>
 <span class="n">FORWARD_FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span>
@@ -460,7 +468,7 @@ document.write(`
 
 <div class="viewcode-block" id="dipole_magnetic">
 <a class="viewcode-back" href="../../../api/generated/harmonica.dipole_magnetic.html#harmonica.dipole_magnetic">[docs]</a>
-<span class="k">def</span> <span class="nf">dipole_magnetic</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dipole_magnetic</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">dipoles</span><span class="p">,</span>
     <span class="n">magnetic_moments</span><span class="p">,</span>
@@ -471,7 +479,7 @@ document.write(`
     <span class="n">disable_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Magnetic field of dipoles in Cartesian coordinates</span>
+<span class="sd">    Magnetic field of dipoles in Cartesian coordinates.</span>
 
 <span class="sd">    Compute the component(s) of the magnetic field vector generated by</span>
 <span class="sd">    a collection of dipoles on a set of observation points.</span>
@@ -533,10 +541,11 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check if field is valid</span>
     <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_FIELDS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Invalid field &#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Please choose one of &#39;</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">VALID_FIELDS</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="c1"># Figure out the shape and size of the output array(s)</span>
     <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
     <span class="c1"># Convert coordinates, dipoles and magnetic moments to arrays</span>
@@ -573,7 +582,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_dipole_magnetic_vector</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_dipole_magnetic_vector</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">dipoles</span><span class="p">,</span>
     <span class="n">magnetic_moments</span><span class="p">,</span>
@@ -583,7 +592,7 @@ document.write(`
     <span class="n">progressbar</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Forward model the three components of the magnetic vector</span>
+<span class="sd">    Forward model the three components of the magnetic vector.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -636,7 +645,7 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">_dipole_magnetic_component</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_dipole_magnetic_component</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">dipoles</span><span class="p">,</span>
     <span class="n">magnetic_moments</span><span class="p">,</span>
@@ -647,7 +656,7 @@ document.write(`
     <span class="n">progressbar</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Forward model a single component of the magnetic vector</span>
+<span class="sd">    Forward model a single component of the magnetic vector.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -707,27 +716,29 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_check_dipoles_and_magnetic_moments</span><span class="p">(</span><span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_dipoles_and_magnetic_moments</span><span class="p">(</span><span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if dipoles and magnetic moments have valid shape and size</span>
+<span class="sd">    Check if dipoles and magnetic moments have valid shape and size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnetic_moments</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Invalid magnetic moments with &#39;</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&#39; elements.&quot;</span>
             <span class="s2">&quot; Magnetic moments vectors should have 3 components.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">magnetic_moments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">dipoles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Number of elements in magnetic_moments (</span><span class="si">{</span><span class="n">magnetic_moments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="sa">f</span><span class="s2">&quot; mismatch the number of dipoles (</span><span class="si">{</span><span class="n">dipoles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">).&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_jit_dipole_magnetic_field_cartesian</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_jit_dipole_magnetic_field_cartesian</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">,</span> <span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span><span class="p">,</span> <span class="n">progress_proxy</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the magnetic field components of dipoles in Cartesian coordinates</span>
+<span class="sd">    Compute the magnetic field components of dipoles in Cartesian coordinates.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -760,32 +771,32 @@ document.write(`
     <span class="n">easting_p</span><span class="p">,</span> <span class="n">northing_p</span><span class="p">,</span> <span class="n">upward_p</span> <span class="o">=</span> <span class="n">dipoles</span>
     <span class="n">mag_e</span><span class="p">,</span> <span class="n">mag_n</span><span class="p">,</span> <span class="n">mag_u</span> <span class="o">=</span> <span class="n">magnetic_moments</span>
     <span class="c1"># Iterate over computation points and dipoles</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
             <span class="n">easting_comp</span><span class="p">,</span> <span class="n">northing_comp</span><span class="p">,</span> <span class="n">upward_comp</span> <span class="o">=</span> <span class="n">magnetic_field</span><span class="p">(</span>
-                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_e</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_n</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_u</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_e</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_n</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_u</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
             <span class="p">)</span>
-            <span class="n">b_e</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">easting_comp</span>
-            <span class="n">b_n</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">northing_comp</span>
-            <span class="n">b_u</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">upward_comp</span>
+            <span class="n">b_e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">easting_comp</span>
+            <span class="n">b_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">northing_comp</span>
+            <span class="n">b_u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">upward_comp</span>
         <span class="c1"># Update progress bar if called</span>
         <span class="k">if</span> <span class="n">update_progressbar</span><span class="p">:</span>
             <span class="n">progress_proxy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_jit_dipole_magnetic_component_cartesian</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_jit_dipole_magnetic_component_cartesian</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">dipoles</span><span class="p">,</span> <span class="n">magnetic_moments</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">forward_func</span><span class="p">,</span> <span class="n">progress_proxy</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute a single magnetic component of dipoles in Cartesian coordinates</span>
+<span class="sd">    Compute a single magnetic component of dipoles in Cartesian coordinates.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -817,18 +828,18 @@ document.write(`
     <span class="n">easting_p</span><span class="p">,</span> <span class="n">northing_p</span><span class="p">,</span> <span class="n">upward_p</span> <span class="o">=</span> <span class="n">dipoles</span>
     <span class="n">mag_e</span><span class="p">,</span> <span class="n">mag_n</span><span class="p">,</span> <span class="n">mag_u</span> <span class="o">=</span> <span class="n">magnetic_moments</span>
     <span class="c1"># Iterate over computation points and dipoles</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
-                <span class="n">easting</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">northing</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">upward</span><span class="p">[</span><span class="n">l</span><span class="p">],</span>
-                <span class="n">easting_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">northing_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">upward_p</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_e</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_n</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-                <span class="n">mag_u</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">easting_p</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">forward_func</span><span class="p">(</span>
+                <span class="n">easting</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">northing</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">upward</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">easting_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">northing_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">upward_p</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_e</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_n</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                <span class="n">mag_u</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="c1"># Update progress bar if called</span>
         <span class="k">if</span> <span class="n">update_progressbar</span><span class="p">:</span>
@@ -883,7 +894,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

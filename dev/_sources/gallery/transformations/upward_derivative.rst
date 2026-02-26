@@ -21,7 +21,7 @@
 Upward derivative of a regular grid
 ===================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-73
+.. GENERATED FROM PYTHON SOURCE LINES 11-74
 
 
 
@@ -35,6 +35,14 @@ Upward derivative of a regular grid
 
  .. code-block:: none
 
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/harmonica/filters/_fft.py:48: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      grid = grid.drop(bad_coords)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:455: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      daft = daft.drop([d for d in dim if d in daft.coords])
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:573: FutureWarning: Default ifft's behaviour (lag=None) changed! Default value of lag was zero (centered output coordinates) and is now set to transformed coordinate's attribute: 'direct_lag'.
+      warnings.warn(msg, FutureWarning)
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.12/site-packages/xrft/xrft.py:671: FutureWarning: dropping variables using `drop` is deprecated; use drop_vars.
+      da = da.drop([d for d in dim if d in da.coords])
 
     Upward derivative:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
@@ -50,10 +58,10 @@ Upward derivative of a regular grid
            [-3.28895188, -0.89679122, -0.84612101, ...,  0.15550382,
              0.36489592,  1.12153698],
            [-5.04820203, -2.9126185 , -2.80733457, ..., -0.11714694,
-             0.3870613 ,  1.26040208]])
+             0.3870613 ,  1.26040208]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
 
 
 
@@ -63,6 +71,7 @@ Upward derivative of a regular grid
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -130,7 +139,7 @@ Upward derivative of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.408 seconds)
+   **Total running time of the script:** (0 minutes 0.433 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_upward_derivative.py:

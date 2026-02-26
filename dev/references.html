@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
@@ -228,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -252,23 +253,29 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Harmonica</a></li>
@@ -501,6 +508,10 @@ document.write(`
   <section id="references">
 <h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
 <div role="list" class="citation-list">
+<div class="citation" id="alken2021" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Alken2021<span class="fn-bracket">]</span></span>
+<p>Alken, P., Thébault, E., Beggan, C. D., Amit, H., Aubert, J., Baerenzung, J., et al. (2021). International Geomagnetic Reference Field: the thirteenth generation. Earth, Planets and Space, 73(1). doi:<a class="reference external" href="https://doi.org/10.1186/s40623-020-01288-x">10.1186/s40623-020-01288-x</a>.</p>
+</div>
 <div class="citation" id="balmino1973" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Balmino1973<span class="fn-bracket">]</span></span>
 <p>Balmino, G., Lambeck, K., &amp; Kaula, W. M. (1973). A spherical harmonic analysis of the Earth’s topography. Journal of Geophysical Research, 78(2), 478-481.</p>
@@ -513,6 +524,10 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>Blakely1995<span class="fn-bracket">]</span></span>
 <p>Blakely, R. (1995). Potential Theory in Gravity and Magnetic Applications. Cambridge: Cambridge University Press. doi:<a class="reference external" href="https://doi.org/10.1017/CBO9780511549816">10.1017/CBO9780511549816</a></p>
 </div>
+<div class="citation" id="clark1986" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Clark1986<span class="fn-bracket">]</span></span>
+<p>Clark, D. A., Saul, S. J., &amp; Emerson, D. W. (1986). Magnetic and gravity anomalies of a triaxial ellipsoid. Exploration Geophysics, 17(4), 189–200. <a class="reference external" href="https://doi.org/10.1071/EG986189">https://doi.org/10.1071/EG986189</a></p>
+</div>
 <div class="citation" id="cordell1992" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Cordell1992<span class="fn-bracket">]</span></span>
 <p>Lindrith Cordell (1992). A scattered equivalent‐source method for interpolation and gridding of potential‐field data in three dimensions. GEOPHYSICS 57: 629-636. doi:<a class="reference external" href="https://doi.org/10.1190/1.1443275">10.1190/1.1443275</a></p>
@@ -520,6 +535,10 @@ document.write(`
 <div class="citation" id="dampney1969" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Dampney1969<span class="fn-bracket">]</span></span>
 <p>Dampney, C. N. G. (1969). The equivalent source technique. Geophysics, 34(1), 39–53. doi:<a class="reference external" href="https://doi.org/10.1190/1.1439996">10.1190/1.1439996</a></p>
+</div>
+<div class="citation" id="driscollhealy1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DriscollHealy1994<span class="fn-bracket">]</span></span>
+<p>Driscoll, J. R., &amp; Healy, D. M. (1994). Computing Fourier Transforms and Convolutions on the 2-Sphere. Advances in Applied Mathematics, 15(2), 202–250. <a class="reference external" href="https://doi.org/10.1006/aama.1994.1008">10.1006/aama.1994.1008</a>.</p>
 </div>
 <div class="citation" id="fukushima2020" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Fukushima2020<span class="fn-bracket">]</span></span>
@@ -536,6 +555,10 @@ document.write(`
 <div class="citation" id="hofmann-wellenhofmoritz2006" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Hofmann-WellenhofMoritz2006<span class="fn-bracket">]</span></span>
 <p>Hofmann-Wellenhof, B., &amp; Moritz, H. (2006). Physical Geodesy (2nd, corr. ed. 2006 edition ed.). Wien ; New York: Springer.</p>
+</div>
+<div class="citation" id="iaga2024" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IAGA2024<span class="fn-bracket">]</span></span>
+<p>International Association of Geomagnetism and Aeronomy. (2024). IGRF-14. Zenodo. doi:<a class="reference external" href="https://doi.org/10.5281/zenodo.14218973">10.5281/zenodo.14218973</a>.</p>
 </div>
 <div class="citation" id="ligotze2001" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LiGotze2001<span class="fn-bracket">]</span></span>
@@ -588,6 +611,10 @@ document.write(`
 <div class="citation" id="vajda2004" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Vajda2004<span class="fn-bracket">]</span></span>
 <p>Vajda, P., Vaníček, P., Novák, P. and Meurers, B. (2004). On evaluation of Newton integrals in geodetic coordinates: Exact formulation and spherical approximation. Contributions to Geophysics and Geodesy, 34(4), 289-314.</p>
+</div>
+<div class="citation" id="takahashi2018" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Takahashi2018<span class="fn-bracket">]</span></span>
+<p>Takahashi, D., Oliveira Jr., V. C., &amp; Barbosa, V. C. F. (2020). Convolutional equivalent layer for gravity data processing. GEOPHYSICS, 85(6), G129–G141. <a class="reference external" href="https://doi.org/10.1190/geo2019-0826.1">https://doi.org/10.1190/geo2019-0826.1</a></p>
 </div>
 <div class="citation" id="turcotteschubert2014" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>TurcotteSchubert2014<span class="fn-bracket">]</span></span>
@@ -649,7 +676,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

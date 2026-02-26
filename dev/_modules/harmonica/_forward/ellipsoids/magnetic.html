@@ -1,0 +1,1134 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._forward.ellipsoids.magnetic | Harmonica dev</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_forward/ellipsoids/magnetic';</script>
+    <link rel="icon" href="../../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/igrf.html">IGRF calculation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_forward/ellipsoids/magnetic.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._forward.ellipsoids.magnetic</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Forward modelling magnetic fields produced by ellipsoidal bodies.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">mu_0</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">ellipeinc</span><span class="p">,</span> <span class="n">ellipkinc</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoPhysicalPropertyWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Coordinates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ellipsoids</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ellipsoid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calculate_lambda</span><span class="p">,</span>
+    <span class="n">check_semiaxes_sorted</span><span class="p">,</span>
+    <span class="n">get_derivatives_of_elliptical_integrals</span><span class="p">,</span>
+    <span class="n">get_elliptical_integrals</span><span class="p">,</span>
+    <span class="n">get_semiaxes_rotation_matrix</span><span class="p">,</span>
+    <span class="n">is_almost_a_sphere</span><span class="p">,</span>
+    <span class="n">is_almost_oblate</span><span class="p">,</span>
+    <span class="n">is_almost_prolate</span><span class="p">,</span>
+    <span class="n">is_internal</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="ellipsoid_magnetic">
+<a class="viewcode-back" href="../../../../api/generated/harmonica.ellipsoid_magnetic.html#harmonica.ellipsoid_magnetic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ellipsoid_magnetic</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">Coordinates</span><span class="p">,</span>
+    <span class="n">ellipsoids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Ellipsoid</span><span class="p">]</span> <span class="o">|</span> <span class="n">Ellipsoid</span><span class="p">,</span>
+    <span class="n">inducing_field</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forward model magnetic fields of ellipsoids.</span>
+
+<span class="sd">    Compute the magnetic field components for an ellipsoidal body at specified</span>
+<span class="sd">    observation points.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        The magnetic field components are returned in nT.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : list of array</span>
+<span class="sd">        List of arrays containing the ``easting``, ``northing`` and ``upward``</span>
+<span class="sd">        coordinates of the computation points defined on a Cartesian coordinate</span>
+<span class="sd">        system. All coordinates should be in meters.</span>
+<span class="sd">    ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid</span>
+<span class="sd">        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or</span>
+<span class="sd">        a list of them.</span>
+<span class="sd">    inducing_field : (3,) array or tuple of float</span>
+<span class="sd">        The easting, northing and upward components of the inducing magnetic field</span>
+<span class="sd">        :math:`\mathbf{B}` in nT.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    be, bn, bu : array</span>
+<span class="sd">        Easting, northing and upward magnetic field components in nT.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [Clark1986]_</span>
+<span class="sd">    [Takahashi2018]_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity checks for ellipsoids</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ellipsoids</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="n">ellipsoids</span> <span class="o">=</span> <span class="p">[</span><span class="n">ellipsoids</span><span class="p">]</span>
+
+    <span class="c1"># Flatten coordinates</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">)</span>
+
+    <span class="c1"># Allocate output arrays</span>
+    <span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+    <span class="c1"># Compute the inducing H0 field</span>
+    <span class="n">b0_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inducing_field</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-9</span>  <span class="c1"># convert to SI units</span>
+    <span class="n">h0_field</span> <span class="o">=</span> <span class="n">b0_field</span> <span class="o">/</span> <span class="n">mu_0</span>
+
+    <span class="c1"># Forward model the magnetic field of ellipsoids</span>
+    <span class="k">for</span> <span class="n">ellipsoid</span> <span class="ow">in</span> <span class="n">ellipsoids</span><span class="p">:</span>
+        <span class="c1"># Skip ellipsoid without susceptibility nor remanent mag</span>
+        <span class="k">if</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">susceptibility</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">remanent_mag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Ellipsoid </span><span class="si">{</span><span class="n">ellipsoid</span><span class="si">}</span><span class="s2"> doesn&#39;t have a susceptibility nor a &quot;</span>
+                <span class="s2">&quot;remanent_mag value. It will be skipped.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">NoPhysicalPropertyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">b_field</span> <span class="o">=</span> <span class="n">_single_ellipsoid_magnetic</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span><span class="p">),</span>
+            <span class="n">ellipsoid</span><span class="p">,</span>
+            <span class="n">ellipsoid</span><span class="o">.</span><span class="n">susceptibility</span><span class="p">,</span>
+            <span class="n">ellipsoid</span><span class="o">.</span><span class="n">remanent_mag</span><span class="p">,</span>
+            <span class="n">h0_field</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">be</span> <span class="o">+=</span> <span class="n">b_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">bn</span> <span class="o">+=</span> <span class="n">b_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">bu</span> <span class="o">+=</span> <span class="n">b_field</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Reshape and convert to nT</span>
+    <span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mf">1e9</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="p">(</span><span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_single_ellipsoid_magnetic</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">],</span>
+    <span class="n">ellipsoid</span><span class="p">:</span> <span class="n">Ellipsoid</span><span class="p">,</span>
+    <span class="n">susceptibility</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">remanent_mag</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">h0_field</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forward model the magnetic field of a single ellipsoid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of (n,) arrays</span>
+<span class="sd">        Easting, northing and upward coordinates of the observation points. They should</span>
+<span class="sd">        be 1d arrays.</span>
+<span class="sd">    ellipsoid : harmonica.typing.Ellipsoid</span>
+<span class="sd">        Ellipsoid object for which the magnetic field will be computed.</span>
+<span class="sd">    susceptibility : float, (3, 3) array or None</span>
+<span class="sd">        Susceptibility scalar or tensor of the ellipsoid</span>
+<span class="sd">        (defined in the local coordinate system of the ellipsoid).</span>
+<span class="sd">    remanent_mag : (3,) array or None</span>
+<span class="sd">        Remanent magnetization vector of the ellipsoid in SI units.</span>
+<span class="sd">        The components of the vector should be in the easting-northing-upward coordinate</span>
+<span class="sd">        system.</span>
+<span class="sd">    h0_field : (3,) array</span>
+<span class="sd">        Array with the easting, northing, and upward components of the inducing</span>
+<span class="sd">        :math:`\mathbf{H}` field in SI units.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    be, bn, bu : (n) arrays</span>
+<span class="sd">        Arrays with the magnetic field components of the ellipsoid on the observation</span>
+<span class="sd">        points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Shift coordinates to the center of the ellipsoid</span>
+    <span class="n">origin_e</span><span class="p">,</span> <span class="n">origin_n</span><span class="p">,</span> <span class="n">origin_u</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">center</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">coords_shifted</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span> <span class="o">-</span> <span class="n">origin_e</span><span class="p">,</span> <span class="n">northing</span> <span class="o">-</span> <span class="n">origin_n</span><span class="p">,</span> <span class="n">upward</span> <span class="o">-</span> <span class="n">origin_u</span><span class="p">)</span>
+
+    <span class="c1"># Sort the semiaxes (a &gt;= b &gt;= c)</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">c</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Get rotation matrix to produce sorted semiaxes in local coordinate system</span>
+    <span class="n">semiaxes_rotation_matrix</span> <span class="o">=</span> <span class="n">get_semiaxes_rotation_matrix</span><span class="p">(</span><span class="n">ellipsoid</span><span class="p">)</span>
+
+    <span class="c1"># Combine the two rotation matrices</span>
+    <span class="n">rotation</span> <span class="o">=</span> <span class="n">semiaxes_rotation_matrix</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># Rotate observation points</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">rotation</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coords_shifted</span><span class="p">)</span>
+
+    <span class="c1"># Build internal demagnetization tensor</span>
+    <span class="n">n_tensor_internal</span> <span class="o">=</span> <span class="n">get_demagnetization_tensor_internal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="c1"># Cast susceptibility and remanent magnetization into matrix and array, respectively</span>
+    <span class="n">susceptibility</span> <span class="o">=</span> <span class="n">cast_susceptibility</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">)</span>
+    <span class="n">remanent_mag</span> <span class="o">=</span> <span class="n">cast_remanent_magnetization</span><span class="p">(</span><span class="n">remanent_mag</span><span class="p">)</span>
+
+    <span class="c1"># Rotate the inducing field and the remanent magnetization</span>
+    <span class="n">h0_field_rotated</span> <span class="o">=</span> <span class="n">rotation</span> <span class="o">@</span> <span class="n">h0_field</span>
+    <span class="n">remnant_mag_rotated</span> <span class="o">=</span> <span class="n">rotation</span> <span class="o">@</span> <span class="n">remanent_mag</span>
+
+    <span class="c1"># Rotate the susceptibility (only to account for the resorting of the semiaxes).</span>
+    <span class="c1"># Need to apply second rank tensor rotation: A_rotated = R @ A @ R.T.</span>
+    <span class="n">susceptibility</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">semiaxes_rotation_matrix</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">susceptibility</span> <span class="o">@</span> <span class="n">semiaxes_rotation_matrix</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Get magnetization of the ellipsoid</span>
+    <span class="n">magnetization</span> <span class="o">=</span> <span class="n">get_magnetisation</span><span class="p">(</span>
+        <span class="n">a</span><span class="p">,</span>
+        <span class="n">b</span><span class="p">,</span>
+        <span class="n">c</span><span class="p">,</span>
+        <span class="n">susceptibility</span><span class="p">,</span>
+        <span class="n">h0_field_rotated</span><span class="p">,</span>
+        <span class="n">remnant_mag_rotated</span><span class="p">,</span>
+        <span class="n">n_tensor</span><span class="o">=</span><span class="n">n_tensor_internal</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Compute magnetic field on observation points</span>
+    <span class="c1"># --------------------------------------------</span>
+    <span class="c1"># Allocate an array for the b_field</span>
+    <span class="n">b_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Mask internal observation points</span>
+    <span class="n">internal</span> <span class="o">=</span> <span class="n">is_internal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="c1"># Compute b_field on internal points</span>
+    <span class="n">b_field</span><span class="p">[</span><span class="n">internal</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mu_0</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">n_tensor_internal</span> <span class="o">@</span> <span class="n">magnetization</span> <span class="o">+</span> <span class="n">magnetization</span><span class="p">)</span>
+
+    <span class="c1"># Compute b_field on external points</span>
+    <span class="n">n_tensors</span> <span class="o">=</span> <span class="n">get_demagnetization_tensor_external</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">internal</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">internal</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="o">~</span><span class="n">internal</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+    <span class="p">)</span>
+    <span class="n">b_field</span><span class="p">[</span><span class="o">~</span><span class="n">internal</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mu_0</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">n_tensors</span> <span class="o">@</span> <span class="n">magnetization</span><span class="p">)</span>
+
+    <span class="c1"># Rotate the b fields</span>
+    <span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">b_field</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">be</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bu</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_magnetisation</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">susceptibility</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">h0_field</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">remnant_mag</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">n_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get magnetization vector for an ellipsoid.</span>
+
+<span class="sd">    Get the magnetization vector of and ellipsoid considering induced and remanent</span>
+<span class="sd">    magnetization. This function takes into account demagnetization effects.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        This function works in the local x, y, z coordinate system defined for the</span>
+<span class="sd">        ellipsoid. The inducing ``h0_field`` and the remanent magnetization vector</span>
+<span class="sd">        should be provided in the x-y-z coordinate system. The generated magnetization</span>
+<span class="sd">        vector will be defined in the same coordinate system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b, c : float</span>
+<span class="sd">        Semi-axes lengths of the ellipsoid sorted such as ``a &gt;= b &gt;= c``.</span>
+<span class="sd">    susceptibility : (3, 3) array</span>
+<span class="sd">        Susceptibility tensor defined in the local coordinate system of the ellipsoid.</span>
+<span class="sd">    h0_field : (3,) array</span>
+<span class="sd">        The rotated background field (in local coordinates).</span>
+<span class="sd">    remnant_mag : (3,) array</span>
+<span class="sd">        Remnant magnetisation vector (in local coordinates).</span>
+<span class="sd">    n_tensor : (3, 3) array, optional</span>
+<span class="sd">        Demagnetization tensor inside the ellipsoid. If None, the demagnetization tensor</span>
+<span class="sd">        will be calculated by the function itself. Pass an array if it was already</span>
+<span class="sd">        precomputed, in order to save computation time.</span>
+<span class="sd">        Default to None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    m (magnetisation): (3) array</span>
+<span class="sd">        The magnetisation vector for the defined body in local coordinates.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Considering an ellipsoid with susceptibility :math:`\chi` (scalar or</span>
+<span class="sd">    tensor) in a uniform background field :math:`\mathbf{H}_0`, and with remanent</span>
+<span class="sd">    magnetization :math:`\mathbf{M}_r`, compute the magnetization vector</span>
+<span class="sd">    :math:`\mathbf{M}` of the ellipsoid accounting for demagnetization effects as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{M} =</span>
+<span class="sd">        \[left \mathbf{I} + \chi \mathbf{N}^\text{int} \right]^{-1}</span>
+<span class="sd">        \[left \chi \mathbf{H}_0 + \mathbf{M}_r \right],</span>
+
+<span class="sd">    where :math:`\mathbf{N}^\text{int}` is the internal demagnetization tensor,</span>
+<span class="sd">    defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{H}(\mathbf{r}) = \mathbf{H}_0 - \mathbf{N}(\mathbf{r})</span>
+<span class="sd">        \mathbf{M}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_semiaxes_sorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n_tensor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_tensor</span> <span class="o">=</span> <span class="n">get_demagnetization_tensor_internal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="n">eye</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">lhs</span> <span class="o">=</span> <span class="n">eye</span> <span class="o">+</span> <span class="n">n_tensor</span> <span class="o">@</span> <span class="n">susceptibility</span>
+    <span class="n">rhs</span> <span class="o">=</span> <span class="n">remnant_mag</span> <span class="o">+</span> <span class="n">susceptibility</span> <span class="o">@</span> <span class="n">h0_field</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">m</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cast_susceptibility</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cast susceptibility into a susceptibility tensor.</span>
+
+<span class="sd">    Converts any valid susceptibility of ellipsoids into a susceptibility tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    susceptibility : float, (3, 3) array or None</span>
+<span class="sd">        Magnetic susceptibility value.</span>
+<span class="sd">        A single float represents isotropic susceptibility in the body.</span>
+<span class="sd">        A (3, 3) array represents the susceptibility tensor to account for anisotropy</span>
+<span class="sd">        (defined in the local coordinate system of the ellipsoid).</span>
+<span class="sd">        If None, a susceptibility of zero is assumed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    susceptibility: (3, 3) array</span>
+<span class="sd">        Susceptibility tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">susceptibility</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="n">susceptibility</span> <span class="o">=</span> <span class="n">susceptibility</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="n">susceptibility</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">susceptibility</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Susceptibility matrix must be 3x3, got shape </span><span class="si">{</span><span class="n">susceptibility</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unrecognized susceptibility type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">susceptibility</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">susceptibility</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cast_remanent_magnetization</span><span class="p">(</span><span class="n">remnant_mag</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cast remanent magnetization to an array of three elements.</span>
+
+<span class="sd">    Converts any valid remanent magnetization of ellipsoids into a three elements array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    remnant_mag : (3,) array or None</span>
+<span class="sd">        Remanent magnetization. Can be an array with three elements or None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    remnant_mag : (3,) array</span>
+<span class="sd">        Remanent magnetization as an array with 3 elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">remnant_mag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">remnant_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">remnant_mag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">remnant_mag</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_demagnetization_tensor_internal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct the demagnetization tensor N on external points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b, c : float</span>
+<span class="sd">        Semi-axes lengths of the given ellipsoid sorted such as ``a &gt;= b &gt;= c``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    N : (3, 3) array</span>
+<span class="sd">        Demagnetization tensor for the given ellipsoid on internal points.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The elements of the demagnetization tensor are defined following the sign convention</span>
+<span class="sd">    of Clark et al. (1986), in which the internal demagnetization tensor</span>
+<span class="sd">    :math:`N_\text{int}` and the demagnetizing field :math:`\Delta \mathbf{H}` are</span>
+<span class="sd">    related as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Delta \mathbf{H}(\mathbf{r}) = - N_\text{int} \mathbf{M}</span>
+
+<span class="sd">    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_semiaxes_sorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_almost_a_sphere</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">n_diagonal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_almost_prolate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">n_diagonal</span> <span class="o">=</span> <span class="n">_demag_tensor_prolate_internal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_almost_oblate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">n_diagonal</span> <span class="o">=</span> <span class="n">_demag_tensor_oblate_internal</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">n_diagonal</span> <span class="o">=</span> <span class="n">_demag_tensor_triaxial_internal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Could not determine ellipsoid type for values given.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">n_diagonal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_demag_tensor_triaxial_internal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the internal demagnetization tensor (N(r)) for the triaxial case.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b, c : float</span>
+<span class="sd">        Semi-axes lengths of the given ellipsoid sorted such as ``a &gt; b &gt; c``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nxx, nyy, nzz : float</span>
+<span class="sd">        individual diagonal components of the x, y, z matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid semiaxes length (not a &gt; b &gt; c): a=</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">, b=</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, c=</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># Cache values of E(theta, k) and F(theta, k) so we compute them only once</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ellipk</span> <span class="o">=</span> <span class="n">ellipkinc</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">ellipe</span> <span class="o">=</span> <span class="n">ellipeinc</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">a_c_sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">nxx</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a_c_sqrt</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">ellipk</span> <span class="o">-</span> <span class="n">ellipe</span><span class="p">)</span>
+    <span class="n">nyy</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">nxx</span>
+        <span class="o">+</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a_c_sqrt</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> <span class="n">ellipe</span>
+        <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">nzz</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a_c_sqrt</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> <span class="n">ellipe</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nxx</span><span class="p">,</span> <span class="n">nyy</span><span class="p">,</span> <span class="n">nzz</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_demag_tensor_prolate_internal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate internal demagnetization factors for prolate case.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : float</span>
+<span class="sd">        Semi-axes lengths of the prolate ellipsoid (``a &gt; b = c``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nxx, nyy, nzz : float</span>
+<span class="sd">        Diagonal components of the internal demagnetization tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid semiaxes for prolate ellipsoid (not a &gt; b): a=</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">, b=</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">nxx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(((</span><span class="n">m</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">nyy</span> <span class="o">=</span> <span class="n">nzz</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nxx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nxx</span><span class="p">,</span> <span class="n">nyy</span><span class="p">,</span> <span class="n">nzz</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_demag_tensor_oblate_internal</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate internal demagnetization factors for oblate case.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    b, c : float</span>
+<span class="sd">        Semi-axes lengths of the oblate ellipsoid (``a == b &gt; c``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nxx, nyy, nzz : float</span>
+<span class="sd">        Diagonal components of the internal demagnetization tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid semiaxes for oblate ellipsoid (not b &gt; c): b=</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, c=</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="n">nzz</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">nxx</span> <span class="o">=</span> <span class="n">nyy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nzz</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nxx</span><span class="p">,</span> <span class="n">nyy</span><span class="p">,</span> <span class="n">nzz</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_demagnetization_tensor_external</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">z</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct the demagnetization tensor(s) N on external observation points.</span>
+
+<span class="sd">    Computes multiple demagnetization tensors, one for each external observation point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x, y, z : (n,) array</span>
+<span class="sd">        Coordinates of the observation points in the local coordinate system.</span>
+<span class="sd">    a, b, c : float</span>
+<span class="sd">        Semi-axes lengths of the given ellipsoid.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    demag_tensors : (n, 3, 3) array</span>
+<span class="sd">        Demagnetization tensors for each observation point.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The elements of the demagnetization tensor are defined following the sign convention</span>
+<span class="sd">    of Clark et al. (1986), in which the tensor :math:`N` and the</span>
+<span class="sd">    demagnetizing field :math:`\Delta \mathbf{H}` are related as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Delta \mathbf{H}(\mathbf{r}) = - N(\mathbf{r}) \mathbf{M}</span>
+
+<span class="sd">    where :math:`\mathbf{M}` is the magnetization vector of the ellipsoid.</span>
+
+<span class="sd">    The components of the demagnetization tensor for any ellipsoid are given by:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        n_{ii} =</span>
+<span class="sd">            \frac{abc}{2}</span>
+<span class="sd">            \left[</span>
+<span class="sd">                    \frac{\partial \lambda}{\partial r_i}</span>
+<span class="sd">                    \frac{\text{d} F_i}{\text{d} \lambda}</span>
+<span class="sd">                    r_i</span>
+<span class="sd">                    +</span>
+<span class="sd">                    F_i(\lambda)</span>
+<span class="sd">            \right],</span>
+<span class="sd">        \quad</span>
+<span class="sd">        \forall i \in \{x, y, z\}</span>
+
+<span class="sd">    and</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        n_{ij} =</span>
+<span class="sd">            \frac{abc}{2}</span>
+<span class="sd">                \frac{\partial \lambda}{\partial r_i}</span>
+<span class="sd">                \frac{\text{d} F_j}{\text{d} \lambda}</span>
+<span class="sd">                r_j,</span>
+<span class="sd">        \quad</span>
+<span class="sd">        \forall i,j \in \{x, y, z\}, \, i \ne j</span>
+
+<span class="sd">    where :math:`F_x(\lambda) = A(\lambda)`, :math:`F_y(\lambda) = B(\lambda)`,</span>
+<span class="sd">    :math:`F_z(\lambda) = C(\lambda)`, and the :math:`r_i` are the :math:`x`, :math:`y`,</span>
+<span class="sd">    and :math:`z` coordinates.</span>
+
+<span class="sd">    Note the sign difference with Takahashi et al. (2018) equations 34 and 35.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Allocate array for all demagnetization tensors (one for each observation point)</span>
+    <span class="n">demag_tensors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_almost_a_sphere</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">r5</span><span class="p">,</span> <span class="n">r3</span> <span class="o">=</span> <span class="n">r</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="o">**</span><span class="mi">3</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">demag_tensors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">r5</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">r3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">demag_tensors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">coords</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">r5</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Calculate lambda and other quantities needed to build the tensors</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="n">calculate_lambda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">ellip_integrals</span> <span class="o">=</span> <span class="n">get_elliptical_integrals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>
+        <span class="n">deriv_ellip_integrals</span> <span class="o">=</span> <span class="n">get_derivatives_of_elliptical_integrals</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">lambda_</span>
+        <span class="p">)</span>
+        <span class="n">derivs_lambda</span> <span class="o">=</span> <span class="n">_spatial_deriv_lambda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">demag_tensors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">derivs_lambda</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">deriv_ellip_integrals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="o">+</span> <span class="n">ellip_integrals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">demag_tensors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">derivs_lambda</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">deriv_ellip_integrals</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">coords</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">demag_tensors</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spatial_deriv_lambda</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">z</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lambda_</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the spatial derivatives of lambda with respect to x, y, and z.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x, y, z : float or (n,) array</span>
+<span class="sd">        Coordinates of the observation points in the local coordinate system.</span>
+<span class="sd">    a, b, c : float</span>
+<span class="sd">        Semi-axes lengths of the given ellipsoid.</span>
+<span class="sd">    lambda_ : float or (n,) arrays</span>
+<span class="sd">        The given lambda value for each point we are considering with this matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    derivatives : tuple of float or tuple of (n,) array</span>
+<span class="sd">        The spatial derivatives of lambda for each observation point.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="n">dlambda_dx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">dlambda_dy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">dlambda_dz</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+
+    <span class="k">return</span> <span class="n">dlambda_dx</span><span class="p">,</span> <span class="n">dlambda_dy</span><span class="p">,</span> <span class="n">dlambda_dz</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 26, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

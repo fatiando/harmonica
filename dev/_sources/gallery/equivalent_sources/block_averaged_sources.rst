@@ -52,7 +52,7 @@ depth) or a ``relative`` depth (where each source is located at a constant
 shift beneath the median location obtained during the block-averaging process).
 The depth of the sources can be set through the ``depth`` parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-147
+.. GENERATED FROM PYTHON SOURCE LINES 42-148
 
 
 
@@ -68,14 +68,16 @@ The depth of the sources can be set through the ``depth`` parameter.
 
     Number of data points: 7054
     Mean height of observations: 481.34278423589456
-    R² score: 0.9984014314880503
+    /home/runner/work/harmonica/harmonica/doc/gallery_src/equivalent_sources/block_averaged_sources.py:83: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      print("R² score:", eqs.score(coordinates, data.total_field_anomaly_nt))
+    R² score: 0.9984014314880448
 
     Generated grid:
      <xarray.Dataset> Size: 241kB
     Dimensions:           (northing: 157, easting: 95)
     Coordinates:
-      * easting           (easting) float64 760B -3.24e+05 -3.235e+05 ... -2.769e+05
       * northing          (northing) float64 1kB 4.175e+06 4.176e+06 ... 4.253e+06
+      * easting           (easting) float64 760B -3.24e+05 -3.235e+05 ... -2.769e+05
         upward            (northing, easting) float64 119kB 1.5e+03 ... 1.5e+03
     Data variables:
         magnetic_anomaly  (northing, easting) float64 119kB 30.31 30.5 ... 151.0
@@ -90,6 +92,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pandas as pd
@@ -200,7 +203,7 @@ The depth of the sources can be set through the ``depth`` parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.428 seconds)
+   **Total running time of the script:** (0 minutes 4.464 seconds)
 
 
 .. _sphx_glr_download_gallery_equivalent_sources_block_averaged_sources.py:

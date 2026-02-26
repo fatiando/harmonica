@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -227,6 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +252,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -440,16 +447,19 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Frequency domain filters meant to be applied on regular grids</span>
+<span class="sd">Frequency domain filters meant to be applied on regular grids.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.._utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">magnetic_angles_to_vec</span>
 
 
 <div class="viewcode-block" id="derivative_upward_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html#harmonica.filters.derivative_upward_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_upward_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_upward_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for upward derivative in frequency domain</span>
+<span class="sd">    Filter for upward derivative in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for computing the upward derivative. The filter is built upon the</span>
@@ -484,7 +494,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.derivative_upward</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -504,9 +514,9 @@ document.write(`
 
 <div class="viewcode-block" id="derivative_easting_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_easting_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_easting_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for easting derivative in frequency domain</span>
+<span class="sd">    Filter for easting derivative in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for computing the easting derivative. The filter is built upon the</span>
@@ -543,7 +553,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.derivative_easting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -561,9 +571,9 @@ document.write(`
 
 <div class="viewcode-block" id="derivative_northing_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html#harmonica.filters.derivative_northing_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">derivative_northing_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">derivative_northing_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for northing derivative in frequency domain</span>
+<span class="sd">    Filter for northing derivative in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for computing the northing derivative. The filter is built upon the</span>
@@ -600,7 +610,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.derivative_northing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -618,9 +628,9 @@ document.write(`
 
 <div class="viewcode-block" id="upward_continuation_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html#harmonica.filters.upward_continuation_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">upward_continuation_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">upward_continuation_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">height_displacement</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for upward continuation in frequency domain</span>
+<span class="sd">    Filter for upward continuation in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for computing the upward continuation. The filter is built upon the</span>
@@ -658,7 +668,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.upward_continuation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -678,9 +688,9 @@ document.write(`
 
 <div class="viewcode-block" id="gaussian_lowpass_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html#harmonica.filters.gaussian_lowpass_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">gaussian_lowpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_lowpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for Gaussian low-pass in frequency domain</span>
+<span class="sd">    Filter for Gaussian low-pass in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of a Gaussian low-pass</span>
 <span class="sd">    filter the frequency domain. The filter is built upon the frequency</span>
@@ -722,7 +732,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Geosoft1999]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.gaussian_lowpass</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -744,9 +754,9 @@ document.write(`
 
 <div class="viewcode-block" id="gaussian_highpass_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html#harmonica.filters.gaussian_highpass_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">gaussian_highpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_highpass_kernel</span><span class="p">(</span><span class="n">fft_grid</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for Gaussian high-pass in frequency domain</span>
+<span class="sd">    Filter for Gaussian high-pass in frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of a Gaussian high-pass</span>
 <span class="sd">    filter the frequency domain. The filter is built upon the frequency</span>
@@ -788,7 +798,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Geosoft1999]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.gaussian_highpass</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -810,7 +820,7 @@ document.write(`
 
 <div class="viewcode-block" id="reduction_to_pole_kernel">
 <a class="viewcode-back" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel">[docs]</a>
-<span class="k">def</span> <span class="nf">reduction_to_pole_kernel</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reduction_to_pole_kernel</span><span class="p">(</span>
     <span class="n">fft_grid</span><span class="p">,</span>
     <span class="n">inclination</span><span class="p">,</span>
     <span class="n">declination</span><span class="p">,</span>
@@ -818,7 +828,7 @@ document.write(`
     <span class="n">magnetization_declination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Filter for reduction to the pole in frequency domain</span>
+<span class="sd">    Filter for reduction to the pole in the frequency domain.</span>
 
 <span class="sd">    Return a :class:`xarray.DataArray` with the values of the frequency domain</span>
 <span class="sd">    filter for applying a reduction to the pole on magnetic data. The filter</span>
@@ -839,32 +849,13 @@ document.write(`
 
 <span class="sd">        \Theta_f = f_z + i \frac{f_e k_e + f_n k_n}{|\mathbf{k}|}</span>
 
-<span class="sd">    where :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel</span>
+<span class="sd">    where :math:`\mathbf{k} = (k_e, k_n)` is the wavenumber vector,</span>
+<span class="sd">    :math:`\hat{\mathbf{f}} = (f_e, f_n, f_z)` is a unit vector parallel</span>
 <span class="sd">    to the geomagnetic field and :math:`\hat{\mathbf{m}} = (m_e, m_n, m_z)`</span>
 <span class="sd">    is a unit vector parallel to the magnetization vector of the source. The</span>
 <span class="sd">    :math:`f_e`, :math:`f_n`, :math:`m_e`, :math:`m_n` are the easting and</span>
 <span class="sd">    northing components while the :math:`f_z` and :math:`m_z` are the</span>
-<span class="sd">    **downward** coordinates.</span>
-<span class="sd">    Each of these components can be obtained from the inclination and</span>
-<span class="sd">    declination angles of the geomagnetic field (:math:`I` and :math:`D`,</span>
-<span class="sd">    respectively) and for the magnetization vector (:math:`I_m` and</span>
-<span class="sd">    :math:`D_m`, respectively):</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        \begin{cases}</span>
-<span class="sd">            f_e = \sin D \cos I \\</span>
-<span class="sd">            f_n = \cos D \cos I \\</span>
-<span class="sd">            f_u = \sin I</span>
-<span class="sd">        \end{cases}</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        \begin{cases}</span>
-<span class="sd">            m_e = \sin D_m \cos I_m \\</span>
-<span class="sd">            m_n = \cos D_m \cos I_m \\</span>
-<span class="sd">            m_u = \sin I_m</span>
-<span class="sd">        \end{cases}</span>
+<span class="sd">    **downward** components.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -899,7 +890,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    [Blakely1995]_</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.reduction_to_pole</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -917,14 +908,23 @@ document.write(`
     <span class="c1"># Convert frequencies to wavenumbers</span>
     <span class="n">k_easting</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_easting</span>
     <span class="n">k_northing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_northing</span>
+    <span class="c1"># Convert inclination and declination to versor components</span>
+    <span class="n">m_e</span><span class="p">,</span> <span class="n">m_n</span><span class="p">,</span> <span class="n">m_u</span> <span class="o">=</span> <span class="n">magnetic_angles_to_vec</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span>
+    <span class="p">)</span>
+    <span class="n">f_e</span><span class="p">,</span> <span class="n">f_n</span><span class="p">,</span> <span class="n">f_u</span> <span class="o">=</span> <span class="n">magnetic_angles_to_vec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">inclination</span><span class="p">,</span> <span class="n">declination</span><span class="p">)</span>
+    <span class="c1"># Convert the upward components to downward components because the</span>
+    <span class="c1"># equations below for the filter use downward instead</span>
+    <span class="n">m_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">m_u</span>
+    <span class="n">f_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">f_u</span>
     <span class="c1"># Compute the filter for reduction to pole in frequency domain</span>
-    <span class="n">da_filter</span> <span class="o">=</span> <span class="n">_get_rtp_filter</span><span class="p">(</span>
-        <span class="n">k_easting</span><span class="p">,</span>
-        <span class="n">k_northing</span><span class="p">,</span>
-        <span class="n">inclination</span><span class="p">,</span>
-        <span class="n">declination</span><span class="p">,</span>
-        <span class="n">magnetization_inclination</span><span class="p">,</span>
-        <span class="n">magnetization_declination</span><span class="p">,</span>
+    <span class="n">k_squared</span> <span class="o">=</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_squared</span><span class="p">)</span>
+    <span class="c1"># Compute the rtp filter</span>
+    <span class="n">da_filter</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">k_squared</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">f_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">f_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">m_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="c1"># Set 0 wavenumber to 0</span>
     <span class="n">da_filter</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">0</span><span class="p">}]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -932,9 +932,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_check_magnetization_angles</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_magnetization_angles</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">,</span> <span class="n">magnetization_declination</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if magnetization angles are both None or both numbers</span>
+<span class="sd">    Check if magnetization angles are both None or both numbers.</span>
 
 <span class="sd">    They could either be two Nones or two angles, but not one None and one</span>
 <span class="sd">    angle.</span>
@@ -953,66 +953,6 @@ document.write(`
             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">magnetization_inclination</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
             <span class="s2">&quot;Please, provide two valid angles in degrees or both angles as None.&quot;</span>
         <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_get_rtp_filter</span><span class="p">(</span>
-    <span class="n">k_easting</span><span class="p">,</span>
-    <span class="n">k_northing</span><span class="p">,</span>
-    <span class="n">inclination</span><span class="p">,</span>
-    <span class="n">declination</span><span class="p">,</span>
-    <span class="n">magnetization_inclination</span><span class="p">,</span>
-    <span class="n">magnetization_declination</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Build the reduction to the pole filter</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    k_easting : array</span>
-<span class="sd">        Wavenumber array for the easting direction.</span>
-<span class="sd">    k_northing : array</span>
-<span class="sd">        Wavenumber array for the northing direction.</span>
-<span class="sd">    inclination : float in degrees</span>
-<span class="sd">        The inclination of the inducing Geomagnetic field.</span>
-<span class="sd">    declination : float in degrees</span>
-<span class="sd">        The declination of the inducing Geomagnetic field.</span>
-<span class="sd">    magnetization_inclination : float in degrees</span>
-<span class="sd">        The inclination of the total magnetization of the anomaly source.</span>
-<span class="sd">    magnetization_declination : float in degrees</span>
-<span class="sd">        The declination of the total magnetization of the anomaly source.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    rtp_filter: array</span>
-<span class="sd">        Array with the kernel for the reduction to the pole filter in frequency</span>
-<span class="sd">        domain.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Convert angles to radians</span>
-    <span class="n">inc_rad</span><span class="p">,</span> <span class="n">dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">declination</span><span class="p">)</span>
-    <span class="n">mag_inc_rad</span><span class="p">,</span> <span class="n">mag_dec_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">magnetization_inclination</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span>
-        <span class="n">magnetization_declination</span>
-    <span class="p">)</span>
-    <span class="c1"># Compute unit vector components for geomagnetic field and magnetization</span>
-    <span class="n">cos_inc</span><span class="p">,</span> <span class="n">sin_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">inc_rad</span><span class="p">)</span>
-    <span class="n">cos_dec</span><span class="p">,</span> <span class="n">sin_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec_rad</span><span class="p">)</span>
-    <span class="n">cos_mag_inc</span><span class="p">,</span> <span class="n">sin_mag_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_inc_rad</span><span class="p">)</span>
-    <span class="n">cos_mag_dec</span><span class="p">,</span> <span class="n">sin_mag_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mag_dec_rad</span><span class="p">)</span>
-    <span class="n">f_e</span> <span class="o">=</span> <span class="n">sin_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
-    <span class="n">f_n</span> <span class="o">=</span> <span class="n">cos_dec</span> <span class="o">*</span> <span class="n">cos_inc</span>
-    <span class="n">f_z</span> <span class="o">=</span> <span class="n">sin_inc</span>
-    <span class="n">m_e</span> <span class="o">=</span> <span class="n">sin_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
-    <span class="n">m_n</span> <span class="o">=</span> <span class="n">cos_mag_dec</span> <span class="o">*</span> <span class="n">cos_mag_inc</span>
-    <span class="n">m_z</span> <span class="o">=</span> <span class="n">sin_mag_inc</span>
-    <span class="c1"># Precompute |k|^2 and |k|</span>
-    <span class="n">k_squared</span> <span class="o">=</span> <span class="n">k_northing</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k_easting</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_squared</span><span class="p">)</span>
-    <span class="c1"># Compute the rtp filter</span>
-    <span class="n">rtp_filter</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">k_squared</span>
-        <span class="o">*</span> <span class="p">(</span><span class="n">f_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">f_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="o">*</span> <span class="p">(</span><span class="n">m_z</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_e</span> <span class="o">*</span> <span class="n">k_easting</span> <span class="o">+</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">k_northing</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">rtp_filter</span>
 </pre></div>
 
                 </article>
@@ -1049,7 +989,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>

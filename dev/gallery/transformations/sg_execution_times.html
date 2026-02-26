@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -228,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -252,23 +253,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -500,7 +507,7 @@ document.write(`
                   
   <section id="computation-times">
 <span id="sphx-glr-gallery-transformations-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>00:04.928</strong> total execution time for 5 files <strong>from gallery/transformations</strong>:</p>
+<p><strong>00:02.948</strong> total execution time for 5 files <strong>from gallery/transformations</strong>:</p>
 <div class="docutils container">
 <style scoped>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -521,24 +528,24 @@ $(document).ready( function () {
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="reduction_to_pole.html#sphx-glr-gallery-transformations-reduction-to-pole-py"><span class="std std-ref">Reduction to the pole of a magnetic anomaly grid</span></a> (<code class="docutils literal notranslate"><span class="pre">reduction_to_pole.py</span></code>)</p></td>
-<td><p>00:02.623</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tilt.html#sphx-glr-gallery-transformations-tilt-py"><span class="std std-ref">Tilt of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">tilt.py</span></code>)</p></td>
+<td><p>00:01.135</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tilt.html#sphx-glr-gallery-transformations-tilt-py"><span class="std std-ref">Tilt of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">tilt.py</span></code>)</p></td>
-<td><p>00:01.096</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="reduction_to_pole.html#sphx-glr-gallery-transformations-reduction-to-pole-py"><span class="std std-ref">Reduction to the pole of a magnetic anomaly grid</span></a> (<code class="docutils literal notranslate"><span class="pre">reduction_to_pole.py</span></code>)</p></td>
+<td><p>00:00.565</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tga.html#sphx-glr-gallery-transformations-tga-py"><span class="std std-ref">Total gradient amplitude of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">tga.py</span></code>)</p></td>
-<td><p>00:00.414</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="upward_derivative.html#sphx-glr-gallery-transformations-upward-derivative-py"><span class="std std-ref">Upward derivative of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">upward_derivative.py</span></code>)</p></td>
+<td><p>00:00.433</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="upward_derivative.html#sphx-glr-gallery-transformations-upward-derivative-py"><span class="std std-ref">Upward derivative of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">upward_derivative.py</span></code>)</p></td>
-<td><p>00:00.408</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tga.html#sphx-glr-gallery-transformations-tga-py"><span class="std std-ref">Total gradient amplitude of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">tga.py</span></code>)</p></td>
+<td><p>00:00.420</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="upward_continuation.html#sphx-glr-gallery-transformations-upward-continuation-py"><span class="std std-ref">Upward continuation of a regular grid</span></a> (<code class="docutils literal notranslate"><span class="pre">upward_continuation.py</span></code>)</p></td>
-<td><p>00:00.386</p></td>
+<td><p>00:00.395</p></td>
 <td><p>0.0</p></td>
 </tr>
 </tbody>
@@ -582,7 +589,7 @@ $(document).ready( function () {
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Feb 26, 2026.
   <br/>
 </p>
   </div>
