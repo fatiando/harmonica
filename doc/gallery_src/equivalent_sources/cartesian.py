@@ -31,6 +31,7 @@ computational load (both in terms of time and memory).
 """
 
 import ensaio
+import numpy as np
 import pandas as pd
 import pygmt
 import pyproj
@@ -95,14 +96,14 @@ fig = pygmt.Figure()
 
 title = "Observed magnetic anomaly data"
 
+# Get the 99.9th percentile of the absolute value of the point data to use as color
+# scale limits
+cpt_lim = np.quantile(np.abs(data.total_field_anomaly_nt), 0.999)
+
 # Make colormap of data
-# Get the 95 percentile of the maximum absolute value between the original and
-# gridded data so we can use the same color scale for both plots and have 0
-# centered at the white color.
-maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values) * 0.95
 pygmt.makecpt(
-    cmap="vik",
-    series=(-maxabs, maxabs),
+    cmap="balance+h0",
+    series=[-cpt_lim, cpt_lim],
     background=True,
 )
 
@@ -118,7 +119,7 @@ with pygmt.config(FONT_TITLE="12p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
+fig.colorbar(cmap=True, frame=["x+lnT"], position="+e")
 
 fig.shift_origin(xshift=fig_width + 1)
 
@@ -131,6 +132,6 @@ with pygmt.config(FONT_TITLE="12p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
+fig.colorbar(cmap=True, frame=["x+lnT"], position="+e")
 
 fig.show()

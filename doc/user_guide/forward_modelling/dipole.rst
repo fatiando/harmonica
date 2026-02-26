@@ -92,20 +92,70 @@ every observation point:
 
    b_e, b_n, b_u = hm.dipole_magnetic(coordinates, dipoles, magnetic_moments, field="b")
 
+We can reshape the results into variables of an dataset:
+
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
+   grid = vd.make_xarray_grid(
+      coordinates,
+      data=(b_e, b_n, b_u),
+      data_names=["b_e", "b_n", "b_u"],
+      extra_coords_names="extra"
+   )
 
-   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+.. jupyter-execute::
+   :hide-code:
 
-   fields = {"b_e": b_e, "b_n": b_n, "b_u": b_u}
-   for field, ax in zip(fields, axes):
-      tmp = ax.pcolormesh(coordinates[0], coordinates[1], fields[field])
-      ax.set_aspect("equal")
-      ax.set_title(field)
-      ax.ticklabel_format(style="sci", scilimits=(0, 0), axis="both")
-      plt.colorbar(tmp, ax=ax, orientation="horizontal", label="nT", pad=0.008)
-   plt.show()
+    import pygmt
+
+    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
+    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
+    # for sphinx-gallery to work means that fig.show won't display anything here
+    # either.
+    pygmt.set_display(method="notebook")
+
+
+.. jupyter-execute::
+
+   import pygmt
+
+   fig = pygmt.Figure()
+
+   maxabs = vd.maxabs(grid.b_e)
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   fig.grdimage(
+      grid=grid.b_e,
+      projection="X10c",
+      cmap=True,
+      frame=["WSne+tEasting component", "xa","ya"],
+   )
+   fig.colorbar(frame='+lnT')
+
+   fig.shift_origin(xshift="11c")
+
+   maxabs = vd.maxabs(grid.b_n)
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   fig.grdimage(
+      grid=grid.b_n,
+      projection="X10c",
+      cmap=True,
+      frame=["wSne+tNorthing component", "xa","ya"],
+   )
+   fig.colorbar(frame='+lnT')
+
+   fig.shift_origin(xshift="11c")
+
+   maxabs = vd.maxabs(grid.b_u)
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   fig.grdimage(
+      grid=grid.b_u,
+      projection="X10c",
+      cmap=True,
+      frame=["wSnE+tUpward component", "xa","ya"],
+   )
+   fig.colorbar(frame='+lnT')
+
+   fig.show()
 
 ----
 

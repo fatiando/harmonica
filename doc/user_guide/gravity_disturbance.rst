@@ -89,7 +89,7 @@ Lets plot it:
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
        position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"observed gravity"'],
+       frame=["af", 'y+lmGal', 'x+lObserved gravity'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
@@ -122,7 +122,7 @@ And plot it:
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
        position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"normal gravity"'],
+       frame=["af", 'y+lmGal', 'x+lNormal gravity'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
@@ -143,7 +143,7 @@ And plot it:
    maxabs = vd.maxabs(gravity_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(series=[-maxabs, maxabs], cmap="polar+h")
+   pygmt.makecpt(series=[-maxabs, maxabs], cmap="balance+h0")
    fig.grdimage(
        gravity_disturbance,
        projection="W20c",
@@ -153,7 +153,7 @@ And plot it:
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
        position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"gravity disturbance"'],
+       frame=["af", 'y+lmGal', 'x+lGravity disturbance'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
