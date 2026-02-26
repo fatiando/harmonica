@@ -52,7 +52,7 @@ Things that will *not* be covered in Harmonica:
 - Multi-physics partial differential equation solvers. Use
   [SimPEG](http://www.simpeg.xyz/) or [PyGIMLi](https://www.pygimli.org/)
   instead.
-- Generic grid processing methods (like FFT and standards interpolation).
+- Generic grid processing methods (like FFT and standard interpolation).
   We'll rely on [Verde](https://www.fatiando.org/verde),
   [xrft](https://xrft.readthedocs.io/en/latest/) and
   [xarray](https://xarray.dev) for those.
