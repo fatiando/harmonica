@@ -220,7 +220,7 @@ def _check_ordering(ordering):
     """
     if ordering not in (-1, 1):
         raise NotImplementedError(
-            f"Found an ordering (a.k.a as KX) equal to '{ordering}'. "
+            f"Found an ordering (a.k.a KX) equal to '{ordering}'. "
             + "Only orderings equal to 1 and -1 are supported."
         )
 
@@ -230,7 +230,7 @@ def _check_sign_flag(sign_flag):
     Check if sign_flag value is within the ones we are supporting.
     """
     if sign_flag == 3:
-        msg = "Reading .grd files with colour grids is not currenty supported."
+        msg = "Reading .grd files with colour grids is not currently supported."
         raise NotImplementedError(msg)
 
 
