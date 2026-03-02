@@ -107,7 +107,7 @@ jobs:
           persist-credentials: false
 
       - name: Download built source and wheel packages
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pypi-${{ github.sha }}
           path: dist
