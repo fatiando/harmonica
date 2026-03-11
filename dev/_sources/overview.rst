@@ -62,15 +62,15 @@ Before we get started, here are a few conventions we keep across Harmonica:
 
 .. seealso::
 
-    Checkout the :ref:`coordinate_systems` section for more details on these
-    coordinates systems.
+    Check out the :ref:`coordinate_systems` section for more details on these
+    coordinate systems.
 
 
 The Library
 -----------
 
 Most classes and functions are available through the :mod:`harmonica` top level
-package. Througout the documentation, we'll use ``hm`` as an alias for
+package. Throughout the documentation, we'll use ``hm`` as an alias for
 :mod:`harmonica`.
 
 .. code::
@@ -79,5 +79,5 @@ package. Througout the documentation, we'll use ``hm`` as an alias for
 
 .. seealso::
 
-    Checkout the :ref:`api` for a comprehensive list of the available function
+    Check out the :ref:`api` for a comprehensive list of the available functions
     and classes in Harmonica.

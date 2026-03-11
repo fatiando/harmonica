@@ -37,7 +37,7 @@ We'll use our sample topography data
 (:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
 isostatic Moho depth of Africa.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-78
+.. GENERATED FROM PYTHON SOURCE LINES 27-79
 
 
 
@@ -53,10 +53,10 @@ isostatic Moho depth of Africa.
 
     Topography/bathymetry grid:
     <xarray.Dataset> Size: 2MB
-    Dimensions:     (longitude: 481, latitude: 511)
+    Dimensions:     (latitude: 511, longitude: 481)
     Coordinates:
-      * longitude   (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
       * latitude    (latitude) float64 4kB -40.0 -39.83 -39.67 ... 44.67 44.83 45.0
+      * longitude   (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
     Data variables:
         topography  (latitude, longitude) float64 2MB -3.528e+03 -3.51e+03 ... 33.0
 
@@ -68,11 +68,21 @@ isostatic Moho depth of Africa.
            ...,
            [15167.4 , 15202.8 , 14937.3 , ..., 30151.2 , 30184.8 , 30184.8 ],
            [15347.94, 15503.7 , 15266.52, ..., 30145.6 , 30184.8 , 30184.8 ],
-           [15362.1 , 15517.86, 15252.36, ..., 30151.2 , 30173.6 , 30184.8 ]])
+           [15362.1 , 15517.86, 15252.36, ..., 30151.2 , 30173.6 , 30184.8 ]],
+          shape=(511, 481))
     Coordinates:
-      * longitude  (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
       * latitude   (latitude) float64 4kB -40.0 -39.83 -39.67 ... 44.67 44.83 45.0
-    Attributes:
+      * longitude  (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
+    Attributes: (12/16)
+        Conventions:     CF-1.8
+        title:           Topographic and bathymetric height of ETOPO1 (ice surfac...
+        crs:             WGS84
+        source:          Generated from a spherical harmonic model by the ICGEM C...
+        license:         public domain
+        references:      https://doi.org/10.7289/V5C8276M
+        ...              ...
+        actual_range:    [-10023.   6082.]
+        icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
         isostasy:        Airy
         density_crust:   2800.0
         density_mantle:  3300.0
@@ -86,6 +96,7 @@ isostatic Moho depth of Africa.
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import numpy as np
@@ -142,7 +153,7 @@ isostatic Moho depth of Africa.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.401 seconds)
+   **Total running time of the script:** (0 minutes 0.408 seconds)
 
 
 .. _sphx_glr_download_gallery_isostatic_moho_airy.py:
