@@ -42,41 +42,6 @@ And plot it:
    :func:`verde.project_grid` function and a map projection like the ones
    available in :mod:`pyproj`.
 
-Since all the grid transformations we are going to apply are based on FFT
-methods, we usually want to pad them in order their increase the accuracy.
-We can easily do it through the :func:`xrft.pad` function.
-First we need to define how much padding we want to add along each direction.
-We will add one third of the width and height of the grid to each side:
-
-.. jupyter-execute::
-
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-
-And then we can pad it, but dropping the ``height`` coordinate first (this is
-needed by the :func:`xrft.pad` function):
-
-.. jupyter-execute::
-
-    import xrft
-
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-    magnetic_grid_padded
-
-.. jupyter-execute::
-
-    tmp = magnetic_grid_padded.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Padded magnetic anomaly grid")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
-
-Now that we have the padded grid, we can apply any grid transformation.
-
 
 Upward derivative
 -----------------
@@ -88,15 +53,7 @@ magnetic anomaly grid using the :func:`harmonica.derivative_upward` function:
 
     import harmonica as hm
 
-    deriv_upward = hm.derivative_upward(magnetic_grid_padded)
-    deriv_upward
-
-This grid includes all the padding we added to the original magnetic grid, so
-we better unpad it using :func:`xrft.unpad`:
-
-.. jupyter-execute::
-
-    deriv_upward = xrft.unpad(deriv_upward, pad_width)
+    deriv_upward = hm.derivative_upward(magnetic_grid)
     deriv_upward
 
 And plot it:
@@ -160,14 +117,12 @@ frequency domain:
 
 .. jupyter-execute::
 
-    deriv_easting = hm.derivative_easting(magnetic_grid_padded, method="fft")
-    deriv_easting = xrft.unpad(deriv_easting, pad_width)
+    deriv_easting = hm.derivative_easting(magnetic_grid, method="fft")
     deriv_easting
 
 .. jupyter-execute::
 
-    deriv_northing = hm.derivative_northing(magnetic_grid_padded, method="fft")
-    deriv_northing = xrft.unpad(deriv_northing, pad_width)
+    deriv_northing = hm.derivative_northing(magnetic_grid, method="fft")
     deriv_northing
 
 .. jupyter-execute::
@@ -213,16 +168,8 @@ to upward continue it a height displacement of 500m:
 .. jupyter-execute::
 
     upward_continued = hm.upward_continuation(
-        magnetic_grid_padded, height_displacement=500
+        magnetic_grid, height_displacement=500
     )
-
-This grid includes all the padding we added to the original magnetic grid, so
-we better unpad it using :func:`xrft.unpad`:
-
-.. jupyter-execute::
-
-    upward_continued = xrft.unpad(upward_continued, pad_width)
-    upward_continued
 
 And plot it:
 
@@ -269,11 +216,8 @@ remanence), then we can apply the reduction to the pole passing only the
 .. jupyter-execute::
 
     rtp_grid = hm.reduction_to_pole(
-        magnetic_grid_padded, inclination=inclination, declination=declination
+        magnetic_grid, inclination=inclination, declination=declination
     )
-
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid, pad_width)
     rtp_grid
 
 And plot it:
@@ -296,15 +240,12 @@ magnetization vector of the sources, we can specify the
     mag_inclination, mag_declination = -25, 21
 
     tmp = rtp_grid = hm.reduction_to_pole(
-        magnetic_grid_padded,
+        magnetic_grid,
         inclination=inclination,
         declination=declination,
         magnetization_inclination=mag_inclination,
         magnetization_declination=mag_declination,
     )
-
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid, pad_width)
     rtp_grid
 
 .. jupyter-execute::
@@ -337,23 +278,16 @@ Let's define a cutoff wavelength of 5 kilometers:
 
     cutoff_wavelength = 5e3
 
-Then apply the two filters to our padded magnetic grid:
+Then apply the two filters to our magnetic grid:
 
 .. jupyter-execute::
 
     magnetic_low_freqs = hm.gaussian_lowpass(
-        magnetic_grid_padded, wavelength=cutoff_wavelength
+        magnetic_grid, wavelength=cutoff_wavelength
     )
     magnetic_high_freqs = hm.gaussian_highpass(
-        magnetic_grid_padded, wavelength=cutoff_wavelength
+        magnetic_grid, wavelength=cutoff_wavelength
     )
-
-And unpad them:
-
-.. jupyter-execute::
-
-    magnetic_low_freqs = xrft.unpad(magnetic_low_freqs, pad_width)
-    magnetic_high_freqs = xrft.unpad(magnetic_high_freqs, pad_width)
 
 .. jupyter-execute::
 
@@ -422,11 +356,8 @@ We can apply it through the :func:`harmonica.total_gradient_amplitude` function.
 .. jupyter-execute::
 
     tga_grid = hm.total_gradient_amplitude(
-        magnetic_grid_padded
+        magnetic_grid
     )
-
-    # Unpad the total gradient amplitude grid
-    tga_grid = xrft.unpad(tga_grid, pad_width)
     tga_grid
 
 And plot it:
