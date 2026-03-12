@@ -94,7 +94,7 @@ And project the geographic coordinates to plain Cartesian ones:
     title = "Observed total-field magnetic anomaly"
 
     pygmt.makecpt(
-        cmap="polar+h0",
+        cmap="balance+h0",
         series=(-maxabs, maxabs),
         background=True,
     )
@@ -182,7 +182,7 @@ we are efectivelly upward continuing the data.
 
     title = "Observed magnetic anomaly data"
     pygmt.makecpt(
-        cmap="polar+h0",
+        cmap="balance+h0",
         series=(-maxabs, maxabs),
         background=True)
 
