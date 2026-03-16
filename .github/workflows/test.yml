@@ -160,6 +160,7 @@ jobs:
   # Upload coverage report to codecov
   codecov-upload:
     runs-on: ubuntu-latest
+    environment: codecov
     needs: test
 
     steps:
