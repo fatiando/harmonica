@@ -1,7 +1,7 @@
 # Build, package, test, and clean
 PROJECT=harmonica
 TESTDIR=tmp-test-dir-with-unique-name
-PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules --doctest-continue-on-failure -v
+PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov --doctest-modules --doctest-continue-on-failure -v
 NUMBATEST_ARGS=--doctest-modules -v -m use_numba
 STYLE_CHECK_FILES=$(PROJECT) doc
 GITHUB_ACTIONS=.github/workflows
