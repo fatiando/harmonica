@@ -208,8 +208,6 @@ jobs:
 
       - name: Make an HTML report
         run: |
-          pwd
-          ls -la
           python -m coverage html --skip-empty
 
       - name: Report coverage on the job summary
