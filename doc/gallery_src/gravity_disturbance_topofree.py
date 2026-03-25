@@ -28,6 +28,7 @@ correction.
 
 import boule as bl
 import ensaio
+import numpy as np
 import pygmt
 import xarray as xr
 
@@ -62,7 +63,11 @@ disturbance_topofree = disturbance - bouguer
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik+h0", continuous=True)
+# Get the 99th percentile of the absolute value to use as color scale limits
+cpt_lims = np.quantile(np.abs(disturbance_topofree), 0.99)
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims], background=True)
 
 title = "Topography-free (Bouguer) gravity disturbance of the Earth"
 
@@ -77,6 +82,6 @@ with pygmt.config(FONT_TITLE="14p"):
 
 fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
 fig.show()

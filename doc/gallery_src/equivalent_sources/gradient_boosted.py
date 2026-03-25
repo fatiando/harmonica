@@ -31,6 +31,7 @@ to use them on a small example.
 
 import boule as bl
 import ensaio
+import numpy as np
 import pandas as pd
 import pygmt
 import pyproj
@@ -115,13 +116,14 @@ fig = pygmt.Figure()
 
 title = "Observed gravity disturbance data"
 
+# Get the 99.9th percentile of the absolute value of the point data to use as color
+# scale limits
+cpt_lim = np.quantile(np.abs(data.gravity_disturbance), 0.999)
+
 # Make colormap of data
 pygmt.makecpt(
-    cmap="vik",
-    series=(
-        -data.gravity_disturbance.quantile(0.99),
-        data.gravity_disturbance.quantile(0.99),
-    ),
+    cmap="balance+h0",
+    series=[-cpt_lim, cpt_lim],
     background=True,
 )
 
@@ -137,7 +139,7 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
 fig.shift_origin(xshift=fig_width + 1)
 
@@ -150,6 +152,6 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
 fig.show()

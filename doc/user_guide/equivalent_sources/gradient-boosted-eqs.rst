@@ -173,7 +173,7 @@ And plot it:
     fig = pygmt.Figure()
 
     # Make colormap of data
-    pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+    pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs,))
 
     title = "Observed gravity disturbance data"
     with pygmt.config(FONT_TITLE="14p"):
