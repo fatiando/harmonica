@@ -121,18 +121,12 @@ jobs:
         run: |
           python -m pip install --requirement requirements-full.txt
 
-      - name: Build source and wheel distributions
-        run: |
-          make build
-          echo ""
-          echo "Generated files:"
-          ls -lh dist/
-
-      - name: Install the package
-        run: python -m pip install --no-deps dist/*.whl
-
       - name: List installed packages
         run: python -m pip freeze
+
+      # Needs to be editable for coverage reporting to work
+      - name: Install the package in editable mode
+        run: python -m pip install --no-deps --editable .
 
       - name: Run the tests
         run: |
