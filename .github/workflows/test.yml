@@ -146,7 +146,6 @@ jobs:
 
       - name: Upload coverage as artifact
         uses: actions/upload-artifact@v7
-        if:  ${{ matrix.os  == 'ubuntu-latest' }}
         with:
           path: .coverage.*
           name: coverage_${{ matrix.os }}_${{ matrix.python }}_${{ matrix.dependencies }}
