@@ -12,3 +12,5 @@ exclude Makefile
 exclude .gitignore
 exclude .gitattributes
 exclude environment.yml
+exclude examples
+exclude env
