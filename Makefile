@@ -28,9 +28,10 @@ install:
 test: test_coverage test_numba
 
 test_coverage:
-	# Run a tmp folder to make sure the tests are run on the installed version
+	# Run a tmp folder to make sure the tests are run on the installed version.
+	# Need to specify configuration file for coverage since we change directiory.
 	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --verbose --cov --doctest-modules --doctest-continue-on-failure ../$(PROJECT)
+	cd $(TESTDIR); NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --verbose --cov --cov-config="../pyproject.toml" --doctest-modules --doctest-continue-on-failure ../$(PROJECT)
 	cp $(TESTDIR)/.coverage* .
 	rm -rvf $(TESTDIR)
 
