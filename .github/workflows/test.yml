@@ -41,20 +41,20 @@ jobs:
           - macos-latest
           - windows-latest
         dependencies:
-          # - oldest
+          - oldest
           - latest
-          # - optional
+          - optional
         include:
-          # - dependencies: oldest
-          #   python: "3.10"
+          - dependencies: oldest
+            python: "3.10"
           - dependencies: latest
             python: "3.13"
-          # - dependencies: optional
-          #   python: "3.13"
+          - dependencies: optional
+            python: "3.13"
           # Include tests on macos (x86) with oldest dependencies
-          # - os: macos-15-intel
-          #   dependencies: oldest
-            # python: "3.10"
+          - os: macos-15-intel
+            dependencies: oldest
+            python: "3.10"
 
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
