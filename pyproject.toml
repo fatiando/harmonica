@@ -141,7 +141,7 @@ convention = "numpy"
 [tool.coverage.run]
 source = ["harmonica"]
 omit = [
-    "**/_version.py",
+    "*/_version.py",
     "**/__init__.py",
 ]
 branch = true
