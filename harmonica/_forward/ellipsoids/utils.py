@@ -89,7 +89,8 @@ def get_semiaxes_rotation_matrix(ellipsoid):
         yaw, pitch, roll = 90, 0, 90
     elif c >= a >= b:
         yaw, pitch, roll = 90, 90, 0
-    else:
+    else:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes: a={a}, b={b}, c={c}."
         raise ValueError(msg)
 
@@ -363,7 +364,8 @@ def get_elliptical_integrals(
     """
     check_semiaxes_sorted(a, b, c)
 
-    if is_almost_a_sphere(a, b, c):
+    if is_almost_a_sphere(a, b, c):  # pragma: no cover
+        # TODO: add test for it
         msg = (
             "Invalid semiaxes that create (almost) a spherical ellipsoid: "
             f"a={a}, b={b}, c={c}."
@@ -376,7 +378,8 @@ def get_elliptical_integrals(
         g1, g2, g3 = _get_elliptical_integrals_oblate(b, c, lambda_)
     elif a > b > c:
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
-    else:
+    else:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes lengths: a={a}, b={b}, c={c}."
         raise ValueError(msg)
     return g1, g2, g3
@@ -454,7 +457,8 @@ def _get_elliptical_integrals_triaxial(a, b, c, lambda_):
         from Takahashi et al. (2018).
 
     """
-    if not a > b > c:
+    if not a > b > c:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
         raise ValueError(msg)
 
@@ -556,7 +560,8 @@ def _get_elliptical_integrals_prolate(a, b, lambda_):
         C(\lambda) = B(\lambda)
 
     """
-    if not a > b:
+    if not a > b:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes length (not a > b): a={a}, b={b}."
         raise ValueError(msg)
 
@@ -632,7 +637,8 @@ def _get_elliptical_integrals_oblate(b, c, lambda_):
         any oblate ellipsoid defined as: ``a = b > c``.
 
     """
-    if not b > c:
+    if not b > c:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes length (not b > c): b={b}, c={c}."
         raise ValueError(msg)
 

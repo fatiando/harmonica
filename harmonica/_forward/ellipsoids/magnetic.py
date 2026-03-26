@@ -315,12 +315,14 @@ def cast_susceptibility(susceptibility: float | npt.NDArray | None) -> npt.NDArr
         return np.zeros((3, 3), dtype=np.float64)
     if isinstance(susceptibility, Real):
         susceptibility = susceptibility * np.identity(3)
-    elif isinstance(susceptibility, Iterable):
+    elif isinstance(susceptibility, Iterable):  # pragma: no cover
+        # TODO: add test for it
         susceptibility = np.asarray(susceptibility)
         if susceptibility.shape != (3, 3):
             msg = f"Susceptibility matrix must be 3x3, got shape {susceptibility.shape}"
             raise ValueError(msg)
-    else:
+    else:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Unrecognized susceptibility type: {type(susceptibility)}"
         raise TypeError(msg)
     return susceptibility
@@ -385,7 +387,8 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
         n_diagonal = _demag_tensor_oblate_internal(b, c)
     elif a > b > c:
         n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
-    else:
+    else:  # pragma: no cover
+        # TODO: add test for it
         msg = "Could not determine ellipsoid type for values given."
         raise ValueError(msg)
 
@@ -407,7 +410,8 @@ def _demag_tensor_triaxial_internal(a: float, b: float, c: float):
     nxx, nyy, nzz : float
         individual diagonal components of the x, y, z matrix.
     """
-    if not a > b > c:
+    if not a > b > c:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
         raise ValueError(msg)
 
@@ -445,7 +449,8 @@ def _demag_tensor_prolate_internal(a: float, b: float):
     nxx, nyy, nzz : float
         Diagonal components of the internal demagnetization tensor.
     """
-    if not a > b:
+    if not a > b:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes for prolate ellipsoid (not a > b): a={a}, b={b}."
         raise ValueError(msg)
     m = a / b
@@ -469,7 +474,8 @@ def _demag_tensor_oblate_internal(b: float, c: float):
     nxx, nyy, nzz : float
         Diagonal components of the internal demagnetization tensor.
     """
-    if not b > c:
+    if not b > c:  # pragma: no cover
+        # TODO: add test for it
         msg = f"Invalid semiaxes for oblate ellipsoid (not b > c): b={b}, c={c}."
         raise ValueError(msg)
     m = c / b

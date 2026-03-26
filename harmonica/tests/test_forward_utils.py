@@ -19,7 +19,7 @@ from .._forward.utils import check_coordinate_system, distance, initialize_progr
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 
@@ -136,7 +136,7 @@ def test_initialize_progressbar_import_error(use_progressbar):
     if use_progressbar:
         with pytest.raises(ImportError):  # noqa: SIM117
             with initialize_progressbar(3, use_progressbar) as progress_proxy:
-                pass
+                pass  # pragma: no cover (won't reach this code)
     else:
         with initialize_progressbar(3, use_progressbar) as progress_proxy:
             assert progress_proxy is None

@@ -59,7 +59,7 @@ def fixture_water(request):
     return thickness, density
 
 
-@pytest.fixture(name="water_array", params=("xarray", "xarray"))
+@pytest.fixture(name="water_array", params=("numpy", "xarray"))
 def fixture_water_array(request):
     """
     Return thickness and density for a water layer as array.
@@ -84,7 +84,7 @@ def fixture_sediments(request):
     return thickness, density
 
 
-@pytest.fixture(name="sediments_array", params=("xarray", "xarray"))
+@pytest.fixture(name="sediments_array", params=("numpy", "xarray"))
 def fixture_sediments_array(request):
     """
     Return thickness and density for a sediments layer.

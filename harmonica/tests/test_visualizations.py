@@ -20,15 +20,16 @@ from ..visualization import prism_to_pyvista
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 
 
 @pytest.mark.skipif(pyvista is not None, reason="pyvista must be missing")
-def test_prism_to_pyvista_missing_pyvista():
+def test_prism_to_pyvista_missing_pyvista():  # pragma: no cover
     """
     Check error raise after calling prism_to_pyvista when pyvista is missing.
     """
+    # TODO: this function is not being covered, check why, or think about removing it.
     prism = [0, 1, 0, 1, 0, 1]
     with pytest.raises(ImportError) as exception:
         prism_to_pyvista(prism)

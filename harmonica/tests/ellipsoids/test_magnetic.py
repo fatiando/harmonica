@@ -257,7 +257,7 @@ class TestDemagnetizationEffects:
                 b = c = 50.0
             case "triaxial":
                 a, b, c = 70.0, 60.0, 50.0
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         return a, b, c
 
@@ -370,7 +370,7 @@ class TestMagnetizationVersusSphere:
                 a = radius
                 b = (1 - self.ratio) * a
                 c = (1 - 2 * self.ratio) * a
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         return a, b, c
 
@@ -455,7 +455,7 @@ class TestMagneticFieldVersusSphere:
                 a = self.radius
                 b = (1 - self.ratio) * a
                 c = (1 - 2 * self.ratio) * a
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
@@ -534,7 +534,7 @@ class TestMagneticFieldVersusDipole:
                 c = (1 - 2 * self.ratio) * a
             case "sphere":
                 a = b = c = self.radius
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
@@ -608,7 +608,7 @@ class TestSymmetryOnRotations:
                 b = c = semiminor
             case "triaxial":
                 a, b, c = semimajor, semimiddle, semiminor
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
 
         ellipsoid = Ellipsoid(a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center)

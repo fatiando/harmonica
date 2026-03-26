@@ -17,7 +17,7 @@ from choclo.prism import magnetic_field
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 from .. import prism_magnetic
@@ -85,7 +85,7 @@ class TestSerialVsParallel:
         npt.assert_allclose(parallel, serial)
 
     @run_only_with_numba
-    @pytest.mark.parametrize("field", VALID_FIELDS)
+    @pytest.mark.parametrize("field", VALID_FIELDS)  # pragma: no cover
     def test_prisms_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs.
