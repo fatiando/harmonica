@@ -336,9 +336,9 @@ class DatasetAccessorTesseroidLayer:
         The density of the tesseroids will be assigned from the ``data_var`` chosen
         through the ``density_name`` argument.
         Ignores the tesseroids which ``top`` or ``bottom`` boundaries are
-        ``np.nan``'s. 
-        Tesseroids thinner than a given threshold can be optionally ignored through 
-        the ``thickness_threshold`` argument. 
+        ``np.nan``'s.
+        Tesseroids thinner than a given threshold can be optionally ignored through
+        the ``thickness_threshold`` argument.
         All ``kwargs`` will be passed to :func:`harmonica.tesseroid_gravity`.
 
         Parameters
