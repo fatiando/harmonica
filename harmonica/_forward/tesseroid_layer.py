@@ -551,7 +551,7 @@ def _discard_thin_tesseroids(
         for thin tesseroids.
     """
     bottom, top = tesseroids[:, -2], tesseroids[:, -1]
-    # Mark tesseroids with thickness < threshold  as null tesseroids
+    # Mark tesseroids with thickness < threshold as null tesseroids
     thickness = top - bottom
     null_tesseroids = thickness < thickness_threshold
     # Keep only thick tesseroids and their densities
