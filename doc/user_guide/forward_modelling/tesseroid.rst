@@ -36,6 +36,11 @@ boundaries in the following order: *west*, *east*, *south*, *north*, *bottom*,
 *top*, where the former four are its longitudinal and latitudinal boundaries in
 decimal degrees and the latter two are the two radii given in meters.
 
+These two radii represent the top and bottom surfaces of the tesseroid, and should be
+given as distances from the center of a sphere. Note this is different from the
+vertical boundaries used for **prisms** in Cartesian coordinates, which are given as
+heights above or below some reference level (e.g., mean sea level or an ellipsoid).
+
 .. note::
 
    The :func:`harmonica.tesseroid_gravity` numerically computed the
@@ -45,7 +50,7 @@ decimal degrees and the latter two are the two radii given in meters.
 
 
 Lets define a single tesseroid and compute the gravitational potential
-it generates on a regular grid of computation points located at 10 km  above
+it generates on a regular grid of computation points located at 10 km above
 its *top* boundary.
 
 Get the WGS84 reference ellipsoid from :mod:`boule` so we can obtain its mean
@@ -127,6 +132,15 @@ And finally plot the computed gravitational field
 
    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+   
+   # Plot edges of tesseroid
+   fig.plot(
+      x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+      y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+      pen="1p,red",
+      label="Tesseroid boundary",
+   )
+   fig.legend()
 
    fig.show()
 
@@ -181,6 +195,20 @@ And plot the results:
 
    fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
 
    fig.show()
 
@@ -264,9 +292,22 @@ Finally, lets plot it:
          frame=["a", f"+t{title}"],
          cmap="viridis",
       )
-
    fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
 
    fig.show()
 
