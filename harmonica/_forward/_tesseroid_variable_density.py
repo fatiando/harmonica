@@ -61,7 +61,7 @@ def gauss_legendre_quadrature_variable_density(
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
-        GLQ weigths for each node for each direction.
+        GLQ weights for each node for each direction.
     kernel : func
         Kernel function for the gravitational field of point masses.
 
@@ -136,7 +136,7 @@ def density_based_discretization(tesseroids, density):
     Returns
     -------
     discretized_tesseroids : 2d-array
-        Array containing the coordinates of radially discretized tesseriods.
+        Array containing the coordinates of radially discretized tesseroids.
         Each row of the array will have the boundaries for each new tesseroid.
     """
     discretized_tesseroids = []
