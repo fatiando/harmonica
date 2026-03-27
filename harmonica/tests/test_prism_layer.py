@@ -22,12 +22,12 @@ from .._forward.prism_layer import _discard_thin_prisms
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 

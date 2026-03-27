@@ -18,7 +18,7 @@ from harmonica import Ellipsoid
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 
 
@@ -35,7 +35,7 @@ class TestEllipsoid:
                 a, b, c = 50.0, -1.0, 35.0
             case "c":
                 a, b, c = 50.0, 40.0, -1.0
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         msg = re.escape(f"Invalid value of '{semiaxis}' equal to '{-1.0}'")
         with pytest.raises(ValueError, match=msg):

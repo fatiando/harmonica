@@ -61,7 +61,7 @@ def fixture_data(coordinates, points, masses):
 
 
 @pytest.fixture(name="weights")
-def fixture_weights(data):
+def fixture_weights(data):  # pragma: no cover (only used by @run_only_with_numba)
     """
     Return some sample data.
     """
@@ -168,7 +168,9 @@ def test_gb_eqs_small_data(coordinates_small, data_small, weights):
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates, data):
+def test_gradient_boosted_eqs_single_window(
+    region, points, masses, coordinates, data
+):  # pragma: no cover
     """
     Test GB eq-sources with a single window that covers the whole region.
     """
@@ -184,7 +186,9 @@ def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates,
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, data):
+def test_gradient_boosted_eqs_predictions(
+    region, points, masses, coordinates, data
+):  # pragma: no cover
     """
     Test GB eq-sources predictions.
     """
@@ -205,7 +209,7 @@ def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, d
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_random_state(coordinates, data):
+def test_gradient_boosted_eqs_random_state(coordinates, data):  # pragma: no cover
     """
     Check if EquivalentSourcesGB produces same result by setting random_state.
     """
@@ -296,7 +300,7 @@ def test_dtype(
     weights_none,
     damping,
     dtype,
-):
+):  # pragma: no cover
     """
     Test dtype argument on EquivalentSources.
     """
@@ -325,7 +329,7 @@ def test_dtype(
 
 
 @run_only_with_numba
-def test_gradient_boosted_eqs_float32(coordinates, data):
+def test_gradient_boosted_eqs_float32(coordinates, data):  # pragma: no cover
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid, using float32 as dtype.

@@ -27,6 +27,10 @@ import harmonica as hm
 from harmonica import ellipsoid_magnetic
 from harmonica._forward.ellipsoids import Ellipsoid
 from harmonica._forward.ellipsoids.magnetic import (
+    _demag_tensor_oblate_internal,
+    _demag_tensor_prolate_internal,
+    _demag_tensor_triaxial_internal,
+    cast_susceptibility,
     get_demagnetization_tensor_internal,
     get_magnetisation,
 )
@@ -257,7 +261,7 @@ class TestDemagnetizationEffects:
                 b = c = 50.0
             case "triaxial":
                 a, b, c = 70.0, 60.0, 50.0
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         return a, b, c
 
@@ -370,7 +374,7 @@ class TestMagnetizationVersusSphere:
                 a = radius
                 b = (1 - self.ratio) * a
                 c = (1 - 2 * self.ratio) * a
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         return a, b, c
 
@@ -455,7 +459,7 @@ class TestMagneticFieldVersusSphere:
                 a = self.radius
                 b = (1 - self.ratio) * a
                 c = (1 - 2 * self.ratio) * a
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
@@ -534,7 +538,7 @@ class TestMagneticFieldVersusDipole:
                 c = (1 - 2 * self.ratio) * a
             case "sphere":
                 a = b = c = self.radius
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, susceptibility=self.susceptibility)
         return ellipsoid
@@ -608,7 +612,7 @@ class TestSymmetryOnRotations:
                 b = c = semiminor
             case "triaxial":
                 a, b, c = semimajor, semimiddle, semiminor
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
 
         ellipsoid = Ellipsoid(a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center)
@@ -1161,3 +1165,55 @@ class TestAnisotropy:
                 np.testing.assert_allclose(
                     b_fields[0, i], b_field[i], rtol=5e-4, atol=atol_ratio * maxabs
                 )
+
+
+class TestCastSusceptibility:
+    """
+    Extra tests to the ``cast_susceptibility`` function.
+    """
+
+    def test_invalid_type(self):
+        """Test error after invalid susceptibility type."""
+
+        class InvalidSus:
+            pass
+
+        susceptibility = InvalidSus()
+        msg = re.escape("Unrecognized susceptibility type")
+        with pytest.raises(TypeError, match=msg):
+            cast_susceptibility(susceptibility)
+
+    def test_invalid_shape(self):
+        """Test error after invalid susceptibility with invalid shape."""
+        invalid_shape = (4, 5)
+        susceptibility = np.random.default_rng(seed=1212).uniform(size=invalid_shape)
+        msg = re.escape("Susceptibility matrix must be 3x3")
+        with pytest.raises(ValueError, match=msg):
+            cast_susceptibility(susceptibility)
+
+
+class TestExtraErrors:
+    """
+    Test extra error messages in private functions.
+
+    Some of these errors are never going to be reached by calling the public functions,
+    but we keep them as fail-safes. Adding tests for them here to get coverage on them.
+    """
+
+    def test_invalid_demag_tensor_triaxial_internal(self):
+        a, b, c = 2.0, 2.0, 1.0
+        msg = re.escape("Invalid semiaxes length (not a > b > c)")
+        with pytest.raises(ValueError, match=msg):
+            _demag_tensor_triaxial_internal(a, b, c)
+
+    def test_invalid_demag_tensor_prolate_internal(self):
+        a, b = 1.0, 2.0
+        msg = re.escape("Invalid semiaxes for prolate ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            _demag_tensor_prolate_internal(a, b)
+
+    def test_invalid_demag_tensor_oblate_internal(self):
+        b, c = 1.0, 2.0
+        msg = re.escape("Invalid semiaxes for oblate ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            _demag_tensor_oblate_internal(b, c)
