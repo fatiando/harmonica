@@ -75,7 +75,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
 
     See Also
     --------
-    harmonica.DatasetAccessorsTesseroidLayer
+    harmonica.DatasetAccessorTesseroidLayer
 
     Examples
     --------
@@ -183,11 +183,11 @@ def _check_overlap(longitude):
 @xr.register_dataset_accessor("tesseroid_layer")
 class DatasetAccessorTesseroidLayer:
     """
-    Define dataset accessor for layer of tesseroids.
+    Defines dataset accessor for layer of tesseroids.
 
     .. warning::
 
-        This class in not intended to be initialized.
+        This class is not intended to be initialized.
         Use the `tesseroid_layer` accessor for accessing the methods and
         attributes of this class.
 
@@ -330,7 +330,8 @@ class DatasetAccessorTesseroidLayer:
         The density of the tesseroids will be assigned from the ``data_var`` chosen
         through the ``density_name`` argument.
         Ignores the tesseroids which ``top`` or ``bottom`` boundaries are
-        ``np.nan``s.
+        ``np.nan``'s. 
+        All ``kwargs`` will be passed to :func:`harmonica.tesseroid_gravity`.
 
         Parameters
         ----------
