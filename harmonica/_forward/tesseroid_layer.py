@@ -14,7 +14,7 @@ import numpy as np
 import verde as vd
 import xarray as xr
 
-from .tesseroid import tesseroid_gravity
+from .tesseroid_gravity import tesseroid_gravity
 
 
 def tesseroid_layer(coordinates, surface, reference, properties=None):
