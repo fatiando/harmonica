@@ -12,13 +12,13 @@ import pytest
 
 from harmonica import Ellipsoid
 from harmonica._forward.ellipsoids.utils import (
+    _get_elliptical_integrals_oblate,
+    _get_elliptical_integrals_prolate,
+    _get_elliptical_integrals_triaxial,
     calculate_lambda,
+    get_elliptical_integrals,
     get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
-    get_elliptical_integrals,
-    _get_elliptical_integrals_triaxial,
-    _get_elliptical_integrals_prolate,
-    _get_elliptical_integrals_oblate,
 )
 
 
