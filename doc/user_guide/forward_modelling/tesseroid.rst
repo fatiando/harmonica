@@ -39,7 +39,7 @@ decimal degrees and the latter two are the two radii given in meters.
 These two radii represent the top and bottom surfaces of the tesseroid, and should be
 given as distances from the center of the Earth. Note this is different from the
 vertical boundaries used for **prisms** in Cartesian coordinates, which are given as
-heights above or below some reference level (e.g., mean sea level or an ellipsoid).
+heights above or below some reference level (e.g., mean sea level or a reference ellipsoid).
 
 .. note::
 
