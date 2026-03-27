@@ -296,7 +296,9 @@ class TestString:
         ellipsoid.susceptibility = sus
         # Grab the susceptibility tensor lines
         matrix_lines, record = [], False
-        for line in str(ellipsoid).splitlines():
+        for line in str(ellipsoid).splitlines():  # pragma: no cover
+            # No cover test here. Since the for loop doesn't cover all lines due to the
+            # break, coverage marks this as non-covered.
             if "susceptibility" in line:
                 record = True
                 continue
