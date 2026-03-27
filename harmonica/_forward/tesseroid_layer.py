@@ -517,7 +517,6 @@ class DatasetAccessorTesseroidLayer:
         ) = self._get_tesseroid_horizontal_boundaries(center_longitude, center_latitude)
         bottom = self._obj.bottom.values[indices]
         top = self._obj.top.values[indices]
-        # return longitude_w, longitude_e, latitude_s, latitude_n, bottom, top
         return longitude_w, longitude_e, latitude_s, latitude_n, bottom, top
 
 
