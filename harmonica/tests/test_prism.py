@@ -30,7 +30,7 @@ from choclo.prism import (
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 from .. import bouguer_correction
@@ -244,7 +244,7 @@ class TestAgainstChoclo:
 
 
 @run_only_with_numba
-def test_laplace():
+def test_laplace():  # pragma: no cover
     """
     Test if the diagonal components satisfy Laplace equation.
     """

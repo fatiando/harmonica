@@ -20,11 +20,11 @@ from ..visualization import prism_to_pyvista
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 
 
-@pytest.mark.skipif(pyvista is not None, reason="pyvista must be missing")
+@patch("harmonica.visualization._prism.pyvista", None)
 def test_prism_to_pyvista_missing_pyvista():
     """
     Check error raise after calling prism_to_pyvista when pyvista is missing.

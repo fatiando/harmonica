@@ -31,7 +31,7 @@ from .utils import run_only_with_numba
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
@@ -356,7 +356,9 @@ def test_single_tesseroid_against_constant_density(field):
 # ----------------------------
 
 
-def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term):
+def analytical_spherical_shell_linear(
+    radius, bottom, top, slope, constant_term
+):  # pragma: no cover (only used by @run_only_with_numba tests)
     """
     Analytical solutions of a spherical shell with linear density.
     """
@@ -373,7 +375,7 @@ def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term)
 
 def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
-):
+):  # pragma: no cover (only used by @run_only_with_numba tests)
     r"""
     Analytical solutions of a spherical shell with exponential density.
 
@@ -408,7 +410,9 @@ def analytical_spherical_shell_exponential(
     return data
 
 
-def build_spherical_shell(bottom, top, shape=(6, 12)):
+def build_spherical_shell(
+    bottom, top, shape=(6, 12)
+):  # pragma: no cover (only used by @run_only_with_numba tests)
     """
     Return a set of tesseroids modelling a spherical shell.
 
@@ -437,7 +441,7 @@ def build_spherical_shell(bottom, top, shape=(6, 12)):
 @run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
-def test_spherical_shell_linear_density(field, thickness):
+def test_spherical_shell_linear_density(field, thickness):  # pragma: no cover
     """
     Test numerical results against analytical solution for linear density.
     """
@@ -477,7 +481,9 @@ def test_spherical_shell_linear_density(field, thickness):
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
 @pytest.mark.parametrize("b_factor", [5, 100])
-def test_spherical_shell_exponential_density(field, thickness, b_factor):
+def test_spherical_shell_exponential_density(
+    field, thickness, b_factor
+):  # pragma: no cover
     """
     Test numerical results against analytical solution for exponential density.
     """

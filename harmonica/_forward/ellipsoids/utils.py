@@ -89,9 +89,9 @@ def get_semiaxes_rotation_matrix(ellipsoid):
         yaw, pitch, roll = 90, 0, 90
     elif c >= a >= b:
         yaw, pitch, roll = 90, 90, 0
-    else:
-        msg = f"Invalid semiaxes: a={a}, b={b}, c={c}."
-        raise ValueError(msg)
+    else:  # pragma: no cover
+        # This branch cannot be reached
+        raise ValueError()
 
     matrix = get_rotation_matrix(yaw, pitch, roll).astype(int)
     return matrix
@@ -376,9 +376,9 @@ def get_elliptical_integrals(
         g1, g2, g3 = _get_elliptical_integrals_oblate(b, c, lambda_)
     elif a > b > c:
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
-    else:
-        msg = f"Invalid semiaxes lengths: a={a}, b={b}, c={c}."
-        raise ValueError(msg)
+    else:  # pragma: no cover
+        # This branch is not reachable
+        raise ValueError()
     return g1, g2, g3
 
 

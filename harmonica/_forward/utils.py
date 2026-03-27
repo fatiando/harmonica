@@ -17,7 +17,7 @@ from scipy.spatial.transform import Rotation
 # Attempt to import numba_progress
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 

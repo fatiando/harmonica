@@ -104,7 +104,7 @@ def load_oasis_montaj_grid(fname):
         order = "C"
         shape = (header["shape_v"], header["shape_e"])
         spacing = (header["spacing_v"], header["spacing_e"])
-    elif header["ordering"] == -1:
+    elif header["ordering"] == -1:  # pragma: no cover
         order = "F"
         shape = (header["shape_e"], header["shape_v"])
         spacing = (header["spacing_e"], header["spacing_v"])
@@ -249,29 +249,29 @@ def _get_data_type(n_bytes_per_element, sign_flag):
             + f"of '{n_bytes_per_element}'. "
             "Only values equal to 1, 2, 4 and 8 are valid, "
             + "along with their compressed counterparts (1025, 1026, 1028, 1032)."
-        )
+        )  # pragma: no cover
     # Shift the n_bytes_per_element in case of compressed grids
     if n_bytes_per_element > 1024:
         n_bytes_per_element -= 1024
     # Determine the data type of the grid elements
     if n_bytes_per_element == 1:
-        if sign_flag == 0:
+        if sign_flag == 0:  # pragma: no cover
             data_type = "B"  # unsigned char
-        elif sign_flag == 1:
+        elif sign_flag == 1:  # pragma: no cover
             data_type = "b"  # signed char
     elif n_bytes_per_element == 2:
-        if sign_flag == 0:
+        if sign_flag == 0:  # pragma: no cover
             data_type = "H"  # unsigned short
-        elif sign_flag == 1:
+        elif sign_flag == 1:  # pragma: no cover
             data_type = "h"  # signed short
     elif n_bytes_per_element == 4:
-        if sign_flag == 0:
+        if sign_flag == 0:  # pragma: no cover
             data_type = "I"  # unsigned int
         elif sign_flag == 1:
             data_type = "i"  # signed int
-        elif sign_flag == 2:
+        elif sign_flag == 2:  # pragma: no cover
             data_type = "f"  # float
-    elif n_bytes_per_element == 8:
+    elif n_bytes_per_element == 8:  # pragma: no cover
         data_type = "d"
     return data_type
 

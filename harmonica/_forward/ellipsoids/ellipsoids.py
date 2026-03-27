@@ -18,7 +18,7 @@ from ..utils import get_rotation_matrix
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 
 

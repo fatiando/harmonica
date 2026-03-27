@@ -12,7 +12,11 @@ import pytest
 
 from harmonica import Ellipsoid
 from harmonica._forward.ellipsoids.utils import (
+    _get_elliptical_integrals_oblate,
+    _get_elliptical_integrals_prolate,
+    _get_elliptical_integrals_triaxial,
     calculate_lambda,
+    get_elliptical_integrals,
     get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
 )
@@ -180,3 +184,44 @@ class TestSemiaxesRotationMatrix:
 def test_is_almost_a_sphere(a, b, c, expected):
     """Test the ``is_almost_a_sphere`` function."""
     assert is_almost_a_sphere(a, b, c) == expected
+
+
+class TestExtraErrors:
+    """
+    Test extra error messages in private functions.
+
+    Some of these errors are never going to be reached by calling the public functions,
+    but we keep them as fail-safes. Adding tests for them here to get coverage on them.
+    """
+
+    @pytest.mark.parametrize(
+        "semiaxes",
+        [
+            (1.0, 1.0, 1.0),
+            (1.00003, 1.00002, 1.00001),
+        ],
+        ids=["sphere", "almost_sphere"],
+    )
+    def test_elliptical_integrals_error_on_sphere(self, semiaxes):
+        a, b, c = semiaxes
+        msg = re.escape("Invalid semiaxes that create (almost) a spherical ellipsoid")
+        with pytest.raises(ValueError, match=msg):
+            get_elliptical_integrals(a, b, c, lambda_=2.0)  # random lambda
+
+    def test_elliptical_integrals_triaxial(self):
+        a, b, c = 2.0, 2.0, 1.0
+        msg = re.escape("Invalid semiaxes length (not a > b > c)")
+        with pytest.raises(ValueError, match=msg):
+            _get_elliptical_integrals_triaxial(a, b, c, lambda_=2.0)  # random lambda
+
+    def test_elliptical_integrals_prolate(self):
+        a, b = 1.0, 2.0
+        msg = re.escape("Invalid semiaxes length (not a > b)")
+        with pytest.raises(ValueError, match=msg):
+            _get_elliptical_integrals_prolate(a, b, lambda_=2.0)  # random lambda
+
+    def test_elliptical_integrals_oblate(self):
+        b, c = 1.0, 2.0
+        msg = re.escape("Invalid semiaxes length (not b > c)")
+        with pytest.raises(ValueError, match=msg):
+            _get_elliptical_integrals_oblate(b, c, lambda_=2.0)  # random lambda

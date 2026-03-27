@@ -51,7 +51,7 @@ def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
         case "sphere":
             a = 3.2
             b, c = a, a
-        case _:
+        case _:  # pragma: no cover
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
 
@@ -185,7 +185,7 @@ class TestSymmetry:
                 radius = sphere.a * 0.5
             case "external":
                 radius = sphere.a * 1.5
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
 
         easting = radius * np.cos(phi) * np.cos(theta)
@@ -370,7 +370,7 @@ class TestEllipsoidVsSphere:
                 a = self.radius
                 b = (1 - self.ratio) * a
                 c = (1 - 2 * self.ratio) * a
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
         return ellipsoid
@@ -437,7 +437,7 @@ class TestSymmetryOnRotations:
             case "triaxial":
                 a, b, c = semimajor, semimiddle, semiminor
                 c = b
-            case _:
+            case _:  # pragma: no cover
                 raise ValueError()
         ellipsoid = Ellipsoid(
             a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, density=density

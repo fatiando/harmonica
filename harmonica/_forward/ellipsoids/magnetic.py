@@ -385,9 +385,9 @@ def get_demagnetization_tensor_internal(a: float, b: float, c: float):
         n_diagonal = _demag_tensor_oblate_internal(b, c)
     elif a > b > c:
         n_diagonal = _demag_tensor_triaxial_internal(a, b, c)
-    else:
-        msg = "Could not determine ellipsoid type for values given."
-        raise ValueError(msg)
+    else:  # pragma: no cover
+        # Branch not reachable
+        raise ValueError()
 
     n = np.diag(n_diagonal)
     return n
