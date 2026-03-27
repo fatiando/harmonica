@@ -90,9 +90,8 @@ def get_semiaxes_rotation_matrix(ellipsoid):
     elif c >= a >= b:
         yaw, pitch, roll = 90, 90, 0
     else:  # pragma: no cover
-        # TODO: add test for it
-        msg = f"Invalid semiaxes: a={a}, b={b}, c={c}."
-        raise ValueError(msg)
+        # This branch cannot be reached
+        raise ValueError()
 
     matrix = get_rotation_matrix(yaw, pitch, roll).astype(int)
     return matrix
@@ -364,8 +363,7 @@ def get_elliptical_integrals(
     """
     check_semiaxes_sorted(a, b, c)
 
-    if is_almost_a_sphere(a, b, c):  # pragma: no cover
-        # TODO: add test for it
+    if is_almost_a_sphere(a, b, c):
         msg = (
             "Invalid semiaxes that create (almost) a spherical ellipsoid: "
             f"a={a}, b={b}, c={c}."
@@ -379,9 +377,8 @@ def get_elliptical_integrals(
     elif a > b > c:
         g1, g2, g3 = _get_elliptical_integrals_triaxial(a, b, c, lambda_)
     else:  # pragma: no cover
-        # TODO: add test for it
-        msg = f"Invalid semiaxes lengths: a={a}, b={b}, c={c}."
-        raise ValueError(msg)
+        # This branch is not reachable
+        raise ValueError()
     return g1, g2, g3
 
 
@@ -457,8 +454,7 @@ def _get_elliptical_integrals_triaxial(a, b, c, lambda_):
         from Takahashi et al. (2018).
 
     """
-    if not a > b > c:  # pragma: no cover
-        # TODO: add test for it
+    if not a > b > c:
         msg = f"Invalid semiaxes length (not a > b > c): a={a}, b={b}, c={c}."
         raise ValueError(msg)
 
@@ -560,8 +556,7 @@ def _get_elliptical_integrals_prolate(a, b, lambda_):
         C(\lambda) = B(\lambda)
 
     """
-    if not a > b:  # pragma: no cover
-        # TODO: add test for it
+    if not a > b:
         msg = f"Invalid semiaxes length (not a > b): a={a}, b={b}."
         raise ValueError(msg)
 
@@ -637,8 +632,7 @@ def _get_elliptical_integrals_oblate(b, c, lambda_):
         any oblate ellipsoid defined as: ``a = b > c``.
 
     """
-    if not b > c:  # pragma: no cover
-        # TODO: add test for it
+    if not b > c:
         msg = f"Invalid semiaxes length (not b > c): b={b}, c={c}."
         raise ValueError(msg)
 
