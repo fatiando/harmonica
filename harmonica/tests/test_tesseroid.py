@@ -25,7 +25,7 @@ from .._forward._tesseroid_utils import (
     _split_tesseroid,
     _tesseroid_dimensions,
 )
-from .._forward.tesseroid import (
+from .._forward.tesseroid_gravity import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,

@@ -61,7 +61,7 @@ def gauss_legendre_quadrature(
     glq_nodes : list
         Unscaled location of GLQ nodes for each direction.
     glq_weights : list
-        GLQ weigths for each node for each direction.
+        GLQ weights for each node for each direction.
     kernel : func
         Kernel function for the gravitational field of point masses.
 
