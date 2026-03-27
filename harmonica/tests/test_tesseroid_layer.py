@@ -9,6 +9,7 @@ Test tesseroids layer.
 """
 
 import warnings
+from unittest.mock import patch
 
 import boule
 import numpy as np
@@ -19,6 +20,11 @@ import xarray as xr
 
 from .. import tesseroid_gravity, tesseroid_layer
 from .._forward.tesseroid_layer import _discard_thin_tesseroids
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 @pytest.fixture
@@ -462,6 +468,49 @@ def test_tesseroid_layer_gravity_density_nans(
         result,
         tesseroid_gravity(grid_coords, tesseroids, rho, field=field),
     )
+
+
+@pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
+@pytest.mark.use_numba
+def test_progress_bar(dummy_layer):
+    """
+    Check if forward gravity results with and without progress bar match.
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    coordinates = vd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    )
+    layer = tesseroid_layer(
+        (longitude, latitude), surface, reference, properties={"density": density}
+    )
+    result_progress_true = layer.tesseroid_layer.gravity(
+        coordinates, field="g_z", progressbar=True
+    )
+
+    result_progress_false = layer.tesseroid_layer.gravity(
+        coordinates, field="g_z", progressbar=False
+    )
+    npt.assert_allclose(result_progress_true, result_progress_false)
+
+
+@patch("harmonica._forward.utils.ProgressBar", None)
+def test_numba_progress_missing_error(dummy_layer):
+    """
+    Check if error is raised when progressbar=True and numba_progress package
+    is not installed.
+    """
+    (longitude, latitude), surface, reference, density = dummy_layer
+    coordinates = vd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    )
+    layer = tesseroid_layer(
+        (longitude, latitude), surface, reference, properties={"density": density}
+    )
+    # Check if error is raised
+    with pytest.raises(ImportError):
+        layer.tesseroid_layer.gravity(coordinates, field="g_z", progressbar=True)
+
+
 def test_gravity_discarded_thin_tesseroids(dummy_layer):
     """
     Check if gravity of tesseroid layer after discarding thin tesseroids is correct.
