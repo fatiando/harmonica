@@ -120,7 +120,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
     >>> # Get the boundaries of one of the tesseroids
     >>> tesseroid = tesseroids.tesseroid_layer.get_tesseroid((0, 2))
     >>> list(float(b) for b in tesseroid)
-    [3.75, 6.25, 1.0, 3.0, 6378137.0, 6378138.0]
+    [3.75, 6.25, 1.0, 3.0, 6378111.171460509, 6378113.171460509]
     """
     dims = ("latitude", "longitude")
     # Initialize data and data_names as None
