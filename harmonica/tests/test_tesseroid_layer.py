@@ -23,7 +23,7 @@ from .._forward.tesseroid_layer import _discard_thin_tesseroids
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 
@@ -528,22 +528,27 @@ def test_gravity_discarded_thin_tesseroids(dummy_layer):
         coordinates, field="g_z", thickness_threshold=0
     )
     npt.assert_allclose(gravity_tesseroids_nothres, gravity_tesseroids_0thres)
-    # Check that gravity from manually removed tesseroids is the same as using a
-    # threshold
-    manually_removed_tesseroids = []
-    for _, j in enumerate(layer.tesseroid_layer._to_tesseroids()):
-        if abs(j[5] - j[4]) >= 5.0:
-            manually_removed_tesseroids.append(j)
-    gravity_manually_removed = tesseroid_gravity(
+
+    # Check that gravity from manually removed tesseroids is the same as w/ threshold
+    # -------------------------------------------------------------------------------
+    # Introduce some thin tesseroids in the layer
+    threshold = 500.0
+    layer.top[:, :3] = layer.bottom[:, :3] + threshold - 1
+    thick_tesseroids = [
+        tess
+        for tess in layer.tesseroid_layer._to_tesseroids()
+        if abs(tess[5] - tess[4]) >= threshold
+    ]
+    gravity_manual = tesseroid_gravity(
         coordinates,
-        tesseroids=manually_removed_tesseroids,
-        density=[2670] * len(manually_removed_tesseroids),
+        tesseroids=thick_tesseroids,
+        density=2670 * np.ones(len(thick_tesseroids)),
         field="g_z",
     )
-    gravity_threshold_removed = layer.tesseroid_layer.gravity(
-        coordinates, field="g_z", thickness_threshold=5
+    gravity_layer = layer.tesseroid_layer.gravity(
+        coordinates, field="g_z", thickness_threshold=threshold
     )
-    npt.assert_allclose(gravity_manually_removed, gravity_threshold_removed)
+    npt.assert_allclose(gravity_manual, gravity_layer)
 
 
 def test_discard_thin_tesseroids():
@@ -554,10 +559,10 @@ def test_discard_thin_tesseroids():
     # (longitude_w, longitude_e, latitude_s, latitude_n,, bottom, top)
     tesseroid_boundaries = np.array(
         [
-            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
-            [5000.0, 15000.0, -5000.0, 5000.0, 0.0, 55.01],
-            [-5000.0, 5000.0, 5000.0, 15000.0, 0.0, 35.0],
-            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+            [-10.0, 10.0, -10.0, 10.0, 0.0, 55.1],
+            [10.0, 30.0, -10.0, 10.0, 0.0, 55.01],
+            [-10.0, 10.0, 10.0, 30.0, 0.0, 35.0],
+            [10.0, 30.0, 10.0, 30.0, 0.0, 84.0],
         ]
     )
 
@@ -575,8 +580,8 @@ def test_discard_thin_tesseroids():
     # manually remove tesseroids and densities of thin tesseroids
     expected_tesseroids = np.array(
         [
-            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
-            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
+            [-10.0, 10.0, -10.0, 10.0, 0.0, 55.1],
+            [10.0, 30.0, 10.0, 30.0, 0.0, 84.0],
         ]
     )
     expected_densities = np.array([2306, 2069])
