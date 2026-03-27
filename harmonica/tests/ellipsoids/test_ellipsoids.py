@@ -296,8 +296,7 @@ class TestString:
         ellipsoid.susceptibility = sus
         # Grab the susceptibility tensor lines
         matrix_lines, record = [], False
-        for line in str(ellipsoid).splitlines():  # pragma: no cover
-            # TODO: check why this is not being fully covered
+        for line in str(ellipsoid).splitlines():
             if "susceptibility" in line:
                 record = True
                 continue
