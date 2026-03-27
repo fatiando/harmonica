@@ -223,7 +223,7 @@ def test_tesseroid_layer_no_regular_grid(
         )
 
 
-def test_tesseroi_layer_attibutes():
+def test_tesseroid_layer_attributes():
     """
     Check attributes of the DatasetAccessorTesseroidLayer class.
     """
