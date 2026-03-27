@@ -37,7 +37,7 @@ boundaries in the following order: *west*, *east*, *south*, *north*, *bottom*,
 decimal degrees and the latter two are the two radii given in meters.
 
 These two radii represent the top and bottom surfaces of the tesseroid, and should be
-given as distances from the center of a sphere. Note this is different from the
+given as distances from the center of the Earth. Note this is different from the
 vertical boundaries used for **prisms** in Cartesian coordinates, which are given as
 heights above or below some reference level (e.g., mean sea level or an ellipsoid).
 
