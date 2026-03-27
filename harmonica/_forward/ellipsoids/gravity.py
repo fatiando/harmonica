@@ -16,10 +16,13 @@ import numpy.typing as npt
 from choclo.constants import GRAVITATIONAL_CONST
 
 from ...errors import NoPhysicalPropertyWarning
-from ...typing import Coordinates, Ellipsoid
+from ...typing import Coordinates
+from .ellipsoids import Ellipsoid
 from .utils import (
     calculate_lambda,
+    check_semiaxes_sorted,
     get_elliptical_integrals,
+    get_semiaxes_rotation_matrix,
     is_almost_a_sphere,
     is_internal,
 )
@@ -53,10 +56,9 @@ def ellipsoid_gravity(
         List of arrays containing the ``easting``, ``northing`` and ``upward``
         coordinates of the computation points defined on a Cartesian coordinate
         system. All coordinates should be in meters.
-    ellipsoid : ellipsoid or list of ellipsoids
-        Ellipsoidal body represented by an instance of
-        :class:`harmonica.TriaxialEllipsoid`, :class:`harmonica.ProlateEllipsoid`,
-        or :class:`harmonica.OblateEllipsoid`, or a list of them.
+    ellipsoid : harmonica.Ellipsoid or list of harmonica.Ellipsoid
+        Ellipsoidal body represented by an instance of :class:`harmonica.Ellipsoid` or
+        a list of them.
 
     Returns
     -------
@@ -97,19 +99,25 @@ def ellipsoid_gravity(
         origin_e, origin_n, origin_u = ellipsoid.center
         coords_shifted = (easting - origin_e, northing - origin_n, upward - origin_u)
 
-        # Create rotation matrix
-        r = ellipsoid.rotation_matrix
+        # Sort the semiaxes (a >= b >= c)
+        a, b, c = sorted((ellipsoid.a, ellipsoid.b, ellipsoid.c), reverse=True)
+
+        # Get rotation matrix to produce sorted semiaxes in local coordinate system
+        semiaxes_rotation_matrix = get_semiaxes_rotation_matrix(ellipsoid)
+
+        # Combine the two rotation matrices
+        rotation = semiaxes_rotation_matrix.T @ ellipsoid.rotation_matrix.T
 
         # Rotate observation points
-        x, y, z = r.T @ np.vstack(coords_shifted)
+        x, y, z = rotation @ np.vstack(coords_shifted)
 
         # Calculate gravity components on local coordinate system
         gravity_ellipsoid = _compute_gravity_ellipsoid(
-            x, y, z, ellipsoid.a, ellipsoid.b, ellipsoid.c, ellipsoid.density
+            x, y, z, a, b, c, ellipsoid.density
         )
 
         # project onto upward unit vector, axis U
-        ge_i, gn_i, gu_i = r @ np.vstack(gravity_ellipsoid)
+        ge_i, gn_i, gu_i = rotation.T @ np.vstack(gravity_ellipsoid)
 
         # sum contributions from each ellipsoid
         ge += ge_i
@@ -140,20 +148,21 @@ def _compute_gravity_ellipsoid(
 
     Parameters
     ----------
-    x, y, z : arrays
+    x, y, z : (n,) array
         Observation coordinates in the local ellipsoid reference frame.
-    a, b, c : floats
-        Semiaxis lengths of the ellipsoid. Must conform to the constraints of
-        the chosen ellipsoid type.
+    a, b, c : float
+        Semi-axes lengths of the ellipsoid sorted such as ``a >= b >= c``.
     density : float
         Density of the ellipsoidal body in kg/m³.
 
     Returns
     -------
-    gx, gy, gz : arrays
+    gx, gy, gz : (n,) array
         Gravity acceleration components in the local coordinate system for the
         ellipsoid. Accelerations are given in SI units (m/s^2).
     """
+    check_semiaxes_sorted(a, b, c)
+
     # Mask internal points
     internal = is_internal(x, y, z, a, b, c)
 

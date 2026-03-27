@@ -22,12 +22,8 @@ import pytest
 import verde as vd
 
 from harmonica import ellipsoid_gravity, point_gravity
-from harmonica._forward.ellipsoids import (
-    OblateEllipsoid,
-    ProlateEllipsoid,
-    Sphere,
-    TriaxialEllipsoid,
-)
+from harmonica._forward.ellipsoids import Ellipsoid
+from harmonica._forward.ellipsoids.utils import SEMIAXES_RTOL
 from harmonica.errors import NoPhysicalPropertyWarning
 
 
@@ -46,49 +42,21 @@ def build_ellipsoid(ellipsoid_type, *, center=(0, 0, 0), density=None):
     match ellipsoid_type:
         case "triaxial":
             a, b, c = 3.2, 2.1, 1.3
-            ellipsoid = TriaxialEllipsoid(
-                a=a, b=b, c=c, yaw=0, pitch=0, roll=0, center=center, density=density
-            )
         case "prolate":
             a, b = 3.2, 2.1
-            ellipsoid = ProlateEllipsoid(
-                a=a, b=b, yaw=0, pitch=0, center=center, density=density
-            )
+            c = b
         case "oblate":
             a, b = 2.2, 3.1
-            ellipsoid = OblateEllipsoid(
-                a=a, b=b, yaw=0, pitch=0, center=center, density=density
-            )
+            c = b
         case "sphere":
             a = 3.2
-            ellipsoid = Sphere(a=a, center=center, density=density)
+            b, c = a, a
         case _:
             msg = f"Invalid ellipsoid type: {ellipsoid_type}"
             raise ValueError(msg)
+
+    ellipsoid = Ellipsoid(a, b, c, center=center, density=density)
     return ellipsoid
-
-
-def test_degenerate_ellipsoid_cases():
-    """
-    Test cases where the ellipsoid axes lengths are close to the boundary of
-    accepted values.
-
-    """
-    # ellipsoids take (a, b, #c, yaw, pitch, #roll, center)
-    a, b, c = 5, 4.99999999, 4.99999998
-    yaw, pitch, roll = 0, 0, 0
-    center = (0, 0, 0)
-    density = 2000
-    tri = TriaxialEllipsoid(a, b, c, yaw, pitch, roll, center, density=density)
-    pro = ProlateEllipsoid(a, b, yaw, pitch, center, density=density)
-    obl = OblateEllipsoid(b, a, yaw, pitch, center, density=density)
-    coordinates = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
-    )
-
-    _, _, _ = ellipsoid_gravity(coordinates, tri)
-    _, _, _ = ellipsoid_gravity(coordinates, pro)
-    _, _, _ = ellipsoid_gravity(coordinates, obl)
 
 
 def test_opposite_planes():
@@ -99,12 +67,8 @@ def test_opposite_planes():
 
     """
     a, b, c = (4, 3, 2)  # triaxial ellipsoid
-    yaw, pitch, roll = 90, 0, 0
-    center = (0, 0, 0)
     density = 2000
-    triaxial_example = TriaxialEllipsoid(
-        a, b, c, yaw, pitch, roll, center, density=density
-    )
+    triaxial_example = Ellipsoid(a, b, c, density=density)
 
     # define observation points (2D grid) at surface height (z axis,
     # 'Upward') = 5
@@ -130,9 +94,7 @@ def test_int_ext_boundary():
 
     # compare a set value apart
     a, b, c = (5, 4, 3)
-    ellipsoid = TriaxialEllipsoid(
-        a, b, c, yaw=0, pitch=0, roll=0, center=(0, 0, 0), density=2000
-    )
+    ellipsoid = Ellipsoid(a, b, c, density=2000)
 
     e = np.array([[4.9999999, 5.00000001]])
     n = np.array([[0.0, 0.0]])
@@ -330,7 +292,7 @@ class TestSphereVsPointSource:
         radius = 50.0
         center = (10, -29, 105)
         density = 200.0
-        sphere = Sphere(radius, center=center, density=density)
+        sphere = Ellipsoid(radius, radius, radius, center=center, density=density)
 
         # Build a 3d grid of observation points centered in (0, 0, 0)
         n = 51
@@ -374,55 +336,43 @@ class TestEllipsoidVsSphere:
     center = (28, 19, -50)
     density = 200.0
 
-    # Difference between ellipsoid's semiaxes.
-    # It should be small compared to the sphere radius, so the ellipsoid approximates
-    # a sphere.
-    delta = 1e-4
+    # Ratio between ellipsoid's semiaxes, defined as ratio = | a - b | /  max(a, b).
+    # Make it small enough so ellipsoids approximate a sphere, but not too small that
+    # might trigger the fixes for numerical uncertainties.
+    ratio = 1e-4
+    assert ratio > SEMIAXES_RTOL
 
     @pytest.fixture
     def sphere(self):
         """Sphere used to compare gravity fields."""
-        return Sphere(self.radius, self.center, density=self.density)
+        return Ellipsoid(
+            self.radius,
+            self.radius,
+            self.radius,
+            center=self.center,
+            density=self.density,
+        )
 
     @pytest.fixture(params=["oblate", "prolate", "triaxial"])
     def ellipsoid(self, request):
         """
         Ellipsoid that approximates a sphere.
         """
-        yaw, pitch, roll = 0, 0, 0
         a = self.radius
         match request.param:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=a,
-                    b=a + self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    density=self.density,
-                )
+                a = b = self.radius
+                c = (1 - self.ratio) * b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=self.center,
-                    density=self.density,
-                )
+                a = self.radius
+                b = c = (1 - self.ratio) * a
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=a,
-                    b=a - self.delta,
-                    c=a - 2 * self.delta,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=self.center,
-                    density=self.density,
-                )
+                a = self.radius
+                b = (1 - self.ratio) * a
+                c = (1 - 2 * self.ratio) * a
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
         return ellipsoid
 
     @pytest.fixture
@@ -448,9 +398,7 @@ class TestEllipsoidVsSphere:
         g_ellipsoid = ellipsoid_gravity(coordinates, ellipsoid)
 
         # Compare the two fields
-        maxabs = vd.maxabs(*g_sphere, *g_ellipsoid)
-        atol = maxabs * 1e-5
-        np.testing.assert_allclose(g_sphere, g_ellipsoid, atol=atol)
+        np.testing.assert_allclose(g_sphere, g_ellipsoid, rtol=7e-4)
 
 
 class TestSymmetryOnRotations:
@@ -467,8 +415,7 @@ class TestSymmetryOnRotations:
         """
         ellipsoid.yaw += 180
         ellipsoid.pitch *= -1
-        if isinstance(ellipsoid, TriaxialEllipsoid):
-            ellipsoid.roll *= -1
+        ellipsoid.roll *= -1
         return ellipsoid
 
     @pytest.fixture(params=["oblate", "prolate", "triaxial"])
@@ -482,41 +429,24 @@ class TestSymmetryOnRotations:
         density = 238
         match ellipsoid_type:
             case "oblate":
-                ellipsoid = OblateEllipsoid(
-                    a=semiminor,
-                    b=semimajor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=center,
-                    density=density,
-                )
+                a, b = semiminor, semimajor
+                c = b
             case "prolate":
-                ellipsoid = ProlateEllipsoid(
-                    a=semimajor,
-                    b=semiminor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    center=center,
-                    density=density,
-                )
+                a, b = semimajor, semiminor
+                c = b
             case "triaxial":
-                ellipsoid = TriaxialEllipsoid(
-                    a=semimajor,
-                    b=semimiddle,
-                    c=semiminor,
-                    yaw=yaw,
-                    pitch=pitch,
-                    roll=roll,
-                    center=center,
-                    density=density,
-                )
+                a, b, c = semimajor, semimiddle, semiminor
+                c = b
             case _:
                 raise ValueError()
+        ellipsoid = Ellipsoid(
+            a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center, density=density
+        )
         return ellipsoid
 
     def test_symmetry_when_flipping(self, ellipsoid):
         """
-        Test symmetry of magnetic field when flipping the ellipsoid.
+        Test symmetry of gravity field when flipping the ellipsoid.
 
         Rotate the ellipsoid so the geometry is preserved. The gravity field generated
         by the ellipsoid should be the same as before the rotation.
@@ -529,7 +459,7 @@ class TestSymmetryOnRotations:
         # Generate a flipped ellipsoid
         ellipsoid_flipped = self.flip_ellipsoid(copy(ellipsoid))
 
-        # Compute magnetic fields
+        # Compute gravity fields
         g_field, g_field_flipped = tuple(
             ellipsoid_gravity(coordinates, ell)
             for ell in (ellipsoid, ellipsoid_flipped)
@@ -558,23 +488,25 @@ class TestMultipleEllipsoids:
     def ellipsoids(self):
         """Sample ellipsoids."""
         ellipsoids = [
-            OblateEllipsoid(
+            Ellipsoid(
                 a=20,
                 b=60,
+                c=60,
                 yaw=30.2,
                 pitch=-23,
                 center=(-10.0, 20.0, -10.0),
                 density=200.0,
             ),
-            ProlateEllipsoid(
+            Ellipsoid(
                 a=40,
                 b=15,
+                c=15,
                 yaw=170.2,
                 pitch=71,
                 center=(15.0, 0.0, -40.0),
                 density=-400.0,
             ),
-            TriaxialEllipsoid(
+            Ellipsoid(
                 a=60,
                 b=18,
                 c=15,
@@ -607,52 +539,15 @@ class TestMultipleEllipsoids:
         np.testing.assert_allclose(gz, gz_expected)
 
 
-@pytest.mark.parametrize(
-    "ellipsoid_class", [OblateEllipsoid, ProlateEllipsoid, TriaxialEllipsoid]
-)
 class TestNoneDensity:
     """Test warning when ellipsoid has no density."""
 
-    @pytest.fixture
-    def ellipsoid_args(self, ellipsoid_class):
-        if ellipsoid_class is OblateEllipsoid:
-            args = {
-                "a": 20.0,
-                "b": 50.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is ProlateEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is TriaxialEllipsoid:
-            args = {
-                "a": 50.0,
-                "b": 20.0,
-                "c": 10.0,
-                "pitch": 0.0,
-                "yaw": 0.0,
-                "roll": 0.0,
-                "center": (0, 0, 0),
-            }
-        elif ellipsoid_class is Sphere:
-            args = {"a": 50.0, "center": (0, 0, 0)}
-        else:
-            raise TypeError()
-        return args
-
-    def test_warning(self, ellipsoid_class, ellipsoid_args):
+    def test_warning(self):
         """
         Test warning about ellipsoid with no density being skipped.
         """
         coordinates = (0.0, 0.0, 0.0)
-        ellipsoid = ellipsoid_class(**ellipsoid_args)
+        ellipsoid = build_ellipsoid("triaxial")
 
         msg = re.escape(
             f"Ellipsoid {ellipsoid} doesn't have a density value. It will be skipped."
@@ -701,7 +596,8 @@ class TestNumericalInstability:
 
     @pytest.fixture
     def sphere(self):
-        return Sphere(self.radius, center=self.center, density=self.density)
+        a = self.radius
+        return Ellipsoid(a, a, a, center=self.center, density=self.density)
 
     def test_gravity_prolate(self, sphere):
         """
@@ -714,9 +610,7 @@ class TestNumericalInstability:
 
         a = self.radius
         b = (1 - ratio) * a
-        ellipsoid = ProlateEllipsoid(
-            a, b, yaw=0, pitch=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, b, b, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
@@ -736,9 +630,7 @@ class TestNumericalInstability:
 
         a = self.radius
         b = (1 + ratio) * a
-        ellipsoid = OblateEllipsoid(
-            a, b, yaw=0, pitch=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, a, b, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
@@ -759,9 +651,7 @@ class TestNumericalInstability:
         a = self.radius
         b = (1 - ratio) * a
         c = (1 - 2 * ratio) * a
-        ellipsoid = TriaxialEllipsoid(
-            a, b, c, yaw=0, pitch=0, roll=0, center=self.center, density=self.density
-        )
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
         ge_sphere, gn_sphere, gu_sphere = ellipsoid_gravity(coordinates, sphere)
         ge_ell, gn_ell, gu_ell = ellipsoid_gravity(coordinates, ellipsoid)
 
@@ -769,3 +659,256 @@ class TestNumericalInstability:
         np.testing.assert_allclose(ge_ell, ge_sphere, rtol=rtol, atol=atol)
         np.testing.assert_allclose(gn_ell, gn_sphere, rtol=rtol, atol=atol)
         np.testing.assert_allclose(gu_ell, gu_sphere, rtol=rtol, atol=atol)
+
+
+class TestTriaxialOnLimits:
+    """
+    Test a triaxial ellipsoid vs oblate and prolate ellipsoids.
+
+    Test the gravity fields of a triaxial ellipsoid that approximates an oblate and
+    a prolate one against their gravity fields.
+    """
+
+    semimajor = 50.0
+    atol_ratio = 1e-5
+    rtol = 1e-5
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(self.semimajor, 5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    def test_triaxial_vs_prolate(self):
+        """Compare triaxial with prolate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a, b = self.semimajor, 20.0
+        c = b - 1e-4
+        density = 200.0
+        triaxial = Ellipsoid(a, b, c, density=density)
+        prolate = Ellipsoid(a, b, b, density=density)
+
+        g_triaxial, g_prolate = tuple(
+            ellipsoid_gravity(coordinates, ell) for ell in (triaxial, prolate)
+        )
+
+        for gi_triaxial, gi_prolate in zip(g_triaxial, g_prolate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(gi_prolate)
+            np.testing.assert_allclose(
+                gi_triaxial, gi_prolate, atol=atol, rtol=self.rtol
+            )
+
+    def test_triaxial_vs_oblate(self):
+        """Compare triaxial with oblate ellipsoid."""
+        coordinates = self.get_coordinates()
+        a = self.semimajor
+        b = a - 1e-4
+        c = 20.0
+        density = 200.0
+        triaxial = Ellipsoid(a, b, c, density=density)
+        oblate = Ellipsoid(a, a, c, density=density)
+
+        g_triaxial, g_oblate = tuple(
+            ellipsoid_gravity(coordinates, ell) for ell in (triaxial, oblate)
+        )
+
+        for gi_triaxial, gi_oblate in zip(g_triaxial, g_oblate, strict=True):
+            atol = self.atol_ratio * vd.maxabs(gi_oblate)
+            np.testing.assert_allclose(
+                gi_triaxial, gi_oblate, atol=atol, rtol=self.rtol
+            )
+
+
+class TestSemiaxesArbitraryOrder:
+    """
+    Test gravity fields when defining the same ellipsoids with different orders of the
+    semiaxes plus needed rotation angles.
+    """
+
+    atol_ratio = 0.0
+    rtol = 1e-7
+
+    def get_coordinates(self, semimajor, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(0.5 * semimajor, 5.5 * semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 20, 10), 0, 0, 0),
+            ((20, 30, 10), 90, 0, 0),
+            ((10, 20, 30), 0, 90, 0),
+            ((30, 10, 20), 0, 0, 90),
+            ((20, 10, 30), 90, 90, 0),
+            ((10, 30, 20), 90, 0, 90),
+        ],
+    )
+    def test_triaxial(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((30, 10, 10), 0, 0, 0),
+            ((10, 30, 10), 90, 0, 0),
+            ((10, 10, 30), 0, 90, 0),
+        ],
+    )
+    def test_prolate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+    @pytest.mark.parametrize(
+        ("semiaxes", "yaw", "pitch", "roll"),
+        [
+            ((20, 20, 10), 0, 0, 0),
+            ((20, 10, 20), 0, 0, 90),
+            ((10, 20, 20), 0, 90, 0),
+        ],
+    )
+    def test_oblate(self, semiaxes, yaw, pitch, roll):
+        a, b, c = semiaxes
+        semiaxes_sorted = sorted(semiaxes, reverse=True)
+        density = 200.0
+        ellipsoid = Ellipsoid(a, b, c, density=density)
+        ellipsoid_rotated = Ellipsoid(
+            *semiaxes_sorted, yaw=yaw, pitch=pitch, roll=roll, density=density
+        )
+
+        coordinates = self.get_coordinates(semiaxes_sorted[0])
+        g_field = ellipsoid_gravity(coordinates, ellipsoid)
+        g_rotated = ellipsoid_gravity(coordinates, ellipsoid_rotated)
+
+        np.testing.assert_allclose(g_field, g_rotated, rtol=self.rtol)
+
+
+class TestNumericalInstabilitiesTriaxial:
+    """
+    Test fix for numerical instabilities when triaxial approximates a prolate or oblate.
+
+    When two of the three semiaxes of a triaxial ellipsoid are almost equal to each
+    other (in the order of machine precision), analytic solutions might fall under
+    singularities, triggering numerical instabilities.
+
+    Given two semiaxes a and b, define a ratio as:
+
+    .. code::
+
+        ratio  = | a - b | / max(a, b)
+
+    These test functions will build the ellipsoids using very small values of this
+    ratio.
+    """
+
+    # Properties of the sphere
+    semimajor, semiminor = 50.0, 30.0
+    center = (0, 0, 0)
+    density = 200.0
+
+    def get_coordinates(self, azimuth=45, polar=45):
+        """
+        Generate coordinates of observation points along a certain direction.
+        """
+        r = np.linspace(0.5 * self.semimajor, 5.5 * self.semimajor, 501)
+        azimuth, polar = np.rad2deg(azimuth), np.rad2deg(polar)
+        easting = r * np.cos(azimuth) * np.cos(polar)
+        northing = r * np.sin(azimuth) * np.cos(polar)
+        upward = r * np.sin(polar)
+        return (easting, northing, upward)
+
+    @pytest.fixture
+    def prolate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semiminor,
+            self.semiminor,
+            center=self.center,
+            density=self.density,
+        )
+
+    @pytest.fixture
+    def oblate(self):
+        return Ellipsoid(
+            self.semimajor,
+            self.semimajor,
+            self.semiminor,
+            center=self.center,
+            density=self.density,
+        )
+
+    def test_triaxial_vs_prolate(self, prolate):
+        """
+        Test gravity field of triaxial ellipsoid that is almost a prolate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = self.semiminor
+        c = (1 - ratio) * b
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
+        ge_prolate, gn_prolate, gz_prolate = ellipsoid_gravity(coordinates, prolate)
+        ge_ell, gn_ell, gz_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_prolate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gz_ell, gz_prolate, rtol=rtol, atol=atol)
+
+    def test_triaxial_vs_oblate(self, oblate):
+        """
+        Test gravity field of triaxial ellipsoid that is almost a oblate.
+        """
+        coordinates = self.get_coordinates()
+
+        # Semiaxes ratio. Sufficiently small to trigger the numerical instabilities
+        ratio = 1e-14
+
+        a = self.semimajor
+        b = (1 - ratio) * a
+        c = self.semiminor
+        ellipsoid = Ellipsoid(a, b, c, center=self.center, density=self.density)
+        ge_oblate, gn_oblate, gz_oblate = ellipsoid_gravity(coordinates, oblate)
+        ge_ell, gn_ell, gz_ell = ellipsoid_gravity(coordinates, ellipsoid)
+
+        rtol, atol = 1e-7, 1e-8
+        np.testing.assert_allclose(ge_ell, ge_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gn_ell, gn_oblate, rtol=rtol, atol=atol)
+        np.testing.assert_allclose(gz_ell, gz_oblate, rtol=rtol, atol=atol)

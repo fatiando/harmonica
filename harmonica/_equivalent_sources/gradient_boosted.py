@@ -222,9 +222,9 @@ class EquivalentSourcesGB(EquivalentSources):
         self.region_ = get_region(coordinates[:2])
         # Ravel coordinates, data and weights to 1d-arrays
         coordinates = vdb.n_1d_arrays(coordinates, 3)
-        data = data.ravel()
+        data = np.ravel(data)
         if weights is not None:
-            weights = weights.ravel()
+            weights = np.ravel(weights)
         # Build point sources
         if self.points is None:
             self.points_ = tuple(
