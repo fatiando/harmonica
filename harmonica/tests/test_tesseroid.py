@@ -25,7 +25,7 @@ from .._forward._tesseroid_utils import (
     _split_tesseroid,
     _tesseroid_dimensions,
 )
-from .._forward.tesseroid import (
+from .._forward.tesseroid_gravity import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,
@@ -38,7 +38,7 @@ from .utils import run_only_with_numba
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 # Define the accuracy threshold for tesseroids (0.1%) as a
@@ -584,7 +584,7 @@ def test_split_tesseroid_only_horizontal():
 # ----------------------------
 @run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
-def test_adaptive_discretization_on_radii(radial_discretization):
+def test_adaptive_discretization_on_radii(radial_discretization):  # pragma: no cover
     """Test if closer computation points increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     distance_size_ratio = 10
@@ -615,7 +615,9 @@ def test_adaptive_discretization_on_radii(radial_discretization):
 
 @run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
-def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
+def test_adaptive_discretization_vs_distance_size_ratio(
+    radial_discretization,
+):  # pragma: no cover
     """Test if higher distance-size-ratio increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     coordinates = np.array([0.0, 0.0, 10.2])
@@ -638,7 +640,7 @@ def test_adaptive_discretization_vs_distance_size_ratio(radial_discretization):
 
 
 @run_only_with_numba
-def test_two_dimensional_adaptive_discretization():
+def test_two_dimensional_adaptive_discretization():  # pragma: no cover
     """
     Test if 2D adaptive discretization produces no splits on radial direction.
     """
@@ -660,7 +662,9 @@ def test_two_dimensional_adaptive_discretization():
 # ------------------------------------------------------------------
 # Compare numerical result vs analytical solution of spherical shell
 # ------------------------------------------------------------------
-def spherical_shell_analytical(top, bottom, density, radius):
+def spherical_shell_analytical(
+    top, bottom, density, radius
+):  # pragma: no cover (only used by @run_only_with_numba tests)
     """
     Compute analytical solution of gravity fields for an
     homogeneous spherical shell.
@@ -678,9 +682,7 @@ def spherical_shell_analytical(top, bottom, density, radius):
 
 @run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
-def test_spherical_shell_two_dim_adaptive_discret(
-    field,
-):
+def test_spherical_shell_two_dim_adaptive_discret(field):  # pragma: no cover
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization.
@@ -725,7 +727,9 @@ def test_spherical_shell_two_dim_adaptive_discret(
 @run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
-def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
+def test_spherical_shell_three_dim_adaptive_discret(
+    thickness, field
+):  # pragma: no cover
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization.

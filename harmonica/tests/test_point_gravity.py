@@ -205,6 +205,8 @@ def test_acceleration_symmetry_cartesian(field):
     elif field == "g_z":
         upward[0] += distance
         upward[1] -= distance
+    else:  # pragma: no cover
+        raise ValueError()
     coordinates = [easting, northing, upward]
     # Compute gravity acceleration component on each computation point
     results = point_gravity(coordinates, point_mass, masses, field, "cartesian")
@@ -246,6 +248,8 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
         index = 1
     elif field == "g_z":
         index = 2
+    else:  # pragma: no cover
+        raise ValueError()
     coordinates_pair[index][0] -= delta
     coordinates_pair[index][1] += delta
     # Compute the potential on both points
@@ -308,6 +312,8 @@ def test_acceleration_sign(field):
         coordinates[1] = np.array([0, 100.2, 210.7])
     elif field == "g_z":
         coordinates[2] = np.array([100.11, -300.7, -400])
+    else:  # pragma: no cover
+        raise ValueError()
     # Compute acceleration component
     results = point_gravity(coordinates, point_mass, mass, field, "cartesian")
     # Check if the sign of the results is right
@@ -321,7 +327,9 @@ def test_acceleration_sign(field):
     "field",
     ["potential", "g_z", "g_n", "g_e", "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"],
 )
-def test_point_mass_cartesian_parallel(field):
+def test_point_mass_cartesian_parallel(
+    field,
+):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
     """
     Check if parallel and serial runs return the same result.
     """
@@ -432,6 +440,8 @@ class TestTensorSymmetryCartesian:
         elif direction_shift == "z":
             upward[0] += distance
             upward[1] += distance
+        else:  # pragma: no cover
+            raise ValueError()
         # Mirror computation points
         if direction_mirror == "n":
             northing[0] += distance
@@ -442,6 +452,8 @@ class TestTensorSymmetryCartesian:
         elif direction_mirror == "z":
             upward[0] += distance
             upward[1] -= distance
+        else:  # pragma: no cover
+            raise ValueError()
         return (easting, northing, upward)
 
     def opposite_computation_points(self, directions):
@@ -574,6 +586,8 @@ def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
         index = 1
     elif direction_j == "z":
         index = 2
+    else:  # pragma: no cover
+        raise ValueError()
     coordinates_pair[index][0] -= delta
     coordinates_pair[index][1] += delta
     # Compute the acceleration on both points
@@ -742,7 +756,7 @@ def test_point_mass_potential_on_same_meridian():
 
 
 @run_only_with_numba
-def test_point_mass_spherical_parallel():
+def test_point_mass_spherical_parallel():  # pragma: no cover
     """
     Check if parallel and serial runs return the same result.
     """

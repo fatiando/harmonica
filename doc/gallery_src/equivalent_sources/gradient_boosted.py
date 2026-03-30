@@ -60,7 +60,7 @@ xy_region = vd.get_region((easting, northing))
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
 data["gravity_disturbance"] = data.gravity_mgal - ellipsoid.normal_gravity(
-    data.latitude, data.height_sea_level_m
+    (data.longitude, data.latitude, data.height_sea_level_m)
 )
 
 # Create the equivalent sources

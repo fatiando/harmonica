@@ -17,7 +17,7 @@ from choclo.dipole import magnetic_field
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 from .. import dipole_magnetic
@@ -132,7 +132,9 @@ class TestSerialVsParallel:
 
     @run_only_with_numba
     @pytest.mark.parametrize("field", VALID_FIELDS)
-    def test_dipoles_parallel_vs_serial(self, field):
+    def test_dipoles_parallel_vs_serial(
+        self, field
+    ):  # pragma: no cover (we don't track coverage when @run_only_with_numba)
         """
         Check results of parallelized and serials runs
         Run a large problem only with Numba enabled.

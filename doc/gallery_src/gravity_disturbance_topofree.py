@@ -48,7 +48,7 @@ print(data)
 
 # Calculate normal gravity and the disturbance
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
 disturbance = data.gravity - gamma
 
 # Reference the topography to the ellipsoid

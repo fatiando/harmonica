@@ -12,7 +12,7 @@ import numpy as np
 
 try:
     import pyvista
-except ImportError:
+except ImportError:  # pragma: no cover
     pyvista = None
 else:
     import vtk

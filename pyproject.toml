@@ -38,7 +38,7 @@ dependencies = [
     "verde >= 1.8.1",
     "xrft >= 1.0",
     "choclo >= 0.1",
-    "boule >= 0.4.1"
+    "boule >= 0.6.0"
 ]
 
 [project.urls]
@@ -137,3 +137,23 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.coverage.run]
+source = ["harmonica"]
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+branch = true
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
+
+[tool.coverage.paths]
+source = [
+    "harmonica",
+    "*/harmonica",
+    "*\\harmonica",
+]
+
+[tool.coverage.report]
+show_missing = true

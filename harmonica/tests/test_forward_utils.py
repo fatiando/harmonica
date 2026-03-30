@@ -19,7 +19,7 @@ from .._forward.utils import check_coordinate_system, distance, initialize_progr
 
 try:
     from numba_progress import ProgressBar
-except ImportError:
+except ImportError:  # pragma: no cover
     ProgressBar = None
 
 
@@ -79,8 +79,8 @@ def test_geodetic_distance_vs_spherical():
     # Compute distance using closed-form formula
     dist = distance(point_a, point_b, coordinate_system="geodetic", ellipsoid=ellipsoid)
     # Convert points to spherical coordinates
-    point_a_sph = ellipsoid.geodetic_to_spherical(*point_a)
-    point_b_sph = ellipsoid.geodetic_to_spherical(*point_b)
+    point_a_sph = ellipsoid.geodetic_to_spherical(point_a)
+    point_b_sph = ellipsoid.geodetic_to_spherical(point_b)
     # Compute distance using these converted points
     dist_sph = distance(point_a_sph, point_b_sph, coordinate_system="spherical")
     npt.assert_allclose(dist, dist_sph)
@@ -136,7 +136,7 @@ def test_initialize_progressbar_import_error(use_progressbar):
     if use_progressbar:
         with pytest.raises(ImportError):  # noqa: SIM117
             with initialize_progressbar(3, use_progressbar) as progress_proxy:
-                pass
+                pass  # pragma: no cover (won't reach this code)
     else:
         with initialize_progressbar(3, use_progressbar) as progress_proxy:
             assert progress_proxy is None

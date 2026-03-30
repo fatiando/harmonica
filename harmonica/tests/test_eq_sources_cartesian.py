@@ -65,7 +65,7 @@ def fixture_data(coordinates, points, masses):
 
 
 @pytest.fixture(name="weights")
-def fixture_weights(data):
+def fixture_weights(data):  # pragma: no cover (only used in @run_only_with_numba tests)
     """
     Return some sample data.
     """
@@ -125,7 +125,7 @@ def fixture_coordinates_9x9(region):
 )
 def test_equivalent_sources_cartesian(
     region, points, masses, coordinates, data, dtype, damping
-):
+):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
@@ -325,7 +325,9 @@ def test_equivalent_sources_jacobian_cartesian():
 
 
 @run_only_with_numba
-def test_equivalent_sources_cartesian_parallel(coordinates, data):
+def test_equivalent_sources_cartesian_parallel(
+    coordinates, data
+):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
     """
     Check predictions when parallel is enabled and disabled.
     """
@@ -356,7 +358,7 @@ def test_dtype(
     weights_none,
     damping,
     dtype,
-):
+):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
     """
     Test dtype argument on EquivalentSources.
     """
