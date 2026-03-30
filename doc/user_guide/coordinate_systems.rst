@@ -214,7 +214,7 @@ We can convert spherical coordinates to geodetic ones through
 
 .. jupyter-execute::
 
-    coordinates_geodetic = ellipsoid.spherical_to_geodetic(*coordinates)
+    coordinates_geodetic = ellipsoid.spherical_to_geodetic(coordinates)
     longitude, latitude, height = coordinates_geodetic[:]
     print("longitude:", longitude)
     print("latitude:", latitude)
@@ -225,7 +225,7 @@ carried out through :meth:`boule.Ellipsoid.geodetic_to_spherical`:
 
 .. jupyter-execute::
 
-    coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates_geodetic)
+    coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates_geodetic)
     longitude, sph_latitude, radius = coordinates_spherical[:]
     print("longitude:", longitude)
     print("spherical latitude:", sph_latitude)

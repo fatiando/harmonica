@@ -28,7 +28,7 @@ print(data)
 
 # Calculate normal gravity using the WGS84 ellipsoid
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
 # The disturbance is the observed minus normal gravity (calculated at the
 # observation point)
 disturbance = data.gravity - gamma

@@ -1,5 +1,4 @@
 # Requirements for running the tests
-boule
 pytest
 pytest-cov
 coverage

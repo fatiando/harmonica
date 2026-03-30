@@ -1,14 +1,12 @@
 # Exclude these files from source distributions.
 # setuptools_scm includes everything else by default.
 prune .github
-prune data
 prune doc
-prune paper
-prune tutorials
+prune env
 exclude .*.yml
 exclude .*rc
-exclude license_notice.py
-exclude Makefile
 exclude .gitignore
-exclude .gitattributes
 exclude environment.yml
+exclude Makefile
+exclude CONTRIBUTING.md
+exclude CODE_OF_CONDUCT.md
