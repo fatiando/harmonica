@@ -351,7 +351,7 @@ class IGRF14:
         cast = np.broadcast(*coordinates[:3])
         longitude, latitude, height = (np.atleast_1d(c).ravel() for c in coordinates)
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
-            longitude, latitude, height
+            (longitude, latitude, height)
         )
         longitude_radians = np.radians(longitude)
         colatitude_radians = np.radians(90 - latitude_sph)
@@ -441,7 +441,7 @@ class IGRF14:
             region, spacing=spacing, shape=shape, adjust=adjust, extra_coords=height
         )
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
-            longitude, latitude, height
+            (longitude, latitude, height)
         )
         longitude_radians = np.radians(longitude)
         colatitude_radians = np.radians(90 - latitude_sph)
