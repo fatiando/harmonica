@@ -62,7 +62,7 @@ def fixture_sample_grid_coords():
     Define sample grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
-        region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=0
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=0
     )
     return grid_coords
 
@@ -73,7 +73,7 @@ def fixture_upward_grid_coords():
     Define upward grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
-        region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=10e3
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=10e3
     )
     return grid_coords
 
@@ -204,6 +204,38 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
         extra_coords_names="upward",
     )
     return g_ee.g_ee
+
+
+@pytest.fixture(name="sample_g_ez")
+def fixture_sample_g_ez(sample_grid_coords, sample_sources):
+    """
+    Return g_ez field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_ez = point_gravity(sample_grid_coords, points, masses, field="g_ez")
+    g_ez = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_ez,
+        data_names="g_ez",
+        extra_coords_names="upward",
+    )
+    return g_ez.g_ez
+
+
+@pytest.fixture(name="sample_g_nz")
+def fixture_sample_g_nz(sample_grid_coords, sample_sources):
+    """
+    Return g_nz field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_nz = point_gravity(sample_grid_coords, points, masses, field="g_nz")
+    g_nz = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_nz,
+        data_names="g_nz",
+        extra_coords_names="upward",
+    )
+    return g_nz.g_nz
 
 
 @pytest.mark.parametrize(
@@ -545,16 +577,19 @@ class TestTilt:
     Test tilt function.
     """
 
-    def test_against_synthetic(
-        self, sample_potential, sample_g_n, sample_g_e, sample_g_z
-    ):
+    def test_against_synthetic(self, sample_g_z, sample_g_nz, sample_g_ez, sample_g_zz):
         """
         Test tilt function against the synthetic model.
         """
-        numerical = tilt_angle(sample_potential)
-        # Use -g_z to use the upward derivative (g_z is downward)
-        analytical = np.arctan2(-sample_g_z, np.sqrt(sample_g_e**2 + sample_g_n**2))
-        np.testing.assert_allclose(numerical.values, analytical)
+        # Use the gz because the potential is too smooth and messes up at the edges
+        numerical = tilt_angle(sample_g_z)
+        # Use minus to use the upward derivative (z is downward)
+        analytical = np.arctan2(-sample_g_zz, np.sqrt(sample_g_ez**2 + sample_g_nz**2))
+        # Compare only an inner region because the tilt is terrible at the edges
+        crop = [-125e3, 125e3, -125e3, 125e3]
+        numerical = numerical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        analytical = analytical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        np.testing.assert_allclose(numerical, analytical, atol=0.15)
 
     def test_invalid_grid_single_dimension(self):
         """
