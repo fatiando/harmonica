@@ -219,7 +219,7 @@ jobs:
         run: python -m coverage report --fail-under=100
 
       - name: Upload HTML report if check failed
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: html-report
           path: htmlcov
