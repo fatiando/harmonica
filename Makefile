@@ -1,7 +1,6 @@
 # Build, package, test, and clean
 PROJECT=harmonica
-TESTDIR=tmp-test-dir-with-unique-name
-STYLE_CHECK_FILES=$(PROJECT) doc
+STYLE_CHECK_FILES=src/$(PROJECT) tests doc
 GITHUB_ACTIONS=.github/workflows
 
 .PHONY: build install test test_coverage test_numba format check check-format check-style check-actions clean
@@ -28,18 +27,10 @@ install:
 test: test_coverage test_numba
 
 test_coverage:
-	# Run a tmp folder to make sure the tests are run on the installed version.
-	# Need to specify configuration file for coverage since we change directiory.
-	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --verbose --cov --cov-config="../pyproject.toml" --doctest-modules --doctest-continue-on-failure ../$(PROJECT)
-	cp $(TESTDIR)/.coverage* .
-	rm -rvf $(TESTDIR)
+	NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --verbose --cov --cov-config="pyproject.toml" --doctest-modules --doctest-continue-on-failure src/$(PROJECT) tests
 
 test_numba:
-	# Run a tmp folder to make sure the tests are run on the installed version
-	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest --verbose --doctest-modules --doctest-continue-on-failure -m use_numba ../$(PROJECT)
-	rm -rvf $(TESTDIR)
+	NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest --verbose --doctest-modules --doctest-continue-on-failure -m use_numba src/$(PROJECT) tests
 
 format:
 	ruff check --select I --fix $(STYLE_CHECK_FILES) # fix isort errors
@@ -62,4 +53,4 @@ clean:
 	find . -name "*.pyc" -exec rm -v {} \;
 	find . -name ".coverage.*" -exec rm -v {} \;
 	rm -rvf build dist MANIFEST *.egg-info __pycache__ .coverage .cache .pytest_cache $(PROJECT)/_version.py
-	rm -rvf $(TESTDIR) dask-worker-space
+	rm -rvf dask-worker-space

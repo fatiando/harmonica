@@ -3,6 +3,7 @@
 prune .github
 prune doc
 prune env
+prune tests
 exclude .*.yml
 exclude .*rc
 exclude .gitignore
