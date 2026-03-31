@@ -21,6 +21,7 @@ from harmonica._spherical_harmonics.legendre import (
     associated_legendre_schmidt,
     associated_legendre_schmidt_derivative,
 )
+
 from .utils import run_only_with_numba
 
 

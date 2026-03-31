@@ -18,7 +18,6 @@ from numba import jit
 from verde import grid_coordinates
 
 import harmonica
-
 from harmonica import tesseroid_gravity
 from harmonica._forward._tesseroid_variable_density import (
     _density_based_discretization,
