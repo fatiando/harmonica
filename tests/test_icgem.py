@@ -14,7 +14,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .. import load_icgem_gdf
+from harmonica import load_icgem_gdf
 
 MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"

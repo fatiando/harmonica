@@ -16,7 +16,7 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..visualization import prism_to_pyvista
+from harmonica.visualization import prism_to_pyvista
 
 try:
     import pyvista
