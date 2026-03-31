@@ -467,9 +467,9 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
-def test_reduction_to_pole():
+def test_reduction_to_pole_remanent():
     """
-    Test reduction_to_pole function against an analytical solution.
+    Test reduction_to_pole against an analytical solution with remanent magnetization.
     """
     coordinates = vd.grid_coordinates(
         (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
@@ -494,6 +494,42 @@ def test_reduction_to_pole():
     anomaly = total_field_anomaly(magnetic_field, finc, fdec)
     grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
     anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec, minc, mdec)
+    # Relative tol doesn't work because the anomaly at the pole is zero in
+    # a ring around the source and the rtol blows up at those points.
+    np.testing.assert_allclose(
+        anomaly_reduced.values,
+        anomaly_pole,
+        rtol=0,
+        atol=0.01 * np.abs(anomaly_pole).max(),
+    )
+
+
+def test_reduction_to_pole_induced():
+    """
+    Test reduction_to_pole against an analytical solution with induced magnetization.
+    """
+    coordinates = vd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    dipole = [-25e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, finc, fdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec)
     # Relative tol doesn't work because the anomaly at the pole is zero in
     # a ring around the source and the rtol blows up at those points.
     np.testing.assert_allclose(

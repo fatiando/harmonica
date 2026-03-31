@@ -59,8 +59,9 @@ def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None
             pad_kwargs["pad_width"] = {d: width for d in dims}
         if "mode" not in pad_kwargs:
             pad_kwargs["mode"] = "edge"
-            # Has to be included explicitly as None or numpy complains about the
-            # argument being there.
+        if "constant_values" not in pad_kwargs:
+            # Has to be included explicitly as None since xrft always passes
+            # it to xarray.DataArray.pad.
             pad_kwargs["constant_values"] = None
         fft_grid = fft(xrft.pad(grid, **pad_kwargs))
     else:
