@@ -9,14 +9,14 @@ maintainers = [
   {name = "Santiago Soler", email = "santisoler@fastmail.com"}
 ]
 readme = "README.md"
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE.txt", "AUTHORS.md"]
 keywords = ["geoscience", "geophysics"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
