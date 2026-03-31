@@ -232,7 +232,9 @@ def test_apply_filter_pad_with_constant(sample_grid):
     """
     # Apply the dummy filter
     filtered_grid = apply_filter(
-        sample_grid, dummy_filter, pad_kwargs={"mode": "constant", "constant_values": 120}
+        sample_grid,
+        dummy_filter,
+        pad_kwargs={"mode": "constant", "constant_values": 120},
     )
     # Compare output with expected results
     expected = sample_grid * 0
