@@ -22,7 +22,7 @@ from .filters._filters import (
 from .filters._utils import apply_filter, grid_sanity_checks
 
 
-def derivative_upward(grid, order=1):
+def derivative_upward(grid, order=1, pad=True, pad_kwargs=None):
     """
     Calculate the derivative of a potential field grid in the upward direction.
 
@@ -38,6 +38,16 @@ def derivative_upward(grid, order=1):
         same units.
     order : int
         The order of the derivative. Default to 1.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -54,10 +64,16 @@ def derivative_upward(grid, order=1):
     --------
     harmonica.filters.derivative_upward_kernel
     """
-    return apply_filter(grid, derivative_upward_kernel, filter_kwargs={"order": order})
+    return apply_filter(
+        grid,
+        derivative_upward_kernel,
+        filter_kwargs={"order": order},
+        pad=pad,
+        pad_kwargs=pad_kwargs,
+    )
 
 
-def derivative_easting(grid, order=1, method="finite-diff"):
+def derivative_easting(grid, order=1, method="finite-diff", pad=True, pad_kwargs=None):
     """
     Calculate the derivative of a regular grid in the easting direction.
 
@@ -84,8 +100,17 @@ def derivative_easting(grid, order=1, method="finite-diff"):
         Method that will be used for computing the easting derivative. It can
         be either ``"finite-diff"``, for computing using
         :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
-        filters.
-        Default ``"finite-diff"``.
+        filters. Default ``"finite-diff"``.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -108,7 +133,11 @@ def derivative_easting(grid, order=1, method="finite-diff"):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
         grid = apply_filter(
-            grid, derivative_easting_kernel, filter_kwargs={"order": order}
+            grid,
+            derivative_easting_kernel,
+            filter_kwargs={"order": order},
+            pad=pad,
+            pad_kwargs=pad_kwargs,
         )
     else:
         msg = (
@@ -118,7 +147,7 @@ def derivative_easting(grid, order=1, method="finite-diff"):
     return grid
 
 
-def derivative_northing(grid, order=1, method="finite-diff"):
+def derivative_northing(grid, order=1, method="finite-diff", pad=True, pad_kwargs=None):
     """
     Calculate the derivative of a regular grid in the northing direction.
 
@@ -145,8 +174,17 @@ def derivative_northing(grid, order=1, method="finite-diff"):
         Method that will be used for computing the easting derivative. It can
         be either ``"finite-diff"``, for computing using
         :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
-        filters.
-        Default ``"finite-diff"``.
+        filters. Default ``"finite-diff"``.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -169,7 +207,11 @@ def derivative_northing(grid, order=1, method="finite-diff"):
             grid = grid.differentiate(coord=coordinate)
     elif method == "fft":
         return apply_filter(
-            grid, derivative_northing_kernel, filter_kwargs={"order": order}
+            grid,
+            derivative_northing_kernel,
+            filter_kwargs={"order": order},
+            pad=pad,
+            pad_kwargs=pad_kwargs,
         )
     else:
         msg = (
@@ -179,7 +221,7 @@ def derivative_northing(grid, order=1, method="finite-diff"):
     return grid
 
 
-def upward_continuation(grid, height_displacement):
+def upward_continuation(grid, height_displacement, pad=True, pad_kwargs=None):
     """
     Calculate the upward continuation of a potential field grid.
 
@@ -197,6 +239,16 @@ def upward_continuation(grid, height_displacement):
         The height displacement of upward continuation. For upward
         continuation, the height displacement should be positive. Its units
         are the same units of the ``grid`` coordinates.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -216,6 +268,8 @@ def upward_continuation(grid, height_displacement):
         grid,
         upward_continuation_kernel,
         filter_kwargs={"height_displacement": height_displacement},
+        pad=pad,
+        pad_kwargs=pad_kwargs,
     )
 
 
@@ -305,6 +359,8 @@ def reduction_to_pole(
     declination,
     magnetization_inclination=None,
     magnetization_declination=None,
+    pad=True,
+    pad_kwargs=None,
 ):
     """
     Calculate the reduction to the pole of a magnetic field grid.
@@ -333,6 +389,16 @@ def reduction_to_pole(
         None, the ``magnetization_declination`` will be set equal to the
         ``declination``, neglecting remanent magnetization and self
         demagnetization. Default None.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -357,10 +423,12 @@ def reduction_to_pole(
             "magnetization_inclination": magnetization_inclination,
             "magnetization_declination": magnetization_declination,
         },
+        pad=pad,
+        pad_kwargs=pad_kwargs,
     )
 
 
-def total_gradient_amplitude(grid):
+def total_gradient_amplitude(grid, pad=True, pad_kwargs=None):
     r"""
     Calculate the total gradient amplitude of a potential field grid.
 
@@ -375,6 +443,16 @@ def total_gradient_amplitude(grid):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -404,15 +482,15 @@ def total_gradient_amplitude(grid):
     grid_sanity_checks(grid)
     # Calculate the gradients of the grid
     gradient = (
-        derivative_easting(grid, order=1),
-        derivative_northing(grid, order=1),
-        derivative_upward(grid, order=1),
+        derivative_easting(grid, order=1, pad=pad, pad_kwargs=pad_kwargs),
+        derivative_northing(grid, order=1, pad=pad, pad_kwargs=pad_kwargs),
+        derivative_upward(grid, order=1, pad=pad, pad_kwargs=pad_kwargs),
     )
     # return the total gradient amplitude
     return np.sqrt(gradient[0] ** 2 + gradient[1] ** 2 + gradient[2] ** 2)
 
 
-def tilt_angle(grid):
+def tilt_angle(grid, pad=True, pad_kwargs=None):
     r"""
     Calculate the tilt angle of a potential field grid.
 
@@ -427,6 +505,16 @@ def tilt_angle(grid):
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -460,9 +548,9 @@ def tilt_angle(grid):
     [MillerSingh1994]_
     """
     grid_sanity_checks(grid)
-    deriv_east = derivative_easting(grid, order=1)
-    deriv_north = derivative_northing(grid, order=1)
-    deriv_up = derivative_upward(grid, order=1)
+    deriv_east = derivative_easting(grid, order=1, pad=pad, pad_kwargs=pad_kwargs)
+    deriv_north = derivative_northing(grid, order=1, pad=pad, pad_kwargs=pad_kwargs)
+    deriv_up = derivative_upward(grid, order=1, pad=pad, pad_kwargs=pad_kwargs)
     horiz_deriv = np.hypot(deriv_east, deriv_north)
     tilt = np.arctan2(deriv_up, horiz_deriv)
     return tilt

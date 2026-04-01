@@ -21,6 +21,13 @@ def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None
     Computes the Fourier transform of the given grid, builds the filter,
     applies it and returns the inverse Fourier transform of the filtered grid.
 
+    .. note::
+
+        Any non-dimensional coordinates in the original grid will be dropped
+        from the filtered grid. This is because we can't know if the filter
+        invalidates the coordinate values (for example, upward continuation
+        would invalidate any height coordinates). So it's safer to drop them.
+
     Parameters
     ----------
     grid : :class:`xarray.DataArray`
@@ -30,9 +37,19 @@ def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None
         same units.
     fft_filter : func
         Callable that builds the filter in the frequency domain.
-    kwargs :
+    filter_kwargs : dict
         Any additional keyword argument that should be passed to the
-        ``fft_filter``.
+        ``fft_filter`` in the form of a dictionary.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function. If none are given, the default
+        padding of 25% the dimensions of the grid will be added using the
+        "edge" method.
 
     Returns
     -------

@@ -31,6 +31,8 @@ def fft(grid, true_phase=True, true_amplitude=True, **kwargs):
         If True, the FFT is multiplied by the spacing of the transformed
         variables to match theoretical FT amplitude.
         Defaults to True.
+    **kwargs
+        Any extra keyword arguments will be passed the :func:`xrft.fft` function.
 
     Returns
     -------
@@ -62,6 +64,8 @@ def ifft(fourier_transform, true_phase=True, true_amplitude=True, **kwargs):
         If True, output is divided by the spacing of the transformed variables
         to match theoretical IFT amplitude.
         Defaults to True.
+    **kwargs
+        Any extra keyword arguments will be passed the :func:`xrft.ifft` function.
 
     Returns
     -------
