@@ -156,3 +156,187 @@ class EulerDeconvolution:
         self.location_ = estimate[:3]
         self.base_level_ = estimate[-1]
         return self
+
+
+class EulerInversion:
+    def __init__(
+        self,
+        structural_index=None,
+        max_iterations=20,
+        tol=0.1,
+        euler_misfit_balance=0.1,
+    ):
+        self.structural_index = structural_index
+        self.max_iterations = max_iterations
+        self.tol = tol
+        self.euler_misfit_balance = euler_misfit_balance
+
+    def fit(self, coordinates, data, weights=(1, 0.1, 0.1, 0.025)):
+        coordinates, data, _ = vdb.check_fit_input(coordinates, data, weights=None)
+        data = vdb.n_1d_arrays(data, 4)
+        coordinates = vdb.n_1d_arrays(coordinates, 3)
+        if self.structural_index is None:
+            candidates = []
+            for si in (1, 2, 3):
+                euler = EulerInversion(
+                    structural_index=si,
+                    max_iterations=self.max_iterations,
+                    tol=self.tol,
+                    euler_misfit_balance=self.euler_misfit_balance,
+                )
+                euler.fit(coordinates, data, weights)
+                candidates.append(euler)
+            best = candidates[np.argmin([e.data_misfit_ for e in candidates])]
+            self.structural_index_ = best.structural_index
+            self.data_misfit_ = best.data_misfit_
+            self.euler_misfit_ = best.data_misfit_
+            self.merit_ = best.data_misfit_
+            self.location_ = best.location_
+            self.base_level_ = best.base_level_
+            self.covariance_ = best.covariance_
+        else:
+            self._fit(coordinates, data, weights)
+            self.structural_index_ = self.structural_index
+        return self
+
+    def _fit(self, coordinates, data, weights):
+        """
+        Run the Euler Inversion when there is a specified structural index.
+        """
+        n_data = data[0].size
+        # The data are organized into a single vector because of the maths
+        data_observed = np.concatenate(data)
+        data_predicted = 0.9 * data_observed
+        parameters = np.empty(4)
+        # Make an initial estimate for the parameters using Euler Deconvolution
+        euler_deconv = EulerDeconvolution(structural_index=self.structural_index)
+        euler_deconv.fit(coordinates, data)
+        parameters[:3] = euler_deconv.location_
+        parameters[3] = euler_deconv.base_level_
+        # Create the data weights vector
+        data_weights = np.empty_like(data_predicted)
+        data_weights[:n_data] = weights[0]
+        data_weights[n_data : 2 * n_data] = weights[1]
+        data_weights[2 * n_data : 3 * n_data] = weights[2]
+        data_weights[3 * n_data : 4 * n_data] = weights[3]
+        # Store the inverse of each section of the data weights matrix for use in later
+        # computations since we can take advantage of its block nature.
+        Wd_inv = [np.full(n_data, 1 / w) for w in weights]
+        # Keep track of the way these metrics vary with iteration
+        euler = self._eulers_equation(coordinates, data_predicted, parameters)
+        residuals = data_observed - data_predicted
+        self.euler_misfit_ = np.linalg.norm(euler)
+        self.data_misfit_ = np.linalg.norm(residuals * data_weights)
+        self.merit_ = self.data_misfit_ + self.euler_misfit_balance * self.euler_misfit_
+        for _ in range(self.max_iterations):
+            parameter_step, data_step, cofactor_new = self._newton_step(
+                coordinates,
+                data_observed,
+                data_predicted,
+                parameters,
+                euler,
+                Wd_inv,
+            )
+            parameters += parameter_step
+            data_predicted += data_step
+            # Update metrics
+            euler = self._eulers_equation(coordinates, data_predicted, parameters)
+            residuals = data_observed - data_predicted
+            new_euler_misfit = np.linalg.norm(euler)
+            new_data_misfit = np.linalg.norm(residuals * data_weights)
+            new_merit = new_data_misfit + self.euler_misfit_balance * new_euler_misfit
+            # Check if was increasing the merit function, which means this solution is
+            # worse than the last.
+            if new_merit > self.merit_:
+                # If it's bad, walk back the last step
+                data_predicted -= data_step
+                parameters -= parameter_step
+                break
+            cofactor = cofactor_new
+            # Update tracked metrics
+            self.euler_misfit_ = new_euler_misfit
+            self.data_misfit_ = new_data_misfit
+            merit_change = abs((self.merit_ - new_merit) / self.merit_)
+            self.merit_ = new_merit
+            # Check for convergence
+            if merit_change < self.tol:
+                break
+        # Save output attributes
+        self.location_ = parameters[:3]
+        self.base_level_ = parameters[3]
+        chi_squared = np.sum(residuals**2) / (residuals.size - parameters.size)
+        self.covariance_ = chi_squared * cofactor
+        return self
+
+    def _newton_step(
+        self, coordinates, data_observed, data_predicted, parameters, euler, Wd_inv
+    ):
+        """
+        Calculate the step in parameters and data in the Gauss-Newton iteration.
+        """
+        deriv_east, deriv_north, deriv_up = np.split(data_predicted, 4)[1:]
+        A = self._parameter_jacobian(deriv_east, deriv_north, deriv_up)
+        B_diags = self._data_jacobian_diagonals(coordinates, parameters[:3])
+        B = sp.sparse.hstack([sp.sparse.diags(b) for b in B_diags])
+        WBT = sp.sparse.hstack(
+            [sp.sparse.diags(w * b) for b, w in zip(B_diags, Wd_inv, strict=True)]
+        ).T
+        residuals = data_observed - data_predicted
+        # Q = B @ Wd_inv @ B.T
+        Q_inv = sp.sparse.diags(
+            1 / sum([b**2 * w for b, w in zip(B_diags, Wd_inv, strict=True)])
+        )
+        ATQ = A.T @ Q_inv
+        BTQ = WBT @ Q_inv
+        Br = B @ residuals
+        cofactor = sp.linalg.inv(ATQ @ A)
+        parameter_step = -cofactor @ ATQ @ (euler + Br)
+        data_step = residuals - BTQ @ (Br + euler + A @ parameter_step)
+        return parameter_step, data_step, cofactor
+
+    def _parameter_jacobian(
+        self,
+        deriv_east,
+        deriv_north,
+        deriv_up,
+    ):
+        """
+        Calculate the model parameter Jacobian for Euler Inversion.
+        """
+        jacobian = np.empty((deriv_east.size, 4), dtype="float64")
+        jacobian[:, 0] = -deriv_east
+        jacobian[:, 1] = -deriv_north
+        jacobian[:, 2] = -deriv_up
+        jacobian[:, 3] = -self.structural_index
+        return jacobian
+
+    def _data_jacobian_diagonals(self, coordinates, source_location):
+        """
+        Calculate the data Jacobian for Euler Inversion.
+        """
+        east, north, up = coordinates
+        east_s, north_s, up_s = source_location
+        nequations = east.size
+        diagonals = [
+            np.full(nequations, self.structural_index, dtype="float64"),
+            east - east_s,
+            north - north_s,
+            up - up_s,
+        ]
+        return diagonals
+
+    def _eulers_equation(self, coordinates, data, parameters):
+        """
+        Evaluate Euler's homogeneity equation.
+        """
+        east, north, up = coordinates
+        field, deriv_east, deriv_north, deriv_up = np.split(data, 4)
+        east_s, north_s, up_s = parameters[:3]
+        base_level = parameters[-1]
+        euler = (
+            (east - east_s) * deriv_east
+            + (north - north_s) * deriv_north
+            + (up - up_s) * deriv_up
+            + self.structural_index * (field - base_level)
+        )
+        return euler
