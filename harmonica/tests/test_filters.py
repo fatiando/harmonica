@@ -172,7 +172,7 @@ def test_apply_filter(sample_grid):
     xrt.assert_allclose(filtered_grid, expected)
 
 
-def test_apply_filter_drop_coords(sample_grid_multiple_coords):
+def test_apply_filter_keep_coords(sample_grid_multiple_coords):
     """
     Test apply_filter function on a grid with extra coordinates.
     """
@@ -181,8 +181,22 @@ def test_apply_filter_drop_coords(sample_grid_multiple_coords):
     # Compare output with expected results
     expected = sample_grid_multiple_coords * 0
     # Non-dimensional coordinates should have been dropped by apply_filter.
-    # We can't restore them because we can't know if they are still correct
-    # after filtering.
+    assert set(sample_grid_multiple_coords.coords) == set(filtered_grid.coords)
+    npt.assert_allclose(filtered_grid.values, expected.values)
+
+
+def test_apply_filter_drop_coords(sample_grid_multiple_coords):
+    """
+    Test apply_filter function on a grid with extra coordinates.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(
+        sample_grid_multiple_coords, dummy_filter, drop_coords=True
+    )
+    # Compare output with expected results
+    expected = sample_grid_multiple_coords * 0
+    # Non-dimensional coordinates should have been dropped by apply_filter.
+    assert set(sample_grid_multiple_coords.coords) != set(filtered_grid.coords)
     assert set(sample_grid_multiple_coords.dims) == set(filtered_grid.coords)
     npt.assert_allclose(filtered_grid.values, expected.values)
 

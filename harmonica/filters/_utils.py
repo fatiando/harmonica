@@ -14,7 +14,9 @@ import xrft
 from ._fft import fft, ifft
 
 
-def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None):
+def apply_filter(
+    grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None, drop_coords=False
+):
     """
     Apply a filter to a grid and return the transformed grid in spatial domain.
 
@@ -50,6 +52,10 @@ def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None
         :meth:`xarray.DataArray.pad` function. If none are given, the default
         padding of 25% the dimensions of the grid will be added using the
         "edge" method.
+    drop_coords : bool
+        If True, non-dimensional coordinates of the grid will be dropped after
+        filtering. This is useful if the filter could move the grid, like in upward
+        continuation, which could make these coordinates incorrect.
 
     Returns
     -------
@@ -96,8 +102,13 @@ def apply_filter(grid, fft_filter, filter_kwargs=None, pad=True, pad_kwargs=None
     # when doing operations with the transformed grids. Restoring the original
     # coordinates avoids these issues.
     filtered_grid = filtered_grid.assign_coords(
-        {dims[1]: grid[dims[1]].values, dims[0]: grid[dims[0]].values}
+        {dims[1]: grid[dims[1]], dims[0]: grid[dims[0]]}
     )
+    # Restore the non-dimensional coordinates if desired
+    if not drop_coords:
+        filtered_grid = filtered_grid.assign_coords(
+            {name: non_dim_coords[name] for name in non_dim_coords}
+        )
     return filtered_grid
 
 

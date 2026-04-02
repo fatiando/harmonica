@@ -228,6 +228,11 @@ def upward_continuation(grid, height_displacement, pad=True, pad_kwargs=None):
     Compute the upward continuation of regular gridded data using frequency
     domain calculations through Fast Fourier Transform.
 
+    .. note::
+
+        Any non-dimensional coordinates of the grid will be dropped since
+        upward continuation may have made them no longer correct.
+
     Parameters
     ----------
     grid : :class:`xarray.DataArray`
@@ -270,10 +275,11 @@ def upward_continuation(grid, height_displacement, pad=True, pad_kwargs=None):
         filter_kwargs={"height_displacement": height_displacement},
         pad=pad,
         pad_kwargs=pad_kwargs,
+        drop_coords=True,
     )
 
 
-def gaussian_lowpass(grid, wavelength):
+def gaussian_lowpass(grid, wavelength, pad=True, pad_kwargs=None):
     """
     Calculate the Gaussian low-pass of a potential field grid.
 
@@ -290,6 +296,16 @@ def gaussian_lowpass(grid, wavelength):
     wavelength : float
         The cutoff wavelength in low-pass filter. Its units are the same units
         of the ``grid`` coordinates.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -308,12 +324,13 @@ def gaussian_lowpass(grid, wavelength):
     return apply_filter(
         grid,
         gaussian_lowpass_kernel,
-        pad=False,
+        pad=pad,
+        pad_kwargs=pad_kwargs,
         filter_kwargs={"wavelength": wavelength},
     )
 
 
-def gaussian_highpass(grid, wavelength):
+def gaussian_highpass(grid, wavelength, pad=True, pad_kwargs=None):
     """
     Calculate the Gaussian high-pass of a potential field grid.
 
@@ -330,6 +347,16 @@ def gaussian_highpass(grid, wavelength):
     wavelength : float
         The cutoff wavelength in high-pass filter. Its units are the same
         units of the ``grid`` coordinates.
+    pad : bool
+        If True, will add padding to the grid before taking the Fourier Transform
+        and applying the filter and remove it after the inverse Fourier Transform.
+        Adding padding usually helps reduce edge effects from signal truncation.
+        Default is True.
+    pad_kwargs : dict or None
+        Any additional keyword arguments that should be passed to the
+        :meth:`xarray.DataArray.pad` function in the form of a dictionary. If none
+        are given, the default padding of 25% the dimensions of the grid will be
+        added using the "edge" method.
 
     Returns
     -------
@@ -348,7 +375,8 @@ def gaussian_highpass(grid, wavelength):
     return apply_filter(
         grid,
         gaussian_highpass_kernel,
-        pad=False,
+        pad=pad,
+        pad_kwargs=pad_kwargs,
         filter_kwargs={"wavelength": wavelength},
     )
 

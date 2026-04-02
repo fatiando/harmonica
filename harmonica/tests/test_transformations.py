@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 import numpy as np
+import numpy.testing as npt
 import pytest
 import verde as vd
 import xarray as xr
@@ -463,7 +464,7 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     continuation = continuation[trim:-trim, trim:-trim]
     g_z_upward = sample_g_z_upward[trim:-trim, trim:-trim]
     # Drop upward for comparison
-    g_z_upward = g_z_upward.drop("upward")
+    g_z_upward = g_z_upward.drop_vars("upward")
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
@@ -663,23 +664,69 @@ class TestTilt:
             tilt_angle(sample_potential)
 
 
-class TestAgainstOasisMontaj:
+class TestGaussianFilters:
     """
-    Test filter result against the output from oasis montaj.
+    Test the Gaussian low and high pass filters against a synthetic.
     """
 
-    expected_grid = xr.open_dataset(TEST_DATA_DIR / "filter.nc")
+    def test_gaussian_lowpass(self):
+        """
+        Test gaussian_lowpass against a synthetic.
+        """
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = (
+            5
+            * np.sin(2 * np.pi / wavelength_low * coordinates[0])
+            * np.cos(2 * np.pi / wavelength_low * coordinates[1])
+        )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the long wavelength component
+        low = gaussian_lowpass(grid, wavelength=1)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(low, grid_low, atol=0.4)
 
-    def test_gaussian_lowpass_grid(self):
+    def test_gaussian_highpass(self):
         """
-        Test gaussian_lowpass function against the output from oasis montaj.
+        Test gaussian_highpass against a synthetic.
         """
-        low_pass = gaussian_lowpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-6)
-
-    def test_gaussian_highpass_grid(self):
-        """
-        Test gaussian_highpass function against the output from oasis montaj.
-        """
-        high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-6)
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = np.sin(2 * np.pi / wavelength_low * coordinates[0]) * np.cos(
+            2 * np.pi / wavelength_low * coordinates[1]
+        )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the short wavelength component
+        high = gaussian_highpass(grid, wavelength=2)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(high, grid_high, atol=0.14)
