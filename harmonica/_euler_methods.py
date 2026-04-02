@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Classes for Euler Deconvolution of potential field data.
+Classes for Euler-based source location estimation.
 """
 
 import numpy as np
@@ -37,12 +37,12 @@ class EulerDeconvolution:
     Parameters
     ----------
     structural_index : int
-        Defines the nature of the source of the potential field data. It's the
-        degree of the field's rate of change with distance from the source,
-        influencing the decay rate of the field and the formulation of Euler's
-        homogeneity equation. **Correlated with the depth estimate**, so larger
-        structural index will lead to larger depths. **Choose based on known
-        source geometry**. See table below.
+        Defines the nature of the source of the potential field data. Should be an
+        integer between 1 and 3. It's the degree of the field's rate of change with
+        distance from the source, influencing the decay rate of the field and the
+        formulation of Euler's homogeneity equation. **Correlated with the depth
+        estimate**, so larger structural index will lead to larger depths. **Choose
+        based on known source geometry**. See table below.
 
     Attributes
     ----------
@@ -95,10 +95,6 @@ class EulerDeconvolution:
 
     def __init__(self, structural_index):
         self.structural_index = structural_index
-        # The estimated parameters. Start them with None
-        self.location_ = None
-        self.base_level_ = None
-        self.covariance_ = None
 
     def fit(self, coordinates, data):
         """
@@ -135,7 +131,8 @@ class EulerDeconvolution:
         field, east_deriv, north_deriv, up_deriv = vdb.n_1d_arrays(data, 4)
         easting, northing, upward = vdb.n_1d_arrays(coordinates, 3)
         n_data = field.size
-        jacobian = np.empty((n_data, 4))
+        n_params = 4
+        jacobian = np.empty((n_data, n_params))
         jacobian[:, 0] = east_deriv
         jacobian[:, 1] = north_deriv
         jacobian[:, 2] = up_deriv
@@ -147,15 +144,15 @@ class EulerDeconvolution:
             + self.structural_index * field
         )
         hessian = jacobian.T @ jacobian
-        # Invert the Hessian instead of solving the system because this is a
-        # 4x4 system and it won't cost much more, plus we need the inverse
-        # anyway to estimate the covariance matrix (used as a filtering
-        # criterion in windowed implementations)
+        # Invert the Hessian instead of solving the system because this is a 4 x 4 or
+        # 3 x 3 system and it won't cost much more. Plus we need the inverse anyway
+        # to estimate the covariance matrix (used as a filtering criterion in windowed
+        # implementations)
         hessian_inv = sp.linalg.inv(hessian)
         estimate = hessian_inv @ jacobian.T @ pseudo_data
         pseudo_residuals = pseudo_data - jacobian @ estimate
-        chi_squared = np.sum(pseudo_residuals**2) / (n_data - 4)
+        chi_squared = np.sum(pseudo_residuals**2) / (n_data - n_params)
         self.covariance_ = chi_squared * hessian_inv
         self.location_ = estimate[:3]
-        self.base_level_ = estimate[3]
+        self.base_level_ = estimate[-1]
         return self
