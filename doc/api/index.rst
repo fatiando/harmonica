@@ -117,6 +117,7 @@ Source position estimation
 .. autosummary::
     :toctree: generated/
 
+    EulerInversion
     EulerDeconvolution
 
 

@@ -18,10 +18,12 @@ class EulerDeconvolution:
     Estimate source location and base level using Euler Deconvolution.
 
     Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source
-    location and a base level constant from potential field data and their
-    directional derivatives. The approach employs linear least-squares to solve
-    Euler's homogeneity equation. **Assumes a single data window** and provides
-    a single estimate.
+    location from potential field data and their directional derivatives. Also
+    estimates any constant shifts or biases of the data (called the base level).
+    The approach employs linear least-squares to solve Euler's homogeneity
+    equation.
+
+    **Assumes a single data window** and provides a single estimate.
 
     .. hint::
 
@@ -37,12 +39,13 @@ class EulerDeconvolution:
     Parameters
     ----------
     structural_index : int
-        Defines the nature of the source of the potential field data. Should be an
-        integer between 1 and 3. It's the degree of the field's rate of change with
-        distance from the source, influencing the decay rate of the field and the
-        formulation of Euler's homogeneity equation. **Correlated with the depth
-        estimate**, so larger structural index will lead to larger depths. **Choose
-        based on known source geometry**. See table below.
+        Defines the nature of the source of the potential field data. Should
+        be an integer between 1 and 3. It's the degree of the field's rate of
+        change with distance from the source, influencing the decay rate of the
+        field and the formulation of Euler's homogeneity equation. **Correlated
+        with the depth estimate**, so larger structural index will lead to
+        larger depths. **Choose based on known source geometry**. See table
+        below.
 
     Attributes
     ----------
@@ -77,11 +80,12 @@ class EulerDeconvolution:
 
     The Euler deconvolution estimates :math:`(e_0, n_0, u_0)` and :math:`b`
     given a potential field and its easting, northing, and upward derivatives
-    and the structural index. However, **this assumes that the sources are
-    ideal** (see the table below). We recommend reading [ReidThurston2014]_ for
-    a discussion on what the structural index means and what it does not mean.
+    and the structural index.
 
-    After [ReidThurston2014]_, values of the structural index (SI) can be:
+    **This assumes that the sources are ideal** (see the table below).
+    We recommend reading [ReidThurston2014]_ for a discussion on what the
+    structural index means and what it does not mean. After [ReidThurston2014]_,
+    values of the structural index (SI) can be:
 
     ===================================== ======== =========
     Source type                           SI (Mag) SI (Grav)
@@ -159,6 +163,125 @@ class EulerDeconvolution:
 
 
 class EulerInversion:
+    r"""
+    Estimate source location, base level, and SI using Euler Inversion.
+
+    Implements Euler Inversion [Uieda2025]_ to estimate subsurface source
+    location from potential field data and their directional derivatives. Also
+    estimates any constant shifts or biases of the data (called the base level),
+    as well as the structural index (SI; a parameter reflecting the source
+    geometry; see below). The approach employs a non-linear total-least-squares
+    approach to solve the inverse problem of Euler's homogeneity equation.
+
+    **Assumes a single data window** and provides a single estimate.
+
+    .. hint::
+
+        **Euler Inversion is much more stable than Euler Deconvolution.** It's
+        less sensitive to noise in the field derivatives and to interfering
+        sources within the data window. It can also estimate integer-valued
+        structural indices (SI).
+
+    .. note::
+
+        Does not yet support structural index 0.
+
+    Parameters
+    ----------
+    structural_index : int
+        Defines the nature of the source of the potential field data. Should be an
+        integer between 1 and 3. It's the degree of the field's rate of change with
+        distance from the source, influencing the decay rate of the field and the
+        formulation of Euler's homogeneity equation. **Correlated with the depth
+        estimate**, so larger structural index will lead to larger depths. **Choose
+        based on known source geometry**. See table below.
+    max_iterations : int
+        The maximum number of iterations allowed in the non-linear Gauss-Newton
+        inversion. If the value is too small, there is a risk of exiting the
+        inversion without the solution converging to the minimum of the goal
+        function. Larger values won't necessarily lead to longer computation
+        times since the inversion will stop if convergence is reached.
+    tol : float
+        The tolerance in decimal percentage that is needed to continue the
+        iterations. If the change in the merit function (see below) is less than
+        ``tol`` times the current merit function value, the iterations will be
+        terminated. Use smaller values to allow for longer inversions.
+    euler_misfit_balance : float
+        The trade-off parameter :math:`\nu` between fitting the data and obeying
+        Euler's homogeneity equation (see below).
+
+    Attributes
+    ----------
+    location_ : 1d-array
+        Estimated (easting, northing, upward) coordinates of the source after
+        model fitting.
+    base_level_ : float
+        Estimated base level constant of the anomaly after model fitting.
+    covariance_ : 2d-array
+        The 4 x 4 estimated covariance matrix of the solution. Parameters are in the
+        order: easting, northing, upward, base level. **This is not an uncertainty of
+        the position** but a rough estimate of their variance with regard to the data.
+    structural_index_  : int
+        The estimated structural index.
+
+    Notes
+    -----
+    Works on any potential field that satisfies Euler's homogeneity equation
+    (like gravity, magnetic, and their gradients caused by **simple sources**):
+
+    .. math::
+
+        (e_i - e_0)\dfrac{\partial f_i}{\partial e} +
+        (n_i - n_0)\dfrac{\partial f_i}{\partial n} +
+        (u_i - u_0)\dfrac{\partial f_i}{\partial u} =
+        \eta (b - f_i),
+
+    in which :math:`f_i` is the given potential field observation at point
+    :math:`(e_i, n_i, u_i)`, :math:`b` is the base level (a constant shift of
+    the field, like a regional field), :math:`\eta` is the structural index,
+    and :math:`(e_0, n_0, u_0)` are the coordinates of a point on the source
+    (for a sphere, this is the center point).
+
+    The Euler Inversion estimates :math:`(e_0, n_0, u_0)` and :math:`b` given
+    a potential field and its easting, northing, and upward derivatives.
+    If the structural index is not given, it can estimate an integer valued
+    :math:`\eta` by running the inversion multiple times and choosing the
+    :math:`\eta` that produces the best fit to the data. This is a big advantage
+    of the Euler Inversion approach over the Deconvolution since the latter
+    is unable to calculate predicted data and thus cannot evaluate true data
+    misfit.
+
+    The convergence of the solution is measured through a *merti function*
+
+    .. math::
+
+        \mathcal{M}(\mathbf{p}, \mathbf{d}) =
+        \sqrt{\mathbf{r}^T\mathbf{W}\mathbf{r}} +
+        \nu\sqrt{\mathbf{e}^T\mathbf{e}}
+
+    in which :math:`\mathbf{p}` is the parameter vector, :math:`\mathbf{d}`
+    is the predicted data vector, :math:`\mathbf{W}` is the weight matrix,
+    :math:`\mathbf{r}`is the residual vector, :math:`\mathbf{e}` is the
+    evaluation of Euler's equation using the current data and parameters, and
+    :math:`\nu` is trade-off parameter that balances fitting the data with
+    obeying Euler's equation.
+
+    As with Euler Deconvolution, Euler Inversion **still assumes that
+    the sources are ideal** (see the table below). We recommend reading
+    [ReidThurston2014]_ for a discussion on what the structural index means and
+    what it does not mean. After [ReidThurston2014]_, values of the structural
+    index (SI) can be:
+
+    ===================================== ======== =========
+    Source type                           SI (Mag) SI (Grav)
+    ===================================== ======== =========
+    Point, sphere                            3         2
+    Line, cylinder, thin bed fault           2         1
+    Thin sheet edge, thin sill, thin dyke    1         0
+    ===================================== ======== =========
+
+    """
+
     def __init__(
         self,
         structural_index=None,
@@ -188,9 +311,6 @@ class EulerInversion:
                 candidates.append(euler)
             best = candidates[np.argmin([e.data_misfit_ for e in candidates])]
             self.structural_index_ = best.structural_index
-            self.data_misfit_ = best.data_misfit_
-            self.euler_misfit_ = best.data_misfit_
-            self.merit_ = best.data_misfit_
             self.location_ = best.location_
             self.base_level_ = best.base_level_
             self.covariance_ = best.covariance_
@@ -225,9 +345,9 @@ class EulerInversion:
         # Keep track of the way these metrics vary with iteration
         euler = self._eulers_equation(coordinates, data_predicted, parameters)
         residuals = data_observed - data_predicted
-        self.euler_misfit_ = np.linalg.norm(euler)
-        self.data_misfit_ = np.linalg.norm(residuals * data_weights)
-        self.merit_ = self.data_misfit_ + self.euler_misfit_balance * self.euler_misfit_
+        euler_misfit = np.linalg.norm(euler)
+        data_misfit = np.linalg.norm(residuals * data_weights)
+        merit = data_misfit + self.euler_misfit_balance * euler_misfit
         for _ in range(self.max_iterations):
             parameter_step, data_step, cofactor_new = self._newton_step(
                 coordinates,
@@ -247,17 +367,17 @@ class EulerInversion:
             new_merit = new_data_misfit + self.euler_misfit_balance * new_euler_misfit
             # Check if was increasing the merit function, which means this solution is
             # worse than the last.
-            if new_merit > self.merit_:
+            if new_merit > merit:
                 # If it's bad, walk back the last step
                 data_predicted -= data_step
                 parameters -= parameter_step
                 break
             cofactor = cofactor_new
             # Update tracked metrics
-            self.euler_misfit_ = new_euler_misfit
-            self.data_misfit_ = new_data_misfit
-            merit_change = abs((self.merit_ - new_merit) / self.merit_)
-            self.merit_ = new_merit
+            euler_misfit = new_euler_misfit
+            data_misfit = new_data_misfit
+            merit_change = abs((merit - new_merit) / merit)
+            merit = new_merit
             # Check for convergence
             if merit_change < self.tol:
                 break
@@ -266,6 +386,7 @@ class EulerInversion:
         self.base_level_ = parameters[3]
         chi_squared = np.sum(residuals**2) / (residuals.size - parameters.size)
         self.covariance_ = chi_squared * cofactor
+        self.data_misfit_ = data_misfit
         return self
 
     def _newton_step(
