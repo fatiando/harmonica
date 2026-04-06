@@ -15,7 +15,13 @@ from ._fft import fft, ifft
 
 
 def apply_filter(
-    grid, fft_filter, *, filter_kwargs=None, pad=True, pad_kwargs=None, drop_coords=False
+    grid,
+    fft_filter,
+    *,
+    filter_kwargs=None,
+    pad=True,
+    pad_kwargs=None,
+    drop_coords=False,
 ):
     """
     Apply a filter to a grid and return the transformed grid in spatial domain.

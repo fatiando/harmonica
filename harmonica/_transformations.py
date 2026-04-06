@@ -73,7 +73,9 @@ def derivative_upward(grid, *, order=1, pad=True, pad_kwargs=None):
     )
 
 
-def derivative_easting(grid, *, order=1, method="finite-diff", pad=True, pad_kwargs=None):
+def derivative_easting(
+    grid, *, order=1, method="finite-diff", pad=True, pad_kwargs=None
+):
     """
     Calculate the derivative of a regular grid in the easting direction.
 
@@ -147,7 +149,9 @@ def derivative_easting(grid, *, order=1, method="finite-diff", pad=True, pad_kwa
     return grid
 
 
-def derivative_northing(grid, *, order=1, method="finite-diff", pad=True, pad_kwargs=None):
+def derivative_northing(
+    grid, *, order=1, method="finite-diff", pad=True, pad_kwargs=None
+):
     """
     Calculate the derivative of a regular grid in the northing direction.
 
