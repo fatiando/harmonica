@@ -80,12 +80,11 @@ def apply_filter(
     non_dim_coords = {c: grid[c] for c in grid.coords if c not in grid.indexes}
     grid = grid.drop_vars(non_dim_coords.keys())
     if pad:
-        # By default, use a padding width of 25% of the largest grid dimension.
+        # By default, use a padding width of 25% of each grid dimension.
         # Fedi et al. (2012; doi:10.1111/j.1365-246X.2011.05259.x) suggest
         # a padding of 100% but that seems exaggerated.
         if "pad_width" not in pad_kwargs:
-            width = int(0.25 * max(grid[d].size for d in dims))
-            pad_kwargs["pad_width"] = {d: width for d in dims}
+            pad_kwargs["pad_width"] = {d: int(0.25 * grid[d].size) for d in dims}
         if "mode" not in pad_kwargs:
             pad_kwargs["mode"] = "edge"
         if "constant_values" not in pad_kwargs:
