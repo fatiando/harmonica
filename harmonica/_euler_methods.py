@@ -104,9 +104,10 @@ class EulerDeconvolution:
         """
         Fit the model using potential field measurements and their derivatives.
 
-        Solves Euler's homogeneity equation to estimate the source location
-        and base level by utilizing field values and their spatial derivatives
-        in easting, northing, and upward directions.
+        Solves Euler's homogeneity equation to estimate the source location and
+        base level by utilizing field values and their spatial derivatives in
+        easting, northing, and upward directions. Creates a pseudo-parametric
+        model that assumes derivatives are free of error.
 
         .. tip::
 
@@ -128,8 +129,8 @@ class EulerDeconvolution:
         Returns
         -------
         self
-            The instance itself, updated with the estimated `location_`
-            and `base_level_`.
+            The instance itself, updated with the estimated ``location_``
+            and ``base_level_``.
         """
         coordinates, data, _ = vdb.check_fit_input(coordinates, data, weights=None)
         field, east_deriv, north_deriv, up_deriv = vdb.n_1d_arrays(data, 4)
@@ -261,7 +262,7 @@ class EulerInversion:
 
     in which :math:`\mathbf{p}` is the parameter vector, :math:`\mathbf{d}`
     is the predicted data vector, :math:`\mathbf{W}` is the weight matrix,
-    :math:`\mathbf{r}`is the residual vector, :math:`\mathbf{e}` is the
+    :math:`\mathbf{r}` is the residual vector, :math:`\mathbf{e}` is the
     evaluation of Euler's equation using the current data and parameters, and
     :math:`\nu` is trade-off parameter that balances fitting the data with
     obeying Euler's equation.
@@ -295,6 +296,47 @@ class EulerInversion:
         self.euler_misfit_balance = euler_misfit_balance
 
     def fit(self, coordinates, data, weights=(1, 0.1, 0.1, 0.025)):
+        """
+        Fit the model using potential field measurements and their derivatives.
+
+        Solves Euler's homogeneity equation to estimate the source location
+        and base level by utilizing field values and their spatial derivatives
+        in easting, northing, and upward directions. Constructs an implicit
+        mathematical model and estimates both the parameters and the predicted
+        data (field and its derivatives). Will also estimate the structural
+        index if a value was not provided.
+
+        .. tip::
+
+            Data does not need to be gridded for this to work.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Tuple of 3 with the coordinates of each data point. Should be in
+            the following order: ``(easting, northing, upward)``.
+            Arrays can be n-dimensional but must all have the same shape.
+        data : tuple of arrays
+            Tuple of 4 arrays with the observed data in the following order:
+            ``(potential_field, derivative_easting, derivative_northing,
+            derivative_upward)``. Arrays can be n-dimensional but must all have
+            the same shape as the coordinates. Derivatives must be in data
+            units over coordinates units, for example nT/m or mGal/m.
+        weights : tuple, list, 1d-array, optional
+            Weights assigned to each of the four data types (field and
+            its derivatives) in the inversion. Reducing the weights of the
+            derivatives helps reduce the influence of random noise in the
+            results. By default, weights are 1 for the field, 0.1 for its
+            eastward and northward derivatives, and 0.025 for its upward
+            derivative. The upward derivative has a smaller weight because it
+            usually contains more errors arising from FFT-based processing.
+
+        Returns
+        -------
+        self
+            The instance itself, updated with the estimated ``location_``,
+            ``base_level_``, and ``structural_index_``.
+        """
         coordinates, data, _ = vdb.check_fit_input(coordinates, data, weights=None)
         data = vdb.n_1d_arrays(data, 4)
         coordinates = vdb.n_1d_arrays(coordinates, 3)
