@@ -109,7 +109,6 @@ def test_euler_inversion_with_analytic_derivatives(euler):
     assert euler.structural_index_ == 2
 
 
-
 @pytest.mark.parametrize(
     "euler",
     [
@@ -144,7 +143,6 @@ def test_euler_inversion_convergence_warning(euler):
             (table.easting, table.northing, table.upward),
             (table.tfa, table.d_east, table.d_north, table.d_up),
         )
-
 
 
 def test_euler_deconvolution_with_numeric_derivatives():
