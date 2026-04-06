@@ -59,8 +59,7 @@ def test_euler_inversion_with_numeric_derivatives(euler):
     npt.assert_allclose(euler.location_[:2], dipole_coordinates[:2], rtol=0.01)
     npt.assert_allclose(euler.location_[2], dipole_coordinates[2], rtol=0.05)
     npt.assert_allclose(euler.base_level_, true_base_level, rtol=0.01)
-    if hasattr(euler, "structural_index_"):
-        assert euler.structural_index_ == 3
+    assert euler.structural_index_ == 3
 
 
 @pytest.mark.parametrize(
@@ -107,8 +106,45 @@ def test_euler_inversion_with_analytic_derivatives(euler):
     npt.assert_allclose(euler.location_[:2], masses_coordinates[:2], rtol=0.01)
     npt.assert_allclose(euler.location_[2], masses_coordinates[2], rtol=0.05)
     npt.assert_allclose(euler.base_level_, base_level, rtol=0.01)
-    if hasattr(euler, "structural_index_"):
-        assert euler.structural_index_ == 2
+    assert euler.structural_index_ == 2
+
+
+
+@pytest.mark.parametrize(
+    "euler",
+    [
+        EulerInversion(structural_index=3, max_iterations=1),
+        EulerInversion(max_iterations=1),
+    ],
+    ids=("fixed_SI", "estimate_SI"),
+)
+def test_euler_inversion_convergence_warning(euler):
+    "Check that a warning is raised when the method exits without convergence"
+    # Add dipole source
+    dipole_coordinates = (10e3, 15e3, -10e3)
+    inc, dec = -40, 15
+    dipole_moments = magnetic_angles_to_vec(1.0e14, inc, dec)
+    region = [-100e3, 100e3, -80e3, 80e3]
+    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    b = dipole_magnetic(coordinates, dipole_coordinates, dipole_moments, field="b")
+    # Add a fixed base level
+    true_base_level = 200  # nT
+    anomaly = total_field_anomaly(b, inc, dec) + true_base_level
+    anomaly += np.random.default_rng(42).normal(0, 20, anomaly.shape)
+    grid = vd.make_xarray_grid(
+        coordinates, anomaly, data_names="tfa", extra_coords_names="upward"
+    )
+    grid["d_east"] = derivative_easting(grid.tfa)
+    grid["d_north"] = derivative_northing(grid.tfa)
+    grid["d_up"] = derivative_upward(grid.tfa)
+    table = vd.grid_to_table(grid)
+    coordinates = (table.easting, table.northing, table.upward)
+    with pytest.warns(UserWarning, match="Euler Inversion exited"):
+        euler.fit(
+            (table.easting, table.northing, table.upward),
+            (table.tfa, table.d_east, table.d_north, table.d_up),
+        )
+
 
 
 def test_euler_deconvolution_with_numeric_derivatives():
@@ -139,8 +175,6 @@ def test_euler_deconvolution_with_numeric_derivatives():
     )
     npt.assert_allclose(euler.location_, dipole_coordinates, rtol=0.01)
     npt.assert_allclose(euler.base_level_, true_base_level, rtol=0.01)
-    if hasattr(euler, "structural_index_"):
-        npt.assert_allclose(euler.structural_index_, 3, rtol=0.01)
 
 
 def test_euler_deconvolution_with_analytic_derivatives():
@@ -172,5 +206,3 @@ def test_euler_deconvolution_with_analytic_derivatives():
     )
     npt.assert_allclose(euler.location_, masses_coordinates, atol=1.0e-3, rtol=1.0e-3)
     npt.assert_allclose(euler.base_level_, 0.0, atol=1.0e-3, rtol=1.0e-3)
-    if hasattr(euler, "structural_index_"):
-        npt.assert_allclose(euler.structural_index_, 2, rtol=0.01)

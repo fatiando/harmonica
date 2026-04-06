@@ -8,6 +8,8 @@
 Classes for Euler-based source location estimation.
 """
 
+import warnings
+
 import numpy as np
 import scipy as sp
 import verde.base as vdb
@@ -391,7 +393,7 @@ class EulerInversion:
         data_misfit = np.linalg.norm(residuals * data_weights)
         merit = data_misfit + self.euler_misfit_balance * euler_misfit
         for _ in range(self.max_iterations):
-            parameter_step, data_step, cofactor_new = self._newton_step(
+            parameter_step, data_step, cofactor = self._newton_step(
                 coordinates,
                 data_observed,
                 data_predicted,
@@ -404,25 +406,21 @@ class EulerInversion:
             # Update metrics
             euler = self._eulers_equation(coordinates, data_predicted, parameters)
             residuals = data_observed - data_predicted
-            new_euler_misfit = np.linalg.norm(euler)
-            new_data_misfit = np.linalg.norm(residuals * data_weights)
-            new_merit = new_data_misfit + self.euler_misfit_balance * new_euler_misfit
-            # Check if was increasing the merit function, which means this solution is
-            # worse than the last.
-            if new_merit > merit:
-                # If it's bad, walk back the last step
-                data_predicted -= data_step
-                parameters -= parameter_step
-                break
-            cofactor = cofactor_new
-            # Update tracked metrics
-            euler_misfit = new_euler_misfit
-            data_misfit = new_data_misfit
+            euler_misfit = np.linalg.norm(euler)
+            data_misfit = np.linalg.norm(residuals * data_weights)
+            new_merit = data_misfit + self.euler_misfit_balance * euler_misfit
             merit_change = abs((merit - new_merit) / merit)
             merit = new_merit
             # Check for convergence
             if merit_change < self.tol:
                 break
+        else:
+            message = (
+                "Euler Inversion exited because maximum number of iterations was reached"
+                " and not because the algorithm converged. Consider increasing the"
+                " maximum number of iterations."
+            )
+            warnings.warn(message, stacklevel=2)
         # Save output attributes
         self.location_ = parameters[:3]
         self.base_level_ = parameters[3]
