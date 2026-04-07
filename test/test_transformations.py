@@ -1,0 +1,733 @@
+# Copyright (c) 2018 The Harmonica Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
+"""
+Test functions for regular grid transformations.
+"""
+
+import re
+from pathlib import Path
+
+import numpy as np
+import numpy.testing as npt
+import pytest
+import verde as vd
+import xarray as xr
+import xarray.testing as xrt
+
+from harmonica import (
+    dipole_magnetic,
+    magnetic_angles_to_vec,
+    point_gravity,
+    total_field_anomaly,
+)
+from harmonica._transformations import (
+    _get_dataarray_coordinate,
+    derivative_easting,
+    derivative_northing,
+    derivative_upward,
+    gaussian_highpass,
+    gaussian_lowpass,
+    reduction_to_pole,
+    tilt_angle,
+    total_gradient_amplitude,
+    upward_continuation,
+)
+
+from .utils import root_mean_square_error
+
+MODULE_DIR = Path(__file__).parent
+TEST_DATA_DIR = MODULE_DIR / "data"
+
+
+@pytest.fixture(name="sample_sources")
+def fixture_sample_sources():
+    """
+    Define a pair of sample point sources used to build tests.
+    """
+    points = [
+        [-50e3, 50e3],
+        [-50e3, 50e3],
+        [-30e3, -20e3],
+    ]
+
+    masses = [8e8, -3e8]
+    return points, masses
+
+
+@pytest.fixture(name="sample_grid_coords")
+def fixture_sample_grid_coords():
+    """
+    Define sample grid coordinates.
+    """
+    grid_coords = vd.grid_coordinates(
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=0
+    )
+    return grid_coords
+
+
+@pytest.fixture(name="upward_grid_coords")
+def fixture_upward_grid_coords():
+    """
+    Define upward grid coordinates.
+    """
+    grid_coords = vd.grid_coordinates(
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=10e3
+    )
+    return grid_coords
+
+
+@pytest.fixture(name="sample_potential")
+def fixture_sample_potential(sample_grid_coords, sample_sources):
+    """
+    Return gravity potential field of sample sources on sample grid coords.
+    """
+    points, masses = sample_sources
+    potential = point_gravity(sample_grid_coords, points, masses, field="potential")
+    potential = vd.make_xarray_grid(
+        sample_grid_coords,
+        potential,
+        data_names="potential",
+        extra_coords_names="upward",
+    )
+    return potential.potential
+
+
+@pytest.fixture(name="sample_g_z")
+def fixture_sample_g_z(sample_grid_coords, sample_sources):
+    """
+    Return g_z field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_z = point_gravity(sample_grid_coords, points, masses, field="g_z")
+    g_z = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_z,
+        data_names="g_z",
+        extra_coords_names="upward",
+    )
+    return g_z.g_z
+
+
+@pytest.fixture(name="sample_g_z_upward")
+def fixture_sample_g_z_upward(upward_grid_coords, sample_sources):
+    """
+    Return g_z field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_z = point_gravity(upward_grid_coords, points, masses, field="g_z")
+    g_z = vd.make_xarray_grid(
+        upward_grid_coords,
+        g_z,
+        data_names="g_z",
+        extra_coords_names="upward",
+    )
+    return g_z.g_z
+
+
+@pytest.fixture(name="sample_g_n")
+def fixture_sample_g_n(sample_grid_coords, sample_sources):
+    """
+    Return g_n field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_n = point_gravity(sample_grid_coords, points, masses, field="g_n")
+    g_n = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_n,
+        data_names="g_n",
+        extra_coords_names="upward",
+    )
+    return g_n.g_n
+
+
+@pytest.fixture(name="sample_g_e")
+def fixture_sample_g_e(sample_grid_coords, sample_sources):
+    """
+    Return g_e field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_e = point_gravity(sample_grid_coords, points, masses, field="g_e")
+    g_e = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_e,
+        data_names="g_e",
+        extra_coords_names="upward",
+    )
+    return g_e.g_e
+
+
+@pytest.fixture(name="sample_g_zz")
+def fixture_sample_g_zz(sample_grid_coords, sample_sources):
+    """
+    Return g_zz field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_zz = point_gravity(sample_grid_coords, points, masses, field="g_zz")
+    g_zz = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_zz,
+        data_names="g_zz",
+        extra_coords_names="upward",
+    )
+    return g_zz.g_zz
+
+
+@pytest.fixture(name="sample_g_nn")
+def fixture_sample_g_nn(sample_grid_coords, sample_sources):
+    """
+    Return g_nn field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_nn = point_gravity(sample_grid_coords, points, masses, field="g_nn")
+    g_nn = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_nn,
+        data_names="g_nn",
+        extra_coords_names="upward",
+    )
+    return g_nn.g_nn
+
+
+@pytest.fixture(name="sample_g_ee")
+def fixture_sample_g_ee(sample_grid_coords, sample_sources):
+    """
+    Return g_ee field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_ee = point_gravity(sample_grid_coords, points, masses, field="g_ee")
+    g_ee = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_ee,
+        data_names="g_ee",
+        extra_coords_names="upward",
+    )
+    return g_ee.g_ee
+
+
+@pytest.fixture(name="sample_g_ez")
+def fixture_sample_g_ez(sample_grid_coords, sample_sources):
+    """
+    Return g_ez field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_ez = point_gravity(sample_grid_coords, points, masses, field="g_ez")
+    g_ez = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_ez,
+        data_names="g_ez",
+        extra_coords_names="upward",
+    )
+    return g_ez.g_ez
+
+
+@pytest.fixture(name="sample_g_nz")
+def fixture_sample_g_nz(sample_grid_coords, sample_sources):
+    """
+    Return g_nz field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_nz = point_gravity(sample_grid_coords, points, masses, field="g_nz")
+    g_nz = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_nz,
+        data_names="g_nz",
+        extra_coords_names="upward",
+    )
+    return g_nz.g_nz
+
+
+@pytest.mark.parametrize(
+    ("index", "expected_dimension"), [(1, "easting"), (0, "northing")]
+)
+def test_get_dataarray_coordinate(index, expected_dimension, sample_potential):
+    """
+    Test the _get_dataarray_coordinate private function.
+    """
+    dimension = _get_dataarray_coordinate(sample_potential, index)
+    assert dimension == expected_dimension
+
+
+@pytest.mark.parametrize(("index", "dimension"), [(1, "easting"), (0, "northing")])
+def test_get_dataarray_coordinate_invalid_grid(index, dimension, sample_potential):
+    """
+    Test if _get_dataarray_coordinate raises error when grid have an additional
+    coordinate that share one of the horizontal dimensions.
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        _get_dataarray_coordinate(grid, index)
+
+
+@pytest.mark.parametrize(
+    ("dimension", "derivative_func"),
+    [("easting", derivative_easting), ("northing", derivative_northing)],
+)
+def test_horizontal_derivative_with_invalid_grid(
+    dimension, derivative_func, sample_potential
+):
+    """
+    Test if the horizontal derivative functions raise an error when passing
+    a grid that has an additional coordinate that share the horizontal
+    dimension and the "finite-diff" method is selected.
+    """
+    # Add another horizontal coordinate that shares the same dimension
+    extra_coord = np.ones_like(sample_potential[dimension])
+    grid = sample_potential.assign_coords({"extra_coord": (dimension, extra_coord)})
+    # Check if function raises an error
+    err_msg = "Grid contains more than one coordinate along the"
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(grid, method="finite-diff")
+
+
+def test_derivative_upward(sample_potential, sample_g_z):
+    """
+    Test derivative_upward function against the synthetic model.
+    """
+    derivative = derivative_upward(sample_potential)
+    # Compare against g_up (trim the borders to ignore boundary effects)
+    trim = 6
+    derivative = derivative[trim:-trim, trim:-trim]
+    g_up = -sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_up)
+    assert rms / np.abs(g_up).max() < 0.015
+
+
+def test_derivative_upward_order2(sample_potential, sample_g_zz):
+    """
+    Test higher order of derivative_upward function against the sample grid.
+
+    Note: We omit the minus sign here because the second derivative is positive
+    for both downward (negative) and upward (positive) derivatives.
+    """
+    # Calculate second upward derivative and unpad it
+    second_deriv = derivative_upward(sample_potential, order=2)
+    # Compare against g_zz (trim the borders to ignore boundary effects)
+    trim = 6
+    second_deriv = second_deriv[trim:-trim, trim:-trim]
+    g_zz = sample_g_zz[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_zz)
+    assert rms / np.abs(g_zz).max() < 0.015
+
+
+@pytest.mark.parametrize(
+    "derivative_func",
+    [derivative_easting, derivative_northing],
+    ids=["derivative_easting", "derivative_northing"],
+)
+def test_invalid_method_horizontal_derivatives(sample_potential, derivative_func):
+    """
+    Test if passing and invalid method to horizontal derivatives raise an error.
+    """
+    method = "bla"
+    err_msg = f"Invalid method '{method}'."
+    with pytest.raises(ValueError, match=err_msg):
+        derivative_func(sample_potential, method=method)
+
+
+def test_derivative_easting_finite_diff(sample_potential, sample_g_e):
+    """
+    Test derivative_easting function against the synthetic model using finite
+    differences.
+    """
+    # Calculate easting derivative
+    derivative = derivative_easting(sample_potential)
+    # Compare against g_e
+    g_e = sample_g_e * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_e)
+    assert rms / np.abs(g_e).max() < 0.01
+
+
+def test_derivative_easting_finite_diff_order_2(sample_potential, sample_g_ee):
+    """
+    Test higher order of derivative_easting function against the sample grid
+    using finite differences.
+    """
+    # Calculate second easting derivative
+    second_deriv = derivative_easting(sample_potential, order=2)
+    # Compare against g_e
+    g_ee = sample_g_ee * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_ee)
+    assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_easting_fft(sample_potential, sample_g_e):
+    """
+    Test derivative_easting function against the synthetic model using FFTs.
+    """
+    derivative = derivative_easting(sample_potential)
+    # Compare against g_e (trim the borders to ignore boundary effects)
+    trim = 6
+    derivative = derivative[trim:-trim, trim:-trim]
+    g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_e)
+    assert rms / np.abs(g_e).max() < 0.1
+
+
+def test_derivative_easting_order2(sample_potential, sample_g_ee):
+    """
+    Test higher order of derivative_easting function against the sample grid.
+    """
+    second_deriv = derivative_easting(sample_potential, order=2)
+    # Compare against g_ee (trim the borders to ignore boundary effects)
+    trim = 6
+    second_deriv = second_deriv[trim:-trim, trim:-trim]
+    g_ee = sample_g_ee[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_ee)
+    assert rms / np.abs(g_ee).max() < 0.1
+
+
+def test_derivative_northing_finite_diff(sample_potential, sample_g_n):
+    """
+    Test derivative_northing function against the synthetic model using finite
+    differences.
+    """
+    # Calculate northing derivative
+    derivative = derivative_northing(sample_potential)
+    # Compare against g_e
+    g_n = sample_g_n * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_n)
+    assert rms / np.abs(g_n).max() < 0.01
+
+
+def test_derivative_northing_finite_diff_order_2(sample_potential, sample_g_nn):
+    """
+    Test higher order of derivative_northing function against the sample grid
+    using finite differences.
+    """
+    # Calculate second northing derivative
+    second_deriv = derivative_northing(sample_potential, order=2)
+    # Compare against g_e
+    g_nn = sample_g_nn * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_nn)
+    assert rms / np.abs(g_nn).max() < 0.1
+
+
+def test_derivative_northing(sample_potential, sample_g_n):
+    """
+    Test derivative_northing function against the synthetic model.
+    """
+    derivative = derivative_northing(sample_potential)
+    # Compare against g_n (trim the borders to ignore boundary effects)
+    trim = 6
+    derivative = derivative[trim:-trim, trim:-trim]
+    g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+    rms = root_mean_square_error(derivative, g_n)
+    assert rms / np.abs(g_n).max() < 0.1
+
+
+def test_derivative_northing_order2(sample_potential, sample_g_nn):
+    """
+    Test higher order of derivative_northing function against the sample grid.
+    """
+    second_deriv = derivative_northing(sample_potential, order=2)
+    # Compare against g_nn (trim the borders to ignore boundary effects)
+    trim = 6
+    second_deriv = second_deriv[trim:-trim, trim:-trim]
+    g_nn = sample_g_nn[trim:-trim, trim:-trim] * 1e-9  # convert to SI units
+    rms = root_mean_square_error(second_deriv, g_nn)
+    assert rms / np.abs(g_nn).max() < 0.1
+
+
+def test_laplace_fft(sample_potential):
+    """
+    Test if second order of derivatives fulfill Laplace equation.
+
+    We will use FFT computations only.
+    """
+    method = "fft"
+    second_deriv_ee = derivative_easting(sample_potential, order=2, method=method)
+    second_deriv_nn = derivative_northing(sample_potential, order=2, method=method)
+    second_deriv_zz = derivative_upward(sample_potential, order=2)
+    # Compare g_nn + g_ee against -g_zz (trim the borders to ignore boundary
+    # effects)
+    trim = 6
+    second_deriv_sum = second_deriv_ee + second_deriv_nn
+    second_deriv_sum = second_deriv_sum[trim:-trim, trim:-trim]
+    second_deriv_zz = second_deriv_zz[trim:-trim, trim:-trim]
+    xrt.assert_allclose(second_deriv_sum, -second_deriv_zz, atol=1e-20)
+
+
+def test_upward_continuation(sample_g_z, sample_g_z_upward):
+    """
+    Test upward_continuation function against the synthetic model.
+    """
+    continuation = upward_continuation(sample_g_z, 10e3)
+    # Compare against g_z_upward (trim the borders to ignore boundary effects)
+    trim = 6
+    continuation = continuation[trim:-trim, trim:-trim]
+    g_z_upward = sample_g_z_upward[trim:-trim, trim:-trim]
+    # Drop upward for comparison
+    g_z_upward = g_z_upward.drop_vars("upward")
+    xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
+
+
+def test_reduction_to_pole_remanent():
+    """
+    Test reduction_to_pole against an analytical solution with remanent magnetization.
+    """
+    coordinates = vd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    minc, mdec = -14, -24
+    dipole = [-25e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, minc, mdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec, minc, mdec)
+    # Relative tol doesn't work because the anomaly at the pole is zero in
+    # a ring around the source and the rtol blows up at those points.
+    np.testing.assert_allclose(
+        anomaly_reduced.values,
+        anomaly_pole,
+        rtol=0,
+        atol=0.01 * np.abs(anomaly_pole).max(),
+    )
+
+
+def test_reduction_to_pole_induced():
+    """
+    Test reduction_to_pole against an analytical solution with induced magnetization.
+    """
+    coordinates = vd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    dipole = [-25e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, finc, fdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec)
+    # Relative tol doesn't work because the anomaly at the pole is zero in
+    # a ring around the source and the rtol blows up at those points.
+    np.testing.assert_allclose(
+        anomaly_reduced.values,
+        anomaly_pole,
+        rtol=0,
+        atol=0.01 * np.abs(anomaly_pole).max(),
+    )
+
+
+def test_reduction_to_pole_dim_names(sample_potential):
+    """
+    Test reduction_to_pole function with non-typical dim names.
+    """
+    renamed_dims_grid = sample_potential.rename(
+        {"easting": "name_one", "northing": "name_two"}
+    )
+    reduction_to_pole(renamed_dims_grid, 60, 45, 60, 45)
+
+
+class TestTotalGradientAmplitude:
+    """
+    Test total_gradient_amplitude function.
+    """
+
+    def test_against_synthetic(
+        self, sample_potential, sample_g_n, sample_g_e, sample_g_z
+    ):
+        """
+        Test total_gradient_amplitude function against the synthetic model.
+        """
+        tga = total_gradient_amplitude(sample_potential)
+        # Compare against g_tga (trim the borders to ignore boundary effects)
+        trim = 6
+        tga = tga[trim:-trim, trim:-trim]
+        g_e = sample_g_e[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_n = sample_g_n[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_z = sample_g_z[trim:-trim, trim:-trim] * 1e-5  # convert to SI units
+        g_tga = np.sqrt(g_e**2 + g_n**2 + g_z**2)
+        rms = root_mean_square_error(tga, g_tga)
+        assert rms / np.abs(g_tga).max() < 0.1
+
+    def test_invalid_grid_single_dimension(self):
+        """
+        Check if total_gradient_amplitude raises error on grid with single
+        dimension.
+        """
+        x = np.linspace(0, 10, 11)
+        y = x**2
+        grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+        msg = re.escape("Invalid grid with 1 dimensions.")
+        with pytest.raises(ValueError, match=msg):
+            total_gradient_amplitude(grid)
+
+    def test_invalid_grid_three_dimensions(self):
+        """
+        Check if total_gradient_amplitude raises error on grid with three
+        dimensions.
+        """
+        x = np.linspace(0, 10, 11)
+        y = np.linspace(-4, 4, 9)
+        z = np.linspace(20, 30, 5)
+        xx, yy, zz = np.meshgrid(x, y, z)
+        data = xx + yy + zz
+        grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+        msg = re.escape("Invalid grid with 3 dimensions.")
+        with pytest.raises(ValueError, match=msg):
+            total_gradient_amplitude(grid)
+
+    def test_invalid_grid_with_nans(self, sample_potential):
+        """
+        Check if total_gradient_amplitude raises error if grid contains nans.
+        """
+        sample_potential.values[0, 0] = np.nan
+        with pytest.raises(ValueError, match="Found nan"):
+            total_gradient_amplitude(sample_potential)
+
+
+class TestTilt:
+    """
+    Test tilt function.
+    """
+
+    def test_against_synthetic(self, sample_g_z, sample_g_nz, sample_g_ez, sample_g_zz):
+        """
+        Test tilt function against the synthetic model.
+        """
+        # Use the gz because the potential is too smooth and messes up at the edges
+        numerical = tilt_angle(sample_g_z)
+        # Use minus to use the upward derivative (z is downward)
+        analytical = np.arctan2(-sample_g_zz, np.sqrt(sample_g_ez**2 + sample_g_nz**2))
+        # Compare only an inner region because the tilt is terrible at the edges
+        crop = [-125e3, 125e3, -125e3, 125e3]
+        numerical = numerical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        analytical = analytical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        np.testing.assert_allclose(numerical, analytical, atol=0.15)
+
+    def test_invalid_grid_single_dimension(self):
+        """
+        Check if tilt raises error on grid with single
+        dimension.
+        """
+        x = np.linspace(0, 10, 11)
+        y = x**2
+        grid = xr.DataArray(y, coords={"x": x}, dims=("x",))
+        msg = re.escape("Invalid grid with 1 dimensions.")
+        with pytest.raises(ValueError, match=msg):
+            tilt_angle(grid)
+
+    def test_invalid_grid_three_dimensions(self):
+        """
+        Check if tilt raises error on grid with three
+        dimensions.
+        """
+        x = np.linspace(0, 10, 11)
+        y = np.linspace(-4, 4, 9)
+        z = np.linspace(20, 30, 5)
+        xx, yy, zz = np.meshgrid(x, y, z)
+        data = xx + yy + zz
+        grid = xr.DataArray(data, coords={"x": x, "y": y, "z": z}, dims=("y", "x", "z"))
+        msg = re.escape("Invalid grid with 3 dimensions.")
+        with pytest.raises(ValueError, match=msg):
+            tilt_angle(grid)
+
+    def test_invalid_grid_with_nans(self, sample_potential):
+        """
+        Check if tilt raises error if grid contains nans.
+        """
+        sample_potential.values[0, 0] = np.nan
+        with pytest.raises(ValueError, match="Found nan"):
+            tilt_angle(sample_potential)
+
+
+class TestGaussianFilters:
+    """
+    Test the Gaussian low and high pass filters against a synthetic.
+    """
+
+    def test_gaussian_lowpass(self):
+        """
+        Test gaussian_lowpass against a synthetic.
+        """
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = (
+            5
+            * np.sin(2 * np.pi / wavelength_low * coordinates[0])
+            * np.cos(2 * np.pi / wavelength_low * coordinates[1])
+        )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the long wavelength component
+        low = gaussian_lowpass(grid, wavelength=1)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(low, grid_low, atol=0.4)
+
+    def test_gaussian_highpass(self):
+        """
+        Test gaussian_highpass against a synthetic.
+        """
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = np.sin(2 * np.pi / wavelength_low * coordinates[0]) * np.cos(
+            2 * np.pi / wavelength_low * coordinates[1]
+        )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the short wavelength component
+        high = gaussian_highpass(grid, wavelength=2)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(high, grid_high, atol=0.14)

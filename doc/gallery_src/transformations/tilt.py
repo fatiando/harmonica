@@ -13,7 +13,6 @@ import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -22,21 +21,8 @@ import harmonica as hm
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
 
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
 # Compute the tilt of the grid
-tilt_grid = hm.tilt_angle(magnetic_grid_padded)
-
-# Unpad the tilt grid
-tilt_grid = xrft.unpad(tilt_grid, pad_width)
-
+tilt_grid = hm.tilt_angle(magnetic_grid)
 # Show the tilt
 print("\nTilt:\n", tilt_grid)
 
@@ -47,19 +33,12 @@ inclination, declination = -52.98, 6.51
 # Apply a reduction to the pole over the magnetic anomaly grid. We will assume
 # that the sources share the same inclination and declination as the
 # geomagnetic field.
-rtp_grid_padded = hm.reduction_to_pole(
-    magnetic_grid_padded, inclination=inclination, declination=declination
+rtp_grid = hm.reduction_to_pole(
+    magnetic_grid, inclination=inclination, declination=declination
 )
 
-# Unpad the reduced to the pole grid
-rtp_grid = xrft.unpad(rtp_grid_padded, pad_width)
-
 # Compute the tilt of the padded rtp grid
-tilt_rtp_grid = hm.tilt_angle(rtp_grid_padded)
-
-# Unpad the tilt grid
-tilt_rtp_grid = xrft.unpad(tilt_rtp_grid, pad_width)
-
+tilt_rtp_grid = hm.tilt_angle(rtp_grid)
 # Show the tilt from RTP
 print("\nTilt from RTP:\n", tilt_rtp_grid)
 

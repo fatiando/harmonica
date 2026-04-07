@@ -13,7 +13,6 @@ import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -21,15 +20,6 @@ import harmonica as hm
 # Ensaio and load it with Xarray
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
-
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
 # Define the inclination and declination of the region by the time of the data
 # acquisition (1990).
@@ -39,15 +29,10 @@ inclination, declination = -52.98, 6.51
 # that the sources share the same inclination and declination as the
 # geomagnetic field.
 rtp_grid = hm.reduction_to_pole(
-    magnetic_grid_padded, inclination=inclination, declination=declination
+    magnetic_grid, inclination=inclination, declination=declination
 )
-
-# Unpad the reduced to the pole grid
-rtp_grid = xrft.unpad(rtp_grid, pad_width)
-
 # Show the reduced to the pole grid
 print("\nReduced to the pole magnetic grid:\n", rtp_grid)
-
 
 # Plot original magnetic anomaly and the reduced to the pole
 fig = pygmt.Figure()

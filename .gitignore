@@ -18,6 +18,6 @@ doc/sg_execution_times.rst
 MANIFEST
 dask-worker-space
 .coverage.*
-harmonica/_version.py
+src/harmonica/_version.py
 .DS_Store
 .spyproject/*
