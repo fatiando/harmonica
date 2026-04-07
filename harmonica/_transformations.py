@@ -96,9 +96,9 @@ def derivative_easting(
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
-    order : int
+    order : int, optional
         The order of the derivative. Default to 1.
-    method : str (optional)
+    method : str, optional
         Method that will be used for computing the easting derivative. It can
         be either ``"finite-diff"``, for computing using
         :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
@@ -172,9 +172,9 @@ def derivative_northing(
         evenly spaced (regular grid). Its dimensions should be in the following
         order: *northing*, *easting*. Its coordinates should be defined in the
         same units.
-    order : int
+    order : int, optional
         The order of the derivative. Default to 1.
-    method : str (optional)
+    method : str, optional
         Method that will be used for computing the easting derivative. It can
         be either ``"finite-diff"``, for computing using
         :func:`xarray.differentiate`, or ``"fft"``, for using FFT-based
