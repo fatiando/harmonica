@@ -18,13 +18,13 @@ import verde as vd
 import xarray as xr
 import xarray.testing as xrt
 
-from .. import (
+from harmonica import (
     dipole_magnetic,
     magnetic_angles_to_vec,
     point_gravity,
     total_field_anomaly,
 )
-from .._transformations import (
+from harmonica._transformations import (
     _get_dataarray_coordinate,
     derivative_easting,
     derivative_northing,
@@ -36,6 +36,7 @@ from .._transformations import (
     total_gradient_amplitude,
     upward_continuation,
 )
+
 from .utils import root_mean_square_error
 
 MODULE_DIR = Path(__file__).parent

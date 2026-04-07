@@ -7,7 +7,7 @@
 import numpy.testing as npt
 import verde as vd
 
-from .. import (
+from harmonica import (
     EulerDeconvolution,
     derivative_easting,
     derivative_northing,
@@ -15,7 +15,7 @@ from .. import (
     dipole_magnetic,
     magnetic_angles_to_vec,
 )
-from .._forward.point import point_gravity
+from harmonica._forward.point import point_gravity
 
 
 def test_euler_with_numeric_derivatives():

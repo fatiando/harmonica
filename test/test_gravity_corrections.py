@@ -12,8 +12,8 @@ import numpy as np
 import numpy.testing as npt
 import xarray as xr
 
-from .. import bouguer_correction
-from ..constants import GRAVITATIONAL_CONST
+from harmonica import bouguer_correction
+from harmonica.constants import GRAVITATIONAL_CONST
 
 
 def test_bouguer_correction():

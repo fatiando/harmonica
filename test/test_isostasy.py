@@ -13,7 +13,7 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from .. import isostatic_moho_airy
+from harmonica import isostatic_moho_airy
 
 
 @pytest.mark.parametrize("reference_depth", [0, 30e3])
