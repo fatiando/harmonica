@@ -530,7 +530,7 @@ def test_reduction_to_pole_induced():
     )
     anomaly = total_field_anomaly(magnetic_field, finc, fdec)
     grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
-    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec)
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec, finc, fdec)
     # Relative tol doesn't work because the anomaly at the pole is zero in
     # a ring around the source and the rtol blows up at those points.
     np.testing.assert_allclose(

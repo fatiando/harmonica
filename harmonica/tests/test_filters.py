@@ -468,29 +468,3 @@ def test_reduction_to_pole_kernel(
             magnetization_declination=50,
         ),
     )
-
-
-@pytest.mark.parametrize(
-    ("magnetization_inclination", "magnetization_declination"), [(None, 1), (1, None)]
-)
-def test_invalid_magnetization_angles(
-    sample_fft_grid, magnetization_inclination, magnetization_declination
-):
-    """
-    Test if reduction to the pole raise errors when
-    invalid magnetization angles are passed.
-    """
-    if magnetization_inclination is None:
-        offender = "magnetization_inclination"
-    if magnetization_declination is None:
-        offender = "magnetization_declination"
-    msg = f"Invalid magnetization degrees. Found `{offender}` as "
-    inclination, declination = 1, 30
-    with pytest.raises(ValueError, match=msg):
-        reduction_to_pole_kernel(
-            sample_fft_grid,
-            inclination,
-            declination,
-            magnetization_inclination,
-            magnetization_declination,
-        )

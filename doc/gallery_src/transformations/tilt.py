@@ -34,7 +34,11 @@ inclination, declination = -52.98, 6.51
 # that the sources share the same inclination and declination as the
 # geomagnetic field.
 rtp_grid = hm.reduction_to_pole(
-    magnetic_grid, inclination=inclination, declination=declination
+    magnetic_grid,
+    inclination=inclination,
+    declination=declination,
+    magnetization_inclination=inclination,
+    magnetization_declination=declination,
 )
 
 # Compute the tilt of the padded rtp grid
