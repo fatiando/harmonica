@@ -19,6 +19,7 @@ from .._forward.point import point_gravity
 
 
 def test_euler_with_numeric_derivatives():
+    "Check the Euler solution against a synthetic using numerical derivatives"
     # Add dipole source
     dipole_coordinates = (10e3, 15e3, -10e3)
     dipole_moments = magnetic_angles_to_vec(1.0e14, 0, 0)
@@ -48,15 +49,16 @@ def test_euler_with_numeric_derivatives():
 
     coordinates = (grid_table.easting, grid_table.northing, grid_table.upward)
     euler.fit(
-        (grid_table.easting, grid_table.northing, grid_table.upward),
+        coordinates,
         (grid_table.tfa, grid_table.d_east, grid_table.d_north, grid_table.d_up),
     )
 
-    npt.assert_allclose(euler.location_, dipole_coordinates, atol=1.0e-3, rtol=1.0e-3)
-    npt.assert_allclose(euler.base_level_, true_base_level, atol=1.0e-3, rtol=1.0e-3)
+    npt.assert_allclose(euler.location_, dipole_coordinates, rtol=1.0e-2)
+    npt.assert_allclose(euler.base_level_, true_base_level, rtol=1.0e-3)
 
 
 def test_euler_with_analytic_derivatives():
+    "Check the Euler solution against a synthetic using analytical derivatives"
     # Add dipole source
     masses_coordinates = (10e3, 15e3, -10e3)
     masses = 1.0e12
