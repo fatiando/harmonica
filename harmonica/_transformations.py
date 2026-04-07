@@ -342,6 +342,58 @@ def reduction_to_pole(
     )
 
 
+def total_horizontal_gradient(grid):
+    r"""
+    Calculate the total horizontal derivative of a potential field grid.
+
+    Compute the amplitude of the horizontal gradient of a regular gridded
+    potential field `M`. This is a measure of the rate of change in the x and y
+    (horizontal) directions. . The horizontal derivatives are calculated though 
+    finite-differences.
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A two-dimensional :class:`xarray.DataArray` whose coordinates are
+        evenly spaced (regular grid). Its dimensions should be in the following
+        order: *northing*, *easting*. The coordinates must be defined in the same units.
+
+    Returns
+    -------
+    horizontal_derivative_grid : :class:`xarray.DataArray`
+        A :class:`xarray.DataArray` containing the total horizontal derivative of
+        the input ``grid``.
+
+    Notes
+    -----
+    The total horizontal derivative is calculated as:
+
+    .. math::
+
+        A(x, y) = \sqrt{
+            \left( \frac{\partial M}{\partial x} \right)^2
+            + \left( \frac{\partial M}{\partial y} \right)^2
+        }
+
+    where :math:`M` is the regularly gridded potential field.
+
+    References
+    ----------
+    [Blakely1995]_
+    [CordellGrauch1985]_
+    """
+
+    # Run sanity checks on the grid
+    grid_sanity_checks(grid)
+    # Calculate the horizontal gradients of the grid
+    horizontal_gradient = (
+        derivative_easting(grid, order=1),
+        derivative_northing(grid, order=1)
+    )
+    # return the total horizontal gradient
+    return np.sqrt(horizontal_gradient[0] ** 2 + horizontal_gradient[1] ** 2)
+
+
 def total_gradient_amplitude(grid):
     r"""
     Calculate the total gradient amplitude of a potential field grid.
