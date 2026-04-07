@@ -29,6 +29,10 @@ from ..filters._filters import (
 )
 from ..filters._utils import apply_filter
 
+# -------------------------------
+# Fixtures
+# -------------------------------
+
 
 @pytest.fixture(name="region")
 def fixture_region():
@@ -46,21 +50,6 @@ def fixture_sample_grid(region):
     easting, northing = grid_coordinates(region, spacing=500)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
     return make_xarray_grid((easting, northing), data, data_names="sample").sample
-
-
-@pytest.fixture(name="sample_grid_upward")
-def fixture_sample_grid_upward(region):
-    """
-    Return a sample grid as an :class:`xarray.DataArray` with upward coord.
-    """
-    easting, northing, upward = grid_coordinates(region, spacing=500, extra_coords=100)
-    data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
-    return make_xarray_grid(
-        (easting, northing, upward),
-        data,
-        data_names="sample",
-        extra_coords_names="upward",
-    ).sample
 
 
 @pytest.fixture(name="sample_grid_multiple_coords")
@@ -84,77 +73,6 @@ def fixture_sample_grid_multiple_coords(region):
         },
         dims=dims,
     )
-
-
-def test_fft_round_trip(sample_grid):
-    """
-    Test if the wrapped fft and ifft functions satisfy a round trip.
-    """
-    xrt.assert_allclose(sample_grid, ifft(fft(sample_grid)))
-
-
-def test_fft_round_trip_upward(sample_grid_upward):
-    """
-    Test if the wrapped fft and ifft functions satisfy a round trip.
-    """
-    round_trip = ifft(fft(sample_grid_upward))
-    assert "upward" not in round_trip
-    # Assert if both arrays are close enough, but dropping upward first
-    xrt.assert_allclose(
-        sample_grid_upward.drop("upward"), ifft(fft(sample_grid_upward))
-    )
-
-
-def test_fft_no_drop_bad_coords(sample_grid_upward):
-    """
-    Check if no dropping bad coordinates raises ValueError on upward coord.
-
-    ``xrft`` complains when *bad coordinates* are present in the input array.
-    This test, along with the ``drop_bad_coordinates`` argument, should be
-    removed if ``xrft`` changes this behaviour
-    """
-    msg = "Please drop these coordinates"
-    with pytest.raises(ValueError, match=msg):
-        fft(sample_grid_upward, drop_bad_coords=False)
-
-
-def test_fft_no_drop_bad_coords_multi(sample_grid_multiple_coords):
-    """
-    Check if no dropping bad coordinates raises ValueError on multiple coords.
-
-    This test should fail because ``xrft`` complains when *bad coordinates* are
-    present in the input array.
-    This test, along with the ``drop_bad_coordinates`` argument, should be
-    removed if ``xrft`` changes this behaviour
-    """
-    msg = "Please drop these coordinates"
-    with pytest.raises(ValueError, match=msg):
-        fft(sample_grid_multiple_coords, drop_bad_coords=False)
-
-
-# -------------------------------
-# Tests for apply_filter function
-# -------------------------------
-
-
-def dummy_filter(fourier_transform):
-    """
-    Implement a dummy filter in frequency domain for testing purposes.
-
-    Return an array full of zeroes
-    """
-    return fourier_transform * 0
-
-
-def test_apply_filter(sample_grid):
-    """
-    Test apply_filter function using the dummy_filter.
-    """
-    # Apply the dummy filter
-    filtered_grid = apply_filter(sample_grid, dummy_filter)
-    # Compare output with expected results
-    expected = sample_grid * 0
-    xrt.assert_allclose(filtered_grid, expected)
 
 
 @pytest.fixture(name="invalid_grid_single_dim")
@@ -188,6 +106,155 @@ def fixture_invalid_grid_3_dims():
     return grid
 
 
+@pytest.fixture(name="sample_fft_grid")
+def fixture_sample_fft_grid():
+    """
+    Return a sample fft_grid to be used in test functions.
+    """
+    domain = (-9e-4, 9e-4, -8e-4, 8e-4)
+    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
+    dummy_fft = np.ones_like(freq_easting)
+    fft_grid = make_xarray_grid(
+        (freq_easting, freq_northing),
+        dummy_fft,
+        data_names=["sample_fft"],
+        dims=("freq_northing", "freq_easting"),
+    )
+    return fft_grid.sample_fft
+
+
+@pytest.fixture(name="invalid_grid_with_nans")
+def fixture_invalid_grid_with_nans(sample_grid):
+    """
+    Return a sample grid with nans.
+
+    This fixture is meant to test if apply_filter raises an error on a grid
+    with a nans.
+    """
+    sample_grid[2, 4] = np.nan
+    return sample_grid
+
+
+# -------------------------------
+# Tests for FFT functions
+# -------------------------------
+
+
+def test_fft_round_trip(sample_grid):
+    """
+    Test if the wrapped fft and ifft functions satisfy a round trip.
+    """
+    xrt.assert_allclose(sample_grid, ifft(fft(sample_grid)))
+
+
+# -------------------------------
+# Tests for apply_filter function
+# -------------------------------
+
+
+def dummy_filter(fourier_transform):
+    """
+    Implement a dummy filter in frequency domain for testing purposes.
+
+    Return an array full of zeroes
+    """
+    return fourier_transform * 0
+
+
+def test_apply_filter(sample_grid):
+    """
+    Test apply_filter function when the grid has no extra coordinates.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(sample_grid, dummy_filter)
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
+def test_apply_filter_keep_coords(sample_grid_multiple_coords):
+    """
+    Test apply_filter function on a grid with extra coordinates.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(sample_grid_multiple_coords, dummy_filter)
+    # Compare output with expected results
+    expected = sample_grid_multiple_coords * 0
+    # Non-dimensional coordinates should have been dropped by apply_filter.
+    assert set(sample_grid_multiple_coords.coords) == set(filtered_grid.coords)
+    npt.assert_allclose(filtered_grid.values, expected.values)
+
+
+def test_apply_filter_drop_coords(sample_grid_multiple_coords):
+    """
+    Test apply_filter function on a grid with extra coordinates.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(
+        sample_grid_multiple_coords, dummy_filter, drop_coords=True
+    )
+    # Compare output with expected results
+    expected = sample_grid_multiple_coords * 0
+    # Non-dimensional coordinates should have been dropped by apply_filter.
+    assert set(sample_grid_multiple_coords.coords) != set(filtered_grid.coords)
+    assert set(sample_grid_multiple_coords.dims) == set(filtered_grid.coords)
+    npt.assert_allclose(filtered_grid.values, expected.values)
+
+
+def test_apply_filter_no_padding(sample_grid):
+    """
+    Test apply_filter function with padding off.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(sample_grid, dummy_filter, pad=False)
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
+def test_apply_filter_pad_width(sample_grid):
+    """
+    Test apply_filter function with custom padding width.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(
+        sample_grid,
+        dummy_filter,
+        pad_kwargs={"pad_width": {"easting": 20, "northing": 20}},
+    )
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
+def test_apply_filter_pad_mode(sample_grid):
+    """
+    Test apply_filter function with custom padding method.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(
+        sample_grid, dummy_filter, pad_kwargs={"mode": "median"}
+    )
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
+def test_apply_filter_pad_with_constant(sample_grid):
+    """
+    Test apply_filter function with the constant padding method.
+    """
+    # Apply the dummy filter
+    filtered_grid = apply_filter(
+        sample_grid,
+        dummy_filter,
+        pad_kwargs={"mode": "constant", "constant_values": 120},
+    )
+    # Compare output with expected results
+    expected = sample_grid * 0
+    xrt.assert_allclose(filtered_grid, expected)
+
+
 def test_apply_filter_grid_single_dimension(invalid_grid_single_dim):
     """
     Check if apply_filter raises error on grid with single dimension.
@@ -204,18 +271,6 @@ def test_apply_filter_grid_three_dimensions(invalid_grid_3_dims):
     msg = re.escape("Invalid grid with 3 dimensions.")
     with pytest.raises(ValueError, match=msg):
         apply_filter(invalid_grid_3_dims, dummy_filter)
-
-
-@pytest.fixture(name="invalid_grid_with_nans")
-def fixture_invalid_grid_with_nans(sample_grid):
-    """
-    Return a sample grid with nans.
-
-    This fixture is meant to test if apply_filter raises an error on a grid
-    with a nans.
-    """
-    sample_grid[2, 4] = np.nan
-    return sample_grid
 
 
 def test_apply_filter_grid_with_nans(invalid_grid_with_nans):
@@ -239,25 +294,8 @@ def test_coordinate_rounding_fix(sample_grid):
 
 
 # -----------------------------
-# Test upward derivative filter
+# Test filter functions
 # -----------------------------
-
-
-@pytest.fixture(name="sample_fft_grid")
-def fixture_sample_fft_grid():
-    """
-    Return a sample fft_grid to be used in test functions.
-    """
-    domain = (-9e-4, 9e-4, -8e-4, 8e-4)
-    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
-    dummy_fft = np.ones_like(freq_easting)
-    fft_grid = make_xarray_grid(
-        (freq_easting, freq_northing),
-        dummy_fft,
-        data_names=["sample_fft"],
-        dims=("freq_northing", "freq_easting"),
-    )
-    return fft_grid.sample_fft
 
 
 @pytest.mark.parametrize("order", [1, 2, 3])

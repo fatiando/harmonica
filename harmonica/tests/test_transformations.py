@@ -12,13 +12,18 @@ import re
 from pathlib import Path
 
 import numpy as np
+import numpy.testing as npt
 import pytest
 import verde as vd
 import xarray as xr
 import xarray.testing as xrt
-import xrft
 
-from .. import point_gravity
+from .. import (
+    dipole_magnetic,
+    magnetic_angles_to_vec,
+    point_gravity,
+    total_field_anomaly,
+)
 from .._transformations import (
     _get_dataarray_coordinate,
     derivative_easting,
@@ -58,7 +63,7 @@ def fixture_sample_grid_coords():
     Define sample grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
-        region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=0
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=0
     )
     return grid_coords
 
@@ -69,7 +74,7 @@ def fixture_upward_grid_coords():
     Define upward grid coordinates.
     """
     grid_coords = vd.grid_coordinates(
-        region=(-150e3, 150e3, -150e3, 150e3), shape=(41, 41), extra_coords=10e3
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=10e3
     )
     return grid_coords
 
@@ -202,6 +207,38 @@ def fixture_sample_g_ee(sample_grid_coords, sample_sources):
     return g_ee.g_ee
 
 
+@pytest.fixture(name="sample_g_ez")
+def fixture_sample_g_ez(sample_grid_coords, sample_sources):
+    """
+    Return g_ez field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_ez = point_gravity(sample_grid_coords, points, masses, field="g_ez")
+    g_ez = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_ez,
+        data_names="g_ez",
+        extra_coords_names="upward",
+    )
+    return g_ez.g_ez
+
+
+@pytest.fixture(name="sample_g_nz")
+def fixture_sample_g_nz(sample_grid_coords, sample_sources):
+    """
+    Return g_nz field of sample points on sample grid coords.
+    """
+    points, masses = sample_sources
+    g_nz = point_gravity(sample_grid_coords, points, masses, field="g_nz")
+    g_nz = vd.make_xarray_grid(
+        sample_grid_coords,
+        g_nz,
+        data_names="g_nz",
+        extra_coords_names="upward",
+    )
+    return g_nz.g_nz
+
+
 @pytest.mark.parametrize(
     ("index", "expected_dimension"), [(1, "easting"), (0, "northing")]
 )
@@ -253,19 +290,7 @@ def test_derivative_upward(sample_potential, sample_g_z):
     """
     Test derivative_upward function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate upward derivative and unpad it
-    derivative = derivative_upward(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_upward(sample_potential)
     # Compare against g_up (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -281,19 +306,8 @@ def test_derivative_upward_order2(sample_potential, sample_g_zz):
     Note: We omit the minus sign here because the second derivative is positive
     for both downward (negative) and upward (positive) derivatives.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
     # Calculate second upward derivative and unpad it
-    second_deriv = derivative_upward(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_upward(sample_potential, order=2)
     # Compare against g_zz (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -347,19 +361,7 @@ def test_derivative_easting_fft(sample_potential, sample_g_e):
     """
     Test derivative_easting function against the synthetic model using FFTs.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate easting derivative and unpad it
-    derivative = derivative_easting(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_easting(sample_potential)
     # Compare against g_e (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -372,19 +374,7 @@ def test_derivative_easting_order2(sample_potential, sample_g_ee):
     """
     Test higher order of derivative_easting function against the sample grid.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second easting derivative and unpad it
-    second_deriv = derivative_easting(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_easting(sample_potential, order=2)
     # Compare against g_ee (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -423,19 +413,7 @@ def test_derivative_northing(sample_potential, sample_g_n):
     """
     Test derivative_northing function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate northing derivative and unpad it
-    derivative = derivative_northing(potential_padded)
-    derivative = xrft.unpad(derivative, pad_width)
+    derivative = derivative_northing(sample_potential)
     # Compare against g_n (trim the borders to ignore boundary effects)
     trim = 6
     derivative = derivative[trim:-trim, trim:-trim]
@@ -448,19 +426,7 @@ def test_derivative_northing_order2(sample_potential, sample_g_nn):
     """
     Test higher order of derivative_northing function against the sample grid.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second northing derivative and unpad it
-    second_deriv = derivative_northing(potential_padded, order=2)
-    second_deriv = xrft.unpad(second_deriv, pad_width)
+    second_deriv = derivative_northing(sample_potential, order=2)
     # Compare against g_nn (trim the borders to ignore boundary effects)
     trim = 6
     second_deriv = second_deriv[trim:-trim, trim:-trim]
@@ -475,24 +441,10 @@ def test_laplace_fft(sample_potential):
 
     We will use FFT computations only.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_potential.easting.size // 3,
-        "northing": sample_potential.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    potential_padded = xrft.pad(
-        sample_potential.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate second northing derivative and unpad it
     method = "fft"
-    second_deriv_ee = derivative_easting(potential_padded, order=2, method=method)
-    second_deriv_nn = derivative_northing(potential_padded, order=2, method=method)
-    second_deriv_zz = derivative_upward(potential_padded, order=2)
-    second_deriv_ee = xrft.unpad(second_deriv_ee, pad_width)
-    second_deriv_nn = xrft.unpad(second_deriv_nn, pad_width)
-    second_deriv_zz = xrft.unpad(second_deriv_zz, pad_width)
+    second_deriv_ee = derivative_easting(sample_potential, order=2, method=method)
+    second_deriv_nn = derivative_northing(sample_potential, order=2, method=method)
+    second_deriv_zz = derivative_upward(sample_potential, order=2)
     # Compare g_nn + g_ee against -g_zz (trim the borders to ignore boundary
     # effects)
     trim = 6
@@ -506,36 +458,97 @@ def test_upward_continuation(sample_g_z, sample_g_z_upward):
     """
     Test upward_continuation function against the synthetic model.
     """
-    # Pad the potential field grid to improve accuracy
-    pad_width = {
-        "easting": sample_g_z.easting.size // 3,
-        "northing": sample_g_z.northing.size // 3,
-    }
-    # need to drop upward coordinate (bug in xrft)
-    gravity_padded = xrft.pad(
-        sample_g_z.drop_vars("upward"),
-        pad_width=pad_width,
-    )
-    # Calculate upward continuation and unpad it
-    continuation = upward_continuation(gravity_padded, 10e3)
-    continuation = xrft.unpad(continuation, pad_width)
+    continuation = upward_continuation(sample_g_z, 10e3)
     # Compare against g_z_upward (trim the borders to ignore boundary effects)
     trim = 6
     continuation = continuation[trim:-trim, trim:-trim]
     g_z_upward = sample_g_z_upward[trim:-trim, trim:-trim]
     # Drop upward for comparison
-    g_z_upward = g_z_upward.drop("upward")
+    g_z_upward = g_z_upward.drop_vars("upward")
     xrt.assert_allclose(continuation, g_z_upward, atol=1e-8)
 
 
-def test_reduction_to_pole(sample_potential):
+def test_reduction_to_pole_remanent():
+    """
+    Test reduction_to_pole against an analytical solution with remanent magnetization.
+    """
+    coordinates = vd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    minc, mdec = -14, -24
+    dipole = [-25e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, minc, mdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec, minc, mdec)
+    # Relative tol doesn't work because the anomaly at the pole is zero in
+    # a ring around the source and the rtol blows up at those points.
+    np.testing.assert_allclose(
+        anomaly_reduced.values,
+        anomaly_pole,
+        rtol=0,
+        atol=0.01 * np.abs(anomaly_pole).max(),
+    )
+
+
+def test_reduction_to_pole_induced():
+    """
+    Test reduction_to_pole against an analytical solution with induced magnetization.
+    """
+    coordinates = vd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    )
+    finc, fdec = -45, 13
+    dipole = [-25e3, 20e3, -5000]
+    moment = 1e12
+    magnetic_field_pole = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, 90, 0),
+        field="b",
+    )
+    anomaly_pole = total_field_anomaly(magnetic_field_pole, 90, 0)
+    magnetic_field = dipole_magnetic(
+        coordinates,
+        dipoles=dipole,
+        magnetic_moments=magnetic_angles_to_vec(moment, finc, fdec),
+        field="b",
+    )
+    anomaly = total_field_anomaly(magnetic_field, finc, fdec)
+    grid = vd.make_xarray_grid(coordinates[:2], anomaly, data_names="anomaly")
+    anomaly_reduced = reduction_to_pole(grid.anomaly, finc, fdec)
+    # Relative tol doesn't work because the anomaly at the pole is zero in
+    # a ring around the source and the rtol blows up at those points.
+    np.testing.assert_allclose(
+        anomaly_reduced.values,
+        anomaly_pole,
+        rtol=0,
+        atol=0.01 * np.abs(anomaly_pole).max(),
+    )
+
+
+def test_reduction_to_pole_dim_names(sample_potential):
     """
     Test reduction_to_pole function with non-typical dim names.
     """
     renamed_dims_grid = sample_potential.rename(
         {"easting": "name_one", "northing": "name_two"}
     )
-    reduction_to_pole(renamed_dims_grid, 60, 45)
+    reduction_to_pole(renamed_dims_grid, 60, 45, 60, 45)
 
 
 class TestTotalGradientAmplitude:
@@ -549,19 +562,7 @@ class TestTotalGradientAmplitude:
         """
         Test total_gradient_amplitude function against the synthetic model.
         """
-        # Pad the potential field grid to improve accuracy
-        pad_width = {
-            "easting": sample_potential.easting.size // 3,
-            "northing": sample_potential.northing.size // 3,
-        }
-        # need to drop upward coordinate (bug in xrft)
-        potential_padded = xrft.pad(
-            sample_potential.drop_vars("upward"),
-            pad_width=pad_width,
-        )
-        # Calculate total gradient amplitude and unpad it
-        tga = total_gradient_amplitude(potential_padded)
-        tga = xrft.unpad(tga, pad_width)
+        tga = total_gradient_amplitude(sample_potential)
         # Compare against g_tga (trim the borders to ignore boundary effects)
         trim = 6
         tga = tga[trim:-trim, trim:-trim]
@@ -613,37 +614,19 @@ class TestTilt:
     Test tilt function.
     """
 
-    def test_against_synthetic(
-        self, sample_potential, sample_g_n, sample_g_e, sample_g_z
-    ):
+    def test_against_synthetic(self, sample_g_z, sample_g_nz, sample_g_ez, sample_g_zz):
         """
         Test tilt function against the synthetic model.
         """
-        # Pad the potential field grid to improve accuracy
-        pad_width = {
-            "easting": sample_potential.easting.size // 3,
-            "northing": sample_potential.northing.size // 3,
-        }
-        # need to drop upward coordinate (bug in xrft)
-        potential_padded = xrft.pad(
-            sample_potential.drop_vars("upward"),
-            pad_width=pad_width,
-        )
-        # Calculate the tilt and unpad it
-        tilt_grid = tilt_angle(potential_padded)
-        tilt_grid = xrft.unpad(tilt_grid, pad_width)
-        # Compare against g_tilt (trim the borders to ignore boundary effects)
-        trim = 6
-        tilt_grid = tilt_grid[trim:-trim, trim:-trim]
-        g_e = sample_g_e[trim:-trim, trim:-trim]
-        g_n = sample_g_n[trim:-trim, trim:-trim]
-        g_z = sample_g_z[trim:-trim, trim:-trim]
-        g_horiz_deriv = np.sqrt(g_e**2 + g_n**2)
-        g_tilt = np.arctan2(
-            -g_z, g_horiz_deriv
-        )  # use -g_z to use the _upward_ derivative
-        rms = root_mean_square_error(tilt_grid, g_tilt)
-        assert rms / np.abs(tilt_grid).max() < 0.1
+        # Use the gz because the potential is too smooth and messes up at the edges
+        numerical = tilt_angle(sample_g_z)
+        # Use minus to use the upward derivative (z is downward)
+        analytical = np.arctan2(-sample_g_zz, np.sqrt(sample_g_ez**2 + sample_g_nz**2))
+        # Compare only an inner region because the tilt is terrible at the edges
+        crop = [-125e3, 125e3, -125e3, 125e3]
+        numerical = numerical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        analytical = analytical.sel(easting=slice(*crop[:2]), northing=slice(*crop[2:]))
+        np.testing.assert_allclose(numerical, analytical, atol=0.15)
 
     def test_invalid_grid_single_dimension(self):
         """
@@ -681,35 +664,69 @@ class TestTilt:
             tilt_angle(sample_potential)
 
 
-class Testfilter:
+class TestGaussianFilters:
     """
-    Test filter result against the output from oasis montaj.
+    Test the Gaussian low and high pass filters against a synthetic.
     """
 
-    expected_grid = xr.open_dataset(TEST_DATA_DIR / "filter.nc")
-
-    def test_gaussian_lowpass_grid(self):
+    def test_gaussian_lowpass(self):
         """
-        Test gaussian_lowpass function against the output from oasis montaj.
+        Test gaussian_lowpass against a synthetic.
         """
-        low_pass = gaussian_lowpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_lp10, low_pass, atol=1e-6)
-
-    def test_gaussian_highpass_grid(self):
-        """
-        Test gaussian_highpass function against the output from oasis montaj.
-        """
-        high_pass = gaussian_highpass(self.expected_grid.filter_data, 10)
-        xrt.assert_allclose(self.expected_grid.filter_hp10, high_pass, atol=1e-6)
-
-    def test_reduction_to_pole_grid(self):
-        """
-        Test reduction_to_pole function against the output from oasis montaj.
-        """
-        rtp = reduction_to_pole(self.expected_grid.filter_data, 60, 45)
-        # Remove mean value to match OM result
-        xrt.assert_allclose(
-            self.expected_grid.filter_rtp - self.expected_grid.filter_data.mean(),
-            rtp,
-            atol=1,
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = (
+            5
+            * np.sin(2 * np.pi / wavelength_low * coordinates[0])
+            * np.cos(2 * np.pi / wavelength_low * coordinates[1])
         )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the long wavelength component
+        low = gaussian_lowpass(grid, wavelength=1)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(low, grid_low, atol=0.4)
+
+    def test_gaussian_highpass(self):
+        """
+        Test gaussian_highpass against a synthetic.
+        """
+        # Make a synthetic with only 2 known wavelengths
+        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        wavelength_high = 0.5
+        wavelength_low = 10
+        component_low = np.sin(2 * np.pi / wavelength_low * coordinates[0]) * np.cos(
+            2 * np.pi / wavelength_low * coordinates[1]
+        )
+        component_high = np.cos(2 * np.pi / wavelength_high * coordinates[0]) * np.sin(
+            2 * np.pi / wavelength_high * coordinates[1]
+        )
+        grid_low = xr.DataArray(
+            component_low,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid_high = xr.DataArray(
+            component_high,
+            coords={"x": coordinates[0][0, :], "y": coordinates[1][:, 0]},
+            dims=("y", "x"),
+        )
+        grid = grid_low + grid_high
+        # Try to isolate the short wavelength component
+        high = gaussian_highpass(grid, wavelength=2)
+        # This is about a 10% error tolerance
+        npt.assert_allclose(high, grid_high, atol=0.14)
