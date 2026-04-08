@@ -109,11 +109,9 @@ def load_oasis_montaj_grid(fname):
         shape = (header["shape_e"], header["shape_v"])
         spacing = (header["spacing_e"], header["spacing_v"])
     # Check that the number of elements matches the expected shape
-    expected_size = shape[0] * shape[1]
-    actual_size = grid.size
-    if actual_size != expected_size:
+    if (expected_size := shape[0] * shape[1]) != grid.size:
         msg = (
-            f"Grid data size mismatch: found {actual_size} elements, "
+            f"Grid data size mismatch: found {grid.size} elements, "
             f"expected {expected_size} (shape {shape}). "
             "The file may be corrupted or incomplete."
         )
