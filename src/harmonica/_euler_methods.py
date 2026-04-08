@@ -287,6 +287,7 @@ class EulerInversion:
 
     def __init__(
         self,
+        *,
         structural_index=None,
         max_iterations=20,
         tol=0.1,
@@ -297,7 +298,7 @@ class EulerInversion:
         self.tol = tol
         self.euler_misfit_balance = euler_misfit_balance
 
-    def fit(self, coordinates, data, weights=(1, 0.1, 0.1, 0.025)):
+    def fit(self, coordinates, data, *, weights=(1, 0.1, 0.1, 0.025)):
         """
         Fit the model using potential field measurements and their derivatives.
 
@@ -351,7 +352,7 @@ class EulerInversion:
                     tol=self.tol,
                     euler_misfit_balance=self.euler_misfit_balance,
                 )
-                euler.fit(coordinates, data, weights)
+                euler.fit(coordinates, data, weights=weights)
                 candidates.append(euler)
             best = candidates[np.argmin([e.data_misfit_ for e in candidates])]
             self.structural_index_ = best.structural_index
