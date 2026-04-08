@@ -111,6 +111,7 @@ class TestOasisMontajGrid:
 
 
 def test_incomplete_grid_raises_error():
-    corrupted_file = "harmonica/tests/data/incomplete_grid.grd"
+    """Test error if grid size doesn't match the size in the header."""
+    corrupted_file = TEST_DATA_DIR / "incomplete_grid.grd"
     with pytest.raises(ValueError, match="Grid data size mismatch"):
         load_oasis_montaj_grid(corrupted_file)
