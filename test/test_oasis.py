@@ -16,8 +16,8 @@ import pytest
 import xarray as xr
 import xarray.testing as xrt
 
-from .. import load_oasis_montaj_grid
-from .._io.oasis_montaj_grd import _check_ordering, _check_sign_flag
+from harmonica import load_oasis_montaj_grid
+from harmonica._io.oasis_montaj_grd import _check_ordering, _check_sign_flag
 
 MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"

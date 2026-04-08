@@ -8,7 +8,11 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .. import magnetic_angles_to_vec, magnetic_vec_to_angles, total_field_anomaly
+from harmonica import (
+    magnetic_angles_to_vec,
+    magnetic_vec_to_angles,
+    total_field_anomaly,
+)
 
 VECTORS = [
     [0.5, 0.5, -0.70710678],

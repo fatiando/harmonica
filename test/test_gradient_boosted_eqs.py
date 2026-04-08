@@ -13,8 +13,9 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from .. import EquivalentSourcesGB, point_gravity
-from .._equivalent_sources.gradient_boosted import _get_region_data_sources
+from harmonica import EquivalentSourcesGB, point_gravity
+from harmonica._equivalent_sources.gradient_boosted import _get_region_data_sources
+
 from .utils import run_only_with_numba
 
 

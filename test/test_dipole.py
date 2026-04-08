@@ -20,8 +20,9 @@ try:
 except ImportError:  # pragma: no cover
     ProgressBar = None
 
-from .. import dipole_magnetic
-from .._forward.dipole import VALID_FIELDS
+from harmonica import dipole_magnetic
+from harmonica._forward.dipole import VALID_FIELDS
+
 from .utils import run_only_with_numba
 
 
