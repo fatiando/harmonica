@@ -28,9 +28,10 @@ from choclo.point import (
     gravity_uu,
 )
 
-from .._forward.point import point_gravity
-from .._forward.utils import distance_cartesian
-from ..constants import GRAVITATIONAL_CONST
+from harmonica._forward.point import point_gravity
+from harmonica._forward.utils import distance_cartesian
+from harmonica.constants import GRAVITATIONAL_CONST
+
 from .utils import run_only_with_numba
 
 MODULE_DIR = Path(__file__).parent

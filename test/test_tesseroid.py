@@ -18,14 +18,14 @@ import pytest
 import verde as vd
 from verde import grid_coordinates
 
-from .._forward._tesseroid_utils import (
+from harmonica._forward._tesseroid_utils import (
     _discard_null_tesseroids,
     _distance_tesseroid_point,
     _longitude_continuity,
     _split_tesseroid,
     _tesseroid_dimensions,
 )
-from .._forward.tesseroid_gravity import (
+from harmonica._forward.tesseroid_gravity import (
     MAX_DISCRETIZATIONS,
     STACK_SIZE,
     _adaptive_discretization,
@@ -33,7 +33,8 @@ from .._forward.tesseroid_gravity import (
     check_points_outside_tesseroids,
     tesseroid_gravity,
 )
-from ..constants import GRAVITATIONAL_CONST
+from harmonica.constants import GRAVITATIONAL_CONST
+
 from .utils import run_only_with_numba
 
 try:

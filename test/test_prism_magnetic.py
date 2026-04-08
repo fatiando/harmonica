@@ -20,8 +20,9 @@ try:
 except ImportError:  # pragma: no cover
     ProgressBar = None
 
-from .. import prism_magnetic
-from .._forward.prism_magnetic import VALID_FIELDS
+from harmonica import prism_magnetic
+from harmonica._forward.prism_magnetic import VALID_FIELDS
+
 from .utils import run_only_with_numba
 
 

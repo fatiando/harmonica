@@ -33,8 +33,13 @@ try:
 except ImportError:  # pragma: no cover
     ProgressBar = None
 
-from .. import bouguer_correction
-from .._forward.prism_gravity import _check_prisms, _discard_null_prisms, prism_gravity
+from harmonica import bouguer_correction
+from harmonica._forward.prism_gravity import (
+    _check_prisms,
+    _discard_null_prisms,
+    prism_gravity,
+)
+
 from .utils import run_only_with_numba
 
 

@@ -13,7 +13,7 @@ import math
 import numpy as np
 import pytest
 
-from .._spherical_harmonics.legendre import (
+from harmonica._spherical_harmonics.legendre import (
     associated_legendre,
     associated_legendre_derivative,
     associated_legendre_full,
@@ -21,6 +21,7 @@ from .._spherical_harmonics.legendre import (
     associated_legendre_schmidt,
     associated_legendre_schmidt_derivative,
 )
+
 from .utils import run_only_with_numba
 
 

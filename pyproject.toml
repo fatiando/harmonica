@@ -58,7 +58,7 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
-version_file = "harmonica/_version.py"
+version_file = "src/harmonica/_version.py"
 
 [tool.pytest.ini_options]
 doctest_optionflags = "NUMBER"
@@ -80,7 +80,7 @@ line-length = 88
 exclude = [
     "doc/_build",
     "doc/gallery",
-    "harmonica/_version.py",
+    "src/harmonica/_version.py",
 ]
 
 [tool.ruff.lint]
@@ -124,7 +124,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # disable unused-imports errors on __init__.py
 "_kernels.py" = ["ARG001"]  # disable unused arguments in kernel files
-"harmonica/tests/**" = [
+"test/**" = [
     "T20", # allow print statements in tests
     "D",   # ignore pydocstyle warnings in tests
     "RUF012", # ignore undecorated mutable class attributes
@@ -151,7 +151,7 @@ relative_files = true
 
 [tool.coverage.paths]
 source = [
-    "harmonica",
+    "src/harmonica",
     "*/harmonica",
     "*\\harmonica",
 ]

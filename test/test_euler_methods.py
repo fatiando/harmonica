@@ -9,7 +9,7 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from .. import (
+from harmonica import (
     EulerDeconvolution,
     EulerInversion,
     derivative_easting,

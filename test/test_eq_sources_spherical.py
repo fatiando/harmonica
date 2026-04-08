@@ -13,7 +13,8 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from .. import EquivalentSourcesSph, point_gravity
+from harmonica import EquivalentSourcesSph, point_gravity
+
 from .utils import run_only_with_numba
 
 

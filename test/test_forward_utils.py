@@ -15,7 +15,11 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from .._forward.utils import check_coordinate_system, distance, initialize_progressbar
+from harmonica._forward.utils import (
+    check_coordinate_system,
+    distance,
+    initialize_progressbar,
+)
 
 try:
     from numba_progress import ProgressBar

@@ -14,7 +14,7 @@ import numpy.testing as npt
 import pytest
 import verde as vd
 
-from .._spherical_harmonics.igrf import (
+from harmonica._spherical_harmonics.igrf import (
     IGRF14,
     interpolate_coefficients,
     load_igrf,

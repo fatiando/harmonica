@@ -18,8 +18,8 @@ import pytest
 import verde as vd
 import xarray as xr
 
-from .. import tesseroid_gravity, tesseroid_layer
-from .._forward.tesseroid_layer import _discard_thin_tesseroids
+from harmonica import tesseroid_gravity, tesseroid_layer
+from harmonica._forward.tesseroid_layer import _discard_thin_tesseroids
 
 try:
     from numba_progress import ProgressBar

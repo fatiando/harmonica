@@ -18,15 +18,15 @@ from numba import jit
 from verde import grid_coordinates
 
 import harmonica
-
-from .. import tesseroid_gravity
-from .._forward._tesseroid_variable_density import (
+from harmonica import tesseroid_gravity
+from harmonica._forward._tesseroid_variable_density import (
     _density_based_discretization,
     density_minmax,
     maximum_absolute_diff,
     straight_line,
 )
-from ..constants import GRAVITATIONAL_CONST
+from harmonica.constants import GRAVITATIONAL_CONST
+
 from .utils import run_only_with_numba
 
 try:
