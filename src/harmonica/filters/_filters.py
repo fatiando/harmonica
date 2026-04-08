@@ -362,8 +362,8 @@ def reduction_to_pole_kernel(
     fft_grid,
     inclination,
     declination,
-    magnetization_inclination=None,
-    magnetization_declination=None,
+    magnetization_inclination,
+    magnetization_declination,
 ):
     r"""
     Filter for reduction to the pole in the frequency domain.
@@ -407,16 +407,10 @@ def reduction_to_pole_kernel(
         The inclination of the inducing Geomagnetic field.
     declination : float in degrees
         The declination of the inducing Geomagnetic field.
-    magnetization_inclination : float in degrees or None
-        The inclination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_inclination`` will be set equal to the
-        ``inclination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
+    magnetization_inclination : float in degrees
+        The inclination of the total magnetization of the anomaly source.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_declination`` will be set equal to the
-        ``declination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
+        The declination of the total magnetization of the anomaly source.
 
     Returns
     -------
@@ -432,12 +426,6 @@ def reduction_to_pole_kernel(
     --------
     harmonica.reduction_to_pole
     """
-    # Check if magnetization angles are valid
-    _check_magnetization_angles(magnetization_inclination, magnetization_declination)
-    # Define magnetization angles if they are None
-    if magnetization_declination is None and magnetization_inclination is None:
-        magnetization_inclination = inclination
-        magnetization_declination = declination
     # Catch the dims of the Fourier transformed grid
     dims = fft_grid.dims
     # Grab the coordinates of the Fourier transformed grid
@@ -467,26 +455,3 @@ def reduction_to_pole_kernel(
     # Set 0 wavenumber to 0
     da_filter.loc[{dims[0]: 0, dims[1]: 0}] = 0
     return da_filter
-
-
-def _check_magnetization_angles(magnetization_inclination, magnetization_declination):
-    """
-    Check if magnetization angles are both None or both numbers.
-
-    They could either be two Nones or two angles, but not one None and one
-    angle.
-    """
-    if magnetization_inclination is None and magnetization_declination is not None:
-        raise ValueError(
-            "Invalid magnetization degrees. Found `magnetization_inclination` as "
-            + "None and `magnetization_declination` as"
-            + f"'{magnetization_declination}'. "
-            "Please, provide two valid angles in degrees or both angles as None."
-        )
-    if magnetization_declination is None and magnetization_inclination is not None:
-        raise ValueError(
-            "Invalid magnetization degrees. Found `magnetization_declination` as "
-            + "None and `magnetization_inclination` as"
-            + f"'{magnetization_inclination}'. "
-            "Please, provide two valid angles in degrees or both angles as None."
-        )
