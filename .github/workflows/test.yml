@@ -46,19 +46,15 @@ jobs:
           - optional
         include:
           - dependencies: oldest
-            python: "3.9"
+            python: "3.10"
           - dependencies: latest
-            python: "3.12"
+            python: "3.13"
           - dependencies: optional
-            python: "3.12"
-          # test on macos-13 (x86) using oldest dependencies and python 3.8
-          - os: macos-13
+            python: "3.13"
+          # Include tests on macos (x86) with oldest dependencies
+          - os: macos-15-intel
             dependencies: oldest
-            python: "3.9"
-        exclude:
-          # don't test on macos-latest (arm64) with oldest dependencies
-          - os: macos-latest
-            dependencies: oldest
+            python: "3.10"
 
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
@@ -67,7 +63,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -83,7 +79,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
 
@@ -116,7 +112,7 @@ jobs:
           echo "dir="$(pip cache dir) >> $GITHUB_OUTPUT
 
       - name: Setup caching for pip packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements-full.txt') }}
@@ -125,18 +121,12 @@ jobs:
         run: |
           python -m pip install --requirement requirements-full.txt
 
-      - name: Build source and wheel distributions
-        run: |
-          make build
-          echo ""
-          echo "Generated files:"
-          ls -lh dist/
-
-      - name: Install the package
-        run: python -m pip install --no-deps dist/*.whl
-
       - name: List installed packages
         run: python -m pip freeze
+
+      # Needs to be editable for coverage reporting to work
+      - name: Install the package in editable mode
+        run: python -m pip install --no-deps --editable .
 
       - name: Run the tests
         run: |
@@ -149,44 +139,88 @@ jobs:
               echo "Running 'make test'"
               make test
           fi
+        env:
+          COVERAGE_DEBUG: config,sys,pathmap
 
-      - name: Convert coverage report to XML for codecov
-        run: coverage xml
+      - name: Rename the coverage output
+        run: |
+          mv .coverage .coverage.${{ matrix.os }}_${{ matrix.python }}_${{ matrix.dependencies }}
 
-      - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload coverage as artifact
+        uses: actions/upload-artifact@v7
         with:
-          name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
-          path: ./coverage.xml
+          path: .coverage.*
+          name: coverage_${{ matrix.os }}_${{ matrix.python }}_${{ matrix.dependencies }}
+          if-no-files-found: ignore
+          include-hidden-files: true
 
 
   #############################################################################
-  # Upload coverage report to codecov
-  codecov-upload:
-    runs-on: ubuntu-latest
+  # Check coverage and upload a report
+  #
+  # Inspired by: https://hynek.me/articles/ditch-codecov-python/
+  coverage:
+    name: test coverage is 100%
+    if: always()
     needs: test
+    runs-on: ubuntu-latest
 
     steps:
 
-      - name: Download coverage report artifacts
-        # Download coverage reports from every runner.
-        # Maximum coverage is achieved by combining reports from every runner.
-        # Each coverage file will live in its own folder with the same name as
-        # the artifact.
-        uses: actions/download-artifact@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          # Need to fetch more than the last commit so that setuptools_scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          # Use latest Python, so it understands all syntax.
+          python-version: "3.14"
+
+      - name: Get the pip cache folder
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup caching for pip packages
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-coverage
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage_*
+          # If true, the downloaded artifacts will be in the same directory
+          # specified by path.
+          merge-multiple: true
 
-      - name: List all downloaded artifacts
-        run: ls -l -R .
+      - name: Install coverage.py
+        run: python -m pip install --upgrade coverage[toml]
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
+      - name: Combine coverage
+        run: python -m coverage combine --debug=pathmap
+
+      - name: Make an HTML report
+        run: |
+          python -m coverage html --skip-empty
+
+      - name: Report coverage on the job summary
+        run: python -m coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if coverage is not 100%
+        run: python -m coverage report --fail-under=100
+
+      - name: Upload HTML report if check failed
+        uses: actions/upload-artifact@v7
         with:
-          # Upload all coverage report files
-          files: ./coverage_*/coverage.xml
-          # Fail the job so we know coverage isn't being updated. Otherwise it
-          # can silently drop and we won't know.
-          fail_ci_if_error: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          name: html-report
+          path: htmlcov
+        if: ${{ failure() }}

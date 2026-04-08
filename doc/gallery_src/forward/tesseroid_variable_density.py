@@ -23,6 +23,7 @@ On this example we will show how we can compute the gravitational effect of
 four tesseroids whose densities are given by a custom linear ``density``
 function.
 """
+
 import boule as bl
 import pygmt
 import verde as vd

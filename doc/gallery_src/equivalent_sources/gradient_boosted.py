@@ -21,13 +21,14 @@ which the windows are visited is randomized to improve convergence of the
 algorithm.
 
 Here we will produce a grid out of a portion of the ground gravity survey from
-South Africa (see :func:`harmonica.datasets.fetch_south_africa_gravity`) using
+South Africa (see :func:`ensaio.fetch_southern_africa_gravity`) using
 the gradient-boosted equivalent sources. This particlar dataset is not very
 large, in fact we could use the :class:`harmonica.EquivalentSources` instead.
 But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
 to use them on a small example.
 
 """
+
 import boule as bl
 import ensaio
 import pandas as pd
@@ -59,7 +60,7 @@ xy_region = vd.get_region((easting, northing))
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
 data["gravity_disturbance"] = data.gravity_mgal - ellipsoid.normal_gravity(
-    data.latitude, data.height_sea_level_m
+    (data.longitude, data.latitude, data.height_sea_level_m)
 )
 
 # Create the equivalent sources

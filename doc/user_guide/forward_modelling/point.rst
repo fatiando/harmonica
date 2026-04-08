@@ -153,7 +153,7 @@ Then we can define the point source in the equator along with its mass:
 .. jupyter-execute::
 
    longitude, latitude = 45, 0
-   radius = ellipsoid.geocentric_radius(latitude, geodetic=False)
+   radius = ellipsoid.geocentric_radius(latitude, coordinate_system="spherical")
    point = (longitude, latitude, radius)
 
    mass = 1e6
@@ -212,8 +212,8 @@ spherical coordinates. To do so, we can use the
 
 .. jupyter-execute::
 
-   points_spherical = ellipsoid.geodetic_to_spherical(*points)
-   coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+   points_spherical = ellipsoid.geodetic_to_spherical(points)
+   coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates)
 
 We can finally use these converted coordinates to compute the gravitational
 field the source generate on every computation point:

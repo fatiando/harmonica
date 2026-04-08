@@ -18,6 +18,7 @@ technique in spherical coordinates. It has the same advantages as the Cartesian
 equivalent sources (:class:`harmonica.EquivalentSources`) while taking into
 account the curvature of the Earth.
 """
+
 import boule as bl
 import ensaio
 import numpy as np
@@ -42,12 +43,12 @@ blocked_mean = vd.BlockReduce(np.mean, spacing=0.2, drop_coords=False)
 
 # Compute gravity disturbance by removing the gravity of normal Earth
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(latitude, height=elevation)
+gamma = ellipsoid.normal_gravity((longitude, latitude, elevation))
 gravity_disturbance = gravity_data - gamma
 
 # Convert data coordinates from geodetic (longitude, latitude, height) to
 # spherical (longitude, spherical_latitude, radius).
-coordinates = ellipsoid.geodetic_to_spherical(longitude, latitude, elevation)
+coordinates = ellipsoid.geodetic_to_spherical((longitude, latitude, elevation))
 
 # Create the equivalent sources
 eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
