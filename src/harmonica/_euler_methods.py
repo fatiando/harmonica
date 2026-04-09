@@ -191,13 +191,17 @@ class EulerInversion:
 
     Parameters
     ----------
-    structural_index : int or None, optional
-        Defines the nature of the source of the potential field data. Should be an
-        integer between 1 and 3. It's the degree of the field's rate of change with
-        distance from the source, influencing the decay rate of the field and the
-        formulation of Euler's homogeneity equation. **Correlated with the depth
-        estimate**, so larger structural index will lead to larger depths. **Choose
-        based on known source geometry**. See table below.
+    structural_index : int or sequence, optional
+        Defines the nature of the source of the potential field data. Should be
+        an integer value, usually between 1 and 3 (but can vary depending on the
+        nature of the field). If a sequence of values is passed, the inversion
+        will try each one and pick the value that provides the smallest misfit
+        to the observed data (default). It's the degree of the field's rate of
+        change with distance from the source, influencing the decay rate of the
+        field and the formulation of Euler's homogeneity equation. **Correlated
+        with the depth estimate**, so larger structural index will lead to
+        larger estimated depths. Choose based on known source geometry (see
+        table below) or allow the inversion to estimate the optimal value.
     max_iterations : int, optional
         The maximum number of iterations allowed in the non-linear Gauss-Newton
         inversion. If the value is too small, there is a risk of exiting the
@@ -288,7 +292,7 @@ class EulerInversion:
     def __init__(
         self,
         *,
-        structural_index=None,
+        structural_index=(1, 2, 3),
         max_iterations=20,
         tol=0.1,
         euler_misfit_balance=0.1,
@@ -307,7 +311,7 @@ class EulerInversion:
         in easting, northing, and upward directions. Constructs an implicit
         mathematical model and estimates both the parameters and the predicted
         data (field and its derivatives). Will also estimate the structural
-        index if a value was not provided.
+        index if a single value was not provided.
 
         .. tip::
 
@@ -343,9 +347,9 @@ class EulerInversion:
         coordinates, data, _ = vdb.check_fit_input(coordinates, data, weights=None)
         data = vdb.n_1d_arrays(data, 4)
         coordinates = vdb.n_1d_arrays(coordinates, 3)
-        if self.structural_index is None:
+        if not np.isscalar(self.structural_index):
             candidates = []
-            for si in (1, 2, 3):
+            for si in self.structural_index:
                 euler = EulerInversion(
                     structural_index=si,
                     max_iterations=self.max_iterations,
