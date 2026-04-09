@@ -191,25 +191,25 @@ class EulerInversion:
 
     Parameters
     ----------
-    structural_index : int
+    structural_index : int or None, optional
         Defines the nature of the source of the potential field data. Should be an
         integer between 1 and 3. It's the degree of the field's rate of change with
         distance from the source, influencing the decay rate of the field and the
         formulation of Euler's homogeneity equation. **Correlated with the depth
         estimate**, so larger structural index will lead to larger depths. **Choose
         based on known source geometry**. See table below.
-    max_iterations : int
+    max_iterations : int, optional
         The maximum number of iterations allowed in the non-linear Gauss-Newton
         inversion. If the value is too small, there is a risk of exiting the
         inversion without the solution converging to the minimum of the goal
         function. Larger values won't necessarily lead to longer computation
         times since the inversion will stop if convergence is reached.
-    tol : float
+    tol : float, optional
         The tolerance in decimal percentage that is needed to continue the
         iterations. If the change in the merit function (see below) is less than
         ``tol`` times the current merit function value, the iterations will be
         terminated. Use smaller values to allow for longer inversions.
-    euler_misfit_balance : float
+    euler_misfit_balance : float, optional
         The trade-off parameter :math:`\nu` between fitting the data and obeying
         Euler's homogeneity equation (see below).
 
@@ -224,7 +224,7 @@ class EulerInversion:
         The 4 x 4 estimated covariance matrix of the solution. Parameters are in the
         order: easting, northing, upward, base level. **This is not an uncertainty of
         the position** but a rough estimate of their variance with regard to the data.
-    structural_index_  : int
+    structural_index_ : int
         The estimated structural index.
 
     Notes
@@ -254,7 +254,7 @@ class EulerInversion:
     is unable to calculate predicted data and thus cannot evaluate true data
     misfit.
 
-    The convergence of the solution is measured through a *merti function*
+    The convergence of the solution is measured through a *merit function*
 
     .. math::
 
