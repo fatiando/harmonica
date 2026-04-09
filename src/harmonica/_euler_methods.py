@@ -100,6 +100,9 @@ class EulerDeconvolution:
     """
 
     def __init__(self, structural_index):
+        if structural_index == 0:
+            message = "EulerDeconvolution does not yet support structural index of 0."
+            raise ValueError(message)
         self.structural_index = structural_index
 
     def fit(self, coordinates, data):
@@ -297,6 +300,9 @@ class EulerInversion:
         tol=0.1,
         euler_misfit_balance=0.1,
     ):
+        if structural_index == 0:
+            message = "EulerInversion does not yet support structural index of 0."
+            raise ValueError(message)
         self.structural_index = structural_index
         self.max_iterations = max_iterations
         self.tol = tol

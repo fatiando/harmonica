@@ -22,6 +22,18 @@ from harmonica import (
 )
 
 
+def test_euler_inversion_SI_zero_error():
+    "Make sure an exception is raised for SI = 0"
+    with pytest.raises(ValueError, match="EulerInversion does not"):
+        EulerInversion(structural_index=0)
+
+
+def test_euler_deconvolution_SI_zero_error():
+    "Make sure an exception is raised for SI = 0"
+    with pytest.raises(ValueError, match="EulerDeconvolution does not"):
+        EulerDeconvolution(structural_index=0)
+
+
 @pytest.mark.parametrize(
     "euler",
     [
