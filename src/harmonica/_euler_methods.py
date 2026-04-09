@@ -337,6 +337,8 @@ class EulerInversion:
             eastward and northward derivatives, and 0.025 for its upward
             derivative. The upward derivative has a smaller weight because it
             usually contains more errors arising from FFT-based processing.
+            If uncertainties are available, the weights can be 1 / uncertainty
+            but should be normalized so that the largest weight is 1.
 
         Returns
         -------
