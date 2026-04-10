@@ -17,6 +17,7 @@ We can load the data file using :mod:`xarray`:
 
     import xarray as xr
     import matplotlib.pyplot as plt
+    import pyproj
     import verde as vd
     import harmonica as hm
     import ensaio
@@ -206,30 +207,49 @@ We can apply it through the :func:`harmonica.reduction_to_pole` function.
 
 .. important::
 
-   Applying reduction to the pole to low latitude regions can amplify high
-   frequency noise.
+    Reduction to the pole is unstable at low latitude regions and will result
+    in artifacts.
 
 The reduction to the pole needs information about the orientation of the
 geomagnetic field at the location of the survey and also the orientation of the
 magnetization vector of the sources.
-
 The International Global Reference Field (IGRF) can provide us information
 about the inclination and declination of the geomagnetic field at the time of
-the survey (1990 in this case):
+the survey. We don't have exact dates for the survey, but we know it was
+some time between 1985 and 1999. We'll use July 1992 as a midpoint value.
+It shouldn't matter too much since the secular variation is small.
+We can use the :class:`harmonica.IGRF14` class to calculate the field values
+at the center of the survey:
 
 .. jupyter-execute::
 
-    inclination, declination = -52.98, 6.51
+    igrf = hm.IGRF14("1992-07-01")
+    projection = pyproj.Proj(magnetic_grid.attrs["crs"])
+    longitude, latitude = projection(
+        magnetic_grid.easting.mean(),
+        magnetic_grid.northing.mean(),
+        inverse=True,
+    )
+    igrf_field = igrf.predict((longitude, latitude, magnetic_grid.height.mean()))
+    intensity, inclination, declination = hm.magnetic_vec_to_angles(
+        *igrf_field
+    )
+    print(inclination, declination)
 
 If we consider that the sources are magnetized in the same direction as the
 geomagnetic survey (hypothesis that is true in case the sources don't have any
-remanence), then we can apply the reduction to the pole passing only the
-``inclination`` and ``declination`` of the geomagnetic field:
+remanence), then we can apply the reduction to the pole passing the same
+``inclination`` and ``declination`` for both the geomagnetic field and the
+magnetization:
 
 .. jupyter-execute::
 
     rtp_grid = hm.reduction_to_pole(
-        magnetic_grid, inclination=inclination, declination=declination
+        magnetic_grid,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=inclination,
+        magnetization_declination=declination,
     )
     rtp_grid
 
@@ -237,16 +257,30 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly reduced to the pole")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8))
+    cbar_kwargs=dict(
+        label="nT", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    )
+    magnetic_grid.plot(ax=ax1, cmap="seismic", center=0, cbar_kwargs=cbar_kwargs)
+    rtp_grid.plot(ax=ax2, cmap="seismic", center=0, cbar_kwargs=cbar_kwargs)
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
+    ax1.set_title("Magnetic anomaly")
+    ax2.set_title("Reduced to the pole")
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
     plt.show()
+
+The reduction concentrated the Lightning Creek anomaly and the negative
+values are spread out and mixed with the regional field. So we could
+consider this to be a valid reduction, indicating that the magnetization
+direction used is plausible.
 
 If on the other hand we have any knowledge about the orientation of the
 magnetization vector of the sources, we can specify the
-``magnetization_inclination`` and ``magnetization_declination``:
+``magnetization_inclination`` and ``magnetization_declination``.
+In this case, we don't have this information, but we'll show an
+example of what happens to the reduction using arbitrary values:
 
 .. jupyter-execute::
 
