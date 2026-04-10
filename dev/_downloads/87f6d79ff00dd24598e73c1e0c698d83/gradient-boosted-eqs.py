@@ -17,7 +17,7 @@ data
 
 import boule as bl
 
-normal_gravity = bl.WGS84.normal_gravity(data.latitude, data.height_sea_level_m)
+normal_gravity = bl.WGS84.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
 disturbance = data.gravity_mgal - normal_gravity
 
 

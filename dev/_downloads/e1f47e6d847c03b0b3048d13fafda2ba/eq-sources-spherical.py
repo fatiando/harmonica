@@ -41,7 +41,7 @@ data
 import boule as bl
 
 ellipsoid = bl.WGS84
-normal_gravity = ellipsoid.normal_gravity(data.latitude, data.height_sea_level_m)
+normal_gravity = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
 gravity_disturbance = data.gravity_mgal - normal_gravity
 
 
@@ -57,7 +57,7 @@ eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
 
 
 coordinates = ellipsoid.geodetic_to_spherical(
-    data.longitude, data.latitude, data.height_sea_level_m
+    (data.longitude, data.latitude, data.height_sea_level_m)
 )
 
 
@@ -85,7 +85,7 @@ grid_coords = vd.grid_coordinates(
 # In[8]:
 
 
-grid_coords_sph = ellipsoid.geodetic_to_spherical(*grid_coords)
+grid_coords_sph = ellipsoid.geodetic_to_spherical(grid_coords)
 
 
 # In[9]:

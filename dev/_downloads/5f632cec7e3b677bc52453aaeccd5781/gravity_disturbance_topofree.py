@@ -25,6 +25,7 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 """
+
 import boule as bl
 import ensaio
 import pygmt
@@ -47,7 +48,7 @@ print(data)
 
 # Calculate normal gravity and the disturbance
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
 disturbance = data.gravity - gamma
 
 # Reference the topography to the ellipsoid

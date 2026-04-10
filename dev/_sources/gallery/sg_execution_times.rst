@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:11.486** total execution time for 3 files **from gallery**:
+**00:05.609** total execution time for 3 files **from gallery**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_gravity_disturbance_topofree.py` (``gravity_disturbance_topofree.py``)
-     - 00:06.675
+     - 00:03.000
      - 0.0
    * - :ref:`sphx_glr_gallery_gravity_disturbance.py` (``gravity_disturbance.py``)
-     - 00:04.411
+     - 00:02.226
      - 0.0
    * - :ref:`sphx_glr_gallery_isostatic_moho_airy.py` (``isostatic_moho_airy.py``)
-     - 00:00.401
+     - 00:00.383
      - 0.0

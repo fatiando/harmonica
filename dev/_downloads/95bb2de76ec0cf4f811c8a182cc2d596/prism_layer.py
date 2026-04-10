@@ -21,6 +21,7 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 """
+
 import numpy as np
 import pygmt
 import verde as vd
