@@ -8,6 +8,7 @@
 Calculation of roots and anti-roots assuming isostatic hypothesis.
 """
 
+import numpy as np
 import xarray as xr
 
 
@@ -135,6 +136,16 @@ def isostatic_moho_airy(
 
 
     """
+    density_contrast = density_mantle - density_crust
+    if isinstance(density_contrast, xr.DataArray):
+        invalid_density_contrast = bool((density_contrast <= 0).any())
+    else:
+        invalid_density_contrast = bool(np.any(np.asarray(density_contrast) <= 0))
+    if invalid_density_contrast:
+        err_msg = (
+            "Invalid densities: 'density_mantle' must be greater than 'density_crust'."
+        )
+        raise ValueError(err_msg)
     # Compute equivalent topography for the layers (if any)
     layers_equivalent_topography = 0
     if layers is not None:
@@ -146,7 +157,7 @@ def isostatic_moho_airy(
     rock_equivalent_topography = basement + layers_equivalent_topography
 
     # Calculate Moho depth
-    scale = density_crust / (density_mantle - density_crust)
+    scale = density_crust / density_contrast
     moho = rock_equivalent_topography * scale + reference_depth
 
     # Add attributes to the xr.DataArray
