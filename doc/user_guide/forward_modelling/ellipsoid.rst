@@ -24,14 +24,11 @@ three Tait-Bryan angles (a particular case of `Euler angles
    and **roll**.
 
 
-.. jupyter-execute::
-   :hide-code:
-
-   import harmonica as hm
-
 Let's define a single rotated triaxial ellipsoid:
 
 .. jupyter-execute::
+
+   import harmonica as hm
 
    ellipsoid = hm.Ellipsoid(
        a=3.0,
@@ -139,7 +136,6 @@ We can also forward model multiple ellipsoid by creating a list of them:
    ge, gn, gz = hm.ellipsoid_gravity(coordinates, ellipsoids)
 
 .. jupyter-execute::
-   :hide-code:
 
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, g_component, label in zip(
@@ -214,7 +210,6 @@ And forward the magnetic field in the grid of observation points:
    be, bn, bu = hm.ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
 .. jupyter-execute::
-   :hide-code:
 
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
@@ -259,7 +254,6 @@ through the ``remanent_mag`` physical property:
    be, bn, bu = hm.ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
 .. jupyter-execute::
-   :hide-code:
 
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
@@ -305,7 +299,6 @@ ellipsoid:
    be, bn, bu = hm.ellipsoid_magnetic(coordinates, ellipsoid, inducing_field)
 
 .. jupyter-execute::
-   :hide-code:
 
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
@@ -360,7 +353,6 @@ We can also forward a collection of ellipsoids with mixed physical properties:
    be, bn, bu = hm.ellipsoid_magnetic(coordinates, ellipsoids, inducing_field)
 
 .. jupyter-execute::
-   :hide-code:
 
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
