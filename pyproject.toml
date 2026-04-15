@@ -6,7 +6,8 @@ authors = [
   {name="The Harmonica Developers", email="fatiandoaterra@protonmail.com"},
 ]
 maintainers = [
-  {name = "Santiago Soler", email = "santisoler@fastmail.com"}
+  {name = "Santiago Soler", email = "santisoler@fastmail.com"},
+  {name = "Matthew Tankersley", email = "matt.d.tankersley@gmail.com"}
 ]
 readme = "README.md"
 license = "BSD-3-Clause"
