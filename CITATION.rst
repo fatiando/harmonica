@@ -20,6 +20,13 @@ Harmonica offers implementations of some methods that have been published in
 scientific journals. We appreciate citations of these publications as well in
 case you made use of them.
 
+* :class:`harmonica.EulerInversion`:
+
+    Uieda, L., Souza-Junior, G. F., Uppal, I., Oliveira Jr., V. C. (2025).
+    Euler inversion: Locating sources of potential-field data through inversion
+    of Euler's homogeneity equation. Geophysical Journal International.
+    doi:`10.1093/gji/ggaf114 <https://doi.org/10.1093/gji/ggaf114>`__.
+
 * :class:`harmonica.EquivalentSources` with ``block_size`` set (block-averaged
   sources):
 
