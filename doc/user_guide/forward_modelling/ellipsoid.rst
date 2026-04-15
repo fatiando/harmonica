@@ -62,7 +62,8 @@ points. It takes the coordinates of the observation points and the collection
 of ellipsoids we want to forward model. Those ellipsoids need to have
 a ``density`` physical property in order to be accounted in the forward model.
 
-For example, we can define a single ellipsoid with a density contrast of 200:
+For example, we can define a single ellipsoid with a density contrast of 200
+kg/m:sup:`3`:
 
 .. jupyter-execute::
 
@@ -187,7 +188,8 @@ The magnetic forward supports ellipsoids that have ``susceptibility`` as
 a physical property. In such case, the inducing magnetic field passed to the
 function is used to compute its magnetization vector.
 
-For example, define a susceptible ellipsoid:
+For example, define an ellipsoid with a magnetic susceptibility of 0.2 (in SI
+units):
 
 .. jupyter-execute::
 
