@@ -48,7 +48,7 @@ The ``a``, ``b``, and ``c`` are the semiaxes lengths along the *easting*,
     The three semiaxes can be passed in any particular order. For example, we
     could define an excentric ellipsoid in the upward direction as follows:
 
-    .. code::python
+    .. code-block:: python
 
        hm.Ellipsoid(a=1.0, b=1.0, c=10.0)
 
@@ -170,7 +170,7 @@ We can also forward model multiple ellipsoid by creating a list of them:
    other ones using the ``_`` variable name. For example, if we only need the
    ``gz`` component:
 
-   .. code::python
+   .. code-block:: python
 
       _, _, gz = hm.ellipsoid_gravity(coordinates, ellipsoid)
 
