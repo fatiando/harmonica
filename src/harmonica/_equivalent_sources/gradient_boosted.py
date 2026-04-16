@@ -14,8 +14,8 @@ import warnings
 
 import numpy as np
 import verde.base as vdb
+from bordado import get_region, rolling_window
 from sklearn import utils
-from verde import get_region, rolling_window
 
 from .cartesian import EquivalentSources
 from .utils import cast_fit_input, predict_numba_parallel
@@ -159,12 +159,12 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Examples
         --------
-        >>> import verde as vd
-        >>> coordinates = vd.scatter_points(
+        >>> import bordado as bd
+        >>> coordinates = bd.random_coordinates(
         ...     region=(-1e3, 3e3, 2e3, 5e3),
         ...     size=100,
-        ...     extra_coords=100,
-        ...     random_state=42,
+        ...     non_dimensional_coords=100,
+        ...     random_seed=42,
         ... )
         >>> eqs = EquivalentSourcesGB(window_size=2e3)
         >>> n_bytes = eqs.estimate_required_memory(coordinates)
@@ -342,18 +342,16 @@ class EquivalentSourcesGB(EquivalentSources):
             self.window_size_ = np.sqrt(window_area)
         else:
             self.window_size_ = self.window_size
-        # Compute window spacing based on overlapping
-        window_spacing = self.window_size_ * (1 - self.overlapping)
         # The windows for sources and data points are the same, but the
-        # verde.rolling_window function creates indices for the given
+        # bordado.rolling_window function creates indices for the given
         # coordinates. That's why we need to create two set of window indices:
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
         kwargs = {
             "region": region,
-            "size": self.window_size_,
-            "spacing": window_spacing,
+            "window_size": self.window_size_,
+            "overlap": self.overlapping,
         }
         _, source_windows = rolling_window(self.points_, **kwargs)
         _, data_windows = rolling_window(coordinates, **kwargs)

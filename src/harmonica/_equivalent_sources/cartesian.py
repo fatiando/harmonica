@@ -12,11 +12,12 @@ from __future__ import annotations
 
 import warnings
 
+import bordado as bd
 import numpy as np
-import verde as vd
 import verde.base as vdb
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
+from verde import BlockReduce, median_distance
 
 from .._forward.utils import distance_cartesian
 from .utils import (
@@ -221,7 +222,7 @@ class EquivalentSources(vdb.BaseGridder):
             coordinates, data, weights, self.dtype
         )
         # Capture the data region to use as a default when gridding.
-        self.region_ = vd.get_region(coordinates[:2])
+        self.region_ = bd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
             self.points_ = tuple(
@@ -268,7 +269,7 @@ class EquivalentSources(vdb.BaseGridder):
         if self.block_size is not None:
             coordinates = self._block_average_coordinates(coordinates)
         if self.depth == "default":
-            self.depth_ = 4.5 * np.mean(vd.median_distance(coordinates, k_nearest=1))
+            self.depth_ = 4.5 * np.mean(median_distance(coordinates, k_nearest=1))
         else:
             self.depth_ = self.depth
         return (
@@ -296,7 +297,7 @@ class EquivalentSources(vdb.BaseGridder):
             Tuple containing the coordinates of the block-averaged observation
             points.
         """
-        reducer = vd.BlockReduce(
+        reducer = BlockReduce(
             spacing=self.block_size, reduction=np.median, drop_coords=False
         )
         # Must pass a dummy data array to BlockReduce.filter(), we choose an
@@ -382,9 +383,9 @@ class EquivalentSources(vdb.BaseGridder):
         The coordinates of the regular grid must be passed through the
         ``coordinates`` argument as a tuple containing three arrays in the
         following order: ``(easting, nothing, upward)``. They can be easily
-        created through the :func:`verde.grid_coordinates` function. If the
+        created through the :func:`bordado.grid_coordinates` function. If the
         grid points must be all at the same height, it can be specified in the
-        ``extra_coords`` argument of :func:`verde.grid_coordinates`.
+        ``extra_coords`` argument of :func:`bordado.grid_coordinates`.
 
         Use the *dims* and *data_names* arguments to set custom names for the
         dimensions and the data field(s) in the output :class:`xarray.Dataset`.
@@ -427,7 +428,7 @@ class EquivalentSources(vdb.BaseGridder):
 
         See Also
         --------
-        :func:`verde.grid_coordinates`
+        :func:`bordado.grid_coordinates`
 
         """
         # We override the grid method from BaseGridder to change the docstring

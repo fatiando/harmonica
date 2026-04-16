@@ -11,8 +11,8 @@ Define a layer of prisms.
 import warnings
 
 import numpy as np
-import verde as vd
 import xarray as xr
+from verde import make_xarray_grid
 
 from ..visualization import prism_to_pyvista
 from .prism_gravity import prism_gravity
@@ -124,9 +124,7 @@ def prism_layer(
         data_names = tuple(p for p in properties)
         data = tuple(np.asarray(p) for p in properties.values())
     # Create xr.Dataset for prisms
-    prisms = vd.make_xarray_grid(
-        coordinates, data=data, data_names=data_names, dims=dims
-    )
+    prisms = make_xarray_grid(coordinates, data=data, data_names=data_names, dims=dims)
     _check_regular_grid(prisms.easting.values, prisms.northing.values)
     # Append some attributes to the xr.Dataset
     attrs = {"coords_units": "meters", "properties_units": "SI"}

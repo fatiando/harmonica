@@ -11,11 +11,12 @@ Calculation of the IGRF magnetic field.
 import datetime
 import pathlib
 
+import bordado as bd
 import boule
 import numba
 import numpy as np
 import pooch
-import verde as vd
+from verde import make_xarray_grid
 
 from .._utils import get_harmonica_cache
 from .._version import __version__
@@ -437,8 +438,12 @@ class IGRF14:
         """
         if spacing is None and shape is None:
             spacing = calculate_ideal_spacing(self.max_degree)
-        longitude, latitude, height = vd.grid_coordinates(
-            region, spacing=spacing, shape=shape, adjust=adjust, extra_coords=height
+        longitude, latitude, height = bd.grid_coordinates(
+            region,
+            spacing=spacing,
+            shape=shape,
+            adjust=adjust,
+            non_dimensional_coords=height,
         )
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
             (longitude, latitude, height)
@@ -466,7 +471,7 @@ class IGRF14:
         b_east, b_north, b_up = vector_spherical_to_geodetic(
             latitude, latitude_sph, (b_east, b_north_sph, b_radial)
         )
-        grid = vd.make_xarray_grid(
+        grid = make_xarray_grid(
             (longitude, latitude, height),
             (b_east, b_north, b_up),
             data_names=("b_east", "b_north", "b_up"),
