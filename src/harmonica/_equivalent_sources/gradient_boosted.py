@@ -353,8 +353,8 @@ class EquivalentSourcesGB(EquivalentSources):
             "window_size": self.window_size_,
             "overlap": self.overlapping,
         }
-        _, source_windows = rolling_window(self.points_, **kwargs)
-        _, data_windows = rolling_window(coordinates, **kwargs)
+        _, source_windows = rolling_window(self.points_[:2], **kwargs)
+        _, data_windows = rolling_window(coordinates[:2], **kwargs)
         # Ravel the indices
         source_windows = [i[0] for i in source_windows.ravel()]
         data_windows = [i[0] for i in data_windows.ravel()]
