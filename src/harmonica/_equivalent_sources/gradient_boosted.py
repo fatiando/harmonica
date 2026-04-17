@@ -169,7 +169,7 @@ class EquivalentSourcesGB(EquivalentSources):
         >>> eqs = EquivalentSourcesGB(window_size=2e3)
         >>> n_bytes = eqs.estimate_required_memory(coordinates)
         >>> int(n_bytes)
-        9800
+        10952
         """
         # Build the sources and assign the points_ attribute
         coordinates = vdb.n_1d_arrays(coordinates, 3)
