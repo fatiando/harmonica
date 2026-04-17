@@ -8,6 +8,7 @@
 Test magnetic forward functions for dipoles.
 """
 
+import bordado as bd
 import choclo
 import numpy as np
 import numpy.testing as npt
@@ -61,8 +62,8 @@ def test_progress_bar(field):
     """
     dipoles = ([1, 1], [-1, 0], [-10, -2])
     magnetic_moments = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
-    coordinates = vd.grid_coordinates(
-        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    coordinates = bd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10
     )
     result_progress_true = dipole_magnetic(
         coordinates, dipoles, magnetic_moments, field=field, progressbar=True
@@ -140,8 +141,8 @@ class TestSerialVsParallel:
         Check results of parallelized and serials runs
         Run a large problem only with Numba enabled.
         """
-        coordinates = vd.grid_coordinates(
-            region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+        coordinates = bd.grid_coordinates(
+            region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10
         )
         dipoles = ([-100, 0], [0, 100], [-20, -50])
         magnetic_moments = [

@@ -10,12 +10,12 @@ Test forward modelling for tesseroids with variable density.
 
 from unittest.mock import patch
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
 import verde as vd
 from numba import jit
-from verde import grid_coordinates
 
 import harmonica
 from harmonica import tesseroid_gravity
@@ -340,7 +340,9 @@ def test_single_tesseroid_against_constant_density(field):
         return density
 
     # Define a set of observation points
-    coordinates = grid_coordinates(region=(-5, 5, -5, 5), spacing=1, extra_coords=top)
+    coordinates = bd.grid_coordinates(
+        region=(-5, 5, -5, 5), spacing=1, non_dimensional_coords=top
+    )
 
     # Compare effects against the constant density implementation
     npt.assert_allclose(
@@ -464,7 +466,9 @@ def test_spherical_shell_linear_density(field, thickness):  # pragma: no cover
     # Create a set of observation points located on the shell outer radius
     region = (-180, 180, -90, 90)
     shape = (19, 13)
-    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=top
+    )
     # Get analytic solution
     analytic = analytical_spherical_shell_linear(
         coordinates[-1], bottom, top, slope, constant_term
@@ -508,7 +512,9 @@ def test_spherical_shell_exponential_density(
     # Create a set of observation points located on the shell outer radius
     region = (-180, 180, -90, 90)
     shape = (19, 13)
-    coordinates = grid_coordinates(region=region, shape=shape, extra_coords=top)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=top
+    )
     # Get analytic solution
     analytic = analytical_spherical_shell_exponential(
         coordinates[-1], bottom, top, a_factor, b_factor, constant_term
@@ -545,8 +551,8 @@ class TestProgressBar:
     @pytest.fixture
     def coordinates(self):
         """Sample coordinates."""
-        coordinates = vd.grid_coordinates(
-            region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
+        coordinates = bd.grid_coordinates(
+            region=(-15, 55, -80, 40), spacing=10, non_dimensional_coords=6.5e4
         )
         return coordinates
 

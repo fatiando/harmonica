@@ -11,6 +11,7 @@ Test prisms layer.
 import warnings
 from unittest.mock import patch
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -345,7 +346,9 @@ def test_prism_layer_gravity(field, dummy_layer):
     """
     Check if gravity method works as expected.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     (easting, northing), surface, reference, density = dummy_layer
     layer = prism_layer(
         (easting, northing), surface, reference, properties={"density": density}
@@ -367,7 +370,9 @@ def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_h
     """
     Check if gravity method works as expected when surface has nans.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     (easting, northing), surface, reference, density = dummy_layer
     # Create one layer that has nans on the surface array
     surface_w_nans = surface.copy()
@@ -391,7 +396,9 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
     """
     Check if prisms is ignored after a nan is found in density array.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     prisms_coords, surface, reference, density = dummy_layer
     # Create one layer that has nans on the density array
     indices = [(3, 3), (2, 1)]
@@ -480,7 +487,9 @@ def test_progress_bar(dummy_layer):
     """
     Check if forward gravity results with and without progress bar match.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     (easting, northing), surface, reference, density = dummy_layer
     layer = prism_layer(
         (easting, northing), surface, reference, properties={"density": density}
@@ -501,7 +510,9 @@ def test_numba_progress_missing_error(dummy_layer):
     Check if error is raised when progressbar=True and numba_progress package
     is not installed.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     (easting, northing), surface, reference, density = dummy_layer
     layer = prism_layer(
         (easting, northing), surface, reference, properties={"density": density}
@@ -515,7 +526,9 @@ def test_gravity_discarded_thin_prisms(dummy_layer):
     """
     Check if gravity of prism layer after discarding thin prisms is correct.
     """
-    coordinates = vd.grid_coordinates((1, 3, 7, 10), spacing=1, extra_coords=30.0)
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
     prism_coords, surface, reference, density = dummy_layer
 
     layer = prism_layer(

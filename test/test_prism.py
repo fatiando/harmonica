@@ -11,6 +11,7 @@ Test forward modelling for prisms.
 import re
 from unittest.mock import patch
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -122,8 +123,8 @@ def test_forward_with_null_prisms():
     Test if the forward model with null prisms gives sensible results.
     """
     # Create a set of observation points
-    coordinates = vd.grid_coordinates(
-        region=(-50, 50, -50, 50), shape=(3, 3), extra_coords=0
+    coordinates = bd.grid_coordinates(
+        region=(-50, 50, -50, 50), shape=(3, 3), non_dimensional_coords=0
     )
     # Build a set of prisms that includes null ones (no volume or zero density)
     prisms = [
@@ -254,7 +255,7 @@ def test_laplace():  # pragma: no cover
     Test if the diagonal components satisfy Laplace equation.
     """
     region = (-10e3, 10e3, -10e3, 10e3)
-    coords = vd.grid_coordinates(region, shape=(10, 10), extra_coords=300)
+    coords = bd.grid_coordinates(region, shape=(10, 10), non_dimensional_coords=300)
     prisms = [
         [1e3, 7e3, -5e3, 2e3, -1e3, -500],
         [-4e3, 1e3, 4e3, 10e3, -2e3, 200],
@@ -313,8 +314,8 @@ def test_prisms_parallel_vs_serial():
         [0, 100, 0, 100, -10, 0],
     ]
     densities = [2000, 3000, 4000, 5000]
-    coordinates = vd.grid_coordinates(
-        region=(-100, 100, -100, 100), shape=(3, 3), extra_coords=10
+    coordinates = bd.grid_coordinates(
+        region=(-100, 100, -100, 100), shape=(3, 3), non_dimensional_coords=10
     )
     for field in ("potential", "g_z"):
         result_parallel = prism_gravity(
@@ -346,8 +347,8 @@ class TestProgressBar:
     @pytest.fixture
     def coordinates(self):
         """Sample coordinates."""
-        coordinates = vd.grid_coordinates(
-            region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+        coordinates = bd.grid_coordinates(
+            region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10
         )
         return coordinates
 

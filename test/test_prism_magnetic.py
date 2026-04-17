@@ -8,6 +8,7 @@
 Test forward functions for magnetic field of prisms.
 """
 
+import bordado as bd
 import choclo
 import numpy as np
 import numpy.testing as npt
@@ -47,8 +48,8 @@ def test_progress_bar(field):
         [0, 100, -100, 0, -10, 0],
     ]
     magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
-    coordinates = vd.grid_coordinates(
-        region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+    coordinates = bd.grid_coordinates(
+        region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10
     )
     result_progress_true = prism_magnetic(
         coordinates, prisms, magnetizations, field=field, progressbar=True
@@ -104,8 +105,8 @@ class TestSerialVsParallel:
             [1.0, -1.0, 1.0, 4.0],
             [1.0, 5.0, 3.0, 1.0],
         )
-        coordinates = vd.grid_coordinates(
-            region=(-100, 100, -100, 100), spacing=20, extra_coords=10
+        coordinates = bd.grid_coordinates(
+            region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10
         )
         parallel = prism_magnetic(
             coordinates, prisms, magnetizations, field=field, parallel=True
