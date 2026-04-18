@@ -175,12 +175,14 @@ And grid the data using the two equivalent sources:
 
 .. jupyter-execute::
 
+   import bordado as bd
+
    # Define grid coordinates
-   region = vd.get_region(coordinates)
-   grid_coords = vd.grid_coordinates(
+   region = bd.get_region((easting, northing))
+   grid_coords = bd.grid_coordinates(
        region=region,
        spacing=2e3,
-       extra_coords=2.5e3,
+       non_dimensional_coords=2.5e3,
    )
 
    grid_first_guess = eqs_first_guess.grid(grid_coords)

@@ -59,11 +59,11 @@ coordinates, so we need to project these gravity observations:
 .. jupyter-execute::
 
    import pyproj
-   import verde as vd
+   import bordado as bd
 
    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.values.mean())
    easting, northing = projection(data.longitude.values, data.latitude.values)
-   region = vd.get_region((easting, northing))
+   region = bd.get_region((easting, northing))
 
 Now we can initialize the :class:`harmonica.EquivalentSources` class.
 
@@ -191,7 +191,9 @@ and use the equivalent sources to generate a gravity disturbance grid.
 .. jupyter-execute::
 
    # Build the grid coordinates
-   grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=2.2e3)
+   grid_coords = bd.grid_coordinates(
+       region=region, spacing=2e3, non_dimensional_coords=2.2e3
+   )
 
    # Grid the gravity disturbances
    grid = equivalent_sources.grid(grid_coords, data_names=["gravity_disturbance"])

@@ -125,12 +125,13 @@ And then predict the field on a regular grid of computation points:
 
 .. jupyter-execute::
 
-    import verde as vd
-    region = vd.get_region(coordinates)
-    grid_coords = vd.grid_coordinates(
+    import bordado as bd
+
+    region = bd.get_region(coordinates)
+    grid_coords = bd.grid_coordinates(
         region=region,
         spacing=5e3,
-        extra_coords=2.5e3,
+        non_dimensional_coords=2.5e3,
     )
     grid = eqs.grid(grid_coords, data_names=["gravity_disturbance"])
     grid
@@ -140,6 +141,8 @@ we might want to mask the output grid based on the distance to the closest data
 point. We can do so through the :func:`verde.distance_mask` function.
 
 .. jupyter-execute::
+
+    import verde as vd
 
     grid_masked = vd.distance_mask(coordinates, maxdist=50e3, grid=grid)
 

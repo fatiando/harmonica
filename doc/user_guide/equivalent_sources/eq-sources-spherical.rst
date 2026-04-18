@@ -98,15 +98,17 @@ of 6 arcminutes.
 
 .. jupyter-execute::
 
+    import bordado as bd
+
     # Get the bounding region of the data in geodetic coordinates
-    region = vd.get_region((data.longitude, data.latitude))
+    region = bd.get_region((data.longitude, data.latitude))
 
     # Get the maximum height of the data coordinates
     max_height = data.height_sea_level_m.max()
 
     # Define a regular grid of points in geodetic coordinates
-    grid_coords = vd.grid_coordinates(
-        region=region, spacing=6 / 60, extra_coords=max_height
+    grid_coords = bd.grid_coordinates(
+        region=region, spacing=6 / 60, non_dimensional_coords=max_height
     )
 
 But before we can tell the equivalent sources to predict the
