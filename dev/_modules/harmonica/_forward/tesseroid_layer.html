@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -215,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -227,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +253,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -440,39 +449,61 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Define a layer of tesseroids</span>
+<span class="sd">Define a layer of tesseroids.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">.tesseroid</span> <span class="kn">import</span> <span class="n">tesseroid_gravity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tesseroid_gravity</span><span class="w"> </span><span class="kn">import</span> <span class="n">tesseroid_gravity</span>
 
 
 <div class="viewcode-block" id="tesseroid_layer">
 <a class="viewcode-back" href="../../../api/generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer">[docs]</a>
-<span class="k">def</span> <span class="nf">tesseroid_layer</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tesseroid_layer</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a layer of tesseroids of equal size</span>
+<span class="sd">    Create a layer of tesseroids of equal size.</span>
+
+<span class="sd">    Build a regular grid of tesseroids (spherical prisms) with variable top and bottom</span>
+<span class="sd">    boundaries and properties like density, magnetization, etc. The function returns a</span>
+<span class="sd">    :class:`xarray.Dataset` containing ``longitude``, ``latitude``, ``top`` and</span>
+<span class="sd">    ``bottom`` coordinates, and all physical properties as ``data_var`` s. The</span>
+<span class="sd">    ``longitude`` and ``latitude`` coordinates correspond to the location of the center</span>
+<span class="sd">    of each tesseroid.</span>
+
+<span class="sd">    Unlike the :func:`harmonica.prism_layer`, the top and bottom boundaries of</span>
+<span class="sd">    tesseroids, provided via `surface` and `reference`, are not heights relative to a</span>
+<span class="sd">    reference level (e.g., sea level). Instead, they are radii from the center of the</span>
+<span class="sd">    body (ellipsoid or sphere) to the top and bottom boundaries of the tesseroids. To</span>
+<span class="sd">    convert top and bottom boundaries from heights to radii, you can use the</span>
+<span class="sd">    :meth:`boule.geocentric_radius` method from :mod:`boule` to calculate the radius</span>
+<span class="sd">    based on the latitude, and add these values to your height values.</span>
+
+<span class="sd">    The ``tesseroid_layer`` dataset accessor can be used to access special methods</span>
+<span class="sd">    and attributes for the layer of tesseroids, like the horizontal dimensions of</span>
+<span class="sd">    the tesseroids, getting the boundaries of each tesseroids, etc.</span>
+<span class="sd">    See :class:`DatasetAccessorTesseroidLayer` for the definition of these methods</span>
+<span class="sd">    and attributes.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    coordinates : tuple</span>
 <span class="sd">        List containing the coordinates of the centers of the tesseroids in</span>
 <span class="sd">        spherical coordinates in the following order ``longitude`` and</span>
-<span class="sd">        ``latitude``.</span>
+<span class="sd">        ``latitude``. All coordinates should be in degrees.</span>
 <span class="sd">    surface : 2d-array</span>
-<span class="sd">        Array used to create the uppermost boundary of the tesserois layer. All</span>
-<span class="sd">        radii should be in meters. On every point where ``surface`` is below</span>
-<span class="sd">        ``reference``, the ``surface`` value will be used to set the ``bottom``</span>
+<span class="sd">        Array used to create the uppermost boundary of the tesseroids layer. Values</span>
+<span class="sd">        should be radii (not heights) in meters. On every point where ``surface`` is</span>
+<span class="sd">        below ``reference``, the ``surface`` value will be used to set the ``bottom``</span>
 <span class="sd">        boundary of that tesseroid, while the ``reference`` value will be used</span>
 <span class="sd">        to set the ``top`` boundary of the tesseroid.</span>
 <span class="sd">    reference : 2d-array or float</span>
 <span class="sd">        Reference surface used to create the lowermost boundary of the</span>
 <span class="sd">        tesseroids layer. It can be either a plane or an irregular surface</span>
-<span class="sd">        passed as 2d array. Radii must be in meters.</span>
+<span class="sd">        passed as 2d array. Values must be radii (not heights) in meters.</span>
 <span class="sd">    properties : dict or None</span>
 <span class="sd">        Dictionary containing the physical properties of the tesseroids. The</span>
 <span class="sd">        keys must be strings that will be used to name the corresponding</span>
@@ -488,10 +519,54 @@ document.write(`
 <span class="sd">        height of its top and bottom boundaries ans its corresponding physical</span>
 <span class="sd">        properties.</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    harmonica.DatasetAccessorsTesseroidLayer</span>
+<span class="sd">    harmonica.DatasetAccessorTesseroidLayer</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import boule as bl</span>
+<span class="sd">    &gt;&gt;&gt; # Create a synthetic relief</span>
+<span class="sd">    &gt;&gt;&gt; longitude = np.linspace(0, 10, 5)</span>
+<span class="sd">    &gt;&gt;&gt; latitude = np.linspace(2, 8, 4)</span>
+<span class="sd">    &gt;&gt;&gt; mesh_longitude, mesh_latitude = np.meshgrid(longitude, latitude)</span>
+<span class="sd">    &gt;&gt;&gt; surface_heights = np.arange(20, dtype=float).reshape((4, 5))</span>
+<span class="sd">    &gt;&gt;&gt; # Convert heights to radii</span>
+<span class="sd">    &gt;&gt;&gt; reference_radii = bl.WGS84.geocentric_radius(mesh_latitude)</span>
+<span class="sd">    &gt;&gt;&gt; surface_radii = surface_heights + reference_radii</span>
+<span class="sd">    &gt;&gt;&gt; # Define constant densities</span>
+<span class="sd">    &gt;&gt;&gt; density = 2670.0 * np.ones_like(surface_radii)</span>
+<span class="sd">    &gt;&gt;&gt; # Define a layer of tesseroids</span>
+<span class="sd">    &gt;&gt;&gt; tesseroids = tesseroid_layer(</span>
+<span class="sd">    ...     (longitude, latitude),</span>
+<span class="sd">    ...     surface_radii,</span>
+<span class="sd">    ...     reference=reference_radii,</span>
+<span class="sd">    ...     properties={&quot;density&quot;: density},</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(tesseroids) # doctest: +SKIP</span>
+<span class="sd">    &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:   (latitude: 4, longitude: 5)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * latitude   (latitude) float64 2.0 4.0 6.0 8.0</span>
+<span class="sd">      * longitude  (longitude) float64 0.0 2.5 5.0 7.5 10.0</span>
+<span class="sd">        top       (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06</span>
+<span class="sd">        bottom    (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        density   (latitude, longitude) float64 2.67e+03 2.67e+03 ... 2.67e+03</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        longitude_units:  degrees</span>
+<span class="sd">        latitude_units:   degrees</span>
+<span class="sd">        radius_units:     meters</span>
+<span class="sd">        properties_units:  SI</span>
+<span class="sd">    &gt;&gt;&gt; # Get the boundaries of the layer (will exceed the region)</span>
+<span class="sd">    &gt;&gt;&gt; boundaries = tesseroids.tesseroid_layer.boundaries</span>
+<span class="sd">    &gt;&gt;&gt; list(float(b) for b in boundaries)</span>
+<span class="sd">    [-1.25, 11.25, 1.0, 9.0]</span>
+<span class="sd">    &gt;&gt;&gt; # Get the boundaries of one of the tesseroids</span>
+<span class="sd">    &gt;&gt;&gt; tesseroid = tesseroids.tesseroid_layer.get_tesseroid((0, 2))</span>
+<span class="sd">    &gt;&gt;&gt; list(float(b) for b in tesseroid)</span>
+<span class="sd">    [3.75, 6.25, 1.0, 3.0, 6378111.2, 6378113.2]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
     <span class="c1"># Initialize data and data_names as None</span>
@@ -499,7 +574,7 @@ document.write(`
     <span class="c1"># If properties were passed, then replace data_names and data for its keys</span>
     <span class="c1"># and values, respectively</span>
     <span class="k">if</span> <span class="n">properties</span><span class="p">:</span>
-        <span class="n">data_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="c1"># Create xr.Dataset for tesseroids</span>
     <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
@@ -522,9 +597,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_check_regular_grid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_regular_grid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the longitude and latitude coordinates define a regular grid</span>
+<span class="sd">    Check if the longitude and latitude coordinates define a regular grid.</span>
 
 <span class="sd">    .. note:</span>
 
@@ -532,56 +607,60 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">longitude</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">longitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">longitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Passed longitude coordinates are note evenly spaced.&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Passed longitude coordinates are not evenly spaced.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">latitude</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">latitude</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">latitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">latitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Passed latitude coordinates are note evenly spaced.&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Passed latitude coordinates are not evenly spaced.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_check_overlap</span><span class="p">(</span><span class="n">longitude</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_overlap</span><span class="p">(</span><span class="n">longitude</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the prisms boundaries are overlapped</span>
+<span class="sd">    Check if the prisms boundaries are overlapped.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">spacing</span> <span class="o">=</span> <span class="n">longitude</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">longitude</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">longitude</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">longitude</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">spacing</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Found invalid longitude coordinates that would create overlapping tesseroids around the globe.&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Found invalid longitude coordinates that would create overlapping &quot;</span>
+            <span class="s2">&quot;tesseroids around the globe.&quot;</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="DatasetAccessorTesseroidLayer">
 <a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer">[docs]</a>
 <span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataset_accessor</span><span class="p">(</span><span class="s2">&quot;tesseroid_layer&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">DatasetAccessorTesseroidLayer</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DatasetAccessorTesseroidLayer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define dataset accessor for layer of tesseroids</span>
+<span class="sd">    Defines dataset accessor for layer of tesseroids.</span>
 
 <span class="sd">    .. warning::</span>
 
-<span class="sd">        This class in not intended to be initialized.</span>
+<span class="sd">        This class is not intended to be initialized.</span>
 <span class="sd">        Use the `tesseroid_layer` accessor for accessing the methods and</span>
 <span class="sd">        attributes of this class.</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    harmonica.tesseroid_layer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray_obj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray_obj</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">xarray_obj</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the dims tuple of the prism layer</span>
+<span class="sd">        Return the dims tuple of the prism layer.</span>
 
 <span class="sd">        The tuple follows the xarray order: ``&quot;latitude&quot;``, ``&quot;longitude&quot;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Spacing between center of tesseroids</span>
+<span class="sd">        Spacing between center of tesseroids.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -597,9 +676,9 @@ document.write(`
         <span class="k">return</span> <span class="n">s_latitude</span><span class="p">,</span> <span class="n">s_longitude</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the total number of tesseroids on the layer</span>
+<span class="sd">        Return the total number of tesseroids on the layer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -609,23 +688,23 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the number of tesseroids on each directions</span>
+<span class="sd">        Return the number of tesseroids on each directions.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        n_latitude : int</span>
 <span class="sd">            Number of tesseroids on the latitude direction.</span>
 <span class="sd">        n_longitude : int</span>
-<span class="sd">            Number of tesserods on the longitude direction.</span>
+<span class="sd">            Number of tesseroids on the longitude direction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Boundaries of the layer</span>
+<span class="sd">        Boundaries of the layer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -642,9 +721,9 @@ document.write(`
 
 <div class="viewcode-block" id="DatasetAccessorTesseroidLayer.update_top_bottom">
 <a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.update_top_bottom">[docs]</a>
-    <span class="k">def</span> <span class="nf">update_top_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_top_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update top and bottom boundaries of the layer</span>
+<span class="sd">        Update top and bottom boundaries of the layer.</span>
 
 <span class="sd">        Change the values of the ``top`` and ``bottom`` coordinates based on</span>
 <span class="sd">        the passed ``surface`` and ``reference``. The ``top`` and ``bottom``</span>
@@ -658,15 +737,14 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        surface : 2d-array</span>
 <span class="sd">            Array used to create the uppermost boundary of the tesseroid layer.</span>
-<span class="sd">            All heights should be in meters. On every point where ``surface``</span>
+<span class="sd">            All radii should be in meters. On every point where ``surface``</span>
 <span class="sd">            is below ``reference``, the ``surface`` value will be used to set</span>
 <span class="sd">            the ``bottom`` boundary of that tesseroid, while the ``reference``</span>
 <span class="sd">            value will be used to set the ``top`` boundary of the tesseroid.</span>
-
 <span class="sd">        reference : 2d-array or float</span>
 <span class="sd">            Reference surface used to create the lowermost boundary of the</span>
 <span class="sd">            tesseroid layer. It can be either a plane or an irregular surface</span>
-<span class="sd">            passed as 2d array. Height(s) must be in meters.</span>
+<span class="sd">            passed as 2d array. Radii must be in meters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">surface</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">surface</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
@@ -695,11 +773,27 @@ document.write(`
 
 <div class="viewcode-block" id="DatasetAccessorTesseroidLayer.gravity">
 <a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.gravity">[docs]</a>
-    <span class="k">def</span> <span class="nf">gravity</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">density_name</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gravity</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">coordinates</span><span class="p">,</span>
+        <span class="n">field</span><span class="p">,</span>
+        <span class="n">progressbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">density_name</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span>
+        <span class="n">thickness_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the gravity generated by the layer of tesseroids</span>
+<span class="sd">        Compute the gravity generated by the layer of tesseroids.</span>
+
+<span class="sd">        Uses :func:`harmonica.tesseroid_gravity` for computing the gravity field</span>
+<span class="sd">        generated by the tesseroids of the layer.</span>
+<span class="sd">        The density of the tesseroids will be assigned from the ``data_var`` chosen</span>
+<span class="sd">        through the ``density_name`` argument.</span>
+<span class="sd">        Ignores the tesseroids which ``top`` or ``bottom`` boundaries are</span>
+<span class="sd">        ``np.nan``&#39;s.</span>
+<span class="sd">        Tesseroids thinner than a given threshold can be optionally ignored through</span>
+<span class="sd">        the ``thickness_threshold`` argument.</span>
+<span class="sd">        All ``kwargs`` will be passed to :func:`harmonica.tesseroid_gravity`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -710,7 +804,7 @@ document.write(`
 <span class="sd">            ``latitude`` should be in degrees and ``radius`` in meters.</span>
 <span class="sd">        field : str</span>
 <span class="sd">            Gravitational field that wants to be computed.</span>
-<span class="sd">            The variable fields are:</span>
+<span class="sd">            The available fields are:</span>
 <span class="sd">            - Gravitational potential: ``potential``</span>
 <span class="sd">            - Downward acceleration: ``g_z``</span>
 <span class="sd">        progressbar : bool (optional)</span>
@@ -721,6 +815,10 @@ document.write(`
 <span class="sd">            Name of the property layer (or ``data_var`` of the</span>
 <span class="sd">            :class:`xarray.Dataset`) that will be used for the density of each</span>
 <span class="sd">            tesseroid in the layer. Default to ``&quot;density&quot;``</span>
+<span class="sd">        thickness_threshold : float or None</span>
+<span class="sd">            Tesseroids thinner than this threshold will be ignored in the</span>
+<span class="sd">            forward gravity calculation. If None, every tesseroid with non-zero</span>
+<span class="sd">            volume will be considered. Default to None.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -729,7 +827,7 @@ document.write(`
 <span class="sd">            point. Gravitational potential will be returned in SI units, while</span>
 <span class="sd">            acceleration components will be in mGal.</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        harmonica.tesseroid_gravity</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -742,7 +840,14 @@ document.write(`
         <span class="c1"># Select only the boundaries and density elements for masked tesseroid</span>
         <span class="n">boundaries</span> <span class="o">=</span> <span class="n">boundaries</span><span class="p">[</span><span class="n">mask</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
         <span class="n">density</span> <span class="o">=</span> <span class="n">density</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
-        <span class="c1"># Return gravity field of tesserids</span>
+        <span class="c1"># Discard thin tesseroids and their densities</span>
+        <span class="k">if</span> <span class="n">thickness_threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">boundaries</span><span class="p">,</span> <span class="n">density</span> <span class="o">=</span> <span class="n">_discard_thin_tesseroids</span><span class="p">(</span>
+                <span class="n">boundaries</span><span class="p">,</span>
+                <span class="n">density</span><span class="p">,</span>
+                <span class="n">thickness_threshold</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="c1"># Return gravity field of tesseroids</span>
         <span class="k">return</span> <span class="n">tesseroid_gravity</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="p">,</span>
             <span class="n">tesseroids</span><span class="o">=</span><span class="n">boundaries</span><span class="p">,</span>
@@ -753,12 +858,19 @@ document.write(`
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_nonans_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_nonans_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Build a mask for tesseroid with no nans on top, bottom or a property</span>
+<span class="sd">        Build a mask for tesseroid with no nans on top, bottom or a property.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        property_name : str (optional)</span>
+<span class="sd">            Name of the property layer (or ``data_var`` of the</span>
+<span class="sd">            :class:`xarray.Dataset`) that will be used for masking the tesseroids</span>
+<span class="sd">            in the layer.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
 <span class="sd">        mask : 2d-array</span>
 <span class="sd">            Array of bools that can be used as a mask for selecting tesseroids</span>
 <span class="sd">            with no nans on top boundaries, bottom boundaries ans the passed</span>
@@ -783,9 +895,9 @@ document.write(`
             <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mask_property</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mask</span>
 
-    <span class="k">def</span> <span class="nf">_to_tesseroids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_tesseroids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the boundaries of each tesseroid of the layer</span>
+<span class="sd">        Return the boundaries of each tesseroid of the layer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -813,9 +925,9 @@ document.write(`
         <span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">tesseroids</span>
 
-    <span class="k">def</span> <span class="nf">_get_tesseroid_horizontal_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tesseroid_horizontal_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the horizontal boundaries of the tesseroid</span>
+<span class="sd">        Compute the horizontal boundaries of the tesseroid.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -833,20 +945,20 @@ document.write(`
 
 <div class="viewcode-block" id="DatasetAccessorTesseroidLayer.get_tesseroid">
 <a class="viewcode-back" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.get_tesseroid">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_tesseroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tesseroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the boundaries of the chosen tesseroid</span>
+<span class="sd">        Return the boundaries of the chosen tesseroid.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        indices : tuple</span>
 <span class="sd">            Indices of the desired tesseroid of the layer in the following</span>
-<span class="sd">            order: ``(index_northing, index_easting)``.</span>
+<span class="sd">            order: ``(index_latitude, index_longitude)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tesseroid : tuple</span>
-<span class="sd">           Boundaries of the prisms in the following order:</span>
+<span class="sd">           Boundaries of the tesseroids in the following order:</span>
 <span class="sd">           ``longitude_w``, ``longitude_e``, ``latitude_s``, ``latitude_n``,</span>
 <span class="sd">           ``bottom``, ``top``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -854,20 +966,57 @@ document.write(`
         <span class="n">center_longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
         <span class="n">center_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="c1"># Calculate the boundaries of the tesseroid</span>
-        <span class="c1"># (</span>
-        <span class="c1">#     longitude_w,</span>
-        <span class="c1">#     Longitude_e,</span>
-        <span class="c1">#     latitude_s,</span>
-        <span class="c1">#     latitude_n,</span>
-        <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_tesseroid_horizontal_boundaries</span><span class="p">(</span>
-            <span class="n">center_longitude</span><span class="p">,</span> <span class="n">center_latitude</span>
-        <span class="p">)</span>
+        <span class="p">(</span>
+            <span class="n">longitude_w</span><span class="p">,</span>
+            <span class="n">longitude_e</span><span class="p">,</span>
+            <span class="n">latitude_s</span><span class="p">,</span>
+            <span class="n">latitude_n</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_tesseroid_horizontal_boundaries</span><span class="p">(</span><span class="n">center_longitude</span><span class="p">,</span> <span class="n">center_latitude</span><span class="p">)</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
         <span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-        <span class="c1"># return longitude_w, longitude_e, latitude_s, latitude_n, bottom, top</span>
-        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span></div>
+        <span class="k">return</span> <span class="n">longitude_w</span><span class="p">,</span> <span class="n">longitude_e</span><span class="p">,</span> <span class="n">latitude_s</span><span class="p">,</span> <span class="n">latitude_n</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span></div>
 </div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_discard_thin_tesseroids</span><span class="p">(</span>
+    <span class="n">tesseroids</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">,</span>
+    <span class="n">thickness_threshold</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Discard tesseroids with a thickness below a threshold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        Array containing the boundaries of the tesseroids in the following order:</span>
+<span class="sd">        ``longitude_w``, ``longitude_e``, ``latitude_s``, ``latitude_n``,</span>
+<span class="sd">           ``bottom``, ``top``.</span>
+<span class="sd">        The array must have the following shape: (``n_tesseroids``, 6), where</span>
+<span class="sd">        ``n_tesseroids`` is the total number of tesseroids.</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        Array containing the density of each tesseroid in kg/m^3. Must have the</span>
+<span class="sd">        same size as the number of tesseroids.</span>
+<span class="sd">    thickness_threshold : float</span>
+<span class="sd">        Tesseroids thinner than this threshold will be discarded.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tesseroids : 2d-array</span>
+<span class="sd">        A copy of the ``tesseroids`` array that doesn&#39;t include the thin tesseroids.</span>
+<span class="sd">    density : 1d-array</span>
+<span class="sd">        A copy of the ``density`` array that doesn&#39;t include the density values</span>
+<span class="sd">        for thin tesseroids.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroids</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Mark tesseroids with thickness &lt; threshold as null tesseroids</span>
+    <span class="n">thickness</span> <span class="o">=</span> <span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span>
+    <span class="n">null_tesseroids</span> <span class="o">=</span> <span class="n">thickness</span> <span class="o">&lt;</span> <span class="n">thickness_threshold</span>
+    <span class="c1"># Keep only thick tesseroids and their densities</span>
+    <span class="n">tesseroids</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">null_tesseroids</span><span class="p">),</span> <span class="p">:]</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">density</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">null_tesseroids</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">tesseroids</span><span class="p">,</span> <span class="n">density</span>
 </pre></div>
 
                 </article>
@@ -904,7 +1053,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Apr 18, 2026.
   <br/>
 </p>
   </div>

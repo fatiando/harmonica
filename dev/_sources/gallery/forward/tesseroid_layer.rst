@@ -21,7 +21,7 @@
 Layer of tesseroids
 ===================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-68
+.. GENERATED FROM PYTHON SOURCE LINES 11-95
 
 
 
@@ -35,6 +35,7 @@ Layer of tesseroids
 
 
 .. code-block:: Python
+
 
     import boule as bl
     import ensaio
@@ -54,10 +55,20 @@ Layer of tesseroids
     ellipsoid = bl.WGS84
 
     longitude, latitude = np.meshgrid(topo.longitude, topo.latitude)
+
+    # Compute radius of WGS84 ellipsoid at each lat/lon coordinates
     reference = ellipsoid.geocentric_radius(latitude)
+
+    # Compute surface topography with respect to the center of the Earth
     surface = topo + reference
+
+    # tesseroids above sea level have density of 2670 kg/m³ and tesseroids located below sea
+    # level have density of -1630 kg/m³
     density = xr.where(topo > 0, 2670.0, 1040.0 - 2670.0)
 
+    # Create a layer of tesseroids representing the topography
+    # These have tops and bottoms defined by Earth's topography with respect to the center
+    # of the Earth.
     tesseroids = hm.tesseroid_layer(
         coordinates=(topo.longitude, topo.latitude),
         surface=surface,
@@ -80,24 +91,40 @@ Layer of tesseroids
         extra_coords_names="radius",
     )
 
-    # Plot gravity field
     fig = pygmt.Figure()
+
+    # Plot tesseroid thickness
+    fig.grdimage(
+        tesseroids.top - tesseroids.bottom,
+        projection="M15c",
+        nan_transparent=True,
+        cmap="viridis",
+        frame="+tTesseroid thickness",
+    )
+    fig.basemap(frame=True)
+    fig.colorbar(frame="af+lthickness (m)")
+    fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
+
+    fig.shift_origin(xshift="17c")
+
+    # Plot gravity field
     maxabs = vd.maxabs(gravity.g_z)
-    pygmt.makecpt(cmap="polar", series=(-maxabs, maxabs))
+    pygmt.makecpt(cmap="balance+h0", series=(-maxabs, maxabs))
     fig.grdimage(
         gravity.g_z,
         projection="M15c",
         nan_transparent=True,
+        frame="+tForward gravity",
     )
     fig.basemap(frame=True)
-    fig.colorbar(frame='af+l"Gravity [mGal]"', position="JCR")
+    fig.colorbar(frame="af+lGravity (mGal)")
     fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 25.108 seconds)
+   **Total running time of the script:** (0 minutes 24.188 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_tesseroid_layer.py:

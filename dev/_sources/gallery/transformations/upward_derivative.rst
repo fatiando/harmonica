@@ -21,7 +21,7 @@
 Upward derivative of a regular grid
 ===================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-73
+.. GENERATED FROM PYTHON SOURCE LINES 11-60
 
 
 
@@ -38,22 +38,23 @@ Upward derivative of a regular grid
 
     Upward derivative:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[-0.95819615, -0.62479717, -0.65249412, ...,  1.73446398,
-             1.6766403 ,  2.72435657],
-           [-0.63634012, -0.21904971, -0.23107569, ...,  0.49049566,
-             0.45948428,  1.68409986],
-           [-0.66359177, -0.2353631 , -0.24506233, ...,  0.51034737,
-             0.49225437,  1.75482676],
+    array([[ 0.00392149, -0.03020041, -0.03536756, ..., -0.04226171,
+            -0.04011395, -0.05324249],
+           [-0.03893551, -0.06934878, -0.06971427, ..., -0.02488467,
+            -0.02337474, -0.03747796],
+           [-0.04212395, -0.07421057, -0.07659479, ..., -0.02333065,
+            -0.02383248, -0.03317766],
            ...,
-           [-3.39466133, -0.92997513, -0.84908229, ...,  0.187395  ,
-             0.37947101,  1.13012071],
-           [-3.28895188, -0.89679122, -0.84612101, ...,  0.15550382,
-             0.36489592,  1.12153698],
-           [-5.04820203, -2.9126185 , -2.80733457, ..., -0.11714694,
-             0.3870613 ,  1.26040208]])
+           [-0.24893064, -0.07536529,  0.02301565, ...,  0.17154972,
+             0.32659791,  0.52662516],
+           [-0.25872989, -0.10818937, -0.00694061, ...,  0.16703944,
+             0.3530013 ,  0.5823102 ],
+           [-0.15762632, -0.04329555,  0.02397919, ...,  0.08397172,
+             0.23195226,  0.4514189 ]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+        height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 
 
 
@@ -64,11 +65,11 @@ Upward derivative of a regular grid
 
 .. code-block:: Python
 
+
     import ensaio
     import pygmt
     import verde as vd
     import xarray as xr
-    import xrft
 
     import harmonica as hm
 
@@ -77,21 +78,8 @@ Upward derivative of a regular grid
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
 
-    # Pad the grid to increase accuracy of the FFT filter
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-    # drop the extra height coordinate
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
     # Compute the upward derivative of the grid
-    deriv_upward = hm.derivative_upward(magnetic_grid_padded)
-
-    # Unpad the derivative grid
-    deriv_upward = xrft.unpad(deriv_upward, pad_width)
-
+    deriv_upward = hm.derivative_upward(magnetic_grid)
     # Show the upward derivative
     print("\nUpward derivative:\n", deriv_upward)
 
@@ -130,7 +118,7 @@ Upward derivative of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.408 seconds)
+   **Total running time of the script:** (0 minutes 0.416 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_upward_derivative.py:

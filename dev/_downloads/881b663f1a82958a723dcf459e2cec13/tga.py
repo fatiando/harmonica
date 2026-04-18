@@ -8,11 +8,11 @@
 Total gradient amplitude of a regular grid
 ==========================================
 """
+
 import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -21,21 +21,8 @@ import harmonica as hm
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
 
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
 # Compute the total gradient amplitude of the grid
-tga = hm.total_gradient_amplitude(magnetic_grid_padded)
-
-# Unpad the total gradient amplitude grid
-tga = xrft.unpad(tga, pad_width)
-
+tga = hm.total_gradient_amplitude(magnetic_grid)
 # Show the total gradient amplitude
 print("\nTotal Gradient Amplitude:\n", tga)
 

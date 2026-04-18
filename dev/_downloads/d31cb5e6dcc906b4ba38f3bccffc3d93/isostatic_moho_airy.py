@@ -21,9 +21,10 @@ common default values for the reference thickness and crust, mantle
 [TurcotteSchubert2014]_.
 
 We'll use our sample topography data
-(:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
+(:func:`ensaio.fetch_earth_topography`) to calculate the Airy
 isostatic Moho depth of Africa.
 """
+
 import ensaio
 import numpy as np
 import pygmt

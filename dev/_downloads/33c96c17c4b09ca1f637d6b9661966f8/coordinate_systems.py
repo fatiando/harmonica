@@ -89,7 +89,7 @@ print("radius:", radius)
 # In[8]:
 
 
-coordinates_geodetic = ellipsoid.spherical_to_geodetic(*coordinates)
+coordinates_geodetic = ellipsoid.spherical_to_geodetic(coordinates)
 longitude, latitude, height = coordinates_geodetic[:]
 print("longitude:", longitude)
 print("latitude:", latitude)
@@ -99,7 +99,7 @@ print("height:", height)
 # In[9]:
 
 
-coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates_geodetic)
+coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates_geodetic)
 longitude, sph_latitude, radius = coordinates_spherical[:]
 print("longitude:", longitude)
 print("spherical latitude:", sph_latitude)
