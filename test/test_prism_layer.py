@@ -15,7 +15,6 @@ import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 import xarray as xr
 
 from harmonica import prism_gravity, prism_layer

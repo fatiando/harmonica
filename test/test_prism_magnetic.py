@@ -13,7 +13,6 @@ import choclo
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 from choclo.prism import magnetic_field
 
 try:

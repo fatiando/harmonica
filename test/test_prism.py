@@ -15,7 +15,6 @@ import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 from choclo.prism import (
     gravity_e,
     gravity_ee,
