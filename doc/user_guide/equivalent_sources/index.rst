@@ -176,7 +176,7 @@ And plot it:
 
 We can also *grid* and *upper continue* the field by predicting its values on
 a regular grid at a constant height higher than the observations. To do so we
-can use the :func:`verde.grid_coordinates` function to create the coordinates
+can use the :func:`bordado.grid_coordinates` function to create the coordinates
 of the grid and then use the :meth:`harmonica.EquivalentSources.grid` method.
 
 First, lets get the maximum height of the observations:
