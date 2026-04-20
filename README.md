@@ -1,6 +1,6 @@
-<img src="https://github.com/fatiando/harmonica/raw/main/doc/_static/readme-banner.png" alt="Harmonica">
+<h1><img src="https://github.com/fatiando/harmonica/raw/main/doc/_static/readme-banner.png" alt="Harmonica"></h1>
 
-<h2 align="center">Processing and modelling gravity and magnetic data</h2>
+<p align="center"><strong>Processing and modelling gravity and magnetic data</strong></p>
 
 <p align="center">
 <a href="https://www.fatiando.org/harmonica"><strong>Documentation</strong> (latest)</a> •
