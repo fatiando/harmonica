@@ -127,7 +127,7 @@ And then predict the field on a regular grid of computation points:
 
     import bordado as bd
 
-    region = bd.get_region(coordinates)
+    region = bd.get_region((easting, northing))
     grid_coords = bd.grid_coordinates(
         region=region,
         spacing=5e3,
