@@ -10,12 +10,13 @@ Test functions from the filter module.
 
 import re
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
 import xarray as xr
 import xarray.testing as xrt
-from verde import grid_coordinates, make_xarray_grid
+from verde import make_xarray_grid
 
 from harmonica.filters._fft import fft, ifft
 from harmonica.filters._filters import (
@@ -47,7 +48,7 @@ def fixture_sample_grid(region):
     """
     Return a sample grid as an :class:`xarray.DataArray`.
     """
-    easting, northing = grid_coordinates(region, spacing=500)
+    easting, northing = bd.grid_coordinates(region, spacing=500)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
     return make_xarray_grid((easting, northing), data, data_names="sample").sample
 
@@ -57,7 +58,9 @@ def fixture_sample_grid_multiple_coords(region):
     """
     Return a sample grid as an :class:`xarray.DataArray` with multiple coords.
     """
-    easting, northing, upward = grid_coordinates(region, spacing=500, extra_coords=100)
+    easting, northing, upward = bd.grid_coordinates(
+        region, spacing=500, non_dimensional_coords=100
+    )
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
     easting, northing = np.unique(easting), np.unique(northing)
     easting_km, northing_km = easting * 1e-3, northing * 1e-3
@@ -112,7 +115,7 @@ def fixture_sample_fft_grid():
     Return a sample fft_grid to be used in test functions.
     """
     domain = (-9e-4, 9e-4, -8e-4, 8e-4)
-    freq_easting, freq_northing = grid_coordinates(region=domain, spacing=8e-4)
+    freq_easting, freq_northing = bd.grid_coordinates(region=domain, spacing=8e-4)
     dummy_fft = np.ones_like(freq_easting)
     fft_grid = make_xarray_grid(
         (freq_easting, freq_northing),
