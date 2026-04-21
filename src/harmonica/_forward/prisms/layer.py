@@ -17,7 +17,7 @@ import xarray as xr
 
 from ...visualization import prism_to_pyvista
 from ..utils import initialize_progressbar
-from .gravity import FIELDS, prism_gravity
+from .gravity import FIELDS
 
 
 def prism_layer(
