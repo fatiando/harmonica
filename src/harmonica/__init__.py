@@ -18,9 +18,12 @@ from ._euler_methods import EulerDeconvolution, EulerInversion
 from ._forward.dipole import dipole_magnetic
 from ._forward.ellipsoids import Ellipsoid, ellipsoid_gravity, ellipsoid_magnetic
 from ._forward.point import point_gravity
-from ._forward.prism_gravity import prism_gravity
-from ._forward.prism_layer import DatasetAccessorPrismLayer, prism_layer
-from ._forward.prism_magnetic import prism_magnetic
+from ._forward.prisms import (
+    DatasetAccessorPrismLayer,
+    prism_gravity,
+    prism_layer,
+    prism_magnetic,
+)
 from ._forward.tesseroid_gravity import tesseroid_gravity
 from ._forward.tesseroid_layer import DatasetAccessorTesseroidLayer, tesseroid_layer
 from ._gravity_corrections import bouguer_correction
