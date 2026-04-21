@@ -397,6 +397,12 @@ class DatasetAccessorPrismLayer:
             0.0 if thickness_threshold is None else thickness_threshold
         )
         density = self._obj[density_name].values
+        if np.isnan(density).any():
+            msg = (
+                "Found NaN values in 'density' property of the prisms layer. "
+                "Their respective prisms will be ignored."
+            )
+            warnings.warn(msg, stacklevel=2)
         with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
             result = numba_function(
                 coordinates,
@@ -651,9 +657,9 @@ def _forward_gravity_prism_layer(
             west = easting_center - half_spacing_east
             east = easting_center + half_spacing_east
             for k, northing_center in enumerate(prisms_northing):
-                # Ignore prisms with zero density
+                # Ignore prisms with zero or NaN density
                 density = densities[k, j]
-                if density == 0.0:
+                if density == 0.0 or np.isnan(density):
                     continue
 
                 # Ignore thin prisms

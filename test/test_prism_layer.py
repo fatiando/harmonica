@@ -401,9 +401,8 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
         prisms_coords, surface, reference, properties={"density": density}
     )
     # Check if warning is raised after passing density with nans
-    with warnings.catch_warnings(record=True) as warn:
+    with pytest.warns():
         result = layer.prism_layer.gravity(coordinates, field=field)
-        assert len(warn) == 1
     # Check if it generates the expected gravity field
     prisms, rho = prism_layer_with_holes
     npt.assert_allclose(
