@@ -131,6 +131,7 @@ And plot it:
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
 
    # Get max absolute value for the observed gravity disturbance
    maxabs = vd.maxabs(data.gravity_disturbance_mgal)
