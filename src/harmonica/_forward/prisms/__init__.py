@@ -9,5 +9,5 @@ Forward modelling of rectangular prisms.
 """
 
 from .gravity import prism_gravity
-from .magnetic import prism_magnetic
 from .layer import DatasetAccessorPrismLayer, prism_layer
+from .magnetic import prism_magnetic
