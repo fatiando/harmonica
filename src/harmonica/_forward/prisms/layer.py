@@ -651,6 +651,9 @@ def _forward_gravity_prism_layer(
     half_spacing_east = (prisms_easting[1] - prisms_easting[0]) / 2
     half_spacing_north = (prisms_northing[1] - prisms_northing[0]) / 2
 
+    # Check if we need to update the progressbar on each iteration
+    update_progressbar = progress_proxy is not None
+
     result = np.zeros(n_coords, dtype=np.float64)
     for i in numba.prange(n_coords):
         for j, easting_center in enumerate(prisms_easting):
@@ -685,6 +688,9 @@ def _forward_gravity_prism_layer(
                     top,
                     density,
                 )
+        # Update progress bar if called
+        if update_progressbar:
+            progress_proxy.update(1)
     return result
 
 
