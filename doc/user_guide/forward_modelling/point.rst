@@ -73,7 +73,7 @@ height:
    import bordado as bd
 
    coordinates = bd.grid_coordinates(
-       region=(-250, 1250, -250, 1250), shape=(40, 40), extra_coords=0
+       region=(-250, 1250, -250, 1250), shape=(40, 40), non_dimensional_coords=0
    )
 
 And finally calculate the vertical component of the gravitational acceleration
