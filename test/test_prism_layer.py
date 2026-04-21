@@ -18,7 +18,7 @@ import verde as vd
 import xarray as xr
 
 from harmonica import prism_gravity, prism_layer
-from harmonica._forward.prism_layer import _discard_thin_prisms
+from harmonica._forward.prisms.layer import _discard_thin_prisms
 
 try:
     import pyvista
