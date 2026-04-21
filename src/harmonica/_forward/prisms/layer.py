@@ -383,7 +383,7 @@ class DatasetAccessorPrismLayer:
 
         # Ravel coordinates to 1D
         cast = np.broadcast(*coordinates[:3])
-        coordinates = tuple(c.ravel() for c in coordinates)
+        coordinates = tuple(np.atleast_1d(c).ravel() for c in coordinates[:3])
 
         # Determine parallel or serial forward modelling function
         numba_function = (
