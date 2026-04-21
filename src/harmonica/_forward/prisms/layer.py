@@ -427,43 +427,6 @@ class DatasetAccessorPrismLayer:
             result *= 1e9  # SI to Eotvos
         return result.reshape(cast.shape)
 
-    def _get_nonans_mask(self, property_name=None):
-        """
-        Build a mask for prisms with no nans on top, bottom or a property.
-
-        Parameters
-        ----------
-        property_name : str (optional)
-            Name of the property layer (or ``data_var`` of the
-            :class:`xarray.Dataset`) that will be used for masking the prisms
-            in the layer.
-
-        Returns
-        -------
-        mask : 2d-array
-            Array of bools that can be used as a mask for selecting prisms with
-            no nans on top boundaries, bottom boundaries and the passed
-            property.
-        """
-        # Mask the prisms that contains no nans on top and bottom boundaries
-        mask = np.logical_and(
-            np.logical_not(np.isnan(self._obj.top.values)),
-            np.logical_not(np.isnan(self._obj.bottom.values)),
-        )
-        # Mask the prisms that contains nans on the selected property
-        if property_name is not None:
-            mask_property = np.logical_not(np.isnan(self._obj[property_name].values))
-            # Warn if a nan is found within the masked property
-            if not mask_property[mask].all():
-                warnings.warn(
-                    f"Found missing values in '{property_name}' property "
-                    + "of the prisms layer. The prisms with a nan as "
-                    + f"'{property_name}' will be ignored.",
-                    stacklevel=1,
-                )
-            mask = np.logical_and(mask, mask_property)
-        return mask
-
     def _to_prisms(self):
         """
         Return the boundaries of each prism of the layer.
@@ -549,45 +512,6 @@ class DatasetAccessorPrismLayer:
                 for data_var in self._obj.data_vars
             }
         return prism_to_pyvista(prisms, properties=properties)
-
-
-def _discard_thin_prisms(
-    prisms,
-    density,
-    thickness_threshold,
-):
-    """
-    Discard prisms with a thickness below a threshold.
-
-    Parameters
-    ----------
-    prisms : 2d-array
-        Array containing the boundaries of the prisms in the following order:
-        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
-        The array must have the following shape: (``n_prisms``, 6), where
-        ``n_prisms`` is the total number of prisms.
-    density : 1d-array
-        Array containing the density of each prism in kg/m^3. Must have the
-        same size as the number of prisms.
-    thickness_threshold : float
-        Prisms thinner than this threshold will be discarded.
-
-    Returns
-    -------
-    prisms : 2d-array
-        A copy of the ``prisms`` array that doesn't include the thin prisms.
-    density : 1d-array
-        A copy of the ``density`` array that doesn't include the density values
-        for thin prisms.
-    """
-    bottom, top = prisms[:, -2], prisms[:, -1]
-    # Mark prisms with thickness < threshold  as null prisms
-    thickness = top - bottom
-    null_prisms = thickness < thickness_threshold
-    # Keep only thick prisms and their densities
-    prisms = prisms[np.logical_not(null_prisms), :]
-    density = density[np.logical_not(null_prisms)]
-    return prisms, density
 
 
 def _forward_gravity_prism_layer(
