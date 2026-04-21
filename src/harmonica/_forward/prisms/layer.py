@@ -598,6 +598,17 @@ def _forward_gravity_prism_layer(
     """
     Forward model the gravity fields of prisms in a prism layer.
 
+    Builds the boundaries of each one the prisms in the layer on the fly, iterating over
+    the easting and northing dimensional coordinates. This function is intended to avoid
+    allocating all prism boundaries in memory before computation.
+
+    The function ignores prisms with zero density, prisms thinner than the
+    ``thickness_threshold``, and prisms with NaN as top or bottom boundaries.
+
+    .. important::
+
+        This function is intended to be decorated with Numba before use.
+
     Parameters
     ----------
     coordinates : tuple of (n,) array
@@ -629,10 +640,6 @@ def _forward_gravity_prism_layer(
     result : array
         Gravity field in SI units.
     """
-    # Remember to:
-    #  - ignore prisms with zero density
-    #  - ignore prisms based on thickness threshold
-
     easting, northing, upward = coordinates
     n_coords = easting.size
     half_spacing_east = (prisms_easting[1] - prisms_easting[0]) / 2
