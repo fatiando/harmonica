@@ -375,7 +375,7 @@ class DatasetAccessorPrismLayer:
         """
         # Sanity check the field
         if field not in FIELDS:
-            msg = f"Gravitational field {field} not recognized"
+            msg = f"Gravitational field '{field}' not recognized."
             raise ValueError(msg)
 
         # Check if prism layer defines a regular grid in horizontal coords

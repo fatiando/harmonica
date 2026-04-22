@@ -11,6 +11,7 @@ Test prisms layer.
 import re
 from unittest.mock import patch
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -18,6 +19,7 @@ import verde as vd
 import xarray as xr
 
 from harmonica import prism_gravity, prism_layer
+from harmonica._forward.prisms.gravity import FIELDS
 
 try:
     import pyvista
@@ -238,7 +240,7 @@ def test_prism_layer_get_prism_by_index():
 
 
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("field", FIELDS)
 def test_prism_layer_gravity(field, dummy_layer):
     """
     Check if gravity method works as expected.
@@ -257,6 +259,24 @@ def test_prism_layer_gravity(field, dummy_layer):
     npt.assert_allclose(
         expected_result, layer.prism_layer.gravity(coordinates, field=field)
     )
+
+
+def test_prism_layer_invalid_field(dummy_layer):
+    """
+    Test error after passing invalid field.
+    """
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+
+    invalid_field = "invalid field"
+    msg = re.escape(f"Gravitational field '{invalid_field}' not recognized.")
+    with pytest.raises(ValueError, match=msg):
+        layer.prism_layer.gravity(coordinates, field=invalid_field)
 
 
 @pytest.mark.use_numba
