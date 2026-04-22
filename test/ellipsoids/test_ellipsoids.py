@@ -380,3 +380,27 @@ class TestRepr:
             ")"
         )
         assert expected == repr(ellipsoid)
+
+    def test_get_surface(self, ellipsoid):
+        """
+        Test surface points by checking if they satisfy characteristic equation.
+        """
+        easting, northing, upward = ellipsoid.get_surface()
+        assert easting.ndim == 2
+        assert easting.shape == northing.shape == upward.shape
+
+        # Go to local coordinate system
+        e_center, n_center, u_center = ellipsoid.center
+        points = np.vstack(
+            [
+                easting.ravel() - e_center,
+                northing.ravel() - n_center,
+                upward.ravel() - u_center,
+            ]
+        )
+        x, y, z = ellipsoid.rotation_matrix.T @ points
+
+        # Compare with characteristic equation
+        np.testing.assert_allclose(
+            x**2 / self.a**2 + y**2 / self.b**2 + z**2 / self.c**2, 1.0
+        )
