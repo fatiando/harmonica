@@ -27,10 +27,20 @@ topo = topo.sel(latitude=slice(*region[2:]), longitude=slice(*region[:2]))
 ellipsoid = bl.WGS84
 
 longitude, latitude = np.meshgrid(topo.longitude, topo.latitude)
+
+# Compute radius of WGS84 ellipsoid at each lat/lon coordinates
 reference = ellipsoid.geocentric_radius(latitude)
+
+# Compute surface topography with respect to the center of the Earth
 surface = topo + reference
+
+# tesseroids above sea level have density of 2670 kg/m³ and tesseroids located below sea
+# level have density of -1630 kg/m³
 density = xr.where(topo > 0, 2670.0, 1040.0 - 2670.0)
 
+# Create a layer of tesseroids representing the topography
+# These have tops and bottoms defined by Earth's topography with respect to the center
+# of the Earth.
 tesseroids = hm.tesseroid_layer(
     coordinates=(topo.longitude, topo.latitude),
     surface=surface,
@@ -53,26 +63,34 @@ gravity = vd.make_xarray_grid(
     extra_coords_names="radius",
 )
 
-# Plot gravity field
 fig = pygmt.Figure()
 
-# Get the max absolute value to use as color scale limits
-cpt_lims = vd.maxabs(gravity.g_z)
+# Plot tesseroid thickness
+fig.grdimage(
+    tesseroids.top - tesseroids.bottom,
+    projection="M15c",
+    nan_transparent=True,
+    cmap="viridis",
+    frame="+tTesseroid thickness",
+)
+fig.basemap(frame=True)
+fig.colorbar(frame="af+lthickness (m)")
+fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
 
-# Make colormap of data
-pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims])
+fig.shift_origin(xshift="17c")
 
-title = "Gravitational acceleration of topography with tesseroids"
-
+# Plot gravity field
+maxabs = vd.maxabs(gravity.g_z)
+pygmt.makecpt(cmap="balance+h0", series=(-maxabs, maxabs))
 fig.grdimage(
     gravity.g_z,
-    frame=f"+t{title}",
     projection="M15c",
     nan_transparent=True,
     cmap=True,
+    frame="+tForward gravity",
 )
 
 fig.basemap(frame=True)
-fig.colorbar(frame="af+lmGal", position="JCR")
+fig.colorbar(frame="af+lgravity (mGal)")
 fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
 fig.show()

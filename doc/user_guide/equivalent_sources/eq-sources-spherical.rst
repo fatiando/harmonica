@@ -57,7 +57,7 @@ And compute gravity disturbance by subtracting normal gravity using
     import boule as bl
 
     ellipsoid = bl.WGS84
-    normal_gravity = ellipsoid.normal_gravity(data.latitude, data.height_sea_level_m)
+    normal_gravity = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
     gravity_disturbance = data.gravity_mgal - normal_gravity
 
 Lets define some equivalent sources in spherical coordinates. We will choose
@@ -82,7 +82,7 @@ defined in :mod:`boule`.
 .. jupyter-execute::
 
     coordinates = ellipsoid.geodetic_to_spherical(
-        data.longitude, data.latitude, data.height_sea_level_m
+        (data.longitude, data.latitude, data.height_sea_level_m)
     )
 
 And then use them to fit the sources:
@@ -114,7 +114,7 @@ field we need to convert the grid coordinates to spherical.
 
 .. jupyter-execute::
 
-    grid_coords_sph = ellipsoid.geodetic_to_spherical(*grid_coords)
+    grid_coords_sph = ellipsoid.geodetic_to_spherical(grid_coords)
 
 And then predict the gravity disturbance on the grid points:
 

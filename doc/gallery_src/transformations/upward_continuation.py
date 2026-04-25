@@ -13,7 +13,6 @@ import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -22,22 +21,9 @@ import harmonica as hm
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
 
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
 # Upward continue the magnetic grid, from 500 m to 1000 m
 # (a height displacement of 500m)
-upward_continued = hm.upward_continuation(magnetic_grid_padded, height_displacement=500)
-
-# Unpad the upward continued grid
-upward_continued = xrft.unpad(upward_continued, pad_width)
-
+upward_continued = hm.upward_continuation(magnetic_grid, height_displacement=500)
 # Show the upward continued grid
 print("\nUpward continued magnetic grid:\n", upward_continued)
 

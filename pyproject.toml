@@ -6,17 +6,18 @@ authors = [
   {name="The Harmonica Developers", email="fatiandoaterra@protonmail.com"},
 ]
 maintainers = [
-  {name = "Santiago Soler", email = "santisoler@fastmail.com"}
+  {name = "Santiago Soler", email = "santisoler@fastmail.com"},
+  {name = "Matthew Tankersley", email = "matt.d.tankersley@gmail.com"}
 ]
 readme = "README.md"
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE.txt", "AUTHORS.md"]
 keywords = ["geoscience", "geophysics"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
@@ -38,7 +39,7 @@ dependencies = [
     "verde >= 1.8.1",
     "xrft >= 1.0",
     "choclo >= 0.1",
-    "boule >= 0.4.1"
+    "boule >= 0.6.0"
 ]
 
 [project.urls]
@@ -58,7 +59,7 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
-version_file = "harmonica/_version.py"
+version_file = "src/harmonica/_version.py"
 
 [tool.pytest.ini_options]
 doctest_optionflags = "NUMBER"
@@ -80,7 +81,7 @@ line-length = 88
 exclude = [
     "doc/_build",
     "doc/gallery",
-    "harmonica/_version.py",
+    "src/harmonica/_version.py",
 ]
 
 [tool.ruff.lint]
@@ -118,12 +119,13 @@ ignore = [
   "RET504",   # allow variable assignment only for return
   "PT001",    # conventions for parenthesis on pytest.fixture
   "D200",     # allow single line docstrings in their own line
+  "C420",     # Replacing dict comprehension with `dict.fromkeys` is ugly
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # disable unused-imports errors on __init__.py
 "_kernels.py" = ["ARG001"]  # disable unused arguments in kernel files
-"harmonica/tests/**" = [
+"test/**" = [
     "T20", # allow print statements in tests
     "D",   # ignore pydocstyle warnings in tests
     "RUF012", # ignore undecorated mutable class attributes
@@ -137,3 +139,23 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.coverage.run]
+source = ["harmonica"]
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+branch = true
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
+
+[tool.coverage.paths]
+source = [
+    "src/harmonica",
+    "*/harmonica",
+    "*\\harmonica",
+]
+
+[tool.coverage.report]
+show_missing = true

@@ -13,7 +13,6 @@ import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -22,21 +21,8 @@ import harmonica as hm
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
 
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
 # Compute the upward derivative of the grid
-deriv_upward = hm.derivative_upward(magnetic_grid_padded)
-
-# Unpad the derivative grid
-deriv_upward = xrft.unpad(deriv_upward, pad_width)
-
+deriv_upward = hm.derivative_upward(magnetic_grid)
 # Show the upward derivative
 print("\nUpward derivative:\n", deriv_upward)
 
