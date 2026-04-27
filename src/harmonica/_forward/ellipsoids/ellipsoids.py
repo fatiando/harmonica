@@ -326,7 +326,7 @@ class Ellipsoid:
         ellipsoid.translate(self.center, inplace=True)
         return ellipsoid
 
-    def get_surface(self, *, size=181):
+    def get_surface(self, *, lon_size=361, lat_size=181):
         """
         Return three arrays with a discrete representation of the ellipsoid's surface.
 
@@ -336,9 +336,10 @@ class Ellipsoid:
 
         Parameters
         ----------
-        size : int, optional
+        lon_size : int, optional
             Number of points used in the latitudinal discretization.
-            Double of these points will be used in the longitudinal discretization.
+        lat_size : int, optional
+            Number of points used in the longitudinal discretization.
 
         Returns
         -------
@@ -364,8 +365,8 @@ class Ellipsoid:
         >>> plt.show()   # doctest: +SKIP
         """
         # Build longitude and latitude arrays
-        lon_rad = np.linspace(0, 2 * np.pi, 2 * size)
-        lat_rad = np.linspace(-np.pi / 2, np.pi / 2, size)
+        lon_rad = np.linspace(0, 2 * np.pi, lon_size)
+        lat_rad = np.linspace(-np.pi / 2, np.pi / 2, lat_size)
         lon_rad, lat_rad = np.meshgrid(lon_rad, lat_rad)
         shape = lon_rad.shape
 
