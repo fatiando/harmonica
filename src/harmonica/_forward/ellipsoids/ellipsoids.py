@@ -326,7 +326,7 @@ class Ellipsoid:
         ellipsoid.translate(self.center, inplace=True)
         return ellipsoid
 
-    def get_surface(self, *, size=151):
+    def get_surface(self, *, size=181):
         """
         Return three arrays with a discrete representation of the ellipsoid surface.
 
