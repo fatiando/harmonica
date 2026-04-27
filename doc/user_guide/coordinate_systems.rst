@@ -103,7 +103,7 @@ Spatial data are usually given in geodetic coordinates, along with the
 reference ellipsoid on which they are defined.
 
 For example, let's define a regular grid of points (separated by equal
-angles) at 2km above the ellipsoid using :mod:`verde`.
+angles) at 2km above the ellipsoid using :mod:`bordado`.
 
 .. jupyter-execute::
 
