@@ -15,7 +15,6 @@ dependencies:
   - scikit-learn
   - verde>=1.8.1
   - xarray
-  - xrft>=1.0
   - choclo>=0.1
   - boule>=0.6
   # Optional requirements
