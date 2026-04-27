@@ -328,7 +328,7 @@ class Ellipsoid:
 
     def get_surface(self, *, size=181):
         """
-        Return three arrays with a discrete representation of the ellipsoid surface.
+        Return three arrays with a discrete representation of the ellipsoid's surface.
 
         .. tip::
 
