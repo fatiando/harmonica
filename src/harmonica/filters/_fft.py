@@ -17,7 +17,7 @@ import xarray as xr
 
 
 def fft(grid, *, prefix="freq_"):
-    """
+    r"""
     Compute Fast Fourier Transform of a 2D regular grid.
 
     Parameters
@@ -35,6 +35,39 @@ def fft(grid, *, prefix="freq_"):
     -------
     fourier_transform : :class:`xarray.DataArray`
         Array with the Fourier transform of the original grid.
+
+    Notes
+    -----
+    This function implements the discrete Fourier Transform of 2D regular grids. It's
+    based on the following definition of the Fourier Transform of
+    a :math:`g:\mathbb{R}^2 \rightarrow \mathbb{R}` function in the spatial domain:
+
+    .. math::
+
+        \mathcal{F}[g](f_x, f_y) =
+        \int\limits_{-\infty}^{\infty}
+        \int\limits_{-\infty}^{\infty}
+        g(x, y) e^{-2 \pi i f_x x} e^{-2 \pi i f_y y}
+        \text{d}x
+        \text{d}y
+
+
+    If we consider two discretized spaces for :math:`x` and :math:`y`, both evenly
+    spaced with steps equal to :math:`\Delta x` and :math:`\Delta y`, respectively, then
+    the :math:`(k, j)` element of the discrete Fourier Transform of :math:`g` can be
+    defined as follows:
+
+    .. math::
+
+        \mathcal{F}[g]_{(j, k)} =
+        \sum\limits_{n=0}^{N-1}
+        \sum\limits_{m=0}^{M-1}
+        g(x_n, y_m) e^{-2 \pi i f_x_j x_n} e^{-2 \pi i f_y_k y_m}
+        \Delta x \Delta y
+
+    This function differs from the plain :func:`numpy.fft.fftn` function since it
+    implements the *true amplitude* and the *true phase* corrections.
+
     """
     if not isinstance(grid, xr.DataArray):
         msg = (
@@ -65,7 +98,7 @@ def fft(grid, *, prefix="freq_"):
     fft = np.fft.fftshift(np.fft.fftn(grid.values))
 
     # Account for true amplitude and true phase
-    freqs_2d = np.meshgrid(freqs[1], freqs[0])
+    freqs_2d = np.meshgrid(freqs[1], freqs[0])  # invert order to create meshgrid
     for freq, shift, spacing in zip(freqs_2d, shifts, spacings, strict=True):
         fft *= np.exp(-2 * 1j * np.pi * freq * shift) * spacing
 
@@ -84,7 +117,7 @@ def fft(grid, *, prefix="freq_"):
 
 
 def ifft(fft_grid, *, prefix="freq_"):
-    """
+    r"""
     Compute the inverse Fast Fourier Transform of a 2D regular grid.
 
     If the frequency coordinates have a *shift* attribute, it will be used to shift the
@@ -109,6 +142,40 @@ def ifft(fft_grid, *, prefix="freq_"):
     -------
     grid : :class:`xarray.DataArray`
         Array with the inverse Fourier transform of the passed grid.
+
+    Notes
+    -----
+    This function implements the discrete inverse Fourier Transform of 2D regular grids.
+    It's based on the following definition of the inverse Fourier Transform of
+    a :math:`G:\mathbb{R}^2 \rightarrow \mathbb{R}` function in the frequency
+    domain:
+
+    .. math::
+
+        \mathcal{F}^{-1}[G](f_x, f_y) =
+        \int\limits_{-\infty}^{\infty}
+        \int\limits_{-\infty}^{\infty}
+        G(f_x, f_y) e^{2 \pi i f_x x} e^{2 \pi i f_y y}
+        \text{d}f_x
+        \text{d}f_y
+
+
+    If we consider two discretized spaces for the :math:`f_x` and :math:`f_y`
+    frequencies, both evenly spaced with steps equal to :math:`\Delta f_x` and
+    :math:`\Delta f_y`, respectively, then the :math:`(n, m)` element of the discrete
+    inverse Fourier Transform of :math:`G` can be defined as follows:
+
+    .. math::
+
+        \mathcal{F}^{-1}[G]_{(n, m)} =
+        \sum\limits_{j=0}^{N-1}
+        \sum\limits_{k=0}^{M-1}
+        G(f_x_j, f_y_k) e^{2 \pi i f_x_j x_n} e^{2 \pi i f_y_k y_m}
+        \Delta f_x \Delta f_y
+
+    This function differs from the plain :func:`numpy.fft.ifftn` function since it
+    implements the *true amplitude* and the *true phase* corrections.
+
     """
     if not isinstance(fft_grid, xr.DataArray):
         msg = (
@@ -150,7 +217,7 @@ def ifft(fft_grid, *, prefix="freq_"):
 
     # Account for true amplitude and true phase
     freqs = tuple(fft_grid.coords[coord].values for coord in dimensional_fft_coords)
-    freqs_2d = np.meshgrid(freqs[1], freqs[0])
+    freqs_2d = np.meshgrid(freqs[1], freqs[0])  # invert order to create meshgrid
     fft_grid = fft_grid.copy()
     for coord, freq in zip(coords, freqs_2d, strict=True):
         shift = coord[0]
