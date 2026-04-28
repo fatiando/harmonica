@@ -30,7 +30,8 @@ from choclo.prism._utils import (
 )
 from numba import jit, prange
 
-from .utils import initialize_progressbar
+from ..utils import initialize_progressbar
+from .utils import check_prisms
 
 # Define dictionary with available gravity fields for prisms
 FIELDS = {
@@ -209,7 +210,7 @@ def prism_gravity(
                 f"Number of elements in density ({density.size}) "
                 + f"mismatch the number of prisms ({prisms.shape[0]})"
             )
-        _check_prisms(prisms)
+        check_prisms(prisms)
         _check_singular_points(coordinates, prisms, field)
     # Discard null prisms (zero volume or zero density)
     prisms, density = _discard_null_prisms(prisms, density)
@@ -448,40 +449,6 @@ def _any_singular_point_g_nz(coordinates, prisms):
     return False
 
 
-def _check_prisms(prisms):
-    """
-    Check if prisms boundaries are well defined.
-
-    Parameters
-    ----------
-    prisms : 2d-array
-        Array containing the boundaries of the prisms in the following order:
-        ``w``, ``e``, ``s``, ``n``, ``bottom``, ``top``.
-        The array must have the following shape: (``n_prisms``, 6), where
-        ``n_prisms`` is the total number of prisms.
-    """
-    west, east, south, north, bottom, top = tuple(prisms[:, i] for i in range(6))
-    err_msg = "Invalid prism or prisms. "
-    bad_we = west > east
-    bad_sn = south > north
-    bad_bt = bottom > top
-    if bad_we.any():
-        err_msg += "The west boundary can't be greater than the east one.\n"
-        for prism in prisms[bad_we]:
-            err_msg += f"\tInvalid prism: {prism}\n"
-        raise ValueError(err_msg)
-    if bad_sn.any():
-        err_msg += "The south boundary can't be greater than the north one.\n"
-        for prism in prisms[bad_sn]:
-            err_msg += f"\tInvalid prism: {prism}\n"
-        raise ValueError(err_msg)
-    if bad_bt.any():
-        err_msg += "The bottom boundary can't be greater than the top one.\n"
-        for prism in prisms[bad_bt]:
-            err_msg += f"\tInvalid tesseroid: {prism}\n"
-        raise ValueError(err_msg)
-
-
 def _discard_null_prisms(prisms, density):
     """
     Discard prisms with zero volume or zero density.
@@ -494,7 +461,7 @@ def _discard_null_prisms(prisms, density):
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
         This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
+        Run ``check_prisms`` before.
     density : 1d-array
         Array containing the density of each prism in kg/m^3. Must have the
         same size as the number of prisms.

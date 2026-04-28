@@ -8,9 +8,10 @@
 Test prisms layer.
 """
 
-import warnings
+import re
 from unittest.mock import patch
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -18,7 +19,7 @@ import verde as vd
 import xarray as xr
 
 from harmonica import prism_gravity, prism_layer
-from harmonica._forward.prism_layer import _discard_thin_prisms
+from harmonica._forward.prisms.gravity import FIELDS
 
 try:
     import pyvista
@@ -238,109 +239,8 @@ def test_prism_layer_get_prism_by_index():
             )
 
 
-def test_nonans_prisms_mask(dummy_layer):
-    """
-    Check if the mask for nonans prism is correctly created.
-    """
-    (easting, northing), surface, reference, _ = dummy_layer
-    shape = (northing.size, easting.size)
-
-    # No nan in top nor bottom
-    # ------------------------
-    layer = prism_layer((easting, northing), surface, reference)
-    expected_mask = np.ones(shape, dtype=bool)
-    mask = layer.prism_layer._get_nonans_mask()
-    npt.assert_allclose(mask, expected_mask)
-
-    # Nans in top only
-    # ----------------
-    layer = prism_layer((easting, northing), surface, reference)
-    expected_mask = np.ones(shape, dtype=bool)
-    for index in ((1, 2), (2, 3)):
-        layer.top[index] = np.nan
-        expected_mask[index] = False
-    mask = layer.prism_layer._get_nonans_mask()
-    npt.assert_allclose(mask, expected_mask)
-
-    # Nans in bottom only
-    # -------------------
-    layer = prism_layer((easting, northing), surface, reference)
-    expected_mask = np.ones(shape, dtype=bool)
-    for index in ((2, 1), (3, 2)):
-        layer.bottom[index] = np.nan
-        expected_mask[index] = False
-    mask = layer.prism_layer._get_nonans_mask()
-    npt.assert_allclose(mask, expected_mask)
-
-    # Nans in top and bottom
-    # ----------------------
-    layer = prism_layer((easting, northing), surface, reference)
-    expected_mask = np.ones(shape, dtype=bool)
-    for index in ((1, 2), (2, 3)):
-        layer.top[index] = np.nan
-        expected_mask[index] = False
-    for index in ((1, 2), (2, 1), (3, 2)):
-        layer.bottom[index] = np.nan
-        expected_mask[index] = False
-    mask = layer.prism_layer._get_nonans_mask()
-    npt.assert_allclose(mask, expected_mask)
-
-
-def test_nonans_prisms_mask_property(
-    dummy_layer,
-):
-    """
-    Check if the method masks the property and raises a warning.
-    """
-    (easting, northing), surface, reference, density = dummy_layer
-    shape = (northing.size, easting.size)
-
-    # Nans in top and property (on the same prisms)
-    # ---------------------------------------------
-    expected_mask = np.ones_like(surface, dtype=bool)
-    indices = ((1, 2), (2, 3))
-    # Set some elements of surface and density as nans
-    for index in indices:
-        surface[index] = np.nan
-        density[index] = np.nan
-        expected_mask[index] = False
-    layer = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
-    )
-    # Check if no warning is raised
-    with warnings.catch_warnings(record=True) as warn:
-        mask = layer.prism_layer._get_nonans_mask(property_name="density")
-        assert len(warn) == 0
-    npt.assert_allclose(mask, expected_mask)
-
-    # Nans in top and property (not precisely on the same prisms)
-    # -----------------------------------------------------------
-    surface = np.arange(20, dtype=float).reshape(shape)
-    density = 2670 * np.ones_like(surface)
-    expected_mask = np.ones_like(surface, dtype=bool)
-    # Set some elements of surface as nans
-    indices = ((1, 2), (2, 3))
-    for index in indices:
-        surface[index] = np.nan
-        expected_mask[index] = False
-    # Set a different set of elements of density as nans
-    indices = ((2, 2), (0, 1))
-    for index in indices:
-        density[index] = np.nan
-        expected_mask[index] = False
-    layer = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
-    )
-    # Check if warning is raised
-    with warnings.catch_warnings(record=True) as warn:
-        mask = layer.prism_layer._get_nonans_mask(property_name="density")
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, UserWarning)
-    npt.assert_allclose(mask, expected_mask)
-
-
 @pytest.mark.use_numba
-@pytest.mark.parametrize("field", ["potential", "g_z"])
+@pytest.mark.parametrize("field", FIELDS)
 def test_prism_layer_gravity(field, dummy_layer):
     """
     Check if gravity method works as expected.
@@ -359,6 +259,24 @@ def test_prism_layer_gravity(field, dummy_layer):
     npt.assert_allclose(
         expected_result, layer.prism_layer.gravity(coordinates, field=field)
     )
+
+
+def test_prism_layer_invalid_field(dummy_layer):
+    """
+    Test error after passing invalid field.
+    """
+    coordinates = bd.grid_coordinates(
+        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
+    )
+    (easting, northing), surface, reference, density = dummy_layer
+    layer = prism_layer(
+        (easting, northing), surface, reference, properties={"density": density}
+    )
+
+    invalid_field = "invalid field"
+    msg = re.escape(f"Gravitational field '{invalid_field}' not recognized.")
+    with pytest.raises(ValueError, match=msg):
+        layer.prism_layer.gravity(coordinates, field=invalid_field)
 
 
 @pytest.mark.use_numba
@@ -401,9 +319,9 @@ def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_h
         prisms_coords, surface, reference, properties={"density": density}
     )
     # Check if warning is raised after passing density with nans
-    with warnings.catch_warnings(record=True) as warn:
+    msg = re.escape("Found NaN values in 'density' property of the prisms layer.")
+    with pytest.warns(match=msg):
         result = layer.prism_layer.gravity(coordinates, field=field)
-        assert len(warn) == 1
     # Check if it generates the expected gravity field
     prisms, rho = prism_layer_with_holes
     npt.assert_allclose(
@@ -544,42 +462,3 @@ def test_gravity_discarded_thin_prisms(dummy_layer):
         coordinates, field="g_z", thickness_threshold=5
     )
     npt.assert_allclose(gravity_manually_removed, gravity_threshold_removed)
-
-
-def test_discard_thin_prisms():
-    """
-    Check if thin prisms are properly discarded.
-    """
-    # create set of 4 prisms (west, east, south, north, bottom, top)
-    prism_boundaries = np.array(
-        [
-            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
-            [5000.0, 15000.0, -5000.0, 5000.0, 0.0, 55.01],
-            [-5000.0, 5000.0, 5000.0, 15000.0, 0.0, 35.0],
-            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
-        ]
-    )
-
-    # assign densities to each prism
-    densities = np.array([2306, 2122, 2190, 2069])
-
-    # drop prisms and respective densities thinner than 55.05
-    # (2nd and 3rd prisms)
-    thick_prisms, thick_densities = _discard_thin_prisms(
-        prism_boundaries,
-        densities,
-        thickness_threshold=55.05,
-    )
-
-    # manually remove prisms and densities of thin prisms
-    expected_prisms = np.array(
-        [
-            [-5000.0, 5000.0, -5000.0, 5000.0, 0.0, 55.1],
-            [5000.0, 15000.0, 5000.0, 15000.0, 0.0, 84.0],
-        ]
-    )
-    expected_densities = np.array([2306, 2069])
-
-    # check the correct prisms and densities were discarded
-    npt.assert_allclose(expected_prisms, thick_prisms)
-    npt.assert_allclose(expected_densities, thick_densities)
