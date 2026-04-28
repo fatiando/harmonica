@@ -14,9 +14,9 @@ import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
+import verde as vd
 import xarray as xr
 import xarray.testing as xrt
-from verde import make_xarray_grid
 
 from harmonica.filters._fft import fft, ifft
 from harmonica.filters._filters import (
@@ -50,7 +50,7 @@ def fixture_sample_grid(region):
     """
     easting, northing = bd.grid_coordinates(region, spacing=500)
     data = np.sin(easting / 1e3) + np.cos(northing / 1e3)
-    return make_xarray_grid((easting, northing), data, data_names="sample").sample
+    return vd.make_xarray_grid((easting, northing), data, data_names="sample").sample
 
 
 @pytest.fixture(name="sample_grid_multiple_coords")
@@ -117,7 +117,7 @@ def fixture_sample_fft_grid():
     domain = (-9e-4, 9e-4, -8e-4, 8e-4)
     freq_easting, freq_northing = bd.grid_coordinates(region=domain, spacing=8e-4)
     dummy_fft = np.ones_like(freq_easting)
-    fft_grid = make_xarray_grid(
+    fft_grid = vd.make_xarray_grid(
         (freq_easting, freq_northing),
         dummy_fft,
         data_names=["sample_fft"],

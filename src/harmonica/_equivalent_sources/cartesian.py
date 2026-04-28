@@ -14,10 +14,10 @@ import warnings
 
 import bordado as bd
 import numpy as np
+import verde as vd
 import verde.base as vdb
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
-from verde import BlockReduce, median_distance
 
 from .._forward.utils import distance_cartesian
 from .utils import (
@@ -269,7 +269,9 @@ class EquivalentSources(vdb.BaseGridder):
         if self.block_size is not None:
             coordinates = self._block_average_coordinates(coordinates)
         if self.depth == "default":
-            self.depth_ = 4.5 * np.mean(bd.neighbor_distance_statistics(coordinates[:2], "median", k=1))
+            self.depth_ = 4.5 * np.mean(
+                bd.neighbor_distance_statistics(coordinates[:2], "median", k=1)
+            )
         else:
             self.depth_ = self.depth
         return (
@@ -297,7 +299,7 @@ class EquivalentSources(vdb.BaseGridder):
             Tuple containing the coordinates of the block-averaged observation
             points.
         """
-        reducer = BlockReduce(
+        reducer = vd.BlockReduce(
             spacing=self.block_size, reduction=np.median, drop_coords=False
         )
         # Must pass a dummy data array to BlockReduce.filter(), we choose an

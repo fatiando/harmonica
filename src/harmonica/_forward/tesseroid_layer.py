@@ -11,8 +11,8 @@ Define a layer of tesseroids.
 import warnings
 
 import numpy as np
+import verde as vd
 import xarray as xr
-from verde import make_xarray_grid
 
 from .tesseroid_gravity import tesseroid_gravity
 
@@ -131,7 +131,7 @@ def tesseroid_layer(coordinates, surface, reference, properties=None):
         data_names = tuple(p for p in properties)
         data = tuple(np.asarray(p) for p in properties.values())
     # Create xr.Dataset for tesseroids
-    tesseroids = make_xarray_grid(
+    tesseroids = vd.make_xarray_grid(
         coordinates, data=data, data_names=data_names, dims=dims
     )
     _check_regular_grid(tesseroids.longitude.values, tesseroids.latitude.values)

@@ -16,7 +16,7 @@ import boule
 import numba
 import numpy as np
 import pooch
-from verde import make_xarray_grid
+import verde as vd
 
 from .._utils import get_harmonica_cache
 from .._version import __version__
@@ -471,7 +471,7 @@ class IGRF14:
         b_east, b_north, b_up = vector_spherical_to_geodetic(
             latitude, latitude_sph, (b_east, b_north_sph, b_radial)
         )
-        grid = make_xarray_grid(
+        grid = vd.make_xarray_grid(
             (longitude, latitude, height),
             (b_east, b_north, b_up),
             data_names=("b_east", "b_north", "b_up"),

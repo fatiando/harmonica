@@ -12,9 +12,9 @@ from __future__ import annotations
 
 import warnings
 
+import bordado as bd
 import numpy as np
 import verde.base as vdb
-from bordado import get_region, rolling_window
 from sklearn import utils
 
 from .cartesian import EquivalentSources
@@ -219,7 +219,7 @@ class EquivalentSourcesGB(EquivalentSources):
             coordinates, data, weights, self.dtype
         )
         # Capture the data region to use as a default when gridding.
-        self.region_ = get_region(coordinates[:2])
+        self.region_ = bd.get_region(coordinates[:2])
         # Ravel coordinates, data and weights to 1d-arrays
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         data = np.ravel(data)
@@ -353,8 +353,8 @@ class EquivalentSourcesGB(EquivalentSources):
             "window_size": self.window_size_,
             "overlap": self.overlapping,
         }
-        _, source_windows = rolling_window(self.points_[:2], **kwargs)
-        _, data_windows = rolling_window(coordinates[:2], **kwargs)
+        _, source_windows = bd.rolling_window(self.points_[:2], **kwargs)
+        _, data_windows = bd.rolling_window(coordinates[:2], **kwargs)
         # Ravel the indices
         source_windows = [i[0] for i in source_windows.ravel()]
         data_windows = [i[0] for i in data_windows.ravel()]
@@ -386,8 +386,8 @@ def _get_region_data_sources(coordinates, points):
     -------
     region : tuple
     """
-    data_region = get_region(coordinates)
-    sources_region = get_region(points)
+    data_region = bd.get_region(coordinates)
+    sources_region = bd.get_region(points)
     region = (
         min(data_region[0], sources_region[0]),
         max(data_region[1], sources_region[1]),
