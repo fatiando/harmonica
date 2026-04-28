@@ -48,27 +48,37 @@ def fft(grid, *, prefix="freq_"):
         )
         raise ValueError(msg)
 
-    # Get dimensional coordinates and coordinates' shifts
+    # Get dimensional coordinates, spacings, and coordinates' shifts
     dimensional_coords = tuple(
         _get_dimensional_coordinate(grid, dim) for dim in grid.dims
     )
+    spacings = tuple(_get_spacing(grid.coords[coord]) for coord in dimensional_coords)
     shifts = tuple(grid.coords[coord].values.min() for coord in dimensional_coords)
 
     # Generate new coordinates
-    fft_dims = tuple(f"{prefix}{dim}" for dim in grid.dims)
-    fft_coords = {
-        f"{prefix}{coord}": (dim, _fftfreq(grid.coords[coord]))
-        for coord, dim in zip(dimensional_coords, fft_dims, strict=True)
-    }
+    freqs = tuple(
+        _fftfreq(grid.coords[coord], spacing)
+        for coord, spacing in zip(dimensional_coords, spacings, strict=True)
+    )
 
     # Compute FFT
     fft = np.fft.fftshift(np.fft.fftn(grid.values))
 
-    # Build new xr.DataArray
-    da_fft = xr.DataArray(fft, dims=fft_dims, coords=fft_coords)
+    # Account for true amplitude and true phase
+    freqs_2d = np.meshgrid(freqs[1], freqs[0])
+    for freq, shift, spacing in zip(freqs_2d, shifts, spacings, strict=True):
+        fft *= np.exp(-2 * 1j * np.pi * freq * shift) * spacing
+
+    # Build the FFT xr.DataArray
+    dims = tuple(f"{prefix}{dim}" for dim in grid.dims)
+    coords = {
+        f"{prefix}{coord}": (dim, freq)
+        for coord, dim, freq in zip(dimensional_coords, dims, freqs, strict=True)
+    }
+    da_fft = xr.DataArray(fft, dims=dims, coords=coords)
 
     # Add shifts to frequency coordinates
-    for coord, shift in zip(fft_coords, shifts, strict=True):
+    for coord, shift in zip(coords, shifts, strict=True):
         da_fft.coords[coord].attrs.update({"shift": shift})
     return da_fft
 
@@ -134,17 +144,30 @@ def ifft(fft_grid, *, prefix="freq_"):
             raise ValueError(msg)
 
     # Generate new coordinates
-    dims = tuple(dim.removeprefix(prefix) for dim in fft_grid.dims)
+    coords = tuple(
+        _ifftfreq(fft_grid.coords[coord]) for coord in dimensional_fft_coords
+    )
 
-    coords = {
-        coord.removeprefix(prefix): (dim, _ifftfreq(fft_grid.coords[coord]))
-        for coord, dim in zip(dimensional_fft_coords, dims, strict=True)
-    }
+    # Account for true amplitude and true phase
+    freqs = tuple(fft_grid.coords[coord].values for coord in dimensional_fft_coords)
+    freqs_2d = np.meshgrid(freqs[1], freqs[0])
+    fft_grid = fft_grid.copy()
+    for coord, freq in zip(coords, freqs_2d, strict=True):
+        shift = coord[0]
+        spacing = coord[1] - coord[0]
+        fft_grid *= np.exp(2 * 1j * np.pi * freq * shift) / spacing
 
     # Compute iFFT
     ifft = np.fft.ifftn(np.fft.ifftshift(fft_grid.values))
 
     # Build new xr.DataArray
+    dims = tuple(dim.removeprefix(prefix) for dim in fft_grid.dims)
+    coords = {
+        coord.removeprefix(prefix): (dim, coordinate_array)
+        for coord, dim, coordinate_array in zip(
+            dimensional_fft_coords, dims, coords, strict=True
+        )
+    }
     da = xr.DataArray(ifft, dims=dims, coords=coords)
 
     return da
@@ -210,17 +233,18 @@ def _get_dimensional_coordinate(grid: xr.DataArray, dim: str) -> str:
     return dimensional_coordinate
 
 
-def _fftfreq(coordinate: xr.DataArray) -> npt.NDArray:
+def _fftfreq(coordinate: xr.DataArray, spacing: float | None = None) -> npt.NDArray:
     """
     Get coordinate into the frequency domain.
     """
     if coordinate.ndim != 1:
         raise ValueError()
-    spacing = _get_spacing(coordinate)
+    if spacing is None:
+        spacing = _get_spacing(coordinate)
     return np.fft.fftshift(np.fft.fftfreq(coordinate.size, spacing))
 
 
-def _ifftfreq(freq: xr.DataArray) -> npt.NDArray:
+def _ifftfreq(freq: xr.DataArray, spacing: float | None = None) -> npt.NDArray:
     """
     Recover coordinate in the space domain from the frequency domain.
 
@@ -229,7 +253,8 @@ def _ifftfreq(freq: xr.DataArray) -> npt.NDArray:
     """
     if freq.ndim != 1:
         raise ValueError()
-    spacing = _get_spacing(freq)
+    if spacing is None:
+        spacing = _get_spacing(freq)
     coordinate = np.fft.fftshift(np.fft.fftfreq(freq.size, spacing))
 
     # Apply static shift if any
