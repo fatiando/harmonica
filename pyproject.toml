@@ -37,7 +37,6 @@ dependencies = [
     "numba >= 0.57",
     "xarray >= 2022.03",
     "verde >= 1.8.1",
-    "xrft >= 1.0",
     "choclo >= 0.1",
     "boule >= 0.6.0"
 ]

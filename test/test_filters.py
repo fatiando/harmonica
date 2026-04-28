@@ -142,7 +142,7 @@ def fixture_invalid_grid_with_nans(sample_grid):
 
 def test_fft_round_trip(sample_grid):
     """
-    Test if the wrapped fft and ifft functions satisfy a round trip.
+    Test if the fft and ifft functions satisfy a round trip.
     """
     xrt.assert_allclose(sample_grid, ifft(fft(sample_grid)))
 
