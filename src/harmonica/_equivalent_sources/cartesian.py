@@ -269,7 +269,7 @@ class EquivalentSources(vdb.BaseGridder):
         if self.block_size is not None:
             coordinates = self._block_average_coordinates(coordinates)
         if self.depth == "default":
-            self.depth_ = 4.5 * np.mean(median_distance(coordinates, k_nearest=1))
+            self.depth_ = 4.5 * np.mean(bd.neighbor_distance_statistics(coordinates[:2], "median", k=1))
         else:
             self.depth_ = self.depth
         return (
