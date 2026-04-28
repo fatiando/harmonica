@@ -74,6 +74,8 @@ Required:
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+* `bordado <http://www.fatiando.org/bordado/>`__
+* `boule <http://www.fatiando.org/boule/>`__
 * `xrft <https://xrft.readthedocs.io/>`__
 
 Optional:
