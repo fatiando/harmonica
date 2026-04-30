@@ -133,7 +133,7 @@ And plot it:
    import pygmt
 
    # Get max absolute value for the observed gravity disturbance
-   maxabs = vd.maxabs(data.gravity_disturbance_mgal)
+   maxabs = vd.maxabs(disturbance, data.gravity_disturbance_mgal)
 
    # Set figure properties
    w, e, s, n = region
@@ -143,7 +143,7 @@ And plot it:
    fig_proj = f"x1:{fig_ratio}"
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
    title="Predicted gravity disturbance"
    with pygmt.config(FONT_TITLE="14p"):
       fig.plot(
@@ -156,7 +156,6 @@ And plot it:
          region=region,
          frame=['ag', f"+t{title}"],
       )
-   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
 
    fig.shift_origin(yshift=fig_height + 2)
 
@@ -170,7 +169,7 @@ And plot it:
          style="c3p",
          frame=['ag', f"+t{title}"],
       )
-   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
+   fig.colorbar(cmap=True, position=f"JMR+o1c/{-(fig_height+2)/2}+w12c/.5c+e", frame=["a50f25", "y+lmGal"])
 
    fig.show()
 
@@ -212,7 +211,7 @@ And plot it
       projection=fig_proj,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
 
    fig.show()
 

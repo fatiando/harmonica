@@ -122,10 +122,10 @@ We can now compute the Bouguer disturbance and plot it:
 
 .. jupyter-execute::
 
-   maxabs = vd.maxabs(bouguer_disturbance)
+   maxabs = vd.maxabs(bouguer_disturbance, percentile=98)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -135,7 +135,11 @@ We can now compute the Bouguer disturbance and plot it:
       projection="M15c",
       frame=['ag', 'WSen'],
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"])
+   fig.colorbar(
+      cmap=True,
+      frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"],
+      position="+e",
+   )
    fig.show()
 
 
@@ -256,6 +260,33 @@ And plot it:
       frame=['ag', 'WSen'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
+   fig.show()
+
+Compare the Bouguer and Topography-free disturbances
+----------------------------------------------------
+
+.. jupyter-execute::
+
+   difference = topo_free_disturbance-bouguer_disturbance
+
+   maxabs = vd.maxabs(difference, percentile=99)
+
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      fill=difference,
+      cmap=True,
+      style="c3p",
+      projection="M15c",
+      frame=['ag', 'WSen'],
+   )
+   fig.colorbar(
+      cmap=True,
+      frame=["af", "x+lDifference between Bouguer and Topography-free disturbances", "y+lmGal"],
+      position="+e",
+   )
    fig.show()
 
 ----

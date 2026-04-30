@@ -216,7 +216,7 @@ Lets plot it:
    fig = pygmt.Figure()
 
    # Make colormap of data
-   pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs,))
+   pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs), background=True)
 
    title = "Gravity disturbance with first guess"
 
@@ -227,7 +227,6 @@ Lets plot it:
       grid=grid_first_guess.scalars,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
    fig.shift_origin(xshift=fig_width + 1)
 
@@ -238,7 +237,11 @@ Lets plot it:
       grid=grid.scalars,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+   fig.colorbar(
+      cmap=True,
+      frame=["a50f25", "x+lmGal"],
+      position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+   )
 
    fig.show()
 

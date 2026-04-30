@@ -104,58 +104,24 @@ We can reshape the results into variables of an dataset:
    )
 
 .. jupyter-execute::
-   :hide-code:
 
-    import pygmt
+   import matplotlib.pyplot as plt
 
-    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
-    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
-    # for sphinx-gallery to work means that fig.show won't display anything here
-    # either.
-    pygmt.set_display(method="notebook")
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-
-.. jupyter-execute::
-
-   import pygmt
-
-   fig = pygmt.Figure()
-
-   maxabs = vd.maxabs(grid.b_e)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_e,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tEasting component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.b_n)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_n,
-      projection="X10c",
-      cmap=True,
-      frame=["wSne+tNorthing component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.b_u)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_u,
-      projection="X10c",
-      cmap=True,
-      frame=["wSnE+tUpward component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.show()
+   maxabs = vd.maxabs(*[grid[v] for v in grid.variables], percentile=99)
+   for field, ax in zip(grid.variables, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
+      ax.set_aspect("equal")
+      ax.set_title(field)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
+   plt.show()
 
 ----
 

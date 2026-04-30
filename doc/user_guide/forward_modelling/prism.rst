@@ -105,152 +105,71 @@ We can reshape the results into variables of an dataset:
 Plot the results:
 
 .. jupyter-execute::
-   :hide-code:
 
-    import pygmt
+   import matplotlib.pyplot as plt
 
-    # Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
-    # the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
-    # for sphinx-gallery to work means that fig.show won't display anything here
-    # either.
-    pygmt.set_display(method="notebook")
-
-.. jupyter-execute::
-
-   import pygmt
-
-   fig = pygmt.Figure()
-
-   fig.grdimage(
-      projection="X10c",
-      grid=grid.potential,
-      frame=["a", "x+leasting (m)", "y+lnorthing (m)"],
-      cmap="viridis",
-   )
-
-   fig.colorbar(cmap=True, position="JMR", frame=["x+lJ kg@+-1@+"])
-   fig.show()
+   grid.potential.plot(cbar_kwargs={"label":"J/kg"})
+   plt.gca().set_aspect("equal")
+   plt.show()
 
 
 .. jupyter-execute::
 
-   fig = pygmt.Figure()
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-   maxabs = vd.maxabs(grid.g_e)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_e,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tEasting component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_n)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_n,
-      projection="X10c",
-      cmap=True,
-      frame=["wSne+tNorthing component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_z)
-   pygmt.makecpt(cmap="balance+h0", series=[0, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_z,
-      projection="X10c",
-      cmap=True,
-      frame=["wSnE+tDownward component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.show()
+   fields = ["g_e", "g_n", "g_z"]
+   maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+   for field, ax in zip(fields, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
+      ax.set_aspect("equal")
+      ax.set_title(field)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="mGal", fraction=.03, pad=0.08)
+   plt.show()
 
 .. jupyter-execute::
 
-   fig = pygmt.Figure()
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-   maxabs = vd.maxabs(grid.g_ee)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_ee,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tEasting-easting tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
+   fields = ["g_ee", "g_nn", "g_zz"]
+   maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+   for field, ax in zip(fields, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
+      ax.set_aspect("equal")
+      ax.set_title(field)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="Eotvos", fraction=.03, pad=0.08)
+   plt.show()
 
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_nn)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_nn,
-      projection="X10c",
-      cmap=True,
-      frame=["wSne+tNorthing-northing tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_zz)
-   pygmt.makecpt(cmap="balance+h0", series=[0, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_zz,
-      projection="X10c",
-      cmap=True,
-      frame=["wSnE+tDownward-downward tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
-
-   fig.show()
 
 .. jupyter-execute::
 
-   fig = pygmt.Figure()
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-   maxabs = vd.maxabs(grid.g_en)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_en,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tEasting-northing tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_ez)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_ez,
-      projection="X10c",
-      cmap=True,
-      frame=["wSne+tEasting-downward tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.g_nz)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.g_nz,
-      projection="X10c",
-      cmap=True,
-      frame=["wSnE+tNorthing-downward tensor", "xa","ya"],
-   )
-   fig.colorbar(frame='+lEotvos')
-
-   fig.show()
+   fields = ["g_en", "g_ez", "g_nz"]
+   maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+   for field, ax in zip(fields, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
+      ax.set_aspect("equal")
+      ax.set_title(field)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="Eotvos", fraction=.03, pad=0.08)
+   plt.show()
 
 
 Passing multiple prisms
@@ -277,8 +196,6 @@ height:
 
 .. jupyter-execute::
 
-   import verde as vd
-
    coordinates = vd.grid_coordinates(
        region=(0, 10e3, 0, 10e3), shape=(40, 40), extra_coords=0
    )
@@ -302,15 +219,7 @@ Lets plot this gravitational field:
 
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
-   fig = pygmt.Figure()
-   fig.grdimage(
-      region=(0, 10e3, 0, 10e3),
-      projection="X10c",
-      grid=grid.g_z,
-      frame=["WSne", "x+leasting (m)", "y+lnorthing (m)"],
-      cmap='viridis',)
-   fig.colorbar(cmap=True, position="JMR", frame=["a2", "x+lmGal"])
-   fig.show()
+   grid.g_z.plot(cbar_kwargs={"label":"mGal"})
 
 
 Magnetic fields
@@ -373,43 +282,26 @@ We can reshape the results into variables of an dataset:
 
 .. jupyter-execute::
 
-   fig = pygmt.Figure()
+   fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-   maxabs = vd.maxabs(grid.b_e)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_e,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tEasting component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.b_n)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_n,
-      projection="X10c",
-      cmap=True,
-      frame=["wSne+tNorthing component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.shift_origin(xshift="11c")
-
-   maxabs = vd.maxabs(grid.b_u)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_u,
-      projection="X10c",
-      cmap=True,
-      frame=["wSnE+tUpward component", "xa","ya"],
-   )
-   fig.colorbar(frame='+lnT')
-
-   fig.show()
+   maxabs = vd.maxabs(*[grid[v] for v in grid.variables], percentile=99)
+   for field, ax in zip(grid.variables, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
+      grid[field].plot.contour(
+         ax=ax,
+         colors="k",
+         linewidths=0.5,
+      )
+      ax.set_aspect("equal")
+      ax.set_title(field)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
+   plt.show()
 
 
 Alternatively, we can compute just a single component by choosing ``field`` to
@@ -435,22 +327,16 @@ generated by these two prisms:
 
 .. jupyter-execute::
 
-   fig = pygmt.Figure()
+   maxabs = vd.maxabs(b_u)
 
-   grid = vd.make_xarray_grid(
-      coordinates, b_u, data_names="b_u", extra_coords_names="extra")
-
-   maxabs = vd.maxabs(grid.b_u)
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
-   fig.grdimage(
-      grid=grid.b_u,
-      projection="X10c",
-      cmap=True,
-      frame=["WSne+tUpward component", "xa","ya"],
+   tmp = plt.pcolormesh(
+      coordinates[0], coordinates[1], b_u, vmin=-maxabs, vmax=maxabs, cmap="RdBu_r"
    )
-   fig.colorbar(frame='+lnT')
-
-   fig.show()
+   plt.contour(coordinates[0], coordinates[1], b_u, colors="k", linewidths=0.5)
+   plt.title("Bu")
+   plt.gca().set_aspect("equal")
+   plt.colorbar(tmp, label="nT", pad=0.03, shrink=0.8)
+   plt.show()
 
 
 .. _prism_layer:
@@ -538,16 +424,8 @@ Finally, let's plot the gravitational field:
    grid = vd.make_xarray_grid(
       coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
-   fig = pygmt.Figure()
-   title = "Gravitational acceleration of a layer of prisms"
-   fig.grdimage(
-      region=region_pad,
-      projection="X10c",
-      grid=grid.gravity,
-      frame=[f"WSne+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
-      cmap='viridis',)
-   fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
-   fig.show()
+   grid.gravity.plot(cbar_kwargs={"label":"mGal"})
+
 
 ----
 
