@@ -132,7 +132,7 @@ And finally plot the computed gravitational field
 
    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
    fig.coast(shorelines="1p,black")
-   
+
    # Plot edges of tesseroid
    fig.plot(
       x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],

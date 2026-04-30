@@ -168,12 +168,16 @@ And plot it:
     fig_ratio = (n - s) / (fig_height / 100)
     fig_proj = f"x1:{fig_ratio}"
 
-    maxabs = vd.maxabs(disturbance, grid_masked.gravity_disturbance)
+    maxabs = vd.maxabs(disturbance, grid_masked.gravity_disturbance, percentile=99)
 
     fig = pygmt.Figure()
 
     # Make colormap of data
-    pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+    pygmt.makecpt(
+        cmap="balance+h0",
+        series=(-maxabs, maxabs),
+        background=True,
+    )
 
     title = "Observed gravity disturbance data"
     with pygmt.config(FONT_TITLE="14p"):
@@ -187,7 +191,6 @@ And plot it:
             style="c0.1c",
             cmap=True,
         )
-    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
     fig.shift_origin(xshift=fig_width + 1)
 
@@ -199,7 +202,11 @@ And plot it:
             cmap=True,
         )
 
-    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+    fig.colorbar(
+      cmap=True,
+      frame=["a50f25", "x+lmGal"],
+      position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+    )
 
     fig.show()
 
