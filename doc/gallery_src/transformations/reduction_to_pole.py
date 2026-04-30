@@ -49,11 +49,6 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
         fig.grdimage(
             grid=magnetic_grid, projection="X?", cmap=True, frame="+tMagnetic anomaly"
         )
-        # Add colorbar
-        fig.colorbar(
-            frame="af+lnT",
-            position="JBC+h+o0/1c+ef",
-        )
     with fig.set_panel(panel=1):
         # Plot upward reduced to the pole grid
         fig.grdimage(
@@ -62,9 +57,11 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             cmap=True,
             frame="+tReduced to the pole",
         )
-        # Add colorbar
-        fig.colorbar(
-            frame="af+lnT",
-            position="JBC+h+o0/1c+ef",
-        )
+    # Add colorbar
+    fig.colorbar(
+        cmap=True,
+        frame=["a1000f500", "x+lnT"],
+        position=f"n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
+    )
+
 fig.show()

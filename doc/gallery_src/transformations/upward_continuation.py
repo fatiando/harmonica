@@ -42,11 +42,6 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             cmap=True,
             frame="+tMagnetic Anomaly at 500m",
         )
-        # Add colorbar
-        fig.colorbar(
-            frame="af+lnT",
-            position="JBC+h+o0/1c+e",
-        )
     with fig.set_panel(panel=1):
         # Plot upward continued grid
         fig.grdimage(
@@ -55,9 +50,11 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             frame="+tUpward continued to 1000m",
             cmap=True,
         )
-        # Add colorbar
-        fig.colorbar(
-            frame="af+lnT",
-            position="JBC+h+o0/1c",
-        )
+    # Add colorbar
+    fig.colorbar(
+        cmap=True,
+        frame=["a1000f500", "x+lnT"],
+        position=f"n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
+    )
+
 fig.show()
