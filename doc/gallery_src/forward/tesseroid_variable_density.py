@@ -91,10 +91,7 @@ with pygmt.config(FONT_TITLE="16p"):
 
 # Plot edges of tesseroids
 for i, tesseroid in enumerate(tesseroids):
-    if i == 0:
-        label="Tesseroid boundaries"
-    else:
-        label=None
+    label = "Tesseroid boundaries" if i == 0 else None
     fig.plot(
         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],

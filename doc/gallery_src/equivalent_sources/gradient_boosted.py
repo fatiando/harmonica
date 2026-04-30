@@ -31,7 +31,6 @@ to use them on a small example.
 
 import boule as bl
 import ensaio
-import numpy as np
 import pandas as pd
 import pygmt
 import pyproj
@@ -151,7 +150,7 @@ with pygmt.config(FONT_TITLE="14p"):
 fig.colorbar(
     cmap=True,
     frame=["x+lmGal"],
-    position=f"n0/0+jTC+w10c/0.5c+h+o-0.5c/0.9c",
+    position="n0/0+jTC+w10c/0.5c+h+o-0.5c/0.9c",
 )
 
 fig.show()

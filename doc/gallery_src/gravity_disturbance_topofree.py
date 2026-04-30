@@ -28,10 +28,9 @@ correction.
 
 import boule as bl
 import ensaio
-import numpy as np
 import pygmt
-import xarray as xr
 import verde as vd
+import xarray as xr
 
 import harmonica as hm
 

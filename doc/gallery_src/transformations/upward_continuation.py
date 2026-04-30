@@ -54,7 +54,7 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     fig.colorbar(
         cmap=True,
         frame=["a1000f500", "x+lnT"],
-        position=f"n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
+        position="n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
     )
 
 fig.show()

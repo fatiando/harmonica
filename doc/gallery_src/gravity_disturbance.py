@@ -18,10 +18,9 @@ data.
 
 import boule as bl
 import ensaio
-import numpy as np
 import pygmt
-import xarray as xr
 import verde as vd
+import xarray as xr
 
 # Load the global gravity grid
 fname = ensaio.fetch_earth_gravity(version=1)

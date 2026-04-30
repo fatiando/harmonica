@@ -41,7 +41,6 @@ The depth of the sources can be set through the ``depth`` parameter.
 """
 
 import ensaio
-import numpy as np
 import pandas as pd
 import pygmt
 import pyproj
@@ -141,8 +140,8 @@ with pygmt.config(FONT_TITLE="12p"):
 
 fig.colorbar(
     cmap=True,
-    frame=["a400f100","x+lnT"],
-    position=f"n0/0+jTC+w8c/0.25c+h+o-0.5c/0.8c",
+    frame=["a400f100", "x+lnT"],
+    position="n0/0+jTC+w8c/0.25c+h+o-0.5c/0.8c",
 )
 
 fig.show()

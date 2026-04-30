@@ -28,8 +28,8 @@ isostatic Moho depth of Africa.
 import ensaio
 import numpy as np
 import pygmt
-import xarray as xr
 import verde as vd
+import xarray as xr
 
 import harmonica as hm
 
