@@ -31,6 +31,7 @@ import ensaio
 import numpy as np
 import pygmt
 import xarray as xr
+import verde as vd
 
 import harmonica as hm
 
@@ -64,10 +65,10 @@ disturbance_topofree = disturbance - bouguer
 fig = pygmt.Figure()
 
 # Get the 99th percentile of the absolute value to use as color scale limits
-cpt_lims = np.quantile(np.abs(disturbance_topofree), 0.99)
+maxabs = vd.maxabs(disturbance_topofree, percentile=99)
 
 # Make colormap of data
-pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims], background=True)
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 title = "Topography-free (Bouguer) gravity disturbance of the Earth"
 

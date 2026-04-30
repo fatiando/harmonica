@@ -32,8 +32,8 @@ fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     with fig.set_panel(panel=0):
         # Make colormap of data
-        cpt_lim = vd.maxabs(magnetic_grid) * 0.6
-        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
+        maxabs = vd.maxabs(magnetic_grid, percentile=99)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
@@ -47,9 +47,9 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
             position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
-        # Make colormap for upward derivative (saturate it a little bit)
-        cpt_lim = vd.maxabs(deriv_upward) * 0.6
-        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
+        # Make colormap for upward derivative
+        maxabs = vd.maxabs(deriv_upward, percentile=99)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot upward derivative
         fig.grdimage(
             grid=deriv_upward,

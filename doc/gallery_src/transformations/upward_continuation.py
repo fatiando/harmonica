@@ -32,7 +32,7 @@ print("\nUpward continued magnetic grid:\n", upward_continued)
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     # Make colormap based on original data
-    cpt_lim = vd.maxabs(magnetic_grid) * 0.6
+    cpt_lim = vd.maxabs(magnetic_grid, percentile=99.9)
     pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid

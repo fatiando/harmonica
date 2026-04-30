@@ -31,8 +31,8 @@ fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     with fig.set_panel(panel=0):
         # Make colormap of data
-        cpt_lim = vd.maxabs(magnetic_grid)
-        pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
+        maxabs = vd.maxabs(magnetic_grid, percentile=99.9)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
@@ -43,12 +43,12 @@ with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
         # Add colorbar
         fig.colorbar(
             frame="af+lnT",
-            position="JBC+h+o0/1c",
+            position="JBC+h+o0/1c+e",
         )
     with fig.set_panel(panel=1):
         # Make colormap for total gradient amplitude (saturate it a little bit)
-        cpt_lim = 0.6 * vd.maxabs(tga)
-        pygmt.makecpt(cmap="balance+h0", series=[0, cpt_lim], background=True)
+        maxabs = vd.maxabs(tga, percentile=99.9)
+        pygmt.makecpt(cmap="balance+h0", series=[0, maxabs], background=True)
         # Plot total gradient amplitude
         fig.grdimage(
             grid=tga,

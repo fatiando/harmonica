@@ -42,7 +42,7 @@ print("\nReduced to the pole magnetic grid:\n", rtp_grid)
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
     # Make colormap for both plots
-    cpt_lim = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
+    cpt_lim = vd.maxabs(magnetic_grid, rtp_grid, percentile=99.9)
     pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid

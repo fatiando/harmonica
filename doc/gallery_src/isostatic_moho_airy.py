@@ -29,6 +29,7 @@ import ensaio
 import numpy as np
 import pygmt
 import xarray as xr
+import verde as vd
 
 import harmonica as hm
 
@@ -59,8 +60,11 @@ print(moho)
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
+# Get the min and max values to use as color scale limits
+cpt_lims = vd.minmax(moho)
+
 # Make colormap of data
-pygmt.makecpt(cmap="viridis", series=[moho.to_numpy().min(), moho.to_numpy().max()])
+pygmt.makecpt(cmap="viridis", series=cpt_lims)
 
 title = "Airy isostatic Moho depth of Africa"
 

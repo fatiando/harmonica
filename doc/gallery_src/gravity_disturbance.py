@@ -21,6 +21,7 @@ import ensaio
 import numpy as np
 import pygmt
 import xarray as xr
+import verde as vd
 
 # Load the global gravity grid
 fname = ensaio.fetch_earth_gravity(version=1)
@@ -38,10 +39,10 @@ disturbance = data.gravity - gamma
 fig = pygmt.Figure()
 
 # Get the 99.9th percentile of the absolute value to use as color scale limits
-cpt_lims = np.quantile(np.abs(disturbance), 0.999)
+maxabs = vd.maxabs(disturbance, percentile=99.9)
 
 # Make colormap of data
-pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims], background=True)
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 title = "Gravity disturbance of the Earth"
 
