@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -216,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -228,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -252,23 +254,30 @@
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -514,36 +523,54 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="harmonica.tesseroid_layer">
 <span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">tesseroid_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/tesseroid_layer.html#tesseroid_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.tesseroid_layer" title="Link to this definition">#</a></dt>
-<dd><p>Create a layer of tesseroids of equal size</p>
+<dd><p>Create a layer of tesseroids of equal size.</p>
+<p>Build a regular grid of tesseroids (spherical prisms) with variable top and bottom
+boundaries and properties like density, magnetization, etc. The function returns a
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> containing <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bottom</span></code> coordinates, and all physical properties as <code class="docutils literal notranslate"><span class="pre">data_var</span></code> s. The
+<code class="docutils literal notranslate"><span class="pre">longitude</span></code> and <code class="docutils literal notranslate"><span class="pre">latitude</span></code> coordinates correspond to the location of the center
+of each tesseroid.</p>
+<p>Unlike the <a class="reference internal" href="harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.prism_layer</span></code></a>, the top and bottom boundaries of
+tesseroids, provided via <cite>surface</cite> and <cite>reference</cite>, are not heights relative to a
+reference level (e.g., sea level). Instead, they are radii from the center of the
+body (ellipsoid or sphere) to the top and bottom boundaries of the tesseroids. To
+convert top and bottom boundaries from heights to radii, you can use the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.geocentric_radius</span></code> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> to calculate the radius
+based on the latitude, and add these values to your height values.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">tesseroid_layer</span></code> dataset accessor can be used to access special methods
+and attributes for the layer of tesseroids, like the horizontal dimensions of
+the tesseroids, getting the boundaries of each tesseroids, etc.
+See <a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetAccessorTesseroidLayer</span></code></a> for the definition of these methods
+and attributes.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>List containing the coordinates of the centers of the tesseroids in
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>List containing the coordinates of the centers of the tesseroids in
 spherical coordinates in the following order <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and
-<code class="docutils literal notranslate"><span class="pre">latitude</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">latitude</span></code>. All coordinates should be in degrees.</p>
 </dd>
-<dt><strong>surface</strong><span class="classifier">2d-array</span></dt><dd><p>Array used to create the uppermost boundary of the tesserois layer. All
-radii should be in meters. On every point where <code class="docutils literal notranslate"><span class="pre">surface</span></code> is below
-<code class="docutils literal notranslate"><span class="pre">reference</span></code>, the <code class="docutils literal notranslate"><span class="pre">surface</span></code> value will be used to set the <code class="docutils literal notranslate"><span class="pre">bottom</span></code>
+<dt><strong>surface</strong><span class="classifier">2d-array</span></dt><dd><p>Array used to create the uppermost boundary of the tesseroids layer. Values
+should be radii (not heights) in meters. On every point where <code class="docutils literal notranslate"><span class="pre">surface</span></code> is
+below <code class="docutils literal notranslate"><span class="pre">reference</span></code>, the <code class="docutils literal notranslate"><span class="pre">surface</span></code> value will be used to set the <code class="docutils literal notranslate"><span class="pre">bottom</span></code>
 boundary of that tesseroid, while the <code class="docutils literal notranslate"><span class="pre">reference</span></code> value will be used
 to set the <code class="docutils literal notranslate"><span class="pre">top</span></code> boundary of the tesseroid.</p>
 </dd>
-<dt><strong>reference</strong><span class="classifier">2d-array or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Reference surface used to create the lowermost boundary of the
+<dt><strong>reference</strong><span class="classifier">2d-array or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Reference surface used to create the lowermost boundary of the
 tesseroids layer. It can be either a plane or an irregular surface
-passed as 2d array. Radii must be in meters.</p>
+passed as 2d array. Values must be radii (not heights) in meters.</p>
 </dd>
-<dt><strong>properties</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Dictionary containing the physical properties of the tesseroids. The
+<dt><strong>properties</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Dictionary containing the physical properties of the tesseroids. The
 keys must be strings that will be used to name the corresponding
-<code class="docutils literal notranslate"><span class="pre">data_var</span></code> inside the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must
+<code class="docutils literal notranslate"><span class="pre">data_var</span></code> inside the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, while the values must
 be 2d-arrays. All physical properties must be passed in SI units. If
-None, no <code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+None, no <code class="docutils literal notranslate"><span class="pre">data_var</span></code> will be added to the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default is None.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>dataset</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>Dataset containing the coordinates of the center of each tesseroid, the
+<dt><strong>dataset</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>Dataset containing the coordinates of the center of each tesseroid, the
 height of its top and bottom boundaries ans its corresponding physical
 properties.</p>
 </dd>
@@ -553,8 +580,53 @@ properties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorsTesseroidLayer</span></code></dt><dd></dd>
+<dt><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorTesseroidLayer</span></code></a></dt><dd></dd>
 </dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a synthetic relief</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_longitude</span><span class="p">,</span> <span class="n">mesh_latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface_heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Convert heights to radii</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference_radii</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span><span class="o">.</span><span class="n">geocentric_radius</span><span class="p">(</span><span class="n">mesh_latitude</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface_radii</span> <span class="o">=</span> <span class="n">surface_heights</span> <span class="o">+</span> <span class="n">reference_radii</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define constant densities</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span> <span class="o">=</span> <span class="mf">2670.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">surface_radii</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a layer of tesseroids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tesseroids</span> <span class="o">=</span> <span class="n">tesseroid_layer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">surface_radii</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">reference</span><span class="o">=</span><span class="n">reference_radii</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">density</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">)</span> 
+<span class="go">&lt;xarray.Dataset&gt;</span>
+<span class="go">Dimensions:   (latitude: 4, longitude: 5)</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * latitude   (latitude) float64 2.0 4.0 6.0 8.0</span>
+<span class="go">  * longitude  (longitude) float64 0.0 2.5 5.0 7.5 10.0</span>
+<span class="go">    top       (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06</span>
+<span class="go">    bottom    (latitude, longitude) float64 6.378e+06 6.378e+06 ... 6.378e+06</span>
+<span class="go">Data variables:</span>
+<span class="go">    density   (latitude, longitude) float64 2.67e+03 2.67e+03 ... 2.67e+03</span>
+<span class="go">Attributes:</span>
+<span class="go">    longitude_units:  degrees</span>
+<span class="go">    latitude_units:   degrees</span>
+<span class="go">    radius_units:     meters</span>
+<span class="go">    properties_units:  SI</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the boundaries of the layer (will exceed the region)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boundaries</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="o">.</span><span class="n">tesseroid_layer</span><span class="o">.</span><span class="n">boundaries</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boundaries</span><span class="p">)</span>
+<span class="go">[-1.25, 11.25, 1.0, 9.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the boundaries of one of the tesseroids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tesseroid</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="o">.</span><span class="n">tesseroid_layer</span><span class="o">.</span><span class="n">get_tesseroid</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">tesseroid</span><span class="p">)</span>
+<span class="go">[3.75, 6.25, 1.0, 3.0, 6378111.2, 6378113.2]</span>
+</pre></div>
 </div>
 </dd></dl>
 
@@ -635,7 +707,7 @@ properties.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Apr 30, 2026.
   <br/>
 </p>
   </div>

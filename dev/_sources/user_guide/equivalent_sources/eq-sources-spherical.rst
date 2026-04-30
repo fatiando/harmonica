@@ -57,7 +57,7 @@ And compute gravity disturbance by subtracting normal gravity using
     import boule as bl
 
     ellipsoid = bl.WGS84
-    normal_gravity = ellipsoid.normal_gravity(data.latitude, data.height_sea_level_m)
+    normal_gravity = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
     gravity_disturbance = data.gravity_mgal - normal_gravity
 
 Lets define some equivalent sources in spherical coordinates. We will choose
@@ -82,7 +82,7 @@ defined in :mod:`boule`.
 .. jupyter-execute::
 
     coordinates = ellipsoid.geodetic_to_spherical(
-        data.longitude, data.latitude, data.height_sea_level_m
+        (data.longitude, data.latitude, data.height_sea_level_m)
     )
 
 And then use them to fit the sources:
@@ -98,15 +98,17 @@ of 6 arcminutes.
 
 .. jupyter-execute::
 
+    import bordado as bd
+
     # Get the bounding region of the data in geodetic coordinates
-    region = vd.get_region((data.longitude, data.latitude))
+    region = bd.get_region((data.longitude, data.latitude))
 
     # Get the maximum height of the data coordinates
     max_height = data.height_sea_level_m.max()
 
     # Define a regular grid of points in geodetic coordinates
-    grid_coords = vd.grid_coordinates(
-        region=region, spacing=6 / 60, extra_coords=max_height
+    grid_coords = bd.grid_coordinates(
+        region=region, spacing=6 / 60, non_dimensional_coords=max_height
     )
 
 But before we can tell the equivalent sources to predict the
@@ -114,7 +116,7 @@ field we need to convert the grid coordinates to spherical.
 
 .. jupyter-execute::
 
-    grid_coords_sph = ellipsoid.geodetic_to_spherical(*grid_coords)
+    grid_coords_sph = ellipsoid.geodetic_to_spherical(grid_coords)
 
 And then predict the gravity disturbance on the grid points:
 

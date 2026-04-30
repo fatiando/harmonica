@@ -60,13 +60,13 @@ Let's define a regular grid of observation points:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
    region = (-100, 100, -100, 100)
    spacing = 1
    height = 0
-   coordinates = vd.grid_coordinates(
-      region=region, spacing=spacing, extra_coords=height
+   coordinates = bd.grid_coordinates(
+      region=region, spacing=spacing, non_dimensional_coords=height
    )
 
 And a set of dipoles with their magnetic moments:

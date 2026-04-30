@@ -43,10 +43,10 @@ masses = np.array([1e6, -1e6, 2e6, -3e6])
 # In[6]:
 
 
-import verde as vd
+import bordado as bd
 
-coordinates = vd.grid_coordinates(
-    region=(-250, 1250, -250, 1250), shape=(40, 40), extra_coords=0
+coordinates = bd.grid_coordinates(
+    region=(-250, 1250, -250, 1250), shape=(40, 40), non_dimensional_coords=0
 )
 
 
@@ -72,6 +72,7 @@ pygmt.set_display(method="notebook")
 
 
 import pygmt
+import verde as vd
 
 grid = vd.make_xarray_grid(
    coordinates, g_z, data_names="g_z", extra_coords_names="extra")
@@ -103,7 +104,7 @@ ellipsoid = bl.WGS84
 
 
 longitude, latitude = 45, 0
-radius = ellipsoid.geocentric_radius(latitude, geodetic=False)
+radius = ellipsoid.geocentric_radius(latitude, coordinate_system="spherical")
 point = (longitude, latitude, radius)
 
 mass = 1e6
@@ -138,18 +139,18 @@ masses = np.array([1e6, 2e6, -3e6, 5e6])
 # In[15]:
 
 
-coordinates = vd.grid_coordinates(
+coordinates = bd.grid_coordinates(
     region=(-72, -68, -46, -42),
     shape=(101, 101),
-    extra_coords=20e3,
+    non_dimensional_coords=20e3,
 )
 
 
 # In[16]:
 
 
-points_spherical = ellipsoid.geodetic_to_spherical(*points)
-coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+points_spherical = ellipsoid.geodetic_to_spherical(points)
+coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates)
 
 
 # In[17]:

@@ -15,6 +15,7 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
+
 import boule as bl
 import ensaio
 import pygmt
@@ -27,7 +28,7 @@ print(data)
 
 # Calculate normal gravity using the WGS84 ellipsoid
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
 # The disturbance is the observed minus normal gravity (calculated at the
 # observation point)
 disturbance = data.gravity - gamma

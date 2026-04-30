@@ -34,7 +34,7 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-67
+.. GENERATED FROM PYTHON SOURCE LINES 24-68
 
 
 
@@ -48,6 +48,7 @@ gravitational effect of the layer.
 
 
 .. code-block:: Python
+
 
     import numpy as np
     import pygmt
@@ -96,7 +97,7 @@ gravitational effect of the layer.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.503 seconds)
+   **Total running time of the script:** (0 minutes 1.387 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prism_layer.py:

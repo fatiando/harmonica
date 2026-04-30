@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -216,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -228,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -252,23 +254,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -507,55 +516,42 @@ to download the full example code</p>
 <span id="sphx-glr-gallery-transformations-tga-py"></span><h1>Total gradient amplitude of a regular grid<a class="headerlink" href="#total-gradient-amplitude-of-a-regular-grid" title="Link to this heading">#</a></h1>
 <img src="../../_images/sphx_glr_tga_001.png" srcset="../../_images/sphx_glr_tga_001.png" alt="tga" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Total Gradient Amplitude:
  &lt;xarray.DataArray (northing: 370, easting: 346)&gt; Size: 1MB
-array([[1.08738592, 0.72940807, 0.75509218, ..., 2.0132328 , 1.95999329,
-        3.07313939],
-       [0.73942233, 0.22047172, 0.23189001, ..., 0.49121787, 0.46025515,
-        1.96645552],
-       [0.76571121, 0.23589359, 0.24513169, ..., 0.51108555, 0.49303789,
-        2.03290899],
+array([[0.03861836, 0.04455406, 0.04407794, ..., 0.05025985, 0.04814695,
+        0.05978932],
+       [0.04940621, 0.07371739, 0.07236767, ..., 0.03644512, 0.03543132,
+        0.04679314],
+       [0.04790018, 0.07587627, 0.07681641, ..., 0.0360322 , 0.03660584,
+        0.04383785],
        ...,
-       [3.80734867, 0.95574565, 0.87764784, ..., 0.59290377, 0.57163822,
-        1.15583825],
-       [3.71454961, 0.92058867, 0.87376757, ..., 0.63073088, 0.60064385,
-        1.14353417],
-       [5.63063027, 3.39067041, 3.24439853, ..., 0.61133653, 0.64716741,
-        1.33503332]])
+       [0.32439862, 0.23297194, 0.22328171, ..., 0.58808784, 0.53799461,
+        0.63361113],
+       [0.32348286, 0.23442257, 0.21816776, ..., 0.63367356, 0.59349298,
+        0.70340967],
+       [0.23963734, 0.19502693, 0.20263021, ..., 0.61247388, 0.53729494,
+        0.60943501]], shape=(370, 346))
 Coordinates:
-  * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
   * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+  * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+    height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
-<span class="kn">import</span> <span class="nn">pygmt</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">xrft</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ensaio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
-<span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">harmonica</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hm</span>
 
 <span class="c1"># Fetch magnetic grid over the Lightning Creek Sill Complex, Australia using</span>
 <span class="c1"># Ensaio and load it with Xarray</span>
 <a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fname</span></a> <span class="o">=</span> <a href="https://www.fatiando.org/ensaio/latest/api/generated/ensaio.fetch_lightning_creek_magnetic.html#ensaio.fetch_lightning_creek_magnetic" title="ensaio.fetch_lightning_creek_magnetic" class="sphx-glr-backref-module-ensaio sphx-glr-backref-type-py-function"><span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_lightning_creek_magnetic</span></a><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataarray.html#xarray.load_dataarray" title="xarray.load_dataarray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">load_dataarray</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fname</span></a><span class="p">)</span>
 
-<span class="c1"># Pad the grid to increase accuracy of the FFT filter</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pad_width</span></a> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;easting&quot;</span><span class="p">:</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.size.html#xarray.DataArray.size" title="xarray.DataArray.size" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">magnetic_grid</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span></a> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s2">&quot;northing&quot;</span><span class="p">:</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.size.html#xarray.DataArray.size" title="xarray.DataArray.size" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">magnetic_grid</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">size</span></a> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="c1"># drop the extra height coordinate</span>
-<a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid_no_height</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.drop_vars.html#xarray.DataArray.drop_vars" title="xarray.DataArray.drop_vars" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">magnetic_grid</span><span class="o">.</span><span class="n">drop_vars</span></a><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">)</span>
-<a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid_padded</span></a> <span class="o">=</span> <span class="n">xrft</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid_no_height</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pad_width</span></a><span class="p">)</span>
-
 <span class="c1"># Compute the total gradient amplitude of the grid</span>
-<a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tga</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude" title="harmonica.total_gradient_amplitude" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-function"><span class="n">hm</span><span class="o">.</span><span class="n">total_gradient_amplitude</span></a><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid_padded</span></a><span class="p">)</span>
-
-<span class="c1"># Unpad the total gradient amplitude grid</span>
-<a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tga</span></a> <span class="o">=</span> <span class="n">xrft</span><span class="o">.</span><span class="n">unpad</span><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tga</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pad_width</span></a><span class="p">)</span>
-
+<a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tga</span></a> <span class="o">=</span> <a href="../../api/generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude" title="harmonica.total_gradient_amplitude" class="sphx-glr-backref-module-harmonica sphx-glr-backref-type-py-function"><span class="n">hm</span><span class="o">.</span><span class="n">total_gradient_amplitude</span></a><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">magnetic_grid</span></a><span class="p">)</span>
 <span class="c1"># Show the total gradient amplitude</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total Gradient Amplitude:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tga</span></a><span class="p">)</span>
 
@@ -591,7 +587,7 @@ Coordinates:
 <a href="https://www.pygmt.org/latest/api/generated/pygmt.Figure.show.html#pygmt.Figure.show" title="pygmt.Figure.show" class="sphx-glr-backref-module-pygmt sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.414 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.399 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-transformations-tga-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/6bcb3ecb92cadf2a6dc07cf0cd4de39a/tga.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">tga.ipynb</span></code></a></p>
@@ -656,7 +652,7 @@ Coordinates:
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Apr 30, 2026.
   <br/>
 </p>
   </div>

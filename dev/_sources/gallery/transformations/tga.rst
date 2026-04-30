@@ -21,7 +21,7 @@
 Total gradient amplitude of a regular grid
 ==========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-72
+.. GENERATED FROM PYTHON SOURCE LINES 11-59
 
 
 
@@ -38,22 +38,23 @@ Total gradient amplitude of a regular grid
 
     Total Gradient Amplitude:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[1.08738592, 0.72940807, 0.75509218, ..., 2.0132328 , 1.95999329,
-            3.07313939],
-           [0.73942233, 0.22047172, 0.23189001, ..., 0.49121787, 0.46025515,
-            1.96645552],
-           [0.76571121, 0.23589359, 0.24513169, ..., 0.51108555, 0.49303789,
-            2.03290899],
+    array([[0.03861836, 0.04455406, 0.04407794, ..., 0.05025985, 0.04814695,
+            0.05978932],
+           [0.04940621, 0.07371739, 0.07236767, ..., 0.03644512, 0.03543132,
+            0.04679314],
+           [0.04790018, 0.07587627, 0.07681641, ..., 0.0360322 , 0.03660584,
+            0.04383785],
            ...,
-           [3.80734867, 0.95574565, 0.87764784, ..., 0.59290377, 0.57163822,
-            1.15583825],
-           [3.71454961, 0.92058867, 0.87376757, ..., 0.63073088, 0.60064385,
-            1.14353417],
-           [5.63063027, 3.39067041, 3.24439853, ..., 0.61133653, 0.64716741,
-            1.33503332]])
+           [0.32439862, 0.23297194, 0.22328171, ..., 0.58808784, 0.53799461,
+            0.63361113],
+           [0.32348286, 0.23442257, 0.21816776, ..., 0.63367356, 0.59349298,
+            0.70340967],
+           [0.23963734, 0.19502693, 0.20263021, ..., 0.61247388, 0.53729494,
+            0.60943501]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+        height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 
 
 
@@ -64,11 +65,11 @@ Total gradient amplitude of a regular grid
 
 .. code-block:: Python
 
+
     import ensaio
     import pygmt
     import verde as vd
     import xarray as xr
-    import xrft
 
     import harmonica as hm
 
@@ -77,21 +78,8 @@ Total gradient amplitude of a regular grid
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
 
-    # Pad the grid to increase accuracy of the FFT filter
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-    # drop the extra height coordinate
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
     # Compute the total gradient amplitude of the grid
-    tga = hm.total_gradient_amplitude(magnetic_grid_padded)
-
-    # Unpad the total gradient amplitude grid
-    tga = xrft.unpad(tga, pad_width)
-
+    tga = hm.total_gradient_amplitude(magnetic_grid)
     # Show the total gradient amplitude
     print("\nTotal Gradient Amplitude:\n", tga)
 
@@ -129,7 +117,7 @@ Total gradient amplitude of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.414 seconds)
+   **Total running time of the script:** (0 minutes 0.399 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tga.py:

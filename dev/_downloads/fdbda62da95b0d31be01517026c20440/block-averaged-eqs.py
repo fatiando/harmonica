@@ -15,10 +15,10 @@ data
 # In[2]:
 
 
-import verde as vd
+import bordado as bd
 
 region = (-5.5, -4.7, 57.8, 58.5)
-inside = vd.inside((data.longitude, data.latitude), region)
+inside = bd.inside((data.longitude, data.latitude), region)
 data = data[inside]
 data
 
@@ -31,7 +31,7 @@ import pyproj
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 easting, northing = projection(data.longitude.values, data.latitude.values)
 coordinates = (easting, northing, data.height_m)
-xy_region=vd.get_region(coordinates)
+xy_region = bd.get_region((easting, northing))
 
 
 # In[4]:
@@ -49,9 +49,10 @@ pygmt.set_display(method="notebook")
 # In[5]:
 
 
+import verde as vd
 import pygmt
 
-maxabs = vd.maxabs(data.total_field_anomaly_nt)*.8
+maxabs = vd.maxabs(data.total_field_anomaly_nt) * .8
 
 # Set figure properties
 w, e, s, n = xy_region
@@ -109,10 +110,10 @@ eqs.points_[0].size
 # In[9]:
 
 
-grid_coords = vd.grid_coordinates(
-    region=vd.get_region(coordinates),
+grid_coords = bd.grid_coordinates(
+    region=bd.get_region((easting, northing)),
     spacing=500,
-    extra_coords=1500,
+    non_dimensional_coords=1500,
 )
 grid = eqs.grid(grid_coords, data_names=["magnetic_anomaly"])
 grid

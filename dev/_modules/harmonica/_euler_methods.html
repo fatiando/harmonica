@@ -1,0 +1,1033 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica._euler_methods | Harmonica dev</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_euler_methods';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_euler_methods.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica._euler_methods</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Classes for Euler-based source location estimation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde.base</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vdb</span>
+
+
+<div class="viewcode-block" id="EulerDeconvolution">
+<a class="viewcode-back" href="../../api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EulerDeconvolution</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate source location and base level using Euler Deconvolution.</span>
+
+<span class="sd">    Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source</span>
+<span class="sd">    location from potential field data and their directional derivatives. Also</span>
+<span class="sd">    estimates any constant shifts or biases of the data (called the base level).</span>
+<span class="sd">    The approach employs linear least-squares to solve Euler&#39;s homogeneity</span>
+<span class="sd">    equation.</span>
+
+<span class="sd">    **Assumes a single data window** and provides a single estimate.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">        Please read the paper [Reid2014]_ to avoid doing **horrible things**</span>
+<span class="sd">        with Euler deconvolution. [Uieda2014]_ offer a practical tutorial using</span>
+<span class="sd">        `legacy Fatiando a Terra &lt;https://legacy.fatiando.org/&gt;`__ code to show</span>
+<span class="sd">        some common misinterpretations.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Does not yet support structural index 0.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structural_index : int</span>
+<span class="sd">        Defines the nature of the source of the potential field data. Should</span>
+<span class="sd">        be an integer between 1 and 3. It&#39;s the degree of the field&#39;s rate of</span>
+<span class="sd">        change with distance from the source, influencing the decay rate of the</span>
+<span class="sd">        field and the formulation of Euler&#39;s homogeneity equation. **Correlated</span>
+<span class="sd">        with the depth estimate**, so larger structural index will lead to</span>
+<span class="sd">        larger depths. **Choose based on known source geometry**. See table</span>
+<span class="sd">        below.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    location_ : 1d-array</span>
+<span class="sd">        Estimated (easting, northing, upward) coordinates of the source after</span>
+<span class="sd">        model fitting.</span>
+<span class="sd">    base_level_ : float</span>
+<span class="sd">        Estimated base level constant of the anomaly after model fitting.</span>
+<span class="sd">    covariance_ : 2d-array</span>
+<span class="sd">        The 4 x 4 estimated covariance matrix of the solution. Parameters are</span>
+<span class="sd">        in the order: easting, northing, upward, base level. **This is not an</span>
+<span class="sd">        uncertainty of the position** but a rough estimate of their variance</span>
+<span class="sd">        with regard to the data.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Works on any potential field that satisfies Euler&#39;s homogeneity equation</span>
+<span class="sd">    (like gravity, magnetic, and their gradients caused by **simple sources**):</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        (e_i - e_0)\dfrac{\partial f_i}{\partial e} +</span>
+<span class="sd">        (n_i - n_0)\dfrac{\partial f_i}{\partial n} +</span>
+<span class="sd">        (u_i - u_0)\dfrac{\partial f_i}{\partial u} =</span>
+<span class="sd">        \eta (b - f_i),</span>
+
+<span class="sd">    in which :math:`f_i` is the given potential field observation at point</span>
+<span class="sd">    :math:`(e_i, n_i, u_i)`, :math:`b` is the base level (a constant shift of</span>
+<span class="sd">    the field, like a regional field), :math:`\eta` is the structural index,</span>
+<span class="sd">    and :math:`(e_0, n_0, u_0)` are the coordinates of a point on the source</span>
+<span class="sd">    (for a sphere, this is the center point).</span>
+
+<span class="sd">    The Euler deconvolution estimates :math:`(e_0, n_0, u_0)` and :math:`b`</span>
+<span class="sd">    given a potential field and its easting, northing, and upward derivatives</span>
+<span class="sd">    and the structural index.</span>
+
+<span class="sd">    **This assumes that the sources are ideal** (see the table below).</span>
+<span class="sd">    We recommend reading [ReidThurston2014]_ for a discussion on what the</span>
+<span class="sd">    structural index means and what it does not mean. After [ReidThurston2014]_,</span>
+<span class="sd">    values of the structural index (SI) can be:</span>
+
+<span class="sd">    ===================================== ======== =========</span>
+<span class="sd">    Source type                           SI (Mag) SI (Grav)</span>
+<span class="sd">    ===================================== ======== =========</span>
+<span class="sd">    Point, sphere                            3         2</span>
+<span class="sd">    Line, cylinder, thin bed fault           2         1</span>
+<span class="sd">    Thin sheet edge, thin sill, thin dyke    1         0</span>
+<span class="sd">    ===================================== ======== =========</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">structural_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;EulerDeconvolution does not yet support structural index of 0.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">=</span> <span class="n">structural_index</span>
+
+<div class="viewcode-block" id="EulerDeconvolution.fit">
+<a class="viewcode-back" href="../../api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model using potential field measurements and their derivatives.</span>
+
+<span class="sd">        Solves Euler&#39;s homogeneity equation to estimate the source location and</span>
+<span class="sd">        base level by utilizing field values and their spatial derivatives in</span>
+<span class="sd">        easting, northing, and upward directions. Creates a pseudo-parametric</span>
+<span class="sd">        model that assumes derivatives are free of error.</span>
+
+<span class="sd">        .. tip::</span>
+
+<span class="sd">            Data does not need to be gridded for this to work.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Tuple of 3 with the coordinates of each data point. Should be in</span>
+<span class="sd">            the following order: ``(easting, northing, upward)``.</span>
+<span class="sd">            Arrays can be n-dimensional but must all have the same shape.</span>
+<span class="sd">        data : tuple of arrays</span>
+<span class="sd">            Tuple of 4 arrays with the observed data in the following order:</span>
+<span class="sd">            ``(potential_field, derivative_easting, derivative_northing,</span>
+<span class="sd">            derivative_upward)``. Arrays can be n-dimensional but must all have</span>
+<span class="sd">            the same shape as the coordinates. Derivatives must be in data</span>
+<span class="sd">            units over coordinates units, for example nT/m or mGal/m.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            The instance itself, updated with the estimated ``location_``</span>
+<span class="sd">            and ``base_level_``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">field</span><span class="p">,</span> <span class="n">east_deriv</span><span class="p">,</span> <span class="n">north_deriv</span><span class="p">,</span> <span class="n">up_deriv</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">n_data</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">n_params</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_data</span><span class="p">,</span> <span class="n">n_params</span><span class="p">))</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">east_deriv</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">north_deriv</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">up_deriv</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span>
+        <span class="n">pseudo_data</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">easting</span> <span class="o">*</span> <span class="n">east_deriv</span>
+            <span class="o">+</span> <span class="n">northing</span> <span class="o">*</span> <span class="n">north_deriv</span>
+            <span class="o">+</span> <span class="n">upward</span> <span class="o">*</span> <span class="n">up_deriv</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">*</span> <span class="n">field</span>
+        <span class="p">)</span>
+        <span class="n">hessian</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">jacobian</span>
+        <span class="c1"># Invert the Hessian instead of solving the system because this is a 4 x 4 or</span>
+        <span class="c1"># 3 x 3 system and it won&#39;t cost much more. Plus we need the inverse anyway</span>
+        <span class="c1"># to estimate the covariance matrix (used as a filtering criterion in windowed</span>
+        <span class="c1"># implementations)</span>
+        <span class="n">hessian_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+        <span class="n">estimate</span> <span class="o">=</span> <span class="n">hessian_inv</span> <span class="o">@</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">pseudo_data</span>
+        <span class="n">pseudo_residuals</span> <span class="o">=</span> <span class="n">pseudo_data</span> <span class="o">-</span> <span class="n">jacobian</span> <span class="o">@</span> <span class="n">estimate</span>
+        <span class="n">chi_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pseudo_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_data</span> <span class="o">-</span> <span class="n">n_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">*</span> <span class="n">hessian_inv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_level_</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="EulerInversion">
+<a class="viewcode-back" href="../../api/generated/harmonica.EulerInversion.html#harmonica.EulerInversion">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EulerInversion</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate source location, base level, and SI using Euler Inversion.</span>
+
+<span class="sd">    Implements Euler Inversion [Uieda2025]_ to estimate subsurface source</span>
+<span class="sd">    location from potential field data and their directional derivatives. Also</span>
+<span class="sd">    estimates any constant shifts or biases of the data (called the base level),</span>
+<span class="sd">    as well as the structural index (SI; a parameter reflecting the source</span>
+<span class="sd">    geometry; see below). The approach employs a non-linear total-least-squares</span>
+<span class="sd">    approach to solve the inverse problem of Euler&#39;s homogeneity equation.</span>
+
+<span class="sd">    **Assumes a single data window** and provides a single estimate.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">        **Euler Inversion is much more stable than Euler Deconvolution.** It&#39;s</span>
+<span class="sd">        less sensitive to noise in the field derivatives and to interfering</span>
+<span class="sd">        sources within the data window. It can also estimate integer-valued</span>
+<span class="sd">        structural indices (SI).</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Does not yet support structural index 0.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structural_index : int or sequence, optional</span>
+<span class="sd">        Defines the nature of the source of the potential field data. Should be</span>
+<span class="sd">        an integer value, usually between 1 and 3 (but can vary depending on the</span>
+<span class="sd">        nature of the field). If a sequence of values is passed, the inversion</span>
+<span class="sd">        will try each one and pick the value that provides the smallest misfit</span>
+<span class="sd">        to the observed data (default). It&#39;s the degree of the field&#39;s rate of</span>
+<span class="sd">        change with distance from the source, influencing the decay rate of the</span>
+<span class="sd">        field and the formulation of Euler&#39;s homogeneity equation. **Correlated</span>
+<span class="sd">        with the depth estimate**, so larger structural index will lead to</span>
+<span class="sd">        larger estimated depths. Choose based on known source geometry (see</span>
+<span class="sd">        table below) or allow the inversion to estimate the optimal value.</span>
+<span class="sd">    max_iterations : int, optional</span>
+<span class="sd">        The maximum number of iterations allowed in the non-linear Gauss-Newton</span>
+<span class="sd">        inversion. If the value is too small, there is a risk of exiting the</span>
+<span class="sd">        inversion without the solution converging to the minimum of the goal</span>
+<span class="sd">        function. Larger values won&#39;t necessarily lead to longer computation</span>
+<span class="sd">        times since the inversion will stop if convergence is reached.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        The tolerance in decimal percentage that is needed to continue the</span>
+<span class="sd">        iterations. If the change in the merit function (see below) is less than</span>
+<span class="sd">        ``tol`` times the current merit function value, the iterations will be</span>
+<span class="sd">        terminated. Use smaller values to allow for longer inversions.</span>
+<span class="sd">    euler_misfit_balance : float, optional</span>
+<span class="sd">        The trade-off parameter :math:`\nu` between fitting the data and obeying</span>
+<span class="sd">        Euler&#39;s homogeneity equation (see below).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    location_ : 1d-array</span>
+<span class="sd">        Estimated (easting, northing, upward) coordinates of the source after</span>
+<span class="sd">        model fitting.</span>
+<span class="sd">    base_level_ : float</span>
+<span class="sd">        Estimated base level constant of the anomaly after model fitting.</span>
+<span class="sd">    covariance_ : 2d-array</span>
+<span class="sd">        The 4 x 4 estimated covariance matrix of the solution. Parameters are in the</span>
+<span class="sd">        order: easting, northing, upward, base level. **This is not an uncertainty of</span>
+<span class="sd">        the position** but a rough estimate of their variance with regard to the data.</span>
+<span class="sd">    structural_index_ : int</span>
+<span class="sd">        The estimated structural index.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Works on any potential field that satisfies Euler&#39;s homogeneity equation</span>
+<span class="sd">    (like gravity, magnetic, and their gradients caused by **simple sources**):</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        (e_i - e_0)\dfrac{\partial f_i}{\partial e} +</span>
+<span class="sd">        (n_i - n_0)\dfrac{\partial f_i}{\partial n} +</span>
+<span class="sd">        (u_i - u_0)\dfrac{\partial f_i}{\partial u} =</span>
+<span class="sd">        \eta (b - f_i),</span>
+
+<span class="sd">    in which :math:`f_i` is the given potential field observation at point</span>
+<span class="sd">    :math:`(e_i, n_i, u_i)`, :math:`b` is the base level (a constant shift of</span>
+<span class="sd">    the field, like a regional field), :math:`\eta` is the structural index,</span>
+<span class="sd">    and :math:`(e_0, n_0, u_0)` are the coordinates of a point on the source</span>
+<span class="sd">    (for a sphere, this is the center point).</span>
+
+<span class="sd">    The Euler Inversion estimates :math:`(e_0, n_0, u_0)` and :math:`b` given</span>
+<span class="sd">    a potential field and its easting, northing, and upward derivatives.</span>
+<span class="sd">    If the structural index is not given, it can estimate an integer valued</span>
+<span class="sd">    :math:`\eta` by running the inversion multiple times and choosing the</span>
+<span class="sd">    :math:`\eta` that produces the best fit to the data. This is a big advantage</span>
+<span class="sd">    of the Euler Inversion approach over the Deconvolution since the latter</span>
+<span class="sd">    is unable to calculate predicted data and thus cannot evaluate true data</span>
+<span class="sd">    misfit.</span>
+
+<span class="sd">    The convergence of the solution is measured through a *merit function*</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathcal{M}(\mathbf{p}, \mathbf{d}) =</span>
+<span class="sd">        \sqrt{\mathbf{r}^T\mathbf{W}\mathbf{r}} +</span>
+<span class="sd">        \nu\sqrt{\mathbf{e}^T\mathbf{e}}</span>
+
+<span class="sd">    in which :math:`\mathbf{p}` is the parameter vector, :math:`\mathbf{d}`</span>
+<span class="sd">    is the predicted data vector, :math:`\mathbf{W}` is the weight matrix,</span>
+<span class="sd">    :math:`\mathbf{r}` is the residual vector, :math:`\mathbf{e}` is the</span>
+<span class="sd">    evaluation of Euler&#39;s equation using the current data and parameters, and</span>
+<span class="sd">    :math:`\nu` is trade-off parameter that balances fitting the data with</span>
+<span class="sd">    obeying Euler&#39;s equation.</span>
+
+<span class="sd">    As with Euler Deconvolution, Euler Inversion **still assumes that</span>
+<span class="sd">    the sources are ideal** (see the table below). We recommend reading</span>
+<span class="sd">    [ReidThurston2014]_ for a discussion on what the structural index means and</span>
+<span class="sd">    what it does not mean. After [ReidThurston2014]_, values of the structural</span>
+<span class="sd">    index (SI) can be:</span>
+
+<span class="sd">    ===================================== ======== =========</span>
+<span class="sd">    Source type                           SI (Mag) SI (Grav)</span>
+<span class="sd">    ===================================== ======== =========</span>
+<span class="sd">    Point, sphere                            3         2</span>
+<span class="sd">    Line, cylinder, thin bed fault           2         1</span>
+<span class="sd">    Thin sheet edge, thin sill, thin dyke    1         0</span>
+<span class="sd">    ===================================== ======== =========</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">structural_index</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">max_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">euler_misfit_balance</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">structural_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;EulerInversion does not yet support structural index of 0.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">=</span> <span class="n">structural_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">=</span> <span class="n">max_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler_misfit_balance</span> <span class="o">=</span> <span class="n">euler_misfit_balance</span>
+
+<div class="viewcode-block" id="EulerInversion.fit">
+<a class="viewcode-back" href="../../api/generated/harmonica.EulerInversion.html#harmonica.EulerInversion.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model using potential field measurements and their derivatives.</span>
+
+<span class="sd">        Solves Euler&#39;s homogeneity equation to estimate the source location</span>
+<span class="sd">        and base level by utilizing field values and their spatial derivatives</span>
+<span class="sd">        in easting, northing, and upward directions. Constructs an implicit</span>
+<span class="sd">        mathematical model and estimates both the parameters and the predicted</span>
+<span class="sd">        data (field and its derivatives). Will also estimate the structural</span>
+<span class="sd">        index if a single value was not provided.</span>
+
+<span class="sd">        .. tip::</span>
+
+<span class="sd">            Data does not need to be gridded for this to work.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Tuple of 3 with the coordinates of each data point. Should be in</span>
+<span class="sd">            the following order: ``(easting, northing, upward)``.</span>
+<span class="sd">            Arrays can be n-dimensional but must all have the same shape.</span>
+<span class="sd">        data : tuple of arrays</span>
+<span class="sd">            Tuple of 4 arrays with the observed data in the following order:</span>
+<span class="sd">            ``(potential_field, derivative_easting, derivative_northing,</span>
+<span class="sd">            derivative_upward)``. Arrays can be n-dimensional but must all have</span>
+<span class="sd">            the same shape as the coordinates. Derivatives must be in data</span>
+<span class="sd">            units over coordinates units, for example nT/m or mGal/m.</span>
+<span class="sd">        weights : tuple, list, 1d-array, optional</span>
+<span class="sd">            Weights assigned to each of the four data types (field and</span>
+<span class="sd">            its derivatives) in the inversion. Reducing the weights of the</span>
+<span class="sd">            derivatives helps reduce the influence of random noise in the</span>
+<span class="sd">            results. By default, weights are 1 for the field, 0.1 for its</span>
+<span class="sd">            eastward and northward derivatives, and 0.025 for its upward</span>
+<span class="sd">            derivative. The upward derivative has a smaller weight because it</span>
+<span class="sd">            usually contains more errors arising from FFT-based processing.</span>
+<span class="sd">            If uncertainties are available, the weights can be 1 / uncertainty</span>
+<span class="sd">            but should be normalized so that the largest weight is 1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            The instance itself, updated with the estimated ``location_``,</span>
+<span class="sd">            ``base_level_``, and ``structural_index_``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span><span class="p">):</span>
+            <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">si</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span><span class="p">:</span>
+                <span class="n">euler</span> <span class="o">=</span> <span class="n">EulerInversion</span><span class="p">(</span>
+                    <span class="n">structural_index</span><span class="o">=</span><span class="n">si</span><span class="p">,</span>
+                    <span class="n">max_iterations</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">,</span>
+                    <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+                    <span class="n">euler_misfit_balance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">euler_misfit_balance</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">euler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+                <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">euler</span><span class="p">)</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">data_misfit_</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">])]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">structural_index_</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">structural_index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">location_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_level_</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">base_level_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">covariance_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">structural_index_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the Euler Inversion when there is a specified structural index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+        <span class="c1"># The data are organized into a single vector because of the maths</span>
+        <span class="n">data_observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data_predicted</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">data_observed</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="c1"># Make an initial estimate for the parameters using Euler Deconvolution</span>
+        <span class="n">euler_deconv</span> <span class="o">=</span> <span class="n">EulerDeconvolution</span><span class="p">(</span><span class="n">structural_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span><span class="p">)</span>
+        <span class="n">euler_deconv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">euler_deconv</span><span class="o">.</span><span class="n">location_</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">euler_deconv</span><span class="o">.</span><span class="n">base_level_</span>
+        <span class="c1"># Create the data weights vector</span>
+        <span class="n">data_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">data_predicted</span><span class="p">)</span>
+        <span class="n">data_weights</span><span class="p">[:</span><span class="n">n_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">data_weights</span><span class="p">[</span><span class="n">n_data</span> <span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">data_weights</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_data</span> <span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">data_weights</span><span class="p">[</span><span class="mi">3</span> <span class="o">*</span> <span class="n">n_data</span> <span class="p">:</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># Store the inverse of each section of the data weights matrix for use in later</span>
+        <span class="c1"># computations since we can take advantage of its block nature.</span>
+        <span class="n">Wd_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_data</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+        <span class="c1"># Keep track of the way these metrics vary with iteration</span>
+        <span class="n">euler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eulers_equation</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data_predicted</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="n">data_observed</span> <span class="o">-</span> <span class="n">data_predicted</span>
+        <span class="n">euler_misfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">euler</span><span class="p">)</span>
+        <span class="n">data_misfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">residuals</span> <span class="o">*</span> <span class="n">data_weights</span><span class="p">)</span>
+        <span class="n">merit</span> <span class="o">=</span> <span class="n">data_misfit</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">euler_misfit_balance</span> <span class="o">*</span> <span class="n">euler_misfit</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">):</span>
+            <span class="n">parameter_step</span><span class="p">,</span> <span class="n">data_step</span><span class="p">,</span> <span class="n">cofactor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_newton_step</span><span class="p">(</span>
+                <span class="n">coordinates</span><span class="p">,</span>
+                <span class="n">data_observed</span><span class="p">,</span>
+                <span class="n">data_predicted</span><span class="p">,</span>
+                <span class="n">parameters</span><span class="p">,</span>
+                <span class="n">euler</span><span class="p">,</span>
+                <span class="n">Wd_inv</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">parameters</span> <span class="o">+=</span> <span class="n">parameter_step</span>
+            <span class="n">data_predicted</span> <span class="o">+=</span> <span class="n">data_step</span>
+            <span class="c1"># Update metrics</span>
+            <span class="n">euler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eulers_equation</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data_predicted</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="n">data_observed</span> <span class="o">-</span> <span class="n">data_predicted</span>
+            <span class="n">euler_misfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">euler</span><span class="p">)</span>
+            <span class="n">data_misfit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">residuals</span> <span class="o">*</span> <span class="n">data_weights</span><span class="p">)</span>
+            <span class="n">new_merit</span> <span class="o">=</span> <span class="n">data_misfit</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">euler_misfit_balance</span> <span class="o">*</span> <span class="n">euler_misfit</span>
+            <span class="n">merit_change</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">merit</span> <span class="o">-</span> <span class="n">new_merit</span><span class="p">)</span> <span class="o">/</span> <span class="n">merit</span><span class="p">)</span>
+            <span class="n">merit</span> <span class="o">=</span> <span class="n">new_merit</span>
+            <span class="c1"># Check for convergence</span>
+            <span class="k">if</span> <span class="n">merit_change</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Euler Inversion exited because maximum number of iterations was reached&quot;</span>
+                <span class="s2">&quot; and not because the algorithm converged. Consider increasing the&quot;</span>
+                <span class="s2">&quot; maximum number of iterations.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Save output attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_level_</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">chi_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">residuals</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">parameters</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">*</span> <span class="n">cofactor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_misfit_</span> <span class="o">=</span> <span class="n">data_misfit</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_newton_step</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data_observed</span><span class="p">,</span> <span class="n">data_predicted</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">euler</span><span class="p">,</span> <span class="n">Wd_inv</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the step in parameters and data in the Gauss-Newton iteration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">deriv_east</span><span class="p">,</span> <span class="n">deriv_north</span><span class="p">,</span> <span class="n">deriv_up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data_predicted</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_jacobian</span><span class="p">(</span><span class="n">deriv_east</span><span class="p">,</span> <span class="n">deriv_north</span><span class="p">,</span> <span class="n">deriv_up</span><span class="p">)</span>
+        <span class="n">B_diags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_jacobian_diagonals</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">parameters</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">B_diags</span><span class="p">])</span>
+        <span class="n">WBT</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">B_diags</span><span class="p">,</span> <span class="n">Wd_inv</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="n">data_observed</span> <span class="o">-</span> <span class="n">data_predicted</span>
+        <span class="c1"># Q = B @ Wd_inv @ B.T</span>
+        <span class="n">Q_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span>
+            <span class="mi">1</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">([</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w</span> <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">B_diags</span><span class="p">,</span> <span class="n">Wd_inv</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)])</span>
+        <span class="p">)</span>
+        <span class="n">ATQ</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Q_inv</span>
+        <span class="n">BTQ</span> <span class="o">=</span> <span class="n">WBT</span> <span class="o">@</span> <span class="n">Q_inv</span>
+        <span class="n">Br</span> <span class="o">=</span> <span class="n">B</span> <span class="o">@</span> <span class="n">residuals</span>
+        <span class="n">cofactor</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">ATQ</span> <span class="o">@</span> <span class="n">A</span><span class="p">)</span>
+        <span class="n">parameter_step</span> <span class="o">=</span> <span class="o">-</span><span class="n">cofactor</span> <span class="o">@</span> <span class="n">ATQ</span> <span class="o">@</span> <span class="p">(</span><span class="n">euler</span> <span class="o">+</span> <span class="n">Br</span><span class="p">)</span>
+        <span class="n">data_step</span> <span class="o">=</span> <span class="n">residuals</span> <span class="o">-</span> <span class="n">BTQ</span> <span class="o">@</span> <span class="p">(</span><span class="n">Br</span> <span class="o">+</span> <span class="n">euler</span> <span class="o">+</span> <span class="n">A</span> <span class="o">@</span> <span class="n">parameter_step</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameter_step</span><span class="p">,</span> <span class="n">data_step</span><span class="p">,</span> <span class="n">cofactor</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parameter_jacobian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">deriv_east</span><span class="p">,</span>
+        <span class="n">deriv_north</span><span class="p">,</span>
+        <span class="n">deriv_up</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the model parameter Jacobian for Euler Inversion.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">deriv_east</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">deriv_east</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">deriv_north</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">deriv_up</span>
+        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span>
+        <span class="k">return</span> <span class="n">jacobian</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_data_jacobian_diagonals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">source_location</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the data Jacobian for Euler Inversion.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">up</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="n">east_s</span><span class="p">,</span> <span class="n">north_s</span><span class="p">,</span> <span class="n">up_s</span> <span class="o">=</span> <span class="n">source_location</span>
+        <span class="n">nequations</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">diagonals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">nequations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">),</span>
+            <span class="n">east</span> <span class="o">-</span> <span class="n">east_s</span><span class="p">,</span>
+            <span class="n">north</span> <span class="o">-</span> <span class="n">north_s</span><span class="p">,</span>
+            <span class="n">up</span> <span class="o">-</span> <span class="n">up_s</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">diagonals</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_eulers_equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate Euler&#39;s homogeneity equation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">up</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="n">field</span><span class="p">,</span> <span class="n">deriv_east</span><span class="p">,</span> <span class="n">deriv_north</span><span class="p">,</span> <span class="n">deriv_up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">east_s</span><span class="p">,</span> <span class="n">north_s</span><span class="p">,</span> <span class="n">up_s</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">base_level</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">euler</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">east</span> <span class="o">-</span> <span class="n">east_s</span><span class="p">)</span> <span class="o">*</span> <span class="n">deriv_east</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">north</span> <span class="o">-</span> <span class="n">north_s</span><span class="p">)</span> <span class="o">*</span> <span class="n">deriv_north</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">up</span> <span class="o">-</span> <span class="n">up_s</span><span class="p">)</span> <span class="o">*</span> <span class="n">deriv_up</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">*</span> <span class="p">(</span><span class="n">field</span> <span class="o">-</span> <span class="n">base_level</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">euler</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 30, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

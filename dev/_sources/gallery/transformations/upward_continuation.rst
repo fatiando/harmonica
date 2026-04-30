@@ -21,7 +21,7 @@
 Upward continuation of a regular grid
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-70
+.. GENERATED FROM PYTHON SOURCE LINES 11-57
 
 
 
@@ -38,22 +38,22 @@ Upward continuation of a regular grid
 
     Upward continued magnetic grid:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[  1.53187928,   1.85099564,   2.13678808, ..., -33.6048979 ,
-            -31.65891672, -29.67750887],
-           [  1.82032573,   2.17483923,   2.49235855, ..., -35.9639625 ,
-            -33.83599574, -31.66680075],
-           [  2.07316733,   2.45926837,   2.80498407, ..., -38.27996857,
-            -35.97492957, -33.62308159],
+    array([[  19.55620825,   19.27947097,   18.97006949, ..., -104.5277715 ,
+            -104.00305377, -103.51237675],
+           [  19.11131778,   18.83284215,   18.52168951, ..., -104.97064033,
+            -104.450267  , -103.96352053],
+           [  18.63232495,   18.35205701,   18.03910509, ..., -105.44585262,
+            -104.93001717, -104.44733358],
            ...,
-           [ 50.44855928,  53.84377734,  57.13891805, ...,   4.05301094,
-              2.81272119,   1.76442772],
-           [ 47.56513259,  50.69950849,  53.74613485, ...,   4.6684348 ,
-              3.44419849,   2.39520294],
-           [ 44.63682346,  47.50470212,  50.29751413, ...,   5.03755398,
-              3.86191533,   2.84250143]])
+           [ 161.38902102,  161.11651289,  160.87879242, ...,    0.45282316,
+              -3.73975786,   -7.71323984],
+           [ 160.97996734,  160.69101224,  160.43830842, ...,    3.41228276,
+              -0.93864591,   -5.06866624],
+           [ 160.59789277,  160.29497591,  160.02940435, ...,    6.13383277,
+               1.64184139,   -2.62848316]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
 
 
 
@@ -64,10 +64,10 @@ Upward continuation of a regular grid
 
 .. code-block:: Python
 
+
     import ensaio
     import pygmt
     import xarray as xr
-    import xrft
 
     import harmonica as hm
 
@@ -76,22 +76,9 @@ Upward continuation of a regular grid
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
 
-    # Pad the grid to increase accuracy of the FFT filter
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-    # drop the extra height coordinate
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
     # Upward continue the magnetic grid, from 500 m to 1000 m
     # (a height displacement of 500m)
-    upward_continued = hm.upward_continuation(magnetic_grid_padded, height_displacement=500)
-
-    # Unpad the upward continued grid
-    upward_continued = xrft.unpad(upward_continued, pad_width)
-
+    upward_continued = hm.upward_continuation(magnetic_grid, height_displacement=500)
     # Show the upward continued grid
     print("\nUpward continued magnetic grid:\n", upward_continued)
 
@@ -127,7 +114,7 @@ Upward continuation of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.386 seconds)
+   **Total running time of the script:** (0 minutes 0.395 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_upward_continuation.py:

@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
@@ -216,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -228,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -252,23 +254,30 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Harmonica</a></li>
@@ -496,7 +505,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-python">Which Python?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
 </ul>
             </nav>
@@ -515,18 +523,18 @@ document.write(`
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-0">
-pip</label><div class="sd-tab-content docutils">
-<p>Using the <a class="reference external" href="https://pypi.org/project/pip/">pip package manager</a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>harmonica
+conda/mamba</label><div class="sd-tab-content docutils">
+<p>Using the <a class="reference external" href="https://conda.io/">conda</a> package manager (or <code class="docutils literal notranslate"><span class="pre">mamba</span></code>)
+that comes with the Anaconda, Miniconda, or Miniforge distributions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>harmonica<span class="w"> </span>--channel<span class="w"> </span>conda-forge
 </pre></div>
 </div>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-1">
-conda/mamba</label><div class="sd-tab-content docutils">
-<p>Using the <a class="reference external" href="https://conda.io/">conda package manager</a> (or <code class="docutils literal notranslate"><span class="pre">mamba</span></code>)
-that comes with the Anaconda/Miniconda distribution:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>harmonica<span class="w"> </span>--channel<span class="w"> </span>conda-forge
+pip</label><div class="sd-tab-content docutils">
+<p>Using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> package manager:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>harmonica
 </pre></div>
 </div>
 </div>
@@ -540,26 +548,31 @@ GitHub (<strong>not recommended</strong> in most situations):</p>
 </div>
 </div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The commands above should be executed in a terminal. On Windows, use the
+<code class="docutils literal notranslate"><span class="pre">cmd.exe</span></code> or the “Anaconda Prompt” / “Miniforge Prompt” app if you’re using
+Anaconda / Miniforge.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Which Python?</p>
+<p>See <a class="reference internal" href="compatibility.html#python-versions"><span class="std std-ref">Supported Python versions</span></a> for a list of supported Python versions.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The commands above should be executed in a terminal. On Windows, use the
-<code class="docutils literal notranslate"><span class="pre">cmd.exe</span></code> or the “Anaconda Prompt” app if you’re using Anaconda.</p>
+<p>We recommend using the
+<a class="reference external" href="https://conda-forge.org/download/">Miniforge distribution</a>
+to ensure that you have the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager available.
+Installing Miniforge does not require administrative rights to your computer
+and doesn’t interfere with any other Python installations in your system.
+It’s also much smaller than the Anaconda distribution and is less likely to
+break when installing new software.</p>
 </div>
-<section id="which-python">
-<h2>Which Python?<a class="headerlink" href="#which-python" title="Link to this heading">#</a></h2>
-<p>You’ll need <strong>Python 3.9 or greater</strong>.
-See <a class="reference internal" href="compatibility.html#python-versions"><span class="std std-ref">Supported Python versions</span></a> if you require support for older versions.</p>
-</section>
 <section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h2>
+<span id="id1"></span><h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h2>
 <p>The required dependencies should be installed automatically when you install
 Harmonica using <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span></code>. Optional dependencies have to be
 installed manually.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See <a class="reference internal" href="compatibility.html#dependency-versions"><span class="std std-ref">Supported dependency versions</span></a> for the our policy of oldest supported
-versions of each dependency.</p>
-</div>
 <p>Required:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://www.numpy.org/">numpy</a></p></li>
@@ -570,6 +583,8 @@ versions of each dependency.</p>
 <li><p><a class="reference external" href="https://scikit-learn.org">scikit-learn</a></p></li>
 <li><p><a class="reference external" href="http://www.fatiando.org/pooch/">pooch</a></p></li>
 <li><p><a class="reference external" href="http://www.fatiando.org/verde/">verde</a></p></li>
+<li><p><a class="reference external" href="http://www.fatiando.org/bordado/">bordado</a></p></li>
+<li><p><a class="reference external" href="http://www.fatiando.org/boule/">boule</a></p></li>
 <li><p><a class="reference external" href="https://xrft.readthedocs.io/">xrft</a></p></li>
 </ul>
 <p>Optional:</p>
@@ -581,9 +596,13 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 printing a progress bar on some forward modelling computations.
 See <a class="reference internal" href="api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity" title="harmonica.prism_gravity"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code></a>.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference internal" href="compatibility.html#dependency-versions"><span class="std std-ref">Supported dependency versions</span></a> for our policy of oldest supported
+versions of each dependency.</p>
+</div>
 <p>The examples in the <a class="reference internal" href="gallery/index.html#gallery"><span class="std std-ref">Gallery</span></a> also use:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="http://www.fatiando.org/boule/">boule</a></p></li>
 <li><p><a class="reference external" href="http://www.fatiando.org/ensaio/">ensaio</a> for downloading sample datasets</p></li>
 <li><p><a class="reference external" href="https://www.pygmt.org/">pygmt</a> for plotting maps</p></li>
 <li><p><a class="reference external" href="https://jswhit.github.io/pyproj/">pyproj</a> for cartographic projections</p></li>
@@ -636,7 +655,6 @@ See <a class="reference internal" href="api/generated/harmonica.prism_gravity.ht
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-python">Which Python?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
 </ul>
   </nav></div>
@@ -660,7 +678,7 @@ See <a class="reference internal" href="api/generated/harmonica.prism_gravity.ht
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Apr 30, 2026.
   <br/>
 </p>
   </div>

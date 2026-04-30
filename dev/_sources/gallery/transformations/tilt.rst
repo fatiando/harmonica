@@ -21,7 +21,7 @@
 Tilt of a regular grid
 ======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-137
+.. GENERATED FROM PYTHON SOURCE LINES 11-121
 
 
 
@@ -38,41 +38,43 @@ Tilt of a regular grid
 
     Tilt:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[-1.0783784 , -1.02860717, -1.04340939, ...,  1.03827901,
-             1.02638371,  1.08973867],
-           [-1.03642874, -1.45715868, -1.48696672, ...,  1.51656355,
-             1.5129112 ,  1.02828324],
-           [-1.04841707, -1.50371841, -1.54700707, ...,  1.51704351,
-             1.51441199,  1.04159331],
+    array([[ 0.10172001, -0.74481704, -0.93128415, ..., -0.99887809,
+            -0.98479112, -1.09844667],
+           [-0.90766593, -1.22480118, -1.29916495, ..., -0.75158608,
+            -0.72044571, -0.92884452],
+           [-1.07462382, -1.36087411, -1.49481561, ..., -0.70429216,
+            -0.70897604, -0.85844459],
            ...,
-           [-1.10088333, -1.33804824, -1.31496059, ...,  0.32157698,
-             0.72592929,  1.35945242],
-           [-1.08740577, -1.34292621, -1.3185706 , ...,  0.24911404,
-             0.65291946,  1.37433697],
-           [-1.11194247, -1.03333203, -1.04572183, ..., -0.19281687,
-             0.64110985,  1.23484722]])
+           [-0.87471433, -0.32942091,  0.10326239, ...,  0.29601165,
+             0.65236242,  0.9811706 ],
+           [-0.92700474, -0.47970142, -0.03181854, ...,  0.26675736,
+             0.63699939,  0.97524498],
+           [-0.71785463, -0.22386292,  0.11861764, ...,  0.13753573,
+             0.44638079,  0.83413707]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+        height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 
     Tilt from RTP:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[-1.21333209, -1.4644687 , -1.46563213, ...,  1.42901118,
-             1.38962685,  1.02899332],
-           [-1.03471553,  0.11466866, -0.25452967, ..., -0.32908127,
-             0.13113278,  0.67459503],
-           [-1.17050374, -1.17608165, -1.29967283, ...,  1.33473239,
-             1.29156435,  0.91346865],
+    array([[-1.06450644, -1.45635179, -1.41685023, ..., -0.52955435,
+            -0.29100831, -0.56997043],
+           [-1.241621  , -1.36914956, -1.33726765, ...,  0.21463618,
+             0.47138089,  0.30185597],
+           [-0.56799045, -1.00005283, -1.0171184 , ...,  0.64376767,
+             0.81315481,  0.58368696],
            ...,
-           [-1.2096313 ,  0.31156962, -0.17243796, ...,  0.59752655,
-             0.97812607,  1.20524396],
-           [-1.21908118, -0.54733936, -0.90922684, ...,  0.17107842,
-             0.80343702,  1.21308321],
-           [-0.4247845 ,  0.72898686,  0.59961164, ...,  1.04173936,
-            -0.14524941,  0.66491492]])
+           [-0.79261989, -0.11679551,  0.21194443, ...,  0.53018773,
+             0.87937371,  1.09492782],
+           [-0.7332206 , -0.07124476,  0.22817914, ...,  0.49177504,
+             0.83321286,  1.05876888],
+           [-0.68345463,  0.02621577,  0.310723  , ...,  0.63909461,
+             0.9252598 ,  1.11166334]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+        height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 
 
 
@@ -83,11 +85,11 @@ Tilt of a regular grid
 
 .. code-block:: Python
 
+
     import ensaio
     import pygmt
     import verde as vd
     import xarray as xr
-    import xrft
 
     import harmonica as hm
 
@@ -96,21 +98,8 @@ Tilt of a regular grid
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
 
-    # Pad the grid to increase accuracy of the FFT filter
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-    # drop the extra height coordinate
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-
     # Compute the tilt of the grid
-    tilt_grid = hm.tilt_angle(magnetic_grid_padded)
-
-    # Unpad the tilt grid
-    tilt_grid = xrft.unpad(tilt_grid, pad_width)
-
+    tilt_grid = hm.tilt_angle(magnetic_grid)
     # Show the tilt
     print("\nTilt:\n", tilt_grid)
 
@@ -121,19 +110,16 @@ Tilt of a regular grid
     # Apply a reduction to the pole over the magnetic anomaly grid. We will assume
     # that the sources share the same inclination and declination as the
     # geomagnetic field.
-    rtp_grid_padded = hm.reduction_to_pole(
-        magnetic_grid_padded, inclination=inclination, declination=declination
+    rtp_grid = hm.reduction_to_pole(
+        magnetic_grid,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=inclination,
+        magnetization_declination=declination,
     )
 
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid_padded, pad_width)
-
     # Compute the tilt of the padded rtp grid
-    tilt_rtp_grid = hm.tilt_angle(rtp_grid_padded)
-
-    # Unpad the tilt grid
-    tilt_rtp_grid = xrft.unpad(tilt_rtp_grid, pad_width)
-
+    tilt_rtp_grid = hm.tilt_angle(rtp_grid)
     # Show the tilt from RTP
     print("\nTilt from RTP:\n", tilt_rtp_grid)
 
@@ -213,7 +199,7 @@ Tilt of a regular grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.096 seconds)
+   **Total running time of the script:** (0 minutes 1.126 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_tilt.py:

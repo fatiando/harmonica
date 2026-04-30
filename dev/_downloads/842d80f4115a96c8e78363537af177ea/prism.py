@@ -30,12 +30,14 @@ print(potential, "J/kg")
 # In[5]:
 
 
-import verde as vd
+import bordado as bd
 
 region = (-10e3, 10e3, -10e3, 10e3)
 shape = (51, 51)
 height = 10
-coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+coordinates = bd.grid_coordinates(
+    region, shape=shape, non_dimensional_coords=height
+)
 
 
 # In[6]:
@@ -128,10 +130,10 @@ densities = [2670, 3300, 2900, 2980]
 # In[13]:
 
 
-import verde as vd
+import bordado as bd
 
-coordinates = vd.grid_coordinates(
-    region=(0, 10e3, 0, 10e3), shape=(40, 40), extra_coords=0
+coordinates = bd.grid_coordinates(
+    region=(0, 10e3, 0, 10e3), shape=(40, 40), non_dimensional_coords=0
 )
 
 
@@ -157,6 +159,8 @@ pygmt.set_display(method="notebook")
 
 
 import pygmt
+import verde as vd
+
 grid = vd.make_xarray_grid(
    coordinates, g_z, data_names="g_z", extra_coords_names="extra")
 fig = pygmt.Figure()
@@ -194,7 +198,9 @@ magnetization = (
 region = (-10e3, 10e3, -10e3, 10e3)
 shape = (51, 51)
 height = 10
-coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+coordinates = bd.grid_coordinates(
+    region, shape=shape, non_dimensional_coords=height
+)
 
 
 # In[19]:
@@ -273,7 +279,7 @@ spacing = 2000
 # In[24]:
 
 
-easting, northing = vd.grid_coordinates(region=region, spacing=spacing)
+easting, northing = bd.grid_coordinates(region=region, spacing=spacing)
 
 
 # In[25]:
@@ -303,9 +309,9 @@ prisms = hm.prism_layer(
 # In[28]:
 
 
-region_pad = vd.pad_region(region, 10e3)
-coordinates = vd.grid_coordinates(
-    region_pad, spacing=spacing, extra_coords=1e3
+region_pad = bd.pad_region(region, 10e3)
+coordinates = bd.grid_coordinates(
+    region_pad, spacing=spacing, non_dimensional_coords=1e3
 )
 
 
