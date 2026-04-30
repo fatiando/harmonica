@@ -10,6 +10,7 @@ Test the EquivalentSources gridder.
 
 from collections.abc import Iterable
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -37,7 +38,7 @@ def fixture_coordinates(region):
     Return a set of sample coordinates at zero height.
     """
     shape = (40, 40)
-    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+    return bd.grid_coordinates(region=region, shape=shape, non_dimensional_coords=0)
 
 
 @pytest.fixture(name="points")
@@ -45,7 +46,9 @@ def fixture_points(region):
     """
     Return the coordinates of some sample point masses.
     """
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=-1e3
+    )
     return points
 
 
@@ -79,7 +82,7 @@ def fixture_coordinates_small(region):
     Return a small set of 25 coordinates and variable elevation.
     """
     shape = (5, 5)
-    easting, northing = vd.grid_coordinates(region=region, shape=shape)
+    easting, northing = bd.grid_coordinates(region=region, shape=shape)
     upward = np.arange(25, dtype=float).reshape(shape)
     coordinates = (easting, northing, upward)
     return coordinates
@@ -99,7 +102,7 @@ def fixture_coordinates_9x9(region):
     Return a small set of 81 coordinates and variable elevation.
     """
     shape = (9, 9)
-    easting, northing = vd.grid_coordinates(region, shape=shape)
+    easting, northing = bd.grid_coordinates(region, shape=shape)
     upward = np.arange(shape[0] * shape[1], dtype=float).reshape(shape)
     coordinates = (easting, northing, upward)
     return coordinates
@@ -146,7 +149,9 @@ def test_equivalent_sources_cartesian(
     # to synthetic values
     upward = 0
     shape = (60, 60)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=upward
+    )
     true = point_gravity(grid_coords, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid_coords), atol=atol)
 
@@ -170,7 +175,9 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     Use Cartesian coordinates.
     """
     # Define a small set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(8, 8), non_dimensional_coords=0
+    )
     # Get synthetic data
     data = point_gravity(coordinates, points, masses, field="g_z")
 
@@ -188,7 +195,9 @@ def test_equivalent_sources_small_data_cartesian(region, points, masses):
     # to synthetic values
     upward = 20
     shape = (8, 8)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=upward
+    )
     true = point_gravity(grid_coords, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.08)
 
@@ -279,7 +288,8 @@ def test_equivalent_sources_custom_points_cartesian(region, coordinates, data):
     """
     # Pass a custom set of point sources
     points_custom = tuple(
-        i.ravel() for i in vd.grid_coordinates(region, shape=(3, 3), extra_coords=-550)
+        i.ravel()
+        for i in bd.grid_coordinates(region, shape=(3, 3), non_dimensional_coords=-550)
     )
     eqs = EquivalentSources(points=points_custom)
     eqs.fit(coordinates, data)
@@ -303,8 +313,8 @@ def test_equivalent_sources_jacobian_cartesian():
     Test Jacobian matrix under symmetric system of point sources.
     Use Cartesian coordinates.
     """
-    easting, northing, upward = vd.grid_coordinates(
-        region=[-100, 100, -100, 100], shape=(2, 2), extra_coords=0
+    easting, northing, upward = bd.grid_coordinates(
+        region=[-100, 100, -100, 100], shape=(2, 2), non_dimensional_coords=0
     )
     points = vdb.n_1d_arrays((easting, northing, upward + 100), n=3)
     coordinates = vdb.n_1d_arrays((easting, northing, upward), n=3)
@@ -366,7 +376,7 @@ def test_dtype(
     # Define the points argument for EquivalentSources
     points = None
     if custom_points:
-        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+        points = bd.grid_coordinates(region, spacing=300, non_dimensional_coords=-2e3)
     # Define the points argument for EquivalentSources.fit()
     if weights_none:
         weights = None
@@ -393,11 +403,13 @@ def test_jacobian_dtype(region, dtype):
     """
     # Build a set of custom coordinates
     coordinates = tuple(
-        c.ravel() for c in vd.grid_coordinates(region, shape=(10, 10), extra_coords=0)
+        c.ravel()
+        for c in bd.grid_coordinates(region, shape=(10, 10), non_dimensional_coords=0)
     )
     # Create custom set of point sources
     points = tuple(
-        p.ravel() for p in vd.grid_coordinates(region, shape=(6, 6), extra_coords=-2e3)
+        p.ravel()
+        for p in bd.grid_coordinates(region, shape=(6, 6), non_dimensional_coords=-2e3)
     )
     # Ravel the coordinates
     coordinates = tuple(c.ravel() for c in coordinates)
@@ -425,7 +437,9 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSources().fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing deprecated arguments
     msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
     with pytest.raises(ValueError, match=msg):
@@ -439,7 +453,9 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSources().fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing kwarg arguments that will be ignored
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):

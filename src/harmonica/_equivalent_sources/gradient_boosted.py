@@ -12,10 +12,10 @@ from __future__ import annotations
 
 import warnings
 
+import bordado as bd
 import numpy as np
 import verde.base as vdb
 from sklearn import utils
-from verde import get_region, rolling_window
 
 from .cartesian import EquivalentSources
 from .utils import cast_fit_input, predict_numba_parallel
@@ -159,17 +159,17 @@ class EquivalentSourcesGB(EquivalentSources):
 
         Examples
         --------
-        >>> import verde as vd
-        >>> coordinates = vd.scatter_points(
+        >>> import bordado as bd
+        >>> coordinates = bd.random_coordinates(
         ...     region=(-1e3, 3e3, 2e3, 5e3),
         ...     size=100,
-        ...     extra_coords=100,
-        ...     random_state=42,
+        ...     non_dimensional_coords=100,
+        ...     random_seed=42,
         ... )
         >>> eqs = EquivalentSourcesGB(window_size=2e3)
         >>> n_bytes = eqs.estimate_required_memory(coordinates)
         >>> int(n_bytes)
-        9800
+        10952
         """
         # Build the sources and assign the points_ attribute
         coordinates = vdb.n_1d_arrays(coordinates, 3)
@@ -219,7 +219,7 @@ class EquivalentSourcesGB(EquivalentSources):
             coordinates, data, weights, self.dtype
         )
         # Capture the data region to use as a default when gridding.
-        self.region_ = get_region(coordinates[:2])
+        self.region_ = bd.get_region(coordinates[:2])
         # Ravel coordinates, data and weights to 1d-arrays
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         data = np.ravel(data)
@@ -342,21 +342,19 @@ class EquivalentSourcesGB(EquivalentSources):
             self.window_size_ = np.sqrt(window_area)
         else:
             self.window_size_ = self.window_size
-        # Compute window spacing based on overlapping
-        window_spacing = self.window_size_ * (1 - self.overlapping)
         # The windows for sources and data points are the same, but the
-        # verde.rolling_window function creates indices for the given
+        # bordado.rolling_window function creates indices for the given
         # coordinates. That's why we need to create two set of window indices:
         # one for the sources and one for the data points.
         # We pass the same region, size and spacing to be sure that both set of
         # windows are the same.
         kwargs = {
             "region": region,
-            "size": self.window_size_,
-            "spacing": window_spacing,
+            "window_size": self.window_size_,
+            "overlap": self.overlapping,
         }
-        _, source_windows = rolling_window(self.points_, **kwargs)
-        _, data_windows = rolling_window(coordinates, **kwargs)
+        _, source_windows = bd.rolling_window(self.points_[:2], **kwargs)
+        _, data_windows = bd.rolling_window(coordinates[:2], **kwargs)
         # Ravel the indices
         source_windows = [i[0] for i in source_windows.ravel()]
         data_windows = [i[0] for i in data_windows.ravel()]
@@ -388,8 +386,8 @@ def _get_region_data_sources(coordinates, points):
     -------
     region : tuple
     """
-    data_region = get_region(coordinates)
-    sources_region = get_region(points)
+    data_region = bd.get_region(coordinates)
+    sources_region = bd.get_region(points)
     region = (
         min(data_region[0], sources_region[0]),
         max(data_region[1], sources_region[1]),

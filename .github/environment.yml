@@ -16,6 +16,7 @@ dependencies:
   - xrft>=1.0
   - choclo>=0.1
   - boule>=0.6.0
+  - bordado>=0.4.0
   # Build
   - python-build
   - twine
@@ -30,7 +31,6 @@ dependencies:
   - ipykernel
   - boule
   - pyproj
-  - bordado>=0.4.0
   - ensaio>=0.5.*
   - netcdf4
   - matplotlib
