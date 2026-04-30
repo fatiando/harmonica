@@ -116,16 +116,14 @@ fig = pygmt.Figure()
 
 title = "Observed gravity disturbance data"
 
-# Get the 99.9th percentile of the absolute value of the point data to use as color
-# scale limits
-cpt_lim = np.quantile(np.abs(data.gravity_disturbance), 0.999)
+# Get the 99th percentile of the absolute value to use as color scale limits
+maxabs = vd.maxabs(
+    data.gravity_disturbance,
+    percentile=99,
+)
 
 # Make colormap of data
-pygmt.makecpt(
-    cmap="balance+h0",
-    series=[-cpt_lim, cpt_lim],
-    background=True,
-)
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 with pygmt.config(FONT_TITLE="14p"):
     fig.plot(
@@ -139,8 +137,6 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
-
 fig.shift_origin(xshift=fig_width + 1)
 
 title = "Gridded with gradient-boosted equivalent sources"
@@ -152,6 +148,10 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
+fig.colorbar(
+    cmap=True,
+    frame=["x+lmGal"],
+    position=f"n0/0+jTC+w10c/0.5c+h+o-0.5c/0.9c",
+)
 
 fig.show()
