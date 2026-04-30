@@ -26,7 +26,6 @@ dependencies:
   - pytest
   - pytest-cov
   - coverage
-  - boule
   # Documentation requirements
   - sphinx==7.2.*
   - numpydoc==1.7.*
