@@ -96,6 +96,8 @@ We can reshape the results into variables of an dataset:
 
 .. jupyter-execute::
 
+   import verde as vd
+   
    grid = vd.make_xarray_grid(
       coordinates,
       data=(b_e, b_n, b_u),
