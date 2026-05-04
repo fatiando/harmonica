@@ -18,6 +18,7 @@ dependencies:
   - xrft>=1.0
   - choclo>=0.1
   - boule>=0.6
+  - bordado>=0.4.0
   # Optional requirements
   - pyvista
   - vtk
@@ -37,7 +38,6 @@ dependencies:
   - ipykernel
   - pyproj
   - matplotlib
-  - bordado>=0.4.0
   - ensaio>=0.5.0
   - verde>=1.9.0
   - netcdf4

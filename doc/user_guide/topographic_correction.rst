@@ -169,8 +169,10 @@ And then crop it to a slightly larger region than the gravity observations:
 
 .. jupyter-execute::
 
-   region = vd.get_region((data.longitude, data.latitude))
-   region_pad = vd.pad_region(region, pad=1)
+   import bordado as bd
+
+   region = bd.get_region((data.longitude, data.latitude))
+   region_pad = bd.pad_region(region, pad=1)
 
    topography = topography.sel(
        longitude=slice(region_pad[0], region_pad[1]),

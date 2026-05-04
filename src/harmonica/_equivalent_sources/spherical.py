@@ -10,8 +10,8 @@ Equivalent sources for generic harmonic functions in spherical coordinates.
 
 import warnings
 
+import bordado as bd
 import numpy as np
-import verde as vd
 import verde.base as vdb
 from numba import jit
 from sklearn.utils.validation import check_is_fitted
@@ -152,7 +152,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         """
         coordinates, data, weights = vdb.check_fit_input(coordinates, data, weights)
         # Capture the data region to use as a default when gridding.
-        self.region_ = vd.get_region(coordinates[:2])
+        self.region_ = bd.get_region(coordinates[:2])
         coordinates = vdb.n_1d_arrays(coordinates, 3)
         if self.points is None:
             self.points_ = (
@@ -244,9 +244,9 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         The coordinates of the regular grid must be passed through the
         ``coordinates`` argument as a tuple containing three arrays in the
         following order: ``(longitude, latitude, radius)``. They can be easily
-        created through the :func:`verde.grid_coordinates` function. If the
+        created through the :func:`bordado.grid_coordinates` function. If the
         grid points must be all at the same radius, it can be specified in the
-        ``extra_coords`` argument of :func:`verde.grid_coordinates`.
+        ``extra_coords`` argument of :func:`bordado.grid_coordinates`.
 
         Use the *dims* and *data_names* arguments to set custom names for the
         dimensions and the data field(s) in the output :class:`xarray.Dataset`.
