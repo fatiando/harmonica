@@ -57,7 +57,7 @@ Lets start by loading a sample gravity dataset for the whole Earth:
 
    fname = ensaio.fetch_earth_gravity(version=1)
    gravity = xr.load_dataarray(fname)
-   print(gravity)
+   gravity
 
 These observations are located on a regular grid on geodetic coordinates at the
 same height of 10 km above the reference ellipsoid.
@@ -132,7 +132,7 @@ Now we can compute the gravity disturbance:
 .. jupyter-execute::
 
    gravity_disturbance = gravity - normal_gravity
-   print(gravity_disturbance)
+   gravity_disturbance
 
 And plot it:
 

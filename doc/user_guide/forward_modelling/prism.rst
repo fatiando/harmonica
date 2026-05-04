@@ -104,7 +104,7 @@ We can reshape the results into variables of an dataset:
       data_names=results.keys(),
       extra_coords_names="extra",
    )
-   print(grid)
+   grid
 
 Plot the results:
 
