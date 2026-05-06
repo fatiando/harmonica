@@ -11,6 +11,7 @@ order by last name) and are considered "The Harmonica Developers":
 * [Vanderlei C Oliveira Jr](https://github.com/birocoles) - Observatório Nacional, Brazil (ORCID: 0000-0002-6338-4086)
 * [Agustina Pesce](https://github.com/aguspesce) - Universidad Nacional de San Juan, Argentina (ORCID: 0000-0002-5538-8845)
 * [Nicholas Shea](https://github.com/nshea3) - MINES ParisTech (ORCID: 0000-0001-6007-5686)
+* [Arthur Siqueira-Macedo](https://github.com/arthursmacedo) - Universidade de São Paulo, Brazil (ORCID: 0009-0006-5106-4356)
 * [Santiago Soler](https://github.com/santisoler) - Department of Earth, Ocean and Atmospheric Sciences, University of British Columbia (ORCID: 0000-0001-9202-5317)
 * [Gelson Ferreira Souza-Junior](https://github.com/Souza-junior) - Universidade de São Paulo, Brazil (ORCID: 0000-0002-5695-4239)
 * [Matthew Tankersley](https://github.com/mdtanker) - Antarctic Research Centre, Victoria University of Wellington, New Zealand (ORCID: 0000-0003-4266-8554)
