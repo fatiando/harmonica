@@ -74,6 +74,8 @@ Required:
 * `scikit-learn <https://scikit-learn.org>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `verde <http://www.fatiando.org/verde/>`__
+* `bordado <http://www.fatiando.org/bordado/>`__
+* `boule <http://www.fatiando.org/boule/>`__
 * `xrft <https://xrft.readthedocs.io/>`__
 
 Optional:
@@ -92,7 +94,6 @@ Optional:
 
 The examples in the :ref:`gallery` also use:
 
-* `boule <http://www.fatiando.org/boule/>`__
 * `ensaio <http://www.fatiando.org/ensaio/>`__ for downloading sample datasets
 * `pygmt <https://www.pygmt.org/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections

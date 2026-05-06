@@ -9,10 +9,10 @@
 import datetime
 import pathlib
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 
 from harmonica._spherical_harmonics.igrf import (
     IGRF14,
@@ -247,7 +247,9 @@ def test_igrf_grid(date):
     region = (0, 360, -90, 90)
     spacing = 20
     height = 2043
-    coordinates = vd.grid_coordinates(region, spacing=spacing, extra_coords=height)
+    coordinates = bd.grid_coordinates(
+        region, spacing=spacing, non_dimensional_coords=height
+    )
     igrf = IGRF14(date)
     predicted = igrf.predict(coordinates)
     grid = igrf.grid(region, height, spacing=spacing)

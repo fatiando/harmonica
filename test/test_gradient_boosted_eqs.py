@@ -8,6 +8,7 @@
 Test functions for gradient-boosted equivalent sources.
 """
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -33,7 +34,7 @@ def fixture_coordinates(region):
     Return a set of sample coordinates at zero height.
     """
     shape = (40, 40)
-    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+    return bd.grid_coordinates(region=region, shape=shape, non_dimensional_coords=0)
 
 
 @pytest.fixture(name="points")
@@ -41,7 +42,9 @@ def fixture_points(region):
     """
     Return the coordinates of some sample point masses.
     """
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=-1e3)
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=-1e3
+    )
     return points
 
 
@@ -75,7 +78,7 @@ def fixture_coordinates_small(region):
     Return a small set of 25 coordinates and variable elevation.
     """
     shape = (8, 8)
-    return vd.grid_coordinates(region=region, shape=shape, extra_coords=0)
+    return bd.grid_coordinates(region=region, shape=shape, non_dimensional_coords=0)
 
 
 @pytest.fixture(name="data_small")
@@ -102,8 +105,8 @@ def test_get_region_data_sources(data_region, sources_region, expected_region):
     Test the EquivalentSourcesGB._get_region_data_sources method.
     """
     shape = (8, 10)
-    coordinates = vd.grid_coordinates(data_region, shape=shape)
-    points = vd.grid_coordinates(sources_region, shape=shape)
+    coordinates = bd.grid_coordinates(data_region, shape=shape)
+    points = bd.grid_coordinates(sources_region, shape=shape)
     region = _get_region_data_sources(coordinates, points)
     npt.assert_allclose(region, expected_region)
 
@@ -115,7 +118,9 @@ def test_custom_points(region, coordinates_small, data_small):
     # Pass a custom set of point sources
     points_custom = tuple(
         i.ravel()
-        for i in vd.grid_coordinates(region=region, shape=(3, 3), extra_coords=-550)
+        for i in bd.grid_coordinates(
+            region=region, shape=(3, 3), non_dimensional_coords=-550
+        )
     )
     eqs = EquivalentSourcesGB(points=points_custom, window_size=500, depth=500)
     eqs.fit(coordinates_small, data_small)
@@ -131,7 +136,9 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
     Test the estimate_required_memory class method.
     """
     region = (-1e3, 5e3, 2e3, 8e3)
-    coordinates = vd.grid_coordinates(region=region, spacing=spacing, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=spacing, non_dimensional_coords=0
+    )
     # Compute expected required memory
     sources_p_window = (int(window_size / spacing) + 1) ** 2
     data_p_window = (int(window_size / spacing) + 1) ** 2
@@ -181,7 +188,7 @@ def test_gradient_boosted_eqs_single_window(
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5, atol=atol)
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
+    grid = bd.grid_coordinates(region, shape=(60, 60), non_dimensional_coords=0)
     true = point_gravity(grid, points, masses, field="g_z")
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3, atol=atol)
 
@@ -203,7 +210,7 @@ def test_gradient_boosted_eqs_predictions(
 
     # Gridding onto a denser grid should be reasonably accurate when compared
     # to synthetic values
-    grid = vd.grid_coordinates(region, shape=(60, 60), extra_coords=0)
+    grid = bd.grid_coordinates(region, shape=(60, 60), non_dimensional_coords=0)
     true = point_gravity(grid, points, masses, field="g_z")
     # Error tolerance is 2% of the maximum data.
     npt.assert_allclose(true, eqs.predict(grid), rtol=0, atol=0.02 * vd.maxabs(true))
@@ -231,11 +238,13 @@ def test_same_number_of_windows_data_and_sources():
     spacing = 1
     # Create data points on a large region
     region = (1, 3, 1, 3)
-    coordinates = vd.grid_coordinates(region=region, spacing=spacing, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=spacing, non_dimensional_coords=0
+    )
     # Create source points on a smaller region
     sources_region = (1.5, 2.5, 1.5, 2.5)
-    points = vd.grid_coordinates(
-        region=sources_region, spacing=spacing, extra_coords=-10
+    points = bd.grid_coordinates(
+        region=sources_region, spacing=spacing, non_dimensional_coords=-10
     )
     # Create EquivalentSourcesGB
     eqs = EquivalentSourcesGB(window_size=spacing)
@@ -254,11 +263,13 @@ def test_same_windows_data_and_sources():
     spacing = 1
     # Create data points on a large region
     region = (1, 3, 1, 3)
-    coordinates = vd.grid_coordinates(region=region, spacing=spacing, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=spacing, non_dimensional_coords=0
+    )
     # Create source points on a subregion
     sources_region = (1, 2, 1, 3)
-    points = vd.grid_coordinates(
-        region=sources_region, spacing=spacing, extra_coords=-10
+    points = bd.grid_coordinates(
+        region=sources_region, spacing=spacing, non_dimensional_coords=-10
     )
     # Create EquivalentSourcesGB
     eqs = EquivalentSourcesGB(window_size=spacing)
@@ -308,7 +319,7 @@ def test_dtype(
     # Define the points argument for EquivalentSources
     points = None
     if custom_points:
-        points = vd.grid_coordinates(region, spacing=300, extra_coords=-2e3)
+        points = bd.grid_coordinates(region, spacing=300, non_dimensional_coords=-2e3)
     # Define the points argument for EquivalentSources.fit()
     if weights_none:
         weights = None
@@ -361,7 +372,9 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing deprecated arguments
     msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
     with pytest.raises(ValueError, match=msg):
@@ -375,7 +388,9 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesGB(window_size=500).fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing kwarg arguments that will be ignored
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
@@ -384,7 +399,9 @@ def test_error_ignored_args(coordinates_small, data_small, region):
 
 def test_window_size_less_than_5000():
     region = (0, 10e3, -5e3, 5e3)
-    grid_coords = vd.grid_coordinates(region=region, shape=(64, 64), extra_coords=0)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(64, 64), non_dimensional_coords=0
+    )
     grid_coords = [c.ravel() for c in grid_coords]
     eqs = EquivalentSourcesGB()
     eqs.points_ = eqs._build_points(
@@ -404,7 +421,9 @@ def test_window_size_less_than_5000():
 
 def test_window_size():
     region = (0, 10e3, -5e3, 5e3)
-    grid_coords = vd.grid_coordinates(region=region, shape=(100, 100), extra_coords=0)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(100, 100), non_dimensional_coords=0
+    )
     eqs = EquivalentSourcesGB()
     eqs.points_ = eqs._build_points(
         grid_coords

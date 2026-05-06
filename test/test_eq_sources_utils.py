@@ -12,7 +12,7 @@ import warnings
 
 import numpy as np
 import pytest
-from verde import scatter_points
+import verde as vd
 
 from harmonica._equivalent_sources.utils import cast_fit_input, pop_extra_coords
 
@@ -42,7 +42,7 @@ def test_cast_fit_input(weights_none, dtype):
     Test cast_fit_input function.
     """
     region = (-7e3, 4e3, 10e3, 25e3)
-    coordinates = scatter_points(region=region, size=100, random_state=42)
+    coordinates = vd.scatter_points(region=region, size=100, random_state=42)
     data = np.arange(coordinates[0].size, dtype="float64")
     weights = None if weights_none else np.ones_like(data)
     coordinates, data, weights = cast_fit_input(coordinates, data, weights, dtype)

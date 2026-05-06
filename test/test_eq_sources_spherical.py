@@ -8,6 +8,7 @@
 Test the EquivalentSourcesSph gridder.
 """
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -32,7 +33,9 @@ def fixture_points(region):
     Return the coordinates of some sample point masses.
     """
     radius = 6400e3
-    points = vd.grid_coordinates(region=region, shape=(6, 6), extra_coords=radius - 1e3)
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=radius - 1e3
+    )
     return points
 
 
@@ -50,7 +53,7 @@ def fixture_coordinates_small(region):
     Return a small set of 25 coordinates and variable elevation.
     """
     shape = (5, 5)
-    longitude, latitude = vd.grid_coordinates(region=region, shape=shape)
+    longitude, latitude = bd.grid_coordinates(region=region, shape=shape)
     radius = 6400e3 + np.arange(25, dtype=float).reshape(shape)
     coordinates = (longitude, latitude, radius)
     return coordinates
@@ -75,13 +78,13 @@ def test_equivalent_sources_spherical():  # pragma: no cover
     region = (-70, -60, -40, -30)
     radius = 6400e3
     # Build synthetic point masses
-    points = vd.grid_coordinates(
-        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=radius - 500e3
     )
     masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
-    coordinates = vd.grid_coordinates(
-        region=region, shape=(40, 40), extra_coords=radius
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(40, 40), non_dimensional_coords=radius
     )
     # Get synthetic data
     data = point_gravity(
@@ -97,7 +100,9 @@ def test_equivalent_sources_spherical():  # pragma: no cover
     # to synthetic values
     upward = radius
     shape = (60, 60)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=upward
+    )
     true = point_gravity(
         grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
@@ -116,12 +121,14 @@ def test_equivalent_sources_small_data_spherical():
     region = (-70, -60, -40, -30)
     radius = 6400e3
     # Build synthetic point masses
-    points = vd.grid_coordinates(
-        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=radius - 500e3
     )
     masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(8, 8), extra_coords=radius)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(8, 8), non_dimensional_coords=radius
+    )
     # Get synthetic data
     data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
@@ -141,7 +148,9 @@ def test_equivalent_sources_small_data_spherical():
     # to synthetic values
     upward = radius + 2e3
     shape = (8, 8)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=upward
+    )
     true = point_gravity(
         grid_coords, points, masses, field="g_z", coordinate_system="spherical"
     )
@@ -160,12 +169,14 @@ def test_equivalent_sources_custom_points_spherical():
     region = (-70, -60, -40, -30)
     radius = 6400e3
     # Build synthetic point masses
-    points = vd.grid_coordinates(
-        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=radius - 500e3
     )
     masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
-    coordinates = vd.grid_coordinates(region=region, shape=(5, 5), extra_coords=radius)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(5, 5), non_dimensional_coords=radius
+    )
     # Get synthetic data
     data = point_gravity(
         coordinates, points, masses, field="g_z", coordinate_system="spherical"
@@ -174,8 +185,8 @@ def test_equivalent_sources_custom_points_spherical():
     # Pass a custom set of point sources
     points_custom = tuple(
         i.ravel()
-        for i in vd.grid_coordinates(
-            region=region, shape=(3, 3), extra_coords=radius - 500e3
+        for i in bd.grid_coordinates(
+            region=region, shape=(3, 3), non_dimensional_coords=radius - 500e3
         )
     )
     eqs = EquivalentSourcesSph(points=points_custom)
@@ -220,13 +231,13 @@ def test_equivalent_sources_spherical_parallel():  # pragma: no cover
     region = (-70, -60, -40, -30)
     radius = 6400e3
     # Build synthetic point masses
-    points = vd.grid_coordinates(
-        region=region, shape=(6, 6), extra_coords=radius - 500e3
+    points = bd.grid_coordinates(
+        region=region, shape=(6, 6), non_dimensional_coords=radius - 500e3
     )
     masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
     # Define a set of observation points
-    coordinates = vd.grid_coordinates(
-        region=region, shape=(40, 40), extra_coords=radius
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(40, 40), non_dimensional_coords=radius
     )
     # Get synthetic data
     data = point_gravity(
@@ -242,7 +253,9 @@ def test_equivalent_sources_spherical_parallel():  # pragma: no cover
 
     upward = radius
     shape = (60, 60)
-    grid_coords = vd.grid_coordinates(region=region, shape=shape, extra_coords=upward)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=shape, non_dimensional_coords=upward
+    )
     grid_serial = eqs_serial.grid(grid_coords)
     grid_parallel = eqs_parallel.grid(grid_coords)
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
@@ -264,7 +277,9 @@ def test_error_deprecated_args(coordinates_small, data_small, region, deprecated
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing deprecated arguments
     msg = "The 'upward', 'region', 'shape' and 'spacing' arguments have been"
     with pytest.raises(ValueError, match=msg):
@@ -278,7 +293,9 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     # Define sample equivalent sources and fit against synthetic data
     eqs = EquivalentSourcesSph().fit(coordinates_small, data_small)
     # Build a target grid
-    grid_coords = vd.grid_coordinates(region=region, shape=(4, 4), extra_coords=2e3)
+    grid_coords = bd.grid_coordinates(
+        region=region, shape=(4, 4), non_dimensional_coords=2e3
+    )
     # Try to grid passing kwarg arguments that will be ignored
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
