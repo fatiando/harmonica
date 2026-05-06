@@ -39,13 +39,13 @@ print(b_u)
 # In[6]:
 
 
-import verde as vd
+import bordado as bd
 
 region = (-100, 100, -100, 100)
 spacing = 1
 height = 0
-coordinates = vd.grid_coordinates(
-   region=region, spacing=spacing, extra_coords=height
+coordinates = bd.grid_coordinates(
+   region=region, spacing=spacing, non_dimensional_coords=height
 )
 
 

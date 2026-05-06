@@ -51,7 +51,7 @@ fig.show()
 import boule as bl
 
 ellipsoid = bl.WGS84
-normal_gravity = ellipsoid.normal_gravity(gravity.latitude, gravity.height)
+normal_gravity = ellipsoid.normal_gravity((gravity.longitude, gravity.latitude, gravity.height))
 
 
 # In[5]:

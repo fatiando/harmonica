@@ -70,10 +70,10 @@ height:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
-   coordinates = vd.grid_coordinates(
-       region=(-250, 1250, -250, 1250), shape=(40, 40), extra_coords=0
+   coordinates = bd.grid_coordinates(
+       region=(-250, 1250, -250, 1250), shape=(40, 40), non_dimensional_coords=0
    )
 
 And finally calculate the vertical component of the gravitational acceleration
@@ -106,6 +106,7 @@ Lets plot this gravitational field:
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
 
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
@@ -153,7 +154,7 @@ Then we can define the point source in the equator along with its mass:
 .. jupyter-execute::
 
    longitude, latitude = 45, 0
-   radius = ellipsoid.geocentric_radius(latitude, geodetic=False)
+   radius = ellipsoid.geocentric_radius(latitude, coordinate_system="spherical")
    point = (longitude, latitude, radius)
 
    mass = 1e6
@@ -200,10 +201,10 @@ coordinates and located at 1km above the ellipsoid:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=(-72, -68, -46, -42),
        shape=(101, 101),
-       extra_coords=20e3,
+       non_dimensional_coords=20e3,
    )
 
 Before we can start forward modelling these sources, we need to convert them to
@@ -212,8 +213,8 @@ spherical coordinates. To do so, we can use the
 
 .. jupyter-execute::
 
-   points_spherical = ellipsoid.geodetic_to_spherical(*points)
-   coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates)
+   points_spherical = ellipsoid.geodetic_to_spherical(points)
+   coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates)
 
 We can finally use these converted coordinates to compute the gravitational
 field the source generate on every computation point:

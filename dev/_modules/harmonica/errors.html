@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>harmonica._euler_deconvolution | Harmonica dev</title>
+        <title>harmonica.errors | Harmonica dev</title>
     
 
   
@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -58,7 +58,7 @@
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/_euler_deconvolution';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/errors';</script>
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -215,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -227,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +253,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -354,7 +363,7 @@
       
       
       
-      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/_euler_deconvolution.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/errors.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -432,7 +441,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for harmonica._euler_deconvolution</h1><div class="highlight"><pre>
+  <h1>Source code for harmonica.errors</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
@@ -440,165 +449,16 @@ document.write(`
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Classes for Euler Deconvolution of potential field data</span>
+<span class="sd">Custom errors and warnings.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">verde.base</span> <span class="k">as</span> <span class="nn">vdb</span>
 
 
-<div class="viewcode-block" id="EulerDeconvolution">
-<a class="viewcode-back" href="../../api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution">[docs]</a>
-<span class="k">class</span> <span class="nc">EulerDeconvolution</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Estimate source location and base level using Euler Deconvolution</span>
-
-<span class="sd">    Implements Euler Deconvolution [Reid1990]_ to estimate subsurface source</span>
-<span class="sd">    location and a base level constant from potential field data and their</span>
-<span class="sd">    directional derivatives. The approach employs linear least-squares to solve</span>
-<span class="sd">    Euler&#39;s homogeneity equation. **Assumes a single data window** and provides</span>
-<span class="sd">    a single estimate.</span>
-
-<span class="sd">    .. hint::</span>
-
-<span class="sd">        Please read the paper [Reid2014]_ to avoid doing **horrible things**</span>
-<span class="sd">        with Euler deconvolution. [Uieda2014]_ offer a practical tutorial using</span>
-<span class="sd">        `legacy Fatiando a Terra &lt;https://legacy.fatiando.org/&gt;`__ code to show</span>
-<span class="sd">        some common misinterpretations.</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">        Does not yet support structural index 0.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    structural_index : int</span>
-<span class="sd">        Defines the nature of the source of the potential field data. It&#39;s the</span>
-<span class="sd">        degree of the field&#39;s rate of change with distance from the source,</span>
-<span class="sd">        influencing the decay rate of the field and the formulation of Euler&#39;s</span>
-<span class="sd">        homogeneity equation. **Correlated with the depth estimate**, so larger</span>
-<span class="sd">        structural index will lead to larger depths. **Choose based on known</span>
-<span class="sd">        source geometry**. See table below.</span>
-
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    location_ : 1d-array</span>
-<span class="sd">        Estimated (easting, northing, upward) coordinates of the source after</span>
-<span class="sd">        model fitting.</span>
-<span class="sd">    base_level_ : float</span>
-<span class="sd">        Estimated base level constant of the anomaly after model fitting.</span>
-<span class="sd">    covariance_ : 2d-array</span>
-<span class="sd">        The 4 x 4 estimated covariance matrix of the solution. Parameters are</span>
-<span class="sd">        in the order: easting, northing, upward, base level. **This is not an</span>
-<span class="sd">        uncertainty of the position** but a rough estimate of their variance</span>
-<span class="sd">        with regard to the data.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-
-<span class="sd">    Works on any potential field that satisfies Euler&#39;s homogeneity equation</span>
-<span class="sd">    (like gravity, magnetic, and their gradients caused by **simple sources**):</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        (e_i - e_0)\dfrac{\partial f_i}{\partial e} +</span>
-<span class="sd">        (n_i - n_0)\dfrac{\partial f_i}{\partial n} +</span>
-<span class="sd">        (u_i - u_0)\dfrac{\partial f_i}{\partial u} =</span>
-<span class="sd">        \eta (b - f_i),</span>
-
-<span class="sd">    in which :math:`f_i` is the given potential field observation at point</span>
-<span class="sd">    :math:`(e_i, n_i, u_i)`, :math:`b` is the base level (a constant shift of</span>
-<span class="sd">    the field, like a regional field), :math:`\eta` is the structural index,</span>
-<span class="sd">    and :math:`(e_0, n_0, u_0)` are the coordinates of a point on the source</span>
-<span class="sd">    (for a sphere, this is the center point).</span>
-
-<span class="sd">    The Euler deconvolution estimates :math:`(e_0, n_0, u_0)` and :math:`b`</span>
-<span class="sd">    given a potential field and its easting, northing, and upward derivatives</span>
-<span class="sd">    and the structural index. However, **this assumes that the sources are</span>
-<span class="sd">    ideal** (see the table below). We recommend reading [ReidThurston2014]_ for</span>
-<span class="sd">    a discussion on what the structural index means and what it does not mean.</span>
-
-<span class="sd">    After [ReidThurston2014]_, values of the structural index (SI) can be:</span>
-
-<span class="sd">    ===================================== ======== =========</span>
-<span class="sd">    Source type                           SI (Mag) SI (Grav)</span>
-<span class="sd">    ===================================== ======== =========</span>
-<span class="sd">    Point, sphere                            3         2</span>
-<span class="sd">    Line, cylinder, thin bed fault           2         1</span>
-<span class="sd">    Thin sheet edge, thin sill, thin dyke    1         0</span>
-<span class="sd">    ===================================== ======== =========</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_index</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">=</span> <span class="n">structural_index</span>
-        <span class="c1"># The estimated parameters. Start them with None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">location_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_level_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="EulerDeconvolution.fit">
-<a class="viewcode-back" href="../../api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit the model using potential field measurements and their derivatives.</span>
-
-<span class="sd">        Solves Euler&#39;s homogeneity equation to estimate the source location</span>
-<span class="sd">        and base level by utilizing field values and their spatial derivatives</span>
-<span class="sd">        in easting, northing, and upward directions.</span>
-
-<span class="sd">        .. tip::</span>
-
-<span class="sd">            Data does not need to be gridded for this to work.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        coordinates : tuple of arrays</span>
-<span class="sd">            Tuple of 3 with the coordinates of each data point. Should be in</span>
-<span class="sd">            the following order: ``(easting, northing, upward)``.</span>
-<span class="sd">            Arrays can be n-dimensional but must all have the same shape.</span>
-<span class="sd">        data : tuple of arrays</span>
-<span class="sd">            Tuple of 4 arrays with the observed data in the following order:</span>
-<span class="sd">            ``(potential_field, derivative_easting, derivative_northing,</span>
-<span class="sd">            derivative_upward)``. Arrays can be n-dimensional but must all have</span>
-<span class="sd">            the same shape as the coordinates. Derivatives must be in data</span>
-<span class="sd">            units over coordinates units, for example nT/m or mGal/m.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        self</span>
-<span class="sd">            The instance itself, updated with the estimated `location_`</span>
-<span class="sd">            and `base_level_`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="n">field</span><span class="p">,</span> <span class="n">east_deriv</span><span class="p">,</span> <span class="n">north_deriv</span><span class="p">,</span> <span class="n">up_deriv</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span> <span class="o">=</span> <span class="n">vdb</span><span class="o">.</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">n_data</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_data</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">east_deriv</span>
-        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">north_deriv</span>
-        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">up_deriv</span>
-        <span class="n">jacobian</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span>
-        <span class="n">pseudo_data</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">easting</span> <span class="o">*</span> <span class="n">east_deriv</span>
-            <span class="o">+</span> <span class="n">northing</span> <span class="o">*</span> <span class="n">north_deriv</span>
-            <span class="o">+</span> <span class="n">upward</span> <span class="o">*</span> <span class="n">up_deriv</span>
-            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">structural_index</span> <span class="o">*</span> <span class="n">field</span>
-        <span class="p">)</span>
-        <span class="n">hessian</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">jacobian</span>
-        <span class="c1"># Invert the Hessian instead of solving the system because this is a</span>
-        <span class="c1"># 4x4 system and it won&#39;t cost much more, plus we need the inverse</span>
-        <span class="c1"># anyway to estimate the covariance matrix (used as a filtering</span>
-        <span class="c1"># criterion in windowed implementations)</span>
-        <span class="n">hessian_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
-        <span class="n">estimate</span> <span class="o">=</span> <span class="n">hessian_inv</span> <span class="o">@</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">pseudo_data</span>
-        <span class="n">pseudo_residuals</span> <span class="o">=</span> <span class="n">pseudo_data</span> <span class="o">-</span> <span class="n">jacobian</span> <span class="o">@</span> <span class="n">estimate</span>
-        <span class="n">chi_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pseudo_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_data</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">*</span> <span class="n">hessian_inv</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">location_</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_level_</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-</div>
+<div class="viewcode-block" id="NoPhysicalPropertyWarning">
+<a class="viewcode-back" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html#harmonica.errors.NoPhysicalPropertyWarning">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NoPhysicalPropertyWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Warning raised when a source lacks the physical property needed to forward model it.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
 </pre></div>
 
@@ -636,7 +496,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on May 06, 2026.
   <br/>
 </p>
   </div>

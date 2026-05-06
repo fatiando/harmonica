@@ -21,7 +21,7 @@
 Reduction to the pole of a magnetic anomaly grid
 ================================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-78
+.. GENERATED FROM PYTHON SOURCE LINES 11-68
 
 
 
@@ -38,22 +38,23 @@ Reduction to the pole of a magnetic anomaly grid
 
     Reduced to the pole magnetic grid:
      <xarray.DataArray (northing: 370, easting: 346)> Size: 1MB
-    array([[  14.15546834,   10.38425778,   10.01995891, ..., -219.8102288 ,
-            -210.9302948 , -179.38411068],
-           [  -3.21249403,   -9.37124449,  -10.96593068, ..., -165.15297526,
-            -158.09589683, -133.29346492],
-           [  -2.32174677,   -9.44940979,  -11.35233997, ..., -170.79739203,
-            -165.2567305 , -141.04626566],
+    array([[ -47.00485345,  -46.04625474,  -46.18113325, ..., -143.64897504,
+            -143.47859109, -142.95056386],
+           [ -46.79976423,  -45.95806362,  -46.22151837, ..., -145.37548214,
+            -145.2125837 , -144.81709706],
+           [ -49.07964615,  -48.24975368,  -48.44025318, ..., -147.16229862,
+            -146.93449916, -146.44257154],
            ...,
-           [  45.45701952,  -24.80999268,  -51.27393509, ...,  -40.42602057,
-             -64.12371145,  -75.97556295],
-           [  36.9104954 ,  -37.13717695,  -58.40650833, ...,  -34.55584156,
-             -55.6561726 ,  -71.01718702],
-           [-102.42450988, -155.67867833, -165.96638688, ...,  -36.95818214,
-             -35.0401052 ,  -40.15055123]])
+           [  88.66121321,   71.02597182,   53.23290517, ...,  -73.68480688,
+            -115.25167392, -140.59692751],
+           [  85.67547575,   69.48843276,   52.69627969, ...,  -76.97781436,
+            -117.42227187, -142.21801708],
+           [  83.45380812,   67.73864462,   51.48823857, ...,  -83.83587177,
+            -122.62522701, -146.42189311]], shape=(370, 346))
     Coordinates:
-      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
       * northing  (northing) float64 3kB 7.576e+06 7.576e+06 ... 7.595e+06 7.595e+06
+      * easting   (easting) float64 3kB 4.655e+05 4.656e+05 ... 4.827e+05 4.828e+05
+        height    (northing, easting) float64 1MB 500.0 500.0 500.0 ... 500.0 500.0
 
 
 
@@ -64,11 +65,11 @@ Reduction to the pole of a magnetic anomaly grid
 
 .. code-block:: Python
 
+
     import ensaio
     import pygmt
     import verde as vd
     import xarray as xr
-    import xrft
 
     import harmonica as hm
 
@@ -76,15 +77,6 @@ Reduction to the pole of a magnetic anomaly grid
     # Ensaio and load it with Xarray
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
-
-    # Pad the grid to increase accuracy of the FFT filter
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-    # drop the extra height coordinate
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
     # Define the inclination and declination of the region by the time of the data
     # acquisition (1990).
@@ -94,15 +86,14 @@ Reduction to the pole of a magnetic anomaly grid
     # that the sources share the same inclination and declination as the
     # geomagnetic field.
     rtp_grid = hm.reduction_to_pole(
-        magnetic_grid_padded, inclination=inclination, declination=declination
+        magnetic_grid,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=inclination,
+        magnetization_declination=declination,
     )
-
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid, pad_width)
-
     # Show the reduced to the pole grid
     print("\nReduced to the pole magnetic grid:\n", rtp_grid)
-
 
     # Plot original magnetic anomaly and the reduced to the pole
     fig = pygmt.Figure()
@@ -135,7 +126,7 @@ Reduction to the pole of a magnetic anomaly grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.623 seconds)
+   **Total running time of the script:** (0 minutes 0.781 seconds)
 
 
 .. _sphx_glr_download_gallery_transformations_reduction_to_pole.py:

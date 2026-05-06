@@ -36,6 +36,11 @@ boundaries in the following order: *west*, *east*, *south*, *north*, *bottom*,
 *top*, where the former four are its longitudinal and latitudinal boundaries in
 decimal degrees and the latter two are the two radii given in meters.
 
+These two radii represent the top and bottom surfaces of the tesseroid, and should be
+given as distances from the center of the Earth. Note this is different from the
+vertical boundaries used for **prisms** in Cartesian coordinates, which are given as
+heights above or below some reference level (e.g., mean sea level or a reference ellipsoid).
+
 .. note::
 
    The :func:`harmonica.tesseroid_gravity` numerically computed the
@@ -45,7 +50,7 @@ decimal degrees and the latter two are the two radii given in meters.
 
 
 Lets define a single tesseroid and compute the gravitational potential
-it generates on a regular grid of computation points located at 10 km  above
+it generates on a regular grid of computation points located at 10 km above
 its *top* boundary.
 
 Get the WGS84 reference ellipsoid from :mod:`boule` so we can obtain its mean
@@ -70,12 +75,12 @@ the *top* surface of the tesseroid:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + mean_radius,
+       non_dimensional_coords=100e3 + mean_radius,
    )
 
 Lets compute the *downward* component of the gravitational acceleration it
@@ -111,6 +116,8 @@ And finally plot the computed gravitational field
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
+
    grid = vd.make_xarray_grid(
       coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
@@ -127,6 +134,15 @@ And finally plot the computed gravitational field
 
    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroid
+   fig.plot(
+      x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+      y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+      pen="1p,red",
+      label="Tesseroid boundary",
+   )
+   fig.legend()
 
    fig.show()
 
@@ -154,10 +170,10 @@ Compute their gravitational effect on a grid of computation points:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + mean_radius,
+       non_dimensional_coords=100e3 + mean_radius,
    )
    gravity = hm.tesseroid_gravity(coordinates, tesseroids, densities, field="g_z")
 
@@ -181,6 +197,20 @@ And plot the results:
 
    fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
 
    fig.show()
 
@@ -235,10 +265,10 @@ above the mean Earth radius:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + ellipsoid.mean_radius,
+       non_dimensional_coords=100e3 + ellipsoid.mean_radius,
    )
 
 And compute the gravitational fields the tesseroids generate:
@@ -264,9 +294,22 @@ Finally, lets plot it:
          frame=["a", f"+t{title}"],
          cmap="viridis",
       )
-
    fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
 
    fig.show()
 
