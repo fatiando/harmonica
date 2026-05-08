@@ -68,15 +68,16 @@ Required:
 
 * `numpy <http://www.numpy.org/>`__
 * `pandas <http://pandas.pydata.org/>`__
-* `numba <https://numba.pydata.org/>`__
 * `scipy <https://www.scipy.org/>`__
-* `xarray <https://xarray.pydata.org/>`__
 * `scikit-learn <https://scikit-learn.org>`__
-* `pooch <http://www.fatiando.org/pooch/>`__
+* `numba <https://numba.pydata.org/>`__
+* `xarray <https://xarray.pydata.org/>`__
 * `verde <http://www.fatiando.org/verde/>`__
 * `bordado <http://www.fatiando.org/bordado/>`__
 * `boule <http://www.fatiando.org/boule/>`__
 * `xrft <https://xrft.readthedocs.io/>`__
+* `choclo <http://www.fatiando.org/choclo/>`__
+* `boule <http://www.fatiando.org/boule/>`__
 
 Optional:
 
@@ -95,5 +96,6 @@ Optional:
 The examples in the :ref:`gallery` also use:
 
 * `ensaio <http://www.fatiando.org/ensaio/>`__ for downloading sample datasets
-* `pygmt <https://www.pygmt.org/>`__ for plotting maps
+* `pygmt <https://www.pygmt.org/>`__ and `matplotlib <https://matplotlib.org/>`__ for plotting maps and figures
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
+* `bordado <http://www.fatiando.org/bordado/>`__ for working with geographic coordinates

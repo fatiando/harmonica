@@ -57,7 +57,7 @@ Lets start by loading a sample gravity dataset for the whole Earth:
 
    fname = ensaio.fetch_earth_gravity(version=1)
    gravity = xr.load_dataarray(fname)
-   print(gravity)
+   gravity
 
 These observations are located on a regular grid on geodetic coordinates at the
 same height of 10 km above the reference ellipsoid.
@@ -89,7 +89,7 @@ Lets plot it:
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
        position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"observed gravity"'],
+       frame=["af", 'y+lmGal', 'x+lObserved gravity'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
@@ -122,7 +122,7 @@ And plot it:
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
        position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"normal gravity"'],
+       frame=["af", 'y+lmGal', 'x+lNormal gravity'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
@@ -132,7 +132,7 @@ Now we can compute the gravity disturbance:
 .. jupyter-execute::
 
    gravity_disturbance = gravity - normal_gravity
-   print(gravity_disturbance)
+   gravity_disturbance
 
 And plot it:
 
@@ -140,10 +140,10 @@ And plot it:
 
    import verde as vd
 
-   maxabs = vd.maxabs(gravity_disturbance)
+   maxabs = vd.maxabs(gravity_disturbance, percentile=98)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(series=[-maxabs, maxabs], cmap="polar+h")
+   pygmt.makecpt(series=[-maxabs, maxabs], cmap="balance+h0", background=True)
    fig.grdimage(
        gravity_disturbance,
        projection="W20c",
@@ -152,8 +152,8 @@ And plot it:
    )
    fig.basemap(frame=["af", "WEsn"])
    fig.colorbar(
-       position="JCB+w10c",
-       frame=["af", 'y+l"mGal"', 'x+l"gravity disturbance"'],
+       position="JCB+w10c+e",
+       frame=["a20f10", 'y+lmGal', 'x+lGravity disturbance'],
    )
    fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
    fig.show()
