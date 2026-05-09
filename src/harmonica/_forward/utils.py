@@ -349,7 +349,7 @@ def initialize_progressbar(total, use_progressbar):
         Number of iterations that will be assumed as the total for the
         :class:`numba_progress.ProgressBar`.
     use_progressbar : bool
-        Weather to initialize a progressbar or not. If True, then the function
+        Whether to initialize a progressbar or not. If True, then the function
         will return None.
 
     Returns
