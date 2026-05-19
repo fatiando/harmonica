@@ -162,10 +162,10 @@ jobs:
         if: success() && github.event_name == 'push'
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
-          repository_url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
           # Allow existing releases on test PyPI without errors.
           # NOT TO BE USED in PyPI!
-          skip_existing: true
+          skip-existing: true
 
       - name: Publish to PyPI
         # Only publish to PyPI when a release triggers the build
