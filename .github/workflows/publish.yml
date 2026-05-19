@@ -1,0 +1,173 @@
+# Build and publish packages to PyPI and documentation to GitHub Pages
+#
+name: publish
+
+# Only pushed to the main branch and releases.
+on:
+  push:
+    branches:
+      - main
+      - cache-poisoning
+  release:
+    types:
+      - published
+
+permissions: {}
+
+# Use bash by default in all jobs
+defaults:
+  run:
+    # The -l {0} is necessary for conda environments to be activated
+    # But this breaks on MacOS if using actions/setup-python:
+    # https://github.com/actions/setup-python/issues/132
+    # -e makes sure builds fail if any command fails
+    shell: bash -e -l {0}
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      # Grant write permissions so that we can push to gh-pages
+      contents: write
+      # This permission allows trusted publishing to PyPI (without an API token)
+      id-token: write
+    environment: pypi
+    env:
+      REQUIREMENTS: env/requirements-docs.txt env/requirements-build.txt
+      PYTHON: "3.14"
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      # Need the tags so that setuptools-scm can form a valid version number
+      - name: Fetch git tags
+        run: git fetch origin 'refs/tags/*:refs/tags/*'
+
+      - name: Setup Miniforge
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167
+        with:
+          python-version: ${{ env.PYTHON }}
+          miniforge-version: latest
+          channels: conda-forge
+          conda-remove-defaults: "true"
+          activate-environment: harmonica-docs
+          environment-file: .github/environment.yml
+
+      - name: List installed packages
+        run: conda list
+
+      - name: Build source and wheel distributions
+        run: |
+          make build
+          echo ""
+          echo "Generated files:"
+          ls -lh dist/
+
+      - name: Check the archives
+        run: twine check dist/*
+
+      - name: Install the package
+        run: python -m pip install --no-deps dist/*.whl
+
+      - name: Build the documentation
+        run: make -C doc clean all
+
+      - name: Checkout the gh-pages branch in a separate folder
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: gh-pages
+          # Checkout to this folder instead of the current one
+          path: deploy
+          # Download the entire history
+          fetch-depth: 0
+          # We need to explicitly preserve the credentials for the GitHub token
+          # on this branch so we can push to it.
+          persist-credentials: true
+
+      - name: Push the built HTML to gh-pages
+        if: success()
+        run: |
+          # Detect if this is a release or from the main branch
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            # Get the tag name without the "refs/tags/" part
+            version="${GITHUB_REF#refs/*/}"
+          else
+            version=dev
+          fi
+          echo "Deploying version: $version"
+
+          # Make the new commit message. Needs to happen before cd into deploy
+          # to get the right commit hash.
+          message="Deploy $version from $(git rev-parse --short HEAD)"
+
+          cd deploy || exit 1
+
+          # Need to have this file so that Github doesn't try to run Jekyll
+          touch .nojekyll
+
+          # Delete all the files and replace with our new  set
+          echo -e "\nRemoving old files from previous builds of ${version}:"
+          rm -rvf "${version}"
+          echo -e "\nCopying HTML files to ${version}:"
+          cp -Rvf ../doc/_build/html/ "${version}/"
+
+          # If this is a new release, update the link from /latest to it
+          if [[ "${version}" != "dev" ]]; then
+            echo -e "\nSetup link from ${version} to 'latest'."
+            rm -f latest
+            ln -sf "${version}" latest
+          fi
+
+          # Stage the commit
+          git add -A .
+          echo -e "\nChanges to be applied:"
+          git status
+
+          # Configure git to be the GitHub Actions account
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          # If this is a dev build and the last commit was from a dev build
+          # (detect if "dev" was in the previous commit message), reuse the
+          # same commit
+          if [[ "${version}" == "dev" && $(git log -1 --format='%s') == *"dev"* ]]; then
+            echo -e "\nAmending last commit:"
+            git commit --amend --reset-author -m "$message"
+          else
+            echo -e "\nMaking a new commit:"
+            git commit -m "$message"
+          fi
+
+          # Make the push quiet just in case there is anything that could leak
+          # sensitive information.
+          echo -e "\nPushing changes to gh-pages."
+          { git push -fq origin gh-pages > /dev/null; } 2>&1
+
+          echo -e "\nFinished uploading generated files."
+
+      - name: Publish to Test PyPI
+        # Only publish to TestPyPI when a PR is merged (pushed to main)
+        if: success() && github.event_name == 'push'
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
+        with:
+          repository_url: https://test.pypi.org/legacy/
+          # Allow existing releases on test PyPI without errors.
+          # NOT TO BE USED in PyPI!
+          skip_existing: true
+
+      - name: Publish to PyPI
+        # Only publish to PyPI when a release triggers the build
+        if: success() && github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
