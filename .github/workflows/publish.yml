@@ -35,7 +35,7 @@ jobs:
     environment: pypi
     env:
       REQUIREMENTS: env/requirements-docs.txt env/requirements-build.txt
-      PYTHON: "3.14"
+      PYTHON: "3.12"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
