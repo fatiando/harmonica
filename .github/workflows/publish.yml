@@ -72,6 +72,13 @@ jobs:
       - name: List installed packages
         run: conda list
 
+      - name: Don't use local version numbers for PyPI uploads
+        run: |
+          # Change setuptools-scm local_scheme to "no-local-version" so the
+          # local part of the version isn't included, making the version string
+          # compatible with Test PyPI.
+          sed --in-place "s/node-and-date/no-local-version/g" pyproject.toml
+
       - name: Build source and wheel distributions
         run: |
           make build
