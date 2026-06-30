@@ -52,7 +52,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup caching for conda packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ env.PYTHON }}-${{ hashFiles('.github/environment.yml') }}
