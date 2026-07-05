@@ -494,3 +494,22 @@ def test_zero_depth():
     msg = "Depth value cannot be zero. It should be a non-zero numeric value."
     with pytest.raises(ValueError, match=msg):
         EquivalentSources(depth=zero_depth)
+
+
+@pytest.mark.parametrize("spacing", [100, 500, 1e3])
+@pytest.mark.parametrize(("dtype", "itemsize"), [("float32", 4), ("float64", 8)])
+def test_memory_estimation(spacing, dtype, itemsize):
+    """
+    Test the estimate_required_memory class method.
+    """
+    region = (-1e3, 5e3, 2e3, 8e3)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=spacing, non_dimensional_coords=0
+    )
+    # Compute expected required memory
+    n_data = coordinates[0].size
+    expected_required_memory = n_data * n_data * itemsize
+    # Estimate required memory
+    eqs = EquivalentSources(dtype=dtype)
+    required_memory = eqs.estimate_required_memory(coordinates)
+    assert required_memory == expected_required_memory
