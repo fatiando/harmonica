@@ -300,3 +300,21 @@ def test_error_ignored_args(coordinates_small, data_small, region):
     msg = "The 'bla' arguments are being ignored."
     with pytest.warns(FutureWarning, match=msg):
         eqs.grid(coordinates=grid_coords, bla="bla")
+
+
+@pytest.mark.parametrize("spacing", [100, 500, 1e3])
+def test_memory_estimation(spacing):
+    """
+    Test the estimate_required_memory class method.
+    """
+    region = (-1e3, 5e3, 2e3, 8e3)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=spacing, non_dimensional_coords=0
+    )
+    # Compute expected required memory
+    n_data = coordinates[0].size
+    expected_required_memory = n_data * n_data * 8
+    # Estimate required memory
+    eqs = EquivalentSourcesSph()
+    required_memory = eqs.estimate_required_memory(coordinates)
+    assert required_memory == expected_required_memory

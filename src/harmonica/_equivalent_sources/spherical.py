@@ -106,7 +106,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
     # as xr.Dataset.
     dims = ("spherical_latitude", "longitude")
 
-    # Overwrite the defalt name for the upward coordinate.
+    # Overwrite the default name for the upward coordinate.
     extra_coords_name = "radius"
 
     def __init__(
@@ -122,6 +122,56 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         self.parallel = parallel
         # Define Green's function for spherical coordinates
         self.greens_function = greens_func_spherical
+
+    def estimate_required_memory(self, coordinates):
+        """
+        Estimate the memory required for storing the Jacobian matrix.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
+
+        Returns
+        -------
+        memory_required : int
+            Amount of memory required to store the Jacobian matrix in
+            bytes.
+
+        Examples
+        --------
+        >>> import bordado as bd
+        >>> coordinates = bd.random_coordinates(
+        ...     region=(-70, -60, -40, -30),
+        ...     size=100,
+        ...     non_dimensional_coords=100,
+        ...     random_seed=42,
+        ... )
+        >>> eqs = EquivalentSourcesSph()
+        >>> n_bytes = eqs.estimate_required_memory(coordinates)
+        >>> int(n_bytes)
+        80000
+        """
+        # Build the sources and assign the points_ attribute
+        coordinates = vdb.n_1d_arrays(coordinates, 3)
+        if self.points is None:
+            points = (
+                coordinates[0],
+                coordinates[1],
+                coordinates[2] - self.relative_depth,
+            )
+        else:
+            points = vdb.n_1d_arrays(self.points, 3)
+        # Get the number of sources and data
+        n_data = coordinates[0].size
+        n_points = points[0].size
+        # Compute the size of the Jacobian matrix
+        jacobian_size = n_data * n_points
+        # Estimate size of a single element of the Jacobian matrix in bytes
+        return jacobian_size * np.dtype(coordinates[0].dtype).itemsize
 
     def fit(self, coordinates, data, weights=None):
         """
