@@ -183,7 +183,9 @@ def test_gradient_boosted_eqs_single_window(
     Test GB eq-sources with a single window that covers the whole region.
     """
     atol = 5e-8
-    eqs = EquivalentSourcesGB(depth=500, window_size=region[1] - region[0])
+    eqs = EquivalentSourcesGB(
+        depth=500, window_size=region[1] - region[0], damping=1e-18
+    )
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5, atol=atol)
     # Gridding onto a denser grid should be reasonably accurate when compared
@@ -201,7 +203,9 @@ def test_gradient_boosted_eqs_predictions(
     Test GB eq-sources predictions.
     """
     # The interpolation should be sufficiently accurate on the data points
-    eqs = EquivalentSourcesGB(window_size=1e3, depth=1e3, damping=None, random_state=42)
+    eqs = EquivalentSourcesGB(
+        window_size=1e3, depth=1e3, damping=1e-24, random_state=42
+    )
     eqs.fit(coordinates, data)
     # Error tolerance is 2% of the maximum data.
     npt.assert_allclose(

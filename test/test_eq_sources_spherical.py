@@ -92,7 +92,7 @@ def test_equivalent_sources_spherical():  # pragma: no cover
     )
 
     # The interpolation should be perfect on the data points
-    eqs = EquivalentSourcesSph(relative_depth=500e3)
+    eqs = EquivalentSourcesSph(relative_depth=500e3, damping=1e-18)
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1.3e-5, atol=1e-11)
 
@@ -135,7 +135,7 @@ def test_equivalent_sources_small_data_spherical():
     )
 
     # The interpolation should be perfect on the data points
-    eqs = EquivalentSourcesSph(relative_depth=500e3)
+    eqs = EquivalentSourcesSph(relative_depth=500e3, damping=1e-12)
     eqs.fit(coordinates, data)
     npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
 
