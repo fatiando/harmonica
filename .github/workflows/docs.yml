@@ -88,3 +88,11 @@ jobs:
           sleep 3
           # Build the docs
           make -C doc clean all
+
+      # Store the docs as a build artifact so we can deploy it later
+      - name: Upload HTML documentation as an artifact
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-${{ github.sha }}
+          path: doc/_build/html
