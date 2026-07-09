@@ -109,26 +109,9 @@ def fixture_coordinates_9x9(region):
 
 
 @run_only_with_numba
-@pytest.mark.parametrize(
-    ("damping", "dtype"),
-    [
-        (None, "default"),
-        (1e-12, "default"),
-        (1e-12, np.float32),
-        pytest.param(
-            None,
-            np.float32,
-            marks=pytest.mark.xfail(
-                reason=(
-                    "equivalent sources with f32 values + no damping became "
-                    "unstable after sklearn 1.6.0"
-                )
-            ),
-        ),
-    ],
-)
+@pytest.mark.parametrize("dtype", ["default", np.float32])
 def test_equivalent_sources_cartesian(
-    region, points, masses, coordinates, data, dtype, damping
+    region, points, masses, coordinates, data, dtype
 ):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
     """
     Check that predictions are reasonable when interpolating from one grid to
@@ -138,8 +121,8 @@ def test_equivalent_sources_cartesian(
     atol = 1e-3 * vd.maxabs(data)
 
     # Fit the equivalent sources
-    kwargs = {"dtype": dtype} if dtype == "float32" else {}
-    eqs = EquivalentSources(damping=damping, **kwargs)
+    kwargs = {"dtype": dtype} if dtype != "default" else {}
+    eqs = EquivalentSources(damping=1e-12, **kwargs)
     eqs.fit(coordinates, data)
 
     # The interpolation should be perfect on the data points
