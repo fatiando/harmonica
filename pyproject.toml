@@ -38,7 +38,8 @@ dependencies = [
     "xarray >= 2022.03",
     "verde >= 1.8.1",
     "choclo >= 0.1",
-    "boule >= 0.6.0"
+    "boule >= 0.6.0",
+    "bordado >= 0.4.0",
 ]
 
 [project.urls]

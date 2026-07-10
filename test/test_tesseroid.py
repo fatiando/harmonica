@@ -11,12 +11,11 @@ Test forward modelling for tesseroids.
 import re
 from unittest.mock import patch
 
+import bordado as bd
 import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
-from verde import grid_coordinates
 
 from harmonica._forward._tesseroid_utils import (
     _discard_null_tesseroids,
@@ -691,7 +690,9 @@ def test_spherical_shell_two_dim_adaptive_discret(field):  # pragma: no cover
     # Define computation point located on the equator at the mean Earth radius
     ellipsoid = boule.WGS84
     radius = ellipsoid.mean_radius
-    coordinates = grid_coordinates([0, 350, -90, 90], spacing=10, extra_coords=radius)
+    coordinates = bd.grid_coordinates(
+        [0, 350, -90, 90], spacing=10, non_dimensional_coords=radius
+    )
     # Define lon and lat coordinates of spherical shell model made of
     # tesseroids
     shape = (12, 6)
@@ -788,8 +789,8 @@ class TestProgressBar:
     @pytest.fixture
     def coordinates(self):
         """Sample coordinates."""
-        coordinates = vd.grid_coordinates(
-            region=(-15, 55, -80, 40), spacing=10, extra_coords=6.5e4
+        coordinates = bd.grid_coordinates(
+            region=(-15, 55, -80, 40), spacing=10, non_dimensional_coords=6.5e4
         )
         return coordinates
 

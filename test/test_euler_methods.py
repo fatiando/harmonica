@@ -4,6 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -49,7 +50,7 @@ def test_euler_inversion_with_numeric_derivatives(euler):
     inc, dec = -40, 15
     dipole_moments = magnetic_angles_to_vec(1.0e14, inc, dec)
     region = [-100e3, 100e3, -80e3, 80e3]
-    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    coordinates = bd.grid_coordinates(region, spacing=500, non_dimensional_coords=500)
     b = dipole_magnetic(coordinates, dipole_coordinates, dipole_moments, field="b")
     # Add a fixed base level
     true_base_level = 200  # nT
@@ -88,7 +89,7 @@ def test_euler_inversion_with_analytic_derivatives(euler):
     masses_coordinates = (10e3, 15e3, -7e3)
     masses = 1.0e14
     region = [-100e3, 100e3, -80e3, 80e3]
-    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    coordinates = bd.grid_coordinates(region, spacing=500, non_dimensional_coords=500)
     gz = point_gravity(coordinates, masses_coordinates, masses, field="g_z")
     random = np.random.default_rng(42)
     gz += random.normal(0, 0.01 * np.abs(gz).max(), gz.shape)
@@ -136,7 +137,7 @@ def test_euler_inversion_convergence_warning(euler):
     inc, dec = -40, 15
     dipole_moments = magnetic_angles_to_vec(1.0e14, inc, dec)
     region = [-100e3, 100e3, -80e3, 80e3]
-    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    coordinates = bd.grid_coordinates(region, spacing=500, non_dimensional_coords=500)
     b = dipole_magnetic(coordinates, dipole_coordinates, dipole_moments, field="b")
     # Add a fixed base level
     true_base_level = 200  # nT
@@ -164,7 +165,7 @@ def test_euler_deconvolution_with_numeric_derivatives():
     inc, dec = -40, 15
     dipole_moments = magnetic_angles_to_vec(1.0e14, inc, dec)
     region = [-100e3, 100e3, -80e3, 80e3]
-    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    coordinates = bd.grid_coordinates(region, spacing=500, non_dimensional_coords=500)
     b = dipole_magnetic(coordinates, dipole_coordinates, dipole_moments, field="b")
     # Add a fixed base level
     true_base_level = 200  # nT
@@ -193,7 +194,7 @@ def test_euler_deconvolution_with_analytic_derivatives():
     masses_coordinates = (10e3, 15e3, -10e3)
     masses = 1.0e12
     region = [-100e3, 100e3, -80e3, 80e3]
-    coordinates = vd.grid_coordinates(region, spacing=500, extra_coords=500)
+    coordinates = bd.grid_coordinates(region, spacing=500, non_dimensional_coords=500)
     gz = point_gravity(coordinates, masses_coordinates, masses, field="g_z")
     # Convert Eötvös to mGal because derivatives must be in mGal/m
     eotvos2mgal = 1.0e-4

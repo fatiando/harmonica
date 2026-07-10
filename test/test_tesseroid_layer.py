@@ -11,11 +11,11 @@ Test tesseroids layer.
 import warnings
 from unittest.mock import patch
 
+import bordado as bd
 import boule
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 import xarray as xr
 
 from harmonica import tesseroid_gravity, tesseroid_layer
@@ -391,8 +391,8 @@ def test_tesseroid_layer_gravity(field, dummy_layer):
     """
     (longitude, latitude), surface, reference, density = dummy_layer
     # Create a regular grid of computation points located at 10km above surface
-    grid_coords = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    grid_coords = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     layer = tesseroid_layer(
         (longitude, latitude), surface, reference, properties={"density": density}
@@ -417,8 +417,8 @@ def test_tesseroid_layer_gravity_surface_nans(
     Check if gravity method works as expected when surface has nans.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
-    grid_coords = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    grid_coords = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     # Create one layer that has nans on the surface array
     surface_w_nans = surface.copy()
@@ -448,8 +448,8 @@ def test_tesseroid_layer_gravity_density_nans(
     Check if tesseroid is ignored after a nan is found in density array.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
-    grid_coords = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    grid_coords = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     # Create one layer that has nans on the density array
     indices = [(3, 3), (2, 1)]
@@ -477,8 +477,8 @@ def test_progress_bar(dummy_layer):
     Check if forward gravity results with and without progress bar match.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
-    coordinates = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    coordinates = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     layer = tesseroid_layer(
         (longitude, latitude), surface, reference, properties={"density": density}
@@ -500,8 +500,8 @@ def test_numba_progress_missing_error(dummy_layer):
     is not installed.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
-    coordinates = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    coordinates = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     layer = tesseroid_layer(
         (longitude, latitude), surface, reference, properties={"density": density}
@@ -516,8 +516,8 @@ def test_gravity_discarded_thin_tesseroids(dummy_layer):
     Check if gravity of tesseroid layer after discarding thin tesseroids is correct.
     """
     (longitude, latitude), surface, reference, density = dummy_layer
-    coordinates = vd.grid_coordinates(
-        (-10, 10, -10, 10), spacing=7, extra_coords=(surface[0] + 10e3)
+    coordinates = bd.grid_coordinates(
+        (-10, 10, -10, 10), spacing=7, non_dimensional_coords=(surface[0] + 10e3)
     )
     layer = tesseroid_layer(
         (longitude, latitude), surface, reference, properties={"density": density}

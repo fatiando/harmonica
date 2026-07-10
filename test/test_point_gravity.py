@@ -11,10 +11,10 @@ Test forward modelling for point masses.
 import re
 from pathlib import Path
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
-import verde as vd
 from choclo.point import (
     gravity_e,
     gravity_ee,
@@ -335,9 +335,13 @@ def test_point_mass_cartesian_parallel(
     Check if parallel and serial runs return the same result.
     """
     region = (2e3, 10e3, -3e3, 5e3)
-    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    points = bd.random_coordinates(
+        region, size=30, non_dimensional_coords=-1e3, random_seed=0
+    )
     masses = np.arange(points[0].size)
-    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=1e3, non_dimensional_coords=0
+    )
     result_serial = point_gravity(
         coordinates, points, masses, field=field, parallel=False
     )
@@ -355,9 +359,13 @@ def test_laplace_equation_cartesian():
     Use Cartesian coordinates.
     """
     region = (2e3, 10e3, -3e3, 5e3)
-    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    points = bd.random_coordinates(
+        region, size=30, non_dimensional_coords=-1e3, random_seed=0
+    )
     masses = np.arange(points[0].size)
-    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=1e3, non_dimensional_coords=0
+    )
     g_ee = point_gravity(coordinates, points, masses, field="g_ee")
     g_nn = point_gravity(coordinates, points, masses, field="g_nn")
     g_zz = point_gravity(coordinates, points, masses, field="g_zz")
@@ -374,9 +382,13 @@ def test_tensor_non_diagonal_components(field, flipped_field):
     Check if function computes g_xy as the same as g_yx.
     """
     region = (2e3, 10e3, -3e3, 5e3)
-    points = vd.scatter_points(region, size=30, extra_coords=-1e3, random_state=0)
+    points = bd.random_coordinates(
+        region, size=30, non_dimensional_coords=-1e3, random_seed=0
+    )
     masses = np.arange(points[0].size)
-    coordinates = vd.grid_coordinates(region=region, spacing=1e3, extra_coords=0)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=1e3, non_dimensional_coords=0
+    )
     npt.assert_allclose(
         point_gravity(coordinates, points, masses, field=field),
         point_gravity(coordinates, points, masses, field=flipped_field),
@@ -763,11 +775,13 @@ def test_point_mass_spherical_parallel():  # pragma: no cover
     """
     region = (2, 10, -3, 5)
     radius = 6400e3
-    points = vd.scatter_points(
-        region, size=30, extra_coords=radius - 10e3, random_state=0
+    points = bd.random_coordinates(
+        region, size=30, non_dimensional_coords=radius - 10e3, random_seed=0
     )
     masses = np.arange(points[0].size)
-    coordinates = vd.grid_coordinates(region=region, spacing=1, extra_coords=radius)
+    coordinates = bd.grid_coordinates(
+        region=region, spacing=1, non_dimensional_coords=radius
+    )
     for field in ("potential", "g_z"):
         result_serial = point_gravity(
             coordinates,

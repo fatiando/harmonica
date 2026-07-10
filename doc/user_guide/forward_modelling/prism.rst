@@ -61,12 +61,14 @@ Build a regular grid of computation points located 10m above the zero height:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
    region = (-10e3, 10e3, -10e3, 10e3)
    shape = (51, 51)
    height = 10
-   coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+   coordinates = bd.grid_coordinates(
+       region, shape=shape, non_dimensional_coords=height
+   )
 
 Define a single prism:
 
@@ -164,10 +166,10 @@ height:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
-   coordinates = vd.grid_coordinates(
-       region=(0, 10e3, 0, 10e3), shape=(40, 40), extra_coords=0
+   coordinates = bd.grid_coordinates(
+       region=(0, 10e3, 0, 10e3), shape=(40, 40), non_dimensional_coords=0
    )
 
 And finally calculate the vertical component of the gravitational acceleration
@@ -200,6 +202,8 @@ Lets plot this gravitational field:
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
+
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
    fig = pygmt.Figure()
@@ -253,7 +257,9 @@ points by choosing ``field="b"``:
    region = (-10e3, 10e3, -10e3, 10e3)
    shape = (51, 51)
    height = 10
-   coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+   coordinates = bd.grid_coordinates(
+       region, shape=shape, non_dimensional_coords=height
+   )
 
 .. jupyter-execute::
 
@@ -364,7 +370,7 @@ Then we can define a regular grid where the centers of the prisms will fall:
 
 .. jupyter-execute::
 
-   easting, northing = vd.grid_coordinates(region=region, spacing=spacing)
+   easting, northing = bd.grid_coordinates(region=region, spacing=spacing)
 
 We need to define a 2D array for the uppermost *surface* of the layer. We will
 sample a trigonometric function for this simple example:
@@ -396,9 +402,9 @@ Let's define a grid of observation points at 1 km above the zeroth height:
 
 .. jupyter-execute::
 
-   region_pad = vd.pad_region(region, 10e3)
-   coordinates = vd.grid_coordinates(
-       region_pad, spacing=spacing, extra_coords=1e3
+   region_pad = bd.pad_region(region, 10e3)
+   coordinates = bd.grid_coordinates(
+       region_pad, spacing=spacing, non_dimensional_coords=1e3
    )
 
 
