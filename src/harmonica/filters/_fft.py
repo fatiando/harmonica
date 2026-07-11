@@ -98,7 +98,10 @@ def fft(grid, *, prefix="freq_"):
     fft = np.fft.fftshift(np.fft.fftn(grid.values))
 
     # Account for true amplitude and true phase
-    freqs_2d = np.meshgrid(freqs[1], freqs[0])  # invert order to create meshgrid
+    freqs_2d = (
+        freqs[0][:, None],
+        freqs[1][None, :],
+    )  # cast them as 2d to perform true shift
     for freq, shift, spacing in zip(freqs_2d, shifts, spacings, strict=True):
         fft *= np.exp(-2 * 1j * np.pi * freq * shift) * spacing
 
