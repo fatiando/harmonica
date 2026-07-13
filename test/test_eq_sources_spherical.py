@@ -329,9 +329,7 @@ def test_memory_estimation_supplied_points():
         region=region, shape=(6, 6), non_dimensional_coords=0
     )
     # instead of 1 point beneath each datapoint, give custom points
-    points = bd.grid_coordinates(
-        region=region, shape=(3, 3), non_dimensional_coords=0
-    )
+    points = bd.grid_coordinates(region=region, shape=(3, 3), non_dimensional_coords=0)
     # Compute expected required memory
     n_data = coordinates[0].size
     n_coords = points[0].size
