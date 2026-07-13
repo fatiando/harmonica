@@ -18,6 +18,7 @@ import itertools
 import re
 from copy import copy
 
+import bordado as bd
 import numpy as np
 import pytest
 import verde as vd
@@ -54,11 +55,11 @@ def test_magnetic_symmetry():
     susceptibility = 0.1
     ellipsoid = Ellipsoid(4, 3, 2, susceptibility=susceptibility)
 
-    coordinates = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+    coordinates = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
     )
-    coordinates2 = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
+    coordinates2 = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=-5
     )
 
     inducing_field = hm.magnetic_angles_to_vec(10_000, 0, 0)
@@ -79,8 +80,8 @@ def test_flipped_h0():
     susceptibility = 0.1
     oblate = Ellipsoid(a, a, c, susceptibility=susceptibility)
 
-    coordinates = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+    coordinates = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
     )
 
     inducing_field = np.asarray(
@@ -100,8 +101,8 @@ def test_zero_susceptibility():
     """
     susceptibility = 0
     ellipsoid = Ellipsoid(2, 2, 1, susceptibility=susceptibility)
-    coordinates = vd.grid_coordinates(
-        region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
+    coordinates = bd.grid_coordinates(
+        region=(-10, 10, -10, 10), spacing=1.0, non_dimensional_coords=5
     )
     inducing_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
 
@@ -118,8 +119,8 @@ def test_zero_field():
     """
     susceptibility = 0.01
     ellipsoid = Ellipsoid(2, 1, 1, susceptibility=susceptibility)
-    coordinates = vd.grid_coordinates(
-        region=(-10, 10, -10, 10), spacing=1.0, extra_coords=5
+    coordinates = bd.grid_coordinates(
+        region=(-10, 10, -10, 10), spacing=1.0, non_dimensional_coords=5
     )
 
     inducing_field = (0, 0, 0)
@@ -177,8 +178,8 @@ def test_mag_flipped_ellipsoid():
 
     # define observation points (2D grid) at surface height (z axis,
     # 'Upward') = 5
-    x, y, z = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+    x, y, z = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
     )
 
     # ignore internal field as this won't be 'flipped' in the same natr
@@ -202,8 +203,8 @@ def test_euler_rotation_symmetry_mag():
     a, b, c = 5, 4, 3
     inducing_field = hm.magnetic_angles_to_vec(55_000, 0.0, 90.0)
     susceptibility = 0.01
-    coordinates = x, y, z = vd.grid_coordinates(
-        region=(-5, 5, -5, 5), spacing=1.0, extra_coords=5
+    x, y, z = bd.grid_coordinates(
+        region=(-5, 5, -5, 5), spacing=1.0, non_dimensional_coords=5
     )
     internal_mask = ((x**2) / (a**2) + (y**2) / (b**2) + (z**2) / (c**2)) < 1
     coordinates = tuple(c[internal_mask] for c in (x, y, z))
@@ -432,7 +433,9 @@ class TestMagneticFieldVersusSphere:
         region = (-200, 200, -200, 200)
         shape = (151, 151)
         height = request.param
-        coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+        coordinates = bd.grid_coordinates(
+            region, shape=shape, non_dimensional_coords=height
+        )
         return coordinates
 
     def get_ellipsoid(self, ellipsoid_type: str):
@@ -630,8 +633,8 @@ class TestSymmetryOnRotations:
         system, it won't rotate with the ellipsoid.
         """
         # Define observation points
-        coordinates = vd.grid_coordinates(
-            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+        coordinates = bd.grid_coordinates(
+            region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
         )
 
         # Define physical properties
@@ -668,8 +671,8 @@ class TestMultipleEllipsoids:
     def coordinates(self):
         """Sample grid coordinates."""
         region = (-30, 30, -30, 30)
-        coordinates = vd.grid_coordinates(
-            region=region, shape=(21, 21), extra_coords=10
+        coordinates = bd.grid_coordinates(
+            region=region, shape=(21, 21), non_dimensional_coords=10
         )
         return coordinates
 
@@ -1132,7 +1135,9 @@ class TestAnisotropy:
         rotation matrix.
         """
         region = (-50, 50, -50, 50)
-        coordinates = vd.grid_coordinates(region, shape=(151, 151), extra_coords=0)
+        coordinates = bd.grid_coordinates(
+            region, shape=(151, 151), non_dimensional_coords=0
+        )
         inducing_field = np.array([0, 0, -20_000])  # pointing on z
         # Define susceptibility as a tensor with only component on the vertical axes
         # of the local coordinate system.

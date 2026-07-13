@@ -70,10 +70,10 @@ height:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
-   coordinates = vd.grid_coordinates(
-       region=(-250, 1250, -250, 1250), shape=(40, 40), extra_coords=0
+   coordinates = bd.grid_coordinates(
+       region=(-250, 1250, -250, 1250), shape=(40, 40), non_dimensional_coords=0
    )
 
 And finally calculate the vertical component of the gravitational acceleration
@@ -106,6 +106,7 @@ Lets plot this gravitational field:
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
 
    grid = vd.make_xarray_grid(
       coordinates, g_z, data_names="g_z", extra_coords_names="extra")
@@ -200,10 +201,10 @@ coordinates and located at 1km above the ellipsoid:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=(-72, -68, -46, -42),
        shape=(101, 101),
-       extra_coords=20e3,
+       non_dimensional_coords=20e3,
    )
 
 Before we can start forward modelling these sources, we need to convert them to

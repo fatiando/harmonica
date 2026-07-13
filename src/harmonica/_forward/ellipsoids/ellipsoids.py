@@ -325,3 +325,68 @@ class Ellipsoid:
         ellipsoid.rotate(rotation=self.rotation_matrix, inplace=True)
         ellipsoid.translate(self.center, inplace=True)
         return ellipsoid
+
+    def get_surface(self, *, lon_size=361, lat_size=181):
+        """
+        Return three arrays with a discrete representation of the ellipsoid's surface.
+
+        .. tip::
+
+            Use this method to plot the ellipsoid in Matplotlib 3D plots.
+
+        Parameters
+        ----------
+        lon_size : int, optional
+            Number of points used in the latitudinal discretization.
+        lat_size : int, optional
+            Number of points used in the longitudinal discretization.
+
+        Returns
+        -------
+        easting, northing, upward : array
+            Arrays containing the coordinates of points in the surface of the ellipsoid.
+
+
+        Examples
+        --------
+        Use this method to plot the ellipsoid in matplotlib 3D plots:
+
+        >>> import matplotlib.pyplot as plt
+        >>>
+        >>> ellipsoid = Ellipsoid(a=3, b=2, c=1, yaw=60, pitch=45, roll=70)
+        >>>
+        >>> fig = plt.figure()
+        >>> ax = fig.add_subplot(projection="3d")
+        >>> ax.plot_surface(*ellipsoid.get_surface()) # doctest: +SKIP
+        >>> ax.set_aspect("equal")
+        >>> ax.set_xlabel("x") # doctest: +SKIP
+        >>> ax.set_ylabel("y") # doctest: +SKIP
+        >>> ax.set_zlabel("z") # doctest: +SKIP
+        >>> plt.show()   # doctest: +SKIP
+        """
+        # Build longitude and latitude arrays
+        lon_rad = np.linspace(0, 2 * np.pi, lon_size)
+        lat_rad = np.linspace(-np.pi / 2, np.pi / 2, lat_size)
+        lon_rad, lat_rad = np.meshgrid(lon_rad, lat_rad)
+        shape = lon_rad.shape
+
+        # Get surface of ellipsoid in the local coordinate system
+        x = self.a * np.cos(lon_rad) * np.cos(lat_rad)
+        y = self.b * np.sin(lon_rad) * np.cos(lat_rad)
+        z = self.c * np.sin(lat_rad)
+
+        # Rotate surface points into the easting-northing-upward coordinate system
+        points = np.vstack([x.ravel(), y.ravel(), z.ravel()])
+        easting, northing, upward = self.rotation_matrix @ points
+
+        # Translate the surface points
+        e_center, n_center, u_center = self.center
+        easting += e_center
+        northing += n_center
+        upward += u_center
+
+        # Reshape arrays to return 2D arrays for the surface points
+        easting, northing, upward = tuple(
+            c.reshape(shape) for c in (easting, northing, upward)
+        )
+        return easting, northing, upward

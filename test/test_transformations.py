@@ -11,6 +11,7 @@ Test functions for regular grid transformations.
 import re
 from pathlib import Path
 
+import bordado as bd
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -63,8 +64,8 @@ def fixture_sample_grid_coords():
     """
     Define sample grid coordinates.
     """
-    grid_coords = vd.grid_coordinates(
-        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=0
+    grid_coords = bd.grid_coordinates(
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, non_dimensional_coords=0
     )
     return grid_coords
 
@@ -74,8 +75,8 @@ def fixture_upward_grid_coords():
     """
     Define upward grid coordinates.
     """
-    grid_coords = vd.grid_coordinates(
-        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, extra_coords=10e3
+    grid_coords = bd.grid_coordinates(
+        region=(-300e3, 300e3, -300e3, 300e3), spacing=5000, non_dimensional_coords=10e3
     )
     return grid_coords
 
@@ -473,8 +474,8 @@ def test_reduction_to_pole_remanent():
     """
     Test reduction_to_pole against an analytical solution with remanent magnetization.
     """
-    coordinates = vd.grid_coordinates(
-        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    coordinates = bd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, non_dimensional_coords=500
     )
     finc, fdec = -45, 13
     minc, mdec = -14, -24
@@ -510,8 +511,8 @@ def test_reduction_to_pole_induced():
     """
     Test reduction_to_pole against an analytical solution with induced magnetization.
     """
-    coordinates = vd.grid_coordinates(
-        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, extra_coords=500
+    coordinates = bd.grid_coordinates(
+        (-70e3, 20e3, -20e3, 60e3), spacing=0.5e3, non_dimensional_coords=500
     )
     finc, fdec = -45, 13
     dipole = [-25e3, 20e3, -5000]
@@ -675,7 +676,7 @@ class TestGaussianFilters:
         Test gaussian_lowpass against a synthetic.
         """
         # Make a synthetic with only 2 known wavelengths
-        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        coordinates = bd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
         wavelength_high = 0.5
         wavelength_low = 10
         component_low = (
@@ -707,7 +708,7 @@ class TestGaussianFilters:
         Test gaussian_highpass against a synthetic.
         """
         # Make a synthetic with only 2 known wavelengths
-        coordinates = vd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
+        coordinates = bd.grid_coordinates((0, 10, 0, 10), spacing=0.05)
         wavelength_high = 0.5
         wavelength_low = 10
         component_low = np.sin(2 * np.pi / wavelength_low * coordinates[0]) * np.cos(

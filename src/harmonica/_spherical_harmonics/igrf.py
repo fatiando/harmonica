@@ -11,6 +11,7 @@ Calculation of the IGRF magnetic field.
 import datetime
 import pathlib
 
+import bordado as bd
 import boule
 import numba
 import numpy as np
@@ -437,8 +438,12 @@ class IGRF14:
         """
         if spacing is None and shape is None:
             spacing = calculate_ideal_spacing(self.max_degree)
-        longitude, latitude, height = vd.grid_coordinates(
-            region, spacing=spacing, shape=shape, adjust=adjust, extra_coords=height
+        longitude, latitude, height = bd.grid_coordinates(
+            region,
+            spacing=spacing,
+            shape=shape,
+            adjust=adjust,
+            non_dimensional_coords=height,
         )
         longitude, latitude_sph, radius = self.ellipsoid.geodetic_to_spherical(
             (longitude, latitude, height)

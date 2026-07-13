@@ -53,6 +53,7 @@ intersphinx_mapping = {
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "ensaio": ("https://www.fatiando.org/ensaio/latest/", None),
     "verde": ("https://www.fatiando.org/verde/latest/", None),
+    "bordado": ("https://www.fatiando.org/bordado/latest/", None),
     "boule": ("https://www.fatiando.org/boule/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
     "pyproj": ("https://pyproj4.github.io/pyproj/stable/", None),

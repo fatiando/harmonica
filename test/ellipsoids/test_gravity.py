@@ -17,6 +17,7 @@ Test gravity forward modelling of ellipsoids.
 import re
 from copy import copy
 
+import bordado as bd
 import numpy as np
 import pytest
 import verde as vd
@@ -72,11 +73,11 @@ def test_opposite_planes():
 
     # define observation points (2D grid) at surface height (z axis,
     # 'Upward') = 5
-    coordinates1 = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+    coordinates1 = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
     )
-    coordinates2 = vd.grid_coordinates(
-        region=(-20, 20, -20, 20), spacing=0.5, extra_coords=-5
+    coordinates2 = bd.grid_coordinates(
+        region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=-5
     )
 
     _, _, gz1 = ellipsoid_gravity(coordinates1, triaxial_example)
@@ -452,8 +453,8 @@ class TestSymmetryOnRotations:
         by the ellipsoid should be the same as before the rotation.
         """
         # Define observation points
-        coordinates = vd.grid_coordinates(
-            region=(-20, 20, -20, 20), spacing=0.5, extra_coords=5
+        coordinates = bd.grid_coordinates(
+            region=(-20, 20, -20, 20), spacing=0.5, non_dimensional_coords=5
         )
 
         # Generate a flipped ellipsoid
@@ -479,8 +480,8 @@ class TestMultipleEllipsoids:
     def coordinates(self):
         """Sample grid coordinates."""
         region = (-30, 30, -30, 30)
-        coordinates = vd.grid_coordinates(
-            region=region, shape=(21, 21), extra_coords=10
+        coordinates = bd.grid_coordinates(
+            region=region, shape=(21, 21), non_dimensional_coords=10
         )
         return coordinates
 
