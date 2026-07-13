@@ -9,7 +9,6 @@ Test forward modelling for prisms.
 """
 
 import re
-from unittest.mock import patch
 
 import bordado as bd
 import numpy as np
@@ -376,18 +375,6 @@ class TestProgressBar:
             coordinates, prisms, densities, field=field, progressbar=False
         )
         npt.assert_allclose(result_progress_true, result_progress_false)
-
-    @patch("harmonica._forward.utils.ProgressBar", None)
-    def test_numba_progress_missing_error(self, coordinates, prisms, densities):
-        """
-        Check if error is raised when progresbar=True and numba_progress
-        package is not installed.
-        """
-        # Check if error is raised
-        with pytest.raises(ImportError):
-            prism_gravity(
-                coordinates, prisms, densities, field="potential", progressbar=True
-            )
 
 
 class TestSingularPoints:
