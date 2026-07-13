@@ -8,7 +8,6 @@
 Test forward modelling for tesseroids with variable density.
 """
 
-
 import bordado as bd
 import numpy as np
 import numpy.testing as npt
@@ -568,4 +567,3 @@ class TestProgressBar:
             coordinates, tesseroids, densities, field=field, progressbar=False
         )
         npt.assert_allclose(result_progress_true, result_progress_false)
-
