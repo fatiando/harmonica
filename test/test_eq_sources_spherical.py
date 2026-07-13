@@ -318,3 +318,25 @@ def test_memory_estimation(spacing):
     eqs = EquivalentSourcesSph()
     required_memory = eqs.estimate_required_memory(coordinates)
     assert required_memory == expected_required_memory
+
+
+def test_memory_estimation_supplied_points():
+    """
+    Test the estimate_required_memory class method with user-supplied points.
+    """
+    region = (-1e3, 5e3, 2e3, 8e3)
+    coordinates = bd.grid_coordinates(
+        region=region, shape=(6, 6, non_dimensional_coords=0
+    )
+    # instead of 1 point beneath each datapoint, give custom points
+    points = bd.grid_coordinates(
+        region=region, shape=(3, 3), non_dimensional_coords=0
+    )
+    # Compute expected required memory
+    n_data = coordinates[0].size
+    n_coords = points[0].size
+    expected_required_memory = n_coords * n_data * 8
+    # Estimate required memory
+    eqs = EquivalentSourcesSph(points=points)
+    required_memory = eqs.estimate_required_memory(coordinates)
+    assert required_memory == expected_required_memory
