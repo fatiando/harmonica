@@ -326,7 +326,7 @@ def test_memory_estimation_supplied_points():
     """
     region = (-1e3, 5e3, 2e3, 8e3)
     coordinates = bd.grid_coordinates(
-        region=region, shape=(6, 6, non_dimensional_coords=0
+        region=region, shape=(6, 6), non_dimensional_coords=0
     )
     # instead of 1 point beneath each datapoint, give custom points
     points = bd.grid_coordinates(
