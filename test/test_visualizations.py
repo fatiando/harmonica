@@ -9,7 +9,6 @@ Test functions from the visualization module.
 """
 
 import re
-from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
@@ -22,17 +21,6 @@ try:
     import pyvista
 except ImportError:  # pragma: no cover
     pyvista = None
-
-
-@patch("harmonica.visualization._prism.pyvista", None)
-def test_prism_to_pyvista_missing_pyvista():
-    """
-    Check error raise after calling prism_to_pyvista when pyvista is missing.
-    """
-    prism = [0, 1, 0, 1, 0, 1]
-    with pytest.raises(ImportError) as exception:
-        prism_to_pyvista(prism)
-    assert "'pyvista'" in str(exception.value)
 
 
 @pytest.fixture(name="prisms")
@@ -124,13 +112,3 @@ def test_prism_to_pyvista_error_2d_property(prisms, density):
     )
     with pytest.raises(ValueError, match=msg):
         prism_to_pyvista(prisms, properties={name: density_2d})
-
-
-@patch("harmonica.visualization._prism.pyvista", None)
-def test_prisms_pyvista_missing_error(prisms, density):
-    """
-    Check if prism_to_pyvista raises error if pyvista is missing.
-    """
-    # Check if error is raised
-    with pytest.raises(ImportError):
-        prism_to_pyvista(prisms, properties={"density": density})

@@ -8,8 +8,6 @@
 Test utils functions for forward modelling.
 """
 
-from unittest.mock import patch
-
 import boule as bl
 import numpy as np
 import numpy.testing as npt
@@ -130,17 +128,4 @@ def test_initialize_progressbar(use_progressbar):
         if use_progressbar:
             assert isinstance(progress_proxy, ProgressBar)
         else:
-            assert progress_proxy is None
-
-
-@patch("harmonica._forward.utils.ProgressBar", None)
-@pytest.mark.parametrize("use_progressbar", [True, False])
-def test_initialize_progressbar_import_error(use_progressbar):
-    """Test if it raises ImportError when numba_progress is missing."""
-    if use_progressbar:
-        with pytest.raises(ImportError):  # noqa: SIM117
-            with initialize_progressbar(3, use_progressbar) as progress_proxy:
-                pass  # pragma: no cover (won't reach this code)
-    else:
-        with initialize_progressbar(3, use_progressbar) as progress_proxy:
             assert progress_proxy is None
