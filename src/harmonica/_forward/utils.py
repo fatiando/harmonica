@@ -385,7 +385,7 @@ def initialize_progressbar(total, use_progressbar):
     except ImportError as original:
         error = ImportError(
             "Cannot import the optional dependency 'numba_progress'. "
-            "It has to be installed in order to be able to show a progressbar."
+            "It must be installed to be able to show a progressbar."
         )  # pragma: nocover
         raise error from original  # pragma: nocover
 
