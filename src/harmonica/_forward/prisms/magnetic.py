@@ -14,8 +14,8 @@ import numpy as np
 from choclo.prism import magnetic_e, magnetic_field, magnetic_n, magnetic_u
 from numba import jit, prange
 
-from .prism_gravity import _check_prisms
-from .utils import initialize_progressbar
+from ..utils import initialize_progressbar
+from .utils import check_prisms
 
 VALID_FIELDS = ("b", "b_e", "b_n", "b_u")
 FORWARD_FUNCTIONS = {
@@ -412,7 +412,7 @@ def _discard_null_prisms(prisms, magnetization):
         The array must have the following shape: (``n_prisms``, 6), where
         ``n_prisms`` is the total number of prisms.
         This array of prisms must have valid boundaries.
-        Run ``_check_prisms`` before.
+        Run ``check_prisms`` before.
     magnetization : 2d-array
         Array containing the magnetization vector of each prism in
         :math:`Am^{-1}`. Each vector will be a row in the 2d-array.
@@ -454,7 +454,7 @@ def _run_sanity_checks(prisms, magnetization):
             f"Number of magnetization vectors ({magnetization[0].size}) "
             + f"mismatch the number of prisms ({prisms.shape[0]})"
         )
-    _check_prisms(prisms)
+    check_prisms(prisms)
 
 
 # Define jitted versions of the forward modelling function
