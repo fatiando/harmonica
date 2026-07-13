@@ -14,12 +14,6 @@ import numpy as np
 from numba import jit
 from scipy.spatial.transform import Rotation
 
-# Attempt to import numba_progress
-try:
-    from numba_progress import ProgressBar
-except ImportError:  # pragma: no cover
-    ProgressBar = None
-
 
 def distance(point_p, point_q, coordinate_system="cartesian", ellipsoid=None):
     """
@@ -384,12 +378,10 @@ def initialize_progressbar(total, use_progressbar):
     # Return None if progressbar is not desired
     if not use_progressbar:
         return contextlib.nullcontext()
-    # Raise error if numba_progress is not installed
-    if ProgressBar is None:
-        msg = (
-            "Missing optional dependency 'numba_progress' required if progressbar=True"
-        )
-        raise ImportError(msg)
+
+    # Lazily load optional dependency
+    from numba_progress import ProgressBar  # noqa: PLC0415
+
     return ProgressBar(total=total)
 
 
