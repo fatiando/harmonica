@@ -33,12 +33,9 @@ try:
 except ImportError:  # pragma: no cover
     ProgressBar = None
 
-from harmonica import bouguer_correction
-from harmonica._forward.prism_gravity import (
-    _check_prisms,
-    _discard_null_prisms,
-    prism_gravity,
-)
+from harmonica import bouguer_correction, prism_gravity
+from harmonica._forward.prisms.gravity import _discard_null_prisms
+from harmonica._forward.prisms.utils import check_prisms
 
 from .utils import run_only_with_numba
 
@@ -75,24 +72,24 @@ def test_invalid_density_array():
 
 
 def test_invalid_prisms():
-    """Check if invalid prism boundaries are caught by _check_prisms."""
+    """Check if invalid prism boundaries are caught by check_prisms."""
     w, e, s, n, bottom, top = -100, 100, -100, 100, -200, -100
     # Check if it works properly on valid prisms
-    _check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
+    check_prisms(np.atleast_2d([w, e, s, n, bottom, top]))
     # Check if it works properly on valid prisms with zero volume
-    _check_prisms(np.atleast_2d([w, w, s, n, bottom, top]))
-    _check_prisms(np.atleast_2d([w, e, s, s, bottom, top]))
-    _check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
+    check_prisms(np.atleast_2d([w, w, s, n, bottom, top]))
+    check_prisms(np.atleast_2d([w, e, s, s, bottom, top]))
+    check_prisms(np.atleast_2d([w, e, s, n, bottom, bottom]))
     # Test invalid boundaries
     msg = "The west boundary can't be greater than the east one"
     with pytest.raises(ValueError, match=msg):
-        _check_prisms(np.atleast_2d([e, w, s, n, bottom, top]))
+        check_prisms(np.atleast_2d([e, w, s, n, bottom, top]))
     msg = "The south boundary can't be greater than the north one"
     with pytest.raises(ValueError, match=msg):
-        _check_prisms(np.atleast_2d([w, e, n, s, bottom, top]))
+        check_prisms(np.atleast_2d([w, e, n, s, bottom, top]))
     msg = "The bottom boundary can't be greater than the top one"
     with pytest.raises(ValueError, match=msg):
-        _check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
+        check_prisms(np.atleast_2d([w, e, s, n, top, bottom]))
 
 
 def test_discard_null_prisms():
