@@ -380,7 +380,14 @@ def initialize_progressbar(total, use_progressbar):
         return contextlib.nullcontext()
 
     # Lazily load optional dependency
-    from numba_progress import ProgressBar  # noqa: PLC0415
+    try:
+        from numba_progress import ProgressBar  # noqa: PLC0415
+    except ImportError as original:
+        error = ImportError(
+            "Cannot import the optional dependency 'numba_progress'. "
+            "It has to be installed in order to be able to show a progressbar."
+        ) # pragma: nocover
+        raise error from original  # pragma: nocover
 
     return ProgressBar(total=total)
 
