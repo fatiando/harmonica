@@ -403,8 +403,12 @@ class DatasetAccessorPrismLayer:
                 "Their respective prisms will be ignored."
             )
             warnings.warn(msg, stacklevel=2)
+
+        # Initialize output array
+        result = np.zeros(cast.size, dtype=np.float64)
+
         with initialize_progressbar(coordinates[0].size, progressbar) as progress_proxy:
-            result = numba_function(
+            numba_function(
                 coordinates,
                 self._obj.easting.values,
                 self._obj.northing.values,
@@ -412,6 +416,7 @@ class DatasetAccessorPrismLayer:
                 self._obj.top.values,
                 density,
                 FIELDS[field],
+                result,
                 thickness_threshold,
                 progress_proxy,
             )
@@ -522,6 +527,7 @@ def _forward_gravity_prism_layer(
     prisms_top,
     densities,
     forward_func,
+    result,
     thickness_threshold=0.0,
     progress_proxy=None,
 ):
@@ -556,6 +562,9 @@ def _forward_gravity_prism_layer(
         2D array with the densities of the prisms in kg/m3.
     forward_func : callable
         Choclo function to forward model a gravity field of prisms.
+    result : (n,) array
+        1D array to which results will be added. It must have the same size as number
+        of observation points.
     thickness_threshold : float
         Prisms thinner than this threshold will be ignored in the
         forward gravity calculation. If None, every prism with non-zero
@@ -578,7 +587,6 @@ def _forward_gravity_prism_layer(
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
 
-    result = np.zeros(n_coords, dtype=np.float64)
     for i in numba.prange(n_coords):
         for j, easting_center in enumerate(prisms_easting):
             west = easting_center - half_spacing_east
@@ -615,7 +623,6 @@ def _forward_gravity_prism_layer(
         # Update progress bar if called
         if update_progressbar:
             progress_proxy.update(1)
-    return result
 
 
 _forward_gravity_prism_layer_parallel = numba.jit(nopython=True, parallel=True)(
