@@ -10,13 +10,6 @@ Functions for visualizing prisms through pyvista.
 
 import numpy as np
 
-try:
-    import pyvista
-except ImportError:  # pragma: no cover
-    pyvista = None
-else:
-    import vtk
-
 
 def prism_to_pyvista(prisms, properties=None):
     """
@@ -71,12 +64,10 @@ def prism_to_pyvista(prisms, properties=None):
        >>> pv_grid.plot() # doctest: +SKIP
 
     """
-    # Check if pyvista are installed
-    if pyvista is None:
-        msg = (
-            "Missing optional dependency 'pyvista' required for building pyvista grids."
-        )
-        raise ImportError(msg)
+    # Lazily import optional dependencies
+    import pyvista  # noqa: PLC0415
+    import vtk  # noqa: PLC0415
+
     # Get prisms and number of prisms
     prisms = np.atleast_2d(prisms)
     n_prisms = prisms.shape[0]

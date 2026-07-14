@@ -16,11 +16,6 @@ import numpy.typing as npt
 
 from ..utils import get_rotation_matrix
 
-try:
-    import pyvista
-except ImportError:  # pragma: no cover
-    pyvista = None
-
 
 class Ellipsoid:
     """
@@ -313,12 +308,9 @@ class Ellipsoid:
         ellipsoid : pyvista.PolyData
             A PyVista's parametric ellipsoid.
         """
-        if pyvista is None:
-            msg = (
-                "Missing optional dependency 'pyvista' required for "
-                "exporting ellipsoids to PyVista."
-            )
-            raise ImportError(msg)
+        # Lazy load optional dependency
+        import pyvista  # noqa: PLC0415
+
         ellipsoid = pyvista.ParametricEllipsoid(
             xradius=self.a, yradius=self.b, zradius=self.c, **kwargs
         )
