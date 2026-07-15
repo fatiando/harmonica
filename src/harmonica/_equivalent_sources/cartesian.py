@@ -190,6 +190,49 @@ class EquivalentSources(vdb.BaseGridder):
         # Define Green's function for Cartesian coordinates
         self.greens_function = greens_func_cartesian
 
+    def estimate_required_memory(self, coordinates):
+        """
+        Estimate the memory required for storing the Jacobian matrix.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (``easting``, ``northing``, ``upward``, ...).
+            Only ``easting``, ``northing``, and ``upward`` will be used, all
+            subsequent coordinates will be ignored.
+
+        Returns
+        -------
+        memory_required : int
+            Amount of memory required to store the Jacobian matrix in
+            bytes.
+
+        Examples
+        --------
+        >>> import bordado as bd
+        >>> coordinates = bd.random_coordinates(
+        ...     region=(-1e3, 3e3, 2e3, 5e3),
+        ...     size=100,
+        ...     non_dimensional_coords=100,
+        ...     random_seed=42,
+        ... )
+        >>> eqs = EquivalentSources()
+        >>> n_bytes = eqs.estimate_required_memory(coordinates)
+        >>> int(n_bytes)
+        80000
+        """
+        # Build the sources and assign the points_ attribute
+        coordinates = vdb.n_1d_arrays(coordinates, 3)
+        points = self._build_points(coordinates)
+        # Get the number of sources and data
+        n_data = coordinates[0].size
+        n_points = points[0].size
+        # Compute the size of the Jacobian matrix
+        jacobian_size = n_data * n_points
+        # Estimate size of the Jacobian matrix in bytes
+        return jacobian_size * np.dtype(self.dtype).itemsize
+
     def fit(self, coordinates, data, weights=None):
         """
         Fit the coefficients of the equivalent sources.
