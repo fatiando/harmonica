@@ -553,6 +553,21 @@ def test_reduction_to_pole_dim_names(sample_potential):
     reduction_to_pole(renamed_dims_grid, 60, 45, 60, 45)
 
 
+def test_reduction_to_pole_magnetization_required(sample_potential):
+    """
+    The magnetization direction must be a required argument.
+
+    Making it required forces users to be explicit about the induced-only
+    magnetization assumption (see #440 and #661). It used to default to None on
+    the public ``reduction_to_pole`` function, which crashed deep inside the
+    kernel after #661 removed the None handling.
+    """
+    with pytest.raises(TypeError, match="magnetization_inclination"):
+        reduction_to_pole(sample_potential, 60, 45)
+    with pytest.raises(TypeError, match="magnetization_declination"):
+        reduction_to_pole(sample_potential, 60, 45, 60)
+
+
 class TestTotalGradientAmplitude:
     """
     Test total_gradient_amplitude function.
