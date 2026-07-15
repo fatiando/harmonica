@@ -307,9 +307,9 @@ def test_memory_estimation(spacing):
     """
     Test the estimate_required_memory class method.
     """
-    region = (-1e3, 5e3, 2e3, 8e3)
+    region = (-20, 20, -20, 20)
     coordinates = bd.grid_coordinates(
-        region=region, spacing=spacing, non_dimensional_coords=0
+        region=region, spacing=spacing, non_dimensional_coords=100.0
     )
     # Compute expected required memory
     n_data = coordinates[0].size
