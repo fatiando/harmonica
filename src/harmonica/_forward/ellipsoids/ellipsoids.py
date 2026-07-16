@@ -308,8 +308,15 @@ class Ellipsoid:
         ellipsoid : pyvista.PolyData
             A PyVista's parametric ellipsoid.
         """
-        # Lazy load optional dependency
-        import pyvista  # noqa: PLC0415
+        # Lazily load optional dependency
+        try:
+            import pyvista  # noqa: PLC0415
+        except ModuleNotFoundError as original:  # pragma: nocover
+            error = ImportError(
+                "Cannot import the optional dependency 'pyvista'. "
+                "It must be installed to run the 'to_pyvista' method."
+            )  # pragma: nocover
+            raise error from original  # pragma: nocover
 
         ellipsoid = pyvista.ParametricEllipsoid(
             xradius=self.a, yradius=self.b, zradius=self.c, **kwargs
