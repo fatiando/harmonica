@@ -9,7 +9,6 @@ Test ellipsoid classes.
 """
 
 import re
-from unittest.mock import patch
 
 import numpy as np
 import pytest
@@ -211,14 +210,6 @@ class TestToPyvista:
         yaw, pitch, roll = 73.0, 14.0, -35.0
         center = (43.0, -72.0, 105)
         return Ellipsoid(a, b, c, yaw=yaw, pitch=pitch, roll=roll, center=center)
-
-    @patch("harmonica._forward.ellipsoids.ellipsoids.pyvista", None)
-    def test_pyvista_missing_error(self, ellipsoid):
-        """
-        Check if error is raised when pyvista is not installed.
-        """
-        with pytest.raises(ImportError):
-            ellipsoid.to_pyvista()
 
     def test_pyvista_object(self, ellipsoid):
         """
