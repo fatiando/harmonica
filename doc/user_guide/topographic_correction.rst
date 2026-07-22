@@ -80,7 +80,7 @@ And plot it:
       cmap=True,
       style="c3p",
       projection="M15c",
-      frame=['ag', 'WSen'],
+      frame=['ag', 'WSen+ggray'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
    fig.show()
@@ -122,10 +122,10 @@ We can now compute the Bouguer disturbance and plot it:
 
 .. jupyter-execute::
 
-   maxabs = vd.maxabs(bouguer_disturbance, percentile=98)
+   cpt_lims = vd.minmax(bouguer_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   pygmt.makecpt(cmap="viridis", series=cpt_lims)
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -133,12 +133,11 @@ We can now compute the Bouguer disturbance and plot it:
       cmap=True,
       style="c3p",
       projection="M15c",
-      frame=['ag', 'WSen'],
+      frame=['ag', 'WSen+ggray'],
    )
    fig.colorbar(
       cmap=True,
       frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"],
-      position="+e",
    )
    fig.show()
 
@@ -248,10 +247,10 @@ And plot it:
 
 .. jupyter-execute::
 
-   maxabs = vd.maxabs(topo_free_disturbance)
+   cpt_lims = vd.minmax(topo_free_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="viridis", series=cpt_lims)
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -259,7 +258,7 @@ And plot it:
       cmap=True,
       style="c3p",
       projection="M15c",
-      frame=['ag', 'WSen'],
+      frame=['ag', 'WSen+ggray'],
    )
    fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
    fig.show()
@@ -267,14 +266,31 @@ And plot it:
 Compare the Bouguer and Topography-free disturbances
 ----------------------------------------------------
 
+Now that we have computed the Bouguer and Topography-free disturbances, we
+can plot the difference to get a sense of how much the methods differ.
+From the below plot, we can see large differences (up to 10 mGal) arise from the
+different methods. Generally, these large differences are in regions of rugged
+topography, while the regions of flat topography have smaller  differences (<2 mGal).
+Additionally, almost all of the differences are positive, meaning the Bouguer
+disturbance is generally smaller than the Topography-free disturbance.
+
+This is because the flat-slab assumption always overestimates the correction. It
+doesn't account for a valleys below, or terrain above, the observation points, both
+of which decrease the observed gravity. Not accounting for these results in too
+large of a Bouguer correction, and therefore too small of a Bouguer disturbance.
+To account for this, additional estimated terrain corrections are often included
+in the Bouguer correction. This highlights the benefit of the forward modelling
+topography instead of the Bouguer correction, especially for regions of rugged
+topography.
+
 .. jupyter-execute::
 
    difference = topo_free_disturbance-bouguer_disturbance
 
-   maxabs = vd.maxabs(difference, percentile=99)
+   cpt_lims = vd.minmax(difference, min_percentile=5, max_percentile=95)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+   pygmt.makecpt(cmap="viridis", series=cpt_lims, background=True)
    fig.plot(
       x=data.longitude,
       y=data.latitude,
@@ -282,13 +298,26 @@ Compare the Bouguer and Topography-free disturbances
       cmap=True,
       style="c3p",
       projection="M15c",
-      frame=['ag', 'WSen'],
+      frame=['ag', 'WSen+ggray'],
    )
    fig.colorbar(
       cmap=True,
       frame=["af", "x+lDifference between Bouguer and Topography-free disturbances", "y+lmGal"],
       position="+e",
    )
+
+   fig.shift_origin(xshift='w+6c')
+
+   cpt_lims = vd.minmax(topography_proj, min_percentile=2, max_percentile=98)
+
+   pygmt.makecpt(cmap="etopo1", series=cpt_lims, background=True)
+   fig.grdimage(
+      topography,
+      cmap=True,
+      projection="M15c",
+      frame=['ag', 'WSen'],
+   )
+   fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
    fig.show()
 
 ----
