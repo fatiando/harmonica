@@ -38,7 +38,7 @@ ellipsoid. Since we want to remove the masses between the surface of the Earth
 and ellipsoid, we need to add the geoid height to the topography before Bouguer
 correction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-82
+.. GENERATED FROM PYTHON SOURCE LINES 28-88
 
 
 
@@ -56,8 +56,8 @@ correction.
     Dimensions:     (longitude: 2161, latitude: 1081)
     Coordinates:
       * longitude   (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
-      * latitude    (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
         height      (latitude, longitude) float32 9MB 1e+04 1e+04 ... 1e+04 1e+04
+      * latitude    (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
     Data variables:
         gravity     (latitude, longitude) float64 19MB 9.801e+05 ... 9.802e+05
         geoid       (latitude, longitude) float64 19MB -29.5 -29.5 ... 15.4 15.4
@@ -74,7 +74,6 @@ correction.
         units:           mGal
         actual_range:    [974748.6 980201.9]
         icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
-    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
 
 
 
@@ -85,9 +84,11 @@ correction.
 
 .. code-block:: Python
 
+
     import boule as bl
     import ensaio
     import pygmt
+    import verde as vd
     import xarray as xr
 
     import harmonica as hm
@@ -107,7 +108,7 @@ correction.
 
     # Calculate normal gravity and the disturbance
     ellipsoid = bl.WGS84
-    gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+    gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
     disturbance = data.gravity - gamma
 
     # Reference the topography to the ellipsoid
@@ -121,7 +122,11 @@ correction.
     # Make a plot of data using PyGMT
     fig = pygmt.Figure()
 
-    pygmt.grd2cpt(grid=disturbance_topofree, cmap="vik+h0", continuous=True)
+    # Get the 99th percentile of the absolute value to use as color scale limits
+    maxabs = vd.maxabs(disturbance_topofree, percentile=99)
+
+    # Make colormap of data
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
     title = "Topography-free (Bouguer) gravity disturbance of the Earth"
 
@@ -136,14 +141,14 @@ correction.
 
     fig.coast(shorelines="0.5p,black", resolution="crude")
 
-    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+    fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.675 seconds)
+   **Total running time of the script:** (0 minutes 2.163 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance_topofree.py:

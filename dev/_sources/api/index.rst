@@ -72,6 +72,7 @@ Gravity fields:
 .. autosummary::
     :toctree: generated/
 
+    ellipsoid_gravity
     point_gravity
     prism_gravity
     tesseroid_gravity
@@ -82,7 +83,15 @@ Magnetic fields:
     :toctree: generated/
 
     dipole_magnetic
+    ellipsoid_magnetic
     prism_magnetic
+
+Geometric bodies:
+
+.. autosummary::
+    :toctree: generated/
+
+    Ellipsoid
 
 Layers and meshes:
 
@@ -108,8 +117,17 @@ Source position estimation
 .. autosummary::
     :toctree: generated/
 
+    EulerInversion
     EulerDeconvolution
 
+
+Spherical Harmonics
+-------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    IGRF14
 
 Input and Output
 ----------------
@@ -137,3 +155,19 @@ Utilities
     magnetic_vec_to_angles
     magnetic_angles_to_vec
     total_field_anomaly
+
+Errors and Warnings
+-------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    errors.NoPhysicalPropertyWarning
+
+Type hints
+----------
+
+.. autosummary::
+   :toctree: generated/
+
+    typing.Coordinates

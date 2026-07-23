@@ -34,7 +34,7 @@ boundaries of any prism in the layer. The methods of this Dataset accessor can
 be used together with the :func:`harmonica.prism_gravity` to compute the
 gravitational effect of the layer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-67
+.. GENERATED FROM PYTHON SOURCE LINES 24-68
 
 
 
@@ -48,6 +48,7 @@ gravitational effect of the layer.
 
 
 .. code-block:: Python
+
 
     import numpy as np
     import pygmt
@@ -78,25 +79,25 @@ gravitational effect of the layer.
     # Plot gravity field
     fig = pygmt.Figure()
 
-    title = "Gravitational acceleration of a layer of prisms"
+    title = "Gravitational acceleration of topography with prisms"
 
     with pygmt.config(FONT_TITLE="14p"):
         fig.grdimage(
             region=region,
             projection="X10c/10c",
             grid=grid.gravity,
-            frame=["a", f"+t{title}", 'x+l"easting (m)"', 'y+l"northing (m)"'],
+            frame=["a", f"+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
             cmap="viridis",
         )
 
-    fig.colorbar(cmap=True, position="JMR", frame=["a2f1", "x+lmGal"])
+    fig.colorbar(cmap=True, position="JMR", frame=["x+lmGal"])
 
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.503 seconds)
+   **Total running time of the script:** (0 minutes 1.668 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prism_layer.py:

@@ -20,12 +20,12 @@ density = 2670
 # In[3]:
 
 
-import verde as vd
+import bordado as bd
 
-coordinates = vd.grid_coordinates(
+coordinates = bd.grid_coordinates(
     region=[-80, -40, -50, -10],
     shape=(80, 80),
-    extra_coords=100e3 + mean_radius,
+    non_dimensional_coords=100e3 + mean_radius,
 )
 
 
@@ -53,6 +53,8 @@ pygmt.set_display(method="notebook")
 
 
 import pygmt
+import verde as vd
+
 grid = vd.make_xarray_grid(
    coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
@@ -69,6 +71,15 @@ with pygmt.config(FONT_TITLE="12p"):
 
 fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
 fig.coast(shorelines="1p,black")
+
+# Plot edges of tesseroid
+fig.plot(
+   x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+   y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+   pen="1p,red",
+   label="Tesseroid boundary",
+)
+fig.legend()
 
 fig.show()
 
@@ -88,10 +99,10 @@ densities = [2670 , 2670, 2670, 2670]
 # In[8]:
 
 
-coordinates = vd.grid_coordinates(
+coordinates = bd.grid_coordinates(
     region=[-80, -40, -50, -10],
     shape=(80, 80),
-    extra_coords=100e3 + mean_radius,
+    non_dimensional_coords=100e3 + mean_radius,
 )
 gravity = hm.tesseroid_gravity(coordinates, tesseroids, densities, field="g_z")
 
@@ -115,6 +126,20 @@ with pygmt.config(FONT_TITLE="12p"):
 
 fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
 fig.coast(shorelines="1p,black")
+
+# Plot edges of tesseroids
+for i, tesseroid in enumerate(tesseroids):
+   if i == 0:
+      label="Tesseroid boundaries"
+   else:
+      label=None
+   fig.plot(
+      x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+      y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+      pen="1p,red",
+      label=label,
+   )
+fig.legend()
 
 fig.show()
 
@@ -149,10 +174,10 @@ def density(radius):
 # In[12]:
 
 
-coordinates = vd.grid_coordinates(
+coordinates = bd.grid_coordinates(
     region=[-80, -40, -50, -10],
     shape=(80, 80),
-    extra_coords=100e3 + ellipsoid.mean_radius,
+    non_dimensional_coords=100e3 + ellipsoid.mean_radius,
 )
 
 
@@ -178,9 +203,22 @@ with pygmt.config(FONT_TITLE="12p"):
       frame=["a", f"+t{title}"],
       cmap="viridis",
    )
-
 fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
 fig.coast(shorelines="1p,black")
+
+# Plot edges of tesseroids
+for i, tesseroid in enumerate(tesseroids):
+   if i == 0:
+      label="Tesseroid boundaries"
+   else:
+      label=None
+   fig.plot(
+      x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+      y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+      pen="1p,red",
+      label=label,
+   )
+fig.legend()
 
 fig.show()
 

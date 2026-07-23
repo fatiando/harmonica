@@ -34,10 +34,10 @@ common default values for the reference thickness and crust, mantle
 [TurcotteSchubert2014]_.
 
 We'll use our sample topography data
-(:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
+(:func:`ensaio.fetch_earth_topography`) to calculate the Airy
 isostatic Moho depth of Africa.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-78
+.. GENERATED FROM PYTHON SOURCE LINES 27-84
 
 
 
@@ -53,10 +53,10 @@ isostatic Moho depth of Africa.
 
     Topography/bathymetry grid:
     <xarray.Dataset> Size: 2MB
-    Dimensions:     (longitude: 481, latitude: 511)
+    Dimensions:     (latitude: 511, longitude: 481)
     Coordinates:
-      * longitude   (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
       * latitude    (latitude) float64 4kB -40.0 -39.83 -39.67 ... 44.67 44.83 45.0
+      * longitude   (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
     Data variables:
         topography  (latitude, longitude) float64 2MB -3.528e+03 -3.51e+03 ... 33.0
 
@@ -68,11 +68,21 @@ isostatic Moho depth of Africa.
            ...,
            [15167.4 , 15202.8 , 14937.3 , ..., 30151.2 , 30184.8 , 30184.8 ],
            [15347.94, 15503.7 , 15266.52, ..., 30145.6 , 30184.8 , 30184.8 ],
-           [15362.1 , 15517.86, 15252.36, ..., 30151.2 , 30173.6 , 30184.8 ]])
+           [15362.1 , 15517.86, 15252.36, ..., 30151.2 , 30173.6 , 30184.8 ]],
+          shape=(511, 481))
     Coordinates:
-      * longitude  (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
       * latitude   (latitude) float64 4kB -40.0 -39.83 -39.67 ... 44.67 44.83 45.0
-    Attributes:
+      * longitude  (longitude) float64 4kB -20.0 -19.83 -19.67 ... 59.67 59.83 60.0
+    Attributes: (12/16)
+        Conventions:     CF-1.8
+        title:           Topographic and bathymetric height of ETOPO1 (ice surfac...
+        crs:             WGS84
+        source:          Generated from a spherical harmonic model by the ICGEM C...
+        license:         public domain
+        references:      https://doi.org/10.7289/V5C8276M
+        ...              ...
+        actual_range:    [-10023.   6082.]
+        icgem_metadata:  generating_institute: gfz-potsdam\ngenerating_date: 2021...
         isostasy:        Airy
         density_crust:   2800.0
         density_mantle:  3300.0
@@ -87,9 +97,11 @@ isostatic Moho depth of Africa.
 
 .. code-block:: Python
 
+
     import ensaio
     import numpy as np
     import pygmt
+    import verde as vd
     import xarray as xr
 
     import harmonica as hm
@@ -118,10 +130,14 @@ isostatic Moho depth of Africa.
     print("\nMoho depth grid:")
     print(moho)
 
-    # Draw the maps
+    # Make a plot of data using PyGMT
     fig = pygmt.Figure()
 
-    pygmt.grd2cpt(grid=moho, cmap="viridis", reverse=True, continuous=True)
+    # Get the min and max values to use as color scale limits
+    cpt_lims = vd.minmax(moho)
+
+    # Make colormap of data
+    pygmt.makecpt(cmap="viridis", series=cpt_lims)
 
     title = "Airy isostatic Moho depth of Africa"
 
@@ -135,14 +151,14 @@ isostatic Moho depth of Africa.
 
     fig.coast(shorelines="0.5p,black", resolution="crude")
 
-    fig.colorbar(cmap=True, frame=["a10000f2500", "x+lmeters"])
+    fig.colorbar(cmap=True, frame=["x+lmeters"])
 
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.401 seconds)
+   **Total running time of the script:** (0 minutes 0.391 seconds)
 
 
 .. _sphx_glr_download_gallery_isostatic_moho_airy.py:

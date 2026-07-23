@@ -30,12 +30,14 @@ print(potential, "J/kg")
 # In[5]:
 
 
-import verde as vd
+import bordado as bd
 
 region = (-10e3, 10e3, -10e3, 10e3)
 shape = (51, 51)
 height = 10
-coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+coordinates = bd.grid_coordinates(
+    region, shape=shape, non_dimensional_coords=height
+)
 
 
 # In[6]:
@@ -62,26 +64,24 @@ for field in fields:
 # In[8]:
 
 
-import matplotlib.pyplot as plt
+import verde as vd
 
-plt.pcolormesh(coordinates[0], coordinates[1], results["potential"])
-plt.gca().set_aspect("equal")
-plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-plt.colorbar(label="J/kg")
-plt.show()
+grid = vd.make_xarray_grid(
+   coordinates,
+   tuple(results.values()),
+   data_names=results.keys(),
+   extra_coords_names="extra",
+)
+grid
 
 
 # In[9]:
 
 
-fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+import matplotlib.pyplot as plt
 
-for field, ax in zip(("g_e", "g_n", "g_z"), axes):
-   tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
-   ax.set_aspect("equal")
-   ax.set_title(field)
-   ax.ticklabel_format(style="sci", scilimits=(0, 0))
-   plt.colorbar(tmp, ax=ax, label="mGal", orientation="horizontal", pad=0.08)
+grid.potential.plot(cbar_kwargs={"label":"J/kg"})
+plt.gca().set_aspect("equal")
 plt.show()
 
 
@@ -90,12 +90,19 @@ plt.show()
 
 fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-for field, ax in zip(("g_ee", "g_nn", "g_zz"), axes):
-   tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
+fields = ["g_e", "g_n", "g_z"]
+maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+for field, ax in zip(fields, axes):
+   tmp = grid[field].plot(
+      ax=ax,
+      add_colorbar=False,
+      vmin=-maxabs,
+      vmax=maxabs,
+      cmap='RdBu_r',
+   )
    ax.set_aspect("equal")
    ax.set_title(field)
-   ax.ticklabel_format(style="sci", scilimits=(0, 0))
-   plt.colorbar(tmp, ax=ax, label="Eotvos", orientation="horizontal", pad=0.08)
+fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="mGal", fraction=.03, pad=0.08)
 plt.show()
 
 
@@ -104,16 +111,44 @@ plt.show()
 
 fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-for field, ax in zip(("g_en", "g_ez", "g_nz"), axes):
-   tmp = ax.pcolormesh(coordinates[0], coordinates[1], results[field])
+fields = ["g_ee", "g_nn", "g_zz"]
+maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+for field, ax in zip(fields, axes):
+   tmp = grid[field].plot(
+      ax=ax,
+      add_colorbar=False,
+      vmin=-maxabs,
+      vmax=maxabs,
+      cmap='RdBu_r',
+   )
    ax.set_aspect("equal")
    ax.set_title(field)
-   ax.ticklabel_format(style="sci", scilimits=(0, 0))
-   plt.colorbar(tmp, ax=ax, label="Eotvos", orientation="horizontal", pad=0.08)
+fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="Eotvos", fraction=.03, pad=0.08)
 plt.show()
 
 
 # In[12]:
+
+
+fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+
+fields = ["g_en", "g_ez", "g_nz"]
+maxabs = vd.maxabs(*[grid[f] for f in fields], percentile=99)
+for field, ax in zip(fields, axes):
+   tmp = grid[field].plot(
+      ax=ax,
+      add_colorbar=False,
+      vmin=-maxabs,
+      vmax=maxabs,
+      cmap='RdBu_r',
+   )
+   ax.set_aspect("equal")
+   ax.set_title(field)
+fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="Eotvos", fraction=.03, pad=0.08)
+plt.show()
+
+
+# In[13]:
 
 
 prisms = [
@@ -125,49 +160,28 @@ prisms = [
 densities = [2670, 3300, 2900, 2980]
 
 
-# In[13]:
-
-
-import verde as vd
-
-coordinates = vd.grid_coordinates(
-    region=(0, 10e3, 0, 10e3), shape=(40, 40), extra_coords=0
-)
-
-
 # In[14]:
 
 
-g_z = hm.prism_gravity(coordinates, prisms, densities, field="g_z")
+import bordado as bd
+
+coordinates = bd.grid_coordinates(
+    region=(0, 10e3, 0, 10e3), shape=(40, 40), non_dimensional_coords=0
+)
 
 
 # In[15]:
 
 
-import pygmt
-
-# Needed so that displaying works on jupyter-sphinx and sphinx-gallery at
-# the same time. Using PYGMT_USE_EXTERNAL_DISPLAY="false" in the Makefile
-# for sphinx-gallery to work means that fig.show won't display anything here
-# either.
-pygmt.set_display(method="notebook")
+g_z = hm.prism_gravity(coordinates, prisms, densities, field="g_z")
 
 
 # In[16]:
 
 
-import pygmt
 grid = vd.make_xarray_grid(
    coordinates, g_z, data_names="g_z", extra_coords_names="extra")
-fig = pygmt.Figure()
-fig.grdimage(
-   region=(0, 10e3, 0, 10e3),
-   projection="X10c",
-   grid=grid.g_z,
-   frame=["WSne", "x+leasting (m)", "y+lnorthing (m)"],
-   cmap='viridis',)
-fig.colorbar(cmap=True, position="JMR", frame=["a2", "x+lmGal"])
-fig.show()
+grid.g_z.plot(cbar_kwargs={"label":"mGal"})
 
 
 # In[17]:
@@ -194,7 +208,9 @@ magnetization = (
 region = (-10e3, 10e3, -10e3, 10e3)
 shape = (51, 51)
 height = 10
-coordinates = vd.grid_coordinates(region, shape=shape, extra_coords=height)
+coordinates = bd.grid_coordinates(
+    region, shape=shape, non_dimensional_coords=height
+)
 
 
 # In[19]:
@@ -206,41 +222,40 @@ b_e, b_n, b_u = hm.prism_magnetic(coordinates, prisms, magnetization, field="b")
 # In[20]:
 
 
-fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 6))
-
-for ax, mag_component, title in zip(axes, (b_e, b_n, b_u), ("Be", "Bn", "Bu")):
-    maxabs = vd.maxabs(mag_component)
-    tmp = ax.pcolormesh(
-        coordinates[0],
-        coordinates[1],
-        mag_component,
-        vmin=-maxabs,
-        vmax=maxabs,
-        cmap="RdBu_r",
-    )
-    ax.contour(
-        coordinates[0],
-        coordinates[1],
-        mag_component,
-        colors="k",
-        linewidths=0.5,
-    )
-    ax.set_title(title)
-    ax.set_aspect("equal")
-    plt.colorbar(
-        tmp,
-        ax=ax,
-        orientation="horizontal",
-        label="nT",
-        pad=0.08,
-        aspect=42,
-        shrink=0.8,
-    )
-
-plt.show()
+grid = vd.make_xarray_grid(
+   coordinates,
+   data=(b_e, b_n, b_u),
+   data_names=["b_e", "b_n", "b_u"],
+   extra_coords_names="extra"
+)
 
 
 # In[21]:
+
+
+fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
+
+maxabs = vd.maxabs(*[grid[v] for v in grid.variables], percentile=99)
+for field, ax in zip(grid.variables, axes):
+   tmp = grid[field].plot(
+      ax=ax,
+      add_colorbar=False,
+      vmin=-maxabs,
+      vmax=maxabs,
+      cmap='RdBu_r',
+   )
+   grid[field].plot.contour(
+      ax=ax,
+      colors="k",
+      linewidths=0.5,
+   )
+   ax.set_aspect("equal")
+   ax.set_title(field)
+fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
+plt.show()
+
+
+# In[22]:
 
 
 b_u = hm.prism_magnetic(
@@ -248,48 +263,48 @@ b_u = hm.prism_magnetic(
 )
 
 
-# In[22]:
+# In[23]:
 
 
 maxabs = vd.maxabs(b_u)
 
 tmp = plt.pcolormesh(
-    coordinates[0], coordinates[1], b_u, vmin=-maxabs, vmax=maxabs, cmap="RdBu_r"
+   coordinates[0], coordinates[1], b_u, vmin=-maxabs, vmax=maxabs, cmap="RdBu_r"
 )
 plt.contour(coordinates[0], coordinates[1], b_u, colors="k", linewidths=0.5)
 plt.title("Bu")
 plt.gca().set_aspect("equal")
-plt.colorbar(tmp, label="nT", pad=0.03, aspect=42, shrink=0.8)
+plt.colorbar(tmp, label="nT", pad=0.03, shrink=0.8)
 plt.show()
 
 
-# In[23]:
+# In[24]:
 
 
 region = (0, 100e3, -40e3, 40e3)
 spacing = 2000
 
 
-# In[24]:
-
-
-easting, northing = vd.grid_coordinates(region=region, spacing=spacing)
-
-
 # In[25]:
+
+
+easting, northing = bd.grid_coordinates(region=region, spacing=spacing)
+
+
+# In[26]:
 
 
 wavelength = 24 * spacing
 surface = np.abs(np.sin(easting * 2 * np.pi / wavelength))
 
 
-# In[26]:
+# In[27]:
 
 
 density = np.full_like(surface, 2700)
 
 
-# In[27]:
+# In[28]:
 
 
 prisms = hm.prism_layer(
@@ -300,35 +315,26 @@ prisms = hm.prism_layer(
 )
 
 
-# In[28]:
-
-
-region_pad = vd.pad_region(region, 10e3)
-coordinates = vd.grid_coordinates(
-    region_pad, spacing=spacing, extra_coords=1e3
-)
-
-
 # In[29]:
 
 
-gravity = prisms.prism_layer.gravity(coordinates, field="g_z")
+region_pad = bd.pad_region(region, 10e3)
+coordinates = bd.grid_coordinates(
+    region_pad, spacing=spacing, non_dimensional_coords=1e3
+)
 
 
 # In[30]:
 
 
+gravity = prisms.prism_layer.gravity(coordinates, field="g_z")
+
+
+# In[31]:
+
+
 grid = vd.make_xarray_grid(
    coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
-fig = pygmt.Figure()
-title = "Gravitational acceleration of a layer of prisms"
-fig.grdimage(
-   region=region_pad,
-   projection="X10c",
-   grid=grid.gravity,
-   frame=[f"WSne+t{title}", "x+leasting (m)", "y+lnorthing (m)"],
-   cmap='viridis',)
-fig.colorbar(cmap=True, position="JMR", frame=["a.02", "x+lmGal"])
-fig.show()
+grid.gravity.plot(cbar_kwargs={"label":"mGal"})
 

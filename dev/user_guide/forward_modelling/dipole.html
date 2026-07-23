@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Magnetic dipoles | Harmonica dev</title>
+        <title>Magnetic dipoles | Harmonica v0.0.post100</title>
     
 
   
@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -153,7 +153,7 @@
   
   
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -216,6 +216,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -228,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -252,23 +254,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -581,13 +590,13 @@ dipoles on multiple observation points.</p>
 <p>Let’s define a regular grid of observation points:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bordado</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bd</span>
 
 <span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">spacing</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
-   <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="n">height</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+   <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">non_dimensional_coords</span><span class="o">=</span><span class="n">height</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -598,7 +607,7 @@ dipoles on multiple observation points.</p>
 <p>And a set of dipoles with their magnetic moments:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">easting</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">]</span>
 <span class="n">northing</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">]</span>
@@ -626,25 +635,47 @@ every observation point:</p>
 <div class="cell_output docutils container">
 </div>
 </div>
+<p>We can reshape the results into variables of an dataset:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
+   <span class="n">coordinates</span><span class="p">,</span>
+   <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">b_e</span><span class="p">,</span> <span class="n">b_n</span><span class="p">,</span> <span class="n">b_u</span><span class="p">),</span>
+   <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;b_e&quot;</span><span class="p">,</span> <span class="s2">&quot;b_n&quot;</span><span class="p">,</span> <span class="s2">&quot;b_u&quot;</span><span class="p">],</span>
+   <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;extra&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 
-<span class="n">fields</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;b_e&quot;</span><span class="p">:</span> <span class="n">b_e</span><span class="p">,</span> <span class="s2">&quot;b_n&quot;</span><span class="p">:</span> <span class="n">b_n</span><span class="p">,</span> <span class="s2">&quot;b_u&quot;</span><span class="p">:</span> <span class="n">b_u</span><span class="p">}</span>
-<span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
-   <span class="n">tmp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">])</span>
+<span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">variables</span><span class="p">],</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+   <span class="n">tmp</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+      <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+      <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+      <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+      <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">,</span>
+   <span class="p">)</span>
    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-   <span class="n">ax</span><span class="o">.</span><span class="n">ticklabel_format</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;sci&quot;</span><span class="p">,</span> <span class="n">scilimits</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
-   <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;nT&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.008</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;nT&quot;</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">.03</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.08</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dipole_8_0.png" src="../../_images/dipole_8_0.png" />
+<img alt="../../_images/dipole_9_0.png" src="../../_images/dipole_9_0.png" />
 </div>
 </div>
 <hr class="docutils" />
@@ -739,7 +770,7 @@ every observation point:</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Jul 23, 2026.
   <br/>
 </p>
   </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Equivalent sources in spherical coordinates | Harmonica dev</title>
+        <title>Equivalent sources in spherical coordinates | Harmonica v0.0.post100</title>
     
 
   
@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -153,7 +153,7 @@
   
   
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -216,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -228,6 +229,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -252,23 +254,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -512,8 +521,8 @@ suited for it.</p>
 <p>Lets start by fetching some gravity data over Southern Africa:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ensaio</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ensaio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">fname</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_southern_africa_gravity</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -633,8 +642,8 @@ suited for it.</p>
 the data using a blocked mean to a resolution of 6 arcminutes.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
 
 <span class="n">blocked_mean</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">drop_coords</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">gravity_data</span> <span class="o">=</span> <span class="n">blocked_mean</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
@@ -763,13 +772,13 @@ the data using a blocked mean to a resolution of 6 arcminutes.</p>
 </div></div></div>
 </div>
 <p>And compute gravity disturbance by subtracting normal gravity using
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> (see <a class="reference internal" href="../gravity_disturbance.html#gravity-disturbance"><span class="std std-ref">Gravity Disturbance</span></a> for more information):</p>
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> (see <a class="reference internal" href="../gravity_disturbance.html#gravity-disturbance"><span class="std std-ref">Gravity Disturbance</span></a> for more information):</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
 
 <span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
-<span class="n">normal_gravity</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">normal_gravity</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">height_sea_level_m</span><span class="p">)</span>
+<span class="n">normal_gravity</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">normal_gravity</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">height_sea_level_m</span><span class="p">))</span>
 <span class="n">gravity_disturbance</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">gravity_mgal</span> <span class="o">-</span> <span class="n">normal_gravity</span>
 </pre></div>
 </div>
@@ -781,7 +790,7 @@ the data using a blocked mean to a resolution of 6 arcminutes.</p>
 some first guess values for the <code class="docutils literal notranslate"><span class="pre">damping</span></code> and <code class="docutils literal notranslate"><span class="pre">depth</span></code> parameters.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">harmonica</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hm</span>
 
 <span class="n">eqs</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">EquivalentSourcesSph</span><span class="p">(</span><span class="n">damping</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">relative_depth</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
@@ -796,12 +805,12 @@ some first guess values for the <code class="docutils literal notranslate"><span
 </div>
 <p>Before we can fit the sources’ coefficients we need to convert the data given
 in geographical coordinates to spherical ones. We can do it through the
-<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geodetic_to_spherical" title="(in Boule vv0.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geodetic_to_spherical</span></code></a> method of the WGS84 ellipsoid
-defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
+<a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geodetic_to_spherical" title="(in Boule vv0.6.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geodetic_to_spherical</span></code></a> method of the WGS84 ellipsoid
+defined in <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a>.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geodetic_to_spherical</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">height_sea_level_m</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">height_sea_level_m</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -817,9 +826,10 @@ defined in <a class="reference external" href="https://www.fatiando.org/boule/la
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>#sk-container-id-1 {
+<div class="output text_html"><style>.sk-global {
   /* Definition of color scheme common for light and dark mode */
-  --sklearn-color-text: black;
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
   --sklearn-color-line: gray;
   /* Definition of color scheme for unfitted estimators */
   --sklearn-color-unfitted-level-0: #fff5e6;
@@ -831,34 +841,34 @@ defined in <a class="reference external" href="https://www.fatiando.org/boule/la
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
-
-  /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-icon: #696969;
-
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
 }
 
-#sk-container-id-1 {
+.sk-global.light {
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
+  --sklearn-color-icon: #696969;
+}
+
+.sk-global.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
+}
+
+.sk-global {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-1 pre {
+.sk-global pre {
   padding: 0;
 }
 
-#sk-container-id-1 input.sk-hidden--visually {
+.sk-global input.sk-hidden--visually {
   border: 0;
-  clip: rect(1px 1px 1px 1px);
-  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(100%);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -867,7 +877,7 @@ defined in <a class="reference external" href="https://www.fatiando.org/boule/la
   width: 1px;
 }
 
-#sk-container-id-1 div.sk-dashed-wrapped {
+.sk-global div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -875,7 +885,7 @@ defined in <a class="reference external" href="https://www.fatiando.org/boule/la
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-1 div.sk-container {
+.sk-global div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -885,7 +895,7 @@ defined in <a class="reference external" href="https://www.fatiando.org/boule/la
   position: relative;
 }
 
-#sk-container-id-1 div.sk-text-repr-fallback {
+.sk-global div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -901,14 +911,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-1 div.sk-parallel-item::after {
+.sk-global div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-1 div.sk-parallel {
+.sk-global div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -916,28 +926,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-1 div.sk-parallel-item {
+.sk-global div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-1 div.sk-parallel-item:first-child::after {
+.sk-global div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-1 div.sk-parallel-item:last-child::after {
+.sk-global div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-1 div.sk-parallel-item:only-child::after {
+.sk-global div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-1 div.sk-serial {
+.sk-global div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -955,24 +965,33 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-1 div.sk-toggleable {
+.sk-global div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-1 label.sk-toggleable__label {
+.sk-global label.sk-toggleable__label {
   cursor: pointer;
-  display: block;
+  display: flex;
   width: 100%;
   margin-bottom: 0;
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
 }
 
-#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+.sk-global label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+.sk-global label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -980,27 +999,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+.sk-global label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-1 div.sk-toggleable__content {
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+.sk-global div.sk-toggleable__content {
+  display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content.fitted {
+.sk-global div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content pre {
+.sk-global div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -1008,79 +1025,78 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+.sk-global div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+.sk-global input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
-  max-height: 200px;
-  max-width: 100%;
-  overflow: auto;
+  display: block;
+  width: 100%;
+  overflow: visible;
 }
 
-#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+.sk-global input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+.sk-global div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+.sk-global div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+.sk-global div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+.sk-global div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-1 div.sk-label label.sk-toggleable__label,
-#sk-container-id-1 div.sk-label label {
+.sk-global div.sk-label label.sk-toggleable__label,
+.sk-global div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+.sk-global div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+.sk-global div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-1 div.sk-label label {
+.sk-global div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-1 div.sk-label-container {
+.sk-global div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-1 div.sk-estimator {
+.sk-global div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -1090,18 +1106,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted {
+.sk-global div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-1 div.sk-estimator:hover {
+.sk-global div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted:hover {
+.sk-global div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -1117,23 +1133,25 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
   text-decoration: none !important;
-  margin-left: 1ex;
+  margin-left: 0.5em;
+  text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -1143,7 +1161,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -1153,7 +1172,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -1188,12 +1208,12 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-1 a.estimator_doc_link {
+.sk-global a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -1203,25 +1223,570 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-1 a.estimator_doc_link.fitted {
+.sk-global a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-1 a.estimator_doc_link:hover {
+.sk-global a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+.sk-global a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>EquivalentSourcesSph(damping=0.001, relative_depth=10000)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;EquivalentSourcesSph<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>EquivalentSourcesSph(damping=0.001, relative_depth=10000)</pre></div> </div></div></div></div></div></div>
+
+.sk-top-container.sk-global {
+  /* pydata-sphinx-theme hides overflow, so scrolling is disabled.
+   We need to set it to !important and add tabindex="0" in the HTML
+   to allow keyboard-only users to navigate the display. */
+  overflow-x: scroll !important;
+  max-width: 100%;
+}
+
+.estimator-table {
+    font-family: monospace;
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover td {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table :is(td, th) {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
+    text-align: left;
+    position: relative;
+    padding: 0;
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
+}
+
+.default td, .estimator-table th {
+    color: black;
+    text-align: left !important;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+td.fitted-att-type {
+    white-space: preserve nowrap;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+@supports(anchor-name: --doc-link) {
+    a.param-doc-link,
+    a.param-doc-link:link,
+    a.param-doc-link:visited {
+    anchor-name: --doc-link;
+    }
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+@supports(position-area: center right) {
+    .param-doc-description {
+    position-area: center right;
+    position: fixed;
+    margin-left: 0;
+    }
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.features {
+  font-family: monospace;
+  cursor: pointer;
+  background-color: var(--sklearn-color-unfitted-level-0);
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: .20em;
+  margin-bottom: 0.5em;
+  font-size: inherit; /* Needed for jupyter */
+}
+
+.features.fitted {
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+.features summary {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 0;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: .25em;
+}
+
+.features details[open] > summary {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+  border-radius: .20em 0 0 0;
+}
+
+.features.fitted details[open] > summary {
+  background-color: var(--sklearn-color-fitted-level-2);
+  border-radius: .20em 0 0 0;
+}
+
+.features details > summary .arrow::before {
+  content: "▸";
+  color: grey;
+}
+
+.features details[open] > summary .arrow::before {
+  content: "▾";
+}
+
+.features details:hover > summary {
+  margin: 0;
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+.features.fitted details:hover > summary {
+  margin: 0;
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+.features .features-container {
+  max-width: 15em;
+  max-height: 10em;
+  overflow: auto;
+  scrollbar-width: thin;
+  padding: .25em 0.1rem;
+  background-color: var(--sklearn-color-unfitted-level-0);
+  border-radius: 0 0 .5em .5em;
+}
+
+.features.fitted .features-container {
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+.features .image-container {
+  block-size: 1em;
+  inline-size: 1em;
+  padding: 0;
+  margin: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.features .copy-paste-icon {
+  background-size: 1em 1em;
+  width: 1em;
+  height: 1em;
+  filter: grayscale(100%) opacity(60%);
+}
+
+.features .features-container table {
+  width: 100%;
+  margin: 0.01em;
+}
+
+.features .features-container table tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.features .features-container table tr:nth-child(even) {
+  background-color: #f6f6f6;
+}
+
+.features .features-container table tr:hover {
+  background-color: #e0e0e0;
+}
+
+.features .features-container table {
+  table-layout: inherit;
+}
+
+.features .features-container table td {
+  text-align: left;
+  padding: 0 0.5em;
+  border: 1px solid rgba(106, 105, 104, 0.232);
+  white-space: nowrap;
+  color: var(--sklearn-color-text);
+}
+
+.total_features {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+</style><body><div id="sk-container-id-1" tabindex="0" class="sk-top-container sk-global"><div class="sk-text-repr-fallback"><pre>EquivalentSourcesSph(damping=0.001, relative_depth=10000)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually sk-global" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>EquivalentSourcesSph</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('damping',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">damping</td>
+            <td class="value">0.001</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('relative_depth',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">relative_depth</td>
+            <td class="value">10000</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('points',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">points</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('parallel',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">parallel</td>
+            <td class="value">True</td>
+        </tr>
+
+                  </tbody>
+                </table>
+            </details>
+        </div>
+
+        <div class="estimator-table">
+            <details>
+                <summary>Fitted attributes</summary>
+                <table class="parameters-table">
+                    <tbody>
+                        <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        </tr>
+
+       <tr class="default">
+           <td class="param"><a class="param-doc-link" style="text-decoration:none;">coefs_</a></td>
+           <td class="fitted-att-type">ndarray[float64](8077,)</td>
+           <td>[388568.45,  8193.48,-50223.36,...,-33647.49,108650.03, 84451.39]</td>
+
+
+       </tr>
+
+
+       <tr class="default">
+           <td class="param"><a class="param-doc-link" style="text-decoration:none;">points_</a></td>
+           <td class="fitted-att-type">tuple</td>
+           <td>(array([19.394...shape=(8077,)), array([-34.73...shape=(8077,)), array([636116...shape=(8077,)))</td>
+
+
+       </tr>
+
+
+       <tr class="default">
+           <td class="param"><a class="param-doc-link" style="text-decoration:none;">region_</a></td>
+           <td class="fitted-att-type">tuple</td>
+           <td>(11.90833, 32.74667, -34.81539796217275, -17.28055719796896)</td>
+
+
+       </tr>
+
+                    </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>/*  Authors: The scikit-learn developers
+ SPDX-License-Identifier: BSD-3-Clause
+*/
+
+function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+
+    const parent = element.parentElement;
+    if (!parent || !parent.nextElementSibling) {
+        console.warn('Expected copy-paste icon is missing from the DOM structure');
+        return;
+    }
+
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+
+/**
+ * Copy the list of feature names formatted as a Python list.
+ *
+ * @param {HTMLElement} element - The copy button inside a `.features` block; its siblings
+ *   contain a `details` element and a table containing feature named.
+ * @returns {boolean} Always returns `false` so callers can prevent the default click behavior.
+ */
+function copyFeatureNamesToClipboard(element) {
+    var detailsElem = element.closest('.features').querySelector('details');
+    var wasOpen = detailsElem.open;
+    detailsElem.open = true;
+    var content = element.closest('.features').querySelector('tbody')
+                  .innerText.trim();
+    if (!wasOpen) detailsElem.open = false;
+    const rows = content.split('\n').map(row => `    "${row}"`);
+    const formattedText = `[\n${rows.join(',\n')},\n]`;
+    const originalHTML = element.innerHTML.replace('✔', '');
+    const originalStyle = element.style;
+    const copyMark = document.createElement('span');
+    copyMark.innerHTML = '✔';
+    copyMark.style.color = 'blue';
+    copyMark.style.fontSize = '1em';
+
+    navigator.clipboard.writeText(formattedText)
+        .then(() => {
+            element.style.display = 'none';
+            element.parentElement.appendChild(copyMark);
+
+            setTimeout(() => {
+                copyMark.remove();
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 1000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'orange';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 1000);
+        });
+    return false;
+}
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 <p>We can then use these sources to predict the gravity disturbance on a regular
 grid defined in geodetic coordinates. We will generate a regular grid of
@@ -1229,15 +1794,17 @@ computation points located at the maximum height of the data and with a spacing
 of 6 arcminutes.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the bounding region of the data in geodetic coordinates</span>
-<span class="n">region</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bordado</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bd</span>
+
+<span class="c1"># Get the bounding region of the data in geodetic coordinates</span>
+<span class="n">region</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
 
 <span class="c1"># Get the maximum height of the data coordinates</span>
 <span class="n">max_height</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">height_sea_level_m</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
 <span class="c1"># Define a regular grid of points in geodetic coordinates</span>
-<span class="n">grid_coords</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
-    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="n">max_height</span>
+<span class="n">grid_coords</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">non_dimensional_coords</span><span class="o">=</span><span class="n">max_height</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1249,7 +1816,7 @@ of 6 arcminutes.</p>
 field we need to convert the grid coordinates to spherical.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_coords_sph</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geodetic_to_spherical</span><span class="p">(</span><span class="o">*</span><span class="n">grid_coords</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_coords_sph</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geodetic_to_spherical</span><span class="p">(</span><span class="n">grid_coords</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1266,8 +1833,8 @@ field we need to convert the grid coordinates to spherical.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>Lastly we can generate a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> using
-<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.make_xarray_grid.html#verde.make_xarray_grid" title="(in Verde vv1.8.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.make_xarray_grid</span></code></a>:</p>
+<p>Lastly we can generate a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> using
+<a class="reference external" href="https://www.fatiando.org/verde/latest/api/generated/verde.make_xarray_grid.html#verde.make_xarray_grid" title="(in Verde vv1.9.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.make_xarray_grid</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
@@ -1296,39 +1863,87 @@ field we need to convert the grid coordinates to spherical.</p>
 </symbol>
 </defs>
 </svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
+<style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
 :root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
 }
 
-html[theme=dark],
-html[data-theme=dark],
-body[data-theme=dark],
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
 body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1F1F1F;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
 }
 
 .xr-wrap {
   display: block !important;
   min-width: 300px;
   max-width: 700px;
+  line-height: 1.6;
+  padding-bottom: 4px;
 }
 
 .xr-text-repr-fallback {
@@ -1339,8 +1954,11 @@ body.vscode-dark {
 .xr-header {
   padding-top: 6px;
   padding-bottom: 6px;
-  margin-bottom: 4px;
+}
+
+.xr-header {
   border-bottom: solid 1px var(--xr-border-color);
+  margin-bottom: 4px;
 }
 
 .xr-header > div,
@@ -1351,39 +1969,62 @@ body.vscode-dark {
 }
 
 .xr-obj-type,
-.xr-array-name {
+.xr-obj-name {
   margin-left: 2px;
   margin-right: 10px;
 }
 
-.xr-obj-type {
+.xr-obj-type,
+.xr-group-box-contents > label {
   color: var(--xr-font-color2);
+  display: block;
 }
 
 .xr-sections {
   padding-left: 0 !important;
   display: grid;
-  grid-template-columns: 150px auto auto 1fr 20px 20px;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .xr-section-item {
   display: contents;
 }
 
-.xr-section-item input {
-  display: none;
+.xr-section-item > input,
+.xr-group-box-contents > input,
+.xr-array-wrap > input {
+  display: block;
+  opacity: 0;
+  height: 0;
+  margin: 0;
 }
 
-.xr-section-item input + label {
+.xr-section-item > input + label,
+.xr-var-item > input + label {
   color: var(--xr-disabled-color);
 }
 
-.xr-section-item input:enabled + label {
+.xr-section-item > input:enabled + label,
+.xr-var-item > input:enabled + label,
+.xr-array-wrap > input:enabled + label,
+.xr-group-box-contents > input:enabled + label {
   cursor: pointer;
   color: var(--xr-font-color2);
 }
 
-.xr-section-item input:enabled + label:hover {
+.xr-section-item > input:focus-visible + label,
+.xr-var-item > input:focus-visible + label,
+.xr-array-wrap > input:focus-visible + label,
+.xr-group-box-contents > input:focus-visible + label {
+  outline: auto;
+}
+
+.xr-section-item > input:enabled + label:hover,
+.xr-var-item > input:enabled + label:hover,
+.xr-array-wrap > input:enabled + label:hover,
+.xr-group-box-contents > input:enabled + label:hover {
   color: var(--xr-font-color0);
 }
 
@@ -1391,11 +2032,25 @@ body.vscode-dark {
   grid-column: 1;
   color: var(--xr-font-color2);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.xr-section-summary > em {
+  font-weight: normal;
+}
+
+.xr-span-grid {
+  grid-column-end: -1;
 }
 
 .xr-section-summary > span {
   display: inline-block;
-  padding-left: 0.5em;
+  padding-left: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label > span {
+  display: inline-block;
+  padding-left: 0.6em;
 }
 
 .xr-section-summary-in:disabled + label {
@@ -1404,7 +2059,7 @@ body.vscode-dark {
 
 .xr-section-summary-in + label:before {
   display: inline-block;
-  content: '►';
+  content: "►";
   font-size: 11px;
   width: 15px;
   text-align: center;
@@ -1415,7 +2070,7 @@ body.vscode-dark {
 }
 
 .xr-section-summary-in:checked + label:before {
-  content: '▼';
+  content: "▼";
 }
 
 .xr-section-summary-in:checked + label > span {
@@ -1423,9 +2078,9 @@ body.vscode-dark {
 }
 
 .xr-section-summary,
-.xr-section-inline-details {
+.xr-section-inline-details,
+.xr-group-box-contents > label {
   padding-top: 4px;
-  padding-bottom: 4px;
 }
 
 .xr-section-inline-details {
@@ -1433,13 +2088,79 @@ body.vscode-dark {
 }
 
 .xr-section-details {
-  display: none;
   grid-column: 1 / -1;
+  margin-top: 4px;
   margin-bottom: 5px;
+}
+
+.xr-section-summary-in ~ .xr-section-details {
+  display: none;
 }
 
 .xr-section-summary-in:checked ~ .xr-section-details {
   display: contents;
+}
+
+.xr-children {
+  display: inline-grid;
+  grid-template-columns: 100%;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+}
+
+.xr-group-box {
+  display: inline-grid;
+  grid-template-columns: 0px 30px auto;
+}
+
+.xr-group-box-vline {
+  grid-column-start: 1;
+  border-right: 0.2em solid;
+  border-color: var(--xr-border-color);
+  width: 0px;
+}
+
+.xr-group-box-hline {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  height: 1em;
+  width: 26px;
+  border-bottom: 0.2em solid;
+  border-color: var(--xr-border-color);
+}
+
+.xr-group-box-contents {
+  grid-column-start: 3;
+  padding-bottom: 4px;
+}
+
+.xr-group-box-contents > label::before {
+  content: "📂";
+  padding-right: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label::before {
+  content: "📁";
+}
+
+.xr-group-box-contents > input:checked + label {
+  padding-bottom: 0px;
+}
+
+.xr-group-box-contents > input:checked ~ .xr-sections {
+  display: none;
+}
+
+.xr-group-box-contents > input + label > span {
+  display: none;
+}
+
+.xr-group-box-ellipsis {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--xr-font-color2);
+  letter-spacing: 0.15em;
+  cursor: default;
 }
 
 .xr-array-wrap {
@@ -1487,15 +2208,15 @@ body.vscode-dark {
 }
 
 .xr-dim-list:before {
-  content: '(';
+  content: "(";
 }
 
 .xr-dim-list:after {
-  content: ')';
+  content: ")";
 }
 
 .xr-dim-list li:not(:last-child):after {
-  content: ',';
+  content: ",";
   padding-right: 5px;
 }
 
@@ -1512,7 +2233,9 @@ body.vscode-dark {
 .xr-var-item label,
 .xr-var-item > .xr-var-name span {
   background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
   margin-bottom: 0;
+  padding-top: 2px;
 }
 
 .xr-var-item > .xr-var-name:hover span {
@@ -1523,6 +2246,7 @@ body.vscode-dark {
 .xr-var-list > li:nth-child(odd) > label,
 .xr-var-list > li:nth-child(odd) > .xr-var-name span {
   background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
 }
 
 .xr-var-name {
@@ -1572,8 +2296,15 @@ body.vscode-dark {
 .xr-var-data,
 .xr-index-data {
   display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
 }
 
 .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -1584,6 +2315,12 @@ body.vscode-dark {
 
 .xr-var-data > table {
   float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
 }
 
 .xr-var-name span,
@@ -1645,14 +2382,22 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 595kB
 Dimensions:              (northing: 177, easting: 209)
 Coordinates:
-  * easting              (easting) float64 2kB 11.91 12.01 12.11 ... 32.65 32.75
   * northing             (northing) float64 1kB -35.0 -34.9 ... -17.49 -17.39
+  * easting              (easting) float64 2kB 11.91 12.01 12.11 ... 32.65 32.75
     upward               (northing, easting) float64 296kB 2.622e+03 ... 2.62...
 Data variables:
-    gravity_disturbance  (northing, easting) float64 296kB 5.957 5.986 ... 3.892</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-5e2ea0d6-2f15-4c22-b182-711dfbb79192' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-5e2ea0d6-2f15-4c22-b182-711dfbb79192' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 177</li><li><span class='xr-has-index'>easting</span>: 209</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-16ae9589-2969-4b5e-93c6-2d87b2ceae1f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-16ae9589-2969-4b5e-93c6-2d87b2ceae1f' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>11.91 12.01 12.11 ... 32.65 32.75</div><input id='attrs-ec74af5b-2cdf-4888-95d3-c805a728ae12' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ec74af5b-2cdf-4888-95d3-c805a728ae12' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8a128023-a082-43b9-b652-e9a3cb0ad2c2' class='xr-var-data-in' type='checkbox'><label for='data-8a128023-a082-43b9-b652-e9a3cb0ad2c2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([11.90833 , 12.008514, 12.108699, ..., 32.546301, 32.646486, 32.74667 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-35.0 -34.9 -34.8 ... -17.49 -17.39</div><input id='attrs-308dfcf2-b73b-4ecf-9caa-5b613520636d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-308dfcf2-b73b-4ecf-9caa-5b613520636d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-59a3204e-1fca-43c1-aa14-702308ccbbe5' class='xr-var-data-in' type='checkbox'><label for='data-59a3204e-1fca-43c1-aa14-702308ccbbe5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-34.996   , -34.895966, -34.795932, -34.695898, -34.595864, -34.49583 ,
+    gravity_disturbance  (northing, easting) float64 296kB 5.957 5.986 ... 3.892</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-06d605b5-5e96-43bf-83a7-dc738b888b62' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-06d605b5-5e96-43bf-83a7-dc738b888b62' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 177</li><li><span class='xr-has-index'>easting</span>: 209</li></ul></div></li><li class='xr-section-item'><input id='section-0782332f-e9c9-4bff-b1fe-8a521c6df751' class='xr-section-summary-in' type='checkbox' checked /><label for='section-0782332f-e9c9-4bff-b1fe-8a521c6df751' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-35.0 -34.9 -34.8 ... -17.49 -17.39</div><input id='attrs-c0ea530e-3ec9-45a4-bd48-4d6cb243edb5' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c0ea530e-3ec9-45a4-bd48-4d6cb243edb5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bd76c03e-87c1-42e3-bbaf-78b10123ac52' class='xr-var-data-in' type='checkbox'><label for='data-bd76c03e-87c1-42e3-bbaf-78b10123ac52' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-34.996   , -34.895966, -34.795932, -34.695898, -34.595864, -34.49583 ,
        -34.395795, -34.295761, -34.195727, -34.095693, -33.995659, -33.895625,
        -33.795591, -33.695557, -33.595523, -33.495489, -33.395455, -33.29542 ,
        -33.195386, -33.095352, -32.995318, -32.895284, -32.79525 , -32.695216,
@@ -1681,13 +2426,15 @@ Data variables:
        -19.390682, -19.290648, -19.190614, -19.09058 , -18.990545, -18.890511,
        -18.790477, -18.690443, -18.590409, -18.490375, -18.390341, -18.290307,
        -18.190273, -18.090239, -17.990205, -17.89017 , -17.790136, -17.690102,
-       -17.590068, -17.490034, -17.39    ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>upward</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.622e+03 2.622e+03 ... 2.622e+03</div><input id='attrs-ab51cb95-5005-4518-a680-b44f907f6f3a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ab51cb95-5005-4518-a680-b44f907f6f3a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f6fa6d3a-4df2-4054-b8c0-56052884d95f' class='xr-var-data-in' type='checkbox'><label for='data-f6fa6d3a-4df2-4054-b8c0-56052884d95f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
+       -17.590068, -17.490034, -17.39    ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>11.91 12.01 12.11 ... 32.65 32.75</div><input id='attrs-fdabda99-6391-4d58-8a6f-8089629b634f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-fdabda99-6391-4d58-8a6f-8089629b634f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1c3620de-9b27-4f6a-a744-c830f0647df2' class='xr-var-data-in' type='checkbox'><label for='data-1c3620de-9b27-4f6a-a744-c830f0647df2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([11.90833 , 12.008514, 12.108699, ..., 32.546301, 32.646486, 32.74667 ],
+      shape=(209,))</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>upward</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.622e+03 2.622e+03 ... 2.622e+03</div><input id='attrs-e94d881e-08d8-47a6-a889-4e52646a5ec9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e94d881e-08d8-47a6-a889-4e52646a5ec9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fe68f3cc-66ba-435b-8c2a-5a25faa4dcef' class='xr-var-data-in' type='checkbox'><label for='data-fe68f3cc-66ba-435b-8c2a-5a25faa4dcef' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
        [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
        [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
        ...,
        [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
        [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2],
-       [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-c7b1c082-66b5-4014-b722-0fc6a3995fd6' class='xr-section-summary-in' type='checkbox'  checked><label for='section-c7b1c082-66b5-4014-b722-0fc6a3995fd6' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>gravity_disturbance</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>5.957 5.986 6.016 ... 3.885 3.892</div><input id='attrs-af267fab-7e3e-4ac3-b216-2e6fe1afead4' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-af267fab-7e3e-4ac3-b216-2e6fe1afead4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e01008dd-ff4c-45a3-9c4d-5c4c86dbcbea' class='xr-var-data-in' type='checkbox'><label for='data-e01008dd-ff4c-45a3-9c4d-5c4c86dbcbea' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[5.95683549, 5.98639274, 6.01610299, ..., 7.73060138, 7.70887743,
+       [2622.2, 2622.2, 2622.2, ..., 2622.2, 2622.2, 2622.2]],
+      shape=(177, 209))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-bbcb0ac6-5a43-4d37-ab91-9de2a7bf5e95' class='xr-section-summary-in' type='checkbox' checked /><label for='section-bbcb0ac6-5a43-4d37-ab91-9de2a7bf5e95' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>gravity_disturbance</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>5.957 5.986 6.016 ... 3.885 3.892</div><input id='attrs-4e0fc26d-b409-4cd4-8c23-91d8b4b22d2b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4e0fc26d-b409-4cd4-8c23-91d8b4b22d2b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-846a03de-e247-4532-aec0-16a973ef90da' class='xr-var-data-in' type='checkbox'><label for='data-846a03de-e247-4532-aec0-16a973ef90da' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[5.95683549, 5.98639274, 6.01610299, ..., 7.73060138, 7.70887743,
         7.68587849],
        [5.99266583, 6.02276805, 6.05302993, ..., 7.83425321, 7.81121734,
         7.78686969],
@@ -1699,25 +2446,7 @@ Data variables:
        [6.74180518, 7.47959179, 8.4046437 , ..., 3.88672927, 3.89465831,
         3.90239634],
        [7.1933771 , 7.78275161, 8.48256164, ..., 3.87799752, 3.88524146,
-        3.89231258]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-b95e2a56-f564-45d2-ba41-16a192ce930e' class='xr-section-summary-in' type='checkbox'  ><label for='section-b95e2a56-f564-45d2-ba41-16a192ce930e' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>easting</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-69d2c89b-bfc8-4d12-a6a8-cb839c6dba0d' class='xr-index-data-in' type='checkbox'/><label for='index-69d2c89b-bfc8-4d12-a6a8-cb839c6dba0d' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([          11.90833, 12.008514326923077, 12.108698653846153,
-        12.20888298076923, 12.309067307692308, 12.409251634615384,
-       12.509435961538461, 12.609620288461539, 12.709804615384614,
-       12.809988942307692,
-       ...
-        31.84501105769231,  31.94519538461539,  32.04537971153846,
-        32.14556403846154, 32.245748365384614,   32.3459326923077,
-        32.44611701923077, 32.546301346153854, 32.646485673076924,
-                 32.74667],
-      dtype=&#x27;float64&#x27;, name=&#x27;easting&#x27;, length=209))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>northing</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-fd69cccf-1650-4b3e-b873-4a6379841b81' class='xr-index-data-in' type='checkbox'/><label for='index-fd69cccf-1650-4b3e-b873-4a6379841b81' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([            -34.996,  -34.89596590909091,  -34.79593181818182,
-        -34.69589772727273,  -34.59586363636364,  -34.49582954545455,
-        -34.39579545454546, -34.295761363636366, -34.195727272727275,
-       -34.095693181818184,
-       ...
-        -18.29030681818182, -18.190272727272728, -18.090238636363637,
-       -17.990204545454546, -17.890170454545455, -17.790136363636364,
-       -17.690102272727273, -17.590068181818182,  -17.49003409090909,
-                    -17.39],
-      dtype=&#x27;float64&#x27;, name=&#x27;northing&#x27;, length=177))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-e8896e39-0364-4b94-8e5d-bc7695aeb11d' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-e8896e39-0364-4b94-8e5d-bc7695aeb11d' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+        3.89231258]], shape=(177, 209))</pre></div></li></ul></div></li></ul></div></div></div></div>
 </div>
 <p>Since the data points don’t cover the entire area, we might want to mask those
 grid points that are too far away from any data point:</p>
@@ -1739,14 +2468,14 @@ grid points that are too far away from any data point:</p>
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
 
-<span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">gravity_disturbance</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">maxabs</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span><span class="p">(</span><span class="n">gravity_disturbance</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">gravity_disturbance</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
 
 <span class="c1"># Make colormap of data</span>
-<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h0&quot;</span><span class="p">,</span><span class="n">series</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">maxabs</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">,))</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;balance+h0&quot;</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">maxabs</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">),</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Block-median reduced gravity disturbance&quot;</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -1760,9 +2489,8 @@ grid points that are too far away from any data point:</p>
     <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a50f25&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">])</span>
 
-<span class="n">fig</span><span class="o">.</span><span class="n">shift_origin</span><span class="p">(</span><span class="n">xshift</span><span class="o">=</span><span class="s1">&#39;w+3c&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">shift_origin</span><span class="p">(</span><span class="n">xshift</span><span class="o">=</span><span class="s1">&#39;w+1c&#39;</span><span class="p">)</span>
 
 <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Gridded gravity disturbance&quot;</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
@@ -1772,7 +2500,12 @@ grid points that are too far away from any data point:</p>
     <span class="n">nan_transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a50f25&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+  <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+  <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a50f25&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">],</span>
+  <span class="n">position</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;n0/0+jTC+w10c/.5c+h+o-0.5c/1c+e&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -1858,7 +2591,7 @@ grid points that are too far away from any data point:</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Jul 23, 2026.
   <br/>
 </p>
   </div>

@@ -45,7 +45,7 @@ score_first_guess = np.mean(
         data.gravity_disturbance_mgal,
     )
 )
-score_first_guess
+print(score_first_guess)
 
 
 # In[5]:
@@ -84,7 +84,7 @@ for params in parameter_sets:
         )
     )
     scores.append(score)
-scores
+print(scores)
 
 
 # In[8]:
@@ -107,12 +107,14 @@ eqs_best = hm.EquivalentSources(**parameter_sets[best]).fit(
 # In[10]:
 
 
+import bordado as bd
+
 # Define grid coordinates
-region = vd.get_region(coordinates)
-grid_coords = vd.grid_coordinates(
+region = bd.get_region((easting, northing))
+grid_coords = bd.grid_coordinates(
     region=region,
     spacing=2e3,
-    extra_coords=2.5e3,
+    non_dimensional_coords=2.5e3,
 )
 
 grid_first_guess = eqs_first_guess.grid(grid_coords)
@@ -148,7 +150,7 @@ maxabs = vd.maxabs(grid_first_guess.scalars, grid.scalars)
 fig = pygmt.Figure()
 
 # Make colormap of data
-pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs), background=True)
 
 title = "Gravity disturbance with first guess"
 
@@ -159,7 +161,6 @@ fig.grdimage(
    grid=grid_first_guess.scalars,
    cmap=True,
 )
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
 fig.shift_origin(xshift=fig_width + 1)
 
@@ -170,7 +171,11 @@ fig.grdimage(
    grid=grid.scalars,
    cmap=True,
 )
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+fig.colorbar(
+   cmap=True,
+   frame=["a50f25", "x+lmGal"],
+   position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+)
 
 fig.show()
 

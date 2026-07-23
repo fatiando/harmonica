@@ -28,7 +28,7 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-55
+.. GENERATED FROM PYTHON SOURCE LINES 18-61
 
 
 
@@ -43,14 +43,13 @@ data.
  .. code-block:: none
 
     <xarray.Dataset> Size: 28MB
-    Dimensions:    (longitude: 2161, latitude: 1081)
+    Dimensions:    (latitude: 1081, longitude: 2161)
     Coordinates:
-      * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
       * latitude   (latitude) float64 9kB -90.0 -89.83 -89.67 ... 89.67 89.83 90.0
+      * longitude  (longitude) float64 17kB -180.0 -179.8 -179.7 ... 179.8 180.0
         height     (latitude, longitude) float32 9MB 1e+04 1e+04 ... 1e+04 1e+04
     Data variables:
         gravity    (latitude, longitude) float64 19MB 9.801e+05 ... 9.802e+05
-    grdimage [WARNING]: Longitude range too small; geographic boundary condition changed to natural.
 
 
 
@@ -61,9 +60,11 @@ data.
 
 .. code-block:: Python
 
+
     import boule as bl
     import ensaio
     import pygmt
+    import verde as vd
     import xarray as xr
 
     # Load the global gravity grid
@@ -73,7 +74,7 @@ data.
 
     # Calculate normal gravity using the WGS84 ellipsoid
     ellipsoid = bl.WGS84
-    gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+    gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
     # The disturbance is the observed minus normal gravity (calculated at the
     # observation point)
     disturbance = data.gravity - gamma
@@ -81,7 +82,11 @@ data.
     # Make a plot of data using PyGMT
     fig = pygmt.Figure()
 
-    pygmt.grd2cpt(grid=disturbance, cmap="polar", continuous=True)
+    # Get the 99.9th percentile of the absolute value to use as color scale limits
+    maxabs = vd.maxabs(disturbance, percentile=99.9)
+
+    # Make colormap of data
+    pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
     title = "Gravity disturbance of the Earth"
 
@@ -95,14 +100,14 @@ data.
 
     fig.coast(shorelines="0.5p,black", resolution="crude")
 
-    fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+    fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.411 seconds)
+   **Total running time of the script:** (0 minutes 1.967 seconds)
 
 
 .. _sphx_glr_download_gallery_gravity_disturbance.py:
