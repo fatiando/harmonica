@@ -106,16 +106,14 @@ fig = pygmt.Figure()
 
 title = "Observed magnetic anomaly data"
 
-# Make colormap of data
-# Get the 95 percentile of the maximum absolute value between the original and
-# gridded data so we can use the same color scale for both plots and have 0
-# centered at the white color.
-maxabs = vd.maxabs(data.total_field_anomaly_nt, grid.magnetic_anomaly.values) * 0.95
-pygmt.makecpt(
-    cmap="vik",
-    series=(-maxabs, maxabs),
-    background=True,
+# Get the 99th percentile of the absolute value to use as color scale limits
+maxabs = vd.maxabs(
+    data.total_field_anomaly_nt,
+    percentile=99,
 )
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 with pygmt.config(FONT_TITLE="12p"):
     fig.plot(
@@ -129,8 +127,6 @@ with pygmt.config(FONT_TITLE="12p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
-
 fig.shift_origin(xshift=fig_width + 1)
 
 title = "Gridded and upward-continued"
@@ -142,6 +138,10 @@ with pygmt.config(FONT_TITLE="12p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a400f100", "x+lnT"])
+fig.colorbar(
+    cmap=True,
+    frame=["a400f100", "x+lnT"],
+    position="n0/0+jTC+w8c/0.25c+h+o-0.5c/0.8c",
+)
 
 fig.show()

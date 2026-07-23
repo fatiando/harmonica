@@ -95,30 +95,32 @@ We can then forward model the ellipsoid:
    import verde as vd
    import matplotlib.pyplot as plt
 
+   maxabs = vd.maxabs(ge, gn, gz, percentile=99)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, g_component, label in zip(
       axes, (ge, gn, gz), ("ge", "gn", "gz"), strict=True
    ):
-       maxabs = vd.maxabs(g_component)
-       tmp = ax.pcolormesh(
-           coordinates[0],
-           coordinates[1],
-           g_component,
-           vmin=-maxabs,
-           vmax=maxabs,
-           cmap="RdBu_r",
-       )
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [mGal]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         g_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="mGal",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()
 
 
@@ -138,30 +140,32 @@ We can also forward model multiple ellipsoid by creating a list of them:
 
 .. jupyter-execute::
 
+   maxabs = vd.maxabs(ge, gn, gz, percentile=95)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, g_component, label in zip(
       axes, (ge, gn, gz), ("ge", "gn", "gz"), strict=True
    ):
-       maxabs = vd.maxabs(g_component)
-       tmp = ax.pcolormesh(
-           coordinates[0],
-           coordinates[1],
-           g_component,
-           vmin=-maxabs,
-           vmax=maxabs,
-           cmap="RdBu_r",
-       )
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [mGal]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         g_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="mGal",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()
 
 
@@ -213,22 +217,32 @@ And forward the magnetic field in the grid of observation points:
 
 .. jupyter-execute::
 
+   maxabs = vd.maxabs(be, bn, bu, percentile=99)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
       axes, (be, bn, bu), ("Be", "Bn", "Bu"), strict=True
    ):
-       tmp = ax.pcolormesh(coordinates[0], coordinates[1], b_component)
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [nT]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         b_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="nT",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()
 
 
@@ -257,22 +271,32 @@ through the ``remanent_mag`` physical property:
 
 .. jupyter-execute::
 
+   maxabs = vd.maxabs(be, bn, bu, percentile=99)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
       axes, (be, bn, bu), ("Be", "Bn", "Bu"), strict=True
    ):
-       tmp = ax.pcolormesh(coordinates[0], coordinates[1], b_component)
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [nT]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         b_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="nT",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()
 
 
@@ -302,22 +326,32 @@ ellipsoid:
 
 .. jupyter-execute::
 
+   maxabs = vd.maxabs(be, bn, bu, percentile=99)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
       axes, (be, bn, bu), ("Be", "Bn", "Bu"), strict=True
    ):
-       tmp = ax.pcolormesh(coordinates[0], coordinates[1], b_component)
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [nT]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         b_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="nT",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()
 
 
@@ -356,20 +390,30 @@ We can also forward a collection of ellipsoids with mixed physical properties:
 
 .. jupyter-execute::
 
+   maxabs = vd.maxabs(be, bn, bu, percentile=99)
+
    _, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(10, 6))
    for ax, b_component, label in zip(
       axes, (be, bn, bu), ("Be", "Bn", "Bu"), strict=True
    ):
-       tmp = ax.pcolormesh(coordinates[0], coordinates[1], b_component)
-       plt.colorbar(
-           tmp,
-           ax=ax,
-           label=f"{label} [nT]",
-           orientation="horizontal",
-           pad=0.12,
-           format='%.0e',
-       )
-       ax.set_xlabel("Easting [m]")
-       ax.set_ylabel("Northing [m]")
-       ax.set_aspect("equal")
+      tmp = ax.pcolormesh(
+         coordinates[0],
+         coordinates[1],
+         b_component,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap="RdBu_r",
+      )
+      ax.set_title(label)
+      ax.set_xlabel("Easting [m]")
+      ax.set_ylabel("Northing [m]")
+      ax.set_aspect("equal")
+   plt.colorbar(
+      tmp,
+      ax=axes,
+      label="nT",
+      orientation="horizontal",
+      pad=0.12,
+      fraction=.03,
+   )
    plt.show()

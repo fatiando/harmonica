@@ -30,11 +30,16 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = magnetic_grid.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(magnetic_grid, percentile=99.9)
+    tmp = magnetic_grid.plot(
+        cmap="RdBu_r",
+        vmin=-maxabs,
+        vmax=maxabs,
+        cbar_kwargs={"label":"nT"},
+    )
     plt.gca().set_aspect("equal")
     plt.title("Magnetic anomaly grid")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 .. seealso::
@@ -60,11 +65,16 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = deriv_upward.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(deriv_upward, percentile=99.9)
+    tmp = deriv_upward.plot(
+        cmap="RdBu_r",
+        vmin=-maxabs,
+        vmax=maxabs,
+        cbar_kwargs={"label":"nT/m"},
+    )
     plt.gca().set_aspect("equal")
-    plt.title("Upward derivative of the magnetic anomaly")
+    plt.title("Magnetic anomaly grid")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 
@@ -92,20 +102,33 @@ And plot them:
     fig, (ax1, ax2) = plt.subplots(
         nrows=1, ncols=2, sharey=True, figsize=(12, 8)
     )
+    maxabs = vd.maxabs(deriv_easting, deriv_northing, percentile=99)
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+
+    tmp = deriv_easting.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    tmp = deriv_northing.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
 
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
     ax1.set_title("Easting derivative of the magnetic anomaly")
     ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
+
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT/m", fraction=.03, pad=0.08)
     plt.show()
 
 By default, these two functions compute the horizontal derivatives using
@@ -130,22 +153,34 @@ frequency domain:
     fig, (ax1, ax2) = plt.subplots(
         nrows=1, ncols=2, sharey=True, figsize=(12, 8)
     )
+    maxabs = vd.maxabs(deriv_easting, deriv_northing, percentile=99)
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+
+    tmp = deriv_easting.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    tmp = deriv_northing.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
 
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
     ax1.set_title("Easting derivative of the magnetic anomaly")
     ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.show()
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
 
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT/m", fraction=.03, pad=0.08)
+    plt.show()
 
 .. important::
 
@@ -189,11 +224,10 @@ Now we can plot it:
 
 .. jupyter-execute::
 
-    tmp = upward_continued.plot(cmap="seismic", center=0, add_colorbar=False)
+    tmp = upward_continued.plot(cmap="RdBu_r", center=0, cbar_kwargs={'label':'nT'})
     plt.gca().set_aspect("equal")
     plt.title("Upward continued magnetic anomaly to 1000m")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 
@@ -257,18 +291,36 @@ And plot it:
 
 .. jupyter-execute::
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8))
-    cbar_kwargs=dict(
-        label="nT", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+    fig, (ax1, ax2) = plt.subplots(
+        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
     )
-    magnetic_grid.plot(ax=ax1, cmap="seismic", center=0, cbar_kwargs=cbar_kwargs)
-    rtp_grid.plot(ax=ax2, cmap="seismic", center=0, cbar_kwargs=cbar_kwargs)
+    maxabs = vd.maxabs(magnetic_grid, rtp_grid, percentile=99)
+
+
+    tmp = magnetic_grid.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
+
+    tmp = rtp_grid.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
+
     ax1.set_aspect("equal")
     ax2.set_aspect("equal")
     ax1.set_title("Magnetic anomaly")
     ax2.set_title("Reduced to the pole")
     ax1.ticklabel_format(style="sci", scilimits=(0, 0))
     ax2.ticklabel_format(style="sci", scilimits=(0, 0))
+
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
     plt.show()
 
 The reduction concentrated the Lightning Creek anomaly and the negative
@@ -297,11 +349,13 @@ example of what happens to the reduction using arbitrary values:
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(rtp_grid, percentile=99.9)
+    tmp = rtp_grid.plot(
+        cmap="RdBu_r", vmin=-maxabs, vmax=maxabs, cbar_kwargs={'label':'nT'},
+    )
     plt.gca().set_aspect("equal")
     plt.title("Reduced to the pole with remanence")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 
@@ -345,33 +399,23 @@ Let's plot the results side by side:
 
 .. jupyter-execute::
 
-    fig, (ax1, ax2, ax3) = plt.subplots(
-        nrows=1, ncols=3, sharey=True, figsize=(14, 8)
-    )
+    fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-    maxabs = vd.maxabs(magnetic_grid, magnetic_low, magnetic_high)
-    kwargs = dict(cmap="seismic", vmin=-maxabs, vmax=maxabs, add_colorbar=False)
-
-    tmp = magnetic_grid.plot(ax=ax1, **kwargs)
-    tmp = magnetic_low.plot(ax=ax2, **kwargs)
-    tmp = magnetic_high.plot(ax=ax3, **kwargs)
-
-    ax1.set_title("Original")
-    ax2.set_title("After low-pass filter")
-    ax3.set_title("After high-pass filter")
-    for ax in (ax1, ax2, ax3):
+    grids = [magnetic_grid, magnetic_low, magnetic_high]
+    maxabs = vd.maxabs(*grids, percentile=99)
+    for grid, ax in zip(grids, axes):
+        tmp = grid.plot(
+            ax=ax,
+            add_colorbar=False,
+            vmin=-maxabs,
+            vmax=maxabs,
+            cmap='RdBu_r',
+        )
         ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-
-    plt.colorbar(
-        tmp,
-        ax=[ax1, ax2, ax3],
-        label="nT",
-        orientation="horizontal",
-        aspect=42,
-        shrink=0.8,
-        pad=0.08,
-    )
+    axes[0].set_title("Original")
+    axes[1].set_title("After low-pass filter")
+    axes[2].set_title("After high-pass filter")
+    fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
     plt.show()
 
 
@@ -408,11 +452,11 @@ And plot it:
 
 .. jupyter-execute::
 
-    tmp = tga_grid.plot(cmap="viridis", add_colorbar=False)
+    cpt_lims = vd.minmax(tga_grid, min_percentile=1, max_percentile=99)
+    tga_grid.plot(vmin=cpt_lims[0], vmax=cpt_lims[1],cbar_kwargs={'label':'nT/m'})
     plt.gca().set_aspect("equal")
     plt.title("Total gradient amplitude of the magnetic anomaly")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 ----

@@ -86,9 +86,11 @@ fig.grdimage(
     gravity.g_z,
     projection="M15c",
     nan_transparent=True,
+    cmap=True,
     frame="+tForward gravity",
 )
+
 fig.basemap(frame=True)
-fig.colorbar(frame="af+lGravity (mGal)")
+fig.colorbar(frame="af+lgravity (mGal)")
 fig.coast(shorelines="0.5p,black", borders=["1/0.5p,black"])
 fig.show()

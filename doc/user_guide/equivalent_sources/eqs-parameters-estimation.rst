@@ -80,7 +80,7 @@ value of the score obtained after each cross validation.
            data.gravity_disturbance_mgal,
        )
    )
-   score_first_guess
+   print(score_first_guess)
 
 The resulting score corresponds to the R^2. It represents how well the
 equivalent sources can reproduce the variation of our data. As closer it gets
@@ -145,7 +145,7 @@ And now we can actually ran one cross validation for each pair of parameters:
            )
        )
        scores.append(score)
-   scores
+   print(scores)
 
 Once every score has been computed, we can obtain the best score and the
 corresponding parameters that generate it:
@@ -218,7 +218,7 @@ Lets plot it:
    fig = pygmt.Figure()
 
    # Make colormap of data
-   pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+   pygmt.makecpt(cmap="balance+h0",series=(-maxabs, maxabs), background=True)
 
    title = "Gravity disturbance with first guess"
 
@@ -229,7 +229,6 @@ Lets plot it:
       grid=grid_first_guess.scalars,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
    fig.shift_origin(xshift=fig_width + 1)
 
@@ -240,7 +239,11 @@ Lets plot it:
       grid=grid.scalars,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+   fig.colorbar(
+      cmap=True,
+      frame=["a50f25", "x+lmGal"],
+      position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+   )
 
    fig.show()
 
