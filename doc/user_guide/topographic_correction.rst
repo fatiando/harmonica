@@ -278,8 +278,7 @@ This is because the flat-slab assumption always overestimates the correction. It
 doesn't account for valleys below or terrain above the observation points, both
 of which decrease the observed gravity. Not accounting for these results in too
 large of a Bouguer correction, and therefore too small of a Bouguer disturbance.
-To account for this, additional estimated terrain corrections are often included
-in the Bouguer correction. This highlights the benefit of the forward modelling
+This highlights the benefit of the forward modelling
 topography instead of the Bouguer correction, especially for regions of rugged
 topography.
 
