@@ -319,6 +319,134 @@ topography.
    fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
    fig.show()
 
+
+Terrain correction in spherical coordinates
+-------------------------------------------
+
+So far we computed the terrain effect by projecting the topography grid and
+the observation points to plain Cartesian coordinates and approximating the
+topographic masses with rectangular prisms.
+On regional to global scales the curvature of the Earth cannot be neglected:
+the projection distorts the geometry of the topographic masses and the
+computed terrain effect accumulates errors.
+In such cases we can forward model the topographic masses directly in
+geocentric spherical coordinates using tesseroids (spherical prisms), which
+take the curvature of the Earth into account.
+
+We can build a model of the topographic masses through the
+:func:`harmonica.tesseroid_layer` function.
+Unlike :func:`harmonica.prism_layer`, its ``surface`` and ``reference``
+arguments must be passed as **radii** measured from the center of the Earth,
+not as heights above a reference level.
+We can obtain the radii of the surface of the reference ellipsoid at each
+latitude with :meth:`boule.Ellipsoid.geocentric_radius` and add the
+topographic heights to them:
+
+.. jupyter-execute::
+
+   import boule as bl
+
+   ellipsoid = bl.WGS84
+
+   longitude, latitude = np.meshgrid(topography.longitude, topography.latitude)
+   reference = ellipsoid.geocentric_radius(latitude)
+   surface = reference + topography.values
+
+We will assign the same densities we used for the layer of prisms and define
+the layer of tesseroids:
+
+.. jupyter-execute::
+
+   density = np.where(topography.values >= 0, 2670, 1040 - 2670)
+
+   tesseroids = hm.tesseroid_layer(
+       coordinates=(topography.longitude, topography.latitude),
+       surface=surface,
+       reference=reference,
+       properties={"density": density},
+   )
+   tesseroids
+
+The radial coordinate of the observation points must be expressed in the same
+way as the boundaries of the layer: as radii from the center of the Earth.
+We will compute them the same way we defined the ``surface`` of the layer, by
+adding the observation heights to the geocentric radius of the ellipsoid at
+each latitude.
+This keeps the observation points consistent with the model of the topographic
+masses:
+
+.. jupyter-execute::
+
+   radius = ellipsoid.geocentric_radius(data.latitude) + data.height_geometric_m
+
+Tesseroid forward modelling requires every computation point to be located
+outside of the tesseroids.
+Since our observations were taken on the terrain surface, some of them can
+fall slightly below the top boundary of the tesseroid that contains them: the
+tops of the tesseroids are given by the topography grid, whose values don't
+exactly coincide with the observation heights.
+We can make sure every observation point is located on or above the top of its
+tesseroid by clamping their radii.
+We will clamp against the highest top among the neighboring tesseroids, so
+that observation points falling exactly on the boundary between two tesseroids
+are safely lifted as well:
+
+.. jupyter-execute::
+
+   top = (
+       tesseroids.top.rolling(longitude=3, latitude=3, center=True, min_periods=1)
+       .max()
+       .sel(
+           longitude=xr.DataArray(data.longitude),
+           latitude=xr.DataArray(data.latitude),
+           method="nearest",
+       )
+       .values
+   )
+   radius = np.maximum(radius, top)
+
+Now we can compute the terrain effect through the
+:meth:`harmonica.DatasetAccessorTesseroidLayer.gravity` method:
+
+.. jupyter-execute::
+
+   coordinates_sph = (data.longitude, data.latitude, radius)
+   terrain_effect_spherical = tesseroids.tesseroid_layer.gravity(
+       coordinates_sph, field="g_z"
+   )
+
+And obtain a topography-free gravity disturbance that takes the curvature of
+the Earth into account:
+
+.. jupyter-execute::
+
+   topo_free_disturbance_spherical = (
+       data.gravity_disturbance_mgal - terrain_effect_spherical
+   )
+
+   cpt_lims = vd.minmax(topo_free_disturbance_spherical)
+
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="viridis", series=cpt_lims)
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      fill=topo_free_disturbance_spherical,
+      cmap=True,
+      style="c3p",
+      projection="M15c",
+      frame=['ag', 'WSen+ggray'],
+   )
+   fig.colorbar(
+      cmap=True,
+      frame=[
+         "a50f25",
+         "x+lTopography-free gravity disturbance (tesseroids)",
+         "y+lmGal",
+      ],
+   )
+   fig.show()
+
 ----
 
 .. grid:: 2
