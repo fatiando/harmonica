@@ -160,13 +160,14 @@ def test_load_igrf_file_not_found():
         load_igrf(pathlib.Path(fname))
 
 
-def test_interpolate_coefficients():
+@pytest.mark.parametrize("tzinfo", [UTC, None], ids=["tzinfo: UTC", "tzinfo: None"])
+def test_interpolate_coefficients(tzinfo):
     "Check that calculating on/close to epochs gives right coefficients"
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
             datetime.datetime(
-                year, month=1, day=1, hour=0, minute=1, second=0, tzinfo=UTC
+                year, month=1, day=1, hour=0, minute=1, second=0, tzinfo=tzinfo
             ),
             g.shape[1] - 1,
             years,
@@ -181,13 +182,14 @@ def test_interpolate_coefficients():
                 npt.assert_allclose(h_date[n, m], h[i, n, m], atol=0.001)
 
 
-def test_interpolate_coefficients_max_degree():
+@pytest.mark.parametrize("tzinfo", [UTC, None], ids=["tzinfo: UTC", "tzinfo: None"])
+def test_interpolate_coefficients_max_degree(tzinfo):
     "Check that the returned coefficients stop at the max degree"
     max_degree = 13
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     g_date, h_date = interpolate_coefficients(
         datetime.datetime(
-            year=2023, month=1, day=20, hour=0, minute=1, second=0, tzinfo=UTC
+            year=2023, month=1, day=20, hour=0, minute=1, second=0, tzinfo=tzinfo
         ),
         max_degree,
         years,
@@ -205,6 +207,8 @@ def test_interpolate_coefficients_max_degree():
     [
         datetime.datetime(1800, month=1, day=1, tzinfo=UTC),
         datetime.datetime(2030, month=1, day=1, tzinfo=UTC),
+        datetime.datetime(1800, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+        datetime.datetime(2030, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
     ],
 )
 def test_interpolate_coefficients_invalid_date(date):
@@ -248,7 +252,11 @@ def test_igrf_points(data, coordinates):
 
 @pytest.mark.parametrize(
     "date",
-    ["2020-04-15", datetime.datetime(2029, month=1, day=1, tzinfo=UTC)],
+    [
+        "2020-04-15",
+        datetime.datetime(2029, month=1, day=1, tzinfo=UTC),
+        datetime.datetime(2029, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+    ],
 )
 def test_igrf_grid(date):
     "Make sure the grid values are the same as the predict values"
@@ -276,3 +284,27 @@ def test_igrf_grid_default_spacing():
     grid = IGRF14("2020-04-15").grid(region=(0, 180, 0, 90), height=0)
     # Half of a global grid
     assert grid.b_east.shape == (15, 29)
+
+
+def test_interpolate_coefficients_on_dates_with_timezones():
+    """
+    Test if coefficients are the same on equivalent dates on different timezones.
+    """
+    # Define the same date on two different timezones
+    utc = datetime.timezone.utc
+    pt = datetime.timezone(-datetime.timedelta(hours=7))  # UTC-7
+    date_utc = datetime.datetime(year=2020, month=4, day=15, hour=14, tzinfo=utc)
+    date_pt = datetime.datetime(year=2020, month=4, day=15, hour=14 - 7, tzinfo=pt)
+
+    # Compute cofficients for both dates
+    years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-04-15")._fetch_coefficient_file())
+    g_utc, h_utc = interpolate_coefficients(
+        date_utc, g.shape[1] - 1, years, g, h, g_sv, h_sv
+    )
+    g_pt, h_pt = interpolate_coefficients(
+        date_pt, g.shape[1] - 1, years, g, h, g_sv, h_sv
+    )
+
+    # Make sure the coefficients are the same
+    np.testing.assert_allclose(g_utc, g_pt)
+    np.testing.assert_allclose(h_utc, h_pt)
