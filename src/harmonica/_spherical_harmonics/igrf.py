@@ -120,13 +120,17 @@ def interpolate_coefficients(date, max_degree, years, g, h, g_sv, h_sv):
         raise ValueError(message)
     # Find out which epoch is the last compatible one.
     index = int((date.year - years[0]) // 5)
-    seconds_since_epoch = (
-        date - datetime.datetime(year=years[index], month=1, day=1, tzinfo=date.tzinfo)
-    ).total_seconds()
-    utc = datetime.timezone.utc
+    start_of_the_year = datetime.datetime(
+        year=years[index],
+        month=1,
+        day=1,
+        # Specify start of the year in UTC time if date has timezone information
+        tzinfo=datetime.timezone.utc if date.tzinfo is not None else None,
+    )
+    seconds_since_epoch = (date - start_of_the_year).total_seconds()
     epoch = (
-        datetime.datetime(year=years[index] + 5, month=1, day=1, tzinfo=utc)
-        - datetime.datetime(year=years[index], month=1, day=1, tzinfo=utc)
+        datetime.datetime(year=years[index] + 5, month=1, day=1)  # ruff: ignore[DTZ001]
+        - datetime.datetime(year=years[index], month=1, day=1)  # ruff: ignore[DTZ001]
     ).total_seconds()
     year_in_seconds = 365.25 * 24 * 60 * 60
     g_date = np.zeros((max_degree + 1, max_degree + 1))
