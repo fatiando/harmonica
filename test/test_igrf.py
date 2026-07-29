@@ -123,6 +123,7 @@ IGRF_ADDIS_ABABA = [
     ["2021-02-01", 35605.6, 1421.6, 1788.7],
     ["2026-08-02", 35675.0, 1368.9, 2067.7],
 ]
+UTC = datetime.timezone.utc
 
 
 def test_igrf14__fetch_coefficients():
@@ -164,7 +165,9 @@ def test_interpolate_coefficients():
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
-            datetime.datetime(year, month=1, day=1, hour=0, minute=1, second=0),
+            datetime.datetime(
+                year, month=1, day=1, hour=0, minute=1, second=0, tzinfo=UTC
+            ),
             g.shape[1] - 1,
             years,
             g,
@@ -183,7 +186,9 @@ def test_interpolate_coefficients_max_degree():
     max_degree = 13
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     g_date, h_date = interpolate_coefficients(
-        datetime.datetime(year=2023, month=1, day=20, hour=0, minute=1, second=0),
+        datetime.datetime(
+            year=2023, month=1, day=20, hour=0, minute=1, second=0, tzinfo=UTC
+        ),
         max_degree,
         years,
         g,
@@ -197,7 +202,10 @@ def test_interpolate_coefficients_max_degree():
 
 @pytest.mark.parametrize(
     "date",
-    [datetime.datetime(1800, month=1, day=1), datetime.datetime(2030, month=1, day=1)],
+    [
+        datetime.datetime(1800, month=1, day=1, tzinfo=UTC),
+        datetime.datetime(2030, month=1, day=1, tzinfo=UTC),
+    ],
 )
 def test_interpolate_coefficients_invalid_date(date):
     "Check that an exception is raised for invalid dates"
@@ -240,7 +248,7 @@ def test_igrf_points(data, coordinates):
 
 @pytest.mark.parametrize(
     "date",
-    ["2020-04-15", datetime.datetime(2029, month=1, day=1)],
+    ["2020-04-15", datetime.datetime(2029, month=1, day=1, tzinfo=UTC)],
 )
 def test_igrf_grid(date):
     "Make sure the grid values are the same as the predict values"
