@@ -340,7 +340,7 @@ points.
    Unlike the :func:`harmonica.prism_layer`, the ``surface`` and ``reference`` boundaries
    of a tesseroid layer must be given as **radii** measured from the center of the Earth,
    not as heights above a reference level.
-   We can use the :meth:`boule.geocentric_radius` method from :mod:`boule` to
+   We can use the :meth:`boule.Ellipsoid.geocentric_radius` method from :mod:`boule` to
    obtain the radius of the reference ellipsoid at each latitude, and add our height values
    to it.
 
@@ -384,6 +384,35 @@ is also expressed as radii from the center of the Earth:
    topography = 3e3 * np.sin(longitude * np.pi / 20) * np.cos(latitude * np.pi / 20)
    surface = reference + topography
 
+Since the ``surface`` is expressed as radii, its values are all close to the radius of
+the ellipsoid (around 6370 km), and the synthetic topography shows up as variations of
+a few kilometers around it. Let's plot it to see it more clearly:
+
+.. jupyter-execute::
+
+   import verde as vd
+
+   grid = vd.make_xarray_grid(
+      (longitude, latitude),
+      surface,
+      data_names="surface",
+      dims=("latitude", "longitude"),
+   )
+
+   fig = pygmt.Figure()
+   title = "Surface boundary of the tesseroid layer"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=region,
+         projection="M-60/-30/10c",
+         grid=grid.surface,
+         frame=["a", f"+t{title}"],
+         cmap="viridis",
+      )
+   fig.colorbar(cmap=True, frame=["af", "x+lSurface radius", "y+lmeters"])
+   fig.coast(shorelines="1p,black")
+   fig.show()
+
 Let's assign the same density to each tesseroid through a 2D array with the same value:
 2670 kg per cubic meter.
 
@@ -425,8 +454,6 @@ tesseroid layer on them:
 Finally, let's plot the gravitational field:
 
 .. jupyter-execute::
-
-   import verde as vd
 
    grid = vd.make_xarray_grid(
       coordinates,
