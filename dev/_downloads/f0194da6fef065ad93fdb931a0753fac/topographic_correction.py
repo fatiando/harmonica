@@ -33,7 +33,7 @@ import verde as vd
 maxabs = vd.maxabs(data.gravity_disturbance_mgal)
 
 fig = pygmt.Figure()
-pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs])
 fig.plot(
    x=data.longitude,
    y=data.latitude,
@@ -41,9 +41,9 @@ fig.plot(
    cmap=True,
    style="c3p",
    projection="M15c",
-   frame=['ag', 'WSen'],
+   frame=['ag', 'WSen+ggray'],
 )
-fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
 fig.show()
 
 
@@ -65,10 +65,10 @@ bouguer_disturbance
 # In[6]:
 
 
-maxabs = vd.maxabs(bouguer_disturbance)
+cpt_lims = vd.minmax(bouguer_disturbance)
 
 fig = pygmt.Figure()
-pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+pygmt.makecpt(cmap="viridis", series=cpt_lims)
 fig.plot(
    x=data.longitude,
    y=data.latitude,
@@ -76,9 +76,12 @@ fig.plot(
    cmap=True,
    style="c3p",
    projection="M15c",
-   frame=['ag', 'WSen'],
+   frame=['ag', 'WSen+ggray'],
 )
-fig.colorbar(cmap=True, frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"])
+fig.colorbar(
+   cmap=True,
+   frame=["a50f25", "x+lBouguer disturbance (with simple Bouguer correction)", "y+lmGal"],
+)
 fig.show()
 
 
@@ -95,8 +98,10 @@ topography
 # In[8]:
 
 
-region = vd.get_region((data.longitude, data.latitude))
-region_pad = vd.pad_region(region, pad=1)
+import bordado as bd
+
+region = bd.get_region((data.longitude, data.latitude))
+region_pad = bd.pad_region(region, pad=1)
 
 topography = topography.sel(
     longitude=slice(region_pad[0], region_pad[1]),
@@ -156,10 +161,10 @@ topo_free_disturbance = data.gravity_disturbance_mgal - terrain_effect
 # In[14]:
 
 
-maxabs = vd.maxabs(topo_free_disturbance)
+cpt_lims = vd.minmax(topo_free_disturbance)
 
 fig = pygmt.Figure()
-pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+pygmt.makecpt(cmap="viridis", series=cpt_lims)
 fig.plot(
    x=data.longitude,
    y=data.latitude,
@@ -167,8 +172,47 @@ fig.plot(
    cmap=True,
    style="c3p",
    projection="M15c",
-   frame=['ag', 'WSen'],
+   frame=['ag', 'WSen+ggray'],
 )
 fig.colorbar(cmap=True, frame=["a50f25", "x+lTopography-free gravity disturbance", "y+lmGal"])
+fig.show()
+
+
+# In[15]:
+
+
+difference = topo_free_disturbance-bouguer_disturbance
+
+cpt_lims = vd.minmax(difference, min_percentile=5, max_percentile=95)
+
+fig = pygmt.Figure()
+pygmt.makecpt(cmap="viridis", series=cpt_lims, background=True)
+fig.plot(
+   x=data.longitude,
+   y=data.latitude,
+   fill=difference,
+   cmap=True,
+   style="c3p",
+   projection="M15c",
+   frame=['ag', 'WSen+ggray'],
+)
+fig.colorbar(
+   cmap=True,
+   frame=["af", "x+lDifference between Bouguer and Topography-free disturbances", "y+lmGal"],
+   position="+e",
+)
+
+fig.shift_origin(xshift='w+6c')
+
+cpt_lims = vd.minmax(topography_proj, min_percentile=2, max_percentile=98)
+
+pygmt.makecpt(cmap="etopo1", series=cpt_lims, background=True)
+fig.grdimage(
+   topography,
+   cmap=True,
+   projection="M15c",
+   frame=['ag', 'WSen'],
+)
+fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
 fig.show()
 
