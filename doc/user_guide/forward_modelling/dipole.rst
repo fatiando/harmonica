@@ -92,19 +92,37 @@ every observation point:
 
    b_e, b_n, b_u = hm.dipole_magnetic(coordinates, dipoles, magnetic_moments, field="b")
 
+We can reshape the results into variables of an dataset:
+
+.. jupyter-execute::
+
+   import verde as vd
+   
+   grid = vd.make_xarray_grid(
+      coordinates,
+      data=(b_e, b_n, b_u),
+      data_names=["b_e", "b_n", "b_u"],
+      extra_coords_names="extra"
+   )
+
 .. jupyter-execute::
 
    import matplotlib.pyplot as plt
 
    fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-   fields = {"b_e": b_e, "b_n": b_n, "b_u": b_u}
-   for field, ax in zip(fields, axes):
-      tmp = ax.pcolormesh(coordinates[0], coordinates[1], fields[field])
+   maxabs = vd.maxabs(*[grid[v] for v in grid.variables], percentile=99)
+   for field, ax in zip(grid.variables, axes):
+      tmp = grid[field].plot(
+         ax=ax,
+         add_colorbar=False,
+         vmin=-maxabs,
+         vmax=maxabs,
+         cmap='RdBu_r',
+      )
       ax.set_aspect("equal")
       ax.set_title(field)
-      ax.ticklabel_format(style="sci", scilimits=(0, 0), axis="both")
-      plt.colorbar(tmp, ax=ax, orientation="horizontal", label="nT", pad=0.008)
+   fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
    plt.show()
 
 ----

@@ -78,7 +78,7 @@ grid = vd.make_xarray_grid(
 # Plot the gravitational field
 fig = pygmt.Figure()
 
-title = "Downward component of gravitational acceleration"
+title = "Gravitational acceleration of variable density tesseroids"
 
 with pygmt.config(FONT_TITLE="16p"):
     fig.grdimage(
@@ -89,7 +89,18 @@ with pygmt.config(FONT_TITLE="16p"):
         cmap="viridis",
     )
 
-fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
+# Plot edges of tesseroids
+for i, tesseroid in enumerate(tesseroids):
+    label = "Tesseroid boundaries" if i == 0 else None
+    fig.plot(
+        x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+        y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+        pen="1p,red",
+        label=label,
+    )
+fig.legend()
+
+fig.colorbar(cmap=True, position="JMR", frame=["a200f50", "x+lmGal"])
 
 fig.coast(shorelines="1p,black")
 

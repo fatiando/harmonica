@@ -64,9 +64,16 @@ def prism_to_pyvista(prisms, properties=None):
        >>> pv_grid.plot() # doctest: +SKIP
 
     """
-    # Lazily import optional dependencies
-    import pyvista  # noqa: PLC0415
-    import vtk  # noqa: PLC0415
+    # Lazily load optional dependency
+    try:
+        import pyvista  # noqa: PLC0415
+        import vtk  # noqa: PLC0415
+    except ModuleNotFoundError as original:  # pragma: nocover
+        error = ImportError(
+            "Cannot import the optional dependency 'pyvista'. "
+            "It must be installed to run the 'prisms_to_pyvista' function."
+        )  # pragma: nocover
+        raise error from original  # pragma: nocover
 
     # Get prisms and number of prisms
     prisms = np.atleast_2d(prisms)
