@@ -220,7 +220,10 @@ def ifft(fft_grid, *, prefix="freq_"):
 
     # Account for true amplitude and true phase
     freqs = tuple(fft_grid.coords[coord].values for coord in dimensional_fft_coords)
-    freqs_2d = np.meshgrid(freqs[1], freqs[0])  # invert order to create meshgrid
+    freqs_2d = (
+        freqs[0][:, None],
+        freqs[1][None, :],
+    )  # cast them as 2d to perform true shift
     fft_grid = fft_grid.copy()
     for coord, freq in zip(coords, freqs_2d, strict=True):
         shift = coord[0]
