@@ -51,6 +51,13 @@ Define filters in the frequency domain.
     filters.gaussian_highpass_kernel
     filters.reduction_to_pole_kernel
 
+FFT and iFFT functions that can be used with 2D :class:`xarray.DataArray`:
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.fft
+    filters.ifft
 
 Equivalent Sources
 ------------------
