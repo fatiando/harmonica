@@ -164,12 +164,12 @@ Lets plot it:
 
     import pygmt
 
-    maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
+    maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values, percentile=99)
 
     fig = pygmt.Figure()
 
     # Make colormap of data
-    pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+    pygmt.makecpt(cmap="balance+h0", series=(-maxabs, maxabs), background=True)
 
     title = "Block-median reduced gravity disturbance"
     fig.plot(
@@ -183,9 +183,8 @@ Lets plot it:
         cmap=True,
     )
     fig.coast(shorelines="0.5p,black", area_thresh=1e4)
-    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-    fig.shift_origin(xshift='w+3c')
+    fig.shift_origin(xshift='w+1c')
 
     title = "Gridded gravity disturbance"
     fig.grdimage(
@@ -195,7 +194,12 @@ Lets plot it:
         nan_transparent=True,
     )
     fig.coast(shorelines="0.5p,black", area_thresh=1e4)
-    fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+    fig.colorbar(
+      cmap=True,
+      frame=["a50f25", "x+lmGal"],
+      position=f"n0/0+jTC+w10c/.5c+h+o-0.5c/1c+e",
+    )
 
     fig.show()
 

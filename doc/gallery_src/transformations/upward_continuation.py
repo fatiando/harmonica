@@ -11,6 +11,7 @@ Upward continuation of a regular grid
 
 import ensaio
 import pygmt
+import verde as vd
 import xarray as xr
 
 import harmonica as hm
@@ -30,27 +31,30 @@ print("\nUpward continued magnetic grid:\n", upward_continued)
 # Plot original magnetic anomaly and the upward continued grid
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
-    # Make colormap for both plots data
-    scale = 2500
-    pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+    # Make colormap based on original data
+    cpt_lim = vd.maxabs(magnetic_grid, percentile=99.9)
+    pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
             projection="X?",
             cmap=True,
-        )
-        # Add colorbar
-        fig.colorbar(
-            frame='af+l"Magnetic anomaly at 500m [nT]"',
-            position="JBC+h+o0/1c+e",
+            frame="+tMagnetic Anomaly at 500m",
         )
     with fig.set_panel(panel=1):
         # Plot upward continued grid
-        fig.grdimage(grid=upward_continued, projection="X?", cmap=True)
-        # Add colorbar
-        fig.colorbar(
-            frame='af+l"Upward continued to 1000m [nT]"',
-            position="JBC+h+o0/1c+e",
+        fig.grdimage(
+            grid=upward_continued,
+            projection="X?",
+            frame="+tUpward continued to 1000m",
+            cmap=True,
         )
+    # Add colorbar
+    fig.colorbar(
+        cmap=True,
+        frame=["a1000f500", "x+lnT"],
+        position="n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
+    )
+
 fig.show()

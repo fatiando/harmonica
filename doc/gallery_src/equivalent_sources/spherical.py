@@ -80,21 +80,19 @@ grid = vd.distance_mask(data_coordinates=coordinates, maxdist=0.5, grid=grid)
 # Plot observed and gridded gravity disturbance
 fig = pygmt.Figure()
 
+# Get the 99th percentile of the absolute value to use as color scale limits
+maxabs = vd.maxabs(gravity_disturbance, percentile=99)
+
 # Make colormap of data
-# Get the 90% of the maximum absolute value between the original and gridded
-# data so we can use the same color scale for both plots and have 0 centered
-# at the white color.
-maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values) * 0.90
-pygmt.makecpt(
-    cmap="vik",
-    series=(-maxabs, maxabs),
-    background=True,
-)
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
+
+
+title = "Observed gravity disturbance data"
 
 fig.plot(
-    projection="M10c",
+    projection="M12c",
     region=region,
-    frame=["WSne", "xa5", "ya4"],
+    frame=[f"WSne+t{title}", "xa5", "ya4"],
     x=longitude,
     y=latitude,
     fill=gravity_disturbance,
@@ -102,16 +100,21 @@ fig.plot(
     cmap=True,
 )
 
-fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+fig.shift_origin(xshift="w+1c")
 
-fig.shift_origin(xshift="w+3c")
+title = "Gridded and upward-continued"
 
 fig.grdimage(
-    frame=["ESnw", "xa5", "ya4"],
+    frame=[f"ESnw+t{title}", "xa5", "ya4"],
     grid=grid.gravity_disturbance,
     cmap=True,
+    nan_transparent=True,
 )
 
-fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+fig.colorbar(
+    cmap=True,
+    frame=["x+lmGal"],
+    position="n0/0+jTC+w10c/0.5c+h+o-0.5c/0.9c",
+)
 
 fig.show()

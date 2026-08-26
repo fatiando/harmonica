@@ -62,10 +62,10 @@ with fig.subplot(
     sharey="l",
     margins=["1c", "1c"],
 ):
-    scale = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
+    maxabs = vd.maxabs(magnetic_grid, rtp_grid, percentile=99)
     with fig.set_panel(panel=0):
         # Make colormap of data
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot magnetic anomaly grid
         fig.grdimage(
             grid=magnetic_grid,
@@ -75,7 +75,7 @@ with fig.subplot(
         )
     with fig.set_panel(panel=1):
         # Make colormap of data
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot reduced to the pole magnetic anomaly grid
         fig.grdimage(
             grid=rtp_grid,
@@ -84,16 +84,15 @@ with fig.subplot(
             frame=["a", "+tReduced to the pole (RTP)"],
         )
         # Add colorbar
-        label = "nT"
         fig.colorbar(
-            frame=f"af+l{label}",
+            frame="af+lnT",
             position="JMR+o1/-0.25c+e",
         )
 
-    scale = 0.6 * vd.maxabs(tilt_grid, tilt_rtp_grid)
+    maxabs = vd.maxabs(tilt_grid, tilt_rtp_grid, percentile=99)
     with fig.set_panel(panel=2):
         # Make colormap for tilt (saturate it a little bit)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot tilt
         fig.grdimage(
             grid=tilt_grid,
@@ -103,7 +102,7 @@ with fig.subplot(
         )
     with fig.set_panel(panel=3):
         # Make colormap for tilt rtp (saturate it a little bit)
-        pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+        pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
         # Plot tilt
         fig.grdimage(
             grid=tilt_rtp_grid,
@@ -112,9 +111,8 @@ with fig.subplot(
             frame=["a", "+tTilt of RTP grid"],
         )
         # Add colorbar
-        label = "rad"
         fig.colorbar(
-            frame=f"af+l{label}",
+            frame="af+lradians",
             position="JMR+o1/-0.25c+e",
         )
 fig.show()

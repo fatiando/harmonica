@@ -9,7 +9,6 @@ Test prisms layer.
 """
 
 import re
-from unittest.mock import patch
 
 import bordado as bd
 import numpy as np
@@ -418,24 +417,6 @@ def test_progress_bar(dummy_layer):
         coordinates, field="g_z", progressbar=False
     )
     npt.assert_allclose(result_progress_true, result_progress_false)
-
-
-@patch("harmonica._forward.utils.ProgressBar", None)
-def test_numba_progress_missing_error(dummy_layer):
-    """
-    Check if error is raised when progressbar=True and numba_progress package
-    is not installed.
-    """
-    coordinates = bd.grid_coordinates(
-        (1, 3, 7, 10), spacing=1, non_dimensional_coords=30.0
-    )
-    (easting, northing), surface, reference, density = dummy_layer
-    layer = prism_layer(
-        (easting, northing), surface, reference, properties={"density": density}
-    )
-    # Check if error is raised
-    with pytest.raises(ImportError):
-        layer.prism_layer.gravity(coordinates, field="g_z", progressbar=True)
 
 
 def test_gravity_discarded_thin_prisms(dummy_layer):

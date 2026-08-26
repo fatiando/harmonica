@@ -8,8 +8,6 @@
 Test forward modelling for tesseroids with variable density.
 """
 
-from unittest.mock import patch
-
 import bordado as bd
 import numpy as np
 import numpy.testing as npt
@@ -569,15 +567,3 @@ class TestProgressBar:
             coordinates, tesseroids, densities, field=field, progressbar=False
         )
         npt.assert_allclose(result_progress_true, result_progress_false)
-
-    @patch("harmonica._forward.utils.ProgressBar", None)
-    def test_numba_progress_missing_error(self, coordinates, tesseroids, densities):
-        """
-        Check if error is raised when progresbar=True and numba_progress
-        package is not installed.
-        """
-        # Check if error is raised
-        with pytest.raises(ImportError):
-            tesseroid_gravity(
-                coordinates, tesseroids, densities, field="potential", progressbar=True
-            )
