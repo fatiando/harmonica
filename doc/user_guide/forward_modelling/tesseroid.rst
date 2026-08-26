@@ -381,7 +381,11 @@ is also expressed as radii from the center of the Earth:
 
    import numpy as np
 
-   topography = 3e3 * np.sin(longitude * np.pi / 20) * np.cos(latitude * np.pi / 20)
+   max_height = 3e3
+   topography = (
+       max_height * np.sin(longitude * np.pi / 20) * np.cos(latitude * np.pi / 20)
+       + max_height
+   ) / 2
    surface = reference + topography
 
 Since the ``surface`` is expressed as radii, its values are all close to the radius of
@@ -392,24 +396,45 @@ a few kilometers around it. Let's plot it to see it more clearly:
 
    import verde as vd
 
-   grid = vd.make_xarray_grid(
+   surface_grid = vd.make_xarray_grid(
       (longitude, latitude),
       surface,
       data_names="surface",
       dims=("latitude", "longitude"),
    )
+   topography_grid = vd.make_xarray_grid(
+      (longitude, latitude),
+      topography,
+      data_names="topography",
+      dims=("latitude", "longitude"),
+   )
 
    fig = pygmt.Figure()
+   gmt_projection = "M-60/-30/10c"
    title = "Surface boundary of the tesseroid layer"
    with pygmt.config(FONT_TITLE="12p"):
       fig.grdimage(
          region=region,
-         projection="M-60/-30/10c",
-         grid=grid.surface,
+         projection=gmt_projection,
+         grid=surface_grid.surface,
          frame=["a", f"+t{title}"],
-         cmap="viridis",
+         cmap="magma",
       )
    fig.colorbar(cmap=True, frame=["af", "x+lSurface radius", "y+lmeters"])
+   fig.coast(shorelines="1p,black")
+
+   fig.shift_origin(xshift="w+1.5c")
+
+   title = "Topography"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=region,
+         projection=gmt_projection,
+         grid=topography_grid.topography,
+         frame=["a", f"+t{title}"],
+         cmap="magma",
+      )
+   fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
    fig.coast(shorelines="1p,black")
    fig.show()
 
