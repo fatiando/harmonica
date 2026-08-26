@@ -76,8 +76,10 @@ def fft(grid, *, prefix="freq_"):
         )
         raise TypeError(msg)
     if grid.ndim != 2:
+        s = "" if grid.ndim == 1 else "s"
         msg = (
-            f"Invalid grid array with '{grid.ndim}' dimensions. It must be a 2D array."
+            f"Invalid grid array with '{grid.ndim}' dimension{s}. "
+            "It must be a 2D array."
         )
         raise ValueError(msg)
 
@@ -187,8 +189,9 @@ def ifft(fft_grid, *, prefix="freq_"):
         )
         raise TypeError(msg)
     if fft_grid.ndim != 2:
+        s = "" if fft_grid.ndim == 1 else "s"
         msg = (
-            f"Invalid grid array with '{fft_grid.ndim}' dimensions. "
+            f"Invalid grid array with '{fft_grid.ndim}' dimension{s}. "
             "It must be a 2D array."
         )
         raise ValueError(msg)
@@ -308,10 +311,26 @@ def _get_dimensional_coordinate(grid: xr.DataArray, dim: str) -> str:
 
 def _fftfreq(coordinate: xr.DataArray, spacing: float | None = None) -> npt.NDArray:
     """
-    Get coordinate into the frequency domain.
+    Get frequency coordinates from the given spatial coordinates.
+
+    Parameters
+    ----------
+    coordinate : xr.DataArray
+        DataArray containing the spatial coordinates.
+    spacing : float or None, optional
+        Precomputed spacing of the ``coordinate`` array.
+        Pass only if the spacing for the coordinates has been already computed.
+        If None, the spacing of the coordinates will be computed.
+
+    Returns
+    -------
+    array
+        1D array with the frequency coordinates associated with the spatial coordinates.
+
     """
     if coordinate.ndim != 1:
-        raise ValueError()
+        msg = f"Invalid coordinate with '{coordinate.ndim}' dimensions. It must be 1D."
+        raise ValueError(msg)
     if spacing is None:
         spacing = _get_spacing(coordinate)
     return np.fft.fftshift(np.fft.fftfreq(coordinate.size, spacing))
@@ -319,13 +338,31 @@ def _fftfreq(coordinate: xr.DataArray, spacing: float | None = None) -> npt.NDAr
 
 def _ifftfreq(freq: xr.DataArray, spacing: float | None = None) -> npt.NDArray:
     """
-    Recover coordinate in the space domain from the frequency domain.
+    Recover spatial coordinates from the frequency coordinates.
 
     Shifts the coordinates in the spatial domain if the ``freq`` has a *shift*
     attribute.
+
+    Parameters
+    ----------
+    freq : xr.DataArray
+        DataArray containing the frequency coordinates.
+    spacing : float or None, optional
+        Precomputed spacing of the ``freq`` array.
+        Pass only if the spacing for the coordinates has been already computed.
+        If None, the spacing of the coordinates will be computed.
+
+    Returns
+    -------
+    array
+        1D array with the spatial coordinates associated with the frequency coordinates.
     """
     if freq.ndim != 1:
-        raise ValueError()
+        msg = (
+            f"Invalid frequency coordinate with '{freq.ndim}' dimensions. "
+            "It must be 1D."
+        )
+        raise ValueError(msg)
     if spacing is None:
         spacing = _get_spacing(freq)
     coordinate = np.fft.fftshift(np.fft.fftfreq(freq.size, spacing))
