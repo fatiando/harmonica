@@ -286,6 +286,12 @@ def _pad_coordinates(coords, pad_width):
     --------
     >>> import numpy as np
     >>> import xarray as xr
+
+    >>> import pytest
+    >>> from packaging.version import Version
+    >>> if Version(xr.__version__) < Version("2025.10.1"):
+    ...     pytest.skip("This doctest works only in Xarray >= 2025.10.1")
+
     >>> x = np.linspace(-4, -1, 4)
     >>> y = np.linspace(-1, 4, 6)
     >>> coords = {
