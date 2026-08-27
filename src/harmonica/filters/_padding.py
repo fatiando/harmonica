@@ -225,7 +225,7 @@ def _check_bad_coords(da, padding_coordinates):
     Check if the DataArray contains bad coordinates.
 
     A bad coordinate is defined as an additional coordinate that shares at
-    least one of the dimensions along which the grid will be padded
+    least one of the dimensions along which the grid will be padded.
 
     Parameters
     ----------
