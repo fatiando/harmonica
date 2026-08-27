@@ -78,9 +78,8 @@ def apply_filter(
     grid_sanity_checks(grid)
     dims = grid.dims
 
-    # TODO: Fix this in our own FFT functions
     # Need to remove non-dimensional coordinates before padding and FFT because
-    # xrft doesn't know what to do with them.
+    # the padding and fft functions don't know what to do with them.
     non_dim_coords = {c: grid[c] for c in grid.coords if c not in grid.indexes}
     grid = grid.drop_vars(non_dim_coords.keys())
 

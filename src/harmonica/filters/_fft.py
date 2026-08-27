@@ -5,10 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Custom FFT and inverse FFT functions that work with :class:`xarray.DataArray`.
-
-These functions are inspired in the ``fft`` and ``ifft`` functions provided by ``xrft``,
-which are released under the MIT license.
+Functions to compute the FFT and inverse FFT of 2D :class:`xarray.DataArray`.
 """
 
 import numpy as np
