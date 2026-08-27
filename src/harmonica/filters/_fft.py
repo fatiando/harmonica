@@ -15,6 +15,8 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 
+from ._utils import get_spacing
+
 
 def fft(grid, *, prefix="freq_"):
     r"""
@@ -87,7 +89,7 @@ def fft(grid, *, prefix="freq_"):
     dimensional_coords = tuple(
         _get_dimensional_coordinate(grid, dim) for dim in grid.dims
     )
-    spacings = tuple(_get_spacing(grid.coords[coord]) for coord in dimensional_coords)
+    spacings = tuple(get_spacing(grid.coords[coord]) for coord in dimensional_coords)
     shifts = tuple(grid.coords[coord].values.min() for coord in dimensional_coords)
 
     # Generate new coordinates
@@ -249,33 +251,6 @@ def ifft(fft_grid, *, prefix="freq_"):
     return da
 
 
-def _get_spacing(coordinate: xr.DataArray) -> float:
-    """
-    Return spacing of a grid coordinate.
-
-    Parameters
-    ----------
-    coordinate : xarray.DataArray
-        DataArray containing the coordinate.
-    coordinate : str
-        Coordinate name.
-
-    Returns
-    -------
-    spacing : float
-    """
-    spacing = coordinate.values[1] - coordinate.values[0]
-    if not np.allclose(spacing, coordinate.values[1:] - coordinate.values[:-1]):
-        msg = f"Invalid '{coordinate.name}' coordinates: they must be evenly spaced."
-        raise ValueError(msg)
-    if spacing <= 0:
-        msg = (
-            f"Invalid coordinate '{coordinate.name}': it must be increasingly ordered."
-        )
-        raise ValueError(msg)
-    return spacing
-
-
 def _get_dimensional_coordinate(grid: xr.DataArray, dim: str) -> str:
     """
     Get dimensional coordinate in the grid for a particular dimension.
@@ -332,7 +307,7 @@ def _fftfreq(coordinate: xr.DataArray, spacing: float | None = None) -> npt.NDAr
         msg = f"Invalid coordinate with '{coordinate.ndim}' dimensions. It must be 1D."
         raise ValueError(msg)
     if spacing is None:
-        spacing = _get_spacing(coordinate)
+        spacing = get_spacing(coordinate)
     return np.fft.fftshift(np.fft.fftfreq(coordinate.size, spacing))
 
 
@@ -364,7 +339,7 @@ def _ifftfreq(freq: xr.DataArray, spacing: float | None = None) -> npt.NDArray:
         )
         raise ValueError(msg)
     if spacing is None:
-        spacing = _get_spacing(freq)
+        spacing = get_spacing(freq)
     coordinate = np.fft.fftshift(np.fft.fftfreq(freq.size, spacing))
 
     # Apply static shift if any

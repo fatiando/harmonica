@@ -17,12 +17,7 @@ import xarray as xr
 import xrft
 
 from harmonica.filters import fft, ifft
-from harmonica.filters._fft import (
-    _fftfreq,
-    _get_dimensional_coordinate,
-    _get_spacing,
-    _ifftfreq,
-)
+from harmonica.filters._fft import _fftfreq, _get_dimensional_coordinate, _ifftfreq
 
 
 @pytest.fixture
@@ -165,34 +160,6 @@ class TestAgainstXRFT:
         recovered_hm = ifft(fft(synthetic_grid))
         recovered_xrft = xrft.ifft(xrft.fft(synthetic_grid))
         xr.testing.assert_allclose(recovered_hm, recovered_xrft)
-
-
-class TestGetSpacing:
-    """Test the ``_get_spacing`` private function."""
-
-    def test_get_spacing(self):
-        spacing = 2.3
-        x = bd.line_coordinates(-2.0, 8.0, spacing=spacing, adjust="region")
-        coordinate = xr.DataArray(x)
-        np.testing.assert_allclose(spacing, _get_spacing(coordinate))
-
-    def test_not_evenly_spaced(self):
-        coordinate = xr.DataArray([1.0, 2.0, 4.0, 5.0])
-        msg = re.escape(
-            f"Invalid '{coordinate.name}' coordinates: they must be evenly spaced."
-        )
-        with pytest.raises(ValueError, match=msg):
-            _get_spacing(coordinate)
-
-    def test_not_ordered(self):
-        spacing = 2.3
-        x = bd.line_coordinates(-2.0, 8.0, spacing=spacing, adjust="region")[::-1]
-        coordinate = xr.DataArray(x)
-        msg = re.escape(
-            f"Invalid coordinate '{coordinate.name}': it must be increasingly ordered."
-        )
-        with pytest.raises(ValueError, match=msg):
-            _get_spacing(coordinate)
 
 
 class TestDimensionalCoordinate:

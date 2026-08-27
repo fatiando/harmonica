@@ -20,6 +20,7 @@ import xarray.testing as xrt
 
 from harmonica.filters._fft import fft, ifft
 from harmonica.filters._filters import (
+    apply_filter,
     derivative_easting_kernel,
     derivative_northing_kernel,
     derivative_upward_kernel,
@@ -28,7 +29,6 @@ from harmonica.filters._filters import (
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
-from harmonica.filters._utils import apply_filter
 
 # -------------------------------
 # Fixtures
