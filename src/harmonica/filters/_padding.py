@@ -137,6 +137,12 @@ def pad(
     Examples
     --------
     >>> import xarray as xr
+
+    >>> import pytest
+    >>> from packaging.version import Version
+    >>> if Version(xr.__version__) < Version("2025.10.1"):
+    ...     pytest.skip("This doctest works only in Xarray >= 2025.10.1")
+
     >>> da = xr.DataArray(
     ...     [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
     ...     coords={"x": [0, 1, 2], "y": [-5, -4, -3]},
@@ -396,6 +402,12 @@ def unpad(da, pad_width=None, **pad_width_kwargs):
     Examples
     --------
     >>> import xarray as xr
+
+    >>> import pytest
+    >>> from packaging.version import Version
+    >>> if Version(xr.__version__) < Version("2025.10.1"):
+    ...     pytest.skip("This doctest works only in Xarray >= 2025.10.1")
+
     >>> da = xr.DataArray(
     ...     [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
     ...     coords={"x": [0, 1, 2], "y": [-5, -4, -3]},
