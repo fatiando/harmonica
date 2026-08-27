@@ -15,7 +15,6 @@ dependencies:
   - scikit-learn
   - verde>=1.8.1
   - xarray
-  - xrft>=1.0
   - choclo>=0.1
   - boule>=0.6
   - bordado>=0.4.0
@@ -27,6 +26,7 @@ dependencies:
   - pytest
   - pytest-cov
   - coverage
+  - xrft
   # Documentation requirements
   - sphinx==7.2.*
   - numpydoc==1.7.*

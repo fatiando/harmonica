@@ -51,8 +51,15 @@ Define filters in the frequency domain.
     filters.gaussian_highpass_kernel
     filters.reduction_to_pole_kernel
 
-Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
-Transforms and its inverse on :class:`xarray.DataArray`.
+FFT and padding functions that can be used with 2D :class:`xarray.DataArray`:
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.fft
+    filters.ifft
+    filters.pad
+    filters.unpad
 
 Equivalent Sources
 ------------------
