@@ -301,6 +301,32 @@ def test_derivative_upward(sample_potential, sample_g_z):
     assert rms / np.abs(g_up).max() < 0.015
 
 
+@pytest.mark.parametrize("flip_dim", ["northing", "easting"])
+def test_filter_descending_coordinate_not_flipped(sample_potential, flip_dim):
+    """
+    Filters should not flip the output for grids with descending coordinates.
+
+    Grids read from some file formats store the northing (or easting) in
+    descending order. The FFT-based filters used to assign the original
+    descending coordinates to the ascending result of the inverse transform,
+    silently flipping the output along that dimension (see
+    https://github.com/fatiando/harmonica/issues/586).
+    """
+    ascending = derivative_upward(sample_potential)
+    # Same physical grid, but with one coordinate stored in descending order
+    flipped_grid = sample_potential.isel({flip_dim: slice(None, None, -1)})
+    assert flipped_grid[flip_dim].values[0] > flipped_grid[flip_dim].values[-1]
+    descending = derivative_upward(flipped_grid)
+    # The output must keep the descending coordinate order of its input
+    assert descending[flip_dim].values[0] > descending[flip_dim].values[-1]
+    # Sorting both results on the flipped dimension must make them identical:
+    # if the output were flipped, the values would not match after sorting.
+    npt.assert_allclose(
+        ascending.sortby(flip_dim).values,
+        descending.sortby(flip_dim).values,
+    )
+
+
 def test_derivative_upward_order2(sample_potential, sample_g_zz):
     """
     Test higher order of derivative_upward function against the sample grid.

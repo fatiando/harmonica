@@ -79,6 +79,18 @@ def apply_filter(
     # xrft doesn't know what to do with them.
     non_dim_coords = {c: grid[c] for c in grid.coords if c not in grid.indexes}
     grid = grid.drop_vars(non_dim_coords.keys())
+    # The FFT-based filters assume the grid coordinates are in ascending order:
+    # xrft builds the frequency coordinates from positive sample spacings, and
+    # the inverse transform always returns the grid in ascending order. Grids
+    # read from some file formats store the northing in descending order, which
+    # silently produced a north-south flipped output because the original
+    # (descending) coordinates were assigned to the ascending result (see #586).
+    # Sort the grid to ascending order before transforming and restore the
+    # original coordinate order at the end.
+    original_coords = {dim: grid[dim] for dim in dims}
+    needs_reorder = any(bool(grid[dim][0] > grid[dim][-1]) for dim in dims)
+    if needs_reorder:
+        grid = grid.sortby(list(dims))
     if pad:
         # By default, use a padding width of 25% of each grid dimension.
         # Fedi et al. (2012; doi:10.1111/j.1365-246X.2011.05259.x) suggest
@@ -109,6 +121,12 @@ def apply_filter(
     filtered_grid = filtered_grid.assign_coords(
         {dims[1]: grid[dims[1]], dims[0]: grid[dims[0]]}
     )
+    # Restore the original coordinate order (e.g. descending northing) so the
+    # output is aligned with the input grid and not flipped (see #586).
+    if needs_reorder:
+        filtered_grid = filtered_grid.reindex(
+            {dim: original_coords[dim] for dim in dims}
+        )
     # Restore the non-dimensional coordinates if desired
     if not drop_coords:
         filtered_grid = filtered_grid.assign_coords(
