@@ -389,8 +389,8 @@ def reduction_to_pole(
     grid,
     inclination,
     declination,
-    magnetization_inclination=None,
-    magnetization_declination=None,
+    magnetization_inclination,
+    magnetization_declination,
     *,
     pad=True,
     pad_kwargs=None,
@@ -412,16 +412,10 @@ def reduction_to_pole(
         The inclination of the inducing Geomagnetic field.
     declination : float in degrees
         The declination of the inducing Geomagnetic field.
-    magnetization_inclination : float in degrees or None
-        The inclination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_inclination`` will be set equal to the
-        ``inclination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
+    magnetization_inclination : float in degrees
+        The inclination of the total magnetization of the anomaly source.
     magnetization_declination : float in degrees
-        The declination of the total magnetization of the anomaly source. If
-        None, the ``magnetization_declination`` will be set equal to the
-        ``declination``, neglecting remanent magnetization and self
-        demagnetization. Default None.
+        The declination of the total magnetization of the anomaly source.
     pad : bool, optional
         If True, will add padding to the grid before taking the Fourier Transform
         and applying the filter and remove it after the inverse Fourier Transform.
