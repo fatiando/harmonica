@@ -84,8 +84,8 @@ class TestPointGravityLinearity:
         expected = sum(
             point_gravity(
                 sample_coordinates,
-                tuple(p[i : i + 1] for p in sample_points),
-                sample_masses[i : i + 1],
+                tuple(p[i] for p in sample_points),
+                sample_masses[i],
                 field,
             )
             for i in range(sample_masses.size)
@@ -112,8 +112,8 @@ class TestPointGravityLinearity:
         expected = sum(
             point_gravity(
                 coordinates,
-                tuple(p[i : i + 1] for p in points),
-                sample_masses[i : i + 1],
+                tuple(p[i] for p in points),
+                sample_masses[i],
                 field,
                 coordinate_system="spherical",
             )
@@ -175,8 +175,8 @@ class TestDipoleMagneticLinearity:
             np.asarray(
                 dipole_magnetic(
                     sample_coordinates,
-                    tuple(d[i : i + 1] for d in sample_dipoles),
-                    tuple(m[i : i + 1] for m in sample_magnetic_moments),
+                    tuple(d[i] for d in sample_dipoles),
+                    tuple(m[i] for m in sample_magnetic_moments),
                     field=field,
                 )
             )
@@ -234,11 +234,11 @@ class TestPrismGravityLinearity:
         expected = sum(
             prism_gravity(
                 sample_coordinates,
-                sample_prisms[i : i + 1],
-                sample_densities[i : i + 1],
+                prism,
+                density,
                 field,
             )
-            for i in range(sample_densities.size)
+            for prism, density in zip(sample_prisms, sample_densities, strict=True)
         )
         npt.assert_allclose(result, expected)
 
@@ -298,8 +298,8 @@ class TestPrismMagneticLinearity:
             np.asarray(
                 prism_magnetic(
                     sample_coordinates,
-                    sample_prisms[i : i + 1],
-                    tuple(m[i : i + 1] for m in sample_magnetizations),
+                    sample_prisms[i],
+                    tuple(m[i] for m in sample_magnetizations),
                     field=field,
                 )
             )
@@ -363,10 +363,12 @@ class TestTesseroidGravityLinearity:
         expected = sum(
             tesseroid_gravity(
                 sample_coordinates,
-                sample_tesseroids[i : i + 1],
-                sample_densities[i : i + 1],
+                tesseroid,
+                density,
                 field=field,
             )
-            for i in range(sample_densities.size)
+            for tesseroid, density in zip(
+                sample_tesseroids, sample_densities, strict=True
+            )
         )
         npt.assert_allclose(result, expected)
