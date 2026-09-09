@@ -19,8 +19,11 @@ updates:
       - dependency-name: "*"
     allow:
       - dependency-name: "zizmor"
-        update-types: "version-update:semver-minor"
+        update-types:
+          - "version-update:semver-minor"
       - dependency-name: "ruff"
-        update-types: "version-update:semver-minor"
+        update-types:
+          - "version-update:semver-minor"
       - dependency-name: "burocrata"
-        update-types: "version-update:semver-minor"
+        update-types:
+          - "version-update:semver-minor"
