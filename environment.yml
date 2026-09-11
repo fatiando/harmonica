@@ -48,5 +48,4 @@ dependencies:
   # Code style checks and autoformat
   - ruff
   - zizmor
-  - pip:
-    - burocrata==0.2.*
+  - burocrata

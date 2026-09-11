@@ -10,3 +10,20 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+    allow:
+      - dependency-name: "zizmor"
+        update-types:
+          - "version-update:semver-minor"
+      - dependency-name: "ruff"
+        update-types:
+          - "version-update:semver-minor"
+      - dependency-name: "burocrata"
+        update-types:
+          - "version-update:semver-minor"
