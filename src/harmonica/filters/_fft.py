@@ -130,7 +130,7 @@ def ifft(fft_grid, *, prefix="freq_"):
     .. important::
 
         Assumes that the ``fft_grid`` is *shifted*: it was passed to
-        :func:`numpy.fft.fftshift`. The outputs of the ``fft`` function satisfy this
+        :func:`numpy.fft.fftshift`. The outputs of the :func:`harmonica.filters.fft` function satisfy this
         condition.
 
     Parameters
