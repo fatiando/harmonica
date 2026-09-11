@@ -15,7 +15,10 @@ import harmonica
 # Project information
 # -----------------------------------------------------------------------------
 project = "Harmonica"
-copyright_info = f"2018-{datetime.date.today().year}, The {project} Developers"
+copyright_info = (
+    f"2018-{datetime.datetime.now(tz=datetime.timezone.utc).year},"
+    f" The {project} Developers"
+)
 if len(harmonica.__version__.split("+")) > 1 or harmonica.__version__ == "unknown":
     version = "dev"
 else:
