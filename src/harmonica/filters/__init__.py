@@ -8,6 +8,7 @@
 Frequency domain filters meant to be applied on regular grids.
 """
 
+from ._fft import fft, ifft
 from ._filters import (
     derivative_easting_kernel,
     derivative_northing_kernel,
@@ -17,3 +18,4 @@ from ._filters import (
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
+from ._padding import pad, unpad
