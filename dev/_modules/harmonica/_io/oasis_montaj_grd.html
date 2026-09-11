@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>harmonica._io.oasis_montaj_grd | Harmonica dev</title>
+        <title>harmonica._io.oasis_montaj_grd | Harmonica v0.0.post100</title>
     
 
   
@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
@@ -152,7 +152,7 @@
   
   
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -215,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -227,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +253,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
@@ -442,37 +451,38 @@ document.write(`
 <span class="c1"># The support for compressed grids was inspired by the code in</span>
 <span class="c1"># https://github.com/Loop3D/geosoft_grid copyrighted by Loop3D and released</span>
 <span class="c1"># under the MIT License.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Function to read Oasis Montaj© .grd file</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
+<span class="sd">Function to read Oasis Montaj© .grd file.</span>
+<span class="sd">"""</span>
 
-<span class="kn">import</span> <span class="nn">array</span>
-<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="c1"># Define the valid element sizes (ES variable) for GRD files</span>
 <span class="c1"># (values &gt; 1024 correspond to compressed versions of the grid)</span>
 <span class="n">VALID_ELEMENT_SIZES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
 <span class="c1"># Define dummy values for each data type</span>
 <span class="n">DUMMIES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">127</span><span class="p">,</span>
-    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
-    <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">32767</span><span class="p">,</span>
-    <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="mi">65535</span><span class="p">,</span>
-    <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2147483647</span><span class="p">,</span>
-    <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="mi">4294967295</span><span class="p">,</span>
-    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1e32</span><span class="p">,</span>
-    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1e32</span><span class="p">,</span>
+    <span class="s2">"b"</span><span class="p">:</span> <span class="o">-</span><span class="mi">127</span><span class="p">,</span>
+    <span class="s2">"B"</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
+    <span class="s2">"h"</span><span class="p">:</span> <span class="o">-</span><span class="mi">32767</span><span class="p">,</span>
+    <span class="s2">"H"</span><span class="p">:</span> <span class="mi">65535</span><span class="p">,</span>
+    <span class="s2">"i"</span><span class="p">:</span> <span class="o">-</span><span class="mi">2147483647</span><span class="p">,</span>
+    <span class="s2">"I"</span><span class="p">:</span> <span class="mi">4294967295</span><span class="p">,</span>
+    <span class="s2">"f"</span><span class="p">:</span> <span class="o">-</span><span class="mf">1e32</span><span class="p">,</span>
+    <span class="s2">"d"</span><span class="p">:</span> <span class="o">-</span><span class="mf">1e32</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="load_oasis_montaj_grid">
 <a class="viewcode-back" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html#harmonica.load_oasis_montaj_grid">[docs]</a>
-<span class="k">def</span> <span class="nf">load_oasis_montaj_grid</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads gridded data from an Oasis Montaj© .grd file.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_oasis_montaj_grid</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Read gridded data from an Oasis Montaj© .grd file.</span>
 
 <span class="sd">    The version 2 of the Geosoft© Grid File Format (GRD) stores gridded</span>
 <span class="sd">    products in binary data. This function can read those files and parse the</span>
@@ -512,20 +522,20 @@ document.write(`
 <span class="sd">    https://help.seequent.com/Oasis-montaj/9.9/en/Content/ss/glossary/grid_file_format__grd.htm</span>
 
 <span class="sd">    https://github.com/Loop3D/geosoft_grid</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Read the header and the grid array</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">grd_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">grd_file</span><span class="p">:</span>
         <span class="c1"># Read the header (first 512 bytes)</span>
         <span class="n">header</span> <span class="o">=</span> <span class="n">_read_header</span><span class="p">(</span><span class="n">grd_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">512</span><span class="p">))</span>
         <span class="c1"># Check for valid flags</span>
-        <span class="n">_check_ordering</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;ordering&quot;</span><span class="p">])</span>
-        <span class="n">_check_sign_flag</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;sign_flag&quot;</span><span class="p">])</span>
+        <span class="n">_check_ordering</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"ordering"</span><span class="p">])</span>
+        <span class="n">_check_sign_flag</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"sign_flag"</span><span class="p">])</span>
         <span class="c1"># Get data type for the grid elements</span>
-        <span class="n">data_type</span> <span class="o">=</span> <span class="n">_get_data_type</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;n_bytes_per_element&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sign_flag&quot;</span><span class="p">])</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">_get_data_type</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"n_bytes_per_element"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"sign_flag"</span><span class="p">])</span>
         <span class="c1"># Read grid</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="n">grd_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="c1"># Decompress grid if needed</span>
-    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;n_bytes_per_element&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1024</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">"n_bytes_per_element"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1024</span><span class="p">:</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="n">_decompress_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
     <span class="c1"># Load the grid values as an array with the proper data_type</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
@@ -534,30 +544,38 @@ document.write(`
     <span class="c1"># Remove dummy values</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">_remove_dummies</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
     <span class="c1"># Scale the grid</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span> <span class="o">/</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;data_factor&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;base_value&quot;</span><span class="p">])</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span> <span class="o">/</span> <span class="n">header</span><span class="p">[</span><span class="s2">"data_factor"</span><span class="p">]</span> <span class="o">+</span> <span class="n">header</span><span class="p">[</span><span class="s2">"base_value"</span><span class="p">])</span>
     <span class="c1"># Reshape the grid based on the ordering</span>
-    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;ordering&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;shape_v&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;shape_e&quot;</span><span class="p">])</span>
-        <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;spacing_v&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;spacing_e&quot;</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;ordering&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;shape_e&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;shape_v&quot;</span><span class="p">])</span>
-        <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;spacing_e&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;spacing_v&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">"ordering"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="s2">"C"</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"shape_v"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"shape_e"</span><span class="p">])</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"spacing_v"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"spacing_e"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">header</span><span class="p">[</span><span class="s2">"ordering"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="s2">"F"</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"shape_e"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"shape_v"</span><span class="p">])</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"spacing_e"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"spacing_v"</span><span class="p">])</span>
+    <span class="c1"># Check that the number of elements matches the expected shape</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected_size</span> <span class="o">:=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Grid data size mismatch: found </span><span class="si">{</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> elements, "</span>
+            <span class="sa">f</span><span class="s2">"expected </span><span class="si">{</span><span class="n">expected_size</span><span class="si">}</span><span class="s2"> (shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">). "</span>
+            <span class="s2">"The file may be corrupted or incomplete."</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
     <span class="c1"># Build coords</span>
-    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;rotation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="s2">"rotation"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">_build_coordinates</span><span class="p">(</span>
-            <span class="n">header</span><span class="p">[</span><span class="s2">&quot;x_origin&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;y_origin&quot;</span><span class="p">],</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span>
+            <span class="n">header</span><span class="p">[</span><span class="s2">"x_origin"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"y_origin"</span><span class="p">],</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span>
         <span class="p">)</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;easting&quot;</span><span class="p">:</span> <span class="n">easting</span><span class="p">,</span> <span class="s2">&quot;northing&quot;</span><span class="p">:</span> <span class="n">northing</span><span class="p">}</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"northing"</span><span class="p">,</span> <span class="s2">"easting"</span><span class="p">)</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"easting"</span><span class="p">:</span> <span class="n">easting</span><span class="p">,</span> <span class="s2">"northing"</span><span class="p">:</span> <span class="n">northing</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">_build_rotated_coordinates</span><span class="p">(</span>
-            <span class="n">header</span><span class="p">[</span><span class="s2">&quot;x_origin&quot;</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;y_origin&quot;</span><span class="p">],</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;rotation&quot;</span><span class="p">]</span>
+            <span class="n">header</span><span class="p">[</span><span class="s2">"x_origin"</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="s2">"y_origin"</span><span class="p">],</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">header</span><span class="p">[</span><span class="s2">"rotation"</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;easting&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">easting</span><span class="p">),</span> <span class="s2">&quot;northing&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">northing</span><span class="p">)}</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">)</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"easting"</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">easting</span><span class="p">),</span> <span class="s2">"northing"</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">northing</span><span class="p">)}</span>
     <span class="c1"># Build an xarray.DataArray for the grid</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
         <span class="n">grid</span><span class="p">,</span>
@@ -569,9 +587,9 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">_read_header</span><span class="p">(</span><span class="n">header_bytes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read GRD file header</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_header</span><span class="p">(</span><span class="n">header_bytes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Read GRD file header.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -588,154 +606,149 @@ document.write(`
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The GRD header consists in 512 contiguous bytes.</span>
-<span class="sd">    It&#39;s divided in four sections:</span>
+<span class="sd">    It's divided in four sections:</span>
 
 <span class="sd">    * Data Storage</span>
 <span class="sd">    * Geographic Information</span>
 <span class="sd">    * Data (Z) Scaling</span>
 <span class="sd">    * Undefined Application Parameters</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">header</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Read data storage</span>
-    <span class="n">ES</span><span class="p">,</span> <span class="n">SF</span><span class="p">,</span> <span class="n">NE</span><span class="p">,</span> <span class="n">NV</span><span class="p">,</span> <span class="n">KX</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># noqa: N806</span>
+    <span class="n">ES</span><span class="p">,</span> <span class="n">SF</span><span class="p">,</span> <span class="n">NE</span><span class="p">,</span> <span class="n">NV</span><span class="p">,</span> <span class="n">KX</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;n_bytes_per_element&quot;</span><span class="p">:</span> <span class="n">ES</span><span class="p">,</span>
-            <span class="s2">&quot;sign_flag&quot;</span><span class="p">:</span> <span class="n">SF</span><span class="p">,</span>
-            <span class="s2">&quot;shape_e&quot;</span><span class="p">:</span> <span class="n">NE</span><span class="p">,</span>
-            <span class="s2">&quot;shape_v&quot;</span><span class="p">:</span> <span class="n">NV</span><span class="p">,</span>
-            <span class="s2">&quot;ordering&quot;</span><span class="p">:</span> <span class="n">KX</span><span class="p">,</span>
+            <span class="s2">"n_bytes_per_element"</span><span class="p">:</span> <span class="n">ES</span><span class="p">,</span>
+            <span class="s2">"sign_flag"</span><span class="p">:</span> <span class="n">SF</span><span class="p">,</span>
+            <span class="s2">"shape_e"</span><span class="p">:</span> <span class="n">NE</span><span class="p">,</span>
+            <span class="s2">"shape_v"</span><span class="p">:</span> <span class="n">NV</span><span class="p">,</span>
+            <span class="s2">"ordering"</span><span class="p">:</span> <span class="n">KX</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># Read geographic info</span>
-    <span class="n">DE</span><span class="p">,</span> <span class="n">DV</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">ROT</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">20</span> <span class="p">:</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>  <span class="c1"># noqa: N806</span>
+    <span class="n">DE</span><span class="p">,</span> <span class="n">DV</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">ROT</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">20</span> <span class="p">:</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>
     <span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;spacing_e&quot;</span><span class="p">:</span> <span class="n">DE</span><span class="p">,</span>
-            <span class="s2">&quot;spacing_v&quot;</span><span class="p">:</span> <span class="n">DV</span><span class="p">,</span>
-            <span class="s2">&quot;x_origin&quot;</span><span class="p">:</span> <span class="n">X0</span><span class="p">,</span>
-            <span class="s2">&quot;y_origin&quot;</span><span class="p">:</span> <span class="n">Y0</span><span class="p">,</span>
-            <span class="s2">&quot;rotation&quot;</span><span class="p">:</span> <span class="n">ROT</span><span class="p">,</span>
+            <span class="s2">"spacing_e"</span><span class="p">:</span> <span class="n">DE</span><span class="p">,</span>
+            <span class="s2">"spacing_v"</span><span class="p">:</span> <span class="n">DV</span><span class="p">,</span>
+            <span class="s2">"x_origin"</span><span class="p">:</span> <span class="n">X0</span><span class="p">,</span>
+            <span class="s2">"y_origin"</span><span class="p">:</span> <span class="n">Y0</span><span class="p">,</span>
+            <span class="s2">"rotation"</span><span class="p">:</span> <span class="n">ROT</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># Read data scaling</span>
-    <span class="n">ZBASE</span><span class="p">,</span> <span class="n">ZMULT</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">60</span> <span class="p">:</span> <span class="mi">60</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>  <span class="c1"># noqa: N806</span>
+    <span class="n">ZBASE</span><span class="p">,</span> <span class="n">ZMULT</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">60</span> <span class="p">:</span> <span class="mi">60</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>
     <span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;base_value&quot;</span><span class="p">:</span> <span class="n">ZBASE</span><span class="p">,</span>
-            <span class="s2">&quot;data_factor&quot;</span><span class="p">:</span> <span class="n">ZMULT</span><span class="p">,</span>
+            <span class="s2">"base_value"</span><span class="p">:</span> <span class="n">ZBASE</span><span class="p">,</span>
+            <span class="s2">"data_factor"</span><span class="p">:</span> <span class="n">ZMULT</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="c1"># Read optional parameters</span>
     <span class="c1"># (ignore map LABEL and MAPNO)</span>
-    <span class="n">PROJ</span><span class="p">,</span> <span class="n">UNITX</span><span class="p">,</span> <span class="n">UNITY</span><span class="p">,</span> <span class="n">UNITZ</span><span class="p">,</span> <span class="n">NVPTS</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>  <span class="c1"># noqa: N806</span>
-        <span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">140</span> <span class="p">:</span> <span class="mi">140</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="p">)</span>
-    <span class="n">IZMIN</span><span class="p">,</span> <span class="n">IZMAX</span><span class="p">,</span> <span class="n">IZMED</span><span class="p">,</span> <span class="n">IZMEA</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>  <span class="c1"># noqa: N806</span>
-        <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">160</span> <span class="p">:</span> <span class="mi">160</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="p">)</span>
-    <span class="p">(</span><span class="n">ZVAR</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">176</span> <span class="p">:</span> <span class="mi">176</span> <span class="o">+</span> <span class="mi">8</span><span class="p">])</span>  <span class="c1"># noqa: N806</span>
-    <span class="p">(</span><span class="n">PRCS</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">184</span> <span class="p">:</span> <span class="mi">184</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># noqa: N806</span>
+    <span class="n">PROJ</span><span class="p">,</span> <span class="n">UNITX</span><span class="p">,</span> <span class="n">UNITY</span><span class="p">,</span> <span class="n">UNITZ</span><span class="p">,</span> <span class="n">NVPTS</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">140</span> <span class="p">:</span> <span class="mi">140</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">IZMIN</span><span class="p">,</span> <span class="n">IZMAX</span><span class="p">,</span> <span class="n">IZMED</span><span class="p">,</span> <span class="n">IZMEA</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"f"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">160</span> <span class="p">:</span> <span class="mi">160</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="p">(</span><span class="n">ZVAR</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">176</span> <span class="p">:</span> <span class="mi">176</span> <span class="o">+</span> <span class="mi">8</span><span class="p">])</span>
+    <span class="p">(</span><span class="n">PRCS</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">header_bytes</span><span class="p">[</span><span class="mi">184</span> <span class="p">:</span> <span class="mi">184</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;map_projection&quot;</span><span class="p">:</span> <span class="n">PROJ</span><span class="p">,</span>
-            <span class="s2">&quot;units_x&quot;</span><span class="p">:</span> <span class="n">UNITX</span><span class="p">,</span>
-            <span class="s2">&quot;units_y&quot;</span><span class="p">:</span> <span class="n">UNITY</span><span class="p">,</span>
-            <span class="s2">&quot;units_z&quot;</span><span class="p">:</span> <span class="n">UNITZ</span><span class="p">,</span>
-            <span class="s2">&quot;n_valid_points&quot;</span><span class="p">:</span> <span class="n">NVPTS</span><span class="p">,</span>
-            <span class="s2">&quot;grid_min&quot;</span><span class="p">:</span> <span class="n">IZMIN</span><span class="p">,</span>
-            <span class="s2">&quot;grid_max&quot;</span><span class="p">:</span> <span class="n">IZMAX</span><span class="p">,</span>
-            <span class="s2">&quot;grid_median&quot;</span><span class="p">:</span> <span class="n">IZMED</span><span class="p">,</span>
-            <span class="s2">&quot;grid_mean&quot;</span><span class="p">:</span> <span class="n">IZMEA</span><span class="p">,</span>
-            <span class="s2">&quot;grid_variance&quot;</span><span class="p">:</span> <span class="n">ZVAR</span><span class="p">,</span>
-            <span class="s2">&quot;process_flag&quot;</span><span class="p">:</span> <span class="n">PRCS</span><span class="p">,</span>
+            <span class="s2">"map_projection"</span><span class="p">:</span> <span class="n">PROJ</span><span class="p">,</span>
+            <span class="s2">"units_x"</span><span class="p">:</span> <span class="n">UNITX</span><span class="p">,</span>
+            <span class="s2">"units_y"</span><span class="p">:</span> <span class="n">UNITY</span><span class="p">,</span>
+            <span class="s2">"units_z"</span><span class="p">:</span> <span class="n">UNITZ</span><span class="p">,</span>
+            <span class="s2">"n_valid_points"</span><span class="p">:</span> <span class="n">NVPTS</span><span class="p">,</span>
+            <span class="s2">"grid_min"</span><span class="p">:</span> <span class="n">IZMIN</span><span class="p">,</span>
+            <span class="s2">"grid_max"</span><span class="p">:</span> <span class="n">IZMAX</span><span class="p">,</span>
+            <span class="s2">"grid_median"</span><span class="p">:</span> <span class="n">IZMED</span><span class="p">,</span>
+            <span class="s2">"grid_mean"</span><span class="p">:</span> <span class="n">IZMEA</span><span class="p">,</span>
+            <span class="s2">"grid_variance"</span><span class="p">:</span> <span class="n">ZVAR</span><span class="p">,</span>
+            <span class="s2">"process_flag"</span><span class="p">:</span> <span class="n">PRCS</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">header</span>
 
 
-<span class="k">def</span> <span class="nf">_check_ordering</span><span class="p">(</span><span class="n">ordering</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the ordering value is within the ones we are supporting</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_ordering</span><span class="p">(</span><span class="n">ordering</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Check if the ordering value is within the ones we are supporting.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ordering</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Found an ordering (a.k.a as KX) equal to &#39;</span><span class="si">{</span><span class="n">ordering</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;Only orderings equal to 1 and -1 are supported.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Found an ordering (a.k.a KX) equal to '</span><span class="si">{</span><span class="n">ordering</span><span class="si">}</span><span class="s2">'. "</span>
+            <span class="o">+</span> <span class="s2">"Only orderings equal to 1 and -1 are supported."</span>
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_check_sign_flag</span><span class="p">(</span><span class="n">sign_flag</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if sign_flag value is within the ones we are supporting</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_sign_flag</span><span class="p">(</span><span class="n">sign_flag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Check if sign_flag value is within the ones we are supporting.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Reading .grd files with colour grids is not currenty supported.&quot;</span>
-        <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Reading .grd files with colour grids is not currently supported."</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_data_type</span><span class="p">(</span><span class="n">n_bytes_per_element</span><span class="p">,</span> <span class="n">sign_flag</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the data type for the grid values</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_data_type</span><span class="p">(</span><span class="n">n_bytes_per_element</span><span class="p">,</span> <span class="n">sign_flag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Return the data type for the grid values.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    https://docs.python.org/3/library/array.html</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Check if number of bytes per element is valid</span>
     <span class="k">if</span> <span class="n">n_bytes_per_element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_ELEMENT_SIZES</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Found a &#39;Grid data element size&#39; (a.k.a. &#39;ES&#39;) value &quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;of &#39;</span><span class="si">{</span><span class="n">n_bytes_per_element</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-            <span class="s2">&quot;Only values equal to 1, 2, 4 and 8 are valid, &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;along with their compressed counterparts (1025, 1026, 1028, 1032).&quot;</span>
-        <span class="p">)</span>
+            <span class="s2">"Found a 'Grid data element size' (a.k.a. 'ES') value "</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"of '</span><span class="si">{</span><span class="n">n_bytes_per_element</span><span class="si">}</span><span class="s2">'. "</span>
+            <span class="s2">"Only values equal to 1, 2, 4 and 8 are valid, "</span>
+            <span class="o">+</span> <span class="s2">"along with their compressed counterparts (1025, 1026, 1028, 1032)."</span>
+        <span class="p">)</span>  <span class="c1"># pragma: no cover</span>
     <span class="c1"># Shift the n_bytes_per_element in case of compressed grids</span>
     <span class="k">if</span> <span class="n">n_bytes_per_element</span> <span class="o">&gt;</span> <span class="mi">1024</span><span class="p">:</span>
         <span class="n">n_bytes_per_element</span> <span class="o">-=</span> <span class="mi">1024</span>
     <span class="c1"># Determine the data type of the grid elements</span>
     <span class="k">if</span> <span class="n">n_bytes_per_element</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>  <span class="c1"># unsigned char</span>
-        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;b&quot;</span>  <span class="c1"># signed char</span>
+        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"B"</span>  <span class="c1"># unsigned char</span>
+        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"b"</span>  <span class="c1"># signed char</span>
     <span class="k">elif</span> <span class="n">n_bytes_per_element</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;H&quot;</span>  <span class="c1"># unsigned short</span>
-        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;h&quot;</span>  <span class="c1"># signed short</span>
+        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"H"</span>  <span class="c1"># unsigned short</span>
+        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"h"</span>  <span class="c1"># signed short</span>
     <span class="k">elif</span> <span class="n">n_bytes_per_element</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;I&quot;</span>  <span class="c1"># unsigned int</span>
+        <span class="k">if</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"I"</span>  <span class="c1"># unsigned int</span>
         <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;i&quot;</span>  <span class="c1"># signed int</span>
-        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;f&quot;</span>  <span class="c1"># float</span>
-    <span class="k">elif</span> <span class="n">n_bytes_per_element</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"i"</span>  <span class="c1"># signed int</span>
+        <span class="k">elif</span> <span class="n">sign_flag</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"f"</span>  <span class="c1"># float</span>
+    <span class="k">elif</span> <span class="n">n_bytes_per_element</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"d"</span>
     <span class="k">return</span> <span class="n">data_type</span>
 
 
-<span class="k">def</span> <span class="nf">_remove_dummies</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replace dummy values for NaNs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_remove_dummies</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Replace dummy values for NaNs.</span>
+<span class="sd">    """</span>
     <span class="c1"># Create dictionary with dummy value for each data type</span>
-    <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"f"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">):</span>
         <span class="n">grid</span><span class="p">[</span><span class="n">grid</span> <span class="o">&lt;=</span> <span class="n">DUMMIES</span><span class="p">[</span><span class="n">data_type</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">return</span> <span class="n">grid</span>
     <span class="n">grid</span><span class="p">[</span><span class="n">grid</span> <span class="o">==</span> <span class="n">DUMMIES</span><span class="p">[</span><span class="n">data_type</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">return</span> <span class="n">grid</span>
 
 
-<span class="k">def</span> <span class="nf">_decompress_grid</span><span class="p">(</span><span class="n">grid_compressed</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decompress the grid using gzip</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_decompress_grid</span><span class="p">(</span><span class="n">grid_compressed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Decompress the grid using gzip.</span>
 
 <span class="sd">    Even if the header specifies that the grid is compressed using a LZRW1</span>
-<span class="sd">    algorithm, it&#39;s using gzip instead. The first two 4 bytes sequences</span>
+<span class="sd">    algorithm, it's using gzip instead. The first two 4 bytes sequences</span>
 <span class="sd">    correspond to the compression signature and</span>
 <span class="sd">    to the compression type. We are going to ignore those and start reading</span>
 <span class="sd">    from the number of blocks (offset 8).</span>
@@ -750,20 +763,20 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    grid : bytes</span>
 <span class="sd">        Uncompressed version of the ``grid_compressed`` parameter.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Number of blocks</span>
-    <span class="p">(</span><span class="n">n_blocks</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">8</span> <span class="p">:</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="p">(</span><span class="n">n_blocks</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">8</span> <span class="p">:</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
     <span class="c1"># Number of vectors per block</span>
-    <span class="p">(</span><span class="n">vectors_per_block</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">12</span> <span class="p">:</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="p">(</span><span class="n">_vectors_per_block</span><span class="p">,)</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">12</span> <span class="p">:</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
     <span class="c1"># File offset from start of every block</span>
-    <span class="n">block_offsets</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">16</span> <span class="p">:</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>
+    <span class="n">block_offsets</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"q"</span><span class="p">,</span> <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">16</span> <span class="p">:</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="mi">8</span><span class="p">])</span>
     <span class="c1"># Compressed size of every block</span>
     <span class="n">compressed_block_sizes</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="s2">&quot;i&quot;</span><span class="p">,</span>
+        <span class="s2">"i"</span><span class="p">,</span>
         <span class="n">grid_compressed</span><span class="p">[</span><span class="mi">16</span> <span class="o">+</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="mi">8</span> <span class="p">:</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="mi">4</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="c1"># Combine grid</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">""</span>
     <span class="c1"># Read each block</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_blocks</span><span class="p">):</span>
         <span class="c1"># Define the start and end offsets for each compressed blocks</span>
@@ -781,9 +794,9 @@ document.write(`
     <span class="k">return</span> <span class="n">grid</span>
 
 
-<span class="k">def</span> <span class="nf">_build_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create the coordinates for the grid</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Create the coordinates for the grid.</span>
 
 <span class="sd">    Generates 1d arrays for the easting and northing coordinates of the grid.</span>
 <span class="sd">    Assumes unrotated grids.</span>
@@ -808,15 +821,15 @@ document.write(`
 <span class="sd">        Array containing the values of the easting coordinates of the grid.</span>
 <span class="sd">    northing : 1d-array</span>
 <span class="sd">        Array containing the values of the northing coordinates of the grid.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">easting</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">west</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">northing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">south</span><span class="p">,</span> <span class="n">south</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span>
 
 
-<span class="k">def</span> <span class="nf">_build_rotated_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">rotation_deg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create the coordinates for a rotated grid</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_rotated_coordinates</span><span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">rotation_deg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Create the coordinates for a rotated grid.</span>
 
 <span class="sd">    Generates 2d arrays for the easting and northing coordinates of the grid.</span>
 
@@ -848,7 +861,7 @@ document.write(`
 <span class="sd">    -----</span>
 <span class="sd">    The ``x`` and ``y`` coordinates are the abscissa and the ordinate of the</span>
 <span class="sd">    unrotated grid before the translation, respectively.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Define the grid coordinates before the rotation</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -896,7 +909,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Sep 11, 2026.
   <br/>
 </p>
   </div>

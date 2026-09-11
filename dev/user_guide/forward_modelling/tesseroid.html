@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Tesseroids | Harmonica dev</title>
+        <title>Tesseroids | Harmonica v0.0.post100</title>
     
 
   
@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -64,7 +64,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Gravity Disturbance" href="../gravity_disturbance.html" />
+    <link rel="next" title="Ellipsoid" href="ellipsoid.html" />
     <link rel="prev" title="Rectangular prisms" href="prism.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
@@ -154,7 +154,7 @@
   
   
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -217,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -229,6 +230,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -253,23 +255,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -499,6 +508,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-tesseroids">Multiple tesseroids</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tesseroids-with-variable-density">Tesseroids with variable density</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tesseroid-layer">Tesseroid layer</a></li>
 </ul>
             </nav>
         </div>
@@ -540,6 +550,10 @@ point. Each tesseroid can be represented through a tuple containing its six
 boundaries in the following order: <em>west</em>, <em>east</em>, <em>south</em>, <em>north</em>, <em>bottom</em>,
 <em>top</em>, where the former four are its longitudinal and latitudinal boundaries in
 decimal degrees and the latter two are the two radii given in meters.</p>
+<p>These two radii represent the top and bottom surfaces of the tesseroid, and should be
+given as distances from the center of the Earth. Note this is different from the
+vertical boundaries used for <strong>prisms</strong> in Cartesian coordinates, which are given as
+heights above or below some reference level (e.g., mean sea level or a reference ellipsoid).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html#harmonica.tesseroid_gravity" title="harmonica.tesseroid_gravity"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.tesseroid_gravity</span></code></a> numerically computed the
@@ -548,13 +562,13 @@ Gauss-Legendre Quadrature along with a bidimensional adaptive discretization
 algorithm. Refer to <a class="reference internal" href="../../references.html#soler2019" id="id2"><span>[Soler2019]</span></a> for more details.</p>
 </div>
 <p>Lets define a single tesseroid and compute the gravitational potential
-it generates on a regular grid of computation points located at 10 km  above
+it generates on a regular grid of computation points located at 10 km above
 its <em>top</em> boundary.</p>
-<p>Get the WGS84 reference ellipsoid from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.4.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> so we can obtain its mean
+<p>Get the WGS84 reference ellipsoid from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> so we can obtain its mean
 radius:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
 
 <span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
 <span class="n">mean_radius</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">mean_radius</span>
@@ -579,12 +593,12 @@ radius:</p>
 the <em>top</em> surface of the tesseroid:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bordado</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bd</span>
 
-<span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
     <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
-    <span class="n">extra_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">mean_radius</span><span class="p">,</span>
+    <span class="n">non_dimensional_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">mean_radius</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -596,9 +610,9 @@ the <em>top</em> surface of the tesseroid:</p>
 generates on the computation point:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">harmonica</span> <span class="k">as</span> <span class="nn">hm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">harmonica</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hm</span>
 
-<span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroid</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
+<span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroid</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -619,23 +633,34 @@ radial component.</p>
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygmt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+
 <span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
-   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;gravity&quot;</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;extra&quot;</span><span class="p">)</span>
+   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">"gravity"</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">"extra"</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Downward component of gravitational acceleration&quot;</span>
-<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">&quot;12p&quot;</span><span class="p">):</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Downward component of gravitational acceleration"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
    <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
       <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
-      <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M-60/-30/10c&quot;</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="s2">"M-60/-30/10c"</span><span class="p">,</span>
       <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">gravity</span><span class="p">,</span>
-      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-      <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
    <span class="p">)</span>
 
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a200f50&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">])</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;1p,black&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a200f50"</span><span class="p">,</span> <span class="s2">"x+lmGal"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
+
+<span class="c1"># Plot edges of tesseroid</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+   <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+   <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+   <span class="n">pen</span><span class="o">=</span><span class="s2">"1p,red"</span><span class="p">,</span>
+   <span class="n">label</span><span class="o">=</span><span class="s2">"Tesseroid boundary"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -669,12 +694,12 @@ a single call of the <a class="reference internal" href="../../api/generated/har
 <p>Compute their gravitational effect on a grid of computation points:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
     <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
-    <span class="n">extra_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">mean_radius</span><span class="p">,</span>
+    <span class="n">non_dimensional_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">mean_radius</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span><span class="p">,</span> <span class="n">densities</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
+<span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span><span class="p">,</span> <span class="n">densities</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -685,21 +710,35 @@ a single call of the <a class="reference internal" href="../../api/generated/har
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
-   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;gravity&quot;</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;extra&quot;</span><span class="p">)</span>
+   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">"gravity"</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">"extra"</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Downward component of gravitational acceleration&quot;</span>
-<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">&quot;12p&quot;</span><span class="p">):</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Downward component of gravitational acceleration"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
    <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
       <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
-      <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M-60/-30/10c&quot;</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="s2">"M-60/-30/10c"</span><span class="p">,</span>
       <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">gravity</span><span class="p">,</span>
-      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-      <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
    <span class="p">)</span>
 
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a1000f500&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">])</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;1p,black&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a1000f500"</span><span class="p">,</span> <span class="s2">"x+lmGal"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
+
+<span class="c1"># Plot edges of tesseroids</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tesseroid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">label</span><span class="o">=</span><span class="s2">"Tesseroid boundaries"</span>
+   <span class="k">else</span><span class="p">:</span>
+      <span class="n">label</span><span class="o">=</span><span class="kc">None</span>
+   <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+      <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+      <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+      <span class="n">pen</span><span class="o">=</span><span class="s2">"1p,red"</span><span class="p">,</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -742,11 +781,11 @@ given by a custom linear <code class="docutils literal notranslate"><span class=
 Numba can run the forward model efficiently.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 
 <span class="nd">@njit</span>
-<span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear density function&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">density</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Linear density function"""</span>
     <span class="n">top</span> <span class="o">=</span> <span class="n">mean_radius</span>
     <span class="n">bottom</span> <span class="o">=</span> <span class="n">mean_radius</span> <span class="o">-</span> <span class="mf">10e3</span>
     <span class="n">density_top</span> <span class="o">=</span> <span class="mi">2670</span>
@@ -763,10 +802,10 @@ Numba can run the forward model efficiently.</p>
 above the mean Earth radius:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
     <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
-    <span class="n">extra_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">mean_radius</span><span class="p">,</span>
+    <span class="n">non_dimensional_coords</span><span class="o">=</span><span class="mf">100e3</span> <span class="o">+</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">mean_radius</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -777,7 +816,7 @@ above the mean Earth radius:</p>
 <p>And compute the gravitational fields the tesseroids generate:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gravity</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">tesseroids</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -788,21 +827,34 @@ above the mean Earth radius:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
-   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;gravity&quot;</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;extra&quot;</span><span class="p">)</span>
+   <span class="n">coordinates</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">"gravity"</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">"extra"</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Downward component of gravitational acceleration&quot;</span>
-<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">&quot;12p&quot;</span><span class="p">):</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Downward component of gravitational acceleration"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
    <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
       <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
-      <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M-60/-30/10c&quot;</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="s2">"M-60/-30/10c"</span><span class="p">,</span>
       <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">gravity</span><span class="p">,</span>
-      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-      <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
    <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a200f100"</span><span class="p">,</span> <span class="s2">"x+lmGal"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a200f100&quot;</span><span class="p">,</span> <span class="s2">&quot;x+lmGal&quot;</span><span class="p">])</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;1p,black&quot;</span><span class="p">)</span>
+<span class="c1"># Plot edges of tesseroids</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tesseroid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tesseroids</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">label</span><span class="o">=</span><span class="s2">"Tesseroid boundaries"</span>
+   <span class="k">else</span><span class="p">:</span>
+      <span class="n">label</span><span class="o">=</span><span class="kc">None</span>
+   <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+      <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+      <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">tesseroid</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+      <span class="n">pen</span><span class="o">=</span><span class="s2">"1p,red"</span><span class="p">,</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -810,6 +862,835 @@ above the mean Earth radius:</p>
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/tesseroid_13_0.png" src="../../_images/tesseroid_13_0.png" />
+</div>
+</div>
+</section>
+<section id="tesseroid-layer">
+<span id="id4"></span><h2>Tesseroid layer<a class="headerlink" href="#tesseroid-layer" title="Link to this heading">#</a></h2>
+<p>A common use of tesseroids is to model geologic structures on regional or global
+scales, where the curvature of the Earth cannot be neglected. Harmonica offers the
+possibility to define a layer of tesseroids through the
+<a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html#harmonica.tesseroid_layer" title="harmonica.tesseroid_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.tesseroid_layer</span></code></a> function: a regular grid of tesseroids of equal size
+along the longitudinal and latitudinal dimensions and with variable top and bottom
+boundaries.
+It returns a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the coordinates of the centers of the
+tesseroids and their corresponding physical properties.</p>
+<p>The <a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer" title="harmonica.DatasetAccessorTesseroidLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorTesseroidLayer</span></code></a> Dataset accessor can be used to
+obtain some properties of the layer like its shape and size or the boundaries of any
+tesseroid in the layer.
+Moreover, we can use the <a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.gravity" title="harmonica.DatasetAccessorTesseroidLayer.gravity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harmonica.DatasetAccessorTesseroidLayer.gravity</span></code></a> method
+to compute the gravitational field of the tesseroid layer on any set of computation
+points.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Unlike the <a class="reference internal" href="../../api/generated/harmonica.prism_layer.html#harmonica.prism_layer" title="harmonica.prism_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonica.prism_layer</span></code></a>, the <code class="docutils literal notranslate"><span class="pre">surface</span></code> and <code class="docutils literal notranslate"><span class="pre">reference</span></code> boundaries
+of a tesseroid layer must be given as <strong>radii</strong> measured from the center of the Earth,
+not as heights above a reference level.
+We can use the <a class="reference external" href="https://www.fatiando.org/boule/latest/api/generated/boule.Ellipsoid.html#boule.Ellipsoid.geocentric_radius" title="(in Boule vv0.6.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boule.Ellipsoid.geocentric_radius</span></code></a> method from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> to
+obtain the radius of the reference ellipsoid at each latitude, and add our height values
+to it.</p>
+</div>
+<p>Let’s create a simple tesseroid layer over a region in South America, whose top boundary
+will approximate a synthetic topography and whose bottom boundary will be set on the
+surface of the reference ellipsoid.
+We can start by getting the WGS84 reference ellipsoid from <a class="reference external" href="https://www.fatiando.org/boule/latest/api/index.html#module-boule" title="(in Boule vv0.6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> and defining the
+region of the layer and the horizontal dimensions of the tesseroids (in degrees):</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boule</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bl</span>
+
+<span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">WGS84</span>
+<span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Then we can define a regular grid where the centers of the tesseroids will fall:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bordado</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bd</span>
+
+<span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The bottom boundary of the layer (<code class="docutils literal notranslate"><span class="pre">reference</span></code>) will be the surface of the ellipsoid,
+so we compute its geocentric radius at each latitude:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geocentric_radius</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We need to define a 2D array with the radii of the uppermost <em>surface</em> of the layer. We
+will build a synthetic topography and add it to the reference radii so that the <code class="docutils literal notranslate"><span class="pre">surface</span></code>
+is also expressed as radii from the center of the Earth:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">max_height</span> <span class="o">=</span> <span class="mf">3e3</span>
+<span class="n">topography</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">max_height</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">longitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">latitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">max_height</span>
+<span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">reference</span> <span class="o">+</span> <span class="n">topography</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Since the <code class="docutils literal notranslate"><span class="pre">surface</span></code> is expressed as radii, its values are all close to the radius of
+the ellipsoid (around 6370 km), and the synthetic topography shows up as variations of
+a few kilometers around it. Let’s plot it to see it more clearly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+
+<span class="n">surface_grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
+   <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span>
+   <span class="n">surface</span><span class="p">,</span>
+   <span class="n">data_names</span><span class="o">=</span><span class="s2">"surface"</span><span class="p">,</span>
+   <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">topography_grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
+   <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span>
+   <span class="n">topography</span><span class="p">,</span>
+   <span class="n">data_names</span><span class="o">=</span><span class="s2">"topography"</span><span class="p">,</span>
+   <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">gmt_projection</span> <span class="o">=</span> <span class="s2">"M-60/-30/10c"</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Surface boundary of the tesseroid layer"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
+   <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+      <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="n">gmt_projection</span><span class="p">,</span>
+      <span class="n">grid</span><span class="o">=</span><span class="n">surface_grid</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"af"</span><span class="p">,</span> <span class="s2">"x+lSurface radius"</span><span class="p">,</span> <span class="s2">"y+lmeters"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">shift_origin</span><span class="p">(</span><span class="n">xshift</span><span class="o">=</span><span class="s2">"w+1.5c"</span><span class="p">)</span>
+
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Topography"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
+   <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+      <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="n">gmt_projection</span><span class="p">,</span>
+      <span class="n">grid</span><span class="o">=</span><span class="n">topography_grid</span><span class="o">.</span><span class="n">topography</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"af"</span><span class="p">,</span> <span class="s2">"x+lTopography"</span><span class="p">,</span> <span class="s2">"y+lmeters"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/tesseroid_18_0.png" src="../../_images/tesseroid_18_0.png" />
+</div>
+</div>
+<p>Let’s assign the same density to each tesseroid through a 2D array with the same value:
+2670 kg per cubic meter.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="mf">2670.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now we can define the tesseroid layer:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">harmonica</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hm</span>
+
+<span class="n">tesseroids</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">tesseroid_layer</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span>
+    <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+    <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s2">"density"</span><span class="p">:</span> <span class="n">density</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">tesseroids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in notebooks */
+
+:root {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+  line-height: 1.6;
+  padding-bottom: 4px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.xr-header {
+  border-bottom: solid 1px var(--xr-border-color);
+  margin-bottom: 4px;
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-obj-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type,
+.xr-group-box-contents > label {
+  color: var(--xr-font-color2);
+  display: block;
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item > input,
+.xr-group-box-contents > input,
+.xr-array-wrap > input {
+  display: block;
+  opacity: 0;
+  height: 0;
+  margin: 0;
+}
+
+.xr-section-item > input + label,
+.xr-var-item > input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item > input:enabled + label,
+.xr-var-item > input:enabled + label,
+.xr-array-wrap > input:enabled + label,
+.xr-group-box-contents > input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item > input:focus-visible + label,
+.xr-var-item > input:focus-visible + label,
+.xr-array-wrap > input:focus-visible + label,
+.xr-group-box-contents > input:focus-visible + label {
+  outline: auto;
+}
+
+.xr-section-item > input:enabled + label:hover,
+.xr-var-item > input:enabled + label:hover,
+.xr-array-wrap > input:enabled + label:hover,
+.xr-group-box-contents > input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.xr-section-summary > em {
+  font-weight: normal;
+}
+
+.xr-span-grid {
+  grid-column-end: -1;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label > span {
+  display: inline-block;
+  padding-left: 0.6em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details,
+.xr-group-box-contents > label {
+  padding-top: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in ~ .xr-section-details {
+  display: none;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-children {
+  display: inline-grid;
+  grid-template-columns: 100%;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+}
+
+.xr-group-box {
+  display: inline-grid;
+  grid-template-columns: 0px 30px auto;
+}
+
+.xr-group-box-vline {
+  grid-column-start: 1;
+  border-right: 0.2em solid;
+  border-color: var(--xr-border-color);
+  width: 0px;
+}
+
+.xr-group-box-hline {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  height: 1em;
+  width: 26px;
+  border-bottom: 0.2em solid;
+  border-color: var(--xr-border-color);
+}
+
+.xr-group-box-contents {
+  grid-column-start: 3;
+  padding-bottom: 4px;
+}
+
+.xr-group-box-contents > label::before {
+  content: "📂";
+  padding-right: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label::before {
+  content: "📁";
+}
+
+.xr-group-box-contents > input:checked + label {
+  padding-bottom: 0px;
+}
+
+.xr-group-box-contents > input:checked ~ .xr-sections {
+  display: none;
+}
+
+.xr-group-box-contents > input + label > span {
+  display: none;
+}
+
+.xr-group-box-ellipsis {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--xr-font-color2);
+  letter-spacing: 0.15em;
+  cursor: default;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 159kB
+Dimensions:    (latitude: 81, longitude: 81)
+Coordinates:
+  * latitude   (latitude) float64 648B -50.0 -49.5 -49.0 ... -11.0 -10.5 -10.0
+  * longitude  (longitude) float64 648B -80.0 -79.5 -79.0 ... -41.0 -40.5 -40.0
+    top        (latitude, longitude) float64 52kB 6.367e+06 ... 6.379e+06
+    bottom     (latitude, longitude) float64 52kB 6.366e+06 ... 6.377e+06
+Data variables:
+    density    (latitude, longitude) float64 52kB 2.67e+03 2.67e+03 ... 2.67e+03
+Attributes:
+    longitude_units:   degrees
+    latitude_units:    degrees
+    radius_units:      meters
+    properties_units:  SI</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-a360b264-296e-4bb6-b14e-c7007a18a822' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-a360b264-296e-4bb6-b14e-c7007a18a822' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 81</li><li><span class='xr-has-index'>longitude</span>: 81</li></ul></div></li><li class='xr-section-item'><input id='section-0b469833-5280-4440-9ee8-1e766e3fd001' class='xr-section-summary-in' type='checkbox' checked /><label for='section-0b469833-5280-4440-9ee8-1e766e3fd001' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-50.0 -49.5 -49.0 ... -10.5 -10.0</div><input id='attrs-a5802b86-b770-43c9-b69a-ae75d7102829' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a5802b86-b770-43c9-b69a-ae75d7102829' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-adacf3f9-aa53-4530-9a7d-8791856797c5' class='xr-var-data-in' type='checkbox'><label for='data-adacf3f9-aa53-4530-9a7d-8791856797c5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-50. , -49.5, -49. , -48.5, -48. , -47.5, -47. , -46.5, -46. , -45.5,
+       -45. , -44.5, -44. , -43.5, -43. , -42.5, -42. , -41.5, -41. , -40.5,
+       -40. , -39.5, -39. , -38.5, -38. , -37.5, -37. , -36.5, -36. , -35.5,
+       -35. , -34.5, -34. , -33.5, -33. , -32.5, -32. , -31.5, -31. , -30.5,
+       -30. , -29.5, -29. , -28.5, -28. , -27.5, -27. , -26.5, -26. , -25.5,
+       -25. , -24.5, -24. , -23.5, -23. , -22.5, -22. , -21.5, -21. , -20.5,
+       -20. , -19.5, -19. , -18.5, -18. , -17.5, -17. , -16.5, -16. , -15.5,
+       -15. , -14.5, -14. , -13.5, -13. , -12.5, -12. , -11.5, -11. , -10.5,
+       -10. ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-80.0 -79.5 -79.0 ... -40.5 -40.0</div><input id='attrs-da4c0ebd-bc7a-4c04-8d03-ce18ab7841f2' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-da4c0ebd-bc7a-4c04-8d03-ce18ab7841f2' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1723a39b-14b0-47ec-bd68-2ec44e492180' class='xr-var-data-in' type='checkbox'><label for='data-1723a39b-14b0-47ec-bd68-2ec44e492180' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-80. , -79.5, -79. , -78.5, -78. , -77.5, -77. , -76.5, -76. , -75.5,
+       -75. , -74.5, -74. , -73.5, -73. , -72.5, -72. , -71.5, -71. , -70.5,
+       -70. , -69.5, -69. , -68.5, -68. , -67.5, -67. , -66.5, -66. , -65.5,
+       -65. , -64.5, -64. , -63.5, -63. , -62.5, -62. , -61.5, -61. , -60.5,
+       -60. , -59.5, -59. , -58.5, -58. , -57.5, -57. , -56.5, -56. , -55.5,
+       -55. , -54.5, -54. , -53.5, -53. , -52.5, -52. , -51.5, -51. , -50.5,
+       -50. , -49.5, -49. , -48.5, -48. , -47.5, -47. , -46.5, -46. , -45.5,
+       -45. , -44.5, -44. , -43.5, -43. , -42.5, -42. , -41.5, -41. , -40.5,
+       -40. ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>top</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.367e+06 6.367e+06 ... 6.379e+06</div><input id='attrs-b0a02776-22ab-49cc-9c0d-f98405849103' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b0a02776-22ab-49cc-9c0d-f98405849103' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6c99e9e4-a03b-455d-97d2-53e8dcad00bf' class='xr-var-data-in' type='checkbox'><label for='data-6c99e9e4-a03b-455d-97d2-53e8dcad00bf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[6367131.51753728, 6367131.51753728, 6367131.51753728, ...,
+        6367131.51753728, 6367131.51753728, 6367131.51753728],
+       [6367315.82439669, 6367325.05814124, 6367334.23495669, ...,
+        6367297.41383669, 6367306.59065213, 6367315.82439669],
+       [6367500.61469342, 6367519.02525342, 6367537.3223062 , ...,
+        6367463.90708064, 6367482.20413342, 6367500.61469342],
+       ...,
+       [6378864.69837563, 6378846.28781563, 6378827.99076285, ...,
+        6378901.40598841, 6378883.10893563, 6378864.69837563],
+       [6378932.56044495, 6378923.32670039, 6378914.14988494, ...,
+        6378950.97100495, 6378941.7941895 , 6378932.56044495],
+       [6378997.40212443, 6378997.40212443, 6378997.40212443, ...,
+        6378997.40212443, 6378997.40212443, 6378997.40212443]],
+      shape=(81, 81))</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>bottom</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.366e+06 6.366e+06 ... 6.377e+06</div><input id='attrs-3fe0d031-3e79-47a7-b544-a9828c50abf7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-3fe0d031-3e79-47a7-b544-a9828c50abf7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c1a6cbfa-9317-459d-b959-209e8b6c6efd' class='xr-var-data-in' type='checkbox'><label for='data-c1a6cbfa-9317-459d-b959-209e8b6c6efd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[6365631.51753728, 6365631.51753728, 6365631.51753728, ...,
+        6365631.51753728, 6365631.51753728, 6365631.51753728],
+       [6365815.82439669, 6365815.82439669, 6365815.82439669, ...,
+        6365815.82439669, 6365815.82439669, 6365815.82439669],
+       [6366000.61469342, 6366000.61469342, 6366000.61469342, ...,
+        6366000.61469342, 6366000.61469342, 6366000.61469342],
+       ...,
+       [6377364.69837563, 6377364.69837563, 6377364.69837563, ...,
+        6377364.69837563, 6377364.69837563, 6377364.69837563],
+       [6377432.56044495, 6377432.56044495, 6377432.56044495, ...,
+        6377432.56044495, 6377432.56044495, 6377432.56044495],
+       [6377497.40212443, 6377497.40212443, 6377497.40212443, ...,
+        6377497.40212443, 6377497.40212443, 6377497.40212443]],
+      shape=(81, 81))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6ff6da38-a518-4aa1-854f-0c3c5e09083c' class='xr-section-summary-in' type='checkbox' checked /><label for='section-6ff6da38-a518-4aa1-854f-0c3c5e09083c' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>density</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.67e+03 2.67e+03 ... 2.67e+03</div><input id='attrs-5eacf856-e8b5-447c-8908-3aa46f27f750' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-5eacf856-e8b5-447c-8908-3aa46f27f750' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dd6c487c-78b6-4951-9f48-f9a08fb6a7b5' class='xr-var-data-in' type='checkbox'><label for='data-dd6c487c-78b6-4951-9f48-f9a08fb6a7b5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[2670., 2670., 2670., ..., 2670., 2670., 2670.],
+       [2670., 2670., 2670., ..., 2670., 2670., 2670.],
+       [2670., 2670., 2670., ..., 2670., 2670., 2670.],
+       ...,
+       [2670., 2670., 2670., ..., 2670., 2670., 2670.],
+       [2670., 2670., 2670., ..., 2670., 2670., 2670.],
+       [2670., 2670., 2670., ..., 2670., 2670., 2670.]], shape=(81, 81))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-49c02c76-a620-4b81-8fc6-f53e51c04a91' class='xr-section-summary-in' type='checkbox' checked /><label for='section-49c02c76-a620-4b81-8fc6-f53e51c04a91' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>longitude_units :</span></dt><dd>degrees</dd><dt><span>latitude_units :</span></dt><dd>degrees</dd><dt><span>radius_units :</span></dt><dd>meters</dd><dt><span>properties_units :</span></dt><dd>SI</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>Let’s define a grid of observation points located 10 km above the reference ellipsoid.
+Since the radius of the ellipsoid changes with latitude, we compute the radial coordinate
+of the observation points accordingly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_longitude</span><span class="p">,</span> <span class="n">grid_latitude</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
+<span class="n">grid_radius</span> <span class="o">=</span> <span class="n">ellipsoid</span><span class="o">.</span><span class="n">geocentric_radius</span><span class="p">(</span><span class="n">grid_latitude</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10e3</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_longitude</span><span class="p">,</span> <span class="n">grid_latitude</span><span class="p">,</span> <span class="n">grid_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And compute the <em>downward</em> component of the gravitational acceleration generated by the
+tesseroid layer on them:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gravity</span> <span class="o">=</span> <span class="n">tesseroids</span><span class="o">.</span><span class="n">tesseroid_layer</span><span class="o">.</span><span class="n">gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Finally, let’s plot the gravitational field:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">make_xarray_grid</span><span class="p">(</span>
+   <span class="n">coordinates</span><span class="p">,</span>
+   <span class="n">gravity</span><span class="p">,</span>
+   <span class="n">data_names</span><span class="o">=</span><span class="s2">"gravity"</span><span class="p">,</span>
+   <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">),</span>
+   <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">"radius"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"Gravitational acceleration of a layer of tesseroids"</span>
+<span class="k">with</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="s2">"12p"</span><span class="p">):</span>
+   <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+      <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+      <span class="n">projection</span><span class="o">=</span><span class="s2">"M-60/-30/10c"</span><span class="p">,</span>
+      <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">gravity</span><span class="p">,</span>
+      <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+t</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+      <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">"a100f50"</span><span class="p">,</span> <span class="s2">"x+lmGal"</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">"1p,black"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/tesseroid_23_0.png" src="../../_images/tesseroid_23_0.png" />
 </div>
 </div>
 <hr class="docutils" />
@@ -857,11 +1738,11 @@ above the mean Earth radius:</p>
       </div>
     </a>
     <a class="right-next"
-       href="../gravity_disturbance.html"
+       href="ellipsoid.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Gravity Disturbance</p>
+        <p class="prev-next-title">Ellipsoid</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -883,6 +1764,7 @@ above the mean Earth radius:</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-tesseroids">Multiple tesseroids</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tesseroids-with-variable-density">Tesseroids with variable density</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tesseroid-layer">Tesseroid layer</a></li>
 </ul>
   </nav></div>
 
@@ -905,7 +1787,7 @@ above the mean Earth radius:</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Sep 11, 2026.
   <br/>
 </p>
   </div>
