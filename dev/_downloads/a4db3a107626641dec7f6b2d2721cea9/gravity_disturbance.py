@@ -15,9 +15,11 @@ use the :meth:`boule.Ellipsoid.normal_gravity` function from :mod:`boule` to
 calculate the global gravity disturbance of the Earth using our sample gravity
 data.
 """
+
 import boule as bl
 import ensaio
 import pygmt
+import verde as vd
 import xarray as xr
 
 # Load the global gravity grid
@@ -27,7 +29,7 @@ print(data)
 
 # Calculate normal gravity using the WGS84 ellipsoid
 ellipsoid = bl.WGS84
-gamma = ellipsoid.normal_gravity(data.latitude, data.height)
+gamma = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height))
 # The disturbance is the observed minus normal gravity (calculated at the
 # observation point)
 disturbance = data.gravity - gamma
@@ -35,7 +37,11 @@ disturbance = data.gravity - gamma
 # Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=disturbance, cmap="polar", continuous=True)
+# Get the 99.9th percentile of the absolute value to use as color scale limits
+maxabs = vd.maxabs(disturbance, percentile=99.9)
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 title = "Gravity disturbance of the Earth"
 
@@ -49,6 +55,6 @@ fig.grdimage(
 
 fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+fig.colorbar(cmap=True, frame=["x+lmGal"], position="+e")
 
 fig.show()

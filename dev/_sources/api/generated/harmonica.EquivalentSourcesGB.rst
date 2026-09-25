@@ -73,6 +73,31 @@ harmonica.EquivalentSourcesGB
 
 
 
+
+
+Attributes
+----------
+
+
+
+.. autoattribute:: EquivalentSourcesGB.data_names_defaults
+
+
+
+.. autoattribute:: EquivalentSourcesGB.dims
+
+
+
+.. autoattribute:: EquivalentSourcesGB.extra_coords_name
+
+
+
+.. autoattribute:: EquivalentSourcesGB.overlapping
+
+
+
+
+
 ----
 
 .. include:: backreferences/harmonica.EquivalentSourcesGB.examples

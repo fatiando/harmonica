@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>harmonica._isostasy | Harmonica dev</title>
+        <title>harmonica._isostasy | Harmonica v0.0.post100</title>
     
 
   
@@ -31,8 +31,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -152,7 +152,7 @@
   
   
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -215,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -227,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -251,23 +253,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -439,24 +448,24 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Function to calculate the thickness of the roots and antiroots assuming the</span>
-<span class="sd">Airy isostatic hypothesis.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="sd">"""</span>
+<span class="sd">Calculation of roots and anti-roots assuming isostatic hypothesis.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 
 <div class="viewcode-block" id="isostatic_moho_airy">
 <a class="viewcode-back" href="../../api/generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy">[docs]</a>
-<span class="k">def</span> <span class="nf">isostatic_moho_airy</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">isostatic_moho_airy</span><span class="p">(</span>
     <span class="n">basement</span><span class="p">,</span>
     <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">density_crust</span><span class="o">=</span><span class="mf">2.8e3</span><span class="p">,</span>
     <span class="n">density_mantle</span><span class="o">=</span><span class="mf">3.3e3</span><span class="p">,</span>
     <span class="n">reference_depth</span><span class="o">=</span><span class="mf">30e3</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the isostatic Moho depth using Airy&#39;s hypothesis.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Calculate the isostatic Moho depth using Airy's hypothesis.</span>
 
 <span class="sd">    Take the height of the crystalline basement and optional additional layers</span>
 <span class="sd">    located on top of it. Each layer must be specified through its vertical</span>
@@ -511,7 +520,7 @@ document.write(`
 <span class="sd">    and can be found in classic textbooks like [TurcotteSchubert2014]_ and</span>
 <span class="sd">    [Hofmann-WellenhofMoritz2006]_.</span>
 
-<span class="sd">    Compress all layers&#39; mass above basement (:math:`h`) into *rock equivalent</span>
+<span class="sd">    Compress all layers' mass above basement (:math:`h`) into *rock equivalent</span>
 <span class="sd">    topography* [Balmino1973]_ :</span>
 
 <span class="sd">    .. math ::</span>
@@ -541,10 +550,10 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # Define a layer of sediments with a thickness of 200m</span>
 <span class="sd">    &gt;&gt;&gt; sediments_thickness = 200</span>
 <span class="sd">    &gt;&gt;&gt; sediments_density = 2300</span>
-<span class="sd">    &gt;&gt;&gt; # Get depth of the Moho following Airy&#39;s isostatic hypothesis</span>
+<span class="sd">    &gt;&gt;&gt; # Get depth of the Moho following Airy's isostatic hypothesis</span>
 <span class="sd">    &gt;&gt;&gt; moho_depth = isostatic_moho_airy(</span>
 <span class="sd">    ...     basement,</span>
-<span class="sd">    ...     layers={&quot;sediments&quot;: (sediments_thickness, sediments_density)}</span>
+<span class="sd">    ...     layers={"sediments": (sediments_thickness, sediments_density)}</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; moho_depth</span>
 <span class="sd">    37640.0</span>
@@ -559,19 +568,19 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # Define a layer for the oceanic water</span>
 <span class="sd">    &gt;&gt;&gt; water_thickness = abs(bathymetry)</span>
 <span class="sd">    &gt;&gt;&gt; water_density = 1040</span>
-<span class="sd">    &gt;&gt;&gt; # Get depth of the Moho following Airy&#39;s isostatic hypothesis</span>
+<span class="sd">    &gt;&gt;&gt; # Get depth of the Moho following Airy's isostatic hypothesis</span>
 <span class="sd">    &gt;&gt;&gt; moho_depth = isostatic_moho_airy(</span>
 <span class="sd">    ...     bathymetry - sediments_thickness,</span>
 <span class="sd">    ...     layers={</span>
-<span class="sd">    ...         &quot;sediments&quot;: (sediments_thickness, sediments_density),</span>
-<span class="sd">    ...         &quot;water&quot;: (water_thickness, water_density),</span>
+<span class="sd">    ...         "sediments": (sediments_thickness, sediments_density),</span>
+<span class="sd">    ...         "water": (water_thickness, water_density),</span>
 <span class="sd">    ...     }</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; moho_depth</span>
 <span class="sd">    18960.0</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Compute equivalent topography for the layers (if any)</span>
     <span class="n">layers_equivalent_topography</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="n">layers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -588,13 +597,13 @@ document.write(`
 
     <span class="c1"># Add attributes to the xr.DataArray</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">moho</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
-        <span class="n">moho</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;moho_depth&quot;</span>
-        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;isostasy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Airy&quot;</span>
-        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;density_crust&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">density_crust</span><span class="p">)</span>
-        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;density_mantle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">density_mantle</span><span class="p">)</span>
+        <span class="n">moho</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"moho_depth"</span>
+        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"isostasy"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Airy"</span>
+        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"density_crust"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">density_crust</span><span class="p">)</span>
+        <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"density_mantle"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">density_mantle</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">layers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span> <span class="ow">in</span> <span class="n">layers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;density_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">density</span>
+                <span class="n">moho</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="sa">f</span><span class="s2">"density_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">density</span>
     <span class="k">return</span> <span class="n">moho</span></div>
 
 </pre></div>
@@ -633,7 +642,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Sep 25, 2026.
   <br/>
 </p>
   </div>

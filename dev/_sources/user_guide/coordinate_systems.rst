@@ -33,7 +33,7 @@ height:
 
 .. jupyter-execute::
 
-    import verde as vd
+    import bordado as bd
 
     # Define boundaries of the rectangular prism (in meters)
     west, east, south, north = -20, 20, -20, 20
@@ -45,8 +45,8 @@ Or a regular grid of points at 100 meters above the zeroth plane:
 .. jupyter-execute::
 
     # Define a regular grid of observation points (coordinates in meters)
-    coordinates = vd.grid_coordinates(
-        region=(-40, 40, -40, 40), shape=(5, 5), extra_coords=100
+    coordinates = bd.grid_coordinates(
+        region=(-40, 40, -40, 40), shape=(5, 5), non_dimensional_coords=100
     )
     easting, northing, upward = coordinates[:]
 
@@ -103,12 +103,12 @@ Spatial data are usually given in geodetic coordinates, along with the
 reference ellipsoid on which they are defined.
 
 For example, let's define a regular grid of points (separated by equal
-angles) at 2km above the ellipsoid using :mod:`verde`.
+angles) at 2km above the ellipsoid using :mod:`bordado`.
 
 .. jupyter-execute::
 
-    coordinates = vd.grid_coordinates(
-        region=(-70, -65, -35, -30), shape=(6, 6), extra_coords=2e3
+    coordinates = bd.grid_coordinates(
+        region=(-70, -65, -35, -30), shape=(6, 6), non_dimensional_coords=2e3
     )
     longitude, latitude, height = coordinates[:]
     print("longitude:", longitude)
@@ -199,10 +199,10 @@ the same radius equal to the *mean radius of the Earth*.
 
 .. jupyter-execute::
 
-    coordinates = vd.grid_coordinates(
+    coordinates = bd.grid_coordinates(
         region=(-70, -65, -35, -30),
         shape=(6, 6),
-        extra_coords=ellipsoid.mean_radius,
+        non_dimensional_coords=ellipsoid.mean_radius,
     )
     longitude, sph_latitude, radius = coordinates[:]
     print("longitude:", longitude)
@@ -214,7 +214,7 @@ We can convert spherical coordinates to geodetic ones through
 
 .. jupyter-execute::
 
-    coordinates_geodetic = ellipsoid.spherical_to_geodetic(*coordinates)
+    coordinates_geodetic = ellipsoid.spherical_to_geodetic(coordinates)
     longitude, latitude, height = coordinates_geodetic[:]
     print("longitude:", longitude)
     print("latitude:", latitude)
@@ -225,7 +225,7 @@ carried out through :meth:`boule.Ellipsoid.geodetic_to_spherical`:
 
 .. jupyter-execute::
 
-    coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates_geodetic)
+    coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates_geodetic)
     longitude, sph_latitude, radius = coordinates_spherical[:]
     print("longitude:", longitude)
     print("spherical latitude:", sph_latitude)

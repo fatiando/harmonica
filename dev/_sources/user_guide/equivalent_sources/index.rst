@@ -59,11 +59,11 @@ coordinates, so we need to project these gravity observations:
 .. jupyter-execute::
 
    import pyproj
-   import verde as vd
+   import bordado as bd
 
    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.values.mean())
    easting, northing = projection(data.longitude.values, data.latitude.values)
-   region = vd.get_region((easting, northing))
+   region = bd.get_region((easting, northing))
 
 Now we can initialize the :class:`harmonica.EquivalentSources` class.
 
@@ -131,9 +131,10 @@ And plot it:
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
 
    # Get max absolute value for the observed gravity disturbance
-   maxabs = vd.maxabs(data.gravity_disturbance_mgal)
+   maxabs = vd.maxabs(disturbance, data.gravity_disturbance_mgal)
 
    # Set figure properties
    w, e, s, n = region
@@ -143,7 +144,7 @@ And plot it:
    fig_proj = f"x1:{fig_ratio}"
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
    title="Predicted gravity disturbance"
    with pygmt.config(FONT_TITLE="14p"):
       fig.plot(
@@ -156,7 +157,6 @@ And plot it:
          region=region,
          frame=['ag', f"+t{title}"],
       )
-   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
 
    fig.shift_origin(yshift=fig_height + 2)
 
@@ -170,13 +170,13 @@ And plot it:
          style="c3p",
          frame=['ag', f"+t{title}"],
       )
-   fig.colorbar(cmap=True, position="JMR", frame=["a50f25", "y+lmGal"])
+   fig.colorbar(cmap=True, position=f"JMR+o1c/{-(fig_height+2)/2}+w12c/.5c+e", frame=["a50f25", "y+lmGal"])
 
    fig.show()
 
 We can also *grid* and *upper continue* the field by predicting its values on
 a regular grid at a constant height higher than the observations. To do so we
-can use the :func:`verde.grid_coordinates` function to create the coordinates
+can use the :func:`bordado.grid_coordinates` function to create the coordinates
 of the grid and then use the :meth:`harmonica.EquivalentSources.grid` method.
 
 First, lets get the maximum height of the observations:
@@ -191,7 +191,9 @@ and use the equivalent sources to generate a gravity disturbance grid.
 .. jupyter-execute::
 
    # Build the grid coordinates
-   grid_coords = vd.grid_coordinates(region=region, spacing=2e3, extra_coords=2.2e3)
+   grid_coords = bd.grid_coordinates(
+       region=region, spacing=2e3, non_dimensional_coords=2.2e3
+   )
 
    # Grid the gravity disturbances
    grid = equivalent_sources.grid(grid_coords, data_names=["gravity_disturbance"])
@@ -204,7 +206,7 @@ And plot it
    maxabs = vd.maxabs(grid.gravity_disturbance)
 
    fig = pygmt.Figure()
-   pygmt.makecpt(cmap="polar+h0", series=[-maxabs, maxabs])
+   pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
    fig.grdimage(
       frame=['af', 'WSen'],
       grid=grid.gravity_disturbance,
@@ -212,7 +214,7 @@ And plot it
       projection=fig_proj,
       cmap=True,
    )
-   fig.colorbar(cmap=True, frame=["a50f25", "x+lgravity disturbance", "y+lmGal"])
+   fig.colorbar(cmap=True, frame=["a50f25", "x+lGravity disturbance", "y+lmGal"])
 
    fig.show()
 
