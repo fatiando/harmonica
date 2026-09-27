@@ -19,8 +19,7 @@ Harmonica *will not* provide:
   instead.
 - Generic processing methods like grid transformations (use `Verde
   <https://www.fatiando.org/verde>`__ or `Xarray <https://docs.xarray.dev>`__
-  instead) or multidimensional FFT calculations (use `xrft
-  <https://xrft.readthedocs.io>`__ instead).
+  instead).
 - Reference ellipsoid representations and computations like normal gravity. Use
   `Boule <https://www.fatiando.org/boule>`__ instead.
 - Data visualization functions. Use `matplotlib <https://matplotlib.org/>`__
