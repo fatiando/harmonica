@@ -15,8 +15,12 @@ We can load the data file using :mod:`xarray`:
 
 .. jupyter-execute::
 
-    import ensaio
     import xarray as xr
+    import matplotlib.pyplot as plt
+    import pyproj
+    import verde as vd
+    import harmonica as hm
+    import ensaio
 
     fname = ensaio.fetch_lightning_creek_magnetic(version=1)
     magnetic_grid = xr.load_dataarray(fname)
@@ -26,13 +30,16 @@ And plot it:
 
 .. jupyter-execute::
 
-    import matplotlib.pyplot as plt
-
-    tmp = magnetic_grid.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(magnetic_grid, percentile=99.9)
+    tmp = magnetic_grid.plot(
+        cmap="RdBu_r",
+        vmin=-maxabs,
+        vmax=maxabs,
+        cbar_kwargs={"label":"nT"},
+    )
     plt.gca().set_aspect("equal")
     plt.title("Magnetic anomaly grid")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 .. seealso::
@@ -41,41 +48,6 @@ And plot it:
    latitude) we can project them to Cartesian coordinates using the
    :func:`verde.project_grid` function and a map projection like the ones
    available in :mod:`pyproj`.
-
-Since all the grid transformations we are going to apply are based on FFT
-methods, we usually want to pad them in order their increase the accuracy.
-We can easily do it through the :func:`xrft.pad` function.
-First we need to define how much padding we want to add along each direction.
-We will add one third of the width and height of the grid to each side:
-
-.. jupyter-execute::
-
-    pad_width = {
-        "easting": magnetic_grid.easting.size // 3,
-        "northing": magnetic_grid.northing.size // 3,
-    }
-
-And then we can pad it, but dropping the ``height`` coordinate first (this is
-needed by the :func:`xrft.pad` function):
-
-.. jupyter-execute::
-
-    import xrft
-
-    magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-    magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
-    magnetic_grid_padded
-
-.. jupyter-execute::
-
-    tmp = magnetic_grid_padded.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Padded magnetic anomaly grid")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
-    plt.show()
-
-Now that we have the padded grid, we can apply any grid transformation.
 
 
 Upward derivative
@@ -86,28 +58,23 @@ magnetic anomaly grid using the :func:`harmonica.derivative_upward` function:
 
 .. jupyter-execute::
 
-    import harmonica as hm
-
-    deriv_upward = hm.derivative_upward(magnetic_grid_padded)
-    deriv_upward
-
-This grid includes all the padding we added to the original magnetic grid, so
-we better unpad it using :func:`xrft.unpad`:
-
-.. jupyter-execute::
-
-    deriv_upward = xrft.unpad(deriv_upward, pad_width)
+    deriv_upward = hm.derivative_upward(magnetic_grid)
     deriv_upward
 
 And plot it:
 
 .. jupyter-execute::
 
-    tmp = deriv_upward.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(deriv_upward, percentile=99.9)
+    tmp = deriv_upward.plot(
+        cmap="RdBu_r",
+        vmin=-maxabs,
+        vmax=maxabs,
+        cbar_kwargs={"label":"nT/m"},
+    )
     plt.gca().set_aspect("equal")
-    plt.title("Upward derivative of the magnetic anomaly")
+    plt.title("Magnetic anomaly grid")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 
@@ -135,20 +102,33 @@ And plot them:
     fig, (ax1, ax2) = plt.subplots(
         nrows=1, ncols=2, sharey=True, figsize=(12, 8)
     )
+    maxabs = vd.maxabs(deriv_easting, deriv_northing, percentile=99)
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+
+    tmp = deriv_easting.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    tmp = deriv_northing.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
 
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
     ax1.set_title("Easting derivative of the magnetic anomaly")
     ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
+
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT/m", fraction=.03, pad=0.08)
     plt.show()
 
 By default, these two functions compute the horizontal derivatives using
@@ -160,14 +140,12 @@ frequency domain:
 
 .. jupyter-execute::
 
-    deriv_easting = hm.derivative_easting(magnetic_grid_padded, method="fft")
-    deriv_easting = xrft.unpad(deriv_easting, pad_width)
+    deriv_easting = hm.derivative_easting(magnetic_grid, method="fft")
     deriv_easting
 
 .. jupyter-execute::
 
-    deriv_northing = hm.derivative_northing(magnetic_grid_padded, method="fft")
-    deriv_northing = xrft.unpad(deriv_northing, pad_width)
+    deriv_northing = hm.derivative_northing(magnetic_grid, method="fft")
     deriv_northing
 
 .. jupyter-execute::
@@ -175,22 +153,34 @@ frequency domain:
     fig, (ax1, ax2) = plt.subplots(
         nrows=1, ncols=2, sharey=True, figsize=(12, 8)
     )
+    maxabs = vd.maxabs(deriv_easting, deriv_northing, percentile=99)
 
-    cbar_kwargs=dict(
-        label="nT/m", orientation="horizontal", shrink=0.8, pad=0.08, aspect=42
+
+    tmp = deriv_easting.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
     )
-    kwargs = dict(center=0, cmap="seismic", cbar_kwargs=cbar_kwargs)
 
-    tmp = deriv_easting.plot(ax=ax1, **kwargs)
-    tmp = deriv_northing.plot(ax=ax2, **kwargs)
+    tmp = deriv_northing.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
 
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
     ax1.set_title("Easting derivative of the magnetic anomaly")
     ax2.set_title("Northing derivative of the magnetic anomaly")
-    for ax in (ax1, ax2):
-        ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.show()
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
 
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT/m", fraction=.03, pad=0.08)
+    plt.show()
 
 .. important::
 
@@ -198,11 +188,10 @@ frequency domain:
     and have less artifacts than their FFT-based counterpart.
 
 
-
 Upward continuation
 -------------------
 
-We can also upward continue the original magnetic grid.
+We can also upward continue the original magnetic grid using :func:`harmonica.upward_continuation`.
 This is, estimating the magnetic field generated by the same sources at
 a higher altitude.
 The original magnetic anomaly grid is located at 500 m above the ellipsoid, as
@@ -212,27 +201,33 @@ to upward continue it a height displacement of 500m:
 
 .. jupyter-execute::
 
+    change_in_height = 500  # meters
     upward_continued = hm.upward_continuation(
-        magnetic_grid_padded, height_displacement=500
+        magnetic_grid, height_displacement=change_in_height
     )
-
-This grid includes all the padding we added to the original magnetic grid, so
-we better unpad it using :func:`xrft.unpad`:
-
-.. jupyter-execute::
-
-    upward_continued = xrft.unpad(upward_continued, pad_width)
     upward_continued
 
-And plot it:
+Did you notice that the ``height`` coordinate is gone from the
+upward-continued grid? We drop any non-dimensional coordinates when
+doing upward continuation because we don't know the name of the
+vertical coordinate and any values there would be wrong after continuation.
+If we want it back, we need to assign an updated version of it:
 
 .. jupyter-execute::
 
-    tmp = upward_continued.plot(cmap="seismic", center=0, add_colorbar=False)
+    upward_continued = upward_continued.assign_coords(
+        {"height": magnetic_grid.height + change_in_height}
+    )
+    upward_continued
+
+Now we can plot it:
+
+.. jupyter-execute::
+
+    tmp = upward_continued.plot(cmap="RdBu_r", center=0, cbar_kwargs={'label':'nT'})
     plt.gca().set_aspect("equal")
     plt.title("Upward continued magnetic anomaly to 1000m")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 
@@ -246,74 +241,121 @@ We can apply it through the :func:`harmonica.reduction_to_pole` function.
 
 .. important::
 
-   Applying reduction to the pole to low latitude regions can amplify high
-   frequency noise.
+    Reduction to the pole is unstable at low latitude regions and will result
+    in artifacts.
 
 The reduction to the pole needs information about the orientation of the
 geomagnetic field at the location of the survey and also the orientation of the
 magnetization vector of the sources.
-
 The International Global Reference Field (IGRF) can provide us information
 about the inclination and declination of the geomagnetic field at the time of
-the survey (1990 in this case):
+the survey. We don't have exact dates for the survey, but we know it was
+some time between 1985 and 1999. We'll use July 1992 as a midpoint value.
+It shouldn't matter too much since the secular variation is small.
+We can use the :class:`harmonica.IGRF14` class to calculate the field values
+at the center of the survey:
 
 .. jupyter-execute::
 
-    inclination, declination = -52.98, 6.51
+    igrf = hm.IGRF14("1992-07-01")
+    projection = pyproj.Proj(magnetic_grid.attrs["crs"])
+    longitude, latitude = projection(
+        magnetic_grid.easting.mean(),
+        magnetic_grid.northing.mean(),
+        inverse=True,
+    )
+    igrf_field = igrf.predict((longitude, latitude, magnetic_grid.height.mean()))
+    intensity, inclination, declination = hm.magnetic_vec_to_angles(
+        *igrf_field
+    )
+    print(inclination, declination)
 
 If we consider that the sources are magnetized in the same direction as the
 geomagnetic survey (hypothesis that is true in case the sources don't have any
-remanence), then we can apply the reduction to the pole passing only the
-``inclination`` and ``declination`` of the geomagnetic field:
+remanence), then we can apply the reduction to the pole passing the same
+``inclination`` and ``declination`` for both the geomagnetic field and the
+magnetization:
 
 .. jupyter-execute::
 
     rtp_grid = hm.reduction_to_pole(
-        magnetic_grid_padded, inclination=inclination, declination=declination
+        magnetic_grid,
+        inclination=inclination,
+        declination=declination,
+        magnetization_inclination=inclination,
+        magnetization_declination=declination,
     )
-
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid, pad_width)
     rtp_grid
 
 And plot it:
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
-    plt.gca().set_aspect("equal")
-    plt.title("Magnetic anomaly reduced to the pole")
-    plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
+    fig, (ax1, ax2) = plt.subplots(
+        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
+    )
+    maxabs = vd.maxabs(magnetic_grid, rtp_grid, percentile=99)
+
+
+    tmp = magnetic_grid.plot(
+        ax=ax1,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
+
+    tmp = rtp_grid.plot(
+        ax=ax2,
+        add_colorbar=False,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap='RdBu_r',
+    )
+
+    ax1.set_aspect("equal")
+    ax2.set_aspect("equal")
+    ax1.set_title("Magnetic anomaly")
+    ax2.set_title("Reduced to the pole")
+    ax1.ticklabel_format(style="sci", scilimits=(0, 0))
+    ax2.ticklabel_format(style="sci", scilimits=(0, 0))
+
+    fig.colorbar(tmp, ax=(ax1, ax2), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
     plt.show()
+
+The reduction concentrated the Lightning Creek anomaly and the negative
+values are spread out and mixed with the regional field. So we could
+consider this to be a valid reduction, indicating that the magnetization
+direction used is plausible.
 
 If on the other hand we have any knowledge about the orientation of the
 magnetization vector of the sources, we can specify the
-``magnetization_inclination`` and ``magnetization_declination``:
+``magnetization_inclination`` and ``magnetization_declination``.
+In this case, we don't have this information, but we'll show an
+example of what happens to the reduction using arbitrary values:
 
 .. jupyter-execute::
 
     mag_inclination, mag_declination = -25, 21
 
     tmp = rtp_grid = hm.reduction_to_pole(
-        magnetic_grid_padded,
+        magnetic_grid,
         inclination=inclination,
         declination=declination,
         magnetization_inclination=mag_inclination,
         magnetization_declination=mag_declination,
     )
-
-    # Unpad the reduced to the pole grid
-    rtp_grid = xrft.unpad(rtp_grid, pad_width)
     rtp_grid
 
 .. jupyter-execute::
 
-    tmp = rtp_grid.plot(cmap="seismic", center=0, add_colorbar=False)
+    maxabs = vd.maxabs(rtp_grid, percentile=99.9)
+    tmp = rtp_grid.plot(
+        cmap="RdBu_r", vmin=-maxabs, vmax=maxabs, cbar_kwargs={'label':'nT'},
+    )
     plt.gca().set_aspect("equal")
     plt.title("Reduced to the pole with remanence")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT")
     plt.show()
 
 
@@ -335,65 +377,45 @@ Let's define a cutoff wavelength of 5 kilometers:
 
 .. jupyter-execute::
 
-    cutoff_wavelength = 5e3
+    cutoff_wavelength = 5e3  # meters
 
-Then apply the two filters to our padded magnetic grid:
+Then apply the two filters to our magnetic grid:
 
 .. jupyter-execute::
 
-    magnetic_low_freqs = hm.gaussian_lowpass(
-        magnetic_grid_padded, wavelength=cutoff_wavelength
+    magnetic_low = hm.gaussian_lowpass(
+        magnetic_grid, wavelength=cutoff_wavelength
     )
-    magnetic_high_freqs = hm.gaussian_highpass(
-        magnetic_grid_padded, wavelength=cutoff_wavelength
+    magnetic_low
+
+.. jupyter-execute::
+
+    magnetic_high = hm.gaussian_highpass(
+        magnetic_grid, wavelength=cutoff_wavelength
     )
-
-And unpad them:
-
-.. jupyter-execute::
-
-    magnetic_low_freqs = xrft.unpad(magnetic_low_freqs, pad_width)
-    magnetic_high_freqs = xrft.unpad(magnetic_high_freqs, pad_width)
-
-.. jupyter-execute::
-
-    magnetic_low_freqs
-
-.. jupyter-execute::
-
-    magnetic_high_freqs
+    magnetic_high
 
 Let's plot the results side by side:
 
 .. jupyter-execute::
 
-    import verde as vd
+    fig, axes = plt.subplots(nrows=1, ncols=3, sharey=True, figsize=(12, 8))
 
-    fig, (ax1, ax2) = plt.subplots(
-        nrows=1, ncols=2, sharey=True, figsize=(12, 8)
-    )
-
-    maxabs = vd.maxabs(magnetic_low_freqs, magnetic_high_freqs)
-    kwargs = dict(cmap="seismic", vmin=-maxabs, vmax=maxabs, add_colorbar=False)
-
-    tmp = magnetic_low_freqs.plot(ax=ax1, **kwargs)
-    tmp = magnetic_high_freqs.plot(ax=ax2, **kwargs)
-
-    ax1.set_title("Magnetic anomaly after low-pass filter")
-    ax2.set_title("Magnetic anomaly after high-pass filter")
-    for ax in (ax1, ax2):
+    grids = [magnetic_grid, magnetic_low, magnetic_high]
+    maxabs = vd.maxabs(*grids, percentile=99)
+    for grid, ax in zip(grids, axes):
+        tmp = grid.plot(
+            ax=ax,
+            add_colorbar=False,
+            vmin=-maxabs,
+            vmax=maxabs,
+            cmap='RdBu_r',
+        )
         ax.set_aspect("equal")
-        ax.ticklabel_format(style="sci", scilimits=(0, 0))
-
-    plt.colorbar(
-        tmp,
-        ax=[ax1, ax2],
-        label="nT",
-        orientation="horizontal",
-        aspect=42,
-        shrink=0.8,
-        pad=0.08,
-    )
+    axes[0].set_title("Original")
+    axes[1].set_title("After low-pass filter")
+    axes[2].set_title("After high-pass filter")
+    fig.colorbar(tmp, ax=axes.ravel().tolist(), orientation="horizontal", label="nT", fraction=.03, pad=0.08)
     plt.show()
 
 
@@ -422,24 +444,19 @@ We can apply it through the :func:`harmonica.total_gradient_amplitude` function.
 .. jupyter-execute::
 
     tga_grid = hm.total_gradient_amplitude(
-        magnetic_grid_padded
+        magnetic_grid
     )
-
-    # Unpad the total gradient amplitude grid
-    tga_grid = xrft.unpad(tga_grid, pad_width)
     tga_grid
 
 And plot it:
 
 .. jupyter-execute::
 
-    import verde as vd
-
-    tmp = tga_grid.plot(cmap="viridis", add_colorbar=False)
+    cpt_lims = vd.minmax(tga_grid, min_percentile=1, max_percentile=99)
+    tga_grid.plot(vmin=cpt_lims[0], vmax=cpt_lims[1],cbar_kwargs={'label':'nT/m'})
     plt.gca().set_aspect("equal")
     plt.title("Total gradient amplitude of the magnetic anomaly")
     plt.gca().ticklabel_format(style="sci", scilimits=(0, 0))
-    plt.colorbar(tmp, label="nT/m")
     plt.show()
 
 ----
