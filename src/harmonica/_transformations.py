@@ -11,6 +11,7 @@ Apply transformations to regular grids of potential fields.
 import numpy as np
 
 from .filters._filters import (
+    apply_filter,
     derivative_easting_kernel,
     derivative_northing_kernel,
     derivative_upward_kernel,
@@ -19,7 +20,7 @@ from .filters._filters import (
     reduction_to_pole_kernel,
     upward_continuation_kernel,
 )
-from .filters._utils import apply_filter, grid_sanity_checks
+from .filters._utils import grid_sanity_checks
 
 
 def derivative_upward(grid, *, order=1, pad=True, pad_kwargs=None):
