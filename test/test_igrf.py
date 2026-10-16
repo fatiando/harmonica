@@ -207,8 +207,8 @@ def test_interpolate_coefficients_max_degree(tzinfo):
     [
         datetime.datetime(1800, month=1, day=1, tzinfo=UTC),
         datetime.datetime(2030, month=1, day=1, tzinfo=UTC),
-        datetime.datetime(1800, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
-        datetime.datetime(2030, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+        datetime.datetime(1800, month=1, day=1, tzinfo=None),
+        datetime.datetime(2030, month=1, day=1, tzinfo=None),
     ],
 )
 def test_interpolate_coefficients_invalid_date(date):
@@ -255,7 +255,7 @@ def test_igrf_points(data, coordinates):
     [
         "2020-04-15",
         datetime.datetime(2029, month=1, day=1, tzinfo=UTC),
-        datetime.datetime(2029, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+        datetime.datetime(2029, month=1, day=1, tzinfo=None),
     ],
 )
 def test_igrf_grid(date):

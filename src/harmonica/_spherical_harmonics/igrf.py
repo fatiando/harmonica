@@ -129,8 +129,8 @@ def interpolate_coefficients(date, max_degree, years, g, h, g_sv, h_sv):
     )
     seconds_since_epoch = (date - start_of_epoch).total_seconds()
     epoch = (
-        datetime.datetime(year=years[index] + 5, month=1, day=1)  # ruff: ignore[DTZ001]
-        - datetime.datetime(year=years[index], month=1, day=1)  # ruff: ignore[DTZ001]
+        datetime.datetime(year=years[index] + 5, month=1, day=1)
+        - datetime.datetime(year=years[index], month=1, day=1)
     ).total_seconds()
     year_in_seconds = 365.25 * 24 * 60 * 60
     g_date = np.zeros((max_degree + 1, max_degree + 1))
