@@ -6,7 +6,7 @@
 #
 """Test the IGRF results against the ones calculated by the BGS."""
 
-import datetime
+import datetime as dt
 import pathlib
 
 import bordado as bd
@@ -123,7 +123,7 @@ IGRF_ADDIS_ABABA = [
     ["2021-02-01", 35605.6, 1421.6, 1788.7],
     ["2026-08-02", 35675.0, 1368.9, 2067.7],
 ]
-UTC = datetime.timezone.utc
+UTC = dt.timezone.utc
 
 
 def test_igrf14__fetch_coefficients():
@@ -166,7 +166,7 @@ def test_interpolate_coefficients(tzinfo):
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     for i, year in enumerate(years):
         g_date, h_date = interpolate_coefficients(
-            datetime.datetime(
+            dt.datetime(
                 year, month=1, day=1, hour=0, minute=1, second=0, tzinfo=tzinfo
             ),
             g.shape[1] - 1,
@@ -188,7 +188,7 @@ def test_interpolate_coefficients_max_degree(tzinfo):
     max_degree = 13
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-02-10")._fetch_coefficient_file())
     g_date, h_date = interpolate_coefficients(
-        datetime.datetime(
+        dt.datetime(
             year=2023, month=1, day=20, hour=0, minute=1, second=0, tzinfo=tzinfo
         ),
         max_degree,
@@ -205,10 +205,10 @@ def test_interpolate_coefficients_max_degree(tzinfo):
 @pytest.mark.parametrize(
     "date",
     [
-        datetime.datetime(1800, month=1, day=1, tzinfo=UTC),
-        datetime.datetime(2030, month=1, day=1, tzinfo=UTC),
-        datetime.datetime(1800, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
-        datetime.datetime(2030, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+        dt.datetime(1800, month=1, day=1, tzinfo=UTC),
+        dt.datetime(2030, month=1, day=1, tzinfo=UTC),
+        dt.datetime(1800, month=1, day=1, tzinfo=None),
+        dt.datetime(2030, month=1, day=1, tzinfo=None),
     ],
 )
 def test_interpolate_coefficients_invalid_date(date):
@@ -254,8 +254,8 @@ def test_igrf_points(data, coordinates):
     "date",
     [
         "2020-04-15",
-        datetime.datetime(2029, month=1, day=1, tzinfo=UTC),
-        datetime.datetime(2029, month=1, day=1, tzinfo=None),  # ruff: ignore[DTZ001]
+        dt.datetime(2029, month=1, day=1, tzinfo=UTC),
+        dt.datetime(2029, month=1, day=1, tzinfo=None),
     ],
 )
 def test_igrf_grid(date):
@@ -291,10 +291,10 @@ def test_interpolate_coefficients_on_dates_with_timezones():
     Test if coefficients are the same on equivalent dates on different timezones.
     """
     # Define the same date on two different timezones
-    utc = datetime.timezone.utc
-    pt = datetime.timezone(-datetime.timedelta(hours=7))  # UTC-7
-    date_utc = datetime.datetime(year=2020, month=4, day=15, hour=14, tzinfo=utc)
-    date_pt = datetime.datetime(year=2020, month=4, day=15, hour=14 - 7, tzinfo=pt)
+    utc = dt.timezone.utc
+    pt = dt.timezone(-dt.timedelta(hours=7))  # UTC-7
+    date_utc = dt.datetime(year=2020, month=4, day=15, hour=14, tzinfo=utc)
+    date_pt = dt.datetime(year=2020, month=4, day=15, hour=14 - 7, tzinfo=pt)
 
     # Compute cofficients for both dates
     years, g, h, g_sv, h_sv = load_igrf(IGRF14("2020-04-15")._fetch_coefficient_file())

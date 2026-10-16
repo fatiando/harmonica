@@ -1,4 +1,4 @@
 # Requirements for checking code style
-ruff==0.16.*
+ruff==0.17.*
 burocrata==0.2.*
 zizmor==1.30.*

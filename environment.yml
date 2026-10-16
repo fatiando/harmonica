@@ -46,6 +46,6 @@ dependencies:
   - gdal
   - trame # needed by pyvista
   # Code style checks and autoformat
-  - ruff==0.16.*
+  - ruff==0.17.*
   - burocrata==0.2.*
   - zizmor==1.30.*

@@ -4,7 +4,7 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-import datetime
+import datetime as dt
 
 import pygmt.sphinx_gallery
 import pyvista
@@ -16,8 +16,7 @@ import harmonica
 # -----------------------------------------------------------------------------
 project = "Harmonica"
 copyright_info = (
-    f"2018-{datetime.datetime.now(tz=datetime.timezone.utc).year},"
-    f" The {project} Developers"
+    f"2018-{dt.datetime.now(tz=dt.timezone.utc).year}, The {project} Developers"
 )
 if len(harmonica.__version__.split("+")) > 1 or harmonica.__version__ == "unknown":
     version = "dev"
