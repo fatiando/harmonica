@@ -8,7 +8,7 @@
 Calculation of the IGRF magnetic field.
 """
 
-import datetime
+import datetime as dt
 import pathlib
 
 import bordado as bd
@@ -120,17 +120,17 @@ def interpolate_coefficients(date, max_degree, years, g, h, g_sv, h_sv):
         raise ValueError(message)
     # Find out which epoch is the last compatible one.
     index = int((date.year - years[0]) // 5)
-    start_of_epoch = datetime.datetime(
+    start_of_epoch = dt.datetime(
         year=years[index],
         month=1,
         day=1,
         # Specify start of the year in UTC time if date has timezone information
-        tzinfo=datetime.timezone.utc if date.tzinfo is not None else None,
+        tzinfo=dt.timezone.utc if date.tzinfo is not None else None,
     )
     seconds_since_epoch = (date - start_of_epoch).total_seconds()
     epoch = (
-        datetime.datetime(year=years[index] + 5, month=1, day=1)
-        - datetime.datetime(year=years[index], month=1, day=1)
+        dt.datetime(year=years[index] + 5, month=1, day=1)
+        - dt.datetime(year=years[index], month=1, day=1)
     ).total_seconds()
     year_in_seconds = 365.25 * 24 * 60 * 60
     g_date = np.zeros((max_degree + 1, max_degree + 1))
@@ -291,7 +291,7 @@ class IGRF14:
         ellipsoid=boule.WGS84,
     ):
         if isinstance(date, str):
-            self.date = datetime.datetime.fromisoformat(date)
+            self.date = dt.datetime.fromisoformat(date)
         else:
             self.date = date
         self.max_degree = max_degree
