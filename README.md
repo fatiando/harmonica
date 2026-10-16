@@ -52,9 +52,8 @@ Things that will *not* be covered in Harmonica:
 - Multi-physics partial differential equation solvers. Use
   [SimPEG](http://www.simpeg.xyz/) or [PyGIMLi](https://www.pygimli.org/)
   instead.
-- Generic grid processing methods (like FFT and standard interpolation).
-  We'll rely on [Verde](https://www.fatiando.org/verde),
-  [xrft](https://xrft.readthedocs.io/en/latest/) and
+- Generic grid processing methods (like standard interpolation).
+  We'll rely on [Verde](https://www.fatiando.org/verde) and
   [xarray](https://xarray.dev) for those.
 - Data visualization.
 - GUI applications.
@@ -77,6 +76,10 @@ Find out more about how to reach us at
 Please read our
 [Contributing Guide](https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md)
 to see how you can help and give feedback.
+
+🤖 **Policy on AI usage:**
+Please read our
+[AI Usage Policy](https://github.com/fatiando/community/blob/main/AI.md).
 
 🧑🏾‍🤝‍🧑🏼 **Code of conduct:**
 This project is released with a
