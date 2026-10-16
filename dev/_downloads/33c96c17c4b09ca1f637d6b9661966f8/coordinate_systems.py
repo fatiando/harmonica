@@ -4,7 +4,7 @@
 # In[1]:
 
 
-import verde as vd
+import bordado as bd
 
 # Define boundaries of the rectangular prism (in meters)
 west, east, south, north = -20, 20, -20, 20
@@ -16,8 +16,8 @@ prism = [west, east, south, north, bottom, top]
 
 
 # Define a regular grid of observation points (coordinates in meters)
-coordinates = vd.grid_coordinates(
-    region=(-40, 40, -40, 40), shape=(5, 5), extra_coords=100
+coordinates = bd.grid_coordinates(
+    region=(-40, 40, -40, 40), shape=(5, 5), non_dimensional_coords=100
 )
 easting, northing, upward = coordinates[:]
 
@@ -38,8 +38,8 @@ print("Point 1 is higher than point 2?", point_1[2] > point_2[2])
 # In[4]:
 
 
-coordinates = vd.grid_coordinates(
-    region=(-70, -65, -35, -30), shape=(6, 6), extra_coords=2e3
+coordinates = bd.grid_coordinates(
+    region=(-70, -65, -35, -30), shape=(6, 6), non_dimensional_coords=2e3
 )
 longitude, latitude, height = coordinates[:]
 print("longitude:", longitude)
@@ -75,10 +75,10 @@ print("northing:", northing)
 # In[7]:
 
 
-coordinates = vd.grid_coordinates(
+coordinates = bd.grid_coordinates(
     region=(-70, -65, -35, -30),
     shape=(6, 6),
-    extra_coords=ellipsoid.mean_radius,
+    non_dimensional_coords=ellipsoid.mean_radius,
 )
 longitude, sph_latitude, radius = coordinates[:]
 print("longitude:", longitude)
@@ -89,7 +89,7 @@ print("radius:", radius)
 # In[8]:
 
 
-coordinates_geodetic = ellipsoid.spherical_to_geodetic(*coordinates)
+coordinates_geodetic = ellipsoid.spherical_to_geodetic(coordinates)
 longitude, latitude, height = coordinates_geodetic[:]
 print("longitude:", longitude)
 print("latitude:", latitude)
@@ -99,7 +99,7 @@ print("height:", height)
 # In[9]:
 
 
-coordinates_spherical = ellipsoid.geodetic_to_spherical(*coordinates_geodetic)
+coordinates_spherical = ellipsoid.geodetic_to_spherical(coordinates_geodetic)
 longitude, sph_latitude, radius = coordinates_spherical[:]
 print("longitude:", longitude)
 print("spherical latitude:", sph_latitude)

@@ -1,0 +1,1025 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>harmonica.filters._padding | Harmonica v0.0.post100</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=cabaca87" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/harmonica/filters/_padding';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance.html">Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/gravity_disturbance_topofree.html">Topography-free (Bouguer) Gravity Disturbances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gallery/isostatic_moho_airy.html">Airy Isostatic Moho</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/block_averaged_sources.html">Gridding with block-averaged equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/cartesian.html">Gridding and upward continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/gradient_boosted.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/equivalent_sources/spherical.html">Gridding in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/forward/index.html">Forward Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/point_gravity.html">Point Masses in Cartesian Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prism_layer.html">Layer of prisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/prisms_topo_gravity.html">Gravitational effect of topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid.html">Tesseroids (spherical prisms)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_layer.html">Layer of tesseroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/forward/tesseroid_variable_density.html">Tesseroids with variable density</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/transformations/index.html">Grid transformations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/reduction_to_pole.html">Reduction to the pole of a magnetic anomaly grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tga.html">Total gradient amplitude of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/tilt.html">Tilt of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_continuation.html">Upward continuation of a regular grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/transformations/upward_derivative.html">Upward derivative of a regular grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../gallery/visualization/index.html">3D visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../gallery/visualization/prism_layer_pyvista.html">Plot a prism layer in 3D</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/coordinate_systems.html">Coordinate systems</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/forward_modelling/index.html">Forward modelling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/point.html">Point sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/topographic_correction.html">Topographic Correction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/equivalent_sources/index.html">Equivalent Sources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eqs-parameters-estimation.html">Estimating damping and depth parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/block-averaged-eqs.html">Block-averaged equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/gradient-boosted-eqs.html">Gradient-boosted equivalent sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/equivalent_sources/eq-sources-spherical.html">Equivalent sources in spherical coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/igrf.html">IGRF calculation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.bouguer_correction.html">harmonica.bouguer_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_easting.html">harmonica.derivative_easting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_northing.html">harmonica.derivative_northing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.derivative_upward.html">harmonica.derivative_upward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.upward_continuation.html">harmonica.upward_continuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_lowpass.html">harmonica.gaussian_lowpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.gaussian_highpass.html">harmonica.gaussian_highpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.reduction_to_pole.html">harmonica.reduction_to_pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_gradient_amplitude.html">harmonica.total_gradient_amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tilt_angle.html">harmonica.tilt_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_easting_kernel.html">harmonica.filters.derivative_easting_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_northing_kernel.html">harmonica.filters.derivative_northing_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.derivative_upward_kernel.html">harmonica.filters.derivative_upward_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.upward_continuation_kernel.html">harmonica.filters.upward_continuation_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.fft.html">harmonica.filters.fft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.ifft.html">harmonica.filters.ifft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.pad.html">harmonica.filters.pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.filters.unpad.html">harmonica.filters.unpad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing Harmonica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/harmonica/issues/new?title=Issue%20on%20page%20%2F_modules/harmonica/filters/_padding.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for harmonica.filters._padding</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 The Harmonica Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="c1"># The padding functions available in this file are modified versions of the ones</span>
+<span class="c1"># available in `xrft` (https://github.com/xgcm/xrft/), released under the</span>
+<span class="c1"># MIT License:</span>
+<span class="c1">#</span>
+<span class="c1"># &gt; The MIT License (MIT)</span>
+<span class="c1"># &gt;</span>
+<span class="c1"># &gt; Copyright (c) 2017 Ryan Abernathey, Columbia University</span>
+<span class="c1"># &gt;</span>
+<span class="c1"># &gt; Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1"># &gt; of this software and associated documentation files (the "Software"), to deal</span>
+<span class="c1"># &gt; in the Software without restriction, including without limitation the rights</span>
+<span class="c1"># &gt; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1"># &gt; copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1"># &gt; furnished to do so, subject to the following conditions:</span>
+<span class="c1"># &gt;</span>
+<span class="c1"># &gt; The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1"># &gt; copies or substantial portions of the Software.</span>
+<span class="c1"># &gt;</span>
+<span class="c1"># &gt; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># &gt; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># &gt; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1"># &gt; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1"># &gt; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1"># &gt; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1"># &gt; SOFTWARE.</span>
+<span class="sd">"""</span>
+<span class="sd">Functions to pad and unpad a 2D regular grid.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xarray.core.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">either_dict_or_kwargs</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_spacing</span>
+
+
+<div class="viewcode-block" id="pad">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.pad.html#harmonica.filters.pad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pad</span><span class="p">(</span>
+    <span class="n">da</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span>
+    <span class="n">stat_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">end_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">reflect_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">pad_width_kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Pad array with evenly spaced coordinates.</span>
+
+<span class="sd">    Wraps the :meth:`xarray.DataArray.pad` method but also pads the evenly</span>
+<span class="sd">    spaced coordinates by extrapolation using the same coordinate spacing.</span>
+<span class="sd">    The ``pad_width`` used for each coordinate is stored as one of its</span>
+<span class="sd">    attributes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : :class:`xarray.DataArray`</span>
+<span class="sd">        Array to be padded. The coordinates along which the array will be</span>
+<span class="sd">        padded must be evenly spaced.</span>
+<span class="sd">    pad_width : mapping of hashable to tuple of int</span>
+<span class="sd">        Mapping with the form of ``{dim: (pad_before, pad_after)}``</span>
+<span class="sd">        describing the number of values padded along each dimension.</span>
+<span class="sd">        ``{dim: pad}`` is a shortcut for ``pad_before = pad_after = pad``.</span>
+<span class="sd">    mode : str, default: "constant"</span>
+<span class="sd">        One of the following string values (taken from numpy docs).</span>
+<span class="sd">        - constant: Pads with a constant value.</span>
+<span class="sd">        - edge: Pads with the edge values of array.</span>
+<span class="sd">        - linear_ramp: Pads with the linear ramp between end_value and the</span>
+<span class="sd">          array edge value.</span>
+<span class="sd">        - maximum: Pads with the maximum value of all or part of the</span>
+<span class="sd">          vector along each axis.</span>
+<span class="sd">        - mean: Pads with the mean value of all or part of the</span>
+<span class="sd">          vector along each axis.</span>
+<span class="sd">        - median: Pads with the median value of all or part of the</span>
+<span class="sd">          vector along each axis.</span>
+<span class="sd">        - minimum: Pads with the minimum value of all or part of the</span>
+<span class="sd">          vector along each axis.</span>
+<span class="sd">        - reflect: Pads with the reflection of the vector mirrored on</span>
+<span class="sd">          the first and last values of the vector along each axis.</span>
+<span class="sd">        - symmetric: Pads with the reflection of the vector mirrored</span>
+<span class="sd">          along the edge of the array.</span>
+<span class="sd">        - wrap: Pads with the wrap of the vector along the axis.</span>
+<span class="sd">          The first values are used to pad the end and the</span>
+<span class="sd">          end values are used to pad the beginning.</span>
+<span class="sd">    stat_length : int, tuple or mapping of hashable to tuple, default: None</span>
+<span class="sd">        Used in 'maximum', 'mean', 'median', and 'minimum'.  Number of</span>
+<span class="sd">        values at edge of each axis used to calculate the statistic value.</span>
+<span class="sd">        {dim_1: (before_1, after_1), ... dim_N: (before_N, after_N)} unique</span>
+<span class="sd">        statistic lengths along each dimension.</span>
+<span class="sd">        ((before, after),) yields same before and after statistic lengths</span>
+<span class="sd">        for each dimension.</span>
+<span class="sd">        (stat_length,) or int is a shortcut for before = after = statistic</span>
+<span class="sd">        length for all axes.</span>
+<span class="sd">        Default is ``None``, to use the entire axis.</span>
+<span class="sd">    constant_values : scalar, tuple or mapping of hashable to tuple, default: 0</span>
+<span class="sd">        Used in 'constant'.  The values to set the padded values for each</span>
+<span class="sd">        axis.</span>
+<span class="sd">        ``{dim_1: (before_1, after_1), ... dim_N: (before_N, after_N)}`` unique</span>
+<span class="sd">        pad constants along each dimension.</span>
+<span class="sd">        ``((before, after),)`` yields same before and after constants for each</span>
+<span class="sd">        dimension.</span>
+<span class="sd">        ``(constant,)`` or ``constant`` is a shortcut for ``before = after = constant``</span>
+<span class="sd">        for all dimensions.</span>
+<span class="sd">        Default is 0.</span>
+<span class="sd">    end_values : scalar, tuple or mapping of hashable to tuple, default: 0</span>
+<span class="sd">        Used in 'linear_ramp'.  The values used for the ending value of the</span>
+<span class="sd">        linear_ramp and that will form the edge of the padded array.</span>
+<span class="sd">        ``{dim_1: (before_1, after_1), ... dim_N: (before_N, after_N)}`` unique</span>
+<span class="sd">        end values along each dimension.</span>
+<span class="sd">        ``((before, after),)`` yields same before and after end values for each</span>
+<span class="sd">        axis.</span>
+<span class="sd">        ``(constant,)`` or ``constant`` is a shortcut for ``before = after = constant``</span>
+<span class="sd">        for all axes.</span>
+<span class="sd">        Default is 0.</span>
+<span class="sd">    reflect_type : {"even", "odd"}, optional</span>
+<span class="sd">        Used in "reflect", and "symmetric".  The "even" style is the</span>
+<span class="sd">        default with an unaltered reflection around the edge value.  For</span>
+<span class="sd">        the "odd" style, the extended part of the array is created by</span>
+<span class="sd">        subtracting the reflected values from two times the edge value.</span>
+<span class="sd">    **pad_width_kwargs</span>
+<span class="sd">        The keyword arguments form of ``pad_width``.</span>
+<span class="sd">        One of ``pad_width`` or ``pad_width_kwargs`` must be provided.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_padded : :class:`xarray.DataArray`</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`harmonica.filters.unpad`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+
+<span class="sd">    &gt;&gt;&gt; import pytest</span>
+<span class="sd">    &gt;&gt;&gt; from packaging.version import Version</span>
+<span class="sd">    &gt;&gt;&gt; if Version(xr.__version__) &lt; Version("2025.10.1"):</span>
+<span class="sd">    ...     pytest.skip("This doctest works only in Xarray &gt;= 2025.10.1")</span>
+
+<span class="sd">    &gt;&gt;&gt; da = xr.DataArray(</span>
+<span class="sd">    ...     [[1, 2, 3], [4, 5, 6], [7, 8, 9]],</span>
+<span class="sd">    ...     coords={"x": [0, 1, 2], "y": [-5, -4, -3]},</span>
+<span class="sd">    ...     dims=("y", "x"),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; da_padded = pad(da, x=2, y=1)</span>
+<span class="sd">    &gt;&gt;&gt; da_padded</span>
+<span class="sd">    &lt;xarray.DataArray (y: 5, x: 7)&gt; Size: 280B</span>
+<span class="sd">    array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">           [0, 0, 1, 2, 3, 0, 0],</span>
+<span class="sd">           [0, 0, 4, 5, 6, 0, 0],</span>
+<span class="sd">           [0, 0, 7, 8, 9, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 40B -6 -5 -4 -3 -2</span>
+<span class="sd">      * x        (x) int64 56B -2 -1 0 1 2 3 4</span>
+<span class="sd">    &gt;&gt;&gt; da_padded.x</span>
+<span class="sd">    &lt;xarray.DataArray 'x' (x: 7)&gt; Size: 56B</span>
+<span class="sd">    array([-2, -1,  0,  1,  2,  3,  4])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * x        (x) int64 56B -2 -1 0 1 2 3 4</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        pad_width:  2</span>
+<span class="sd">    &gt;&gt;&gt; da_padded.y</span>
+<span class="sd">    &lt;xarray.DataArray 'y' (y: 5)&gt; Size: 40B</span>
+<span class="sd">    array([-6, -5, -4, -3, -2])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 40B -6 -5 -4 -3 -2</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        pad_width:  1</span>
+
+<span class="sd">    Asymmetric padding</span>
+
+<span class="sd">    &gt;&gt;&gt; da_padded = pad(da, x=(1, 4))</span>
+<span class="sd">    &gt;&gt;&gt; da_padded</span>
+<span class="sd">    &lt;xarray.DataArray (y: 3, x: 8)&gt; Size: 192B</span>
+<span class="sd">    array([[0, 1, 2, 3, 0, 0, 0, 0],</span>
+<span class="sd">           [0, 4, 5, 6, 0, 0, 0, 0],</span>
+<span class="sd">           [0, 7, 8, 9, 0, 0, 0, 0]])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 24B -5 -4 -3</span>
+<span class="sd">      * x        (x) int64 64B -1 0 1 2 3 4 5 6</span>
+<span class="sd">    &gt;&gt;&gt; da_padded.x</span>
+<span class="sd">    &lt;xarray.DataArray 'x' (x: 8)&gt; Size: 64B</span>
+<span class="sd">    array([-1,  0,  1,  2,  3,  4,  5,  6])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * x        (x) int64 64B -1 0 1 2 3 4 5 6</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        pad_width:  (1, 4)</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># Redefine pad_width if pad_width_kwargs were passed</span>
+    <span class="n">pad_width</span> <span class="o">=</span> <span class="n">either_dict_or_kwargs</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_width_kwargs</span><span class="p">,</span> <span class="s2">"pad"</span><span class="p">)</span>
+
+    <span class="c1"># Check for bad coordinates</span>
+    <span class="n">_check_bad_coords</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># Pad the array using the xarray.DataArray.pad method</span>
+    <span class="n">padded_da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">,</span>
+        <span class="n">stat_length</span><span class="p">,</span>
+        <span class="n">constant_values</span><span class="p">,</span>
+        <span class="n">end_values</span><span class="p">,</span>
+        <span class="n">reflect_type</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Pad the coordinates selected in pad_width</span>
+    <span class="n">padded_coords</span> <span class="o">=</span> <span class="n">_pad_coordinates</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">pad_width</span><span class="p">)</span>
+
+    <span class="c1"># Assign the padded coordinates to the padded array</span>
+    <span class="n">padded_da</span> <span class="o">=</span> <span class="n">padded_da</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">padded_coords</span><span class="p">)</span>
+
+    <span class="c1"># Edit the attributes of the padded array</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">pad_width</span><span class="p">:</span>
+        <span class="c1"># Add attrs of the original coords to the padded array</span>
+        <span class="n">padded_da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="c1"># Add the pad_width used for this coordinate</span>
+        <span class="n">padded_da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"pad_width"</span><span class="p">:</span> <span class="n">pad_width</span><span class="p">[</span><span class="n">dim</span><span class="p">]})</span>
+
+    <span class="k">return</span> <span class="n">padded_da</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_bad_coords</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">padding_coordinates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Check if the DataArray contains bad coordinates.</span>
+
+<span class="sd">    A bad coordinate is defined as an additional coordinate that shares at</span>
+<span class="sd">    least one of the dimensions along which the grid will be padded.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : :class:`xarray.DataArray`</span>
+<span class="sd">        Array to be padded.</span>
+<span class="sd">    padding_coordinates : list of str</span>
+<span class="sd">        List containing the coordinates along which the grid will be padded.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If any bad coordinate is found in the DataArray.</span>
+<span class="sd">    """</span>
+    <span class="c1"># Initialize empty list for bad coords</span>
+    <span class="n">bad_coords</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Start checking for bad coordinates in the array</span>
+    <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">padding_coordinates</span><span class="p">:</span>
+        <span class="c1"># Get dimension of the current padding coordinate</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">da</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">bad_coords</span> <span class="o">+=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">da</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">coord</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">bad_coords</span><span class="p">:</span>
+        <span class="n">bad_coords</span> <span class="o">=</span> <span class="s2">"'"</span> <span class="o">+</span> <span class="s2">"', '"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bad_coords</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"'"</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"Please, drop the following coordinates from the passed DataArray "</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"before trying to pad it: </span><span class="si">{</span><span class="n">bad_coords</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pad_coordinates</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">pad_width</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Pad coordinates arrays according to the passed width.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coords : dict-like object</span>
+<span class="sd">        Dictionary with coordinates as :class:`xarray.DataArray`.</span>
+<span class="sd">        Only the coordinates specified through ``pad_width`` will be padded.</span>
+<span class="sd">        Every coordinate that will be padded should be evenly spaced.</span>
+<span class="sd">    pad_width : dict-like object</span>
+<span class="sd">        Dictionary with the same keys as ``coords``. The coordinates specified</span>
+<span class="sd">        through ``pad_width`` are returned as padded.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    padded_coords : dict-like object</span>
+<span class="sd">        Dictionary with 1d-arrays corresponding to the padded coordinates.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+
+<span class="sd">    &gt;&gt;&gt; import pytest</span>
+<span class="sd">    &gt;&gt;&gt; from packaging.version import Version</span>
+<span class="sd">    &gt;&gt;&gt; if Version(xr.__version__) &lt; Version("2025.10.1"):</span>
+<span class="sd">    ...     pytest.skip("This doctest works only in Xarray &gt;= 2025.10.1")</span>
+
+<span class="sd">    &gt;&gt;&gt; x = np.linspace(-4, -1, 4)</span>
+<span class="sd">    &gt;&gt;&gt; y = np.linspace(-1, 4, 6)</span>
+<span class="sd">    &gt;&gt;&gt; coords = {</span>
+<span class="sd">    ... "x": xr.DataArray(x, coords={"x": x}, dims=("x",)),</span>
+<span class="sd">    ... "y": xr.DataArray(y, coords={"y": y}, dims=("y",)),</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; pad_width = {"x": 2}</span>
+<span class="sd">    &gt;&gt;&gt; padded_coords = _pad_coordinates(coords, pad_width)</span>
+<span class="sd">    &gt;&gt;&gt; padded_coords["x"]</span>
+<span class="sd">    array([-6., -5., -4., -3., -2., -1.,  0.,  1.])</span>
+<span class="sd">    &gt;&gt;&gt; padded_coords["y"]</span>
+<span class="sd">    &lt;xarray.DataArray (y: 6)&gt; Size: 48B</span>
+<span class="sd">    array([-1.,  0.,  1.,  2.,  3.,  4.])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) float64 48B -1.0 0.0 1.0 2.0 3.0 4.0</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># Generate a dictionary with the original coordinates</span>
+    <span class="n">padded_coords</span> <span class="o">=</span> <span class="p">{</span><span class="n">dim</span><span class="p">:</span> <span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">}</span>
+
+    <span class="c1"># Start padding the coordinates that appear in pad_width</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">pad_width</span><span class="p">:</span>
+        <span class="c1"># Get the spacing of the selected coordinate</span>
+        <span class="c1"># (raises an error if not evenly spaced)</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="n">get_spacing</span><span class="p">(</span><span class="n">padded_coords</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+        <span class="c1"># Pad the coordinates using numpy.pad with the _pad_coordinates_callback</span>
+        <span class="n">padded_coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+            <span class="n">padded_coords</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span>
+            <span class="n">pad_width</span><span class="o">=</span><span class="n">pad_width</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="n">_pad_coordinates_callback</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>  <span class="c1"># spacing is passed as a kwarg to the callback</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">padded_coords</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pad_coordinates_callback</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">iaxis_pad_width</span><span class="p">,</span> <span class="n">iaxis</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Padd coordinate array.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        This function is not intended to be called, but to be passed as the</span>
+<span class="sd">        ``mode`` method to the :func:`numpy.pad`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : 1d-array</span>
+<span class="sd">        A rank 1 array already padded with zeros. Padded values are</span>
+<span class="sd">        ``vector[:iaxis_pad_width[0]]`` and ``vector[-iaxis_pad_width[1]:]``.</span>
+<span class="sd">    iaxis_pad_width : tuple</span>
+<span class="sd">        A 2-tuple of ints, ``iaxis_pad_width[0]`` represents the number of</span>
+<span class="sd">        values padded at the beginning of vector where ``iaxis_pad_width[1]``</span>
+<span class="sd">        represents the number of values padded at the end of vector.</span>
+<span class="sd">    iaxis : int</span>
+<span class="sd">        The axis currently being calculated. This parameter is not used, but</span>
+<span class="sd">        the function will check if it's equal to zero. It exists for</span>
+<span class="sd">        compatibility with the ``padding_func`` callback that :func:`numpy.pad`</span>
+<span class="sd">        needs.</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Any keyword arguments the function requires. The kwargs are ignored in</span>
+<span class="sd">        this function, they exist for compatibility with the ``padding_func``</span>
+<span class="sd">        callback that :func:`numpy.pad` needs.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vector : 1d-array</span>
+<span class="sd">        Padded vector.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="n">iaxis</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"spacing"</span><span class="p">]</span>
+    <span class="n">n_start</span><span class="p">,</span> <span class="n">n_end</span> <span class="o">=</span> <span class="n">iaxis_pad_width</span><span class="p">[:]</span>
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">vector</span><span class="p">[</span><span class="n">n_start</span><span class="p">],</span> <span class="n">vector</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">n_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">vector</span><span class="p">[:</span><span class="n">n_start</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">vmin</span> <span class="o">-</span> <span class="n">n_start</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">n_start</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">vector</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_end</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">vmax</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_end</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">n_end</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">vector</span>
+
+
+<div class="viewcode-block" id="unpad">
+<a class="viewcode-back" href="../../../api/generated/harmonica.filters.unpad.html#harmonica.filters.unpad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unpad</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">pad_width_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Unpad an array and its coordinates.</span>
+
+<span class="sd">    Undo the padding process of the :func:`harmonica.filters.pad` function by slicing</span>
+<span class="sd">    the passed :class:`xarray.DataArray` and its coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : :class:`xarray.DataArray`</span>
+<span class="sd">        Padded array. The coordinates along which the array will be</span>
+<span class="sd">        padded must be evenly spaced.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    da_unpaded : :class:`xarray.DataArray`</span>
+<span class="sd">        Unpadded array.</span>
+<span class="sd">    pad_width : mapping of hashable to tuple of int (optional)</span>
+<span class="sd">        Mapping with the form of {dim: (pad_before, pad_after)}</span>
+<span class="sd">        describing the number of values padded along each dimension.</span>
+<span class="sd">        {dim: pad} is a shortcut for pad_before = pad_after = pad.</span>
+<span class="sd">        If ``None``, then the *pad_width* for each coordinate is read from</span>
+<span class="sd">        their ``pad_width`` attribute.</span>
+<span class="sd">    **pad_width_kwargs (optional)</span>
+<span class="sd">        The keyword arguments form of ``pad_width``.</span>
+<span class="sd">        Pass ``pad_width`` or ``pad_width_kwargs``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`harmonica.filters.pad`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+
+<span class="sd">    &gt;&gt;&gt; import pytest</span>
+<span class="sd">    &gt;&gt;&gt; from packaging.version import Version</span>
+<span class="sd">    &gt;&gt;&gt; if Version(xr.__version__) &lt; Version("2025.10.1"):</span>
+<span class="sd">    ...     pytest.skip("This doctest works only in Xarray &gt;= 2025.10.1")</span>
+
+<span class="sd">    &gt;&gt;&gt; da = xr.DataArray(</span>
+<span class="sd">    ...     [[1, 2, 3], [4, 5, 6], [7, 8, 9]],</span>
+<span class="sd">    ...     coords={"x": [0, 1, 2], "y": [-5, -4, -3]},</span>
+<span class="sd">    ...     dims=("y", "x"),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; da_padded = pad(da, x=2, y=1)</span>
+<span class="sd">    &gt;&gt;&gt; da_padded</span>
+<span class="sd">    &lt;xarray.DataArray (y: 5, x: 7)&gt; Size: 280B</span>
+<span class="sd">    array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">           [0, 0, 1, 2, 3, 0, 0],</span>
+<span class="sd">           [0, 0, 4, 5, 6, 0, 0],</span>
+<span class="sd">           [0, 0, 7, 8, 9, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 40B -6 -5 -4 -3 -2</span>
+<span class="sd">      * x        (x) int64 56B -2 -1 0 1 2 3 4</span>
+<span class="sd">    &gt;&gt;&gt; unpad(da_padded)</span>
+<span class="sd">    &lt;xarray.DataArray (y: 3, x: 3)&gt; Size: 72B</span>
+<span class="sd">    array([[1, 2, 3],</span>
+<span class="sd">           [4, 5, 6],</span>
+<span class="sd">           [7, 8, 9]])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 24B -5 -4 -3</span>
+<span class="sd">      * x        (x) int64 24B 0 1 2</span>
+
+<span class="sd">    Custom ``pad_width``</span>
+
+<span class="sd">    &gt;&gt;&gt; unpad(da_padded, x=1, y=1)</span>
+<span class="sd">    &lt;xarray.DataArray (y: 3, x: 5)&gt; Size: 120B</span>
+<span class="sd">    array([[0, 1, 2, 3, 0],</span>
+<span class="sd">           [0, 4, 5, 6, 0],</span>
+<span class="sd">           [0, 7, 8, 9, 0]])</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * y        (y) int64 24B -5 -4 -3</span>
+<span class="sd">      * x        (x) int64 40B -1 0 1 2 3</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># Generate the pad_width dictionary</span>
+    <span class="k">if</span> <span class="n">pad_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pad_width_kwargs</span><span class="p">:</span>
+        <span class="c1"># Read the pad_width from each coordinate if pad_width is None and</span>
+        <span class="c1"># no pad_width_kwargs has been passed</span>
+        <span class="n">pad_width</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">dim</span><span class="p">:</span> <span class="n">coord</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"pad_width"</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">"pad_width"</span> <span class="ow">in</span> <span class="n">coord</span><span class="o">.</span><span class="n">attrs</span>
+        <span class="p">}</span>
+        <span class="c1"># Raise error if there's no pad_width attribute in the coordinates</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pad_width</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"The passed array doesn't seem to be a padded one: the 'pad_width' "</span>
+                <span class="o">+</span> <span class="s2">"attribute was missing on every one of its coordinates. "</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Redefine pad_width if pad_width_kwargs were passed</span>
+        <span class="n">pad_width</span> <span class="o">=</span> <span class="n">either_dict_or_kwargs</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_width_kwargs</span><span class="p">,</span> <span class="s2">"pad"</span><span class="p">)</span>
+
+    <span class="c1"># Transform every pad_width into a tuple with indices</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">pad_width</span><span class="p">:</span>
+        <span class="n">slices</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">_pad_width_to_slice</span><span class="p">(</span><span class="n">pad_width</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Slice the padded array</span>
+    <span class="n">unpadded_da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">indexers</span><span class="o">=</span><span class="n">slices</span><span class="p">)</span>
+
+    <span class="c1"># Remove the pad_width attribute from coords since it's no longer necessary</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">pad_width</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"pad_width"</span> <span class="ow">in</span> <span class="n">unpadded_da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+            <span class="n">unpadded_da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"pad_width"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">unpadded_da</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pad_width_to_slice</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Create a slice for removing the padded elements of a coordinate array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pad_width : int or tuple</span>
+<span class="sd">        Integer or tuples with the width of the padding at each side of the</span>
+<span class="sd">        coordinate array. An integer means an equal padding at each side equal</span>
+<span class="sd">        to its value.</span>
+<span class="sd">    size : int</span>
+<span class="sd">        Number of elements of the coordinates array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    coord_slice : slice</span>
+<span class="sd">        A slice object for removing the padded elements of the coordinate</span>
+<span class="sd">        array.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">pad_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_width</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="n">pad_width</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span> <span class="o">-</span> <span class="n">pad_width</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Oct 16, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

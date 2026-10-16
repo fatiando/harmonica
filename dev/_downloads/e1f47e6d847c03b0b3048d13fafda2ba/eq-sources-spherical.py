@@ -41,7 +41,7 @@ data
 import boule as bl
 
 ellipsoid = bl.WGS84
-normal_gravity = ellipsoid.normal_gravity(data.latitude, data.height_sea_level_m)
+normal_gravity = ellipsoid.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
 gravity_disturbance = data.gravity_mgal - normal_gravity
 
 
@@ -57,7 +57,7 @@ eqs = hm.EquivalentSourcesSph(damping=1e-3, relative_depth=10000)
 
 
 coordinates = ellipsoid.geodetic_to_spherical(
-    data.longitude, data.latitude, data.height_sea_level_m
+    (data.longitude, data.latitude, data.height_sea_level_m)
 )
 
 
@@ -70,22 +70,24 @@ eqs.fit(coordinates, gravity_disturbance)
 # In[7]:
 
 
+import bordado as bd
+
 # Get the bounding region of the data in geodetic coordinates
-region = vd.get_region((data.longitude, data.latitude))
+region = bd.get_region((data.longitude, data.latitude))
 
 # Get the maximum height of the data coordinates
 max_height = data.height_sea_level_m.max()
 
 # Define a regular grid of points in geodetic coordinates
-grid_coords = vd.grid_coordinates(
-    region=region, spacing=6 / 60, extra_coords=max_height
+grid_coords = bd.grid_coordinates(
+    region=region, spacing=6 / 60, non_dimensional_coords=max_height
 )
 
 
 # In[8]:
 
 
-grid_coords_sph = ellipsoid.geodetic_to_spherical(*grid_coords)
+grid_coords_sph = ellipsoid.geodetic_to_spherical(grid_coords)
 
 
 # In[9]:
@@ -131,12 +133,12 @@ pygmt.set_display(method="notebook")
 
 import pygmt
 
-maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values)
+maxabs = vd.maxabs(gravity_disturbance, grid.gravity_disturbance.values, percentile=99)
 
 fig = pygmt.Figure()
 
 # Make colormap of data
-pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+pygmt.makecpt(cmap="balance+h0", series=(-maxabs, maxabs), background=True)
 
 title = "Block-median reduced gravity disturbance"
 fig.plot(
@@ -150,9 +152,8 @@ fig.plot(
     cmap=True,
 )
 fig.coast(shorelines="0.5p,black", area_thresh=1e4)
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
-fig.shift_origin(xshift='w+3c')
+fig.shift_origin(xshift='w+1c')
 
 title = "Gridded gravity disturbance"
 fig.grdimage(
@@ -162,7 +163,12 @@ fig.grdimage(
     nan_transparent=True,
 )
 fig.coast(shorelines="0.5p,black", area_thresh=1e4)
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+
+fig.colorbar(
+  cmap=True,
+  frame=["a50f25", "x+lmGal"],
+  position=f"n0/0+jTC+w10c/.5c+h+o-0.5c/1c+e",
+)
 
 fig.show()
 

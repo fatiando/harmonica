@@ -11,6 +11,10 @@ harmonica.EquivalentSourcesSph
 
 
 
+.. automethod:: EquivalentSourcesSph.estimate_required_memory
+
+
+
 .. automethod:: EquivalentSourcesSph.filter
 
 
@@ -64,6 +68,27 @@ harmonica.EquivalentSourcesSph
 
 
 .. automethod:: EquivalentSourcesSph.set_score_request
+
+
+
+
+
+
+
+Attributes
+----------
+
+
+
+.. autoattribute:: EquivalentSourcesSph.data_names_defaults
+
+
+
+.. autoattribute:: EquivalentSourcesSph.dims
+
+
+
+.. autoattribute:: EquivalentSourcesSph.extra_coords_name
 
 
 
