@@ -21,7 +21,7 @@ defaults:
     # But this breaks on MacOS if using actions/setup-python:
     # https://github.com/actions/setup-python/issues/132
     # -e makes sure builds fail if any command fails
-    shell: bash -e -o pipefail -l {0}
+    shell: bash -o pipefail -e {0}
 
 jobs:
   #############################################################################
@@ -116,7 +116,9 @@ jobs:
           python -m pip install --requirement requirements-full.txt
 
       - name: List installed packages
-        run: python -m pip freeze
+        run: |
+          echo "Python version:" $(python --version)
+          python -m pip freeze
 
       - name: Build source and wheel distributions
         run: make build
