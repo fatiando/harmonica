@@ -29,12 +29,12 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "numpy >= 1.23",
-    "pandas >= 1.4",
+    "numpy >= 1.26",
+    "pandas >= 2.0",
     "scipy >= 1.9",
-    "scikit-learn >= 1.1",
-    "numba >= 0.57",
-    "xarray >= 2022.03",
+    "scikit-learn >= 1.2",
+    "numba >= 0.59",
+    "xarray >= 2023.1",
     "verde >= 1.8.1",
     "choclo >= 0.1",
     "boule >= 0.6.0",
