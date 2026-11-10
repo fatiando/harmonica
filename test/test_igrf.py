@@ -123,7 +123,7 @@ IGRF_ADDIS_ABABA = [
     ["2021-02-01", 35605.6, 1421.6, 1788.7],
     ["2026-08-02", 35675.0, 1368.9, 2067.7],
 ]
-UTC = dt.timezone.utc
+UTC = dt.UTC
 
 
 def test_igrf14__fetch_coefficients():
@@ -291,7 +291,7 @@ def test_interpolate_coefficients_on_dates_with_timezones():
     Test if coefficients are the same on equivalent dates on different timezones.
     """
     # Define the same date on two different timezones
-    utc = dt.timezone.utc
+    utc = dt.UTC
     pt = dt.timezone(-dt.timedelta(hours=7))  # UTC-7
     date_utc = dt.datetime(year=2020, month=4, day=15, hour=14, tzinfo=utc)
     date_pt = dt.datetime(year=2020, month=4, day=15, hour=14 - 7, tzinfo=pt)
