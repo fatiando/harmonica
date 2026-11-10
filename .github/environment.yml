@@ -34,7 +34,7 @@ dependencies:
   - netcdf4
   - matplotlib
   - pyvista
-  - vtk>=9.5
+  - vtk==9.6.2
   - pygmt
   - gmt
   - gdal
