@@ -46,9 +46,9 @@ jobs:
           - dependencies: oldest
             python: "3.10"
           - dependencies: latest
-            python: "3.13"
+            python: "3.14"
           - dependencies: optional
-            python: "3.13"
+            python: "3.14"
 
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-tests.txt
