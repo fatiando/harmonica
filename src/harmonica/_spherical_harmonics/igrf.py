@@ -125,7 +125,7 @@ def interpolate_coefficients(date, max_degree, years, g, h, g_sv, h_sv):
         month=1,
         day=1,
         # Specify start of the year in UTC time if date has timezone information
-        tzinfo=dt.timezone.utc if date.tzinfo is not None else None,
+        tzinfo=dt.UTC if date.tzinfo is not None else None,
     )
     seconds_since_epoch = (date - start_of_epoch).total_seconds()
     epoch = (
