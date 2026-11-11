@@ -29,7 +29,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PYTHON: "3.12"
+      PYTHON: "3.14"
       ENSAIO_DATA_FROM_GITHUB: true
 
     steps:
