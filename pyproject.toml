@@ -23,20 +23,19 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "numpy >= 1.23",
-    "pandas >= 1.4",
-    "scipy >= 1.9",
-    "scikit-learn >= 1.1",
-    "numba >= 0.57",
-    "xarray >= 2022.03",
+    "numpy >= 1.26",
+    "pandas >= 2.0",
+    "scipy >= 1.10",
+    "scikit-learn >= 1.2",
+    "numba >= 0.59",
+    "xarray >= 2023.1",
     "verde >= 1.8.1",
     "choclo >= 0.1",
     "boule >= 0.6.0",
