@@ -8,7 +8,6 @@ import datetime as dt
 
 import pygmt.sphinx_gallery
 import pyvista
-from sphinx_gallery.sorting import FileNameSortKey
 
 import harmonica
 
@@ -98,7 +97,7 @@ sphinx_gallery_conf = {
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": FileNameSortKey,
+    "within_subsection_order": "FileNameSortKey",
     # directory where function granular galleries are stored
     "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.  In
