@@ -8,7 +8,6 @@ import datetime as dt
 
 import pygmt.sphinx_gallery
 import pyvista
-from sphinx_gallery.sorting import FileNameSortKey
 
 import harmonica
 
@@ -98,14 +97,12 @@ sphinx_gallery_conf = {
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": FileNameSortKey,
+    "within_subsection_order": "FileNameSortKey",
     # directory where function granular galleries are stored
     "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.  In
     # this case sphinx_gallery and numpy in a tuple of strings.
     "doc_module": "harmonica",
-    # Insert links to documentation of objects in the examples
-    "reference_url": {"harmonica": None},
     # Add pyvista to the image scrapers
     "image_scrapers": (
         "pyvista",
@@ -128,7 +125,7 @@ pyvista.global_theme.window_size = (1024 * 2, 768 * 2)
 
 # HTML output configuration
 # -----------------------------------------------------------------------------
-html_title = f'{project} <span class="project-version">{version}</span>'
+html_title = f"{project} {version}"
 # Don't use the logo since it gets in the way of the project name and is
 # repeated in the front page.
 # html_logo = "_static/harmonica-logo.png"
@@ -145,7 +142,12 @@ html_show_copyright = True
 
 html_theme = "sphinx_book_theme"
 html_theme_options = {
-    "repository_url": "https://github.com/fatiando/harmonica",
+    "logo": {
+        "text": f'{project} <span class="project-version">{version}</span>',
+        "image_light": f"_static/{project.lower()}-logo.png",
+        "image_dark": f"_static/{project.lower()}-logo.png",
+    },
+    "repository_url": f"https://github.com/fatiando/{project.lower()}",
     "repository_branch": "main",
     "path_to_docs": "doc",
     "launch_buttons": {
@@ -157,4 +159,7 @@ html_theme_options = {
     "use_repository_button": True,
     "use_download_button": True,
     "home_page_in_toc": False,
+    # Need this for sidebars to work using sphinx-book-theme==1.4.0
+    # See https://github.com/fatiando/boule/issues/317
+    "navbar_persistent": [],
 }

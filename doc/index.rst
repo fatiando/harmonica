@@ -1,37 +1,26 @@
 .. title:: Home
 
-.. grid::
-    :gutter: 2 3 3 3
-    :margin: 5 5 0 0
-    :padding: 0 0 0 0
+Harmonica
+=========
 
-    .. grid-item::
-        :columns: 12 8 8 8
+.. div:: sd-fs-3
 
-        .. raw:: html
+    Processing and modelling gravity and magnetic data.
 
-            <h1 class="display-1">Harmonica</h1>
-
-        .. div:: sd-fs-3
-
-            Processing and modelling gravity and magnetic data
-
-    .. grid-item::
-        :columns: 12 4 4 4
-
-        .. image:: ./_static/harmonica-logo.svg
-            :width: 200px
-            :class: sd-m-auto dark-light
 
 **Harmonica** is a Python library for processing and modeling gravity and
 magnetic data.
-
 It includes common processing steps, like calculation of Bouguer and terrain
 corrections, reduction to the pole, upward continuation, equivalent sources,
 and more. There are forward modeling functions for basic geometric shapes, like
 point sources, prisms and tesseroids. The inversion methods are implemented as
 classes with an interface inspired by scikit-learn (like `Verde
 <https://www.fatiando.org/verde>`__).
+
+.. seealso::
+
+    Harmonica is a part of the
+    `Fatiando a Terra <https://www.fatiando.org/>`_ project.
 
 .. grid:: 1 2 1 2
     :margin: 5 5 0 0
@@ -93,65 +82,59 @@ classes with an interface inspired by scikit-learn (like `Verde
             :outline:
             :expand:
 
+----
 
-.. seealso::
 
-    Harmonica is a part of the
-    `Fatiando a Terra <https://www.fatiando.org/>`_ project.
+Project status
+--------------
 
-.. admonition:: Ready for daily use but still changing
-    :class: seealso
+**Harmonica is ready for use but still changing.** This means that we
+sometimes break backwards compatibility as we try to improve the
+software based on user experience, new ideas, better design decisions,
+etc. Please keep that in mind before you update Harmonica to a newer
+version.
 
-    This means that we are still adding a lot of new features and sometimes we
-    make changes to the ones we already have while we try to improve the
-    software based on users' experience, test new ideas, take better design
-    decisions, etc.
-    Some of these changes could be **backwards incompatible**. Keep that in
-    mind before you update Harmonica to a newer version.
+**We welcome feedback and ideas!** This is a great time to bring new
+ideas on how we can improve the project. `Join the
+conversation <https://www.fatiando.org/contact>`__ or submit `issues on
+GitHub <https://github.com/fatiando/harmonica/issues>`__.
 
-    :octicon:`comment-discussion` **We welcome any feedback and ideas!** This
-    is a great time to bring new ideas on how we can improve Harmonica, feel
-    free to `join the conversation <https://www.fatiando.org/contact>`__ or
-    submit a new `issues on Github
-    <https://github.com/fatiando/harmonica/issues>`__.
 
-------------
+Getting involved
+----------------
 
-Imposter syndrome disclaimer
-++++++++++++++++++++++++++++
+🗨️ **Contact us:** Find out more about how to reach us at
+`fatiando.org/contact <https://www.fatiando.org/contact/>`__.
 
-**We want your help.** No, really.
+👩🏾‍💻 **Contributing to project development:** Please read our
+`Contributing
+Guide <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>`__
+to see how you can help and give feedback.
 
-There may be a little voice inside your head that is telling you that you're
-not ready to be an open source contributor; that your skills aren't nearly good
-enough to contribute.
-What could you possibly offer?
+🤖 **Policy on AI usage:** Please read our `AI Usage
+Policy <https://github.com/fatiando/community/blob/main/AI.md>`__.
 
-We assure you that the little voice in your head is wrong.
+🧑🏾‍🤝‍🧑🏼 **Code of conduct:** This project is released with a `Code of
+Conduct <https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md>`__.
+By participating in this project you agree to abide by its terms.
 
-**Being a contributor doesn't just mean writing code**.
-Equally important contributions include:
-writing or proof-reading documentation, suggesting or implementing tests, or
-even giving feedback about the project (including giving feedback about the
-contribution process).
-If you're coming to the project with fresh eyes, you might see the errors and
-assumptions that seasoned contributors have glossed over.
-If you can write any code at all, you can contribute code to open source.
-We are constantly trying out new skills, making mistakes, and learning from
-those mistakes.
-That's how we all improve and we are happy to help others learn.
+   **Imposter syndrome disclaimer:** We want your help. **No, really.**
+   There may be a little voice inside your head that is telling you that
+   you’re not ready, that you aren’t skilled enough to contribute. We
+   assure you that the little voice in your head is wrong. Most
+   importantly, **there are many valuable ways to contribute besides
+   writing code**.
 
-.. admonition:: How to contribute
-    :class: seealso
+   *This disclaimer was adapted from the* `MetPy
+   project <https://github.com/Unidata/MetPy>`__.
 
-    Please, read our `Contributor Guide
-    <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>`_ to learn
-    how you can contribute to the project.
+License
+-------
 
-.. note::
-    *This disclaimer was adapted from the*
-    `MetPy project <https://github.com/Unidata/MetPy>`__.
-
+This is free software: you can redistribute it and/or modify it under
+the terms of the **BSD 3-clause License**. A copy of this license is
+provided in
+`LICENSE.txt <https://github.com/fatiando/harmonica/blob/main/LICENSE.txt>`__.
 
 
 .. toctree::
@@ -196,8 +179,18 @@ That's how we all improve and we are happy to help others learn.
     :maxdepth: 1
     :caption: Community
 
-    Join the community <https://www.fatiando.org/contact>
+    Join our community <https://www.fatiando.org/contact>
     How to contribute <https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md>
     Code of Conduct <https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md>
     Source code on GitHub <https://github.com/fatiando/harmonica>
     The Fatiando a Terra project <https://www.fatiando.org>
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: Code and packages
+
+    GitHub <https://github.com/fatiando/harmonica>
+    PyPI <https://pypi.python.org/pypi/harmonica>
+    conda-forge <https://github.com/conda-forge/harmonica-feedstock>
+    Zenodo <https://doi.org/10.5281/zenodo.7851747>

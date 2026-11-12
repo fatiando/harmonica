@@ -28,11 +28,11 @@ dependencies:
   - coverage
   - xrft
   # Documentation requirements
-  - sphinx==7.2.*
-  - numpydoc==1.7.*
-  - sphinx-book-theme==1.1.*
-  - sphinx-gallery==0.15.*
-  - sphinx-design==0.5.*
+  - sphinx==9.2.*
+  - numpydoc==1.11.*
+  - sphinx-book-theme==1.4.*
+  - sphinx-gallery==0.22.*
+  - sphinx-design==0.7.*
   - sphinx-copybutton==0.5.*
   - jupyter-sphinx==0.5.*
   - ipykernel
