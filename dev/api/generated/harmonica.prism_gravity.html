@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>harmonica.prism_gravity | Harmonica dev</title>
+        <title>harmonica.prism_gravity | Harmonica v0.0.post100</title>
     
 
   
@@ -20,47 +20,52 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cabaca87" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7c09dca1" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/thebelab-helper.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/harmonica.prism_gravity';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -70,33 +75,22 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -104,7 +98,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -112,15 +105,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -129,7 +122,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -153,21 +147,25 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../_static/harmonica-logo.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/harmonica-logo.png" class="logo__image only-dark pst-js-only" alt=""/>
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -217,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -229,6 +228,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="current nav bd-sidenav">
@@ -250,26 +250,37 @@
 <li class="toctree-l2"><a class="reference internal" href="harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.fft.html">harmonica.filters.fft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.ifft.html">harmonica.filters.ifft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.pad.html">harmonica.filters.pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.filters.unpad.html">harmonica.filters.unpad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Harmonica</a></li>
@@ -280,11 +291,18 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join our community</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code and packages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/harmonica">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/conda-forge/harmonica-feedstock">conda-forge</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://doi.org/10.5281/zenodo.7851747">Zenodo</a></li>
 </ul>
 
     </div>
@@ -293,9 +311,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -442,7 +465,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -456,25 +479,24 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
-`);
-</script>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -496,7 +518,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.prism_gravity"><code class="docutils literal notranslate"><span class="pre">prism_gravity</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-harmonica-prism-gravity">Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code></a></li>
 </ul>
@@ -514,8 +536,8 @@ document.write(`
 <h1>harmonica.prism_gravity<a class="headerlink" href="#harmonica-prism-gravity" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="harmonica.prism_gravity">
-<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">prism_gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prisms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_checks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/prism_gravity.html#prism_gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Link to this definition">#</a></dt>
-<dd><p>Gravitational fields of right-rectangular prisms in Cartesian coordinates</p>
+<span class="sig-prename descclassname"><span class="pre">harmonica.</span></span><span class="sig-name descname"><span class="pre">prism_gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prisms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_checks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/harmonica/_forward/prisms/gravity.html#prism_gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#harmonica.prism_gravity" title="Link to this definition">#</a></dt>
+<dd><p>Gravitational fields of right-rectangular prisms in Cartesian coordinates.</p>
 <p>Compute the gravitational potential, gravitational acceleration and tensor
 components generated by a collection of prisms on a set of observation
 points.</p>
@@ -542,20 +564,20 @@ component.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code> and <code class="docutils literal notranslate"><span class="pre">upward</span></code>
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>List of arrays containing the <code class="docutils literal notranslate"><span class="pre">easting</span></code>, <code class="docutils literal notranslate"><span class="pre">northing</span></code> and <code class="docutils literal notranslate"><span class="pre">upward</span></code>
 coordinates of the computation points defined on a Cartesian coordinate
 system. All coordinates should be in meters.</p>
 </dd>
-<dt><strong>prisms</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, 1d-array, <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> 2d-array</span></dt><dd><p>List or array containing the coordinates of the prism(s) in the
+<dt><strong>prisms</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, 1d-array, <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> 2d-array</span></dt><dd><p>List or array containing the coordinates of the prism(s) in the
 following order: west, east, south, north, bottom, top, in a Cartesian
 coordinate system.
 All coordinates should be in meters. Coordinates for more than one
 prism can be provided. In this case, <em>prisms</em> should be a list of lists
 or 2d-array (with one prism per row).</p>
 </dd>
-<dt><strong>density</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>List or array containing the density of each prism in kg/m^3.</p>
+<dt><strong>density</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>List or array containing the density of each prism in kg/m^3.</p>
 </dd>
-<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
+<dt><strong>field</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Gravitational field that wants to be computed.
 The available fields are:</p>
 <ul class="simple">
 <li><p>Gravitational potential: <code class="docutils literal notranslate"><span class="pre">potential</span></code></p></li>
@@ -566,7 +588,7 @@ The available fields are:</p>
 <li><p>Non-diagonal tensor components: <code class="docutils literal notranslate"><span class="pre">g_en</span></code>, <code class="docutils literal notranslate"><span class="pre">g_ez</span></code>, <code class="docutils literal notranslate"><span class="pre">g_nz</span></code></p></li>
 </ul>
 </dd>
-<dt><strong>parallel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True the computations will run in parallel using Numba built-in
+<dt><strong>parallel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bltin-boolean-values" title="(in Python v3.15)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True the computations will run in parallel using Numba built-in
 parallelization. If False, the forward model will run on a single core.
 Might be useful to disable parallelization if the forward model is run
 by an already parallelized workflow. Default to True.</p>
@@ -574,11 +596,11 @@ by an already parallelized workflow. Default to True.</p>
 <dt><strong>dtype</strong><span class="classifier">data-type (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Data type assigned to the resulting gravitational field. Default to
 <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p>
 </dd>
-<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to standard
+<dt><strong>progressbar</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bltin-boolean-values" title="(in Python v3.15)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>If True, a progress bar of the computation will be printed to standard
 error (stderr). Requires <code class="xref py py-mod docutils literal notranslate"><span class="pre">numba_progress</span></code> to be installed.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
-<dt><strong>disable_checks</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Flag that controls whether to perform a sanity check on the model.
+<dt><strong>disable_checks</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bltin-boolean-values" title="(in Python v3.15)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Flag that controls whether to perform a sanity check on the model.
 Should be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> only when it is certain that the input model
 is valid and it does not need to be checked.
 Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
@@ -587,7 +609,7 @@ Default to <code class="docutils literal notranslate"><span class="pre">False</s
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the prisms on the computation points.
+<dt><strong>result</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Gravitational field generated by the prisms on the computation points.
 Gravitational potential is returned in <span class="math notranslate nohighlight">\(\text{J}/\text{kg}\)</span>,
 acceleration components in mGal, and tensor components in Eotvos.</p>
 </dd>
@@ -634,8 +656,8 @@ the outside.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">upward</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute the downward component of the gravitational acceleration that</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># the prism generates on the computation points</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gz</span> <span class="o">=</span> <span class="n">prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prism</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">gz</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gz</span> <span class="o">=</span> <span class="n">prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prism</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"(</span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">gz</span><span class="p">))</span>
 <span class="go">(0.06552, 0.06629, 0.06174)</span>
 </pre></div>
 </div>
@@ -643,8 +665,8 @@ the outside.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prisms</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">densities</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute the g_z that the prisms generate on the computation points</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gz</span> <span class="o">=</span> <span class="n">prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">densities</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;g_z&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">gz</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gz</span> <span class="o">=</span> <span class="n">prism_gravity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">prisms</span><span class="p">,</span> <span class="n">densities</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"g_z"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"(</span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">, </span><span class="si">{:.5f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">gz</span><span class="p">))</span>
 <span class="go">(-0.05380, 0.02908, 0.11237)</span>
 </pre></div>
 </div>
@@ -652,11 +674,11 @@ the outside.</p>
 
 <section id="examples-using-harmonica-prism-gravity">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code><a class="headerlink" href="#examples-using-harmonica-prism-gravity" title="Link to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates th..."><img alt="" src="../../_images/sphx_glr_prism_layer_thumb.png" />
-<p><a class="reference internal" href="../../gallery/forward/prism_layer.html#sphx-glr-gallery-forward-prism-layer-py"><span class="std std-ref">Layer of prisms</span></a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="One way to model three dimensional structures is to create a set of prisms that approximates their geometry and its physical properties (density, susceptibility, etc.). The harmonica.prism_layer offers a simple way to create a layer of prisms: a regular grid of prisms of equal size on the horizontal directions with variable top and bottom boundaries. It returns a xarray.Dataset with the coordinates of the centers of the prisms and their corresponding physical properties. The harmonica.DatasetAccessorPrismLayer Dataset accessor can be used to obtain some properties of the layer like its shape and size or the boundaries of any prism in the layer. The methods of this Dataset accessor can be used together with the harmonica.prism_gravity to compute the gravitational effect of the layer."><img alt="" src="../../_images/sphx_glr_prism_layer_thumb.png" />
+<p><a class="reference internal" href="../../gallery/forward/prism_layer.html"><span class="doc">Layer of prisms</span></a></p>
   <div class="sphx-glr-thumbnail-title">Layer of prisms</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terr..."><img alt="" src="../../_images/sphx_glr_prisms_topo_gravity_thumb.png" />
-<p><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html#sphx-glr-gallery-forward-prisms-topo-gravity-py"><span class="std std-ref">Gravitational effect of topography</span></a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One possible application of the harmonica.prism_layer function is to create a model of the terrain and compute its gravity effect. Here we will use a regular grid of topographic and bathymetric heights for South Africa to create a prisms layer that model the terrain with a density of 2670 kg/m^3 and the ocean with a density contrast of -1900 kg/m^3 obtained as the difference between the density of water (1000 kg/m^3) and the normal density of upper crust (2900 kg/m^3). Then we will use harmonica.prism_gravity to compute the gravity effect of the model on a regular grid of observation points."><img alt="" src="../../_images/sphx_glr_prisms_topo_gravity_thumb.png" />
+<p><a class="reference internal" href="../../gallery/forward/prisms_topo_gravity.html"><span class="doc">Gravitational effect of topography</span></a></p>
   <div class="sphx-glr-thumbnail-title">Gravitational effect of topography</div>
 </div></div><div style='clear:both'></div></section>
 </section>
@@ -697,15 +719,17 @@ the outside.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonica.prism_gravity"><code class="docutils literal notranslate"><span class="pre">prism_gravity</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-harmonica-prism-gravity">Examples using <code class="docutils literal notranslate"><span class="pre">harmonica.prism_gravity</span></code></a></li>
 </ul>
@@ -721,6 +745,10 @@ the outside.</p>
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">
@@ -730,7 +758,7 @@ the outside.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Nov 13, 2026.
   <br/>
 </p>
   </div>
@@ -748,8 +776,8 @@ the outside.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
 
   <footer class="bd-footer">
   </footer>

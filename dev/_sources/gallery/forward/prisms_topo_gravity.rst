@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_gallery_forward_prisms_topo_gravity.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -31,7 +31,7 @@ crust (2900 kg/m^3). Then we will use :func:`harmonica.prism_gravity` to
 compute the gravity effect of the model on a regular grid of observation
 points.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-101
+.. GENERATED FROM PYTHON SOURCE LINES 21-108
 
 
 
@@ -45,7 +45,7 @@ points.
 
  .. code-block:: none
 
-    /home/runner/miniconda3/envs/test/lib/python3.12/site-packages/pygmt/clib/session.py:1498: RuntimeWarning: Grid may have irregular spacing in the 'northing' dimension, but GMT only supports regular spacing. Calculated regular spacing 22283.15174176384 is assumed in the 'northing' dimension.
+    /home/runner/miniconda3/envs/harmonica-docs/lib/python3.14/site-packages/pygmt/clib/session.py:1646: RuntimeWarning: Grid may have irregular spacing in the 'northing' dimension, but GMT only supports regular spacing. Calculated regular spacing 22283.15174176384 is assumed in the 'northing' dimension.
       matrix, region, inc = dataarray_to_matrix(grid)
 
 
@@ -56,6 +56,7 @@ points.
 |
 
 .. code-block:: Python
+
 
     import ensaio
     import pygmt
@@ -125,23 +126,29 @@ points.
 
     title = "Gravitational acceleration of the topography"
 
+    # Get the max absolute value to use as color scale limits
+    cpt_lims = vd.maxabs(grid.gravity)
+
+    # Make colormap of data
+    pygmt.makecpt(cmap="balance+h0", series=[-cpt_lims, cpt_lims])
+
     with pygmt.config(FONT_TITLE="14p"):
         fig.grdimage(
             region=xy_region,
             projection=fig_proj,
             grid=grid.gravity,
             frame=["ag", f"+t{title}"],
-            cmap="vik",
+            cmap=True,
         )
 
-    fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+    fig.colorbar(cmap=True, position="JMR", frame=["a100f50", "x+lmGal"])
 
     fig.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 32.442 seconds)
+   **Total running time of the script:** (0 minutes 17.672 seconds)
 
 
 .. _sphx_glr_download_gallery_forward_prisms_topo_gravity.py:
@@ -157,6 +164,10 @@ points.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: prisms_topo_gravity.py <prisms_topo_gravity.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: prisms_topo_gravity.zip <prisms_topo_gravity.zip>`
 
 
 .. only:: html

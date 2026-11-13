@@ -9,7 +9,7 @@ import xarray as xr
 
 fname = ensaio.fetch_earth_gravity(version=1)
 gravity = xr.load_dataarray(fname)
-print(gravity)
+gravity
 
 
 # In[2]:
@@ -39,7 +39,7 @@ fig.grdimage(
 fig.basemap(frame=["af", "WEsn"])
 fig.colorbar(
     position="JCB+w10c",
-    frame=["af", 'y+l"mGal"', 'x+l"observed gravity"'],
+    frame=["af", 'y+lmGal', 'x+lObserved gravity'],
 )
 fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
 fig.show()
@@ -51,7 +51,7 @@ fig.show()
 import boule as bl
 
 ellipsoid = bl.WGS84
-normal_gravity = ellipsoid.normal_gravity(gravity.latitude, gravity.height)
+normal_gravity = ellipsoid.normal_gravity((gravity.longitude, gravity.latitude, gravity.height))
 
 
 # In[5]:
@@ -67,7 +67,7 @@ fig.grdimage(
 fig.basemap(frame=["af", "WEsn"])
 fig.colorbar(
     position="JCB+w10c",
-    frame=["af", 'y+l"mGal"', 'x+l"normal gravity"'],
+    frame=["af", 'y+lmGal', 'x+lNormal gravity'],
 )
 fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
 fig.show()
@@ -77,7 +77,7 @@ fig.show()
 
 
 gravity_disturbance = gravity - normal_gravity
-print(gravity_disturbance)
+gravity_disturbance
 
 
 # In[7]:
@@ -85,10 +85,10 @@ print(gravity_disturbance)
 
 import verde as vd
 
-maxabs = vd.maxabs(gravity_disturbance)
+maxabs = vd.maxabs(gravity_disturbance, percentile=98)
 
 fig = pygmt.Figure()
-pygmt.makecpt(series=[-maxabs, maxabs], cmap="polar+h")
+pygmt.makecpt(series=[-maxabs, maxabs], cmap="balance+h0", background=True)
 fig.grdimage(
     gravity_disturbance,
     projection="W20c",
@@ -97,8 +97,8 @@ fig.grdimage(
 )
 fig.basemap(frame=["af", "WEsn"])
 fig.colorbar(
-    position="JCB+w10c",
-    frame=["af", 'y+l"mGal"', 'x+l"gravity disturbance"'],
+    position="JCB+w10c+e",
+    frame=["a20f10", 'y+lmGal', 'x+lGravity disturbance'],
 )
 fig.coast(shorelines=True, resolution="c", area_thresh=1e4)
 fig.show()

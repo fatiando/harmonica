@@ -44,10 +44,10 @@ the data:
 
 .. jupyter-execute::
 
-    import verde as vd
+    import bordado as bd
 
     region = (-5.5, -4.7, 57.8, 58.5)
-    inside = vd.inside((data.longitude, data.latitude), region)
+    inside = bd.inside((data.longitude, data.latitude), region)
     data = data[inside]
     data
 
@@ -60,7 +60,7 @@ And project the geographic coordinates to plain Cartesian ones:
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
     easting, northing = projection(data.longitude.values, data.latitude.values)
     coordinates = (easting, northing, data.height_m)
-    xy_region=vd.get_region(coordinates)
+    xy_region = bd.get_region((easting, northing))
 
 
 .. jupyter-execute::
@@ -77,9 +77,10 @@ And project the geographic coordinates to plain Cartesian ones:
 
 .. jupyter-execute::
 
+    import verde as vd
     import pygmt
 
-    maxabs = vd.maxabs(data.total_field_anomaly_nt)*.8
+    maxabs = vd.maxabs(data.total_field_anomaly_nt, percentile=99)
 
     # Set figure properties
     w, e, s, n = xy_region
@@ -94,7 +95,7 @@ And project the geographic coordinates to plain Cartesian ones:
     title = "Observed total-field magnetic anomaly"
 
     pygmt.makecpt(
-        cmap="polar+h0",
+        cmap="balance+h0",
         series=(-maxabs, maxabs),
         background=True,
     )
@@ -110,14 +111,14 @@ And project the geographic coordinates to plain Cartesian ones:
             style="c0.1c",
             cmap=True,
         )
-    fig.colorbar(cmap=True, position="JMR", frame=["a200f100", "x+lnT"])
+    fig.colorbar(cmap=True, position="JMR+e", frame=["a200f100", "y+lnT"])
     fig.show()
 
 
-Most airborne surveys like this one present an anysotropic distribution of the
+Most airborne surveys like this one present an anisotropic distribution of the
 data: there are more observation points along the flight lines that goes west
 to east than the ones going south to north.
-Placing a single source beneath each observation point generates an anysotropic
+Placing a single source beneath each observation point generates an anisotropic
 distribution of the equivalent sources, which might lead to aliases on the
 generated outputs.
 
@@ -167,10 +168,10 @@ we are efectivelly upward continuing the data.
 
 .. jupyter-execute::
 
-    grid_coords = vd.grid_coordinates(
-        region=vd.get_region(coordinates),
+    grid_coords = bd.grid_coordinates(
+        region=bd.get_region((easting, northing)),
         spacing=500,
-        extra_coords=1500,
+        non_dimensional_coords=1500,
     )
     grid = eqs.grid(grid_coords, data_names=["magnetic_anomaly"])
     grid
@@ -182,9 +183,10 @@ we are efectivelly upward continuing the data.
 
     title = "Observed magnetic anomaly data"
     pygmt.makecpt(
-        cmap="polar+h0",
+        cmap="balance+h0",
         series=(-maxabs, maxabs),
-        background=True)
+        background=True,
+    )
 
     with pygmt.config(FONT_TITLE="14p"):
         fig.plot(
@@ -197,7 +199,6 @@ we are efectivelly upward continuing the data.
             style="c0.1c",
             cmap=True,
         )
-    fig.colorbar(cmap=True, frame=["a200f100", "x+lnT"])
 
     fig.shift_origin(xshift=fig_width + 1)
 
@@ -209,7 +210,11 @@ we are efectivelly upward continuing the data.
             grid=grid.magnetic_anomaly,
             cmap=True,
         )
-    fig.colorbar(cmap=True, frame=["a200f100", "x+lnT"])
+    fig.colorbar(
+        cmap=True,
+        frame=["a200f50", "x+lnT"],
+        position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+    )
 
     fig.show()
 

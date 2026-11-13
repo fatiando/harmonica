@@ -21,12 +21,14 @@ common default values for the reference thickness and crust, mantle
 [TurcotteSchubert2014]_.
 
 We'll use our sample topography data
-(:func:`harmonica.datasets.fetch_topography_earth`) to calculate the Airy
+(:func:`ensaio.fetch_earth_topography`) to calculate the Airy
 isostatic Moho depth of Africa.
 """
+
 import ensaio
 import numpy as np
 import pygmt
+import verde as vd
 import xarray as xr
 
 import harmonica as hm
@@ -55,10 +57,14 @@ moho = hm.isostatic_moho_airy(
 print("\nMoho depth grid:")
 print(moho)
 
-# Draw the maps
+# Make a plot of data using PyGMT
 fig = pygmt.Figure()
 
-pygmt.grd2cpt(grid=moho, cmap="viridis", reverse=True, continuous=True)
+# Get the min and max values to use as color scale limits
+cpt_lims = vd.minmax(moho)
+
+# Make colormap of data
+pygmt.makecpt(cmap="viridis", series=cpt_lims)
 
 title = "Airy isostatic Moho depth of Africa"
 
@@ -72,6 +78,6 @@ fig.grdimage(
 
 fig.coast(shorelines="0.5p,black", resolution="crude")
 
-fig.colorbar(cmap=True, frame=["a10000f2500", "x+lmeters"])
+fig.colorbar(cmap=True, frame=["x+lmeters"])
 
 fig.show()

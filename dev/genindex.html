@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>Index | Harmonica dev</title>
+        <title>Index | Harmonica v0.0.post100</title>
     
 
   
@@ -19,46 +19,51 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=cabaca87" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7c09dca1" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/thebelab-helper.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
@@ -66,33 +71,22 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -100,7 +94,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -108,15 +101,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -127,7 +120,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -151,21 +145,25 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="_static/harmonica-logo.png" class="logo__image only-light" alt=""/>
+    <img src="_static/harmonica-logo.png" class="logo__image only-dark pst-js-only" alt=""/>
   
-    <p class="title logo__title">Harmonica <span class="project-version">dev</span></p>
+  
+    <p class="title logo__title">Harmonica <span class="project-version">v0.0.post100</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -215,6 +213,7 @@
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/dipole.html">Magnetic dipoles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/prism.html">Rectangular prisms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/tesseroid.html">Tesseroids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/forward_modelling/ellipsoid.html">Ellipsoid</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/gravity_disturbance.html">Gravity Disturbance</a></li>
@@ -227,6 +226,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide/transformations.html">Grid transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/igrf.html">IGRF calculation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
 <ul class="nav bd-sidenav">
@@ -248,26 +248,37 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.gaussian_lowpass_kernel.html">harmonica.filters.gaussian_lowpass_kernel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.gaussian_highpass_kernel.html">harmonica.filters.gaussian_highpass_kernel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.reduction_to_pole_kernel.html">harmonica.filters.reduction_to_pole_kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.fft.html">harmonica.filters.fft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.ifft.html">harmonica.filters.ifft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.pad.html">harmonica.filters.pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.filters.unpad.html">harmonica.filters.unpad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSources.html">harmonica.EquivalentSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesGB.html">harmonica.EquivalentSourcesGB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EquivalentSourcesSph.html">harmonica.EquivalentSourcesSph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_gravity.html">harmonica.ellipsoid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.point_gravity.html">harmonica.point_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_gravity.html">harmonica.prism_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_gravity.html">harmonica.tesseroid_gravity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.dipole_magnetic.html">harmonica.dipole_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.ellipsoid_magnetic.html">harmonica.ellipsoid_magnetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_magnetic.html">harmonica.prism_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.Ellipsoid.html">harmonica.Ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.prism_layer.html">harmonica.prism_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.tesseroid_layer.html">harmonica.tesseroid_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorPrismLayer.html">harmonica.DatasetAccessorPrismLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html">harmonica.DatasetAccessorTesseroidLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.isostatic_moho_airy.html">harmonica.isostatic_moho_airy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerInversion.html">harmonica.EulerInversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.EulerDeconvolution.html">harmonica.EulerDeconvolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.IGRF14.html">harmonica.IGRF14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_icgem_gdf.html">harmonica.load_icgem_gdf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.load_oasis_montaj_grid.html">harmonica.load_oasis_montaj_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.visualization.prism_to_pyvista.html">harmonica.visualization.prism_to_pyvista</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_vec_to_angles.html">harmonica.magnetic_vec_to_angles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.magnetic_angles_to_vec.html">harmonica.magnetic_angles_to_vec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.total_field_anomaly.html">harmonica.total_field_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.errors.NoPhysicalPropertyWarning.html">harmonica.errors.NoPhysicalPropertyWarning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/harmonica.typing.Coordinates.html">harmonica.typing.Coordinates</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Harmonica</a></li>
@@ -278,11 +289,18 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact">Join our community</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica/blob/main/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">Source code on GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code and packages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/harmonica">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/harmonica">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/conda-forge/harmonica-feedstock">conda-forge</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://doi.org/10.5281/zenodo.7851747">Zenodo</a></li>
 </ul>
 
     </div>
@@ -291,9 +309,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -375,7 +398,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -389,24 +412,23 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
-`);
-</script>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -436,7 +458,9 @@ document.write(`
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#B"><strong>B</strong></a>
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
@@ -446,6 +470,8 @@ document.write(`
  | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -453,10 +479,42 @@ document.write(`
  | <a href="#U"><strong>U</strong></a>
  
 </div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.a">a (harmonica.Ellipsoid attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.b">b (harmonica.Ellipsoid attribute)</a>
+</li>
       <li><a href="api/generated/harmonica.bouguer_correction.html#harmonica.bouguer_correction">bouguer_correction() (in module harmonica)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.boundaries">boundaries (harmonica.DatasetAccessorPrismLayer attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.boundaries">(harmonica.DatasetAccessorTesseroidLayer attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.c">c (harmonica.Ellipsoid attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.coefficients">coefficients (harmonica.IGRF14 attribute)</a>
+</li>
+      <li><a href="api/generated/harmonica.typing.Coordinates.html#harmonica.typing.Coordinates">Coordinates (in module harmonica.typing)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -464,25 +522,49 @@ document.write(`
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.data_names_defaults">data_names_defaults (harmonica.EquivalentSources attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.data_names_defaults">(harmonica.EquivalentSourcesGB attribute)</a>
+</li>
+        <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.data_names_defaults">(harmonica.EquivalentSourcesSph attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer">DatasetAccessorPrismLayer (class in harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer">DatasetAccessorTesseroidLayer (class in harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.density">density (harmonica.Ellipsoid attribute)</a>
 </li>
       <li><a href="api/generated/harmonica.derivative_easting.html#harmonica.derivative_easting">derivative_easting() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.filters.derivative_easting_kernel.html#harmonica.filters.derivative_easting_kernel">derivative_easting_kernel() (in module harmonica.filters)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.derivative_northing.html#harmonica.derivative_northing">derivative_northing() (in module harmonica)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.filters.derivative_northing_kernel.html#harmonica.filters.derivative_northing_kernel">derivative_northing_kernel() (in module harmonica.filters)</a>
 </li>
       <li><a href="api/generated/harmonica.derivative_upward.html#harmonica.derivative_upward">derivative_upward() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.filters.derivative_upward_kernel.html#harmonica.filters.derivative_upward_kernel">derivative_upward_kernel() (in module harmonica.filters)</a>
 </li>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.dims">dims (harmonica.DatasetAccessorPrismLayer attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.dims">(harmonica.DatasetAccessorTesseroidLayer attribute)</a>
+</li>
+        <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.dims">(harmonica.EquivalentSources attribute)</a>
+</li>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.dims">(harmonica.EquivalentSourcesGB attribute)</a>
+</li>
+        <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.dims">(harmonica.EquivalentSourcesSph attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/generated/harmonica.dipole_magnetic.html#harmonica.dipole_magnetic">dipole_magnetic() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.doi">doi (harmonica.IGRF14 attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -490,24 +572,50 @@ document.write(`
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid">Ellipsoid (class in harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.ellipsoid_gravity.html#harmonica.ellipsoid_gravity">ellipsoid_gravity() (in module harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.ellipsoid_magnetic.html#harmonica.ellipsoid_magnetic">ellipsoid_magnetic() (in module harmonica)</a>
+</li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources">EquivalentSources (class in harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB">EquivalentSourcesGB (class in harmonica)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph">EquivalentSourcesSph (class in harmonica)</a>
 </li>
-      <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">estimate_required_memory() (harmonica.EquivalentSourcesGB method)</a>
+      <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.estimate_required_memory">estimate_required_memory() (harmonica.EquivalentSources method)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.estimate_required_memory">(harmonica.EquivalentSourcesGB method)</a>
 </li>
+        <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.estimate_required_memory">(harmonica.EquivalentSourcesSph method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution">EulerDeconvolution (class in harmonica)</a>
 </li>
+      <li><a href="api/generated/harmonica.EulerInversion.html#harmonica.EulerInversion">EulerInversion (class in harmonica)</a>
+</li>
+      <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.extra_coords_name">extra_coords_name (harmonica.EquivalentSources attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.extra_coords_name">(harmonica.EquivalentSourcesGB attribute)</a>
+</li>
+        <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.extra_coords_name">(harmonica.EquivalentSourcesSph attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.filters.fft.html#harmonica.filters.fft">fft() (in module harmonica.filters)</a>
+</li>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.file_name">file_name (harmonica.IGRF14 attribute)</a>
+</li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.filter">filter() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -526,6 +634,8 @@ document.write(`
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.fit">(harmonica.EquivalentSourcesSph method)</a>
 </li>
         <li><a href="api/generated/harmonica.EulerDeconvolution.html#harmonica.EulerDeconvolution.fit">(harmonica.EulerDeconvolution method)</a>
+</li>
+        <li><a href="api/generated/harmonica.EulerInversion.html#harmonica.EulerInversion.fit">(harmonica.EulerInversion method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -562,6 +672,8 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.get_prism">get_prism() (harmonica.DatasetAccessorPrismLayer method)</a>
 </li>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.get_surface">get_surface() (harmonica.Ellipsoid method)</a>
+</li>
       <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.get_tesseroid">get_tesseroid() (harmonica.DatasetAccessorTesseroidLayer method)</a>
 </li>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.gravity">gravity() (harmonica.DatasetAccessorPrismLayer method)</a>
@@ -576,6 +688,8 @@ document.write(`
         <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.grid">(harmonica.EquivalentSourcesGB method)</a>
 </li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.grid">(harmonica.EquivalentSourcesSph method)</a>
+</li>
+        <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.grid">(harmonica.IGRF14 method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -592,11 +706,21 @@ document.write(`
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.hash">hash (harmonica.IGRF14 attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.filters.ifft.html#harmonica.filters.ifft">ifft() (in module harmonica.filters)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14">IGRF14 (class in harmonica)</a>
+</li>
       <li><a href="api/generated/harmonica.isostatic_moho_airy.html#harmonica.isostatic_moho_airy">isostatic_moho_airy() (in module harmonica)</a>
 </li>
   </ul></td>
@@ -647,9 +771,27 @@ document.write(`
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.errors.NoPhysicalPropertyWarning.html#harmonica.errors.NoPhysicalPropertyWarning">NoPhysicalPropertyWarning</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.EquivalentSourcesGB.html#harmonica.EquivalentSourcesGB.overlapping">overlapping (harmonica.EquivalentSourcesGB attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.filters.pad.html#harmonica.filters.pad">pad() (in module harmonica.filters)</a>
+</li>
       <li><a href="api/generated/harmonica.point_gravity.html#harmonica.point_gravity">point_gravity() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.predict">predict() (harmonica.EquivalentSources method)</a>
@@ -659,11 +801,13 @@ document.write(`
 </li>
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.predict">(harmonica.EquivalentSourcesSph method)</a>
 </li>
-      </ul></li>
-      <li><a href="api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity">prism_gravity() (in module harmonica)</a>
+        <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.predict">(harmonica.IGRF14 method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.prism_gravity.html#harmonica.prism_gravity">prism_gravity() (in module harmonica)</a>
+</li>
       <li><a href="api/generated/harmonica.prism_layer.html#harmonica.prism_layer">prism_layer() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.prism_magnetic.html#harmonica.prism_magnetic">prism_magnetic() (in module harmonica)</a>
@@ -686,9 +830,15 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.reduction_to_pole.html#harmonica.reduction_to_pole">reduction_to_pole() (in module harmonica)</a>
 </li>
+      <li><a href="api/generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel">reduction_to_pole_kernel() (in module harmonica.filters)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/harmonica.filters.reduction_to_pole_kernel.html#harmonica.filters.reduction_to_pole_kernel">reduction_to_pole_kernel() (in module harmonica.filters)</a>
+      <li><a href="api/generated/harmonica.IGRF14.html#harmonica.IGRF14.reference_radius">reference_radius (harmonica.IGRF14 attribute)</a>
+</li>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.remanent_mag">remanent_mag (harmonica.Ellipsoid attribute)</a>
+</li>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.rotation_matrix">rotation_matrix (harmonica.Ellipsoid attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -720,8 +870,6 @@ document.write(`
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.set_fit_request">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.set_params">set_params() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -730,6 +878,8 @@ document.write(`
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.set_params">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.EquivalentSources.html#harmonica.EquivalentSources.set_predict_request">set_predict_request() (harmonica.EquivalentSources method)</a>
 
       <ul>
@@ -746,6 +896,26 @@ document.write(`
         <li><a href="api/generated/harmonica.EquivalentSourcesSph.html#harmonica.EquivalentSourcesSph.set_score_request">(harmonica.EquivalentSourcesSph method)</a>
 </li>
       </ul></li>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.shape">shape (harmonica.DatasetAccessorPrismLayer attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.shape">(harmonica.DatasetAccessorTesseroidLayer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.size">size (harmonica.DatasetAccessorPrismLayer attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.size">(harmonica.DatasetAccessorTesseroidLayer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.spacing">spacing (harmonica.DatasetAccessorPrismLayer attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.DatasetAccessorTesseroidLayer.html#harmonica.DatasetAccessorTesseroidLayer.spacing">(harmonica.DatasetAccessorTesseroidLayer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.susceptibility">susceptibility (harmonica.Ellipsoid attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -761,7 +931,11 @@ document.write(`
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.to_pyvista">to_pyvista() (harmonica.DatasetAccessorPrismLayer method)</a>
+
+      <ul>
+        <li><a href="api/generated/harmonica.Ellipsoid.html#harmonica.Ellipsoid.to_pyvista">(harmonica.Ellipsoid method)</a>
 </li>
+      </ul></li>
       <li><a href="api/generated/harmonica.total_field_anomaly.html#harmonica.total_field_anomaly">total_field_anomaly() (in module harmonica)</a>
 </li>
       <li><a href="api/generated/harmonica.total_gradient_amplitude.html#harmonica.total_gradient_amplitude">total_gradient_amplitude() (in module harmonica)</a>
@@ -772,6 +946,8 @@ document.write(`
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/harmonica.filters.unpad.html#harmonica.filters.unpad">unpad() (in module harmonica.filters)</a>
+</li>
       <li><a href="api/generated/harmonica.DatasetAccessorPrismLayer.html#harmonica.DatasetAccessorPrismLayer.update_top_bottom">update_top_bottom() (harmonica.DatasetAccessorPrismLayer method)</a>
 
       <ul>
@@ -814,6 +990,10 @@ document.write(`
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">
@@ -823,7 +1003,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Aug 12, 2024.
+  Last updated on Nov 13, 2026.
   <br/>
 </p>
   </div>
@@ -841,8 +1021,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
 
   <footer class="bd-footer">
   </footer>
