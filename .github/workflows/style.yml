@@ -6,13 +6,18 @@
 #
 name: code-style
 
-# Only build PRs and the main branch. Pushes to branches will only be built
-# when a PR is opened.
+# Only run on main or when relevant sources where edited in PRs.
 on:
   pull_request:
   push:
-    branches:
-      - main
+    paths:
+      - src/**
+      - test/**
+      - doc/conf.py
+      - pyproject.toml
+      - env/requirements-style.txt
+      - .github/workflows/style.yml
+      - Makefile
 
 permissions: {}
 
