@@ -9,7 +9,6 @@ name: documentation
 # Only run on main or when relevant sources where edited in PRs.
 on:
   pull_request:
-  push:
     paths:
       - doc/**
       - src/**
@@ -17,6 +16,9 @@ on:
       - .github/environment.yml
       - .github/workflows/docs.yml
       - Makefile
+  push:
+    branches:
+      - main
 
 permissions: {}
 
