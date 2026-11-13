@@ -6,30 +6,46 @@
 #
 name: code-style
 
-# Only build PRs and the main branch. Pushes to branches will only be built
-# when a PR is opened.
+# Only run on main or when relevant sources where edited in PRs.
 on:
   pull_request:
   push:
-    branches:
-      - main
+    paths:
+      - src/**
+      - test/**
+      - doc/conf.py
+      - pyproject.toml
+      - env/requirements-style.txt
+      - .github/workflows/style.yml
+      - Makefile
 
 permissions: {}
 
 ###############################################################################
 jobs:
-  format:
+  check:
+    name: format and linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
         with:
           python-version: "3.15"
+
+      - name: Get the pip cache folder
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup caching for pip packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('env/requirements-style.txt') }}
 
       - name: Install requirements
         run: pip install -r env/requirements-style.txt
@@ -37,27 +53,5 @@ jobs:
       - name: List installed packages
         run: pip freeze
 
-      - name: Check code format
-        run: make check-format
-
-  style:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Setup Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.15"
-
-      - name: Install requirements
-        run: pip install -r env/requirements-style.txt
-
-      - name: List installed packages
-        run: pip freeze
-
-      - name: Check code style
-        run: make check-style
+      - name: Check code format and lint
+        run: make check
