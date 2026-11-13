@@ -9,7 +9,6 @@ name: test
 # Only run on main or when relevant sources where edited in PRs.
 on:
   pull_request:
-  push:
     paths:
       - src/**
       - test/**
@@ -18,6 +17,9 @@ on:
       - env/requirements-tests.txt
       - .github/workflows/test.yml
       - Makefile
+  push:
+    branches:
+      - main
 
 permissions: {}
 
