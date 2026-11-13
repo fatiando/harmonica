@@ -42,7 +42,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -58,7 +58,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup caching for conda packages
-        uses: actions/cache@v6
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ env.PYTHON }}-${{ hashFiles('.github/environment.yml') }}
@@ -98,7 +98,7 @@ jobs:
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
         if: success()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
