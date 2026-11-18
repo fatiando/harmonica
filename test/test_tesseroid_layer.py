@@ -382,7 +382,6 @@ def test_nonans_tesseroid_mask_property(
     npt.assert_allclose(mask, expected_mask)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_tesseroid_layer_gravity(field, dummy_layer):
     """
@@ -407,7 +406,6 @@ def test_tesseroid_layer_gravity(field, dummy_layer):
     )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_tesseroid_layer_gravity_surface_nans(
     field, dummy_layer, tesseroid_layer_with_holes
@@ -438,7 +436,6 @@ def test_tesseroid_layer_gravity_surface_nans(
     )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_tesseroid_layer_gravity_density_nans(
     field, dummy_layer, tesseroid_layer_with_holes
@@ -470,7 +467,6 @@ def test_tesseroid_layer_gravity_density_nans(
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-@pytest.mark.use_numba
 def test_progress_bar(dummy_layer):
     """
     Check if forward gravity results with and without progress bar match.

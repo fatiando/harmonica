@@ -25,7 +25,6 @@ except ImportError:  # pragma: no cover
     ProgressBar = None
 
 
-@pytest.mark.use_numba
 def test_distance():
     """Test if computed is distance is right."""
     # Cartesian coordinate system

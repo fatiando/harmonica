@@ -16,8 +16,6 @@ import verde as vd
 
 from harmonica import EquivalentSourcesSph, point_gravity
 
-from .utils import run_only_with_numba
-
 
 @pytest.fixture(name="region")
 def fixture_region():
@@ -69,8 +67,7 @@ def fixture_data_small(points, masses, coordinates_small):
     )
 
 
-@run_only_with_numba
-def test_equivalent_sources_spherical():  # pragma: no cover
+def test_equivalent_sources_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid.
@@ -223,8 +220,7 @@ def test_equivalent_sources_spherical_no_projection():
         eqs.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
 
 
-@run_only_with_numba
-def test_equivalent_sources_spherical_parallel():  # pragma: no cover
+def test_equivalent_sources_spherical_parallel():
     """
     Check predictions when parallel is enabled and disabled.
     """

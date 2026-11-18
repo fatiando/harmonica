@@ -33,8 +33,6 @@ from harmonica._forward.tesseroid_gravity import (
 )
 from harmonica.constants import GRAVITATIONAL_CONST
 
-from .utils import run_only_with_numba
-
 try:
     from numba_progress import ProgressBar
 except ImportError:  # pragma: no cover
@@ -45,7 +43,6 @@ except ImportError:  # pragma: no cover
 ACCURACY_THRESHOLD = 1e-3
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_single_tesseroid(field, radial_discretization):
@@ -65,7 +62,6 @@ def test_single_tesseroid(field, radial_discretization):
     )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_tesseroid_parallel(field, radial_discretization):
@@ -220,7 +216,6 @@ def test_invalid_tesseroid():
         _check_tesseroids(np.atleast_2d([-150, 300, s, n, bottom, top]))
 
 
-@pytest.mark.use_numba
 def test_disable_checks():
     """Check if the disable_checks flag works properly."""
     valid_tesseroid = [0.0, 10.0, 0.0, 10.0, 10.0, 20.0]
@@ -247,7 +242,6 @@ def test_disable_checks():
 class TestPointInsideTesseroid:
     """Test checks for points inside tesseroids."""
 
-    @pytest.mark.use_numba
     def test_points_outside_tesseroid(self):
         """Check if error is not raised when no point is inside a tesseroid."""
         points = np.array(
@@ -266,7 +260,6 @@ class TestPointInsideTesseroid:
         tesseroid = np.atleast_2d([-10, 10, -10, 10, 100, 200])
         check_points_outside_tesseroids(points, tesseroid)
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("points", [[0, 0, 150], [360, 0, 150]])
     def test_point_inside_tesseroid(self, points):
         """Check if error is raised when point fall inside the tesseroid."""
@@ -276,7 +269,6 @@ class TestPointInsideTesseroid:
         with pytest.raises(ValueError, match=msg):
             check_points_outside_tesseroids(points, tesseroid)
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize(
         ("point", "tesseroid"),
         [
@@ -292,7 +284,6 @@ class TestPointInsideTesseroid:
         with pytest.raises(ValueError, match=msg):
             check_points_outside_tesseroids(point, tesseroid)
 
-    @pytest.mark.use_numba
     def test_multiple_points_and_tesseroids(self):
         """Check if error is raised with multiple points and tesseroids."""
         tesseroids = np.atleast_2d(
@@ -314,7 +305,6 @@ class TestPointInsideTesseroid:
             check_points_outside_tesseroids(points, tesseroids)
 
 
-@pytest.mark.use_numba
 def test_stack_overflow_on_adaptive_discretization():
     """Test if _adaptive_discretization raises OverflowError on stack overflow."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 0.5, 1.0])
@@ -374,7 +364,6 @@ def test_discard_null_tesseroids():
 # --------------------------------------
 # Test tesseroid distance and dimensions
 # --------------------------------------
-@pytest.mark.use_numba
 def test_distance_tesseroid_point():
     """Test distance between tesseroid and computation point."""
     ellipsoid = boule.WGS84
@@ -409,7 +398,6 @@ def test_distance_tesseroid_point():
     npt.assert_allclose(_distance_tesseroid_point(point, tesseroid), distance)
 
 
-@pytest.mark.use_numba
 def test_tesseroid_dimensions():
     """Test calculation of tesseroid dimensions."""
     # Tesseroid on equator
@@ -462,7 +450,6 @@ def test_longitude_continuity_equivalent_tesseroids(field):
 # ---------------------
 # Test tesseroid splits
 # ---------------------
-@pytest.mark.use_numba
 def test_split_tesseroid():
     """Test splitting of a tesseroid on every direction."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
@@ -482,7 +469,6 @@ def test_split_tesseroid():
     assert not (splitted[0, radial_indexes] == splitted[:, radial_indexes]).all()
 
 
-@pytest.mark.use_numba
 def test_split_tesseroid_only_longitude():
     """Test splitting of a tesseroid only on longitude."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
@@ -508,7 +494,6 @@ def test_split_tesseroid_only_longitude():
     npt.assert_allclose(lon_splitted[1], [(e + w) / 2, e])
 
 
-@pytest.mark.use_numba
 def test_split_tesseroid_only_latitude():
     """Test splitting of a tesseroid only on latitude."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
@@ -534,7 +519,6 @@ def test_split_tesseroid_only_latitude():
     npt.assert_allclose(lat_splitted[1], [(n + s) / 2, n])
 
 
-@pytest.mark.use_numba
 def test_split_tesseroid_only_radius():
     """Test splitting of a tesseroid only on radius."""
     lon_indexes, lat_indexes, radial_indexes = [0, 1], [2, 3], [4, 5]
@@ -560,7 +544,6 @@ def test_split_tesseroid_only_radius():
     npt.assert_allclose(radial_splitted[1], [(top + bottom) / 2, top])
 
 
-@pytest.mark.use_numba
 def test_split_tesseroid_only_horizontal():
     """Test splitting of a tesseroid on horizontal directions."""
     radial_indexes = [4, 5]
@@ -581,9 +564,8 @@ def test_split_tesseroid_only_horizontal():
 # ----------------------------
 # Test adaptive discretization
 # ----------------------------
-@run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
-def test_adaptive_discretization_on_radii(radial_discretization):  # pragma: no cover
+def test_adaptive_discretization_on_radii(radial_discretization):
     """Test if closer computation points increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     distance_size_ratio = 10
@@ -612,11 +594,10 @@ def test_adaptive_discretization_on_radii(radial_discretization):  # pragma: no 
         assert number_of_splits[i - 1] >= number_of_splits[i]
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("radial_discretization", [True, False])
 def test_adaptive_discretization_vs_distance_size_ratio(
     radial_discretization,
-):  # pragma: no cover
+):
     """Test if higher distance-size-ratio increase the tesseroid discretization."""
     tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, 1.0, 10.0])
     coordinates = np.array([0.0, 0.0, 10.2])
@@ -638,8 +619,7 @@ def test_adaptive_discretization_vs_distance_size_ratio(
         assert number_of_splits[i - 1] <= number_of_splits[i]
 
 
-@run_only_with_numba
-def test_two_dimensional_adaptive_discretization():  # pragma: no cover
+def test_two_dimensional_adaptive_discretization():
     """
     Test if 2D adaptive discretization produces no splits on radial direction.
     """
@@ -661,9 +641,7 @@ def test_two_dimensional_adaptive_discretization():  # pragma: no cover
 # ------------------------------------------------------------------
 # Compare numerical result vs analytical solution of spherical shell
 # ------------------------------------------------------------------
-def spherical_shell_analytical(
-    top, bottom, density, radius
-):  # pragma: no cover (only used by @run_only_with_numba tests)
+def spherical_shell_analytical(top, bottom, density, radius):
     """
     Compute analytical solution of gravity fields for an
     homogeneous spherical shell.
@@ -679,9 +657,8 @@ def spherical_shell_analytical(
     return analytical
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
-def test_spherical_shell_two_dim_adaptive_discret(field):  # pragma: no cover
+def test_spherical_shell_two_dim_adaptive_discret(field):
     """
     Compare numerical result with analytical solution for
     2D adaptive discretization.
@@ -725,12 +702,9 @@ def test_spherical_shell_two_dim_adaptive_discret(field):  # pragma: no cover
         )
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [10, 100, 1e3, 1e4, 1e5])
-def test_spherical_shell_three_dim_adaptive_discret(
-    thickness, field
-):  # pragma: no cover
+def test_spherical_shell_three_dim_adaptive_discret(thickness, field):
     """
     Compare numerical result with analytical solution for
     3D adaptive discretization.
@@ -794,7 +768,6 @@ class TestProgressBar:
         return coordinates
 
     @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["potential", "g_z"])
     def test_progress_bar(self, coordinates, tesseroids, densities, field):
         """
