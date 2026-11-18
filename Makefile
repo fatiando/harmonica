@@ -1,6 +1,5 @@
 # Build, package, test, and clean
-PROJECT=harmonica
-STYLE_CHECK_FILES=src/$(PROJECT) test doc
+STYLE_CHECK_FILES=src test doc
 GITHUB_ACTIONS=.github/workflows
 
 .PHONY: build install test test_coverage test_numba format check check-format check-style check-actions clean
@@ -27,10 +26,10 @@ install:
 test: test_coverage test_numba
 
 test_coverage:
-	NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --verbose --cov --cov-config="pyproject.toml" --doctest-modules --doctest-continue-on-failure src/$(PROJECT) test
+	NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --cov
 
 test_numba:
-	NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest --verbose --doctest-modules --doctest-continue-on-failure -m use_numba src/$(PROJECT) test
+	NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest -m use_numba
 
 format:
 	ruff check --select I --fix $(STYLE_CHECK_FILES) # fix isort errors
@@ -50,7 +49,10 @@ check-actions:
 	zizmor $(GITHUB_ACTIONS)
 
 clean:
-	find . -name "*.pyc" -exec rm -v {} \;
-	find . -name ".coverage.*" -exec rm -v {} \;
-	rm -rvf build dist MANIFEST *.egg-info __pycache__ .coverage .cache .pytest_cache $(PROJECT)/_version.py
-	rm -rvf dask-worker-space
+	find . -name "*.pyc" -exec rm -v "{}" \;
+	find . -name "*.orig" -exec rm -v "{}" \;
+	find . -name ".coverage.*" -exec rm -v "{}" \;
+	find . -name "_version.py" -exec rm -v "{}" \;
+	find . -name "*.egg-info" -type d -exec rm -vr "{}" \; -prune
+	find . -name "__pycache__" -type d -exec rm -vr "{}" \; -prune
+	rm -rvf build dist MANIFEST .coverage .cache .pytest_cache
