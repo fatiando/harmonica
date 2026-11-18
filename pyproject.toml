@@ -145,10 +145,7 @@ convention = "numpy"
 
 [tool.pytest.ini_options]
 doctest_optionflags = "NUMBER"
-markers = [
-    "use_numba: mark test functions that call Numba jitted functions"
-]
-addopts = "--verbose --doctest-modules --doctest-continue-on-failure"
+addopts = "--verbose --cov --doctest-modules --doctest-continue-on-failure"
 testpaths = [
     "test",
     "src",

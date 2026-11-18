@@ -2,7 +2,7 @@
 STYLE_CHECK_FILES=src test doc
 GITHUB_ACTIONS=.github/workflows
 
-.PHONY: build install test test_coverage test_numba format check check-format check-style check-actions clean
+.PHONY: build help install test format check check-format check-style check-actions clean
 
 help:
 	@echo "Commands:"
@@ -15,21 +15,14 @@ help:
 	@echo "  clean     clean up build and generated files"
 	@echo ""
 
-.PHONY: build, install, test, test_coverage, test_numba, format, check, check-format, check-style, check-actions, clean
-
 build:
 	python -m build .
 
 install:
 	python -m pip install --no-deps -e .
 
-test: test_coverage test_numba
-
-test_coverage:
-	NUMBA_DISABLE_JIT=1 MPLBACKEND='agg' pytest --cov
-
-test_numba:
-	NUMBA_DISABLE_JIT=0 MPLBACKEND='agg' pytest -m use_numba
+test:
+	NUMBA_JIT_COVERAGE=1 pytest
 
 format:
 	ruff check --select I --fix $(STYLE_CHECK_FILES) # fix isort errors
