@@ -39,7 +39,7 @@ jobs:
     env:
       REQUIREMENTS: env/requirements-docs.txt env/requirements-build.txt
       ENSAIO_DATA_FROM_GITHUB: true
-      PYTHON: "3.14"
+      PYTHON: "3.15"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE

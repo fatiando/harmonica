@@ -37,6 +37,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      # Use Python 3.14 for now since VTK 9 is not available in conda-forge
+      # for Python 3.15 yet.
       PYTHON: "3.14"
       ENSAIO_DATA_FROM_GITHUB: true
 
