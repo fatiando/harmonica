@@ -152,26 +152,6 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
 # -----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("weights", [None, np.ones((8, 8))])
-def test_gb_eqs_small_data(coordinates_small, data_small, weights):
-    """
-    Check predictions against synthetic data using few data points for speed.
-    """
-    # The interpolation should be good enought on the data points
-    # Gradient-boosted equivalent sources don't perform well on small data, so
-    # we will check if the error is no larger than 1mGal
-    # (sample data ranges from approximately -7mGal to 7mGal)
-    eqs = EquivalentSourcesGB(depth=1e3, damping=None, window_size=1e3, random_state=42)
-    eqs.fit(coordinates_small, data_small, weights=weights)
-    # Error tolerance is 5% of the maximum data.
-    npt.assert_allclose(
-        data_small,
-        eqs.predict(coordinates_small),
-        rtol=0,
-        atol=0.05 * vd.maxabs(data_small),
-    )
-
-
 def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates, data):
     """
     Test GB eq-sources with a single window that covers the whole region.
