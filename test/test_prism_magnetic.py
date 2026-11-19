@@ -62,32 +62,9 @@ class TestSerialVsParallel:
     """
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
-    def test_prisms_parallel_vs_serial_no_numba(self, field):
-        """
-        Check results of parallelized and serials runs.
-
-        Run a small problem with Numba disable to count for test coverage.
-        """
-        prisms = [
-            [-100, 0, -100, 0, -10, 0],
-            [0, 100, -100, 0, -10, 0],
-        ]
-        magnetizations = ([1.0, 1.0], [1.0, -1.0], [1.0, 5.0])
-        coordinates = ([0, 10], [0, 10], [0, 10])
-        parallel = prism_magnetic(
-            coordinates, prisms, magnetizations, field=field, parallel=True
-        )
-        serial = prism_magnetic(
-            coordinates, prisms, magnetizations, field=field, parallel=False
-        )
-        npt.assert_allclose(parallel, serial)
-
-    @pytest.mark.parametrize("field", VALID_FIELDS)
     def test_prisms_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs.
-
-        Run a large problem only with Numba enabled.
         """
         prisms = [
             [-100, 0, -100, 0, -10, 0],

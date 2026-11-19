@@ -45,25 +45,6 @@ ACCURACY_THRESHOLD = 1e-3
 
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("radial_discretization", [True, False])
-def test_single_tesseroid(field, radial_discretization):
-    """Test single tesseroid for achieving coverage when Numba is disabled."""
-    ellipsoid = boule.WGS84
-    top = ellipsoid.mean_radius
-    bottom = top - 1e3
-    tesseroid = np.array([-10.0, 10.0, -10.0, 10.0, bottom, top])
-    density = 1000.0
-    coordinates = [0.0, 0.0, top + 100]
-    tesseroid_gravity(
-        coordinates,
-        tesseroid,
-        density,
-        radial_adaptive_discretization=radial_discretization,
-        field=field,
-    )
-
-
-@pytest.mark.parametrize("field", ["potential", "g_z"])
-@pytest.mark.parametrize("radial_discretization", [True, False])
 def test_tesseroid_parallel(field, radial_discretization):
     """Compare tesseroids in parallel with tesseroids in serial."""
     ellipsoid = boule.WGS84
