@@ -9,10 +9,10 @@ Test forward modelling for tesseroids with variable density.
 """
 
 import bordado as bd
+import numba
 import numpy as np
 import numpy.testing as npt
 import pytest
-from numba import jit
 
 import harmonica
 from harmonica import tesseroid_gravity
@@ -101,7 +101,7 @@ def fixture_quadratic_density(quadratic_params):
     """
     factor, vertex_radius, vertex_density = quadratic_params
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def density(radius):
         """Quadratic density function."""
         return factor * (radius - vertex_radius) ** 2 + vertex_density
@@ -117,7 +117,7 @@ def fixture_straight_line_analytic(bottom, top, quadratic_density):
     density_bottom, density_top = quadratic_density(bottom), quadratic_density(top)
     slope = (density_top - density_bottom) / (top - bottom)
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def line(radius):
         return slope * (radius - bottom) + density_bottom
 
@@ -203,7 +203,7 @@ def test_density_minmax_exponential_function(bottom, top):
     thickness = top - bottom
     b_factor = 50
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density.
@@ -284,7 +284,7 @@ def test_density_based_discret_linear_density():
     w, e, s, n, bottom, top = -3, 2, -4, 5, 30, 50
     tesseroid = [w, e, s, n, bottom, top]
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def linear_density(radius):
         """Define a dummy linear density."""
         return 3 * radius + 2
@@ -332,7 +332,7 @@ def test_single_tesseroid_against_constant_density(field):
     density = 2900.0
 
     # Define a constant density
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def constant_density(
         radius,  # noqa: ARG001
         # the radius argument is needed for the density function
@@ -456,7 +456,7 @@ def test_spherical_shell_linear_density(field, thickness):  # pragma: no cover
     slope = (density_outer - density_inner) / (top - bottom)
     constant_term = density_outer - slope * top
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def linear_density(radius):
         """
         Create a dummy linear density.
@@ -500,7 +500,7 @@ def test_spherical_shell_exponential_density(
     a_factor = (density_inner - density_outer) / (1 - np.exp(-b_factor))
     constant_term = density_inner - a_factor
 
-    @jit(nopython=True)
+    @numba.jit(nopython=True)
     def exponential_density(radius):
         """
         Create a dummy exponential density.
@@ -542,7 +542,7 @@ class TestProgressBar:
     def densities(self):
         """Sample variable density densities."""
 
-        @jit(nopython=True)
+        @numba.jit(nopython=True)
         def density(r):
             return r
 

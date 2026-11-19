@@ -10,8 +10,8 @@ Utilities for forward modelling.
 
 import contextlib
 
+import numba
 import numpy as np
-from numba import jit
 from scipy.spatial.transform import Rotation
 
 
@@ -87,7 +87,7 @@ def check_coordinate_system(
         raise ValueError(msg)
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def distance_cartesian(point_p, point_q):
     """
     Calculate the distance between two points given in Cartesian coordinates.
@@ -118,7 +118,7 @@ def distance_cartesian(point_p, point_q):
     return dist
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def distance_spherical(point_p, point_q):
     """
     Calculate the distance between two points in spherical coordinates.
@@ -160,7 +160,7 @@ def distance_spherical(point_p, point_q):
     return dist
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def distance_spherical_core(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):

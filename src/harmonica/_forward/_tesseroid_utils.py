@@ -8,14 +8,14 @@
 Utils functions for tesseroid forward modelling.
 """
 
+import numba
 import numpy as np
-from numba import jit
 from numpy.polynomial.legendre import leggauss
 
 from .utils import distance_spherical
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def gauss_legendre_quadrature(
     longitude,
     cosphi,
@@ -146,7 +146,7 @@ def glq_nodes_weights(glq_degrees):
     return glq_nodes, glq_weights
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _adaptive_discretization(
     coordinates,
     tesseroid,
@@ -236,7 +236,7 @@ def _adaptive_discretization(
     return n_splits
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     """
     Split tesseroid along each dimension.
@@ -259,7 +259,7 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     return stack_top
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _tesseroid_dimensions(tesseroid):
     """
     Calculate the dimensions of the tesseroid.
@@ -275,7 +275,7 @@ def _tesseroid_dimensions(tesseroid):
     return l_lon, l_lat, l_rad
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _distance_tesseroid_point(coordinates, tesseroid):
     """
     Distance between a computation point and the center of a tesseroid.
@@ -448,7 +448,7 @@ def check_points_outside_tesseroids(coordinates, tesseroids):
         raise ValueError(err_msg)
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _check_points_outside_tesseroids(coordinates, tesseroids):
     """
     Check if observation points fall inside tesseroids.
