@@ -319,6 +319,213 @@ topography.
    fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
    fig.show()
 
+
+Terrain correction in spherical coordinates
+-------------------------------------------
+
+So far we computed the terrain effect by projecting the topography grid and
+the observation points to plain Cartesian coordinates and approximating the
+topographic masses with rectangular prisms.
+On regional to global scales the curvature of the Earth cannot be neglected:
+the projection distorts the geometry of the topographic masses and the
+computed terrain effect accumulates errors.
+In such cases we can forward model the topographic masses directly in
+geocentric spherical coordinates using tesseroids (spherical prisms), which
+take the curvature of the Earth into account.
+
+We can build a model of the topographic masses through the
+:func:`harmonica.tesseroid_layer` function.
+Unlike :func:`harmonica.prism_layer`, its ``surface`` and ``reference``
+arguments must be passed as **radii** measured from the center of the Earth,
+not as heights above a reference level.
+We can obtain the radii of the surface of the reference ellipsoid at each
+latitude with :meth:`boule.Ellipsoid.geocentric_radius` and add the
+topographic heights to them:
+
+.. jupyter-execute::
+
+   import boule as bl
+
+   ellipsoid = bl.WGS84
+
+   longitude, latitude = np.meshgrid(topography.longitude, topography.latitude)
+   reference = ellipsoid.geocentric_radius(latitude)
+   surface = reference + topography.values
+
+We will assign the same densities we used for the layer of prisms and define
+the layer of tesseroids:
+
+.. jupyter-execute::
+
+   density = np.where(topography.values >= 0, 2670, 1040 - 2670)
+
+   tesseroids = hm.tesseroid_layer(
+       coordinates=(topography.longitude, topography.latitude),
+       surface=surface,
+       reference=reference,
+       properties={"density": density},
+   )
+   tesseroids
+
+.. note::
+
+   We are using the geodetic latitude of the topography grid as the latitude
+   of the tesseroids, which live in geocentric spherical coordinates.
+   This assumes the difference between the two latitudes (up to 0.2 degrees)
+   has no significant effect on the terrain correction.
+   Converting the grid to geocentric spherical coordinates would avoid the
+   assumption, but a regular grid in geodetic coordinates is not regular in
+   spherical ones, so the topography would have to be regridded first.
+
+The radial coordinate of the observation points must be expressed in the same
+way as the boundaries of the layer: as radii from the center of the Earth.
+We will compute them the same way we defined the ``surface`` of the layer, by
+adding the observation heights to the geocentric radius of the ellipsoid at
+each latitude.
+This keeps the observation points consistent with the model of the topographic
+masses:
+
+.. jupyter-execute::
+
+   radius = ellipsoid.geocentric_radius(data.latitude) + data.height_geometric_m
+
+Tesseroid forward modelling requires every computation point to be located
+outside of the tesseroids.
+Since our observations were taken on the terrain surface, some of them fall
+below the top of the tesseroid that contains them: the tops of the tesseroids
+are given by the topography grid, which averages the terrain over each cell,
+while the observation heights were measured at each station.
+Rather than moving the observation points, we will trust the measured heights
+and lower the top of every tesseroid that contains a station below it to the
+radius of that station.
+A station that sits exactly on the boundary between two tesseroids belongs to
+both, so we look up the tesseroids on every side of each station (shifting its
+coordinates by far less than their precision):
+
+.. jupyter-execute::
+
+   indices = np.arange(tesseroids.top.size).reshape(tesseroids.top.shape)
+   cells = tesseroids.top.copy(data=indices)
+   lowest_station = np.full(tesseroids.top.size, np.inf)
+   shift = 1e-9
+   for shift_longitude in (-shift, shift):
+       for shift_latitude in (-shift, shift):
+           index = cells.sel(
+               longitude=xr.DataArray(data.longitude + shift_longitude),
+               latitude=xr.DataArray(data.latitude + shift_latitude),
+               method="nearest",
+           )
+           np.minimum.at(lowest_station, index.values, radius)
+   lowest_station = lowest_station.reshape(tesseroids.top.shape)
+
+   surface = np.minimum(surface, lowest_station)
+   tesseroids.tesseroid_layer.update_top_bottom(surface, reference)
+
+.. note::
+
+   The same situation arises with the layer of prisms, but the prism forward
+   model doesn't require the computation points to be outside of the prisms,
+   so it went unnoticed in the previous section: the mass above those
+   stations is still part of that model.
+
+Now we can compute the terrain effect through the
+:meth:`harmonica.DatasetAccessorTesseroidLayer.gravity` method:
+
+.. jupyter-execute::
+
+   coordinates_sph = (data.longitude, data.latitude, radius)
+   terrain_effect_spherical = tesseroids.tesseroid_layer.gravity(
+       coordinates_sph, field="g_z"
+   )
+
+And obtain a topography-free gravity disturbance that takes the curvature of
+the Earth into account:
+
+.. jupyter-execute::
+
+   topo_free_disturbance_spherical = (
+       data.gravity_disturbance_mgal - terrain_effect_spherical
+   )
+
+   cpt_lims = vd.minmax(topo_free_disturbance_spherical)
+
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="viridis", series=cpt_lims)
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      fill=topo_free_disturbance_spherical,
+      cmap=True,
+      style="c3p",
+      projection="M15c",
+      frame=['ag', 'WSen+ggray'],
+   )
+   fig.colorbar(
+      cmap=True,
+      frame=[
+         "a50f25",
+         "x+lTopography-free gravity disturbance (tesseroids)",
+         "y+lmGal",
+      ],
+   )
+   fig.show()
+
+Compare the terrain effects of prisms and tesseroids
+----------------------------------------------------
+
+Even though this region spans only a few degrees, the two models don't agree.
+Let's plot the difference between the terrain effects computed with prisms and
+with tesseroids:
+
+.. jupyter-execute::
+
+   difference = terrain_effect - terrain_effect_spherical
+
+   cpt_lims = vd.minmax(difference, min_percentile=5, max_percentile=95)
+
+   fig = pygmt.Figure()
+   pygmt.makecpt(cmap="viridis", series=cpt_lims)
+   fig.plot(
+      x=data.longitude,
+      y=data.latitude,
+      fill=difference,
+      cmap=True,
+      style="c3p",
+      projection="M15c",
+      frame=['ag', 'WSen+ggray'],
+   )
+   fig.colorbar(
+      cmap=True,
+      frame=["af", "x+lTerrain effect difference (prisms - tesseroids)", "y+lmGal"],
+   )
+   fig.show()
+
+The tesseroids produce a terrain effect that is systematically larger, by
+about 4.5 mGal on average, than the one produced by the prisms.
+This is the effect of the curvature of the Earth on the terrain correction: the
+topographic masses far from an observation point lie below the plane that is
+tangent to the Earth at that point, so they pull more strongly downwards than
+the same masses laid flat in a Cartesian model.
+Unlike the difference between the Bouguer and the topography-free
+disturbances, this one is fairly uniform: it depends on how much topography
+surrounds each station rather than on how rugged it is, so it grows with the
+extent of the topography grid and shrinks towards its edges.
+For this grid, which extends a few hundred kilometers around the observations,
+it amounts to 3-4% of the terrain effect.
+Whether that is negligible depends on the goal of the survey: it's comparable
+to the differences we found above between the Bouguer and the topography-free
+disturbances.
+
+.. hint::
+
+   This is the same effect that the classic Bullard B (curvature) correction
+   accounts for when applying a Bouguer correction with a spherical cap
+   instead of an infinite slab.
+
+The largest differences are found at stations that lie below the topography
+grid. The prism model still has topographic mass above them, which pulls
+upwards, while we removed it from the tesseroid model.
+
 ----
 
 .. grid:: 2
