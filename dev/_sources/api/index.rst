@@ -51,8 +51,15 @@ Define filters in the frequency domain.
     filters.gaussian_highpass_kernel
     filters.reduction_to_pole_kernel
 
-Use :func:`xrft.xrft.fft` and :func:`xrft.xrft.ifft` to apply Fast-Fourier
-Transforms and its inverse on :class:`xarray.DataArray`.
+FFT and padding functions that can be used with 2D :class:`xarray.DataArray`:
+
+.. autosummary::
+    :toctree: generated/
+
+    filters.fft
+    filters.ifft
+    filters.pad
+    filters.unpad
 
 Equivalent Sources
 ------------------
@@ -72,6 +79,7 @@ Gravity fields:
 .. autosummary::
     :toctree: generated/
 
+    ellipsoid_gravity
     point_gravity
     prism_gravity
     tesseroid_gravity
@@ -82,7 +90,15 @@ Magnetic fields:
     :toctree: generated/
 
     dipole_magnetic
+    ellipsoid_magnetic
     prism_magnetic
+
+Geometric bodies:
+
+.. autosummary::
+    :toctree: generated/
+
+    Ellipsoid
 
 Layers and meshes:
 
@@ -108,8 +124,17 @@ Source position estimation
 .. autosummary::
     :toctree: generated/
 
+    EulerInversion
     EulerDeconvolution
 
+
+Spherical Harmonics
+-------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    IGRF14
 
 Input and Output
 ----------------
@@ -137,3 +162,19 @@ Utilities
     magnetic_vec_to_angles
     magnetic_angles_to_vec
     total_field_anomaly
+
+Errors and Warnings
+-------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    errors.NoPhysicalPropertyWarning
+
+Type hints
+----------
+
+.. autosummary::
+   :toctree: generated/
+
+    typing.Coordinates

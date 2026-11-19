@@ -8,11 +8,11 @@
 Reduction to the pole of a magnetic anomaly grid
 ================================================
 """
+
 import ensaio
 import pygmt
 import verde as vd
 import xarray as xr
-import xrft
 
 import harmonica as hm
 
@@ -20,15 +20,6 @@ import harmonica as hm
 # Ensaio and load it with Xarray
 fname = ensaio.fetch_lightning_creek_magnetic(version=1)
 magnetic_grid = xr.load_dataarray(fname)
-
-# Pad the grid to increase accuracy of the FFT filter
-pad_width = {
-    "easting": magnetic_grid.easting.size // 3,
-    "northing": magnetic_grid.northing.size // 3,
-}
-# drop the extra height coordinate
-magnetic_grid_no_height = magnetic_grid.drop_vars("height")
-magnetic_grid_padded = xrft.pad(magnetic_grid_no_height, pad_width)
 
 # Define the inclination and declination of the region by the time of the data
 # acquisition (1990).
@@ -38,40 +29,39 @@ inclination, declination = -52.98, 6.51
 # that the sources share the same inclination and declination as the
 # geomagnetic field.
 rtp_grid = hm.reduction_to_pole(
-    magnetic_grid_padded, inclination=inclination, declination=declination
+    magnetic_grid,
+    inclination=inclination,
+    declination=declination,
+    magnetization_inclination=inclination,
+    magnetization_declination=declination,
 )
-
-# Unpad the reduced to the pole grid
-rtp_grid = xrft.unpad(rtp_grid, pad_width)
-
 # Show the reduced to the pole grid
 print("\nReduced to the pole magnetic grid:\n", rtp_grid)
-
 
 # Plot original magnetic anomaly and the reduced to the pole
 fig = pygmt.Figure()
 with fig.subplot(nrows=1, ncols=2, figsize=("28c", "15c"), sharey="l"):
-    # Make colormap for both plots (saturate it a little bit)
-    scale = 0.5 * vd.maxabs(magnetic_grid, rtp_grid)
-    pygmt.makecpt(cmap="polar+h", series=[-scale, scale], background=True)
+    # Make colormap for both plots
+    cpt_lim = vd.maxabs(magnetic_grid, rtp_grid, percentile=99.9)
+    pygmt.makecpt(cmap="balance+h0", series=[-cpt_lim, cpt_lim], background=True)
     with fig.set_panel(panel=0):
         # Plot magnetic anomaly grid
         fig.grdimage(
-            grid=magnetic_grid,
-            projection="X?",
-            cmap=True,
-        )
-        # Add colorbar
-        fig.colorbar(
-            frame='af+l"Magnetic anomaly [nT]"',
-            position="JBC+h+o0/1c+e",
+            grid=magnetic_grid, projection="X?", cmap=True, frame="+tMagnetic anomaly"
         )
     with fig.set_panel(panel=1):
         # Plot upward reduced to the pole grid
-        fig.grdimage(grid=rtp_grid, projection="X?", cmap=True)
-        # Add colorbar
-        fig.colorbar(
-            frame='af+l"Reduced to the pole [nT]"',
-            position="JBC+h+o0/1c+e",
+        fig.grdimage(
+            grid=rtp_grid,
+            projection="X?",
+            cmap=True,
+            frame="+tReduced to the pole",
         )
+    # Add colorbar
+    fig.colorbar(
+        cmap=True,
+        frame=["a1000f500", "x+lnT"],
+        position="n0/0+jTC+w12c/0.5c+h+o-0.5c/0.9c+e",
+    )
+
 fig.show()

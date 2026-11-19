@@ -6,11 +6,16 @@ Grid transformations
 --------------------
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -21,7 +26,7 @@ Grid transformations
   .. image:: /gallery/transformations/images/thumb/sphx_glr_reduction_to_pole_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_transformations_reduction_to_pole.py`
+  :doc:`/gallery/transformations/reduction_to_pole`
 
 .. raw:: html
 
@@ -38,7 +43,7 @@ Grid transformations
   .. image:: /gallery/transformations/images/thumb/sphx_glr_tga_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_transformations_tga.py`
+  :doc:`/gallery/transformations/tga`
 
 .. raw:: html
 
@@ -55,7 +60,7 @@ Grid transformations
   .. image:: /gallery/transformations/images/thumb/sphx_glr_tilt_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_transformations_tilt.py`
+  :doc:`/gallery/transformations/tilt`
 
 .. raw:: html
 
@@ -72,7 +77,7 @@ Grid transformations
   .. image:: /gallery/transformations/images/thumb/sphx_glr_upward_continuation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_transformations_upward_continuation.py`
+  :doc:`/gallery/transformations/upward_continuation`
 
 .. raw:: html
 
@@ -89,13 +94,15 @@ Grid transformations
   .. image:: /gallery/transformations/images/thumb/sphx_glr_upward_derivative_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_transformations_upward_derivative.py`
+  :doc:`/gallery/transformations/upward_derivative`
 
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Upward derivative of a regular grid</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

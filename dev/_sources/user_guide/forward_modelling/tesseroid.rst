@@ -36,6 +36,11 @@ boundaries in the following order: *west*, *east*, *south*, *north*, *bottom*,
 *top*, where the former four are its longitudinal and latitudinal boundaries in
 decimal degrees and the latter two are the two radii given in meters.
 
+These two radii represent the top and bottom surfaces of the tesseroid, and should be
+given as distances from the center of the Earth. Note this is different from the
+vertical boundaries used for **prisms** in Cartesian coordinates, which are given as
+heights above or below some reference level (e.g., mean sea level or a reference ellipsoid).
+
 .. note::
 
    The :func:`harmonica.tesseroid_gravity` numerically computed the
@@ -45,7 +50,7 @@ decimal degrees and the latter two are the two radii given in meters.
 
 
 Lets define a single tesseroid and compute the gravitational potential
-it generates on a regular grid of computation points located at 10 km  above
+it generates on a regular grid of computation points located at 10 km above
 its *top* boundary.
 
 Get the WGS84 reference ellipsoid from :mod:`boule` so we can obtain its mean
@@ -70,12 +75,12 @@ the *top* surface of the tesseroid:
 
 .. jupyter-execute::
 
-   import verde as vd
+   import bordado as bd
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + mean_radius,
+       non_dimensional_coords=100e3 + mean_radius,
    )
 
 Lets compute the *downward* component of the gravitational acceleration it
@@ -111,6 +116,8 @@ And finally plot the computed gravitational field
 .. jupyter-execute::
 
    import pygmt
+   import verde as vd
+
    grid = vd.make_xarray_grid(
       coordinates, gravity, data_names="gravity", extra_coords_names="extra")
 
@@ -127,6 +134,15 @@ And finally plot the computed gravitational field
 
    fig.colorbar(cmap=True, frame=["a200f50", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroid
+   fig.plot(
+      x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+      y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+      pen="1p,red",
+      label="Tesseroid boundary",
+   )
+   fig.legend()
 
    fig.show()
 
@@ -154,10 +170,10 @@ Compute their gravitational effect on a grid of computation points:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + mean_radius,
+       non_dimensional_coords=100e3 + mean_radius,
    )
    gravity = hm.tesseroid_gravity(coordinates, tesseroids, densities, field="g_z")
 
@@ -181,6 +197,20 @@ And plot the results:
 
    fig.colorbar(cmap=True, frame=["a1000f500", "x+lmGal"])
    fig.coast(shorelines="1p,black")
+
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
 
    fig.show()
 
@@ -235,10 +265,10 @@ above the mean Earth radius:
 
 .. jupyter-execute::
 
-   coordinates = vd.grid_coordinates(
+   coordinates = bd.grid_coordinates(
        region=[-80, -40, -50, -10],
        shape=(80, 80),
-       extra_coords=100e3 + ellipsoid.mean_radius,
+       non_dimensional_coords=100e3 + ellipsoid.mean_radius,
    )
 
 And compute the gravitational fields the tesseroids generate:
@@ -264,10 +294,212 @@ Finally, lets plot it:
          frame=["a", f"+t{title}"],
          cmap="viridis",
       )
-
    fig.colorbar(cmap=True, frame=["a200f100", "x+lmGal"])
    fig.coast(shorelines="1p,black")
 
+   # Plot edges of tesseroids
+   for i, tesseroid in enumerate(tesseroids):
+      if i == 0:
+         label="Tesseroid boundaries"
+      else:
+         label=None
+      fig.plot(
+         x=[tesseroid[0], tesseroid[1], tesseroid[1], tesseroid[0], tesseroid[0]],
+         y=[tesseroid[2], tesseroid[2], tesseroid[3], tesseroid[3], tesseroid[2]],
+         pen="1p,red",
+         label=label,
+      )
+   fig.legend()
+
+   fig.show()
+
+
+.. _tesseroid_layer:
+
+Tesseroid layer
+---------------
+
+A common use of tesseroids is to model geologic structures on regional or global
+scales, where the curvature of the Earth cannot be neglected. Harmonica offers the
+possibility to define a layer of tesseroids through the
+:func:`harmonica.tesseroid_layer` function: a regular grid of tesseroids of equal size
+along the longitudinal and latitudinal dimensions and with variable top and bottom
+boundaries.
+It returns a :class:`xarray.Dataset` with the coordinates of the centers of the
+tesseroids and their corresponding physical properties.
+
+The :class:`harmonica.DatasetAccessorTesseroidLayer` Dataset accessor can be used to
+obtain some properties of the layer like its shape and size or the boundaries of any
+tesseroid in the layer.
+Moreover, we can use the :meth:`harmonica.DatasetAccessorTesseroidLayer.gravity` method
+to compute the gravitational field of the tesseroid layer on any set of computation
+points.
+
+.. important::
+
+   Unlike the :func:`harmonica.prism_layer`, the ``surface`` and ``reference`` boundaries
+   of a tesseroid layer must be given as **radii** measured from the center of the Earth,
+   not as heights above a reference level.
+   We can use the :meth:`boule.Ellipsoid.geocentric_radius` method from :mod:`boule` to
+   obtain the radius of the reference ellipsoid at each latitude, and add our height values
+   to it.
+
+Let's create a simple tesseroid layer over a region in South America, whose top boundary
+will approximate a synthetic topography and whose bottom boundary will be set on the
+surface of the reference ellipsoid.
+We can start by getting the WGS84 reference ellipsoid from :mod:`boule` and defining the
+region of the layer and the horizontal dimensions of the tesseroids (in degrees):
+
+.. jupyter-execute::
+
+   import boule as bl
+
+   ellipsoid = bl.WGS84
+   region = (-80, -40, -50, -10)
+   spacing = 0.5
+
+Then we can define a regular grid where the centers of the tesseroids will fall:
+
+.. jupyter-execute::
+
+   import bordado as bd
+
+   longitude, latitude = bd.grid_coordinates(region=region, spacing=spacing)
+
+The bottom boundary of the layer (``reference``) will be the surface of the ellipsoid,
+so we compute its geocentric radius at each latitude:
+
+.. jupyter-execute::
+
+   reference = ellipsoid.geocentric_radius(latitude)
+
+We need to define a 2D array with the radii of the uppermost *surface* of the layer. We
+will build a synthetic topography and add it to the reference radii so that the ``surface``
+is also expressed as radii from the center of the Earth:
+
+.. jupyter-execute::
+
+   import numpy as np
+
+   max_height = 3e3
+   topography = (
+       max_height * np.sin(longitude * np.pi / 20) * np.cos(latitude * np.pi / 20)
+       + max_height
+   ) / 2
+   surface = reference + topography
+
+Since the ``surface`` is expressed as radii, its values are all close to the radius of
+the ellipsoid (around 6370 km), and the synthetic topography shows up as variations of
+a few kilometers around it. Let's plot it to see it more clearly:
+
+.. jupyter-execute::
+
+   import verde as vd
+
+   surface_grid = vd.make_xarray_grid(
+      (longitude, latitude),
+      surface,
+      data_names="surface",
+      dims=("latitude", "longitude"),
+   )
+   topography_grid = vd.make_xarray_grid(
+      (longitude, latitude),
+      topography,
+      data_names="topography",
+      dims=("latitude", "longitude"),
+   )
+
+   fig = pygmt.Figure()
+   gmt_projection = "M-60/-30/10c"
+   title = "Surface boundary of the tesseroid layer"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=region,
+         projection=gmt_projection,
+         grid=surface_grid.surface,
+         frame=["a", f"+t{title}"],
+         cmap="magma",
+      )
+   fig.colorbar(cmap=True, frame=["af", "x+lSurface radius", "y+lmeters"])
+   fig.coast(shorelines="1p,black")
+
+   fig.shift_origin(xshift="w+1.5c")
+
+   title = "Topography"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=region,
+         projection=gmt_projection,
+         grid=topography_grid.topography,
+         frame=["a", f"+t{title}"],
+         cmap="magma",
+      )
+   fig.colorbar(cmap=True, frame=["af", "x+lTopography", "y+lmeters"])
+   fig.coast(shorelines="1p,black")
+   fig.show()
+
+Let's assign the same density to each tesseroid through a 2D array with the same value:
+2670 kg per cubic meter.
+
+.. jupyter-execute::
+
+   density = np.full_like(surface, 2670.0)
+
+Now we can define the tesseroid layer:
+
+.. jupyter-execute::
+
+   import harmonica as hm
+
+   tesseroids = hm.tesseroid_layer(
+       coordinates=(longitude, latitude),
+       surface=surface,
+       reference=reference,
+       properties={"density": density},
+   )
+   tesseroids
+
+Let's define a grid of observation points located 10 km above the reference ellipsoid.
+Since the radius of the ellipsoid changes with latitude, we compute the radial coordinate
+of the observation points accordingly:
+
+.. jupyter-execute::
+
+   grid_longitude, grid_latitude = bd.grid_coordinates(region=region, spacing=spacing)
+   grid_radius = ellipsoid.geocentric_radius(grid_latitude) + 10e3
+   coordinates = (grid_longitude, grid_latitude, grid_radius)
+
+And compute the *downward* component of the gravitational acceleration generated by the
+tesseroid layer on them:
+
+.. jupyter-execute::
+
+   gravity = tesseroids.tesseroid_layer.gravity(coordinates, field="g_z")
+
+Finally, let's plot the gravitational field:
+
+.. jupyter-execute::
+
+   grid = vd.make_xarray_grid(
+      coordinates,
+      gravity,
+      data_names="gravity",
+      dims=("latitude", "longitude"),
+      extra_coords_names="radius",
+   )
+
+   fig = pygmt.Figure()
+   title = "Gravitational acceleration of a layer of tesseroids"
+   with pygmt.config(FONT_TITLE="12p"):
+      fig.grdimage(
+         region=region,
+         projection="M-60/-30/10c",
+         grid=grid.gravity,
+         frame=["a", f"+t{title}"],
+         cmap="viridis",
+      )
+   fig.colorbar(cmap=True, frame=["a100f50", "x+lmGal"])
+   fig.coast(shorelines="1p,black")
    fig.show()
 
 ----

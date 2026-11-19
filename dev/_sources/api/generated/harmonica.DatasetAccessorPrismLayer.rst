@@ -29,6 +29,35 @@ harmonica.DatasetAccessorPrismLayer
 
 
 
+
+
+Attributes
+----------
+
+
+
+.. autoattribute:: DatasetAccessorPrismLayer.boundaries
+
+
+
+.. autoattribute:: DatasetAccessorPrismLayer.dims
+
+
+
+.. autoattribute:: DatasetAccessorPrismLayer.shape
+
+
+
+.. autoattribute:: DatasetAccessorPrismLayer.size
+
+
+
+.. autoattribute:: DatasetAccessorPrismLayer.spacing
+
+
+
+
+
 ----
 
 .. include:: backreferences/harmonica.DatasetAccessorPrismLayer.examples

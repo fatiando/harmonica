@@ -21,13 +21,14 @@ which the windows are visited is randomized to improve convergence of the
 algorithm.
 
 Here we will produce a grid out of a portion of the ground gravity survey from
-South Africa (see :func:`harmonica.datasets.fetch_south_africa_gravity`) using
+South Africa (see :func:`ensaio.fetch_southern_africa_gravity`) using
 the gradient-boosted equivalent sources. This particlar dataset is not very
 large, in fact we could use the :class:`harmonica.EquivalentSources` instead.
 But we will use the :class:`harmonica.EquivalentSourcesGB` for illustrating how
 to use them on a small example.
 
 """
+
 import boule as bl
 import ensaio
 import pandas as pd
@@ -59,7 +60,7 @@ xy_region = vd.get_region((easting, northing))
 # Compute the gravity disturbance
 ellipsoid = bl.WGS84
 data["gravity_disturbance"] = data.gravity_mgal - ellipsoid.normal_gravity(
-    data.latitude, data.height_sea_level_m
+    (data.longitude, data.latitude, data.height_sea_level_m)
 )
 
 # Create the equivalent sources
@@ -114,15 +115,14 @@ fig = pygmt.Figure()
 
 title = "Observed gravity disturbance data"
 
-# Make colormap of data
-pygmt.makecpt(
-    cmap="vik",
-    series=(
-        -data.gravity_disturbance.quantile(0.99),
-        data.gravity_disturbance.quantile(0.99),
-    ),
-    background=True,
+# Get the 99th percentile of the absolute value to use as color scale limits
+maxabs = vd.maxabs(
+    data.gravity_disturbance,
+    percentile=99,
 )
+
+# Make colormap of data
+pygmt.makecpt(cmap="balance+h0", series=[-maxabs, maxabs], background=True)
 
 with pygmt.config(FONT_TITLE="14p"):
     fig.plot(
@@ -136,8 +136,6 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
-
 fig.shift_origin(xshift=fig_width + 1)
 
 title = "Gridded with gradient-boosted equivalent sources"
@@ -149,6 +147,10 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+fig.colorbar(
+    cmap=True,
+    frame=["x+lmGal"],
+    position="n0/0+jTC+w10c/0.5c+h+o-0.5c/0.9c",
+)
 
 fig.show()

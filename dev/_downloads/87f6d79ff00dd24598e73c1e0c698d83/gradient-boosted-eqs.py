@@ -17,7 +17,7 @@ data
 
 import boule as bl
 
-normal_gravity = bl.WGS84.normal_gravity(data.latitude, data.height_sea_level_m)
+normal_gravity = bl.WGS84.normal_gravity((data.longitude, data.latitude, data.height_sea_level_m))
 disturbance = data.gravity_mgal - normal_gravity
 
 
@@ -56,12 +56,13 @@ eqs.fit(coordinates, disturbance)
 # In[7]:
 
 
-import verde as vd
-region = vd.get_region(coordinates)
-grid_coords = vd.grid_coordinates(
+import bordado as bd
+
+region = bd.get_region((easting, northing))
+grid_coords = bd.grid_coordinates(
     region=region,
     spacing=5e3,
-    extra_coords=2.5e3,
+    non_dimensional_coords=2.5e3,
 )
 grid = eqs.grid(grid_coords, data_names=["gravity_disturbance"])
 grid
@@ -69,6 +70,8 @@ grid
 
 # In[8]:
 
+
+import verde as vd
 
 grid_masked = vd.distance_mask(coordinates, maxdist=50e3, grid=grid)
 
@@ -97,12 +100,16 @@ fig_width = fig_height * (e - w) / (n - s)
 fig_ratio = (n - s) / (fig_height / 100)
 fig_proj = f"x1:{fig_ratio}"
 
-maxabs = vd.maxabs(disturbance, grid_masked.gravity_disturbance)
+maxabs = vd.maxabs(disturbance, grid_masked.gravity_disturbance, percentile=99)
 
 fig = pygmt.Figure()
 
 # Make colormap of data
-pygmt.makecpt(cmap="polar+h0",series=(-maxabs, maxabs,))
+pygmt.makecpt(
+    cmap="balance+h0",
+    series=(-maxabs, maxabs),
+    background=True,
+)
 
 title = "Observed gravity disturbance data"
 with pygmt.config(FONT_TITLE="14p"):
@@ -116,7 +123,6 @@ with pygmt.config(FONT_TITLE="14p"):
         style="c0.1c",
         cmap=True,
     )
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
 
 fig.shift_origin(xshift=fig_width + 1)
 
@@ -128,7 +134,11 @@ with pygmt.config(FONT_TITLE="14p"):
         cmap=True,
     )
 
-fig.colorbar(cmap=True, frame=["a50f25", "x+lmGal"])
+fig.colorbar(
+  cmap=True,
+  frame=["a50f25", "x+lmGal"],
+  position=f"n0/0+jTC+w{fig_width*.75}c/0.5c+h+o-0.5c/1c+e",
+)
 
 fig.show()
 
