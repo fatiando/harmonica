@@ -11,9 +11,9 @@ Equivalent sources for generic harmonic functions in spherical coordinates.
 import warnings
 
 import bordado as bd
+import numba
 import numpy as np
 import verde.base as vdb
-from numba import jit
 from sklearn.utils.validation import check_is_fitted
 
 from .._forward.utils import distance_spherical
@@ -87,7 +87,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         *points* is specified.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
-        parallel through Numba's ``jit.prange``, reducing the computation time.
+        parallel through :func:`numba.prange`, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
 
     Attributes
@@ -409,7 +409,7 @@ class EquivalentSourcesSph(vdb.BaseGridder):
         raise NotImplementedError
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def greens_func_spherical(
     longitude, latitude, radius, point_longitude, point_latitude, point_radius
 ):

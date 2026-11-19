@@ -10,7 +10,7 @@ Utility functions for equivalent sources gridders.
 
 from warnings import warn
 
-from numba import jit, prange
+import numba
 
 
 def cast_fit_input(coordinates, data, weights, dtype):
@@ -62,7 +62,7 @@ def jacobian(coordinates, points, jac, greens_function):
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):  # pragma: no branch
+    for i in numba.prange(east.size):  # pragma: no branch
         for j in range(point_east.size):  # pragma: no branch
             jac[i, j] = greens_function(
                 east[i],
@@ -85,7 +85,7 @@ def predict(coordinates, points, coeffs, result, greens_function):
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):  # pragma: no branch
+    for i in numba.prange(east.size):  # pragma: no branch
         for j in range(point_east.size):  # pragma: no branch
             result[i] += coeffs[j] * greens_function(
                 east[i],
@@ -97,7 +97,7 @@ def predict(coordinates, points, coeffs, result, greens_function):
             )
 
 
-predict_numba_serial = jit(nopython=True)(predict)
-predict_numba_parallel = jit(nopython=True, parallel=True)(predict)
-jacobian_numba_serial = jit(nopython=True)(jacobian)
-jacobian_numba_parallel = jit(nopython=True, parallel=True)(jacobian)
+predict_numba_serial = numba.jit(nopython=True)(predict)
+predict_numba_parallel = numba.jit(nopython=True, parallel=True)(predict)
+jacobian_numba_serial = numba.jit(nopython=True)(jacobian)
+jacobian_numba_parallel = numba.jit(nopython=True, parallel=True)(jacobian)

@@ -8,8 +8,8 @@
 Forward modelling for tesseroids.
 """
 
+import numba
 import numpy as np
-from numba import jit, prange
 
 from ._tesseroid_utils import (
     _adaptive_discretization,
@@ -143,8 +143,8 @@ def tesseroid_gravity(
 
     >>> # Define a linear density function for the same tesseroid.
     >>> # It should be decorated with numba.njit
-    >>> from numba import jit
-    >>> @jit(nopython=True)
+    >>> import numba
+    >>> @numba.jit(nopython=True)
     ... def linear_density(radius):
     ...     density_top = 2670.
     ...     density_bottom = 3300.
@@ -302,7 +302,7 @@ def jit_tesseroid_gravity(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for i in prange(longitude.size):  # pragma: no branch
+    for i in numba.prange(longitude.size):  # pragma: no branch
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
@@ -405,7 +405,7 @@ def jit_tesseroid_gravity_variable_density(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for i in prange(longitude.size):  # pragma: no branch
+    for i in numba.prange(longitude.size):  # pragma: no branch
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
@@ -440,13 +440,13 @@ def jit_tesseroid_gravity_variable_density(
 
 
 # Define jitted versions of the forward modelling function
-jit_tesseroid_gravity_serial = jit(nopython=True)(jit_tesseroid_gravity)
-jit_tesseroid_gravity_parallel = jit(nopython=True, parallel=True)(
+jit_tesseroid_gravity_serial = numba.jit(nopython=True)(jit_tesseroid_gravity)
+jit_tesseroid_gravity_parallel = numba.jit(nopython=True, parallel=True)(
     jit_tesseroid_gravity
 )
-jit_tesseroid_gravity_variable_density_serial = jit(nopython=True)(
+jit_tesseroid_gravity_variable_density_serial = numba.jit(nopython=True)(
     jit_tesseroid_gravity_variable_density
 )
-jit_tesseroid_gravity_variable_density_parallel = jit(nopython=True, parallel=True)(
-    jit_tesseroid_gravity_variable_density
-)
+jit_tesseroid_gravity_variable_density_parallel = numba.jit(
+    nopython=True, parallel=True
+)(jit_tesseroid_gravity_variable_density)

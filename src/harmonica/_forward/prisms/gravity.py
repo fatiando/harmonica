@@ -10,6 +10,7 @@ Forward modelling for prisms.
 
 import warnings
 
+import numba
 import numpy as np
 from choclo.prism import (
     gravity_e,
@@ -28,7 +29,6 @@ from choclo.prism._utils import (
     is_point_on_northing_edge,
     is_point_on_upward_edge,
 )
-from numba import jit, prange
 
 from ..utils import initialize_progressbar
 from .utils import check_prisms
@@ -269,7 +269,7 @@ def _check_singular_points(coordinates, prisms, field):
         )
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_ee(coordinates, prisms):
     """
     Check observation points as singular points of g_ee.
@@ -304,7 +304,7 @@ def _any_singular_point_g_ee(coordinates, prisms):
     return False
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_nn(coordinates, prisms):
     """
     Check observation points as singular points of g_nn.
@@ -339,7 +339,7 @@ def _any_singular_point_g_nn(coordinates, prisms):
     return False
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_zz(coordinates, prisms):
     """
     Check observation points as singular points of g_zz.
@@ -374,7 +374,7 @@ def _any_singular_point_g_zz(coordinates, prisms):
     return False
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_en(coordinates, prisms):
     """
     Check observation points as singular points of g_en.
@@ -399,7 +399,7 @@ def _any_singular_point_g_en(coordinates, prisms):
     return False
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_ez(coordinates, prisms):
     """
     Check observation points as singular points of g_ez.
@@ -424,7 +424,7 @@ def _any_singular_point_g_ez(coordinates, prisms):
     return False
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def _any_singular_point_g_nz(coordinates, prisms):
     """
     Check observation points as singular points of g_nz.
@@ -521,7 +521,7 @@ def jit_prism_gravity(
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
-    for i in prange(easting.size):  # pragma: no branch
+    for i in numba.prange(easting.size):  # pragma: no branch
         for j in range(prisms.shape[0]):  # pragma: no branch
             out[i] += forward_func(
                 easting[i],
@@ -541,5 +541,5 @@ def jit_prism_gravity(
 
 
 # Define jitted versions of the forward modelling function
-jit_prism_gravity_serial = jit(nopython=True)(jit_prism_gravity)
-jit_prism_gravity_parallel = jit(nopython=True, parallel=True)(jit_prism_gravity)
+jit_prism_gravity_serial = numba.jit(nopython=True)(jit_prism_gravity)
+jit_prism_gravity_parallel = numba.jit(nopython=True, parallel=True)(jit_prism_gravity)

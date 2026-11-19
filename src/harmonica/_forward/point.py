@@ -8,6 +8,7 @@
 Forward modelling for point masses.
 """
 
+import numba
 import numpy as np
 from choclo.constants import GRAVITATIONAL_CONST
 from choclo.point import (
@@ -22,7 +23,6 @@ from choclo.point import (
     gravity_u,
     gravity_uu,
 )
-from numba import jit, prange
 
 from .utils import check_coordinate_system, distance_spherical_core
 
@@ -321,7 +321,7 @@ def get_kernel(coordinate_system, field):
 # ------------------------------------------
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def potential_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
@@ -338,7 +338,7 @@ def potential_spherical(
 #  -------------------
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def gravity_u_spherical(
     longitude, cosphi, sinphi, radius, longitude_p, cosphi_p, sinphi_p, radius_p
 ):
@@ -385,7 +385,7 @@ def point_mass_cartesian(
         field on the computation points. It could be one of the forward
         modelling functions in :mod:`choclo.point`.
     """
-    for i in prange(easting.size):  # pragma: no branch
+    for i in numba.prange(easting.size):  # pragma: no branch
         for j in range(easting_p.size):  # pragma: no branch
             out[i] += forward_func(
                 easting[i],
@@ -433,7 +433,7 @@ def point_mass_spherical(
     cosphi_p = np.cos(latitude_p)
     sinphi_p = np.sin(latitude_p)
     # Compute gravitational field
-    for i in prange(longitude.size):  # pragma: no branch
+    for i in numba.prange(longitude.size):  # pragma: no branch
         for j in range(longitude_p.size):  # pragma: no branch
             out[i] += masses[j] * kernel(
                 longitude[i],
@@ -448,7 +448,11 @@ def point_mass_spherical(
 
 
 # Define jitted versions of the forward modelling functions
-point_mass_cartesian_serial = jit(nopython=True)(point_mass_cartesian)
-point_mass_cartesian_parallel = jit(nopython=True, parallel=True)(point_mass_cartesian)
-point_mass_spherical_serial = jit(nopython=True)(point_mass_spherical)
-point_mass_spherical_parallel = jit(nopython=True, parallel=True)(point_mass_spherical)
+point_mass_cartesian_serial = numba.jit(nopython=True)(point_mass_cartesian)
+point_mass_cartesian_parallel = numba.jit(nopython=True, parallel=True)(
+    point_mass_cartesian
+)
+point_mass_spherical_serial = numba.jit(nopython=True)(point_mass_spherical)
+point_mass_spherical_parallel = numba.jit(nopython=True, parallel=True)(
+    point_mass_spherical
+)

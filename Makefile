@@ -1,6 +1,5 @@
 # Build, package, test, and clean
 STYLE_CHECK_FILES=src test doc
-GITHUB_ACTIONS=.github/workflows
 
 .PHONY: build help install test format check check-format check-style check-actions clean
 
@@ -39,7 +38,7 @@ check-style:
 	ruff check $(STYLE_CHECK_FILES)
 
 check-actions:
-	zizmor $(GITHUB_ACTIONS)
+	zizmor .github/workflows
 
 clean:
 	find . -name "*.pyc" -exec rm -v "{}" \;

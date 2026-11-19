@@ -8,14 +8,14 @@
 Utils functions for tesseroids with variable density.
 """
 
+import numba
 import numpy as np
-from numba import jit
 from scipy.optimize import minimize_scalar
 
 DELTA_RATIO = 0.1
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def gauss_legendre_quadrature_variable_density(
     longitude,
     cosphi,
