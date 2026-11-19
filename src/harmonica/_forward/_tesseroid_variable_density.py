@@ -79,18 +79,18 @@ def gauss_legendre_quadrature_variable_density(
     # optimization: reduce the number of times that the trigonometric functions
     # are evaluated)
     result = 0.0
-    for j, lat_node in enumerate(lat_nodes):
+    for j, lat_node in enumerate(lat_nodes):  # pragma: no branch
         # Get the latitude of the point mass
         latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
         cosphi_p = np.cos(latitude_p)
         sinphi_p = np.sin(latitude_p)
-        for k, rad_node in enumerate(rad_nodes):
+        for k, rad_node in enumerate(rad_nodes):  # pragma: no branch
             # Get the radius of the point mass
             radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
             density_p = density(radius_p)
             # Get kappa constant for the point mass
             kappa = radius_p**2 * cosphi_p
-            for i, lon_node in enumerate(lon_nodes):
+            for i, lon_node in enumerate(lon_nodes):  # pragma: no branch
                 # Get the longitude of the point mass
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
                 # Compute the mass of the point mass

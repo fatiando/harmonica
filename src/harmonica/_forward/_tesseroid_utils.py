@@ -79,17 +79,17 @@ def gauss_legendre_quadrature(
     # optimization: reduce the number of times that the trigonometric functions
     # are evaluated)
     result = 0.0
-    for j, lat_node in enumerate(lat_nodes):
+    for j, lat_node in enumerate(lat_nodes):  # pragma: no branch
         # Get the latitude of the point mass
         latitude_p = np.radians(0.5 * (n - s) * lat_node + 0.5 * (n + s))
         cosphi_p = np.cos(latitude_p)
         sinphi_p = np.sin(latitude_p)
-        for k, rad_node in enumerate(rad_nodes):
+        for k, rad_node in enumerate(rad_nodes):  # pragma: no branch
             # Get the radius of the point mass
             radius_p = 0.5 * (top - bottom) * rad_node + 0.5 * (top + bottom)
             # Get kappa constant for the point mass
             kappa = radius_p**2 * cosphi_p
-            for i, lon_node in enumerate(lon_nodes):
+            for i, lon_node in enumerate(lon_nodes):  # pragma: no branch
                 # Get the longitude of the point mass
                 longitude_p = np.radians(0.5 * (e - w) * lon_node + 0.5 * (e + w))
                 # Compute the mass of the point mass
@@ -198,7 +198,7 @@ def _adaptive_discretization(
     stack[0] = tesseroid
     stack_top = 0
     n_splits = 0
-    while stack_top >= 0:
+    while stack_top >= 0:  # pragma: no branch
         # Pop the first tesseroid from the stack
         tesseroid = stack[stack_top]
         stack_top -= 1
@@ -208,25 +208,29 @@ def _adaptive_discretization(
         distance = _distance_tesseroid_point(coordinates, tesseroid)
         # Check inequality
         n_lon, n_lat, n_rad = 1, 1, 1
-        if distance / l_lon < distance_size_ratio:
+        if distance / l_lon < distance_size_ratio:  # pragma: no branch
             n_lon = 2
-        if distance / l_lat < distance_size_ratio:
+        if distance / l_lat < distance_size_ratio:  # pragma: no branch
             n_lat = 2
-        if distance / l_rad < distance_size_ratio and radial_discretization:
+        if (
+            distance / l_rad < distance_size_ratio and radial_discretization
+        ):  # pragma: no branch
             n_rad = 2
         # Apply discretization
-        if n_lon * n_lat * n_rad > 1:
+        if n_lon * n_lat * n_rad > 1:  # pragma: no branch
             # Raise error if stack overflow
             # Number of tesseroids in stack = stack_top + 1
-            if (stack_top + 1) + n_lon * n_lat * n_rad > stack.shape[0]:
+            if (stack_top + 1) + n_lon * n_lat * n_rad > stack.shape[
+                0
+            ]:  # pragma: no branch
                 msg = "Stack Overflow. Try to increase the stack size."
                 raise OverflowError(msg)
             stack_top = _split_tesseroid(
                 tesseroid, n_lon, n_lat, n_rad, stack, stack_top
             )
-        else:
+        else:  # pragma: no branch
             # Raise error if small_tesseroids overflow
-            if n_splits + 1 > small_tesseroids.shape[0]:
+            if n_splits + 1 > small_tesseroids.shape[0]:  # pragma: no branch
                 raise OverflowError(
                     "Exceeded maximum discretizations."
                     + " Please increase the MAX_DISCRETIZATIONS."
@@ -246,9 +250,9 @@ def _split_tesseroid(tesseroid, n_lon, n_lat, n_rad, stack, stack_top):
     d_lon = (e - w) / n_lon
     d_lat = (n - s) / n_lat
     d_rad = (top - bottom) / n_rad
-    for i in range(n_lon):
-        for j in range(n_lat):
-            for k in range(n_rad):
+    for i in range(n_lon):  # pragma: no branch
+        for j in range(n_lat):  # pragma: no branch
+            for k in range(n_rad):  # pragma: no branch
                 stack_top += 1
                 stack[stack_top, 0] = w + d_lon * i
                 stack[stack_top, 1] = w + d_lon * (i + 1)
@@ -455,8 +459,8 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
     """
     longitude, latitude, radius = coordinates[:]
     conflicting = []
-    for i in range(longitude.size):
-        for j in range(tesseroids.shape[0]):
+    for i in range(longitude.size):  # pragma: no branch
+        for j in range(tesseroids.shape[0]):  # pragma: no branch
             # Longitudinal boundaries of the tesseroid must be compared with
             # longitudinal coordinates of computation points when moved to
             # [0, 360) and [-180, 180).
@@ -467,7 +471,7 @@ def _check_points_outside_tesseroids(coordinates, tesseroids):
                 (west < longitude_180 < east or west < longitude_360 < east)
                 and south < latitude[i] < north
                 and bottom < radius[i] < top
-            ):
+            ):  # pragma: no branch
                 conflicting.append((i, j))
     return conflicting
 
@@ -511,7 +515,7 @@ def _discard_null_tesseroids(tesseroids, density):
     Parameters
     ----------
     tesseroids : 2d-array
-        Array containing the boundaries of the tesserois in the following
+        Array containing the boundaries of the tesseroids in the following
         order: ``west``, ``east``, ``south``, ``north``, ``bottom``, ``top``
         defined in a geocentric spherical coordinate system.
     density : 1d-array

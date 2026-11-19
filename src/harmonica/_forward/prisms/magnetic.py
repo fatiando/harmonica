@@ -314,8 +314,8 @@ def _jit_prism_magnetic_field(
     easting, northing, upward = coordinates
     mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for i in prange(easting.size):
-        for j in range(prisms.shape[0]):
+    for i in prange(easting.size):  # pragma: no branch
+        for j in range(prisms.shape[0]):  # pragma: no branch
             easting_comp, northing_comp, upward_comp = magnetic_field(
                 easting[i],
                 northing[i],
@@ -334,7 +334,7 @@ def _jit_prism_magnetic_field(
             b_n[i] += northing_comp
             b_u[i] += upward_comp
         # Update progress bar if called
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 
@@ -379,8 +379,8 @@ def _jit_prism_magnetic_component(
     easting, northing, upward = coordinates
     mag_e, mag_n, mag_u = magnetization
     # Iterate over computation points and prisms
-    for i in prange(easting.size):
-        for j in range(prisms.shape[0]):
+    for i in prange(easting.size):  # pragma: no branch
+        for j in range(prisms.shape[0]):  # pragma: no branch
             result[i] += forward_function(
                 easting[i],
                 northing[i],
@@ -396,7 +396,7 @@ def _jit_prism_magnetic_component(
                 mag_u[j],
             )
         # Update progress bar if called
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 

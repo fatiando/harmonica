@@ -302,12 +302,12 @@ def jit_tesseroid_gravity(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for i in prange(longitude.size):
+    for i in prange(longitude.size):  # pragma: no branch
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for j in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):  # pragma: no branch
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
                 (longitude[i], latitude[i], radius[i]),
@@ -318,7 +318,7 @@ def jit_tesseroid_gravity(
                 radial_adaptive_discretization,
             )
             # Compute effect of the tesseroid through GLQ
-            for tess_index in range(n_splits):
+            for tess_index in range(n_splits):  # pragma: no branch
                 tesseroid = small_tesseroids[tess_index, :]
                 result[i] += gauss_legendre_quadrature(
                     longitude_rad[i],
@@ -332,7 +332,7 @@ def jit_tesseroid_gravity(
                     kernel,
                 )
         # Update progress bar
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 
@@ -405,12 +405,12 @@ def jit_tesseroid_gravity_variable_density(
     cosphi = np.cos(np.radians(latitude))
     sinphi = np.sin(np.radians(latitude))
     # Loop over computation points
-    for i in prange(longitude.size):
+    for i in prange(longitude.size):  # pragma: no branch
         # Initialize arrays to perform memory allocation only once
         stack = np.empty((STACK_SIZE, 6), dtype=dtype)
         small_tesseroids = np.empty((MAX_DISCRETIZATIONS, 6), dtype=dtype)
         # Loop over tesseroids
-        for j in range(tesseroids.shape[0]):
+        for j in range(tesseroids.shape[0]):  # pragma: no branch
             # Apply adaptive discretization on tesseroid
             n_splits = _adaptive_discretization(
                 (longitude[i], latitude[i], radius[i]),
@@ -421,7 +421,7 @@ def jit_tesseroid_gravity_variable_density(
                 radial_adaptive_discretization,
             )
             # Compute effect of the tesseroid through GLQ
-            for tess_index in range(n_splits):
+            for tess_index in range(n_splits):  # pragma: no branch
                 tesseroid = small_tesseroids[tess_index, :]
                 result[i] += gauss_legendre_quadrature_variable_density(
                     longitude_rad[i],
@@ -435,7 +435,7 @@ def jit_tesseroid_gravity_variable_density(
                     kernel,
                 )
         # Update progress bar
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 

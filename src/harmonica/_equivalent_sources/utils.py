@@ -62,8 +62,8 @@ def jacobian(coordinates, points, jac, greens_function):
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):
-        for j in range(point_east.size):
+    for i in prange(east.size):  # pragma: no branch
+        for j in range(point_east.size):  # pragma: no branch
             jac[i, j] = greens_function(
                 east[i],
                 north[i],
@@ -85,8 +85,8 @@ def predict(coordinates, points, coeffs, result, greens_function):
     """
     east, north, upward = coordinates[:]
     point_east, point_north, point_upward = points[:]
-    for i in prange(east.size):
-        for j in range(point_east.size):
+    for i in prange(east.size):  # pragma: no branch
+        for j in range(point_east.size):  # pragma: no branch
             result[i] += coeffs[j] * greens_function(
                 east[i],
                 north[i],
