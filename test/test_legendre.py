@@ -22,8 +22,6 @@ from harmonica._spherical_harmonics.legendre import (
     associated_legendre_schmidt_derivative,
 )
 
-from .utils import run_only_with_numba
-
 
 def legendre_analytical(x):
     """Analytical expressions for unnormalized Legendre functions."""
@@ -47,7 +45,6 @@ def legendre_analytical(x):
     return p
 
 
-@pytest.mark.use_numba
 def legendre_derivative_analytical(x):
     """
     Analytical expressions for theta derivatives of unnormalized Legendre
@@ -97,7 +94,6 @@ def full_normalization(p):
                 )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("func", "norm"),
     [
@@ -124,7 +120,6 @@ def test_associated_legendre_function_analytical(func, norm):
                 np.testing.assert_allclose(p_analytical[n, m], p[n, m], atol=1e-10)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("func", "deriv", "norm"),
     [
@@ -215,7 +210,6 @@ class BaseSchmidt:
             )
 
 
-@run_only_with_numba
 class TestSchmidtHighDegree(BaseSchmidt):
     max_degree = 2800
 

@@ -21,8 +21,6 @@ from harmonica import EquivalentSources, point_gravity
 from harmonica._equivalent_sources.cartesian import greens_func_cartesian
 from harmonica._equivalent_sources.utils import jacobian_numba_serial
 
-from .utils import run_only_with_numba
-
 
 @pytest.fixture(name="region")
 def fixture_region():
@@ -69,7 +67,7 @@ def fixture_data(coordinates, points, masses):
 
 
 @pytest.fixture(name="weights")
-def fixture_weights(data):  # pragma: no cover (only used in @run_only_with_numba tests)
+def fixture_weights(data):
     """
     Return some sample data.
     """
@@ -108,11 +106,8 @@ def fixture_coordinates_9x9(region):
     return coordinates
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("dtype", ["default", np.float32])
-def test_equivalent_sources_cartesian(
-    region, points, masses, coordinates, data, dtype
-):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
+def test_equivalent_sources_cartesian(region, points, masses, coordinates, data, dtype):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid. Use Cartesian coordinates.
@@ -150,52 +145,6 @@ def test_equivalent_sources_cartesian(
         (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
     )
     npt.assert_allclose(true, profile.scalars, atol=atol)
-
-
-def test_equivalent_sources_small_data_cartesian(region, points, masses):
-    """
-    Check predictions against synthetic data using few data points for speed
-    Use Cartesian coordinates.
-    """
-    # Define a small set of observation points
-    coordinates = bd.grid_coordinates(
-        region=region, shape=(8, 8), non_dimensional_coords=0
-    )
-    # Get synthetic data
-    data = point_gravity(coordinates, points, masses, field="g_z")
-
-    # The interpolation should be perfect on the data points
-    eqs = EquivalentSources(depth=500)
-    eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
-
-    # Check that the proper source locations were set
-    tmp = [i.ravel() for i in coordinates]
-    npt.assert_allclose(tmp[:2], eqs.points_[:2], rtol=1e-5)
-    npt.assert_allclose(tmp[2] - 500, eqs.points_[2], rtol=1e-5)
-
-    # Gridding at higher altitude should be reasonably accurate when compared
-    # to synthetic values
-    upward = 20
-    shape = (8, 8)
-    grid_coords = bd.grid_coordinates(
-        region=region, shape=shape, non_dimensional_coords=upward
-    )
-    true = point_gravity(grid_coords, points, masses, field="g_z")
-    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.08)
-
-    # Test grid method
-    grid = eqs.grid(grid_coords)
-    npt.assert_allclose(true, grid.scalars, rtol=0.08)
-
-    # Test profile method
-    point1 = (region[0], region[2])
-    point2 = (region[0], region[3])
-    profile = eqs.profile(point1, point2, upward, 10)
-    true = point_gravity(
-        (profile.easting, profile.northing, profile.upward), points, masses, field="g_z"
-    )
-    npt.assert_allclose(true, profile.scalars, rtol=0.05)
 
 
 def test_equivalent_sources_build_points(coordinates):
@@ -290,7 +239,6 @@ def test_equivalent_sources_scatter_not_implemented():
         eqs.scatter()
 
 
-@pytest.mark.use_numba
 def test_equivalent_sources_jacobian_cartesian():
     """
     Test Jacobian matrix under symmetric system of point sources.
@@ -318,10 +266,7 @@ def test_equivalent_sources_jacobian_cartesian():
     npt.assert_allclose(jacobian[nearest_neighbours][0], jacobian[nearest_neighbours])
 
 
-@run_only_with_numba
-def test_equivalent_sources_cartesian_parallel(
-    coordinates, data
-):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
+def test_equivalent_sources_cartesian_parallel(coordinates, data):
     """
     Check predictions when parallel is enabled and disabled.
     """
@@ -336,7 +281,6 @@ def test_equivalent_sources_cartesian_parallel(
     npt.assert_allclose(grid_serial.scalars, grid_parallel.scalars, rtol=1e-7)
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("block_size", [None, 500], ids=["no_blocks", "blocks"])
 @pytest.mark.parametrize("custom_points", [False, True], ids=["no_points", "points"])
 @pytest.mark.parametrize("weights_none", [False, True], ids=["no_weights", "weights"])
@@ -352,7 +296,7 @@ def test_dtype(
     weights_none,
     damping,
     dtype,
-):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
+):
     """
     Test dtype argument on EquivalentSources.
     """
@@ -378,7 +322,6 @@ def test_dtype(
     #  assert eqs.coefs_.dtype == np.dtype(dtype)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("dtype", ["float64", "float32"])
 def test_jacobian_dtype(region, dtype):
     """

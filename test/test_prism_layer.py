@@ -237,7 +237,6 @@ def test_prism_layer_get_prism_by_index():
             )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", FIELDS)
 def test_prism_layer_gravity(field, dummy_layer):
     """
@@ -279,7 +278,6 @@ def test_prism_layer_invalid_field(dummy_layer):
         layer.prism_layer.gravity(coordinates, field=invalid_field)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_holes):
     """
@@ -305,7 +303,6 @@ def test_prism_layer_gravity_surface_nans(field, dummy_layer, prism_layer_with_h
     )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_prism_layer_gravity_density_nans(field, dummy_layer, prism_layer_with_holes):
     """
@@ -397,7 +394,6 @@ def test_to_pyvista_drop_null_prisms(dummy_layer, drop_null_prisms):
 
 
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-@pytest.mark.use_numba
 def test_progress_bar(dummy_layer):
     """
     Check if forward gravity results with and without progress bar match.

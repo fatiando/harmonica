@@ -580,7 +580,7 @@ def spherical_harmonics_magnetic_field(
     Calculate a spherical harmonic expansion of a magnetic field.
     """
     n_data = longitude.size
-    for i in numba.prange(n_data):
+    for i in numba.prange(n_data):  # pragma: no branch
         cos_colat = np.cos(colatitude[i])
         sin_colat = np.sin(colatitude[i])
         # Have to allocate here because of the parallel loop. These are small
@@ -601,15 +601,15 @@ def spherical_harmonics_magnetic_field(
         sin_mlon[0] = 0
         cos_mlon[1] = np.cos(longitude[i])
         sin_mlon[1] = np.sin(longitude[i])
-        for m in range(2, max_degree + 1):
+        for m in range(2, max_degree + 1):  # pragma: no branch
             cos_mlon[m] = 2 * cos_mlon[1] * cos_mlon[m - 1] - cos_mlon[m - 2]
             sin_mlon[m] = 2 * cos_mlon[1] * sin_mlon[m - 1] - sin_mlon[m - 2]
         # Calculating the power like this results in about an 8% performance
         # boost. Not much but I'll take it.
         r_frac = normalized_radius[i] ** (min_degree - 1 + 2)
-        for n in range(min_degree, max_degree + 1):
+        for n in range(min_degree, max_degree + 1):  # pragma: no branch
             r_frac *= normalized_radius[i]
-            for m in range(n + 1):
+            for m in range(n + 1):  # pragma: no branch
                 b_east[i] += (
                     r_frac
                     * (-m * g[n, m] * sin_mlon[m] + m * h[n, m] * cos_mlon[m])
@@ -628,7 +628,7 @@ def spherical_harmonics_magnetic_field(
                 )
         # The east component is singular at the poles. Set it to zero if close
         # to the poles to avoid this.
-        if abs(sin_colat) < 1e-10:
+        if abs(sin_colat) < 1e-10:  # pragma: no branch
             b_east[i] = 0
         else:
             b_east[i] *= -1 / sin_colat
@@ -658,19 +658,19 @@ def spherical_harmonics_magnetic_field_grid(
     # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
     cos_mlon = np.empty((n_lon, max_degree + 1))
     sin_mlon = np.empty((n_lon, max_degree + 1))
-    for j in numba.prange(n_lon):
+    for j in numba.prange(n_lon):  # pragma: no branch
         cos_mlon[j, 0] = 1
         sin_mlon[j, 0] = 0
         cos_mlon[j, 1] = np.cos(longitude[j])
         sin_mlon[j, 1] = np.sin(longitude[j])
-        for m in range(2, max_degree + 1):
+        for m in range(2, max_degree + 1):  # pragma: no branch
             cos_mlon[j, m] = (
                 2 * cos_mlon[j, 1] * cos_mlon[j, m - 1] - cos_mlon[j, m - 2]
             )
             sin_mlon[j, m] = (
                 2 * cos_mlon[j, 1] * sin_mlon[j, m - 1] - sin_mlon[j, m - 2]
             )
-    for i in numba.prange(n_colat):
+    for i in numba.prange(n_colat):  # pragma: no branch
         cos_colat = np.cos(colatitude[i])
         sin_colat = np.sin(colatitude[i])
         # Have to allocate here because of the parallel loop. These are small
@@ -680,11 +680,11 @@ def spherical_harmonics_magnetic_field_grid(
         p_deriv = np.empty_like(g)
         legendre.associated_legendre_schmidt(cos_colat, max_degree, p)
         legendre.associated_legendre_schmidt_derivative(max_degree, p, p_deriv)
-        for j in range(n_lon):
+        for j in range(n_lon):  # pragma: no branch
             r_frac = normalized_radius[i, j] ** (min_degree - 1 + 2)
-            for n in range(min_degree, max_degree + 1):
+            for n in range(min_degree, max_degree + 1):  # pragma: no branch
                 r_frac *= normalized_radius[i, j]
-                for m in range(n + 1):
+                for m in range(n + 1):  # pragma: no branch
                     b_east[i, j] += (
                         r_frac
                         * (-m * g[n, m] * sin_mlon[j, m] + m * h[n, m] * cos_mlon[j, m])
@@ -703,7 +703,7 @@ def spherical_harmonics_magnetic_field_grid(
                     )
             # The east component is singular at the poles. Set it to zero if close
             # to the poles to avoid this.
-            if abs(sin_colat) < 1e-10:
+            if abs(sin_colat) < 1e-10:  # pragma: no branch
                 b_east[i, j] = 0
             else:
                 b_east[i, j] *= -1 / sin_colat

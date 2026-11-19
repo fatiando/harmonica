@@ -587,23 +587,23 @@ def _forward_gravity_prism_layer(
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
 
-    for i in numba.prange(n_coords):
-        for j, easting_center in enumerate(prisms_easting):
+    for i in numba.prange(n_coords):  # pragma: no branch
+        for j, easting_center in enumerate(prisms_easting):  # pragma: no branch
             west = easting_center - half_spacing_east
             east = easting_center + half_spacing_east
-            for k, northing_center in enumerate(prisms_northing):
+            for k, northing_center in enumerate(prisms_northing):  # pragma: no branch
                 # Ignore prisms with zero or NaN density
                 density = densities[k, j]
-                if density == 0.0 or np.isnan(density):
+                if density == 0.0 or np.isnan(density):  # pragma: no branch
                     continue
 
                 # Ignore thin prisms
                 bottom, top = prisms_bottom[k, j], prisms_top[k, j]
-                if top - bottom < thickness_threshold:
+                if top - bottom < thickness_threshold:  # pragma: no branch
                     continue
 
                 # Ignore prisms with nan top or bottom
-                if np.isnan(top) or np.isnan(bottom):
+                if np.isnan(top) or np.isnan(bottom):  # pragma: no branch
                     continue
 
                 south = northing_center - half_spacing_north
@@ -621,7 +621,7 @@ def _forward_gravity_prism_layer(
                     density,
                 )
         # Update progress bar if called
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 

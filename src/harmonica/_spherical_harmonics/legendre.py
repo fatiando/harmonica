@@ -16,10 +16,10 @@ import numpy as np
 def _rescale(u, max_degree, p):
     """Rescale Legendre functions to their original range."""
     rescale = 1e280
-    for m in range(max_degree + 1):
-        if m > 0:
+    for m in range(max_degree + 1):  # pragma: no branch
+        if m > 0:  # pragma: no branch
             rescale *= u
-        for n in range(m, max_degree + 1):
+        for n in range(m, max_degree + 1):  # pragma: no branch
             p[n, m] *= rescale
 
 
@@ -59,8 +59,8 @@ def associated_legendre(x, max_degree, p):
     """
     u = np.sqrt((1 - x) * (1 + x))
     p[0, 0] = 1
-    for n in range(1, max_degree + 1):
-        for m in range(n - 1):
+    for n in range(1, max_degree + 1):  # pragma: no branch
+        for m in range(n - 1):  # pragma: no branch
             a_nm = (2 * n - 1) / (n - m)
             b_nm = -(n + m - 1) / (n - m)
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
@@ -113,10 +113,10 @@ def associated_legendre_derivative(max_degree, p, dp):
       https://www.gnu.org/software/gsl/tr/tr001.pdf
     """
     dp[0, 0] = 0
-    for n in range(1, max_degree + 1):
+    for n in range(1, max_degree + 1):  # pragma: no branch
         a_nm = -1
         dp[n, 0] = a_nm * p[n, 1]
-        for m in range(1, n):
+        for m in range(1, n):  # pragma: no branch
             b_nm = 0.5 * (n + m) * (n - m + 1)
             c_nm = -0.5
             dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
@@ -170,13 +170,13 @@ def associated_legendre_schmidt(x, max_degree, p):
     # This equation doesn't have u because of the scaling
     p[1, 1] = p[0, 0]
     # Calculate the zero order terms first
-    for n in range(2, max_degree + 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
         a_n0 = (2 * n - 1) / (sqrt[n] ** 2)
         b_n0 = -((sqrt[n - 1] / sqrt[n]) ** 2)
         p[n, 0] = a_n0 * x * p[n - 1, 0] + b_n0 * p[n - 2, 0]
     # Now calculate the other terms
-    for n in range(2, max_degree + 1):
-        for m in range(1, n - 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
+        for m in range(1, n - 1):  # pragma: no branch
             a_nm = (2 * n - 1) / (sqrt[n + m] * sqrt[n - m])
             b_nm = -sqrt[n + m - 1] * sqrt[n - m - 1] / (sqrt[n + m] * sqrt[n - m])
             p[n, m] = a_nm * x * p[n - 1, m] + b_nm * p[n - 2, m]
@@ -237,13 +237,13 @@ def associated_legendre_schmidt_derivative(max_degree, p, dp):
     dp[0, 0] = 0
     dp[1, 0] = -p[1, 1]
     dp[1, 1] = p[1, 0]
-    for n in range(2, max_degree + 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
         a_nm = -sqrt[n] * sqrt[n + 1] / sqrt[2]
         dp[n, 0] = a_nm * p[n, 1]
         b_nm = 0.5 * sqrt[n] * sqrt[n + 1] * sqrt[2]
         c_nm = -0.5 * sqrt[n + 2] * sqrt[n - 1]
         dp[n, 1] = b_nm * p[n, 0] + c_nm * p[n, 2]
-        for m in range(2, n):
+        for m in range(2, n):  # pragma: no branch
             b_nm = 0.5 * sqrt[n + m] * sqrt[n - m + 1]
             c_nm = -0.5 * sqrt[n + m + 1] * sqrt[n - m]
             dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]
@@ -295,13 +295,13 @@ def associated_legendre_full(x, max_degree, p):
     # This equation doesn't have u because of the scaling
     p[1, 1] = p[0, 0] * sqrt[3]
     # Calculate the zero order terms first
-    for n in range(2, max_degree + 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
         a_n0 = sqrt[2 * n - 1] * sqrt[2 * n + 1] / n
         b_n0 = -(n - 1) * sqrt[2 * n + 1] / (n * sqrt[2 * n - 3])
         p[n, 0] = a_n0 * x * p[n - 1, 0] + b_n0 * p[n - 2, 0]
     # Now calculate the other terms
-    for n in range(2, max_degree + 1):
-        for m in range(1, n - 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
+        for m in range(1, n - 1):  # pragma: no branch
             a_nm = sqrt[2 * n + 1] * sqrt[2 * n - 1] / (sqrt[n + m] * sqrt[n - m])
             b_nm = (
                 -sqrt[n + m - 1]
@@ -364,13 +364,13 @@ def associated_legendre_full_derivative(max_degree, p, dp):
     dp[0, 0] = 0
     dp[1, 0] = -p[1, 1]
     dp[1, 1] = p[1, 0]
-    for n in range(2, max_degree + 1):
+    for n in range(2, max_degree + 1):  # pragma: no branch
         a_nm = -sqrt[n] * sqrt[n + 1] / sqrt[2]
         dp[n, 0] = a_nm * p[n, 1]
         b_n1 = 0.5 * sqrt[2] * sqrt[n + 1] * sqrt[n]
         c_n1 = -0.5 * sqrt[n + 2] * sqrt[n - 1]
         dp[n, 1] = b_n1 * p[n, 0] + c_n1 * p[n, 2]
-        for m in range(2, n):
+        for m in range(2, n):  # pragma: no branch
             b_nm = 0.5 * sqrt[n + m] * sqrt[n - m + 1]
             c_nm = -0.5 * sqrt[n + m + 1] * sqrt[n - m]
             dp[n, m] = b_nm * p[n, m - 1] + c_nm * p[n, m + 1]

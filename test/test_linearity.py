@@ -348,7 +348,6 @@ class TestTesseroidGravityLinearity:
             non_dimensional_coords=boule.WGS84.mean_radius + 100,
         )
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["potential", "g_z"])
     def test_linearity(
         self, sample_coordinates, sample_tesseroids, sample_densities, field
