@@ -10,9 +10,9 @@ Forward modelling for magnetic fields of dipoles.
 
 from math import prod
 
+import numba
 import numpy as np
 from choclo.dipole import magnetic_e, magnetic_field, magnetic_n, magnetic_u
-from numba import jit, prange
 
 from .utils import initialize_progressbar
 
@@ -326,7 +326,7 @@ def _jit_dipole_magnetic_field_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for i in prange(easting.size):
+    for i in numba.prange(easting.size):
         for j in range(easting_p.size):
             easting_comp, northing_comp, upward_comp = magnetic_field(
                 easting[i],
@@ -383,7 +383,7 @@ def _jit_dipole_magnetic_component_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for i in prange(easting.size):
+    for i in numba.prange(easting.size):
         for j in range(easting_p.size):
             result[i] += forward_func(
                 easting[i],
@@ -401,15 +401,15 @@ def _jit_dipole_magnetic_component_cartesian(
             progress_proxy.update(1)
 
 
-_jit_dipole_magnetic_field_cartesian_serial = jit(nopython=True)(
+_jit_dipole_magnetic_field_cartesian_serial = numba.jit(nopython=True)(
     _jit_dipole_magnetic_field_cartesian
 )
-_jit_dipole_magnetic_field_cartesian_parallel = jit(nopython=True, parallel=True)(
+_jit_dipole_magnetic_field_cartesian_parallel = numba.jit(nopython=True, parallel=True)(
     _jit_dipole_magnetic_field_cartesian
 )
-_jit_dipole_magnetic_component_cartesian_serial = jit(nopython=True)(
+_jit_dipole_magnetic_component_cartesian_serial = numba.jit(nopython=True)(
     _jit_dipole_magnetic_component_cartesian
 )
-_jit_dipole_magnetic_component_cartesian_parallel = jit(nopython=True, parallel=True)(
-    _jit_dipole_magnetic_component_cartesian
-)
+_jit_dipole_magnetic_component_cartesian_parallel = numba.jit(
+    nopython=True, parallel=True
+)(_jit_dipole_magnetic_component_cartesian)

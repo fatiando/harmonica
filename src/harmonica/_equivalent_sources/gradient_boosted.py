@@ -77,7 +77,7 @@ class EquivalentSourcesGB(EquivalentSources):
         points are in each window.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
-        parallel through Numba's ``jit.prange``, reducing the computation time.
+        parallel through :func:`numba.prange`, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
     dtype : data-type
         The desired data-type for the predictions and the Jacobian matrix.

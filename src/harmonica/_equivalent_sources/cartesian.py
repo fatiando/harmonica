@@ -13,10 +13,10 @@ from __future__ import annotations
 import warnings
 
 import bordado as bd
+import numba
 import numpy as np
 import verde as vd
 import verde.base as vdb
-from numba import jit
 from sklearn.utils.validation import check_is_fitted
 
 from .._forward.utils import distance_cartesian
@@ -129,7 +129,7 @@ class EquivalentSources(vdb.BaseGridder):
         Default to None.
     parallel : bool
         If True any predictions and Jacobian building is carried out in
-        parallel through Numba's ``jit.prange``, reducing the computation time.
+        parallel through :func:`numba.prange`, reducing the computation time.
         If False, these tasks will be run on a single CPU. Default to True.
     dtype : data-type
         The desired data-type for the predictions and the Jacobian matrix.
@@ -631,7 +631,7 @@ class EquivalentSources(vdb.BaseGridder):
         return table
 
 
-@jit(nopython=True)
+@numba.jit(nopython=True)
 def greens_func_cartesian(east, north, upward, point_east, point_north, point_upward):
     """
     Green's function for the equivalent sources in Cartesian coordinates.
