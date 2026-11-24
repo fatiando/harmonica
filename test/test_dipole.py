@@ -23,8 +23,6 @@ except ImportError:  # pragma: no cover
 from harmonica import dipole_magnetic
 from harmonica._forward.dipole import VALID_FIELDS
 
-from .utils import run_only_with_numba
-
 
 def test_invalid_field():
     """Check if passing an invalid field raises an error."""
@@ -52,7 +50,6 @@ def test_disable_checks(field):
     )
 
 
-@pytest.mark.use_numba
 @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
 @pytest.mark.parametrize("field", VALID_FIELDS)
 def test_progress_bar(field):
@@ -111,34 +108,9 @@ class TestSerialVsParallel:
     """
 
     @pytest.mark.parametrize("field", VALID_FIELDS)
-    def test_dipoles_parallel_vs_serial_no_numba(self, field):
+    def test_dipoles_parallel_vs_serial(self, field):
         """
         Check results of parallelized and serials runs
-        Run a small problem with Numba disable to count for test coverage.
-        """
-        coordinates = ([0, 10], [0, 10], [0, 10])
-        dipoles = ([-100, 0], [0, 100], [-20, -50])
-        magnetic_moments = (
-            [1.0, 1.0],
-            [1.0, -1.0],
-            [1.0, 5.0],
-        )
-        parallel = dipole_magnetic(
-            coordinates, dipoles, magnetic_moments, field=field, parallel=True
-        )
-        serial = dipole_magnetic(
-            coordinates, dipoles, magnetic_moments, field=field, parallel=False
-        )
-        npt.assert_allclose(parallel, serial)
-
-    @run_only_with_numba
-    @pytest.mark.parametrize("field", VALID_FIELDS)
-    def test_dipoles_parallel_vs_serial(
-        self, field
-    ):  # pragma: no cover (we don't track coverage when @run_only_with_numba)
-        """
-        Check results of parallelized and serials runs
-        Run a large problem only with Numba enabled.
         """
         coordinates = bd.grid_coordinates(
             region=(-100, 100, -100, 100), spacing=20, non_dimensional_coords=10

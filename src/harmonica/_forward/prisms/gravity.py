@@ -277,8 +277,8 @@ def _any_singular_point_g_ee(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_northing_edge(
                 easting[i],
                 northing[i],
@@ -299,7 +299,7 @@ def _any_singular_point_g_ee(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -312,8 +312,8 @@ def _any_singular_point_g_nn(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_easting_edge(
                 easting[i],
                 northing[i],
@@ -334,7 +334,7 @@ def _any_singular_point_g_nn(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -347,8 +347,8 @@ def _any_singular_point_g_zz(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_easting_edge(
                 easting[i],
                 northing[i],
@@ -369,7 +369,7 @@ def _any_singular_point_g_zz(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -382,8 +382,8 @@ def _any_singular_point_g_en(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_upward_edge(
                 easting[i],
                 northing[i],
@@ -394,7 +394,7 @@ def _any_singular_point_g_en(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -407,8 +407,8 @@ def _any_singular_point_g_ez(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_northing_edge(
                 easting[i],
                 northing[i],
@@ -419,7 +419,7 @@ def _any_singular_point_g_ez(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -432,8 +432,8 @@ def _any_singular_point_g_nz(coordinates, prisms):
     easting, northing, upward = coordinates
     n_coords = easting.size
     n_prisms = prisms.shape[0]
-    for i in range(n_coords):
-        for j in range(n_prisms):
+    for i in range(n_coords):  # pragma: no branch
+        for j in range(n_prisms):  # pragma: no branch
             if is_point_on_easting_edge(
                 easting[i],
                 northing[i],
@@ -444,7 +444,7 @@ def _any_singular_point_g_nz(coordinates, prisms):
                 prisms[j, 3],
                 prisms[j, 4],
                 prisms[j, 5],
-            ):
+            ):  # pragma: no branch
                 return True
     return False
 
@@ -521,8 +521,8 @@ def jit_prism_gravity(
     # Check if we need to update the progressbar on each iteration
     update_progressbar = progress_proxy is not None
     # Iterate over computation points and prisms
-    for i in numba.prange(easting.size):
-        for j in range(prisms.shape[0]):
+    for i in numba.prange(easting.size):  # pragma: no branch
+        for j in range(prisms.shape[0]):  # pragma: no branch
             out[i] += forward_func(
                 easting[i],
                 northing[i],
@@ -536,7 +536,7 @@ def jit_prism_gravity(
                 density[j],
             )
         # Update progress bar
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 

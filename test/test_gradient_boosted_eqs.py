@@ -17,8 +17,6 @@ import verde as vd
 from harmonica import EquivalentSourcesGB, point_gravity
 from harmonica._equivalent_sources.gradient_boosted import _get_region_data_sources
 
-from .utils import run_only_with_numba
-
 
 @pytest.fixture(name="region")
 def fixture_region():
@@ -65,7 +63,7 @@ def fixture_data(coordinates, points, masses):
 
 
 @pytest.fixture(name="weights")
-def fixture_weights(data):  # pragma: no cover (only used by @run_only_with_numba)
+def fixture_weights(data):
     """
     Return some sample data.
     """
@@ -154,31 +152,7 @@ def test_memory_estimation(spacing, window_size, dtype, itemsize):
 # -----------------------------------------------------------------------
 
 
-@pytest.mark.use_numba
-@pytest.mark.parametrize("weights", [None, np.ones((8, 8))])
-def test_gb_eqs_small_data(coordinates_small, data_small, weights):
-    """
-    Check predictions against synthetic data using few data points for speed.
-    """
-    # The interpolation should be good enought on the data points
-    # Gradient-boosted equivalent sources don't perform well on small data, so
-    # we will check if the error is no larger than 1mGal
-    # (sample data ranges from approximately -7mGal to 7mGal)
-    eqs = EquivalentSourcesGB(depth=1e3, damping=None, window_size=1e3, random_state=42)
-    eqs.fit(coordinates_small, data_small, weights=weights)
-    # Error tolerance is 5% of the maximum data.
-    npt.assert_allclose(
-        data_small,
-        eqs.predict(coordinates_small),
-        rtol=0,
-        atol=0.05 * vd.maxabs(data_small),
-    )
-
-
-@run_only_with_numba
-def test_gradient_boosted_eqs_single_window(
-    region, points, masses, coordinates, data
-):  # pragma: no cover
+def test_gradient_boosted_eqs_single_window(region, points, masses, coordinates, data):
     """
     Test GB eq-sources with a single window that covers the whole region.
     """
@@ -195,10 +169,7 @@ def test_gradient_boosted_eqs_single_window(
     npt.assert_allclose(true, eqs.predict(grid), rtol=1e-3, atol=atol)
 
 
-@run_only_with_numba
-def test_gradient_boosted_eqs_predictions(
-    region, points, masses, coordinates, data
-):  # pragma: no cover
+def test_gradient_boosted_eqs_predictions(region, points, masses, coordinates, data):
     """
     Test GB eq-sources predictions.
     """
@@ -220,8 +191,7 @@ def test_gradient_boosted_eqs_predictions(
     npt.assert_allclose(true, eqs.predict(grid), rtol=0, atol=0.02 * vd.maxabs(true))
 
 
-@run_only_with_numba
-def test_gradient_boosted_eqs_random_state(coordinates, data):  # pragma: no cover
+def test_gradient_boosted_eqs_random_state(coordinates, data):
     """
     Check if EquivalentSourcesGB produces same result by setting random_state.
     """
@@ -300,7 +270,6 @@ def test_same_windows_data_and_sources():
 # -------------------------------------------------
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("block_size", [None, 500], ids=["no_blocks", "blocks"])
 @pytest.mark.parametrize("custom_points", [False, True], ids=["no_points", "points"])
 @pytest.mark.parametrize("weights_none", [False, True], ids=["no_weights", "weights"])
@@ -316,7 +285,7 @@ def test_dtype(
     weights_none,
     damping,
     dtype,
-):  # pragma: no cover
+):
     """
     Test dtype argument on EquivalentSources.
     """
@@ -344,8 +313,7 @@ def test_dtype(
     assert prediction.dtype == np.dtype(dtype)
 
 
-@run_only_with_numba
-def test_gradient_boosted_eqs_float32(coordinates, data):  # pragma: no cover
+def test_gradient_boosted_eqs_float32(coordinates, data):
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid, using float32 as dtype.

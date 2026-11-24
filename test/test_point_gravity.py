@@ -32,8 +32,6 @@ from harmonica._forward.point import point_gravity
 from harmonica._forward.utils import distance_cartesian
 from harmonica.constants import GRAVITATIONAL_CONST
 
-from .utils import run_only_with_numba
-
 MODULE_DIR = Path(__file__).parent
 TEST_DATA_DIR = MODULE_DIR / "data"
 
@@ -141,7 +139,6 @@ def fixture_sample_coordinates_potential():
     return (easting, northing, upward, potential)
 
 
-@pytest.mark.use_numba
 def test_potential_cartesian_known_values(point_mass, sample_coordinates_potential):
     """
     Compare the computed gravitational potential with reference values.
@@ -154,7 +151,6 @@ def test_potential_cartesian_known_values(point_mass, sample_coordinates_potenti
     npt.assert_allclose(results, precomputed_potential)
 
 
-@pytest.mark.use_numba
 def test_potential_symmetry_cartesian():
     """
     Test if potential field of a point mass has symmetry in Cartesian coords.
@@ -180,7 +176,6 @@ def test_potential_symmetry_cartesian():
     npt.assert_allclose(*results)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 def test_acceleration_symmetry_cartesian(field):
     """
@@ -272,7 +267,6 @@ def acceleration_finite_differences(coordinates, point, mass, field, delta=0.05)
     return finite_diff, relative_error
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 @pytest.mark.parametrize(
     ("coordinates", "point", "mass"),
@@ -296,7 +290,6 @@ def test_acceleration_finite_diff_cartesian(coordinates, point, mass, field):
     npt.assert_allclose(result, finite_diff, rtol=relative_error)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["g_n", "g_e", "g_z"])
 def test_acceleration_sign(field):
     """
@@ -323,14 +316,13 @@ def test_acceleration_sign(field):
     assert np.sign(mass) == -np.sign(results[2])
 
 
-@run_only_with_numba
 @pytest.mark.parametrize(
     "field",
     ["potential", "g_z", "g_n", "g_e", "g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"],
 )
 def test_point_mass_cartesian_parallel(
     field,
-):  # pragma: no cover (we don't track coverage with @run_only_with_numba)
+):
     """
     Check if parallel and serial runs return the same result.
     """
@@ -351,7 +343,6 @@ def test_point_mass_cartesian_parallel(
     npt.assert_allclose(result_serial, result_parallel)
 
 
-@pytest.mark.use_numba
 def test_laplace_equation_cartesian():
     """
     Check if the diagonal components of the tensor satisfy Laplace equation.
@@ -373,7 +364,6 @@ def test_laplace_equation_cartesian():
     npt.assert_allclose(g_ee + g_nn, -g_zz)
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("field", "flipped_field"), [("g_en", "g_ne"), ("g_ez", "g_ze"), ("g_nz", "g_zn")]
 )
@@ -522,7 +512,6 @@ class TestTensorSymmetryCartesian:
             upward[1] -= distance
         return (easting, northing, upward)
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", tensor_fields)
     def test_opposite(self, field):
         """
@@ -539,7 +528,6 @@ class TestTensorSymmetryCartesian:
         # Check for expected symmetry
         npt.assert_allclose(results[0], results[1])
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", nondiagonal_fields)
     @pytest.mark.parametrize("swap_directions", [False, True], ids=["noswap", "swap"])
     def test_mirrored_nondiagonals(self, field, swap_directions):
@@ -626,7 +614,6 @@ def tensor_finite_differences(coordinates, point, mass, field, delta=0.05):
     return finite_diff, relative_error
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"])
 @pytest.mark.parametrize(
     ("coordinates", "point", "mass"),
@@ -653,7 +640,6 @@ def test_tensor_finite_diff_cartesian(coordinates, point, mass, field):
 # ---------------------------
 # Spherical coordinates tests
 # ---------------------------
-@pytest.mark.use_numba
 def test_point_mass_on_origin():
     """Check potential and g_z of point mass on origin in spherical coordinates."""
     point_mass = [0.0, 0.0, 0.0]
@@ -678,7 +664,6 @@ def test_point_mass_on_origin():
         )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_point_mass_same_radial_direction(field):
     """
@@ -708,7 +693,6 @@ def test_point_mass_same_radial_direction(field):
                 )
 
 
-@pytest.mark.use_numba
 def test_point_mass_potential_on_equator():
     """Check potential field on equator and same radial coordinate."""
     radius = 3.0
@@ -738,7 +722,6 @@ def test_point_mass_potential_on_equator():
                 )
 
 
-@pytest.mark.use_numba
 def test_point_mass_potential_on_same_meridian():
     """Check potential field on same meridian and radial coordinate."""
     radius = 3.0
@@ -768,8 +751,7 @@ def test_point_mass_potential_on_same_meridian():
                 )
 
 
-@run_only_with_numba
-def test_point_mass_spherical_parallel():  # pragma: no cover
+def test_point_mass_spherical_parallel():
     """
     Check if parallel and serial runs return the same result.
     """
@@ -833,7 +815,6 @@ class TestAgainstChoclo:
         upward = np.array([9, 6, 6, 12], dtype=float)
         return (easting, northing, upward)
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize(
         ("field", "choclo_func"),
         [

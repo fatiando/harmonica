@@ -16,8 +16,6 @@ import verde as vd
 
 from harmonica import EquivalentSourcesSph, point_gravity
 
-from .utils import run_only_with_numba
-
 
 @pytest.fixture(name="region")
 def fixture_region():
@@ -69,8 +67,7 @@ def fixture_data_small(points, masses, coordinates_small):
     )
 
 
-@run_only_with_numba
-def test_equivalent_sources_spherical():  # pragma: no cover
+def test_equivalent_sources_spherical():
     """
     Check that predictions are reasonable when interpolating from one grid to
     a denser grid.
@@ -111,54 +108,6 @@ def test_equivalent_sources_spherical():  # pragma: no cover
     # Test grid method
     grid = eqs.grid(grid_coords)
     npt.assert_allclose(true, grid.scalars, rtol=1e-3)
-
-
-def test_equivalent_sources_small_data_spherical():
-    """
-    Check predictions against synthetic data using few data points for speed
-    Use spherical coordinates.
-    """
-    region = (-70, -60, -40, -30)
-    radius = 6400e3
-    # Build synthetic point masses
-    points = bd.grid_coordinates(
-        region=region, shape=(6, 6), non_dimensional_coords=radius - 500e3
-    )
-    masses = vd.synthetic.CheckerBoard(amplitude=1e13, region=region).predict(points)
-    # Define a set of observation points
-    coordinates = bd.grid_coordinates(
-        region=region, shape=(8, 8), non_dimensional_coords=radius
-    )
-    # Get synthetic data
-    data = point_gravity(
-        coordinates, points, masses, field="g_z", coordinate_system="spherical"
-    )
-
-    # The interpolation should be perfect on the data points
-    eqs = EquivalentSourcesSph(relative_depth=500e3, damping=1e-12)
-    eqs.fit(coordinates, data)
-    npt.assert_allclose(data, eqs.predict(coordinates), rtol=1e-5)
-
-    # Check that the proper source locations were set
-    tmp = [i.ravel() for i in coordinates]
-    npt.assert_allclose(tmp[:2], eqs.points_[:2], rtol=1e-5)
-    npt.assert_allclose(tmp[2] - 500e3, eqs.points_[2], rtol=1e-5)
-
-    # Gridding at higher altitude should be reasonably accurate when compared
-    # to synthetic values
-    upward = radius + 2e3
-    shape = (8, 8)
-    grid_coords = bd.grid_coordinates(
-        region=region, shape=shape, non_dimensional_coords=upward
-    )
-    true = point_gravity(
-        grid_coords, points, masses, field="g_z", coordinate_system="spherical"
-    )
-    npt.assert_allclose(true, eqs.predict(grid_coords), rtol=0.05)
-
-    # Test grid method
-    grid = eqs.grid(grid_coords)
-    npt.assert_allclose(true, grid.scalars, rtol=0.05)
 
 
 def test_equivalent_sources_custom_points_spherical():
@@ -223,8 +172,7 @@ def test_equivalent_sources_spherical_no_projection():
         eqs.grid(upward=10, projection=lambda a, b: (a * 2, b * 2))
 
 
-@run_only_with_numba
-def test_equivalent_sources_spherical_parallel():  # pragma: no cover
+def test_equivalent_sources_spherical_parallel():
     """
     Check predictions when parallel is enabled and disabled.
     """

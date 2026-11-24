@@ -326,8 +326,8 @@ def _jit_dipole_magnetic_field_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for i in numba.prange(easting.size):
-        for j in range(easting_p.size):
+    for i in numba.prange(easting.size):  # pragma: no branch
+        for j in range(easting_p.size):  # pragma: no branch
             easting_comp, northing_comp, upward_comp = magnetic_field(
                 easting[i],
                 northing[i],
@@ -343,7 +343,7 @@ def _jit_dipole_magnetic_field_cartesian(
             b_n[i] += northing_comp
             b_u[i] += upward_comp
         # Update progress bar if called
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 
@@ -383,8 +383,8 @@ def _jit_dipole_magnetic_component_cartesian(
     easting_p, northing_p, upward_p = dipoles
     mag_e, mag_n, mag_u = magnetic_moments
     # Iterate over computation points and dipoles
-    for i in numba.prange(easting.size):
-        for j in range(easting_p.size):
+    for i in numba.prange(easting.size):  # pragma: no branch
+        for j in range(easting_p.size):  # pragma: no branch
             result[i] += forward_func(
                 easting[i],
                 northing[i],
@@ -397,7 +397,7 @@ def _jit_dipole_magnetic_component_cartesian(
                 mag_u[j],
             )
         # Update progress bar if called
-        if update_progressbar:
+        if update_progressbar:  # pragma: no branch
             progress_proxy.update(1)
 
 

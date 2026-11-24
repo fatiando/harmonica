@@ -24,8 +24,6 @@ from harmonica._forward._tesseroid_variable_density import (
 )
 from harmonica.constants import GRAVITATIONAL_CONST
 
-from .utils import run_only_with_numba
-
 try:
     from numba_progress import ProgressBar
 except ImportError:  # pragma: no cover
@@ -320,7 +318,6 @@ def test_density_based_discret_constant_density():
 # ----------------------------------------------
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 def test_single_tesseroid_against_constant_density(field):
     """
@@ -358,9 +355,7 @@ def test_single_tesseroid_against_constant_density(field):
 # ----------------------------
 
 
-def analytical_spherical_shell_linear(
-    radius, bottom, top, slope, constant_term
-):  # pragma: no cover (only used by @run_only_with_numba tests)
+def analytical_spherical_shell_linear(radius, bottom, top, slope, constant_term):
     """
     Analytical solutions of a spherical shell with linear density.
     """
@@ -377,7 +372,7 @@ def analytical_spherical_shell_linear(
 
 def analytical_spherical_shell_exponential(
     radius, bottom, top, a_factor, b_factor, constant_term
-):  # pragma: no cover (only used by @run_only_with_numba tests)
+):
     r"""
     Analytical solutions of a spherical shell with exponential density.
 
@@ -412,9 +407,7 @@ def analytical_spherical_shell_exponential(
     return data
 
 
-def build_spherical_shell(
-    bottom, top, shape=(6, 12)
-):  # pragma: no cover (only used by @run_only_with_numba tests)
+def build_spherical_shell(bottom, top, shape=(6, 12)):
     """
     Return a set of tesseroids modelling a spherical shell.
 
@@ -440,10 +433,9 @@ def build_spherical_shell(
     return tesseroids
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
-def test_spherical_shell_linear_density(field, thickness):  # pragma: no cover
+def test_spherical_shell_linear_density(field, thickness):
     """
     Test numerical results against analytical solution for linear density.
     """
@@ -481,13 +473,10 @@ def test_spherical_shell_linear_density(field, thickness):  # pragma: no cover
     )
 
 
-@run_only_with_numba
 @pytest.mark.parametrize("field", ["potential", "g_z"])
 @pytest.mark.parametrize("thickness", [1e2, 1e3, 1e6])
 @pytest.mark.parametrize("b_factor", [5, 100])
-def test_spherical_shell_exponential_density(
-    field, thickness, b_factor
-):  # pragma: no cover
+def test_spherical_shell_exponential_density(field, thickness, b_factor):
     """
     Test numerical results against analytical solution for exponential density.
     """
@@ -557,7 +546,6 @@ class TestProgressBar:
         return coordinates
 
     @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["potential", "g_z"])
     def test_progress_bar(self, coordinates, tesseroids, densities, field):
         """

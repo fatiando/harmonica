@@ -36,8 +36,6 @@ from harmonica import bouguer_correction, prism_gravity
 from harmonica._forward.prisms.gravity import _discard_null_prisms
 from harmonica._forward.prisms.utils import check_prisms
 
-from .utils import run_only_with_numba
-
 
 def test_invalid_field():
     """Check if passing an invalid field raises an error."""
@@ -112,7 +110,6 @@ def test_discard_null_prisms():
     npt.assert_allclose(density, np.array([2670]))
 
 
-@pytest.mark.use_numba
 def test_forward_with_null_prisms():
     """
     Test if the forward model with null prisms gives sensible results.
@@ -136,7 +133,6 @@ def test_forward_with_null_prisms():
     )
 
 
-@pytest.mark.use_numba
 def test_disable_checks():
     """Check if the disable_checks flag works properly."""
     valid_prism = [0, 10, 0, 10, -10, 0]
@@ -189,7 +185,6 @@ class TestAgainstChoclo:
         upward = np.array([9, 6, 6, 12], dtype=float)
         return (easting, northing, upward)
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize(
         ("field", "choclo_func"),
         [
@@ -244,8 +239,7 @@ class TestAgainstChoclo:
         npt.assert_allclose(result, expected_result)
 
 
-@run_only_with_numba
-def test_laplace():  # pragma: no cover
+def test_laplace():
     """
     Test if the diagonal components satisfy Laplace equation.
     """
@@ -266,7 +260,6 @@ def test_laplace():  # pragma: no cover
     )
 
 
-@pytest.mark.use_numba
 def test_prism_against_infinite_slab():
     """
     Test if g_z of a large prism matches the solution for an infinite slab.
@@ -297,7 +290,6 @@ def test_prism_against_infinite_slab():
     npt.assert_allclose(analytical, results[-1])
 
 
-@pytest.mark.use_numba
 def test_prisms_parallel_vs_serial():
     """
     Check if the parallelized run returns the same results as the serial one.
@@ -348,7 +340,6 @@ class TestProgressBar:
         return coordinates
 
     @pytest.mark.skipif(ProgressBar is None, reason="requires numba_progress")
-    @pytest.mark.use_numba
     @pytest.mark.parametrize(
         "field",
         [
@@ -430,7 +421,6 @@ class TestSingularPoints:
         upward = np.full_like(easting, upward_c)
         return easting, northing, upward
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_zz", "g_en", "g_ez", "g_nz"])
     def test_on_vertices(self, sample_prism, sample_density, field):
         """
@@ -447,7 +437,6 @@ class TestSingularPoints:
                     field=field,
                 )
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["g_nn", "g_zz", "g_nz"])
     def test_on_easting_edges(self, sample_prism, sample_density, field):
         """
@@ -465,7 +454,6 @@ class TestSingularPoints:
                     field=field,
                 )
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["g_ee", "g_zz", "g_ez"])
     def test_on_northing_edges(self, sample_prism, sample_density, field):
         """
@@ -483,7 +471,6 @@ class TestSingularPoints:
                     field=field,
                 )
 
-    @pytest.mark.use_numba
     @pytest.mark.parametrize("field", ["g_ee", "g_nn", "g_en"])
     def test_on_upward_edges(self, sample_prism, sample_density, field):
         """

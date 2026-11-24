@@ -35,6 +35,18 @@ information.
 You'll find more information about project maintenance (releases, reviews, etc)
 in our organization-wide [Maintainers Guide][maintenance].
 
+## About coverage analysis
+
+Harmonica relies on numba for performance within some functions, which can make
+it a bit difficult to measure test coverage since the functions being
+executed are the jit-compiled versions of the functions in the code.
+Fortunately, numba now supports measuring coverage if the environment variable
+`NUMBA_JIT_COVERAGE=1` is set. However, it still does not support branch
+analysis and will report any `for` or `if` as missing coverage for a branch,
+even if tests explicitly for that are added. To get around this, we have to
+disable branch analysis for every single `for` and `if` statement in our code by
+putting `# pragma: no branch` after the statement.
+
 [coc]: https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md
 [contrib]: https://github.com/fatiando/community/blob/main/CONTRIBUTING.md
 [maintenance]: https://github.com/fatiando/community/blob/main/MAINTENANCE.md

@@ -225,7 +225,6 @@ def test_interpolate_coefficients_invalid_date(date):
         )
 
 
-@pytest.mark.use_numba
 @pytest.mark.parametrize(
     ("data", "coordinates"),
     [

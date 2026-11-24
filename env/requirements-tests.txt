@@ -1,7 +1,10 @@
 # Requirements for running the tests
 pytest
 pytest-cov
-coverage
+# Pin coverage because there is a bug with 7.17.5 when numba coverage analysis
+# is used with numba 0.68.1
+coverage==7.17.4
+# Optional dependencies used in tests
 pyvista
 vtk>=9
 numba_progress
